@@ -3,7 +3,7 @@ module M3e.SlideGroup exposing
     , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, nextPageLabel, previousPageLabel, threshold, vertical
     , nextIcon, prevIcon
-    , withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
+    , withAriaLabel, withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
     )
 
 {-| The `m3e-slide-group` component — strict per-component surface.
@@ -14,7 +14,7 @@ Presents pagination controls used to scroll overflowing content.
 @docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIcon, prevIcon
-@docs withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
+@docs withAriaLabel, withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
 
 -}
 
@@ -36,7 +36,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disabled : Supported
     , id : Supported
     , nextPageLabel : Supported
@@ -140,7 +141,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disabled : Available
     , id : Available
     , nextPageLabel : Available
@@ -172,6 +174,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-slide-group" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

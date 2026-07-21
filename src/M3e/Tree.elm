@@ -2,7 +2,7 @@ module M3e.Tree exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , cascade, multi, onChange
-    , withCascade, withChild, withClass, withId, withMulti, withOnChange, withSlot, withStyle
+    , withAriaLabel, withCascade, withChild, withClass, withId, withMulti, withOnChange, withSlot, withStyle
     )
 
 {-| The `m3e-tree` component — strict per-component surface.
@@ -12,7 +12,7 @@ Presents hierarchical data in a tree structure.
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs cascade, multi, onChange
-@docs withCascade, withChild, withClass, withId, withMulti, withOnChange, withSlot, withStyle
+@docs withAriaLabel, withCascade, withChild, withClass, withId, withMulti, withOnChange, withSlot, withStyle
 
 -}
 
@@ -35,7 +35,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { cascade : Supported
+    { ariaLabel : Supported
+    , cascade : Supported
     , class : Supported
     , id : Supported
     , multi : Supported
@@ -98,7 +99,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { cascade : Available
+    { ariaLabel : Available
+    , cascade : Available
     , class : Available
     , id : Available
     , multi : Available
@@ -126,6 +128,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-tree" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

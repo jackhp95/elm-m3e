@@ -2,7 +2,7 @@ module M3e.StateLayer exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disableHover, disabled, for
-    , withClass, withDisableHover, withDisabled, withFor, withId, withSlot, withStyle
+    , withAriaLabel, withClass, withDisableHover, withDisabled, withFor, withId, withSlot, withStyle
     )
 
 {-| The `m3e-state-layer` component — strict per-component surface.
@@ -12,7 +12,7 @@ Provides focus and hover state layer treatment for an interactive element.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disableHover, disabled, for
-@docs withClass, withDisableHover, withDisabled, withFor, withId, withSlot, withStyle
+@docs withAriaLabel, withClass, withDisableHover, withDisabled, withFor, withId, withSlot, withStyle
 
 -}
 
@@ -34,7 +34,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disableHover : Supported
     , disabled : Supported
     , for : Supported
@@ -91,7 +92,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disableHover : Available
     , disabled : Available
     , for : Available
@@ -119,6 +121,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-state-layer" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

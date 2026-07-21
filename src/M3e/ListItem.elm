@@ -2,7 +2,7 @@ module M3e.ListItem exposing
     ( view, build, toElement
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , leading, overline, supportingText, trailing
-    , withChild, withClass, withId, withLeading, withOverline, withSlot, withStyle, withSupportingText, withTrailing
+    , withAriaLabel, withChild, withClass, withId, withLeading, withOverline, withSlot, withStyle, withSupportingText, withTrailing
     )
 
 {-| The `m3e-list-item` component — strict per-component surface.
@@ -12,7 +12,7 @@ An item in a list.
 @docs view, build, toElement
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs leading, overline, supportingText, trailing
-@docs withChild, withClass, withId, withLeading, withOverline, withSlot, withStyle, withSupportingText, withTrailing
+@docs withAriaLabel, withChild, withClass, withId, withLeading, withOverline, withSlot, withStyle, withSupportingText, withTrailing
 
 -}
 
@@ -34,7 +34,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -146,7 +147,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , slot : Available
     , style : Available
@@ -175,6 +177,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-list-item" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

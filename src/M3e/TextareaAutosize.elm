@@ -2,7 +2,7 @@ module M3e.TextareaAutosize exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, for, maxRows, minRows
-    , withClass, withDisabled, withFor, withId, withMaxRows, withMinRows, withSlot, withStyle
+    , withAriaLabel, withClass, withDisabled, withFor, withId, withMaxRows, withMinRows, withSlot, withStyle
     )
 
 {-| The `m3e-textarea-autosize` component — strict per-component surface.
@@ -12,7 +12,7 @@ A non-visual element used to automatically resize a `textarea` to fit its conten
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, for, maxRows, minRows
-@docs withClass, withDisabled, withFor, withId, withMaxRows, withMinRows, withSlot, withStyle
+@docs withAriaLabel, withClass, withDisabled, withFor, withId, withMaxRows, withMinRows, withSlot, withStyle
 
 -}
 
@@ -34,7 +34,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disabled : Supported
     , for : Supported
     , id : Supported
@@ -99,7 +100,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disabled : Available
     , for : Available
     , id : Available
@@ -128,6 +130,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-textarea-autosize" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

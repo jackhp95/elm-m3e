@@ -3,7 +3,7 @@ module M3e.Toolbar exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Shape, shape, Variant, variant
     , elevated, vertical
-    , withChild, withClass, withElevated, withId, withShape, withSlot, withStyle, withVariant, withVertical
+    , withAriaLabel, withChild, withClass, withElevated, withId, withShape, withSlot, withStyle, withVariant, withVertical
     )
 
 {-| The `m3e-toolbar` component — strict per-component surface.
@@ -14,7 +14,7 @@ Presents frequently used actions relevant to the current page.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Shape, shape, Variant, variant
 @docs elevated, vertical
-@docs withChild, withClass, withElevated, withId, withShape, withSlot, withStyle, withVariant, withVertical
+@docs withAriaLabel, withChild, withClass, withElevated, withId, withShape, withSlot, withStyle, withVariant, withVertical
 
 -}
 
@@ -37,7 +37,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , elevated : Supported
     , id : Supported
     , shape : Supported
@@ -121,7 +122,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , elevated : Available
     , id : Available
     , shape : Available
@@ -150,6 +152,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-toolbar" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

@@ -3,7 +3,7 @@ module M3e.Skeleton exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Animation, animation, Shape, shape
     , loaded
-    , withAnimation, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
+    , withAnimation, withAriaLabel, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
     )
 
 {-| The `m3e-skeleton` component — strict per-component surface.
@@ -14,7 +14,7 @@ A visual placeholder that mimics the layout of content while it's still loading.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Animation, animation, Shape, shape
 @docs loaded
-@docs withAnimation, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
+@docs withAnimation, withAriaLabel, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
 
 -}
 
@@ -38,6 +38,7 @@ type alias Is s =
 -}
 type alias Attrs =
     { animation : Supported
+    , ariaLabel : Supported
     , class : Supported
     , id : Supported
     , loaded : Supported
@@ -117,6 +118,7 @@ type Builder attrCaps slotCaps msg
 -}
 type alias AttrCaps =
     { animation : Available
+    , ariaLabel : Available
     , class : Available
     , id : Available
     , loaded : Available
@@ -144,6 +146,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-skeleton" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

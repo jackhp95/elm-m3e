@@ -2,7 +2,7 @@ module M3e.BottomSheetTrigger exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , detent, for, secondary
-    , withChild, withClass, withDetent, withFor, withId, withSecondary, withSlot, withStyle
+    , withAriaLabel, withChild, withClass, withDetent, withFor, withId, withSecondary, withSlot, withStyle
     )
 
 {-| The `m3e-bottom-sheet-trigger` component — strict per-component surface.
@@ -12,7 +12,7 @@ An element, nested within a clickable element, used to trigger a bottom sheet.
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs detent, for, secondary
-@docs withChild, withClass, withDetent, withFor, withId, withSecondary, withSlot, withStyle
+@docs withAriaLabel, withChild, withClass, withDetent, withFor, withId, withSecondary, withSlot, withStyle
 
 -}
 
@@ -34,7 +34,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , detent : Supported
     , for : Supported
     , id : Supported
@@ -97,7 +98,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , detent : Available
     , for : Available
     , id : Available
@@ -125,6 +127,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-bottom-sheet-trigger" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

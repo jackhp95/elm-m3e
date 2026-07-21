@@ -3,7 +3,7 @@ module M3e.Toc exposing
     , Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , for, maxDepth
     , overline, title
-    , withChild, withClass, withFor, withId, withMaxDepth, withOverline, withSlot, withStyle, withTitle
+    , withAriaLabel, withChild, withClass, withFor, withId, withMaxDepth, withOverline, withSlot, withStyle, withTitle
     )
 
 {-| The `m3e-toc` component — strict per-component surface.
@@ -14,7 +14,7 @@ A table of contents that provides in-page scroll navigation.
 @docs Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs for, maxDepth
 @docs overline, title
-@docs withChild, withClass, withFor, withId, withMaxDepth, withOverline, withSlot, withStyle, withTitle
+@docs withAriaLabel, withChild, withClass, withFor, withId, withMaxDepth, withOverline, withSlot, withStyle, withTitle
 
 -}
 
@@ -36,7 +36,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , for : Supported
     , id : Supported
     , maxDepth : Supported
@@ -116,7 +117,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , for : Available
     , id : Available
     , maxDepth : Available
@@ -145,6 +147,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-toc" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

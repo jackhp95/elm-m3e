@@ -2,7 +2,7 @@ module M3e.RadioGroup exposing
     ( view, el, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
-    , withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
+    , withAriaInvalid, withAriaLabel, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
     )
 
 {-| The `m3e-radio-group` component — strict per-component surface.
@@ -12,7 +12,7 @@ A container for a set of radio buttons.
 @docs view, el, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
-@docs withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
+@docs withAriaInvalid, withAriaLabel, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
 
 -}
 
@@ -38,6 +38,7 @@ type alias Is s =
 -}
 type alias Attrs =
     { ariaInvalid : Supported
+    , ariaLabel : Supported
     , class : Supported
     , disabled : Supported
     , id : Supported
@@ -141,6 +142,7 @@ type Builder attrCaps slotCaps msg
 -}
 type alias AttrCaps =
     { ariaInvalid : Available
+    , ariaLabel : Available
     , class : Available
     , disabled : Available
     , id : Available
@@ -174,6 +176,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-radio-group" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

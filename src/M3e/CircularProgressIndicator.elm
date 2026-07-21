@@ -3,7 +3,7 @@ module M3e.CircularProgressIndicator exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
     , indeterminate, max, value
-    , withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
+    , withAriaLabel, withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
     )
 
 {-| The `m3e-circular-progress-indicator` component — strict per-component surface.
@@ -14,7 +14,7 @@ A circular indicator of progress and activity.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
 @docs indeterminate, max, value
-@docs withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
+@docs withAriaLabel, withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
 
 -}
 
@@ -39,7 +39,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , indeterminate : Supported
     , max : Supported
@@ -115,7 +116,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , indeterminate : Available
     , max : Available
@@ -144,6 +146,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-circular-progress-indicator" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

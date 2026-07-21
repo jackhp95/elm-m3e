@@ -2,7 +2,7 @@ module M3e.Shape exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Name, name
-    , withChild, withClass, withId, withName, withSlot, withStyle
+    , withAriaLabel, withChild, withClass, withId, withName, withSlot, withStyle
     )
 
 {-| The `m3e-shape` component — strict per-component surface.
@@ -12,7 +12,7 @@ A shape used to add emphasis and decorative flair.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Name, name
-@docs withChild, withClass, withId, withName, withSlot, withStyle
+@docs withAriaLabel, withChild, withClass, withId, withName, withSlot, withStyle
 
 -}
 
@@ -35,7 +35,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , name : Supported
     , slot : Supported
@@ -120,7 +121,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , name : Available
     , slot : Available
@@ -146,6 +148,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-shape" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

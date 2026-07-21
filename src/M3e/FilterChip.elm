@@ -4,7 +4,7 @@ module M3e.FilterChip exposing
     , Variant, variant
     , disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
     , icon, trailingIcon
-    , withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
+    , withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
     )
 
 {-| The `m3e-filter-chip` component — strict per-component surface.
@@ -16,7 +16,7 @@ A chip users interact with to select/deselect options.
 @docs Variant, variant
 @docs disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
 @docs icon, trailingIcon
-@docs withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
+@docs withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
 
 -}
 
@@ -40,7 +40,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , id : Supported
@@ -198,7 +199,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disabled : Available
     , disabledInteractive : Available
     , id : Available
@@ -236,6 +238,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-filter-chip" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

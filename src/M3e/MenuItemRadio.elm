@@ -3,7 +3,7 @@ module M3e.MenuItemRadio exposing
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , checked, disabled, onClick
     , icon, trailingIcon
-    , withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
+    , withAriaLabel, withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
     )
 
 {-| The `m3e-menu-item-radio` component — strict per-component surface.
@@ -14,7 +14,7 @@ An item of a menu which supports a mutually exclusive checkable state.
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs checked, disabled, onClick
 @docs icon, trailingIcon
-@docs withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
+@docs withAriaLabel, withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
 
 -}
 
@@ -37,7 +37,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { checked : Supported
+    { ariaLabel : Supported
+    , checked : Supported
     , class : Supported
     , disabled : Supported
     , id : Supported
@@ -128,7 +129,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { checked : Available
+    { ariaLabel : Available
+    , checked : Available
     , class : Available
     , disabled : Available
     , id : Available
@@ -158,6 +160,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-menu-item-radio" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

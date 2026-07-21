@@ -4,7 +4,7 @@ module M3e.SearchView exposing
     , Mode, mode
     , clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
     , clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon
-    , withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
+    , withAriaLabel, withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
     )
 
 {-| The `m3e-search-view` component — strict per-component surface.
@@ -16,7 +16,7 @@ A surface that presents suggestions and results for a search.
 @docs Mode, mode
 @docs clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
 @docs clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon
-@docs withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
+@docs withAriaLabel, withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
 
 -}
 
@@ -40,7 +40,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , clearLabel : Supported
     , closeLabel : Supported
     , contained : Supported
@@ -290,7 +291,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , clearLabel : Available
     , closeLabel : Available
     , contained : Available
@@ -331,6 +333,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-search-view" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

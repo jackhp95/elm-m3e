@@ -4,7 +4,7 @@ module M3e.Button exposing
     , Shape, shape, Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
     , icon, selected, selectedIcon, trailingIcon
-    , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
+    , withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
     )
 
 {-| The `m3e-button` component — strict per-component surface.
@@ -16,7 +16,7 @@ A button users interact with to perform an action.
 @docs Shape, shape, Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
 @docs icon, selected, selectedIcon, trailingIcon
-@docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
+@docs withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
 
 -}
 
@@ -43,7 +43,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , download : Supported
@@ -375,7 +376,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disabled : Available
     , disabledInteractive : Available
     , download : Available
@@ -426,6 +428,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-button" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

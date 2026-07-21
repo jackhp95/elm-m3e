@@ -3,7 +3,7 @@ module M3e.TextHighlight exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Mode, mode
     , caseSensitive, disabled, term, onHighlight
-    , withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
+    , withAriaLabel, withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
     )
 
 {-| The `m3e-text-highlight` component — strict per-component surface.
@@ -14,7 +14,7 @@ Highlights text which matches a given search term.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Mode, mode
 @docs caseSensitive, disabled, term, onHighlight
-@docs withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
+@docs withAriaLabel, withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
 
 -}
 
@@ -38,7 +38,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { caseSensitive : Supported
+    { ariaLabel : Supported
+    , caseSensitive : Supported
     , class : Supported
     , disabled : Supported
     , id : Supported
@@ -123,7 +124,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { caseSensitive : Available
+    { ariaLabel : Available
+    , caseSensitive : Available
     , class : Available
     , disabled : Available
     , id : Available
@@ -153,6 +155,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-text-highlight" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

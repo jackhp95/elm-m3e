@@ -3,7 +3,7 @@ module M3e.Dialog exposing
     , Is, Attrs, CloseIconSlot, HeaderSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
     , actions, closeIcon, header
-    , withActions, withAlert, withChild, withClass, withCloseIcon, withCloseLabel, withDisableClose, withDismissible, withHeader, withId, withNoFocusTrap, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle
+    , withActions, withAlert, withAriaLabel, withChild, withClass, withCloseIcon, withCloseLabel, withDisableClose, withDismissible, withHeader, withId, withNoFocusTrap, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle
     )
 
 {-| The `m3e-dialog` component — strict per-component surface.
@@ -14,7 +14,7 @@ A dialog that provides important prompts in a user flow.
 @docs Is, Attrs, CloseIconSlot, HeaderSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
 @docs actions, closeIcon, header
-@docs withActions, withAlert, withChild, withClass, withCloseIcon, withCloseLabel, withDisableClose, withDismissible, withHeader, withId, withNoFocusTrap, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle
+@docs withActions, withAlert, withAriaLabel, withChild, withClass, withCloseIcon, withCloseLabel, withDisableClose, withDismissible, withHeader, withId, withNoFocusTrap, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle
 
 -}
 
@@ -38,6 +38,7 @@ type alias Is s =
 -}
 type alias Attrs =
     { alert : Supported
+    , ariaLabel : Supported
     , class : Supported
     , closeLabel : Supported
     , disableClose : Supported
@@ -198,6 +199,7 @@ type Builder attrCaps slotCaps msg
 -}
 type alias AttrCaps =
     { alert : Available
+    , ariaLabel : Available
     , class : Available
     , closeLabel : Available
     , disableClose : Available
@@ -236,6 +238,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-dialog" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

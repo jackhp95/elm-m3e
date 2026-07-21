@@ -3,7 +3,7 @@ module M3e.NavMenuItem exposing
     , Is, Attrs, Content, BadgeSlot, IconSlot, LabelSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
     , badge, icon, label, selectedIcon, toggleIcon
-    , withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
+    , withAriaLabel, withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
     )
 
 {-| The `m3e-nav-menu-item` component — strict per-component surface.
@@ -14,7 +14,7 @@ An expandable item, selectable item within a navigation menu.
 @docs Is, Attrs, Content, BadgeSlot, IconSlot, LabelSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
 @docs badge, icon, label, selectedIcon, toggleIcon
-@docs withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
+@docs withAriaLabel, withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
 
 -}
 
@@ -37,7 +37,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disabled : Supported
     , id : Supported
     , onClick : Supported
@@ -225,7 +226,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disabled : Available
     , id : Available
     , onClick : Available
@@ -265,6 +267,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-nav-menu-item" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

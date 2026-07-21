@@ -4,7 +4,7 @@ module M3e.Tabs exposing
     , HeaderPosition, headerPosition, Variant, variant
     , disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
     , nextIcon, panel, prevIcon
-    , withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
+    , withAriaLabel, withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
     )
 
 {-| The `m3e-tabs` component — strict per-component surface.
@@ -16,7 +16,7 @@ Organizes content into separate views where only one view can be visible at a ti
 @docs HeaderPosition, headerPosition, Variant, variant
 @docs disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
 @docs nextIcon, panel, prevIcon
-@docs withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
+@docs withAriaLabel, withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
 
 -}
 
@@ -40,7 +40,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disablePagination : Supported
     , headerPosition : Supported
     , id : Supported
@@ -209,7 +210,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disablePagination : Available
     , headerPosition : Available
     , id : Available
@@ -245,6 +247,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-tabs" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

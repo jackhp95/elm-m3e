@@ -4,7 +4,7 @@ module M3e.OptionPanel exposing
     , ScrollStrategy, scrollStrategy, State, state
     , anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
     , loading, noData
-    , withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
+    , withAnchorOffset, withAriaLabel, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
     )
 
 {-| The `m3e-option-panel` component — strict per-component surface.
@@ -16,7 +16,7 @@ Presents a list of options on a temporary surface.
 @docs ScrollStrategy, scrollStrategy, State, state
 @docs anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
 @docs loading, noData
-@docs withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
+@docs withAnchorOffset, withAriaLabel, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
 
 -}
 
@@ -41,6 +41,7 @@ type alias Is s =
 -}
 type alias Attrs =
     { anchorOffset : Supported
+    , ariaLabel : Supported
     , class : Supported
     , fitAnchorWidth : Supported
     , id : Supported
@@ -173,6 +174,7 @@ type Builder attrCaps slotCaps msg
 -}
 type alias AttrCaps =
     { anchorOffset : Available
+    , ariaLabel : Available
     , class : Available
     , fitAnchorWidth : Available
     , id : Available
@@ -204,6 +206,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-option-panel" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

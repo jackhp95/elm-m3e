@@ -3,7 +3,7 @@ module M3e.Breadcrumb exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , wrap
     , separator
-    , withChild, withClass, withId, withSeparator, withSlot, withStyle, withWrap
+    , withAriaLabel, withChild, withClass, withId, withSeparator, withSlot, withStyle, withWrap
     )
 
 {-| The `m3e-breadcrumb` component — strict per-component surface.
@@ -15,7 +15,7 @@ current location within an application.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs wrap
 @docs separator
-@docs withChild, withClass, withId, withSeparator, withSlot, withStyle, withWrap
+@docs withAriaLabel, withChild, withClass, withId, withSeparator, withSlot, withStyle, withWrap
 
 -}
 
@@ -37,7 +37,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -103,7 +104,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , slot : Available
     , style : Available
@@ -132,6 +134,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-breadcrumb" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

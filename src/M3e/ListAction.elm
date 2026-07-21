@@ -3,7 +3,7 @@ module M3e.ListAction exposing
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, download, href, rel, target, onClick
     , leading, overline, supportingText, trailing
-    , withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing
+    , withAriaLabel, withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing
     )
 
 {-| The `m3e-list-action` component — strict per-component surface.
@@ -14,7 +14,7 @@ An item in a list that performs an action.
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, download, href, rel, target, onClick
 @docs leading, overline, supportingText, trailing
-@docs withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing
+@docs withAriaLabel, withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing
 
 -}
 
@@ -37,7 +37,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , disabled : Supported
     , download : Supported
     , href : Supported
@@ -209,7 +210,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , disabled : Available
     , download : Available
     , href : Available
@@ -244,6 +246,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-list-action" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

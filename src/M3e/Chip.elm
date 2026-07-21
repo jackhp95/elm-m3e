@@ -4,7 +4,7 @@ module M3e.Chip exposing
     , Variant, variant
     , value
     , icon, trailingIcon
-    , withChild, withClass, withIcon, withId, withSlot, withStyle, withTrailingIcon, withValue, withVariant
+    , withAriaLabel, withChild, withClass, withIcon, withId, withSlot, withStyle, withTrailingIcon, withValue, withVariant
     )
 
 {-| The `m3e-chip` component — strict per-component surface.
@@ -16,7 +16,7 @@ A non-interactive chip used to convey small pieces of information.
 @docs Variant, variant
 @docs value
 @docs icon, trailingIcon
-@docs withChild, withClass, withIcon, withId, withSlot, withStyle, withTrailingIcon, withValue, withVariant
+@docs withAriaLabel, withChild, withClass, withIcon, withId, withSlot, withStyle, withTrailingIcon, withValue, withVariant
 
 -}
 
@@ -39,7 +39,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -141,7 +142,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , slot : Available
     , style : Available
@@ -172,6 +174,13 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-chip" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

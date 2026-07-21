@@ -4,7 +4,7 @@ module M3e.Card exposing
     , Orientation, orientation, Type, type_, Variant, variant
     , actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, onClick
     , actions, content, footer, header
-    , withActionable, withActions, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
+    , withActionable, withActions, withAriaLabel, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
 
 {-| The `m3e-card` component — strict per-component surface.
@@ -16,7 +16,7 @@ A content container for text, images (or other media), and actions in the contex
 @docs Orientation, orientation, Type, type_, Variant, variant
 @docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, onClick
 @docs actions, content, footer, header
-@docs withActionable, withActions, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
+@docs withActionable, withActions, withAriaLabel, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
 -}
 
@@ -43,6 +43,7 @@ type alias Is s =
 -}
 type alias Attrs =
     { actionable : Supported
+    , ariaLabel : Supported
     , class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
@@ -249,6 +250,7 @@ type Builder attrCaps slotCaps msg
 -}
 type alias AttrCaps =
     { actionable : Available
+    , ariaLabel : Available
     , class : Available
     , disabled : Available
     , disabledInteractive : Available
@@ -291,6 +293,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-card" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

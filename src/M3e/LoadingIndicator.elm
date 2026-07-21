@@ -2,7 +2,7 @@ module M3e.LoadingIndicator exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
-    , withClass, withId, withSlot, withStyle, withVariant
+    , withAriaLabel, withClass, withId, withSlot, withStyle, withVariant
     )
 
 {-| The `m3e-loading-indicator` component — strict per-component surface.
@@ -12,7 +12,7 @@ Shows indeterminate progress for a short wait time.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
-@docs withClass, withId, withSlot, withStyle, withVariant
+@docs withAriaLabel, withClass, withId, withSlot, withStyle, withVariant
 
 -}
 
@@ -35,7 +35,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -84,7 +85,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , slot : Available
     , style : Available
@@ -110,6 +112,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-loading-indicator" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

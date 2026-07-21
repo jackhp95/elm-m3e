@@ -454,15 +454,20 @@ enforces pairing it with a real interactive child and a keyboard path.
 
 ### The ARIA hybrid
 
-ARIA is deliberately **not** generated into m3e. It lives in the **native brand**,
-`TypedHtml.Aria` (from `elm-typed-html`). There is no `M3e.ariaLabel`. m3e users
-reach ARIA by importing the native module and writing the setter inline in any
-component's attribute list:
+The single highest-value ARIA setter, `aria-label`, **is** surfaced directly as a
+global on `M3e.Attributes` (`ariaLabel : String -> Attr`), so an accessible name is
+reachable without a second import — and icon-only controls (FAB, IconButton) require it
+as a record field (see §Required content). The broader ARIA surface (the full aria-\*
+family, `role` gating) is deliberately **not** generated into m3e; it lives in the
+**native brand**, `TypedHtml.Aria` (from `elm-typed-html`). m3e users reach the rest of
+ARIA by importing the native module and writing the setter inline in any component's
+attribute list:
 
 ```elm
 import TypedHtml.Aria as Aria
 
-M3e.iconButton [ Aria.label "Back" ] []          -- from docs/app/Route/Guide/Accessibility.elm
+M3e.iconButton [ M3e.Attributes.ariaLabel "Back" ] []   -- the name, direct on M3e.Attributes
+M3e.iconButton [ Aria.describedBy "hint-1" ] []         -- the rest, via TypedHtml.Aria
 ```
 
 This composes because a universal ARIA setter carries a **fully-open capability

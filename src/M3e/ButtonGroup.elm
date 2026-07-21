@@ -3,7 +3,7 @@ module M3e.ButtonGroup exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Size, size, Variant, variant
     , multi
-    , withChild, withClass, withId, withMulti, withSize, withSlot, withStyle, withVariant
+    , withAriaLabel, withChild, withClass, withId, withMulti, withSize, withSlot, withStyle, withVariant
     )
 
 {-| The `m3e-button-group` component — strict per-component surface.
@@ -14,7 +14,7 @@ Organizes buttons and adds interactions between them.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Size, size, Variant, variant
 @docs multi
-@docs withChild, withClass, withId, withMulti, withSize, withSlot, withStyle, withVariant
+@docs withAriaLabel, withChild, withClass, withId, withMulti, withSize, withSlot, withStyle, withVariant
 
 -}
 
@@ -37,7 +37,8 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { ariaLabel : Supported
+    , class : Supported
     , id : Supported
     , multi : Supported
     , size : Supported
@@ -121,7 +122,8 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
+    { ariaLabel : Available
+    , class : Available
     , id : Available
     , multi : Available
     , size : Available
@@ -149,6 +151,13 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-button-group" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
+-}
+withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
+withAriaLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
