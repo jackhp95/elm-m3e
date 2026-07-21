@@ -31,9 +31,9 @@ diverges the library from `@m3e/web`. If someone *has* hand-edited a generated f
 2. Make the real fix in `config/slots.json` (or upstream in `elm-cem`).
 3. Regenerate and confirm the intended change appears in the diff.
 
-(The hand-written IR *core* — `Markup.Node`, `Markup.Element`, `Markup.Html.Attr`,
-`Markup.Aria`, `Markup.Attributes`, and `Markup.Kind` — now lives in the shared
-`markup-core` package (`elm-cem/markup/src/Markup/`), not in `src/M3e/`. elm-m3e
+(The hand-written IR *core* — `HtmlIr.Element`, `HtmlIr.Node`, `HtmlIr.Attribute`,
+`HtmlIr.Value`, and `HtmlIr.Kind` — lives in the published-shape
+`elm-html-intermediate-representation` package, not in `src/M3e/`. elm-m3e
 imports these modules as a dependency (`ownsRuntime = false`). Per-component modules
 under `src/M3e/` are deliberately excluded from `elm-format --validate` because they
 are generated.)
@@ -55,8 +55,9 @@ node elm-cem/bin/elm-cem.js \
 ```
 
 `config/runtime.json` carries `{ "_runtime": { "owns": false } }` — it tells the
-generator that elm-m3e imports its IR core from the shared `markup-core` package
-(`Markup.*` modules) rather than emitting its own runtime copies.
+generator that elm-m3e imports its IR core from the shared
+`elm-html-intermediate-representation` package (`HtmlIr.*` modules) — the
+generator never injects or emits runtime copies (injectRuntime is retired).
 
 Then **format** (the raw output is not elm-formatted — committing it raw floods the diff
 with line-wrap churn that swamps the real API change):
@@ -93,7 +94,7 @@ output:
 | `_native` | the typed native-HTML facade (`M3e.Native`) |
 | `_seams` | the `M3e.Seam` contract types + stampers |
 | `_coerce` | config-blessed brand crossings emitted as `M3e.Coerce.<name>` functions |
-| `_runtime` | `{ "owns": false }` → import `Markup.*` from `markup-core` (not emit) |
+| `_phantom` | `true` → the phantom pipeline: generated code imports `HtmlIr.*` |
 
 **Vocabulary that bites:** the unnamed slot is keyed `"unnamed"` (not `"default"`); the
 accepts-anything sugar is the bare string `"arbitrary"` (not `"any"`); `[]` means *no
@@ -127,7 +128,7 @@ churn — all tracking real `@m3e/web` changes.
   change; note it for the changelog/`elm bump`.
 - **Massive whitespace-only churn** — you forgot the `elm-format` step; re-run it.
 - Any change under `src/M3e/` to modules that shouldn't be generated — the IR core
-  (`Markup.*`) lives in `markup-core`, not in `src/M3e/`; the generator should never
+  (`HtmlIr.*`) lives in `elm-html-intermediate-representation`, not in `src/M3e/`; the generator should never
   produce files named `Node.elm`, `Element.elm`, `Html/Attr.elm` etc. under `src/M3e/`.
 
 ## Zero-diff verification after a toolchain change
