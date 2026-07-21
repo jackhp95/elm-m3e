@@ -20,7 +20,7 @@
 //   Usage:   node scripts/fetch-mdn-native-summaries.mjs
 //
 //   Then regenerate the library (note the extra --config-from):
-//     node elm-cem/bin/elm-cem.js \
+//     node /Users/jack/Documents/code/elm-cem/bin/elm-cem.js \
 //       --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
 //       --config-from=config/slots.json \
 //       --config-from=config/native-mdn.json \

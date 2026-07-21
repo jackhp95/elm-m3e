@@ -46,13 +46,19 @@ sibling checkout `/Users/jack/Documents/code/elm-cem` — the exact path `packag
 `split` script already uses. Install its deps first (`cd /Users/jack/Documents/code/elm-cem
 && npm ci`). It needs an `elm` 0.19.1 (this repo's `node_modules/.bin/elm` works).
 
-> **Do not use the repo-local `elm-cem/` clone for regen.** That gitignored in-repo copy
-> can lag behind the phantom pipeline (it emits the retired `M3e/Build/`, `M3e/Aria.elm`
-> etc.); regenerating with it produces a large spurious diff. The sibling checkout is the
-> source of truth — a regen with it is byte-for-byte zero-diff against committed `src/`
-> (verified 2026-07-21: 132 files, `diff -rq $TMP src` empty).
+> **Use the sibling checkout — the in-repo clone is deleted.** An earlier workflow kept a
+> gitignored `elm-cem/` clone inside this repo; it was stuck on a pre-phantom commit and
+> emitted the retired `M3e/Build/`, `M3e/Aria.elm` etc., producing a large spurious diff.
+> That clone has been removed (pass 2, 2026-07-21). The sibling checkout
+> `/Users/jack/Documents/code/elm-cem` is the only local regen path — a regen with it is
+> byte-for-byte zero-diff against committed `src/` (verified 2026-07-21: 132 files,
+> `diff -rq $TMP src` empty).
 
 ```bash
+# PATH prepend is REQUIRED: the generator shells out to `elm`, which lives in THIS
+# repo's node_modules/.bin (not elm-cem's). Without it the regen fails SILENTLY —
+# exit 0, zero files, a bare "Compilation failed." line.
+PATH="/Users/jack/Documents/code/elm-m3e/node_modules/.bin:$PATH" \
 node /Users/jack/Documents/code/elm-cem/bin/elm-cem.js \
   --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
   --config-from=config/slots.json \
@@ -157,11 +163,12 @@ onto the PR branch**. CI then re-runs and proves the regenerated output still co
 regen is **deterministic** — a no-op bump produces no commit (the workflow's `git diff
 --quiet -- src` guard). You review the auto-committed diff like any code change.
 
-> **Caveat (phantom-refactor transition):** the workflow clones `elm-cem` from GitHub `main`.
-> The phantom pipeline that produced the committed `src/` currently lives on the local sibling
-> checkout `/Users/jack/Documents/code/elm-cem` (branch `pass2-docs-elm-cem`). Until that
-> pipeline is merged and published to `elm-cem` `main`, a CI-driven regen may not match the
-> committed output. For a trustworthy local regen, use the sibling checkout as shown above.
+> **Caveat (GitHub lag):** the workflow clones `elm-cem` from GitHub `main`. The local
+> sibling checkout `/Users/jack/Documents/code/elm-cem` is already on the phantom pipeline
+> (local `main`, commit `7cebfde`), but GitHub `origin/main` of `elm-cem` still lags that
+> local commit — the push is human-gated (Stage F). Until Jack pushes, a CI-driven regen
+> clones the older GitHub `main` and may not match the committed `src/`. For a trustworthy
+> local regen, always use the sibling checkout as shown above.
 
 ## Reading a regen diff — expected vs suspicious
 

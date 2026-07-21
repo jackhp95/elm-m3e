@@ -500,6 +500,16 @@ bump. The generator being public means the clone needs no token; a PAT
 (`ELM_CEM_TOKEN`) is optional and only needed to make the bot's regen commit
 re-trigger CI automatically.
 
+> **Amendment 2026-07-21 (pass 2):** An earlier iteration of this workflow kept a
+> gitignored in-repo working clone at `/elm-cem/` so the local regen command could be
+> run from the repo root. That clone is retired. The canonical local regen path is
+> the sibling checkout `/Users/jack/Documents/code/elm-cem` at its current `main`
+> (the phantom pipeline, local commit `7cebfde`). CI continues to do a fresh `git
+> clone jackhp95/elm-cem` at regen time; the GitHub `origin/main` of `elm-cem` still
+> lags local `main` (push is human-gated, Stage F), so a CI-triggered regen may not
+> match the committed `src/` until that push lands. See
+> `skills/regenerating-elm-m3e/SKILL.md` for the exact local regen command.
+
 ## Unwrap the default slot; phantoms as guidance
 
 An earlier model wrapped the top layer's default-slot children in a `Content`
