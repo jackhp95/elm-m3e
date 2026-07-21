@@ -14,20 +14,19 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element exposing (Element)
 import Kit
 import Layout
 import M3e
-import TypedHtml.Attributes as TA
 import M3e.Attributes
 import M3e.Button
-import M3e.Values as Value
-import Seam
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 

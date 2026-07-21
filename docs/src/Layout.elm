@@ -9,6 +9,7 @@ module Layout exposing
 
 Migrated to the phantom substrate: `Markup.*` → `HtmlIr.*`.
 
+
 ## Named layout wrappers
 
 @docs rowWith, colWith, gridWith
@@ -34,7 +35,6 @@ import Html.Attributes as Attr
 import Html.Events
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
-import HtmlIr.Internal as Ir
 import M3e.Kind
 import Native
 import Seam

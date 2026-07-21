@@ -16,7 +16,6 @@ import HtmlIr.Element as Element exposing (Element)
 import Kit
 import Layout
 import M3e
-import M3e.Attributes
 import M3e.Button
 import M3e.FormField
 import M3e.Kind
@@ -102,7 +101,7 @@ twoColumn =
         [ emailField, saveButton ]
 
 
-{-| The `link` seam filling a *typed slot*. A nav-menu item's `label` slot
+{-| The `link` seam filling a _typed slot_. A nav-menu item's `label` slot
 accepts the `text` and `link` kinds, so `Kit.link` (the feature-facing re-export
 of the `link` seam) drops straight in as an `<a href>` label — no raw HTML, no
 break-glass `recast`. The slot's phantom row admits exactly the kinds the design

@@ -18,13 +18,13 @@ stamps the M3e brand's `html` kind. Native elements carry `{ k | html : M3e.Kind
 
 -}
 
-import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 import M3e.Kind
+
 
 
 -- GENERIC BUILDER (the Seam crossing) ----------------------------------------
@@ -41,6 +41,7 @@ node :
 node tagName attrs kids =
     Ir.fromNode
         (Ir.node tagName attrs (List.map HtmlIr.Element.toNode kids))
+
 
 
 -- COVERED TAGS ----------------------------------------------------------------
@@ -204,6 +205,7 @@ textarea =
     node "textarea"
 
 
+
 -- UNCOVERED TAGS --------------------------------------------------------------
 
 
@@ -259,6 +261,7 @@ br =
 hr : Element { k | html : M3e.Kind.Brand } freeAdm msg
 hr =
     node "hr" [] []
+
 
 
 -- NATIVE ATTRIBUTE / EVENT ESCAPES --------------------------------------------

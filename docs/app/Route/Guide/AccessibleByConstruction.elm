@@ -13,17 +13,16 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element exposing (Element)
 import Layout
 import M3e
-import M3e.Attributes
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import TypedHtml.Aria as Aria
-import TypedHtml.Attributes as TA
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import TypedHtml.Aria as Aria
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
