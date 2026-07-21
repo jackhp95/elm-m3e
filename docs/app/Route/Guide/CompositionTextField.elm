@@ -74,16 +74,14 @@ the one shared id "email-field". This is the value shown live and printed below.
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ M3e.FormField.label "email-field"
-            (Native.label [] [ Kit.text "Email address" ])
+        [ Native.label [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ]
         , M3e.FormField.hint (Kit.text "We'll never share it.")
-        , M3e.FormField.control "email-field"
-            (Native.input
-                [ Native.attribute "type" "email"
-                , Native.attribute "placeholder" "you@example.com"
-                , Native.attribute "name" "email"
-                ]
-            )
+        , Native.input
+            [ Native.attribute "id" "email-field"
+            , Native.attribute "type" "email"
+            , Native.attribute "placeholder" "you@example.com"
+            , Native.attribute "name" "email"
+            ]
         ]
 
 

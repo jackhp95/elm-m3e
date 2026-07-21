@@ -573,7 +573,7 @@ name):
 
 1. **`element`** (CEM-side, curated) — tag, attributes, events, and slots come from
    the manifest; config keeps the proven curation keys (`_exclude`, `syntheticAttrs`,
-   `attrTypes`, `staticAttrs`, `events`, `group`, `idWiring`, `_actions`).
+   `attrTypes`, `staticAttrs`, `events`, `group`, `_actions`).
 2. **`kind`** — what the element *is*: `"private"` (default → the brand's own
    `M3e.Kind.Brand`) or `"shared:<role>"` (a cross-brand atom → `HtmlIr.Kind.Shared`).
    In the shipped config, `Icon` is `"shared:icon"`.

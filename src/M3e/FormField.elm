@@ -3,8 +3,8 @@ module M3e.FormField exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
     , hideRequiredMarker
-    , error, hint, label, prefix, prefixText, suffix, suffixText, control
-    , withAriaLabel, withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withLabel, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
+    , error, hint, prefix, prefixText, suffix, suffixText
+    , withAriaLabel, withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
     )
 
 {-| The `m3e-form-field` component — strict per-component surface.
@@ -15,8 +15,8 @@ A container for form controls that applies Material Design styling and behavior.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
 @docs hideRequiredMarker
-@docs error, hint, label, prefix, prefixText, suffix, suffixText, control
-@docs withAriaLabel, withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withLabel, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
+@docs error, hint, prefix, prefixText, suffix, suffixText
+@docs withAriaLabel, withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
 
 -}
 
@@ -139,14 +139,6 @@ hint element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "hint") (HtmlIr.Element.toNode element))
 
 
-{-| Place an element into the named `label` slot, wiring its `for=` from the required
-id so the label and control are associated (a11y by construction).
--}
-label : String -> Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-label id_ element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "label") (Ir.addAttribute (Ir.attribute "for" id_) (HtmlIr.Element.toNode element)))
-
-
 {-| Place an element into the named `prefix` slot (input constrained to the
 slot's kinds; output row free so it composes into the child list).
 -}
@@ -179,14 +171,6 @@ suffixText element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "suffix-text") (HtmlIr.Element.toNode element))
 
 
-{-| Place an element into the control (`unnamed`) slot, wiring its `id=` from the required
-id so the label and control are associated (a11y by construction).
--}
-control : String -> Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-control id_ element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "id" id_) (HtmlIr.Element.toNode element))
-
-
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
 a singular attribute or slot twice is unwritable.
 -}
@@ -214,7 +198,6 @@ type alias AttrCaps =
 type alias SlotCaps =
     { error : Available
     , hint : Available
-    , label : Available
     , prefix : Available
     , prefixText : Available
     , suffix : Available
@@ -311,13 +294,6 @@ withError element (Builder b) =
 withHint : Element childAccepts admittedBy msg -> Builder attrCaps { s | hint : Available } msg -> Builder attrCaps { s | hint : Used } msg
 withHint element (Builder b) =
     Builder { b | children = HtmlIr.Element.toNode (hint element) :: b.children }
-
-
-{-| Pipe form of the `label` slot — consumes its capability (write-once).
--}
-withLabel : String -> Element childAccepts admittedBy msg -> Builder attrCaps { s | label : Available } msg -> Builder attrCaps { s | label : Used } msg
-withLabel id_ element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (label id_ element) :: b.children }
 
 
 {-| Pipe form of the `prefix` slot — consumes its capability (write-once).

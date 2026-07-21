@@ -286,10 +286,6 @@
     }
   },
   "FormField": {
-    "idWiring": {
-      "control": "unnamed",
-      "label": "label"
-    },
     "admits": {
       "unnamed": {
         "kinds": [
@@ -306,13 +302,6 @@
         "required": false
       },
       "prefix-text": {
-        "kinds": [
-          "any"
-        ],
-        "multi": false,
-        "required": false
-      },
-      "label": {
         "kinds": [
           "any"
         ],

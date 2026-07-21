@@ -615,17 +615,15 @@ swatch. `onInput` crosses via the one sanctioned `Seam.asAttribute`.
 seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ M3e.FormField.label "seed-color"
-            (Native.label [] [ Kit.text "Source color" ])
+        [ Native.label [ Native.attribute "for" "seed-color" ] [ Kit.text "Source color" ]
         , M3e.FormField.hint
             (Kit.code Value.small [ Kit.onSurfaceVariant ] [ Kit.text model.seed ])
-        , M3e.FormField.control "seed-color"
-            (Native.input
-                [ Native.attribute "type" "color"
-                , Native.attribute "value" model.seed
-                , Seam.asAttribute (Html.Events.onInput SetSeed)
-                ]
-            )
+        , Native.input
+            [ Native.attribute "id" "seed-color"
+            , Native.attribute "type" "color"
+            , Native.attribute "value" model.seed
+            , Seam.asAttribute (Html.Events.onInput SetSeed)
+            ]
         ]
 
 
