@@ -12,15 +12,16 @@ import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html
+import HtmlIr.Element as Element exposing (Element)
 import Json.Decode as Decode
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e.Attributes
+import M3e.Card
+import M3e.Heading
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -242,11 +243,14 @@ rankedCells cells =
 -- VIEW
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Round-trip report" ]
+        [ M3e.Heading.variant Value.display
+        , M3e.Heading.size Value.small
+        , M3e.Attributes.level 1
+        ]
+        [ M3e.text "Round-trip report" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -276,7 +280,7 @@ three are layers on the [the layers](/guide/the-layers); record/build are two of
 the three [call-shapes](/guide/strictness); barrel is the one-import API the
 Guide teaches (see the [reference](/reference)).
 -}
-surfaceLegend : Element { s | html : M3e.Kind.Brand } msg
+surfaceLegend : Element { s | html : M3e.Kind.Brand } admittedBy msg
 surfaceLegend =
     Native.section
         [ Layout.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
@@ -301,11 +305,11 @@ surfaceLegendText =
 The three layers and the two call-shapes are *different axes*: a layer is how much the types check; a call-shape is what you're forced to supply. The barrel vs a specific `M3e.Button` module is a *third* axis — only which import you reach through."""
 
 
-summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } msg
+summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 summarySection perSurface =
     Native.section
         [ Layout.class "mt-12 space-y-4" ]
-        [ Native.node (Html.node "h2")
+        [ Native.node "h2"
             []
             [ Kit.headline Value.small [] [ Kit.text "Per-form summary" ] ]
         , Layout.div "space-y-3"
@@ -313,14 +317,14 @@ summarySection perSurface =
         ]
 
 
-surfaceRow : ( String, SurfaceAgg ) -> Element { s | card : M3e.Kind.Brand } msg
+surfaceRow : ( String, SurfaceAgg ) -> Element { s | card : M3e.Kind.Brand } admittedBy msg
 surfaceRow ( name, agg ) =
     M3e.card
-        [ M3e.variantOutlined ]
-        [ M3e.cardSlotContent
-            (Native.node (Html.node "div")
+        [ M3e.Card.variant Value.outlined ]
+        [ M3e.Card.content
+            (Native.node "div"
                 [ Layout.class "space-y-1" ]
-                [ Native.node (Html.node "div")
+                [ Native.node "div"
                     []
                     [ Kit.title Value.medium [ Kit.primary ] [ Kit.text name ] ]
                 , Kit.body Value.medium
@@ -360,12 +364,12 @@ surfaceRow ( name, agg ) =
         ]
 
 
-cellsSection : List Cell -> Element { s | html : M3e.Kind.Brand } msg
+cellsSection : List Cell -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 cellsSection cells =
     Native.section
         [ Layout.class "mt-12 space-y-4" ]
         [ M3e.divider [] []
-        , Native.node (Html.node "h2")
+        , Native.node "h2"
             []
             [ Kit.headline Value.small [] [ Kit.text "Cells (deviations first)" ] ]
         , Layout.div "space-y-3"
@@ -373,7 +377,7 @@ cellsSection cells =
         ]
 
 
-cellRow : Cell -> Element { s | card : M3e.Kind.Brand } msg
+cellRow : Cell -> Element { s | card : M3e.Kind.Brand } admittedBy msg
 cellRow c =
     let
         deviationText : String
@@ -409,15 +413,15 @@ cellRow c =
                 [ Kit.onSurfaceVariant ]
     in
     M3e.card
-        [ M3e.variantOutlined ]
-        [ M3e.cardSlotContent
-            (Native.node (Html.node "div")
+        [ M3e.Card.variant Value.outlined ]
+        [ M3e.Card.content
+            (Native.node "div"
                 [ Layout.class "space-y-1" ]
-                [ Native.node (Html.node "div")
+                [ Native.node "div"
                     []
                     [ Kit.title Value.medium
                         []
-                        [ Native.node (Html.node "code") [] [ Kit.text c.id ] ]
+                        [ Native.node "code" [] [ Kit.text c.id ] ]
                     ]
                 , Kit.body Value.medium deviationColor [ Kit.text deviationText ]
                 , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text escapeText ]

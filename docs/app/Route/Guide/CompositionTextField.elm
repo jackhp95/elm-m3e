@@ -12,12 +12,14 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element as Element exposing (Element)
 import Kit
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
-import M3e.Native
+import M3e.FormField
 import M3e.Kind
+import M3e.Values as Value
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -69,19 +71,18 @@ head _ =
 field holds a native `<label>` and a typed native `<input>`, wired together by
 the one shared id "email-field". This is the value shown live and printed below.
 -}
-emailField : Element { s | formField : M3e.Kind.Brand } msg
+emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
-    M3e.formField [ M3e.variantOutlined ]
-        [ M3e.formFieldSlotLabel "email-field"
-            (M3e.Native.label [] [ Kit.text "Email address" ])
-        , M3e.formFieldSlotHint (Kit.text "We'll never share it.")
-        , M3e.formFieldSlotDefault "email-field"
-            (M3e.Native.input
-                [ M3e.Native.type_ "email"
-                , M3e.Native.placeholder "you@example.com"
-                , M3e.Native.name "email"
-                ]
-            )
+    M3e.formField [ M3e.FormField.variant Value.outlined ]
+        [ M3e.FormField.label
+            (Native.label [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ])
+        , M3e.FormField.hint (Kit.text "We'll never share it.")
+        , Native.input
+            [ Native.attribute "id" "email-field"
+            , Native.attribute "type" "email"
+            , Native.attribute "placeholder" "you@example.com"
+            , Native.attribute "name" "email"
+            ]
         ]
 
 

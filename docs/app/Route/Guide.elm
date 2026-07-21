@@ -9,8 +9,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element as Element exposing (Element)
 import Layout
-import Markup.Element as Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -59,7 +59,7 @@ head _ =
         |> Seo.website
 
 
-chapterLink : String -> String -> Element { s | html : M3e.Kind.Brand } msg
+chapterLink : String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 chapterLink href label =
     Doc.anchorPill { href = href, label = label }
 

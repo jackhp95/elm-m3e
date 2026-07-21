@@ -12,15 +12,16 @@ import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html
+import HtmlIr.Element as Element exposing (Element)
 import Json.Decode as Decode
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e.Attributes
+import M3e.Card
+import M3e.Heading
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -108,11 +109,14 @@ head _ =
         |> Seo.website
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Component reference" ]
+        [ M3e.Heading.variant Value.display
+        , M3e.Heading.size Value.small
+        , M3e.Attributes.level 1
+        ]
+        [ M3e.text "Component reference" ]
 
 
 {-| The one-import barrel module (`module M3e`) is split out of the alphabetical
@@ -142,7 +146,7 @@ view app _ =
                     [ Kit.paragraph Value.large
                         [ Kit.onSurfaceVariant ]
                         [ Kit.text "Every "
-                        , Native.node (Html.node "code") [] [ Kit.text "M3e.*" ]
+                        , Native.node "code" [] [ Kit.text "M3e.*" ]
                         , Kit.text " module, its overview, and every exposed value — extracted from the library source at build time."
                         ]
                     ]
@@ -167,7 +171,7 @@ generic **barrel** teaching form vs the precise **specific-module** form.
 Keeps the reference's terminology aligned with `/guide/the-layers` and
 `/guide/strictness` so a reader never meets a fifth name for the same idea.
 -}
-twoForms : Element { s | html : M3e.Kind.Brand } msg
+twoForms : Element { s | html : M3e.Kind.Brand } admittedBy msg
 twoForms =
     Layout.div "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2"
         [ Kit.overline [ Kit.primary ] [ Kit.text "Two forms" ]
@@ -185,7 +189,7 @@ twoFormsText =
 Neither is a layer on the [the layers](/guide/the-layers) and neither is one of the three [call-shapes](/guide/strictness) — those are separate axes. This is only *which import you reach through*. Start on the barrel; drop to a component module when you want the tighter types."""
 
 
-indexGrid : List Component -> Element { s | html : M3e.Kind.Brand } msg
+indexGrid : List Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 indexGrid components =
     Layout.div "mt-8 flex flex-wrap gap-2"
         (List.map
@@ -201,16 +205,16 @@ name-keyed groups a reader scans for (constructors, `variant*` tokens, `slot*`
 setters, `attr*`/other setters, `on*` events). Grouping by name prefix — not the
 JSON `role` — is what makes the ~650-member barrel navigable.
 -}
-barrelBlock : Component -> Element { s | html : M3e.Kind.Brand } msg
+barrelBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 barrelBlock c =
     Native.section
         [ Native.attribute "id" c.slug, Layout.class "mt-12 scroll-mt-6 space-y-6" ]
         [ M3e.divider [] []
-        , Native.node (Html.node "h2")
+        , Native.node "h2"
             []
             [ Kit.headline Value.small
                 []
-                [ Native.node (Html.node "code") [ Kit.tint [ Kit.primary ] ] [ Kit.text c.moduleName ]
+                [ Native.node "code" [ Kit.tint [ Kit.primary ] ] [ Kit.text c.moduleName ]
                 , Kit.text "  · the barrel"
                 ]
             ]
@@ -245,7 +249,7 @@ isBarrelConstructor m =
 
 {-| One name-keyed subsection of the barrel; renders nothing when empty.
 -}
-barrelGroup : String -> (Member -> Bool) -> List Member -> Element { s | html : M3e.Kind.Brand } msg
+barrelGroup : String -> (Member -> Bool) -> List Member -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 barrelGroup label pred members =
     case List.filter pred members of
         [] ->
@@ -254,23 +258,23 @@ barrelGroup label pred members =
         ms ->
             Native.section
                 [ Layout.class "space-y-3" ]
-                [ Native.node (Html.node "h3")
+                [ Native.node "h3"
                     []
                     [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") ] ]
                 , Layout.div "space-y-3" (List.map memberRow ms)
                 ]
 
 
-componentBlock : Component -> Element { s | html : M3e.Kind.Brand } msg
+componentBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 componentBlock c =
     Native.section
         [ Native.attribute "id" c.slug, Layout.class "scroll-mt-6 space-y-4" ]
         [ M3e.divider [] []
-        , Native.node (Html.node "h2")
+        , Native.node "h2"
             []
             [ Kit.headline Value.small
                 []
-                [ Native.node (Html.node "code") [ Kit.tint [ Kit.primary ] ] [ Kit.text c.moduleName ] ]
+                [ Native.node "code" [ Kit.tint [ Kit.primary ] ] [ Kit.text c.moduleName ] ]
             ]
         , prose "max-w-2xl" Value.large c.overview
         , Layout.div "space-y-3"
@@ -278,7 +282,7 @@ componentBlock c =
         ]
 
 
-memberRow : Member -> Element { s | card : M3e.Kind.Brand } msg
+memberRow : Member -> Element { s | card : M3e.Kind.Brand } admittedBy msg
 memberRow m =
     let
         sig : String
@@ -293,9 +297,9 @@ memberRow m =
                 m.name ++ " : " ++ m.signature
     in
     M3e.card
-        [ M3e.variantOutlined ]
-        [ M3e.cardSlotContent
-            (Native.node (Html.node "div")
+        [ M3e.Card.variant Value.outlined ]
+        [ M3e.Card.content
+            (Native.node "div"
                 []
                 [ Doc.preBlock sig
                 , if m.doc == "" then
@@ -309,10 +313,8 @@ memberRow m =
 
 
 {-| Render \\n\\n-separated text as body paragraphs at the given type-scale size.
-`layoutCls` carries only layout (e.g. `max-w-2xl`); typography/color come from the
-`Kit` primitives.
 -}
-prose : String -> Kit.Size -> String -> Element { s | html : M3e.Kind.Brand } msg
+prose : String -> Kit.Size -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 prose layoutCls size s =
     Layout.div layoutCls
         (s

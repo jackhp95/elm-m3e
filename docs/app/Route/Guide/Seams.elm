@@ -12,13 +12,17 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element as Element exposing (Element)
 import Kit
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
-import M3e.Native
-import M3e.Record.NavMenuItem as NavMenuItem
+import M3e.Attributes
+import M3e.Button
+import M3e.FormField
 import M3e.Kind
+import M3e.NavMenuItem
+import M3e.Values as Value
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -66,18 +70,24 @@ head _ =
         |> Seo.website
 
 
-saveButton : Element { s | button : M3e.Kind.Brand } msg
+saveButton : Element { s | button : M3e.Kind.Brand } admittedBy msg
 saveButton =
-    M3e.button [ M3e.variantFilled ]
-        [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] []), Kit.text "Save" ]
+    M3e.button [ M3e.Button.variant Value.filled ]
+        [ M3e.Button.icon (M3e.icon [ Native.attribute "name" "save" ] [])
+        , Kit.text "Save"
+        ]
 
 
-emailField : Element { s | formField : M3e.Kind.Brand } msg
+emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
-    M3e.formField [ M3e.variantOutlined ]
-        [ M3e.formFieldSlotLabel "email-field" (M3e.Native.label [] [ Kit.text "Email address" ])
-        , M3e.formFieldSlotDefault "email-field"
-            (M3e.Native.input [ M3e.Native.type_ "email", M3e.Native.name "email" ])
+    M3e.formField [ M3e.FormField.variant Value.outlined ]
+        [ M3e.FormField.label
+            (Native.label [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ])
+        , Native.input
+            [ Native.attribute "id" "email-field"
+            , Native.attribute "type" "email"
+            , Native.attribute "name" "email"
+            ]
         ]
 
 
@@ -86,7 +96,7 @@ is itself userland — a plain wrapper over raw HTML that lives in the layout
 module (a blessed seam location), so feature code names the layout instead of
 sprinkling raw class strings around.
 -}
-twoColumn : Element { s | html : M3e.Kind.Brand } msg
+twoColumn : Element { s | html : M3e.Kind.Brand } admittedBy msg
 twoColumn =
     Layout.gridWith "grid grid-cols-1 gap-4 md:grid-cols-2"
         [ emailField, saveButton ]
@@ -98,11 +108,11 @@ of the `link` seam) drops straight in as an `<a href>` label — no raw HTML, no
 break-glass `recast`. The slot's phantom row admits exactly the kinds the design
 system declared for it, and the seam produces one of them.
 -}
-linkNav : Element { s | navMenu : M3e.Kind.Brand } msg
+linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
     M3e.navMenu []
-        [ NavMenuItem.view { label = Kit.link "/guide/seams" [ Kit.text "Seams" ] } [] []
-        , NavMenuItem.view { label = Kit.link "/guide/the-layers" [ Kit.text "The layers" ] } [] []
+        [ M3e.NavMenuItem.el { label = Kit.link "/guide/seams" [ Kit.text "Seams" ] } [] []
+        , M3e.NavMenuItem.el { label = Kit.link "/guide/the-layers" [ Kit.text "The layers" ] } [] []
         ]
 
 

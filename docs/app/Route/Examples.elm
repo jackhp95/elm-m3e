@@ -9,13 +9,16 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element as Element exposing (Element)
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e.Attributes
+import M3e.Button
+import M3e.Card
+import M3e.Heading
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -76,28 +79,31 @@ examples =
     ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Examples" ]
+        [ M3e.Heading.variant Value.display
+        , M3e.Heading.size Value.small
+        , M3e.Attributes.level 1
+        ]
+        [ M3e.text "Examples" ]
 
 
-exampleCard : ( String, String, String ) -> Element { s | card : M3e.Kind.Brand } msg
-exampleCard ( slug, title, body ) =
+exampleCard : ( String, String, String ) -> Element { s | card : M3e.Kind.Brand } admittedBy msg
+exampleCard ( slug, cardTitle, cardBody ) =
     let
         exampleHref : String
         exampleHref =
             "/examples/" ++ slug
     in
     M3e.card
-        [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text title ])
-        , M3e.cardSlotContent (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ])
-        , M3e.cardSlotActions
+        [ M3e.Card.variant Value.elevated ]
+        [ M3e.Card.header (M3e.heading [ M3e.Heading.variant Value.title ] [ M3e.text cardTitle ])
+        , M3e.Card.content (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text cardBody ])
+        , M3e.Card.actions
             (M3e.button
-                [ M3e.variantFilled, M3e.attrHref exampleHref ]
-                [ Kit.text ("Open " ++ title) ]
+                [ M3e.Button.variant Value.filled, M3e.Button.href exampleHref ]
+                [ Kit.text ("Open " ++ cardTitle) ]
             )
         ]
 
