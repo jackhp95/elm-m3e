@@ -1,9 +1,28 @@
 # The design of elm-m3e
 
+> **Reconciliation banner (pass 2, 2026-07-21) — read this first.** This document still
+> frames the API as a **3-layer / 5-form** stack (`M3e.Raw` → `M3e.Html` → `M3e` standard
+> → `M3e.Record` / `M3e.Build`) over a `Markup.*` runtime. That framing is **pre-phantom
+> and does not match shipped code.** The merged reality:
+> - The shared runtime is the **`HtmlIr.*`** IR (`HtmlIr.Element/Node/Attribute/Value/Kind`,
+>   `HtmlIr.Internal`), published as `elm-html-intermediate-representation` and **imported,
+>   not injected** (`injectRuntime` is retired). There is no `Markup.*` runtime.
+> - The API is **two surfaces**, not five forms: a **general** surface
+>   (`M3e` / `M3e.Attributes` / `M3e.Events` / `M3e.Values`) and a **per-component** surface
+>   (`M3e.<Component>`, with `view { required }` and a `build` pipeline). `M3e.Raw` /
+>   `M3e.Html` as form-layers, the barrel-as-restatement, and the facet-family packaging are
+>   retired.
+> - The render exit is `HtmlIr.Element.toNode >> HtmlIr.Node.toHtml`.
+>
+> For the reconciled account see [`guides/TheLayers.md`](guides/TheLayers.md),
+> [`guides/Seams.md`](guides/Seams.md), and [`guides/Glossary.md`](guides/Glossary.md).
+> The sections below preserve the original design rationale; trust the shipped module names
+> in `src/` and `elm.json` over the names used here.
+
 How the library is built and why. elm-m3e is a **generated** Elm binding over
 matraic's `@m3e/web` Material 3 web components: the [`elm-cem`](https://github.com/jackhp95/elm-cem)
 generator reads each component's custom-elements manifest (CEM) plus a small
-hand-authored `config/slots.json`, and emits the layers described here. Nothing
+hand-authored `config/slots.json`, and emits the surfaces described here. Nothing
 in `src/M3e/` is hand-written per component; the hand-craft lives in the
 generator, the config, and the userland seam.
 

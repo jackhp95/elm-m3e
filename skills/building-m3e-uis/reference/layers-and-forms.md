@@ -1,62 +1,68 @@
-# Layers, forms, enforcement, and a compilable starter
+# Surfaces, enforcement, and a compilable starter
 
-## The two axes (from `docs/DESIGN.md` §1, §3)
+## The two surfaces (from `docs/DESIGN.md`)
 
-- **Layer axis** — how raw you go. `M3e` (top) → `M3e.Html` (Html) → `M3e.Raw` (raw) →
-  raw `elm/html`: a *safety* gradient. Dropping a layer is rawer, less convenient, less
-  safe. Only `toHtml` is eager.
-- **Form axis** — how strict one call site is (top layer only): how required/optional
-  parts are passed. Namespace depth here names a form, **not** less safety —
-  `M3e.Record`/`M3e.Build` are deeper yet *safer*.
+- **General surface** — `M3e` (every component in the `elm/html` call shape) plus the
+  shared vocabulary `M3e.Attributes` / `M3e.Events` / `M3e.Values`. Element↔attr, enum,
+  and *direct* slot-kind are compiler-checked. The everyday default.
+- **Per-component surface** — `M3e.Button`, `M3e.Dialog`, … Adds narrowed values, a
+  `view { required … }` shape (required content), and a `build` pipeline. Everything the
+  general surface leaves to `elm-review` is a compile error here.
 
-## Full layer/form table
+Both return `HtmlIr.Element.Element … msg`; only `HtmlIr.Node.toHtml` is eager.
 
-| Layer/form | Namespace | Call form | Guarantee |
-|------------|-----------|-----------|-----------|
-| top layer, standard form (barrel, flat) | `M3e` | `M3e.button [attrs] [content]` | one import; enum + slot-kind checked at compile |
-| top layer, standard form (per-component) | `M3e.Button` | `M3e.Button.view [attrs] [content]` | same as barrel, qualified |
-| Record form (required record) | `M3e.Record.Button` | `view { required } [attrs] [content]` | + missing-required is a compile error |
-| Build form (availability pipeline) | `M3e.Build.Button` | `seed {req} \|> setter \|> build` | + duplicate-singular is unwritable |
-| Html layer (lazy IR attrs) | `M3e.Html.Button` | `M3e.Html.Button.button [attrs] children` | phantom Value + capability, no top-layer slotting sugar |
-| raw layer (partial `elm/html`) | `M3e.Raw.Button` | `M3e.Raw.Button.button [Html.Attribute] [Html]` | no phantom types; the floor |
+## Full surface table
 
-## Which mistake each layer/form catches (§3)
+| Surface | Namespace | Call form | Guarantee |
+|---------|-----------|-----------|-----------|
+| general (barrel) | `M3e` | `M3e.button [attrs] [content]` | one import; enum + *direct* slot-kind checked at compile |
+| per-component (view) | `M3e.Button` | `M3e.Button.view [attrs] [content]` | same, qualified, narrowed values |
+| per-component (required record) | `M3e.Button` | `M3e.Button.view { required } [attrs] [content]` | + missing-required is a compile error |
+| per-component (build pipeline) | `M3e.Button` | `M3e.Button.build { req } \|> M3e.Button.setter \|> …` | + duplicate-singular is unwritable |
 
-| Mistake | standard form | Record form | Build form |
-|---------|:---:|:---:|:---:|
-| Invalid enum token | compiler | compiler | compiler |
-| Wrong slot-kind child | compiler | compiler | compiler |
-| Missing **required** (label/action) | linter | **compiler** | **compiler** |
-| **Duplicate singular** (`icon` twice) | linter | linter | **impossible** |
+## Which mistake each surface catches
 
-The standard form leans on `elm-review` (the Cem rules) for the bottom two rows; the
-Record and Build forms convert them to type errors. Choose the layer/form by which
-guarantee the screen actually needs — do not blanket-adopt the Build form "to be safe";
-it costs per-component qualified imports and pipeline ceremony.
+| Mistake | general | per-component |
+|---------|:---:|:---:|
+| Invalid enum token | compiler | compiler |
+| Wrong attr on element | compiler | compiler |
+| Wrong slot-kind (**direct** child) | compiler | compiler |
+| Wrong slot-kind (child placed via slot fn) | **elm-review** | compiler |
+| Missing **required** (label/action) | **elm-review** | compiler |
+| **Duplicate singular** (`icon` twice) | **elm-review** | compiler (via `build`) |
 
-## Barrel setter naming
+Exactly three checks move to `elm-review` (the Cem rules) on the general surface;
+the per-component surface converts them to type errors. Choose by which guarantee the
+screen actually needs — do not blanket-adopt the per-component `build` pipeline "to be
+safe"; it costs qualified imports and pipeline ceremony.
 
-Shared scalar setters are re-exposed on the barrel `attr`-prefixed and self-categorizing:
-`M3e.attrDisabled`, `M3e.attrValue`, `M3e.attrName`, `M3e.attrChecked`. Where a type
-conflicts across components, both are kept: `attrValue : String -> …` **plus**
-`attrValueFloat : Float -> …`, each with a distinct capability so the wrong-typed setter
-cannot unify. ARIA setters keep natural names (`M3e.ariaLabel`).
+## Shared vocabulary
+
+Shared setters live in `M3e.Attributes` (natural names: `M3e.Attributes.disabled`,
+`.value`, `.name`, `.checked`, generic `.class` / `.id` / `.slot` / `.style`),
+`M3e.Events` (`onClick`, `onChange`, …), and `M3e.Values` (enum tokens: `filled`,
+`outlined`, `title`, …). Where an attribute's type conflicts across components, the value
+setter is type-suffixed (e.g. `value` plus `valueFloat`), each with a distinct capability
+so the wrong-typed setter cannot unify. Per-component modules re-expose narrowed versions
+(`M3e.Button.variant : Value Variant -> …`) that only admit that component's tokens.
 
 ## Compilable starter
 
-A `Browser.sandbox` counter with a filled button and an icon. Copy `docs/kit/Kit.elm`
-into your app's source directory first (the seam producers are not in the package).
+A `Browser.sandbox` counter with a filled button and an icon. `M3e.text` is built in; copy
+`docs/kit/Native.elm` into your app's source directory only if you want native-HTML
+elements like `div`.
 
 ```elm
 module Main exposing (main)
 
 import Browser
 import Html exposing (Html)
-import Kit
+import HtmlIr.Element
+import HtmlIr.Node
 import M3e
-import M3e.Element as Element
-import M3e.Token as Token
-import Native
+import M3e.Attributes
+import M3e.Button
+import M3e.Values as Value
 
 
 type alias Model =
@@ -79,21 +85,20 @@ update Inc model =
 
 view : Model -> Html Msg
 view model =
-    -- The single eager exit: IR -> Html.
-    Element.toNode (screen model)
+    -- The single eager exit: IR -> Node -> Html.
+    screen model
+        |> HtmlIr.Element.toNode
+        |> HtmlIr.Node.toHtml
 
 
-screen : Model -> Element.Element { s | html : Token.Supported } Msg
+screen : Model -> HtmlIr.Element.Element accepts admittedBy Msg
 screen model =
-    Native.div "flex flex-col gap-4 p-6"
-        [ Kit.text ("Count: " ++ String.fromInt model.count)
-        , M3e.button
-            [ M3e.variant Token.filled
-            , M3e.onClick Inc
-            ]
-            [ M3e.buttonSlotIcon (M3e.icon [ M3e.attrName "add" ] [])
-            , Kit.text "Increment"
-            ]
+    M3e.button
+        [ M3e.Button.variant Value.filled
+        , M3e.Button.onClick Inc
+        ]
+        [ M3e.Button.icon (M3e.icon [ M3e.Attributes.name "add" ] [])
+        , M3e.text ("Increment (" ++ String.fromInt model.count ++ ")")
         ]
 
 
@@ -105,6 +110,6 @@ main =
 > **JS registration required.** This compiles, but renders nothing until the app's
 > `index.js` does `import "@m3e/web";` before `Elm.Main.init`. See the SKILL body.
 
-(Exact attribute/slot names per component — `M3e.onClick` vs `M3e.Button.onClick`,
-`buttonSlotIcon`, `variant` — come from that component's `src/M3e/Button.elm` doc
-comment and the generated implementation card; verify against them, don't guess.)
+(Exact attribute/slot names per component — `M3e.Button.onClick`, `M3e.Button.icon`,
+`M3e.Button.variant` — come from that component's `src/M3e/Button.elm` doc comment and the
+generated implementation card; verify against them, don't guess.)

@@ -34,7 +34,7 @@ import M3e.Theme as Theme
 
 Theme.view
     [ Theme.color model.seed              -- the brand/seed color, e.g. "#4285F4"
-    , Theme.scheme (schemeToken model.scheme)   -- M3e.Token.light | M3e.Token.dark
+    , Theme.scheme (schemeToken model.scheme)   -- M3e.Values.light | M3e.Values.dark
     , Theme.contrast (contrastToken model.contrast) -- standard | medium | high
     , Theme.density model.density          -- 0 (default) down to -3 (compact)
     ]
@@ -70,7 +70,7 @@ design judgment — see reviewing-m3e-designs.
 ## Dark and dynamic color
 
 Dark mode is a **scheme swap**, not a second stylesheet: flip `Theme.scheme` between
-`M3e.Token.light` and `M3e.Token.dark` (the docs app holds `scheme` in its `Shared.Model`
+`M3e.Values.light` and `M3e.Values.dark` (the docs app holds `scheme` in its `Shared.Model`
 and toggles it). Dynamic color is a **seed swap**: change `Theme.color` and the whole role
 palette re-derives — no per-role editing. Contrast is orthogonal (`standard`/`medium`/
 `high`) for accessibility needs.
@@ -96,8 +96,9 @@ docs deliberately cross into `Seam` to bridge Tailwind (e.g. surface-as-attribut
 crossing is confined to blessed adapter modules and audited by
 `NoSeamOutsideAllowedModules` in the `CodegenReviewConfig` (see `review/README.md`).
 
-Attribution note: the native HTML element/attribute doc summaries in `M3e.Native` are
-adapted from MDN under CC BY-SA 2.5 — see [`config/ATTRIBUTION.md`](../../config/ATTRIBUTION.md).
+Attribution note: the native HTML element/attribute doc summaries in the native-HTML brand
+(`TypedHtml.*` / the userland `docs/kit/Native.elm`) are adapted from MDN under CC BY-SA 2.5
+— see [`config/ATTRIBUTION.md`](../../config/ATTRIBUTION.md).
 (This is a licensing credit, not a styling mechanism; the "Tailwind bridge" is the
 layout-only utility boundary above.)
 

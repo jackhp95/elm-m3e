@@ -13,6 +13,13 @@ First public release: a generated, **Make-Impossible-States-Impossible** `M3e.*`
 Elm surface over matraic's [`@m3e/web`](https://github.com/matraic/m3e) Material 3
 Expressive web components.
 
+> **Note (pre-phantom draft — rewrite before tagging).** The "Added" list below still
+> describes the retired **5-form / `M3e.Cem.*` / `M3e.Native`** shape over a `Markup.*`
+> runtime. The shipped architecture is **two surfaces** (general `M3e` +
+> `M3e.Attributes`/`M3e.Events`/`M3e.Values`, and per-component `M3e.<Component>`) over the
+> imported **`HtmlIr.*`** IR (`elm-html-intermediate-representation`). This unreleased entry
+> must be rewritten to the real surface at publish time — see the README for current names.
+
 ### Added
 
 - **Five addressable API surfaces per component**, generated from the `@m3e/web`

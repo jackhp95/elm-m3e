@@ -4,12 +4,11 @@ description: >-
   Builds Material 3 Expressive UIs in Elm with the elm-m3e (M3e.*) component library —
   the generated typed binding over @m3e/web. Use in projects using elm-m3e when the user
   wants to add or wire an m3e component (button, dialog, list, nav bar, chips, fab, text
-  field, card), asks "how do I use elm-m3e", "material elm ui", "which M3e layer/form should
+  field, card), asks "how do I use elm-m3e", "material elm ui", "which M3e surface should
   I use", hits a blank screen where m3e components render nothing, or fights the phantom
-  types. Covers the layer/form decision tree (M3e barrel / per-component / M3e.Record /
-  M3e.Build / M3e.Html / M3e.Raw), the mandatory @m3e/web JS custom-element registration
-  (the #1 newcomer trap), and the userland seam (Kit text/link producers you copy, not
-  import from the package). For layout composition see composing-m3e-layouts; for a11y see
+  types. Covers the two-surface decision (general M3e / per-component M3e.<Component>), the
+  mandatory @m3e/web JS custom-element registration (the #1 newcomer trap), and the userland
+  seam (Kit text/link producers you copy, not import from the package). For layout composition see composing-m3e-layouts; for a11y see
   making-m3e-accessible; for tokens/theming see theming-m3e-apps; for judging a finished
   view see reviewing-m3e-designs.
 ---
@@ -20,22 +19,20 @@ elm-m3e is a **generated** typed Elm binding over matraic's `@m3e/web` Material 
 Expressive web components. Everything under `src/M3e/` is emitted by `elm-cem` from the
 `@m3e/web` Custom Elements Manifest plus `config/slots.json`; you consume it, you never
 hand-edit it. The library ships **no JS runtime** — an `M3e.button` is a lazy IR node
-that becomes a `<m3e-button>` only at `Markup.Element.toNode`. The Elm IR core (`Element`,
-`Node`, `Html.Attr`, `Aria`, `Attributes`) lives in the shared `markup-core` package
-(`Markup.*` modules); elm-m3e imports them as a dependency rather than copying them.
+that becomes a `<m3e-button>` only at `HtmlIr.Element.toNode`. The Elm IR core
+(`HtmlIr.Element`, `HtmlIr.Node`, `HtmlIr.Attribute`, `HtmlIr.Value`, `HtmlIr.Kind`,
+`HtmlIr.Internal`) lives in the shared `elm-html-intermediate-representation` package
+(`HtmlIr.*` modules); elm-m3e **imports** them as a dependency rather than copying them
+(the IR is imported, never injected).
 
 ## The #1 trap: register the custom elements
 
-elm-m3e ships as a **facet family** — install only the facets you need:
+elm-m3e is a **single Elm package** plus its one runtime dependency, the shared IR:
 
 ```bash
-elm install jackhp95/elm-m3e-standard  # the everyday API (most apps)
-elm install jackhp95/elm-m3e-build     # Build form + Record form
-elm install jackhp95/elm-m3e-core      # M3e.Kind + M3e.Token only (deep deps)
+elm install jackhp95/elm-html-intermediate-representation  # the HtmlIr.* IR core
+elm install jackhp95/elm-m3e                                # the whole M3e.* surface
 ```
-
-For the Elm IR core shared across facets, `markup-core` is installed as a transitive
-dependency; you typically never install it directly.
 
 The `<m3e-*>` custom elements are inert HTML until the matching JS is registered at app
 startup. **If you skip this, every component renders as an empty/unstyled box and nothing
@@ -54,37 +51,39 @@ Elm.Main.init({ node: document.getElementById("root") });
 
 When "components render but look broken / do nothing", check this import first.
 
-## Layers and forms — decision tree
+## Two surfaces — decision
 
-Two orthogonal axes shape the API (see `docs/DESIGN.md` §1, §3). The **layer** axis is
-how raw you go — a safety gradient; the **form** axis is how strict one call site is —
-how required vs optional parts are passed. All layers and forms return the same
-`Markup.Element.Element … msg`, so they nest and interchange freely. Default to the standard
-form; move only when a concrete guarantee earns it.
+The API has **two coordinated surfaces** (see `docs/DESIGN.md`). Both are element↔attr
+typed and compiler-checked; they return the same `HtmlIr.Element.Element … msg`, so they
+nest and interchange freely. Start general; reach for a per-component module when you want
+the compiler (not `elm-review`) to enforce required content and placed-child slot-kinds.
 
 | Want | Use | Why |
 |------|-----|-----|
-| The everyday default | **`M3e` barrel** (top layer, standard form) — `M3e.button [attrs] [content]` | one import (`import M3e exposing (..)`), lowercase names, generalized setters. Start here. |
-| A component with **required** content (label, action) checked by the compiler | **`M3e.Record.*`** (Record form) — `view { required } [attrs] [content]` | missing-required becomes a *compile* error, not a lint. Only components that have required parts get a Record module. |
-| A pipeline where **duplicate-singular is unwritable** | **`M3e.Build.*`** (Build form) — `seed {req} \|> setter \|> build`, imported qualified | setting a singular attr twice fails to type-check. Opt-in, per-component, no barrel. |
-| A raw attribute the top layer doesn't expose | **`M3e.Html.*`** (Html layer) — lazy IR attrs, eager component | documented escape, less convenience. |
-| Partial applications of `elm/html`, no phantom types | **`M3e.Raw.*`** (raw layer) — fully applied → `Html` | the documented floor; the last escape hatch. |
+| The everyday default | **general surface** — `M3e.button [attrs] [content]`; shared vocabulary in `M3e.Attributes` / `M3e.Events` / `M3e.Values` | one import (`import M3e exposing (..)`), lowercase names, library-wide setters. Start here. |
+| **Required** content (label, action) checked by the **compiler** | **per-component** `M3e.<Component>.view { required } [attrs] [content]` | missing-required becomes a *compile* error, not a lint. Only components that have required parts take a `required` record. |
+| A pipeline where **duplicate-singular is unwritable** | **per-component** `M3e.<Component>.build { req } \|> M3e.<Component>.setter \|> …` | setting a singular attr twice fails to type-check. Opt-in, per-component. |
+| An `arbitrary`-slot child placed via a slot function, checked by the compiler | **per-component** module | the general surface leaves that one check to `elm-review`; the per-component surface makes it a compile error. |
 
-The `Html` and `raw` layers are **documented escapes**, not the everyday path. Drop to
-them only when the top layer genuinely can't express something; prefer filing the gap.
+The **only** three things that move to `elm-review` on the general surface —
+missing-required content, duplicate-singular slots/attrs, and the slot-kind of a child
+placed via a slot function — are all compile errors on the per-component surface.
+Everything else (invalid enum token, wrong attr on an element, wrong-kind *direct* child)
+is a compile error on **both**.
 
-**Rule of thumb:** build a settings screen or a form → **standard form** (`M3e` barrel).
-A button/dialog/snackbar that *must* carry a label or action → **Record form**. A guided,
-cardinality-guaranteed builder (wizard step, generated form) → **Build**.
+**Rule of thumb:** build a settings screen or a form → the **general surface** (`M3e`
+barrel). A button/dialog/snackbar that *must* carry a label or action, or a guided
+cardinality-guaranteed builder → the **per-component** module's `view { required … }` or
+`build` pipeline.
 
 ## Don't fight the phantom types
 
-Three phantom rows make invalid compositions a compile error (`docs/DESIGN.md` §1). When
+The phantom rows make invalid compositions a compile error (`docs/DESIGN.md`). When
 the compiler rejects your view, it is telling you the composition is invalid — **fix the
-composition, don't reach for `M3e.Raw` or `Seam.recast` to silence it:**
+composition, don't reach for `M3e.Unsafe.fromHtml` or `Seam.recast` to silence it:**
 
-- `M3e.Button.variant M3e.Token.square` — compile error: `square` isn't in the variant
-  value row. Pick a real variant (`M3e.Token.filled`, `.outlined`, …).
+- `M3e.Button.variant Value.square` — compile error: `square` isn't in Button's variant
+  value row. Pick a real variant (`M3e.Values.filled`, `.outlined`, …).
 - `M3e.Card.view …` inside a Button's content list — compile error: `card` isn't an
   accepted child kind of Button. Use the slot the parent actually accepts.
 - Slot placers stamp `slot=` and return the right kind, so `M3e.appBarSlotTitle`,
@@ -96,33 +95,37 @@ no dedup machinery.
 
 ## The seam: atoms and native elements are userland
 
-The library intentionally does **not** define `text`/`link`/`label`/`icon` in the
-published package. These **atoms** are accessible-by-construction primitives whose exact
-shape (String? i18n key? icon font vs SVG?) is a team decision. They live in the **Kit**,
+Plain text is built in — `M3e.text : String -> Element …` ships in the general surface,
+so `M3e.text "Save"` needs nothing extra. The **richer** producers (`link`, typography
+sizing, native-HTML elements, raw-`Html` crossings) are userland: they live in the **Kit**,
 a copyable module set under `docs/kit/` that is **NOT part of the published package** —
 consumers copy `Kit`, `Native`, and `Seam` and adapt them (see `docs/kit/README.md`,
-`docs/DESIGN.md` §4):
+`docs/DESIGN.md`):
 
-- **`Kit`** — `text`, `link`, `label`, `icon` producers. These return the **shared atom
-  kind** (`Markup.Kind.Shared`), so they fit any slot typed `"shared:text"` /
-  `"shared:icon"` / etc. — and `link : {href} -> Element {text:Shared} msg -> …`
-  requires at least one content child, enforcing link accessibility at the type level.
-- **`Native`** — native-HTML IR (`div`, `span`, `p`, `a`, `img`, `ul`, `li`, …) carrying
-  the `html : M3e.Kind.Brand` kind, so it fits any `"arbitrary"` slot.
+- **`Kit`** — `text`, `link`, `textLink`, and typography helpers. These return the
+  **shared atom kind** (`HtmlIr.Kind.Shared`), so they fit any slot typed `"shared:text"`
+  etc. — and `link` requires at least one content child, enforcing link accessibility at
+  the type level.
+- **`Native`** — native-HTML IR (`div`, `span`, `p`, `a`, `img`, `ul`, `li`, …). The
+  native-HTML brand also ships standalone as `TypedHtml.*` (`elm-typed-html`); the Kit's
+  `Native` is the copyable adapter.
 - **`Seam`** — the single sanctioned, loud, auditable break-glass (`fromHtml`, `recast`)
-  built on the `*.Internal` modules. You cannot mint an `Element` from raw HTML anywhere
-  else; that fence is Elm's own module exposure, not a lint rule. For stable semantic
-  crossings, prefer `M3e.Coerce.*` (config-blessed coercions) over `recast`.
+  built on `HtmlIr.Internal`. You cannot mint an `Element` from raw HTML anywhere else
+  except the published `M3e.Unsafe.fromHtml`; that fence is Elm's own module exposure, not
+  a lint rule. For stable semantic crossings, prefer `M3e.Coerce.*` (config-blessed
+  coercions) over `recast`.
 
-So a real call reads `M3e.button [ M3e.variant M3e.Token.filled ] [ Kit.text "Save" ]` —
-library component, shared-atom text.
+So a real call reads `M3e.button [ M3e.Button.variant Value.filled ] [ M3e.text "Save" ]`
+— library component, built-in text.
 
 ## Rendering exit
 
 Everything stays IR until the app root. Convert once, at the top of your `view`:
 
 ```elm
-Markup.Element.toNode myScreen   -- IR → Node → Html, the only eager point
+myScreen
+    |> HtmlIr.Element.toNode
+    |> HtmlIr.Node.toHtml   -- IR → Node → Html, the only eager point
 ```
 
 ## Reference

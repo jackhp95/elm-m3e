@@ -1,3 +1,8 @@
+<!-- Historical record (phantom-migration snapshot, 2026-07-20). Retained as a worklog;
+some module names may predate the final shipped names (IR = HtmlIr.* imported from
+elm-html-intermediate-representation; two surfaces — general + per-component — not five
+forms). For current names see the README and docs/guides/. Body preserved as-is. -->
+
 # Migration State — elm-m3e docs app → phantom substrate
 
 **Branch:** phantom-migration  

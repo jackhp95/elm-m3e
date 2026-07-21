@@ -1,150 +1,120 @@
-# The Layers
+# The Surfaces
 
-elm-m3e is split into **facets** — addressable packages at different points in the
-layer/form space. This guide describes the facet stack, the markup foundation it
-sits on, and the atom layer that bridges the two.
+elm-m3e exposes **two coordinated surfaces** over one shared IR: a general,
+`elm/html`-shaped surface and a strict per-component surface. This guide describes
+those surfaces, the shared IR foundation they sit on, and the atom layer that bridges
+raw content into the typed IR.
 
-For the full theory of the layer axis and form axis, see [`DESIGN.md §1–§3`](../DESIGN.md).
 For the brand model and kind tiers, see [`Glossary`](Glossary.md) and
 [`decisions.md CX2–CX3`](../decisions.md#cx2--brand-kind-rows-per-library).
 
-## The foundation: markup-core
+## The foundation: elm-html-intermediate-representation
 
-Every elm-m3e facet depends on `jackhp95/markup-core`. This package, produced by
-the elm-cem repo, owns:
+elm-m3e depends on `jackhp95/elm-html-intermediate-representation`. This package,
+produced alongside the elm-cem generator, owns the phantom-typed HTML IR — a superset
+of `elm/html`:
 
-- The IR runtime types (`Markup.Element`, `Markup.Node`, `Markup.Html.Attr`).
-- The token foundation (`Markup.Token`, `Markup.Aria`, `Markup.Attributes`).
-- The kind vocabulary (`Markup.Kind` with `Shared` and `Brand`).
-- The accessible atom constructors (`Markup.Atoms`).
+- The IR types (`HtmlIr.Element`, `HtmlIr.Node`, `HtmlIr.Attribute`, `HtmlIr.Value`).
+- The kind vocabulary (`HtmlIr.Kind` with `Shared` and `Brand`).
+- The interior constructors (`HtmlIr.Internal`) that seams build on — lint-guarded so
+  they are not reachable from ordinary code.
 
-`markup-core` is the floor. Its `Markup.Element.Element` type is the one nominal
-type every generated library shares. Because all libraries import the same
-published package, the nominal type system works across library boundaries — a
-`Markup.Kind.Shared`-typed atom produced by `markup-core` unifies with any m3e
-slot that opts in to that atom role.
+The IR is the floor. Its `HtmlIr.Element.Element` type is the one nominal type every
+generated brand shares. Because all brands import the same published package, the
+nominal type system works across brand boundaries — an `HtmlIr.Kind.Shared`-typed atom
+unifies with any m3e slot that opts in to that atom role. **The IR is imported, never
+injected**: elm-m3e's generated code carries `import HtmlIr.*`, and the shared runtime
+lives in exactly one place.
 
-## The m3e facet stack
+## The two m3e surfaces
 
-The seven m3e packages, from narrowest to broadest surface:
+The whole library ships as **one Elm package** (`jackhp95/elm-m3e`). Within it:
 
 ```
-markup-core               Markup.* runtime, atoms, kinds (foundation)
-  elm-m3e-core            M3e.Kind.Brand + M3e.Token.* + M3e.Element.* + M3e.Node.* + M3e.Html.Attr.*
-    elm-m3e-raw           M3e.Raw.*  (partial Html applications; strings live here)
-      elm-m3e-html        M3e.Html.* (lazy Attr + eager component; phantom capability rows)
-        elm-m3e           M3e.* standard (lazy IR for components; barrel; Action; Seam; Coerce)
-          elm-m3e-record  M3e.Record.*  (required-record form; missing-required is a compile error)
-          elm-m3e-build   M3e.Build.*   (builder pipeline; duplicate-singular is unwritable)
-
-elm-m3e-review-facts      M3e.Review.Facts  (install in review/ apps only)
+elm-html-intermediate-representation   HtmlIr.* — the shared phantom-typed HTML IR
+  M3e (general)                        M3e.button [attrs] [content] + M3e.text;
+                                       shared vocab in M3e.Attributes / M3e.Events / M3e.Values
+  M3e.<Component> (per-component)      M3e.Button, M3e.Dialog, … — narrowed values,
+                                       required-content view, and the build pipeline
+  support                             M3e.Kind, M3e.Coerce, M3e.Unsafe, M3e.Review.Facts
 ```
 
-Each level adds expressiveness and safety over the one below it. Dropping to a
-lower facet is rawer and less safe but gives more control.
+Both surfaces return the same `HtmlIr.Element.Element … msg`, so they nest and
+interchange freely. Start on the general surface; reach for a per-component module when
+you want the compiler (not `elm-review`) to enforce required content and placed-child
+slot-kinds.
 
-### elm-m3e-core
+### The general surface
 
-The core package contains everything that is not yet a component view: the phantom
-phantom-row runtime types (`M3e.Element.*`, `M3e.Node.*`, `M3e.Html.Attr.*`), the
-token and value types (`M3e.Token`, `M3e.Aria`, `M3e.Attributes`), and crucially
-`M3e.Kind` with the `Brand` type.
+`M3e` exposes every component in the `elm/html` call shape — `M3e.button [attrs]
+[content]`, lowercase names, one import — plus `M3e.text` for plain text content. The
+shared vocabulary lives in three sibling modules:
 
-`M3e.Kind.Brand` is opaque and nullary. It is the per-library phantom marker. Elm's
-nominal type system gives it a distinct identity from `Markup.Kind.Brand` and every
-other library's brand. This is the mechanism that makes kind segregation compile-time
-safe with zero runtime cost.
+- **`M3e.Attributes`** — the library-wide attribute setters (`disabled`, `value`,
+  `name`, `checked`, the generic `class` / `id` / `slot` / `style`). Enum setters here
+  close over the library-wide union of values.
+- **`M3e.Events`** — the event setters (`onClick`, `onChange`, …).
+- **`M3e.Values`** — the enum value tokens (`filled`, `outlined`, `title`, …).
 
-### elm-m3e-raw
+On the general surface, element↔attr validity, enum tokens, and *direct* slot-kind are
+compiler-checked. Three checks — missing-required content, duplicate-singular, and the
+slot-kind of a child placed via a slot function — are `elm-review` guidance here.
 
-The raw facet contains `M3e.Raw.*` — one module per component, with functions that
-are plain partial applications of `Html.node` and `Html.Attributes.attribute`. No
-phantom types. Strings live here and nowhere else in the generated code.
+### The per-component surface
 
-Use the raw facet when you need maximal control and are willing to lose compile-time
-slot-kind guarantees.
+`M3e.Button`, `M3e.Card`, … each expose the strict shape for one component:
 
-### elm-m3e-html
+- `view [attrs] [content]` — or `view { required } [attrs] [content]` where the
+  component has required content, making missing-required a **compile** error.
+- `build { req } |> setter |> … ` — the incremental pipeline where setting a singular
+  attr twice fails to type-check.
+- Narrowed value setters (`M3e.Button.variant : Value Variant -> …`) that admit only
+  that component's tokens.
 
-The html (middle) facet contains `M3e.Html.*` — lazy attribute and event setters,
-plus an eager `view` function that applies attributes to produce `Html` (not `Element`).
-Phantom capability rows appear here (`Attr { c | variant : Supported }`).
-
-Use the html facet when you want typed attributes but are integrating into an
-existing `Html`-returning codebase where lazy `Element` IR is not convenient.
-
-### elm-m3e (standard)
-
-The standard package is the normal-use entry point. It contains:
-
-- All top-layer component modules (`M3e.Button`, `M3e.Card`, …).
-- The barrel (`M3e`) re-exporting everything in the standard form.
-- `M3e.Action` — the typed action constructors (onClick, etc.).
-- `M3e.Seam` — the seam stamper (see [`Seams`](Seams.md)).
-- `M3e.Coerce` — the config-blessed named coercions.
-- `M3e.Native` — typed IR constructors for raw HTML elements.
-
-A `view` function in the standard form takes a list of attributes and a list of
-children and returns a lazy `Element`:
+Everything the general surface leaves to `elm-review` is a compile error here.
 
 ```elm
 M3e.Button.view
-    [ M3e.Button.variant M3e.Token.filled ]
-    [ Markup.Atoms.text "Submit" ]
+    [ M3e.Button.variant M3e.Values.filled ]
+    [ M3e.text "Submit" ]
 ```
 
-Slot kind checking works at compile time. The kind rows of the children must
-unify with the closed slot row of the component. An atom produced by
-`Markup.Atoms.text` carries `{ s | text : Markup.Kind.Shared }`; if the button's
-slot config declares `shared:text`, the slot row is `{ text : Markup.Kind.Shared }`
-and the unification succeeds. A foreign-library element carrying a different brand
-fails to unify and is rejected by the compiler.
+Slot-kind checking works at compile time. The kind rows of the children must unify with
+the closed slot row of the component. An atom carrying `{ s | sharedText :
+HtmlIr.Kind.Shared }` unifies with a slot that declares `shared:text`; a foreign-brand
+element fails to unify and is rejected by the compiler.
 
-### elm-m3e-record and elm-m3e-build
+### The support modules
 
-The record and build packages add stricter forms (see [`DESIGN.md §3`](../DESIGN.md)
-for the full matrix). Both depend on the standard package because `M3e.Action` is
-component-coupled (it imports standard-facet modules), so the dependency chain
-runs from core through standard to record/build.
-
-### elm-m3e-review-facts
-
-This satellite package contains only `M3e.Review.Facts` (the generated component
-facts table). Install it exclusively in `review/elm.json` apps. It depends on
-`jackhp95/elm-review-cem`, which must not enter application trees. The review-facts
-separation resolves the blocker that made `M3e.Review.Facts` unpublishable as part
-of the main package (it imports `Cem.Facts`, a review-only module).
+- **`M3e.Kind`** — `Brand` (this library's opaque, nullary phantom marker; Elm's nominal
+  type system gives it a distinct identity from `HtmlIr.Kind.Brand` and every other
+  brand) and `Ctx` (the context-row marker). This is what makes kind segregation
+  compile-time safe with zero runtime cost.
+- **`M3e.Coerce`** — the config-blessed named coercions between brands.
+- **`M3e.Unsafe`** — the published `fromHtml` escape hatch.
+- **`M3e.Review.Facts`** — the generated component facts table, consumed by the
+  `review/` app's `elm-review-cem` rules.
 
 ## The atom layer
 
-Atoms sit between the Markup foundation and the m3e component surface. They are
-produced by `Markup.Atoms` (part of `markup-core`) and carry `Markup.Kind.Shared`
-in role-specific fields:
+Atoms bridge raw content into the typed IR. Plain text is built in — `M3e.text : String
+-> Element …` returns the shared text atom directly, so it needs nothing extra. Richer
+producers are userland: `docs/kit/Kit.elm` supplies `text`, `link`, `textLink`, and
+typography helpers, all returning `HtmlIr.Kind.Shared` in role-specific fields:
 
 | Atom | Kind field | Type produced |
 |------|-----------|----------------|
-| `Markup.Atoms.text "…"` | `text : Markup.Kind.Shared` | `Element { s \| text : Markup.Kind.Shared } msg` |
-| `Markup.Atoms.link {href} first rest` | `link : Markup.Kind.Shared` | `Element { s \| link : Markup.Kind.Shared } msg` |
-| `Markup.Atoms.label {for} children` | `label : Markup.Kind.Shared` | `Element { s \| label : Markup.Kind.Shared } msg` |
-| `Markup.Atoms.iconDecorative svg` | `icon : Markup.Kind.Shared` | `Element { s \| icon : Markup.Kind.Shared } msg` |
-| `Markup.Atoms.iconLabeled {label} svg` | `icon : Markup.Kind.Shared` | `Element { s \| icon : Markup.Kind.Shared } msg` |
+| `M3e.text "…"` | `sharedText : HtmlIr.Kind.Shared` | `Element { s \| sharedText : HtmlIr.Kind.Shared } … msg` |
+| `Kit.link "…" children` | `sharedLink : HtmlIr.Kind.Shared` | `Element { s \| sharedLink : HtmlIr.Kind.Shared } … msg` |
 
-An m3e component slot accepts an atom when its slot config declares
-`"shared:<atom>"` and the generated slot row contains that field. The Elm type
-checker resolves the unification. No cast, no coercion, no seam crossing required.
+An m3e component slot accepts an atom when its slot config declares `"shared:<atom>"` and
+the generated slot row contains that field. The Elm type checker resolves the
+unification — no cast, no coercion, no seam crossing required. Atoms are the only thing
+that flows freely across brand boundaries; private-brand components are rejected by
+default.
 
-Atoms are the only thing that flows freely across library boundaries. Private-brand
-components are rejected by default.
-
-## The generated markup surface
-
-In parallel with the m3e facet stack, the elm-cem repo produces the **markup
-family**: `markup-core`, `markup-raw`, `markup-html`, `markup` (standard), and
-`markup-build`. The markup library is generated by the same elm-cem pipeline as
-elm-m3e, from its own HTML manifest — this is what proves the generator is
-library-agnostic (CX8). The markup standard package's docs.json measured at
-132,168 bytes (18% of the 700 KB gate).
-
-The markup v1 surface contains 16 HTML elements (structural, form, and list
-categories). Missing: `ol`, headings (`h1`–`h6`), and `img` — these are flagged
-to Jack for pre-release decision (additions are non-breaking).
+For native-HTML elements (`div`, `span`, `img`, …), copy `docs/kit/Native.elm`, or use
+the standalone native brand `TypedHtml.*` (`elm-typed-html`). ARIA setters come from
+`TypedHtml.Aria` (the ARIA hybrid) — see [`making-m3e-accessible`](Seams.md) and the
+accessibility guide. For crossing raw `Html` into the IR, `docs/kit/Seam.elm` (built on
+`HtmlIr.Internal`) is the single sanctioned boundary; see [`Seams`](Seams.md).

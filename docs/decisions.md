@@ -1,5 +1,17 @@
 # Decisions
 
+> **Reconciliation banner (pass 2, 2026-07-21).** The **elm-phantom refactor** (merged) has
+> superseded several decisions below. In particular: the shared runtime is now the
+> **`HtmlIr.*`** IR published as `elm-html-intermediate-representation` and **imported, not
+> injected** — there is no `Markup.*` runtime, and `injectRuntime` / string-rewrite copying is
+> retired. The **facet-family packaging** (CX11) and **copy-only publish mirrors** (CX12) are
+> retired: elm-m3e ships as a **single** `jackhp95/elm-m3e` package with **two surfaces**
+> (general `M3e`/`M3e.Attributes`/`M3e.Events`/`M3e.Values` + per-component `M3e.<Component>`),
+> not a 5-form/multi-package stack. The kind/atom/seam/coercion *reasoning* below still holds;
+> only the runtime name (`Markup.*`→`HtmlIr.*`) and the packaging (facets→one package) changed.
+> This trail is preserved for the "why"; trust `src/`, `elm.json`, and the reconciled guides
+> for current names.
+
 This is the living record of the durable design decisions behind elm-m3e —
 the "why is it built this way?" answers that don't live comfortably in the code
 or the reference docs. It is a companion to [`DESIGN.md`](DESIGN.md), which is

@@ -54,12 +54,12 @@ on desktop, a `NavBar` pinned to the bottom on mobile**, driven purely by respon
 visibility classes and the same destination list.
 
 ```elm
-desktopRail : Markup.Element.Element { s | navRail : M3e.Kind.Brand } msg
+desktopRail : HtmlIr.Element.Element { s | navRail : M3e.Kind.Brand } adm_ msg
 desktopRail =
     M3e.navRail [ Layout.class "hidden md:flex shrink-0" ]
         (List.map navItem destinations)
 
-mobileBar : Markup.Element.Element { s | navBar : M3e.Kind.Brand } msg
+mobileBar : HtmlIr.Element.Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
     M3e.navBar [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map navItem destinations)
@@ -76,7 +76,7 @@ neutral rationale and the standard breakpoints):
 | Large + persistent nav | `M3e.NavigationDrawer` | (component exists; not in current examples) |
 
 Both nav copies share ONE `navItem` producer and ONE destination list, so they never
-drift. Mark the active destination with `M3e.attrSelected`.
+drift. Mark the active destination with `M3e.Attributes.selected`.
 
 ## Adaptive body patterns (mined from the examples)
 
@@ -114,7 +114,7 @@ When one list holds rows of different component kinds (a `ListItem`, a `Divider`
 
 ```elm
 type alias Row msg =
-    Markup.Element.Element { html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } msg
+    HtmlIr.Element.Element { html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
 ```
 
 Each producer returns an *open* row (`{ s | listItem : M3e.Kind.Brand }`), which widens to fill

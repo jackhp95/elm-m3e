@@ -29,10 +29,11 @@ the owner runs the irreversible steps by hand, in order. Do not automate them.
 
 Do not release on a red or stale CI run. The three jobs in `.github/workflows/ci.yml`:
 
-1. **library** — `elm-format --validate` on the generated output, `elm make src/M3e.elm`
-   (the package correctness proof), `elm-test` (kind/token unit tests), and `elm-review`
-   with the Cem rules + `NoProprietaryDsClasses`. Also runs `npm run measure-docs` to
-   verify every facet's docs size is within the 700 KB Elm registry gate.
+1. **library** — `elm-format --validate` on the generated output, a compile of `src/M3e.elm`
+   with the IR dependency on the path (the package correctness proof), `elm-test` (kind/token
+   unit tests), and `elm-review` with the Cem rules + `NoProprietaryDsClasses`. Also runs
+   `npm run measure-docs` to verify the package's docs size is within the 700 KB Elm registry
+   gate.
 2. **docs** — the reference pipeline (`build:reference`, which runs `elm make --docs` and
    **fails hard if any exposed value lacks a doc comment**) and the full elm-pages
    production build.
@@ -43,27 +44,32 @@ Each fetches the sibling public `jackhp95/elm-review-cem` at `../elm-review-cem`
 
 ## The publish gate: docs-size + `elm make --docs`
 
-elm-m3e publishes as a **facet family** (core / raw / html / standard / record / build /
-review-facts), each a separate Elm package. Before tagging:
+elm-m3e publishes as a **single Elm package** (`jackhp95/elm-m3e`) alongside its one runtime
+dependency, the shared IR (`jackhp95/elm-html-intermediate-representation`), which is
+published on its own. Before tagging:
 
 ```bash
-npm run measure-docs        # in elm-m3e/ — runs elm make --docs on each facet,
-                            # asserts every facet's docs.json ≤ 700 KB; must exit 0
+npm run measure-docs        # in elm-m3e/ — compiles with elm make --docs and
+                            # asserts docs.json ≤ 700 KB; must exit 0
 ```
 
 This validates that every exposed value has a doc comment (what `elm publish` requires)
-and that no facet has grown past the registry cap. A missing doc comment on any generated
-exposed value fails here. If it fails, fix it upstream in the generator/config and
+and that the package has not grown past the registry cap. A missing doc comment on any
+generated exposed value fails here. If it fails, fix it upstream in the generator/config and
 regenerate (see regenerating-elm-m3e), never by hand-editing `src/`.
 
-The mirror release script (`scripts/mirror-release.mjs`) copies each facet's subset of
-`src/M3e/` into its copy-only mirror repo and tags it. Run with `--rehearse` first to
-verify the split before any real push.
+> **Known-red / tooling drift (2026-07-21):** `npm run measure-docs` currently fails at its
+> `split` step, and `packages.json` + `scripts/mirror-release.mjs` still describe the
+> **retired** multi-package facet family (`elm-m3e-core`/`-raw`/`-html`/`-record`/`-build`,
+> `markup-core`). The merged 2-surface architecture ships as the single `jackhp95/elm-m3e`
+> package, so the facet-split gate and the mirror script must be re-authored to the real
+> single-package shape before a release. That re-authoring is a code task, flagged for the
+> phantom-refactor code chunk; treat the facet-family steps below as **not yet valid**.
 
 ## `elm bump` discipline
 
 Elm computes the version bump from the API diff — you do not choose it. Run `elm bump`
-from each facet mirror's clone:
+from the package root (the repo root is the package):
 
 ```bash
 elm bump          # inspects the API diff vs the last published version, writes elm.json
@@ -74,37 +80,35 @@ elm bump          # inspects the API diff vs the last published version, writes 
   and let `elm bump` set the number; do not hand-set `version`.
 - Added exposed values only → **MINOR**. Doc/impl-only changes → **PATCH**.
 - Update `CHANGELOG.md` to match what `elm bump` reports before tagging.
-- Because the facets share a common source (`src/M3e/`), a breaking change in a shared
-  module (e.g. a Kind or Token rename) usually bumps EVERY facet that exposes that value.
+- A breaking change in a shared module (e.g. a `M3e.Kind` or `M3e.Values` rename) bumps the
+  whole package. Note that the IR dependency (`elm-html-intermediate-representation`) versions
+  independently — an `HtmlIr.*` change bumps that package, and elm-m3e widens its dep range.
 
 ## The irreversible steps (from RELEASE-CHECKLIST.md)
 
-elm-m3e releases as a facet family — each facet is a separate Elm package published from
-its own copy-only mirror repo (e.g. `jackhp95/elm-m3e-standard`). The mirror release
-script handles the split; the steps below cover the invariants and the topo order.
+elm-m3e releases as a **single Elm package** published from the repo root; its IR dependency
+is a separate package with its own release. Publish the IR **first** (elm-m3e's dep range
+must resolve), then elm-m3e.
 
-1. **Confirm structure & license**: `npm run measure-docs` (all facets compile + ≤ 700 KB);
-   root `LICENSE`, root `elm.json` `"license"`, and `package.json` all agree on
-   **BSD-3-Clause**.
-2. **Run the mirror release script** in `--rehearse` mode, verify all 7 mirror repos get
-   the correct tree + tag + copy-only banner, then run for real:
+> The retired facet-family split (7 mirror repos, `scripts/mirror-release.mjs`) is no longer
+> the release path — see the "Known-red / tooling drift" note above. Publish the single
+> package directly.
+
+1. **Confirm structure & license**: `npm run measure-docs` (compiles + ≤ 700 KB) once the
+   gate is re-authored; root `LICENSE`, root `elm.json` `"license"`, and `package.json` all
+   agree on **BSD-3-Clause**.
+2. **Publish the IR dependency** `jackhp95/elm-html-intermediate-representation` (its own
+   repo/runbook) so elm-m3e's dependency range resolves.
+3. **Publish elm-m3e** from the repo root. Publishing is permanent and cannot be undone.
    ```bash
-   node scripts/mirror-release.mjs --rehearse   # dry run to local bare repos
-   node scripts/mirror-release.mjs              # real push (gated; runs once)
-   ```
-3. **Publish each facet in topo order** from the mirror repo (core → raw/html → standard →
-   record/build → review-facts). Publishing is permanent and cannot be undone.
-   ```bash
-   # from each mirror clone:
    elm publish
    ```
-4. **After publishing**, point each mirror repo's homepage at its `package.elm-lang.org`
-   page.
+4. **After publishing**, point the repo homepage at the `package.elm-lang.org` page.
 
 The repo is already public with description/topics/homepage set. Optional hardening
 (secret scanning, private vuln reporting, branch protection) is in RELEASE-CHECKLIST §5;
 note the `.gitleaks.toml` allowlist already suppresses the false-positive
-`M3e.Token.*`/`M3e.Heading.emphasized` "generic-api-key" hits in the examples corpus.
+`M3e.Values.*`/`M3e.Heading.emphasized` "generic-api-key" hits in the examples corpus.
 
 ## Docs-site deploy
 

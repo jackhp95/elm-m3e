@@ -7,7 +7,7 @@ description: >-
   asks "does this m3e component need an aria-label", how to name/label an m3e control,
   what keyboard behavior a dialog/menu/list gives you, why elm-review reports
   missingRequiredAttribute / RequireSlot, or wants to spot-check the accessibility tree.
-  Covers the named-slot vs Markup.Aria.label / M3e.ariaLabel decision, what @m3e/web handles
+  Covers the named-slot vs TypedHtml.Aria.label decision, what @m3e/web handles
   vs what the author must wire, interpreting the a11y-relevant Cem review errors, and the
   Playwright a11y spot-check recipe. For WCAG theory link the m3e knowledge base's
   accessibility page. For building components see building-m3e-uis; for a full design
@@ -29,21 +29,28 @@ has visible text:
 
 | Situation | How to name it | Example |
 |-----------|----------------|---------|
-| Control **has** visible text (a labelled button, a nav item with a label) | The text *is* the name — the named/text slot supplies it. Add nothing. | `M3e.button [ … ] [ Kit.text "Save" ]` |
-| **Icon-only** control (icon button, icon-only FAB, a `Switch`/`Radio` whose label sits elsewhere) | Explicit ARIA name — **required** | `M3e.iconButton [ M3e.ariaLabel "Back" ] [ M3e.icon [ M3e.attrName "arrow_back" ] [] ]` |
-| Name lives in another visible element | Reference it | `M3e.ariaLabelledby "field-id"` |
+| Control **has** visible text (a labelled button, a nav item with a label) | The text *is* the name — the named/text slot supplies it. Add nothing. | `M3e.button [ … ] [ M3e.text "Save" ]` |
+| **Icon-only** control (icon button, icon-only FAB, a `Switch`/`Radio` whose label sits elsewhere) | Explicit ARIA name — **required** | `M3e.iconButton [ Aria.label "Back" ] [ M3e.icon [ M3e.Attributes.name "arrow_back" ] [] ]` |
+| Name lives in another visible element | Reference it | `Aria.labelledby "field-id"` |
 
-The ARIA setter exists on three layers (pick by the layer you're building on):
+**ARIA is the native-HTML hybrid — the setters come from `TypedHtml.Aria`, not `M3e.*`.**
+`M3e.*` deliberately does not mint aria setters; you reach across to the native-HTML brand:
 
-- Top layer (barrel): `M3e.ariaLabel "Back"` / `M3e.ariaLabelledby "…"`
-- Html layer: `Markup.Aria.label "Back"` / `Markup.Aria.labelledby "…"`
-- raw layer: `Markup.Raw.Aria.label "Back"`
+```elm
+import TypedHtml.Aria as Aria
+
+M3e.iconButton [ Aria.label "Back" ] [ M3e.icon [ M3e.Attributes.name "arrow_back" ] [] ]
+```
+
+`Aria.label` / `Aria.labelledby` / `Aria.describedby` are ordinary `Attr` producers that fit
+any element's row. (If you must set it as a raw string, `Seam.asAttribute (attribute
+"aria-label" "…")` or `Native.attribute "aria-label" "…"` from `docs/kit/` also work.)
 
 **The nameless icon-only control is the pattern you cannot ship.** An
 `<m3e-icon-button>` wrapping a bare `<m3e-icon>` announces nothing to assistive tech.
 Trailing `Switch`/`Radio` controls in list rows are the sneaky case — their visible label
-is a sibling `ListItem` text, not their own, so they still need `M3e.ariaLabel` (see the
-Settings example's `switchRow`/`themeRow`, which pass `M3e.ariaLabel label` on every
+is a sibling `ListItem` text, not their own, so they still need `Aria.label` (see the
+Settings example's `switchRow`/`themeRow`, which pass `Aria.label label` on every
 `Switch` and `Radio`).
 
 ## Read the review errors as a11y guidance
@@ -53,7 +60,7 @@ accessibility feedback, not bureaucracy:
 
 - **`missingRequiredAttribute`** on a control that lists `aria-label` in its
   `requiredAttrs` (config, e.g. `FilledButton`) = "this control has no accessible name;
-  add `M3e.ariaLabel`." It reads per-component facts and refuses the nameless control when
+  add `Aria.label` (from `TypedHtml.Aria`)." It reads per-component facts and refuses the nameless control when
   `elm-review` runs in CI.
 - **`RequireSlot`** = a required semantic slot (a label, a title) is absent from the
   content — often the same "no accessible name / no visible label" problem seen as
@@ -66,9 +73,9 @@ accessibility feedback, not bureaucracy:
 
 | Handled by `@m3e/web` (the custom element) | You must wire (Elm side) |
 |--------------------------------------------|--------------------------|
-| Roving focus / arrow-key navigation within a component (menu, list, tabs, radio group) | The **accessible name** of icon-only controls (`M3e.ariaLabel`) |
+| Roving focus / arrow-key navigation within a component (menu, list, tabs, radio group) | The **accessible name** of icon-only controls (`TypedHtml.Aria.label`) |
 | Internal roles on shadow-DOM parts | **Focus management across route/state changes** (moving focus into an opened dialog, returning it on close) |
-| Focus ring / focus-visible styling (strengthen with `Theme.strongFocus`) | **Grouping semantics** you own — e.g. a `name` shared across a `Radio` group so it reads as one control (Settings `themeRow` uses `M3e.attrName "theme"`) |
+| Focus ring / focus-visible styling (strengthen with `Theme.strongFocus`) | **Grouping semantics** you own — e.g. a `name` shared across a `Radio` group so it reads as one control (Settings `themeRow` uses `M3e.Attributes.name "theme"`) |
 | Escape-to-close, backdrop, focus-trap on dialogs it owns | **Live-region / status** announcements for your own app state changes |
 | `disabled`/`checked` state on the element | **Meaningful order** of DOM/slot children (screen readers follow source order) |
 

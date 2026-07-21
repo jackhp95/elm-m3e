@@ -2,9 +2,10 @@
 
 A **seam** is any crossing point where a value from outside the typed IR
 enters it. The IR itself is opaque — you cannot construct an `Element` from
-raw `Html` by accident, because `fromNode` lives only in `Markup.Element.Internal`
-and that module is not re-exported from the public `M3e.Element`. Every crossing
-into the IR must go through one of the two mechanisms described here.
+raw `Html` by accident, because `fromNode`/`fromHtml` live only in `HtmlIr.Internal`,
+which is lint-guarded and not re-exported from the public modules (the one published
+escape is `M3e.Unsafe.fromHtml`). Every crossing into the IR must go through one of the
+two mechanisms described here.
 
 This guide covers the **two sanctioned brand crossings** that the cross-CEM
 initiative established (CX5). For a broader overview of the seam boundary and
@@ -19,10 +20,11 @@ why it exists, see [`DESIGN.md §4`](../DESIGN.md) and the
 row and re-stamps it with any other kind row:
 
 ```elm
--- In your designated Seam module (docs/kit/Seam.elm or your app's equivalent):
-text : String -> M3e.Element.Element { s | text : M3e.Kind.Brand } msg
-text str =
-    M3e.Seam.text str
+-- In your designated Seam module (docs/kit/Seam.elm or your app's equivalent),
+-- built on HtmlIr.Internal:
+recastAsButton : Element k msg -> Element { s | button : M3e.Kind.Brand } msg
+recastAsButton =
+    Seam.recast
 ```
 
 `recast` makes no semantic claim — it just changes the phantom row. It is loud
@@ -48,10 +50,10 @@ function in `M3e.Coerce`:
 
 -- Generated: src/M3e/Coerce.elm
 asButton :
-    M3e.Element.Element { k | chip : M3e.Kind.Brand } msg
-    -> M3e.Element.Element { s | button : M3e.Kind.Brand } msg
-asButton =
-    M3e.Element.Internal.toNode >> M3e.Element.Internal.fromNode
+    HtmlIr.Element.Element { k | chip : M3e.Kind.Brand } admittedBy msg
+    -> HtmlIr.Element.Element { s | button : M3e.Kind.Brand } admittedBy msg
+asButton element =
+    Ir.fromNode (HtmlIr.Element.toNode element)   -- Ir = HtmlIr.Internal
 ```
 
 A named coercion differs from `recast` in two ways:
@@ -67,8 +69,8 @@ sign it deserves a named coercion.
 
 ## What is NOT a seam crossing
 
-The `Markup.Atoms` constructors (`text`, `link`, `label`, `iconDecorative`,
-`iconLabeled`) produce `Markup.Kind.Shared`-typed elements. These are not seam
+The atom producers — `M3e.text` (built in) and the userland `Kit` producers (`link`,
+`textLink`, …) — produce `HtmlIr.Kind.Shared`-typed elements. These are not seam
 crossings — they are atoms with a declared shared role, and any m3e slot that
 opts in with the matching `shared:*` config entry accepts them. The kind system
 allows the unification; no `recast` or coercion is needed.
@@ -80,8 +82,9 @@ Similarly, m3e components in any closed private-tier slot accept their own brand
 
 Two elm-review-cem rules enforce seam discipline:
 
-- **`ExtractToSeam`** — flags a direct `fromNode`/`fromHtml` call outside the
-  declared seam modules and suggests moving it to the seam.
+- **`NoInternalImportOutsideAllowed`** — the opaque-IR backstop: flags any import of
+  `HtmlIr.Internal` (the seam stampers `fromNode`/`fromHtml`) outside the declared
+  modules, so raw-to-IR crossings can only happen inside an audited seam.
 - **`NoSeamOutsideAllowedModules`** — flags use of `recast` (or any seam
   stamper) outside the set of modules you declare as allowed. Config:
 
