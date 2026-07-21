@@ -544,3 +544,61 @@ only a minority of entries are evidence-based today, and the rest ride the
 permissive defaults until a real composition proves a tighter fact is warranted.
 This keeps the library shippable from day one on a new `@m3e/web` release instead
 of blocking on hand-authoring every slot.
+
+
+## 2026-07-21 — Post-phantom publish layering: core / three component ranges / barrel
+
+The phantom refactor retired the old *facet* split (`-raw`/`-html`/`-record`/
+`-build`, one package per API style over the same components). `packages.json`
+now describes a **layered** split of the single phantom surface, sized so every
+publishable package's per-package `docs.json` stays comfortably under the
+`DOCS_LIMIT` (700,000 bytes) the pre-phantom whole-library docs blew through.
+
+Three layers, all version `1.0.0`, `family`/`devRepo`/`licenseText` preserved:
+
+  1. **`jackhp95/elm-m3e-core` (bottom)** — the general/support surface that
+     imports no component: `M3e.Action`, `M3e.Attributes`, `M3e.Coerce`,
+     `M3e.Events`, `M3e.Kind`, `M3e.Unsafe`, `M3e.Values` (7 modules). Verified
+     against `grep '^import M3e\.'`: `Attributes → Values`, `Coerce → Kind`,
+     everything else importing only `elm/*` and `HtmlIr.*`. No component leaks in.
+  2. **Middle — the per-component `M3e.<Component>` modules**, partitioned into
+     **three** packages purely by a simple, documented rule: **alphabetical by
+     module name, cut into three roughly docs-balanced ranges.** No cleverness,
+     no cross-cutting grouping.
+       - `jackhp95/elm-m3e-components-a` — `Accordion … FocusTrap` (45 modules)
+       - `jackhp95/elm-m3e-components-b` — `FormField … NavRailToggle` (28 modules)
+       - `jackhp95/elm-m3e-components-c` — `Optgroup … YearView` (50 modules)
+     Component modules import only the core layer (`Attributes`/`Events`/`Kind`/
+     `Action`), never each other, so the component→component DAG is empty and any
+     partition is DAG-valid; the split tool's DAG check confirms it.
+  3. **`jackhp95/elm-m3e` (top)** — the `M3e` barrel (`src/M3e.elm`), depending
+     on core + all three component packages. Bucket is `{ "exact": "M3e" }` only.
+
+Retired dep `jackhp95/markup-core` is replaced by
+`jackhp95/elm-html-intermediate-representation` (every module imports `HtmlIr.*`);
+the gate scripts map it via `--dep-src`. `jackhp95/elm-m3e-review-facts` is
+unchanged (installed in `review/` only; skipped by the docs + isolation gates).
+
+**Measured docs sizes** (`npm run measure-docs`, 2026-07-21, limit 700,000 B):
+
+| package                | bytes   | % of limit |
+| ---------------------- | ------- | ---------- |
+| elm-m3e-core           |  75,206 | 10.7 %     |
+| elm-m3e-components-a    | 351,407 | 50.2 %     |
+| elm-m3e-components-b    | 216,430 | 30.9 %     |
+| elm-m3e-components-c    | 370,886 | 53.0 %     |
+| elm-m3e (barrel)       |  38,640 |  5.5 %     |
+
+The largest package sits at 53 % of the cap — ample headroom for the surface to
+grow before the ranges need re-cutting.
+
+**Split-tool durability note.** `elm-cem split` *copies into* its output dir but
+never *cleans* it, so a stale `dist-packages/` from a prior partition (e.g. the
+old `{ "prefix": "M3e." }` barrel bucket) silently poisons the isolation probe
+with ambiguous-module collisions. The repo-local `split` npm script therefore
+prepends `rm -rf dist-packages` so `npm run gate` is idempotent regardless of
+prior state. (Not an `elm-cem` bug the fixture reproduces — its fixture uses a
+fresh temp dir each run — so the fix is at the consuming script, not the tool.)
+
+`scripts/mirror-release.mjs` is **out of scope**: it still references the retired
+facet names, but it is not invoked by any gate, so it is left untouched here.
