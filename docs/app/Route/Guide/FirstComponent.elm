@@ -14,7 +14,7 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -68,7 +68,7 @@ Save button, in the one-import barrel, options-list form. Genuinely constructed 
 this is the value rendered on the page and printed in the source block below, so
 the two can never drift.
 -}
-settingsCard : Element { s | card : M3e.Kind.Brand } msg
+settingsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 settingsCard =
     M3e.card [ M3e.variantOutlined ]
         [ M3e.slotHeader
@@ -82,7 +82,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Your first component · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
@@ -110,7 +110,7 @@ intro =
 
 body : String
 body =
-    """Every component is a typed Elm value. Import the one-import `M3e` barrel, build a value in the shape `M3e.<name> [ attributes ] [ children ]`, and hand it to `Element.toNode` at your app's root. Here is the start of our panel: an outlined card, a title, and a **Save** button.
+    """Every component is a typed Elm value. Import the one-import `M3e` barrel, build a value in the shape `M3e.<name> [ attributes ] [ children ]`, and hand it to `HtmlIr.Element.toNode` at your app's root. Here is the start of our panel: an outlined card, a title, and a **Save** button.
 
 Look at the shape. Attributes like `M3e.variantFilled` go in the first list; content goes in the second. That is the whole API — one import, one shape, every component.
 
@@ -135,5 +135,5 @@ settingsCard =
 recap : String
 recap =
     """- Every component is `M3e.<name> [ attributes ] [ children ]`, from the one-import `M3e` barrel.
-- `Element.toNode` renders your composed value at your app's root.
+- `HtmlIr.Element.toNode` renders your composed value at your app's root.
 - **Next: [Invalid states don't compile](/guide/invalid-states) →** we compose the *wrong* thing on purpose — and watch the compiler refuse it."""

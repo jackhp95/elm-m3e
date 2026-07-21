@@ -23,10 +23,10 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -168,7 +168,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Settings · elm-m3e"
     , body =
-        [ Element.toNode (screen model) ]
+        [ HtmlIr.Element.toNode (screen model) ]
     }
 
 
@@ -176,7 +176,7 @@ view _ _ model =
 mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so only the
 content column scrolls.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } (PagesMsg Msg)
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } (PagesMsg Msg)
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -196,7 +196,7 @@ screen model =
 {-| The shared "Built from" + prev/next strip. Settings is the last example, so
 it has no next screen.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -214,7 +214,7 @@ exampleFooter =
         }
 
 
-appBar : Element { s | appBar : M3e.Kind.Brand } msg
+appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.sizeMedium ]
         [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "menu" ] [])
@@ -275,7 +275,7 @@ every field any row needs. Each producing function's `view` returns an open row,
 which widens to fill this closed record.
 -}
 type alias Row msg =
-    Element { html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } msg
+    Element { html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
 
 
 content : Model -> List (Element { s | html : M3e.Kind.Brand } (PagesMsg Msg))

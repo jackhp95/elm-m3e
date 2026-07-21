@@ -16,7 +16,7 @@ import Head
 import Head.Seo as Seo
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -68,7 +68,7 @@ head _ =
 {-| The one live example on this page: an icon-only control WITH its accessible
 name, so the page itself passes the a11y-tree check it describes.
 -}
-labeledBack : Element { s | iconButton : M3e.Kind.Brand } msg
+labeledBack : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 labeledBack =
     M3e.iconButton [ M3e.ariaLabel "Back" ]
         [ M3e.icon [ M3e.attrName "arrow_back" ] [] ]
@@ -78,7 +78,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Accessibility reference · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"

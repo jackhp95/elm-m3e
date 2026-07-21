@@ -6,11 +6,11 @@ import Head
 import Head.Seo as Seo
 import Kit
 import Layout
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -58,25 +58,25 @@ head _ =
         |> Seo.website
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Installation" ]
+        [ Markup.M3e.text "Installation" ]
 
 
-stepHeading : String -> Element { s | heading : M3e.Kind.Brand } msg
+stepHeading : String -> Element { s | heading : M3e.Kind.Brand } adm_ msg
 stepHeading label =
     M3e.heading
         [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ]
-        [ Markup.Atoms.text label ]
+        [ Markup.M3e.text label ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Installation · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
@@ -153,10 +153,10 @@ module Main exposing (main)
 
 import Browser
 import M3e.Button as Button
-import Markup.Atoms
-import Markup.Element as Element
+import M3e
+import HtmlIr.Element
 import M3e.Theme as Theme
-import M3e.Token as Value
+import M3e.Values as Value
 import Kit
 
 
@@ -167,7 +167,7 @@ main =
 
 view : () -> Html.Html ()
 view _ =
-    Element.toNode
+    HtmlIr.Element.toNode
         (Theme.view
             [ Theme.color "#6750A4"
             , Theme.scheme Value.auto
@@ -180,7 +180,7 @@ view _ =
 """
                     , Kit.paragraph Value.large
                         [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Element.toNode turns an M3e Element into elm/html, so Browser.sandbox can render it (add `import Html` alongside the imports above). Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
+                        [ Kit.text "HtmlIr.Element.toNode turns an M3e Element into elm/html, so Browser.sandbox can render it (add `import Html` alongside the imports above). Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
                     , code_ Xml """
 <!doctype html>
 <html lang="en">

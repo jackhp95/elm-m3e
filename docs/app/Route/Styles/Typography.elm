@@ -7,10 +7,10 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -64,7 +64,7 @@ font-size / line-height / weight from `--md-sys-typescale-*` (see
 `sys/typescale.css`). The demo dogfoods the primitives: the exhibit _is_
 `Kit.display`/`headline`/… .
 -}
-scale : List ( Element { s | html : M3e.Kind.Brand } msg, String, String )
+scale : List ( Element { s | html : M3e.Kind.Brand } adm_ msg, String, String )
 scale =
     [ ( Kit.display Value.large [ Kit.onSurface ] [ Kit.text "Display Large" ], "text-display-lg", "3.5625rem / 4rem · 400" )
     , ( Kit.display Value.medium [ Kit.onSurface ] [ Kit.text "Display Medium" ], "text-display-md", "2.8125rem / 3.25rem · 400" )
@@ -84,7 +84,7 @@ scale =
     ]
 
 
-row : ( Element { s | html : M3e.Kind.Brand } msg, String, String ) -> Element { s | html : M3e.Kind.Brand } msg
+row : ( Element { s | html : M3e.Kind.Brand } adm_ msg, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 row ( exhibit, cls, metrics ) =
     Layout.div "flex flex-wrap items-baseline justify-between gap-2 py-3"
         [ exhibit
@@ -95,18 +95,18 @@ row ( exhibit, cls, metrics ) =
         ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Typography" ]
+        [ Markup.M3e.text "Typography" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Typography · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading

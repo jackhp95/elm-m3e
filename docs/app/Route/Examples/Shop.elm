@@ -27,12 +27,12 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
-import Markup.Html.Attr exposing (Attr)
-import Markup.Kind
+import M3e
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Kind
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -152,7 +152,7 @@ view _ _ model =
     in
     { title = "Shop · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Surface.view Surface.surface
                 [ Layout.class "flex min-h-screen w-full" ]
                 [ navRail model
@@ -177,7 +177,7 @@ view _ _ model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -302,7 +302,7 @@ navDestination current dest =
 
 {-| A small welcome banner painted on a container surface.
 -}
-hero : Element { s | html : M3e.Kind.Brand } msg
+hero : Element { s | html : M3e.Kind.Brand } adm_ msg
 hero =
     Surface.view Surface.primaryContainer
         [ Shape.corner Shape.extraLarge, Layout.class "flex flex-col gap-1 p-6" ]
@@ -332,7 +332,7 @@ categoryChip current cat =
         [ M3e.attrSelected (cat == current)
         , Native.onClick (PagesMsg.fromMsg (SetCategory cat))
         ]
-        [ Markup.Atoms.text cat ]
+        [ Markup.M3e.text cat ]
 
 
 {-| Responsive product grid: 1 col on mobile, 2 on small, 3/4 on larger screens.
@@ -368,7 +368,7 @@ productCard product =
 
 {-| Placeholder media: a shape-clipped surface tile with a centered glyph.
 -}
-media : Product -> Element { s | html : M3e.Kind.Brand } msg
+media : Product -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media product =
     Surface.view product.media
         [ Shape.corner Shape.large, Layout.class "flex aspect-square items-center justify-center" ]
@@ -377,7 +377,7 @@ media product =
 
 {-| A floating checkout action over the content.
 -}
-checkoutFab : Element { s | html : M3e.Kind.Brand } msg
+checkoutFab : Element { s | html : M3e.Kind.Brand } adm_ msg
 checkoutFab =
     Layout.div "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6"
         [ Layout.span "pointer-events-auto"
@@ -392,7 +392,7 @@ checkoutFab =
 
 {-| A standalone standard icon button used for toolbar actions.
 -}
-iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } msg
+iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction icon =
     M3e.iconButton
         [ M3e.variantStandard, M3e.ariaLabel icon ]

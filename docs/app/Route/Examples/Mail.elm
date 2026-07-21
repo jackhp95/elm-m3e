@@ -30,11 +30,11 @@ import Kit.Avatar as Avatar
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -191,7 +191,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Mail · elm-m3e"
     , body =
-        [ Element.toNode (Element.map PagesMsg.fromMsg (screen model)) ]
+        [ HtmlIr.Element.toNode (HtmlIr.Element.map PagesMsg.fromMsg (screen model)) ]
     }
 
 
@@ -199,7 +199,7 @@ view _ _ model =
 the nav rail beside a column of AppBar + two-pane body, plus the mobile bottom
 bar and the floating compose FAB.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } Msg
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
     Surface.view Surface.surface
         [ Layout.class "relative flex h-screen w-full overflow-hidden" ]
@@ -216,7 +216,7 @@ screen model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -240,7 +240,7 @@ exampleFooter =
 
 {-| Desktop navigation rail (hidden below `md:`).
 -}
-navRail : Element { s | html : M3e.Kind.Brand } Msg
+navRail : Element { s | html : M3e.Kind.Brand } adm_ Msg
 navRail =
     Layout.nav "hidden md:flex"
         [ M3e.navRail [ M3e.modeExpanded ]
@@ -248,7 +248,7 @@ navRail =
         ]
 
 
-railItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } Msg
+railItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ Msg
 railItem index d =
     M3e.navItem
         [ M3e.attrSelected (index == 0) ]
@@ -259,7 +259,7 @@ railItem index d =
 
 {-| Mobile bottom navigation bar (hidden at `md:` and up).
 -}
-bottomBar : Element { s | html : M3e.Kind.Brand } Msg
+bottomBar : Element { s | html : M3e.Kind.Brand } adm_ Msg
 bottomBar =
     Layout.nav "md:hidden fixed inset-x-0 bottom-0"
         [ M3e.navBar []
@@ -267,7 +267,7 @@ bottomBar =
         ]
 
 
-barItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } Msg
+barItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ Msg
 barItem index d =
     M3e.navItem
         [ M3e.attrSelected (index == 0) ]
@@ -280,7 +280,7 @@ barItem index d =
 -- TOP BAR ---------------------------------------------------------------------
 
 
-topBar : Element { s | appBar : M3e.Kind.Brand } Msg
+topBar : Element { s | appBar : M3e.Kind.Brand } adm_ Msg
 topBar =
     M3e.appBar [ M3e.sizeMedium ]
         [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "menu" ] [])
@@ -289,7 +289,7 @@ topBar =
         ]
 
 
-searchBar : Element { s | searchBar : M3e.Kind.Brand } Msg
+searchBar : Element { s | searchBar : M3e.Kind.Brand } adm_ Msg
 searchBar =
     M3e.searchBar
         []
@@ -311,7 +311,7 @@ searchBar =
 {-| The reflowing two-pane body. On `md:` the list is a fixed-width column beside
 a filling reading pane; below `md:` they stack (list first, reading pane under).
 -}
-body : Model -> Element { s | html : M3e.Kind.Brand } Msg
+body : Model -> Element { s | html : M3e.Kind.Brand } adm_ Msg
 body model =
     Layout.colWith "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden"
         [ Layout.section "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant"
@@ -338,7 +338,7 @@ emptyMessage =
 snippet (supporting text) and timestamp, separated by dividers. The selected row
 is painted with a `surfaceContainer` background.
 -}
-messageList : Model -> Element { s | list : M3e.Kind.Brand } Msg
+messageList : Model -> Element { s | list : M3e.Kind.Brand } adm_ Msg
 messageList model =
     M3e.list []
         (List.intersperse divider
@@ -346,12 +346,12 @@ messageList model =
         )
 
 
-divider : Element { s | divider : M3e.Kind.Brand } msg
+divider : Element { s | divider : M3e.Kind.Brand } adm_ msg
 divider =
     M3e.divider [ M3e.attrInset True ] []
 
 
-messageRow : Int -> Int -> Message -> Element { s | listItem : M3e.Kind.Brand } Msg
+messageRow : Int -> Int -> Message -> Element { s | listItem : M3e.Kind.Brand } adm_ Msg
 messageRow selected index message =
     let
         rowSurface : Surface
@@ -389,7 +389,7 @@ messageRow selected index message =
 {-| The reading pane for the selected message: subject heading, sender row with
 avatar and timestamp, label chips, and the body paragraphs via `Kit`.
 -}
-readingPane : Message -> Element { s | html : M3e.Kind.Brand } msg
+readingPane : Message -> Element { s | html : M3e.Kind.Brand } adm_ msg
 readingPane message =
     Layout.colWith "flex flex-col gap-6 p-6"
         [ Kit.headline Value.small [ Kit.onSurface ] [ Kit.text message.subject ]
@@ -407,11 +407,11 @@ readingPane message =
         ]
 
 
-labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } msg
+labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 labelChip name =
     M3e.assistChip
         []
-        [ Markup.Atoms.text name
+        [ Markup.M3e.text name
         , M3e.assistChipSlotIcon (M3e.icon [ M3e.attrName "label" ] [])
         ]
 
@@ -422,7 +422,7 @@ labelChip name =
 
 {-| Floating compose action, anchored bottom-right (kept above the mobile bar).
 -}
-composeFab : Element { s | html : M3e.Kind.Brand } msg
+composeFab : Element { s | html : M3e.Kind.Brand } adm_ msg
 composeFab =
     Layout.div "absolute bottom-20 right-6 md:bottom-6"
         [ M3e.fab

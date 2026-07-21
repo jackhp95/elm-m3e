@@ -12,7 +12,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import Layout
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -61,7 +61,7 @@ head _ =
         |> Seo.website
 
 
-entry : String -> String -> Element { s | html : M3e.Kind.Brand } msg
+entry : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 entry prose code =
     Layout.section "space-y-3"
         [ Doc.markdown prose
@@ -73,7 +73,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Troubleshooting · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
@@ -108,9 +108,9 @@ kindMismatch =
 kindMismatchError : String
 kindMismatchError =
     """This `chip` call produces:
-    Element { a | chip : M3e.Kind.Brand, icon : M3e.Kind.Brand, ... } msg
+    Element { a | chip : M3e.Kind.Brand, icon : M3e.Kind.Brand, ... } adm_ msg
 But `slotIcon` needs the 1st argument to be:
-    Element { icon : M3e.Kind.Brand, loadingIndicator : M3e.Kind.Brand } msg
+    Element { icon : M3e.Kind.Brand, loadingIndicator : M3e.Kind.Brand } adm_ msg
 Hint: Maybe chip should be icon?"""
 
 

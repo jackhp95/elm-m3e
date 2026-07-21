@@ -26,10 +26,10 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -149,14 +149,14 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Feed · elm-m3e"
     , body =
-        [ Element.toNode (Element.map PagesMsg.fromMsg (screen model)) ]
+        [ HtmlIr.Element.toNode (HtmlIr.Element.map PagesMsg.fromMsg (screen model)) ]
     }
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 filter bar and the reflowing card grid, with a mobile bottom bar.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } Msg
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -175,7 +175,7 @@ screen model =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -191,7 +191,7 @@ exampleFooter =
         }
 
 
-appBar : Element { s | appBar : M3e.Kind.Brand } msg
+appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
         [ M3e.appBarSlotTitle (Kit.text "Feed") ]
@@ -205,13 +205,13 @@ appBar =
 carries `attrSelected`; clicking one is real state via `Native.onClick` (a
 `FilterChip`'s selection is presentation — the app owns which category is active).
 -}
-filterBar : String -> Element { s | filterChipSet : M3e.Kind.Brand } Msg
+filterBar : String -> Element { s | filterChipSet : M3e.Kind.Brand } adm_ Msg
 filterBar current =
     M3e.filterChipSet []
         (List.map (filterChip current) filters)
 
 
-filterChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } Msg
+filterChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } adm_ Msg
 filterChip current category =
     M3e.filterChip
         [ M3e.attrSelected (category == current)
@@ -236,13 +236,13 @@ shownPosts filter =
 {-| The adaptive grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`. One line does
 the whole responsive column count; the cards reflow to fill.
 -}
-cardGrid : List Post -> Element { s | html : M3e.Kind.Brand } msg
+cardGrid : List Post -> Element { s | html : M3e.Kind.Brand } adm_ msg
 cardGrid shown =
     Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         (List.map postCard shown)
 
 
-postCard : Post -> Element { s | card : M3e.Kind.Brand } msg
+postCard : Post -> Element { s | card : M3e.Kind.Brand } adm_ msg
 postCard post =
     M3e.card [ M3e.variantElevated ]
         [ M3e.cardSlotHeader
@@ -265,19 +265,19 @@ postCard post =
 -- NAVIGATION ------------------------------------------------------------------
 
 
-desktopRail : Element { s | navRail : M3e.Kind.Brand } msg
+desktopRail : Element { s | navRail : M3e.Kind.Brand } adm_ msg
 desktopRail =
     M3e.navRail [ Layout.class "hidden md:flex shrink-0" ]
         (List.map navItem destinations)
 
 
-mobileBar : Element { s | navBar : M3e.Kind.Brand } msg
+mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
     M3e.navBar [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map navItem destinations)
 
 
-navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } msg
+navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 navItem d =
     M3e.navItem
         [ M3e.attrSelected (d.label == "Home") ]

@@ -165,7 +165,7 @@ twoColumn =
         [ emailField, saveButton ]
 
 -- a userland text seam: one body, every call site upgrades untouched
-text : String -> Element { s | text : M3e.Kind.Brand } msg
+text : String -> Element { s | text : M3e.Kind.Brand } adm_ msg
 text raw =
     -- swap this one body (e.g. run it through i18n) and every
     -- `text "…"` call site changes with it, no edits at the sites."""

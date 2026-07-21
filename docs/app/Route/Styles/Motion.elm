@@ -7,10 +7,10 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -59,17 +59,17 @@ head _ =
         |> Seo.website
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Motion" ]
+        [ Markup.M3e.text "Motion" ]
 
 
 {-| A `(token, value)` reference table: the CSS custom property on the left, its
 literal value on the right, divider-separated inside an outlined card.
 -}
-tokenTable : List ( String, String ) -> Element { r | card : M3e.Kind.Brand } msg
+tokenTable : List ( String, String ) -> Element { r | card : M3e.Kind.Brand } adm_ msg
 tokenTable rows =
     M3e.card
         [ M3e.variantOutlined ]
@@ -80,7 +80,7 @@ tokenTable rows =
         ]
 
 
-tokenRow : ( String, String ) -> Element { s | html : M3e.Kind.Brand } msg
+tokenRow : ( String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 tokenRow ( token, value ) =
     Layout.div "flex flex-wrap items-baseline justify-between gap-2 py-2.5"
         [ Kit.code Value.medium [ Kit.onSurface ] [ Kit.text token ]
@@ -92,7 +92,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Motion · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading

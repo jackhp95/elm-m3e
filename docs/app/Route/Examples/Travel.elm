@@ -29,11 +29,11 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -203,14 +203,14 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Travel · elm-m3e"
     , body =
-        [ Element.toNode (shell model) ]
+        [ HtmlIr.Element.toNode (shell model) ]
     }
 
 
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
 that only appears on small screens.
 -}
-shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } (PagesMsg Msg)
+shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } (PagesMsg Msg)
 shell model =
     Layout.div "flex h-screen w-full flex-col"
         [ appBar
@@ -227,7 +227,7 @@ shell model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -427,7 +427,7 @@ placeCard place =
 {-| Placeholder media: a shape-clipped, tinted card-media block standing in for a
 destination photo.
 -}
-media : Place -> Element { s | html : M3e.Kind.Brand } msg
+media : Place -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media place =
     Media.view place.tint
         Shape.large
@@ -439,6 +439,6 @@ ratingChip : String -> Element { s | assistChip : M3e.Kind.Brand } (PagesMsg Msg
 ratingChip rating =
     M3e.assistChip
         []
-        [ Markup.Atoms.text rating
+        [ Markup.M3e.text rating
         , M3e.assistChipSlotIcon (M3e.icon [ M3e.attrName "star", M3e.attrFilled True ] [])
         ]

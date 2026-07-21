@@ -24,11 +24,11 @@ import Head
 import Head.Seo as Seo
 import Kit
 import Layout
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -123,25 +123,25 @@ head _ =
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view app _ model =
     let
-        heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } Msg
+        heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } adm_ Msg
         heading =
             M3e.heading
                 [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-                [ Markup.Atoms.text "All components" ]
+                [ Markup.M3e.text "All components" ]
 
-        content : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg)
+        content : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Msg)
         content =
             if model.revealed then
                 stackedBlocks model.usage app.data
-                    |> List.map (Element.map UsageMsg)
+                    |> List.map (HtmlIr.Element.map UsageMsg)
 
             else
                 [ overview app.data ]
     in
     { title = "All components · elm-m3e"
     , body =
-        [ Element.toNode
-            (Element.map PagesMsg.fromMsg
+        [ HtmlIr.Element.toNode
+            (HtmlIr.Element.map PagesMsg.fromMsg
                 (Doc.pane
                     [ Layout.div "space-y-12" (heading :: content) ]
                 )
@@ -158,7 +158,7 @@ a summary line, the category names, and a **Show all components** button that
 flips `revealed` on click.
 
 -}
-overview : Data -> Element { s | html : M3e.Kind.Brand, card : M3e.Kind.Brand } Msg
+overview : Data -> Element { s | html : M3e.Kind.Brand, card : M3e.Kind.Brand } adm_ Msg
 overview d =
     let
         withExamples : List Component
@@ -218,7 +218,7 @@ wrapped in an `id`-anchored `.cv-auto` block. A running offset (the count of
 examples already placed) is threaded through `Usage.usageBlocks` so each
 component's tab strips occupy a disjoint index range in the shared model.
 -}
-stackedBlocks : Usage.Model -> Data -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Usage.Msg)
+stackedBlocks : Usage.Model -> Data -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg)
 stackedBlocks model d =
     let
         orderedComponents : List Component
@@ -226,14 +226,14 @@ stackedBlocks model d =
             Shared.componentCategories
                 |> List.concatMap (\( category, _ ) -> List.filter (\c -> c.category == category) d.components)
 
-        step : Component -> ( Int, List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Usage.Msg) ) -> ( Int, List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Usage.Msg) )
+        step : Component -> ( Int, List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg) ) -> ( Int, List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg) )
         step component ( offset, acc ) =
             let
                 examples : List UsageExample
                 examples =
                     Dict.get component.slug d.usage |> Maybe.withDefault []
 
-                block : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Usage.Msg)
+                block : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg)
                 block =
                     if List.isEmpty examples then
                         []
@@ -243,7 +243,7 @@ stackedBlocks model d =
                             "cv-auto space-y-6 scroll-mt-24"
                             (M3e.heading
                                 [ M3e.variantHeadline, M3e.sizeMedium, M3e.attrLevel 2 ]
-                                [ Markup.Atoms.text component.name ]
+                                [ Markup.M3e.text component.name ]
                                 :: Usage.usageBlocks offset model examples
                             )
                         ]

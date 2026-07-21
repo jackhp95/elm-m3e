@@ -14,7 +14,7 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -67,7 +67,7 @@ head _ =
 This is the VALID version — the one that renders. The chapter's failures are
 shown as real compiler text, not built here.
 -}
-savedButton : Element { s | button : M3e.Kind.Brand } msg
+savedButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 savedButton =
     M3e.button [ M3e.variantFilled ]
         [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] [])
@@ -79,7 +79,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Invalid states don't compile · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
@@ -146,11 +146,11 @@ errorText =
                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This `chip` call produces:
 
-    Element { a | chip : M3e.Kind.Brand, icon : M3e.Kind.Brand, ... } msg
+    Element { a | chip : M3e.Kind.Brand, icon : M3e.Kind.Brand, ... } adm_ msg
 
 But `slotIcon` needs the 1st argument to be:
 
-    Element { icon : M3e.Kind.Brand, loadingIndicator : M3e.Kind.Brand } msg
+    Element { icon : M3e.Kind.Brand, loadingIndicator : M3e.Kind.Brand } adm_ msg
 
 Hint: Seems like a record field typo. Maybe chip should be icon?"""
 

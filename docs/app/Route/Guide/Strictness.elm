@@ -18,8 +18,8 @@ import Kit
 import Layout
 import M3e
 import Seam
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -72,7 +72,7 @@ head _ =
 easy top. The stricter shapes are shown as code below, each rendering the same
 button; they only change what you're allowed to leave out.
 -}
-saveButton : Element { s | button : M3e.Kind.Brand } msg
+saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
     M3e.button [ M3e.variantFilled ]
         [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] [] |> Seam.recast)
@@ -84,7 +84,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "The strictness dial · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"

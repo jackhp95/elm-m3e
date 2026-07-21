@@ -16,7 +16,7 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -69,7 +69,7 @@ head _ =
 not a new visual, but seeing that this value is data the library holds and
 controls until the single conversion at the root.
 -}
-saveButton : Element { s | button : M3e.Kind.Brand } msg
+saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
     M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
 
@@ -78,7 +78,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Generated, and data underneath · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
@@ -114,7 +114,7 @@ That does mean the API isn't *fully* automatic: when a new version of the compon
 
 inspectable : String
 inspectable =
-    """**A component isn't opaque HTML — it's inspectable data.** `M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]` doesn't produce HTML on the spot. It builds a small value the library can *read*: it knows this is a button, that it's filled, that its content is the text "Save". Your whole page stays as this readable data right up until one conversion — `Element.toNode` — at your app's root, which turns the entire tree into HTML exactly once.
+    """**A component isn't opaque HTML — it's inspectable data.** `M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]` doesn't produce HTML on the spot. It builds a small value the library can *read*: it knows this is a button, that it's filled, that its content is the text "Save". Your whole page stays as this readable data right up until one conversion — `HtmlIr.Element.toNode` — at your app's root, which turns the entire tree into HTML exactly once.
 
 Because the library can inspect what you built *before* it becomes HTML, it can enforce rules a plain HTML wrapper never could — the next chapters are all cashing in on this one fact."""
 
@@ -128,12 +128,12 @@ saveButton =
 
 -- …and becomes HTML exactly once, at the root:
 view model =
-    Element.toNode saveButton"""
+    HtmlIr.Element.toNode saveButton"""
 
 
 recap : String
 recap =
     """- The Elm API is **generated from the components' published manifest + a hand-authored `config/slots.json`** — you regenerate on each upstream release; anything the config doesn't cover yet surfaces as loose `any` slots.
-- A component is **inspectable data** the library reads, then turns into HTML **once, at the root** (`Element.toNode`).
+- A component is **inspectable data** the library reads, then turns into HTML **once, at the root** (`HtmlIr.Element.toNode`).
 - That's why the library can catch mistakes the browser never sees.
 - **Next: [The layer map](/guide/the-layers) →** the same button, shown as a the layers — safe at the top, raw at the bottom."""

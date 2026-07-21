@@ -7,10 +7,10 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -59,7 +59,7 @@ head _ =
         |> Seo.website
 
 
-supportRow : String -> String -> Element { s | html : M3e.Kind.Brand } msg
+supportRow : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 supportRow browser note =
     Layout.div "flex items-baseline justify-between gap-4 py-2.5"
         [ Kit.title Value.small [ Kit.onSurface ] [ Kit.text browser ]
@@ -67,23 +67,23 @@ supportRow browser note =
         ]
 
 
-featureItem : String -> Element { s | html : M3e.Kind.Brand } msg
+featureItem : String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 featureItem note =
     Native.li [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text note ] ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Browser Support" ]
+        [ Markup.M3e.text "Browser Support" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Browser Support · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading

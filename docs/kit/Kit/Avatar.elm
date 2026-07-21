@@ -17,9 +17,9 @@ import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import M3e
-import Markup.Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Seam
 
 
@@ -27,7 +27,7 @@ import Seam
 `secondaryContainer` disc, shaped `full`. Drops straight into a `ListItem.leading`
 / `avatar` slot (the `flex` on the `<m3e-avatar>` makes it render inline).
 -}
-initials : String -> Element { s | avatar : M3e.Kind.Brand } msg
+initials : String -> Element { s | avatar : M3e.Kind.Brand } adm_ msg
 initials text =
     M3e.avatar [ Seam.asAttribute (Html.Attributes.class "flex") ]
         [ Surface.view Surface.secondaryContainer

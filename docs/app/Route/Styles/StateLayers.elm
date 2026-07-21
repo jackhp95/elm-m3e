@@ -13,10 +13,10 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -74,7 +74,7 @@ states =
     ]
 
 
-stateRow : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } msg
+stateRow : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 stateRow ( token, value, trigger ) =
     Layout.div "flex flex-col gap-1 py-2.5"
         [ Layout.div "flex flex-wrap items-baseline justify-between gap-2"
@@ -85,7 +85,7 @@ stateRow ( token, value, trigger ) =
         ]
 
 
-demoButtons : Element { s | html : M3e.Kind.Brand } msg
+demoButtons : Element { s | html : M3e.Kind.Brand } adm_ msg
 demoButtons =
     Layout.div "flex flex-wrap gap-3 p-2"
         [ M3e.button [ M3e.variantFilled ] [ Kit.text "Filled" ]
@@ -95,18 +95,18 @@ demoButtons =
         ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "State Layers" ]
+        [ Markup.M3e.text "State Layers" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "State Layers · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading

@@ -11,7 +11,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import Layout
-import Markup.Element as Element
+import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -63,7 +63,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Glossary · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-8"
                     [ Layout.section "space-y-4"
@@ -96,7 +96,7 @@ terms =
 | **generic / component setters** | Two barrel dialects: `M3e.slotIcon` works on any component that has the slot; `M3e.buttonIcon`-style **component setters** are kind-precise. The linter can upgrade the former to the latter for you. |
 | **kind** | The category a piece of content is — icon, text, button. |
 | **slot** | A labeled place a component puts content; each slot declares the kinds it accepts. |
-| **token** | An enum value that exists as a name (`M3e.Token.filled`) — invalid tokens aren't names at all. |
+| **token** | An enum value that exists as a name (`M3e.Values.filled`) — invalid tokens aren't names at all. |
 | **seam** | The one sanctioned crossing between raw HTML and the typed world, fenced into a few named modules. `Seam.recast` is its loud, greppable override for "the design system is wrong here." |
 | **component facts** | The generated per-component list (required slots, valid tokens, required attributes) that the linter reads — the same list the API was generated from. |
 | **manifest** | The components' machine-readable self-description that everything above is generated from. |"""

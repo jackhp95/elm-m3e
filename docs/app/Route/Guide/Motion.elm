@@ -15,7 +15,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import Layout
-import Markup.Element as Element
+import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -67,7 +67,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Motion: what ships, what you wire · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
@@ -123,15 +123,15 @@ shippedCode =
 
 Theme.view
     [ Theme.color model.seed
-    , Theme.motion M3e.Token.expressive  -- spring-like emphasis (M3E's signature)
-    -- , Theme.motion M3e.Token.standard   -- functional, restrained transitions
+    , Theme.motion M3e.Values.expressive  -- spring-like emphasis (M3E's signature)
+    -- , Theme.motion M3e.Values.standard   -- functional, restrained transitions
     ]
     [ appBody ]"""
 
 
 shippedNote : String
 shippedNote =
-    """`M3e.Token.standard` gives the restrained, functional easing of classic Material; `M3e.Token.expressive` turns on the springy, higher-energy emphasis that is the point of Material 3 *Expressive*. It is one input, published to every nested component through the `--md-sys-motion-*` tokens — the same theme-at-the-root pattern as color (see [Theming](/guide/theming)). Do not try to reproduce a spring by hand in Elm; you would fight the element's own animation and lose the token-scheme coupling."""
+    """`M3e.Values.standard` gives the restrained, functional easing of classic Material; `M3e.Values.expressive` turns on the springy, higher-energy emphasis that is the point of Material 3 *Expressive*. It is one input, published to every nested component through the `--md-sys-motion-*` tokens — the same theme-at-the-root pattern as color (see [Theming](/guide/theming)). Do not try to reproduce a spring by hand in Elm; you would fight the element's own animation and lose the token-scheme coupling."""
 
 
 authorBody : String
@@ -160,7 +160,7 @@ snackbarCode =
     """-- Elm owns WHEN the snackbar exists; the element owns the slide-in animation.
 -- Render the <avt-snackbar> element (via the Native `node` producer) only while
 -- shown — mounting it is what triggers the toast:
-snackbar : Toast -> Element { s | html : M3e.Kind.Brand } msg
+snackbar : Toast -> Element { s | html : M3e.Kind.Brand } adm_ msg
 snackbar t =
     Native.node (Html.node "avt-snackbar")
         [ Native.attribute "message" t.message

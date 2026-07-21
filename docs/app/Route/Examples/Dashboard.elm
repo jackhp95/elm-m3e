@@ -23,10 +23,10 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -171,7 +171,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ _ =
     { title = "Aperture Analytics · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Surface.view Surface.surface
                 [ Layout.class "flex flex-col min-h-screen w-full" ]
                 [ appBar
@@ -191,7 +191,7 @@ view _ _ _ =
 {-| The shared "Built from" + prev/next strip. Dashboard is the first example,
 so it has no previous screen.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -214,7 +214,7 @@ exampleFooter =
 -- CHROME ----------------------------------------------------------------------
 
 
-appBar : Element { s | appBar : M3e.Kind.Brand } msg
+appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.sizeSmall ]
         [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "analytics" ] [])
@@ -229,7 +229,7 @@ appBar =
         ]
 
 
-iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } msg
+iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction name =
     M3e.iconButton
         [ M3e.variantStandard, M3e.ariaLabel name ]
@@ -238,7 +238,7 @@ iconAction name =
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
 -}
-desktopRail : Element { s | html : M3e.Kind.Brand } msg
+desktopRail : Element { s | html : M3e.Kind.Brand } adm_ msg
 desktopRail =
     Layout.div "hidden md:flex sticky top-0 self-start"
         [ M3e.navRail []
@@ -246,7 +246,7 @@ desktopRail =
         ]
 
 
-railItem : Destination -> Element { s | navItem : M3e.Kind.Brand } msg
+railItem : Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 railItem d =
     M3e.navItem
         [ M3e.attrHref "#", M3e.attrSelected d.selected ]
@@ -257,7 +257,7 @@ railItem d =
 
 {-| The mobile bottom bar. Hidden on desktop via `md:hidden`.
 -}
-mobileBar : Element { s | html : M3e.Kind.Brand } msg
+mobileBar : Element { s | html : M3e.Kind.Brand } adm_ msg
 mobileBar =
     Layout.div "md:hidden sticky bottom-0 z-10"
         [ M3e.navBar []
@@ -265,7 +265,7 @@ mobileBar =
         ]
 
 
-barItem : Destination -> Element { s | navItem : M3e.Kind.Brand } msg
+barItem : Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 barItem d =
     M3e.navItem
         [ M3e.attrHref "#", M3e.attrSelected d.selected ]
@@ -274,7 +274,7 @@ barItem d =
         ]
 
 
-fab : Element { s | html : M3e.Kind.Brand } msg
+fab : Element { s | html : M3e.Kind.Brand } adm_ msg
 fab =
     Layout.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
         [ M3e.fab
@@ -289,7 +289,7 @@ fab =
 -- MAIN CONTENT ----------------------------------------------------------------
 
 
-mainContent : Element { s | html : M3e.Kind.Brand } msg
+mainContent : Element { s | html : M3e.Kind.Brand } adm_ msg
 mainContent =
     Layout.section "flex-1 min-w-0 flex flex-col gap-6 p-4 md:p-6 pb-28 md:pb-6"
         [ pageHeader
@@ -304,7 +304,7 @@ mainContent =
         ]
 
 
-pageHeader : Element { s | html : M3e.Kind.Brand } msg
+pageHeader : Element { s | html : M3e.Kind.Brand } adm_ msg
 pageHeader =
     Layout.div "flex flex-col gap-1"
         [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text "Overview" ]
@@ -317,13 +317,13 @@ pageHeader =
 -- KPI ROW ---------------------------------------------------------------------
 
 
-kpiRow : Element { s | html : M3e.Kind.Brand } msg
+kpiRow : Element { s | html : M3e.Kind.Brand } adm_ msg
 kpiRow =
     Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
         (List.map kpiCard kpis)
 
 
-kpiCard : Kpi -> Element { s | card : M3e.Kind.Brand } msg
+kpiCard : Kpi -> Element { s | card : M3e.Kind.Brand } adm_ msg
 kpiCard k =
     M3e.card [ M3e.variantFilled ]
         [ M3e.cardSlotContent
@@ -336,7 +336,7 @@ kpiCard k =
         ]
 
 
-trendDelta : Trend -> String -> Element { s | html : M3e.Kind.Brand } msg
+trendDelta : Trend -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 trendDelta trend delta =
     let
         ( iconName, role ) =
@@ -357,7 +357,7 @@ trendDelta trend delta =
 -- ACCOUNTS --------------------------------------------------------------------
 
 
-accountsSection : Element { s | card : M3e.Kind.Brand } msg
+accountsSection : Element { s | card : M3e.Kind.Brand } adm_ msg
 accountsSection =
     sectionCard "Accounts"
         (Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2"
@@ -365,7 +365,7 @@ accountsSection =
         )
 
 
-accountRow : Account -> Element { s | html : M3e.Kind.Brand } msg
+accountRow : Account -> Element { s | html : M3e.Kind.Brand } adm_ msg
 accountRow a =
     Surface.view Surface.surfaceContainerHigh
         [ Shape.corner Shape.large, Layout.class "flex items-center gap-3 p-3" ]
@@ -383,7 +383,7 @@ accountRow a =
 -- BUDGETS ---------------------------------------------------------------------
 
 
-budgetsSection : Element { s | card : M3e.Kind.Brand } msg
+budgetsSection : Element { s | card : M3e.Kind.Brand } adm_ msg
 budgetsSection =
     sectionCard "Budgets"
         (Layout.div "flex flex-col gap-5"
@@ -391,7 +391,7 @@ budgetsSection =
         )
 
 
-budgetRow : Budget -> Element { s | html : M3e.Kind.Brand } msg
+budgetRow : Budget -> Element { s | html : M3e.Kind.Brand } adm_ msg
 budgetRow b =
     Layout.div "flex flex-col gap-2"
         [ Layout.div "flex items-center justify-between gap-2"
@@ -408,7 +408,7 @@ budgetRow b =
 -- RECENT ACTIVITY -------------------------------------------------------------
 
 
-activitySection : Element { s | card : M3e.Kind.Brand } msg
+activitySection : Element { s | card : M3e.Kind.Brand } adm_ msg
 activitySection =
     sectionCard "Recent activity"
         (Layout.div "flex flex-col"
@@ -418,7 +418,7 @@ activitySection =
         )
 
 
-activityRow : Activity -> Element { s | listItem : M3e.Kind.Brand } msg
+activityRow : Activity -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 activityRow a =
     let
         role : TextColor
@@ -442,7 +442,7 @@ activityRow a =
 -- SHARED SECTION CARD ---------------------------------------------------------
 
 
-sectionCard : String -> Element any msg -> Element { r | card : M3e.Kind.Brand } msg
+sectionCard : String -> Element any adm_ msg -> Element { r | card : M3e.Kind.Brand } adm_ msg
 sectionCard heading content =
     M3e.card [ M3e.variantElevated ]
         [ M3e.cardSlotHeader

@@ -15,7 +15,7 @@ import Head
 import Head.Seo as Seo
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -68,7 +68,7 @@ head _ =
 you should ship and it renders. The nameless version is shown only as code,
 beside the real output of the `missingRequiredAttribute` rule.
 -}
-helpButton : Element { s | iconButton : M3e.Kind.Brand } msg
+helpButton : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 helpButton =
     M3e.iconButton [ M3e.ariaLabel "Help" ]
         [ M3e.icon [ M3e.attrName "help" ] [] ]
@@ -78,7 +78,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Accessibility you can't forget · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"

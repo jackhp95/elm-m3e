@@ -12,9 +12,9 @@ import Head
 import Head.Seo as Seo
 import Kit
 import Layout
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -62,7 +62,7 @@ head _ =
         |> Seo.website
 
 
-card : String -> List (Element { s | html : M3e.Kind.Brand } msg) -> Element { r | html : M3e.Kind.Brand } msg
+card : String -> List (Element { s | html : M3e.Kind.Brand } adm_ msg) -> Element { r | html : M3e.Kind.Brand } adm_ msg
 card title items =
     Layout.section "space-y-3"
         (Kit.title Value.medium [ Kit.onSurface ] [ Kit.text title ] :: items)
@@ -72,7 +72,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Cheat sheet · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-10"
                     [ Layout.section "space-y-4"
@@ -125,7 +125,7 @@ barrelVsSpecificCode =
 M3e.button [ M3e.variantFilled ] [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] []), Kit.text "Save" ]
 
 -- component module — component-scoped, tighter types
-M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ Kit.text "Save" ]"""
+M3e.Button.view [ M3e.Button.variant M3e.Values.filled ] [ Kit.text "Save" ]"""
 
 
 shapes : String

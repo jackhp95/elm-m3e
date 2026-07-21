@@ -15,7 +15,7 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -68,7 +68,7 @@ head _ =
 default. The chapter shows the lower layers as code (they return raw HTML, not a
 slottable value), so the live demo is the top layer: this is the one you want.
 -}
-saveButton : Element { s | button : M3e.Kind.Brand } msg
+saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
     M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
 
@@ -77,7 +77,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "The layer map · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"

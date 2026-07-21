@@ -23,7 +23,7 @@ import Head
 import Head.Seo as Seo
 import Json.Decode as Decode
 import Layout
-import Markup.Element as Element
+import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -131,7 +131,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "How we prove it · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"

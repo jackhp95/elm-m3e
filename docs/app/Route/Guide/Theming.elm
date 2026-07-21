@@ -15,7 +15,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import Layout
-import Markup.Element as Element
+import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -67,7 +67,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Theming with tokens · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
@@ -128,7 +128,7 @@ rootCode =
 
 Theme.view
     [ Theme.color model.seed                    -- the brand/seed color, e.g. "#4285F4"
-    , Theme.scheme (schemeToken model.scheme)   -- M3e.Token.light | M3e.Token.dark
+    , Theme.scheme (schemeToken model.scheme)   -- M3e.Values.light | M3e.Values.dark
     , Theme.contrast (contrastToken model.contrast) -- standard | medium | high
     , Theme.density model.density               -- 0 (default) down to -3 (compact)
     ]
@@ -137,7 +137,7 @@ Theme.view
 
 rootNote : String
 rootNote =
-    """Those four inputs are the whole surface most apps need. `Theme` also carries `strongFocus` (strengthen the focus ring — an accessibility aid, see [Accessibility](/guide/accessible-by-construction)), `variant` (the dynamic-color scheme flavor), and `motion` (`M3e.Token.standard` for functional transitions, `M3e.Token.expressive` for spring-like emphasis — see [Motion](/guide/motion)). Set the theme once and inherit it; you rarely nest a second `Theme`, and when you do it is a deliberate island (a preview swatch, an inverted hero) — not a way to patch one component's color."""
+    """Those four inputs are the whole surface most apps need. `Theme` also carries `strongFocus` (strengthen the focus ring — an accessibility aid, see [Accessibility](/guide/accessible-by-construction)), `variant` (the dynamic-color scheme flavor), and `motion` (`M3e.Values.standard` for functional transitions, `M3e.Values.expressive` for spring-like emphasis — see [Motion](/guide/motion)). Set the theme once and inherit it; you rarely nest a second `Theme`, and when you do it is a deliberate island (a preview swatch, an inverted hero) — not a way to patch one component's color."""
 
 
 rolesBody : String
@@ -163,13 +163,13 @@ tokenFamilies =
 
 darkBody : String
 darkBody =
-    """Dark mode is **not** a second stylesheet. It is one input flipped: `Theme.scheme` between `M3e.Token.light` and `M3e.Token.dark`. The docs app holds `scheme` in its `Shared.Model` and toggles it; the whole role palette re-derives for the new scheme and every component follows. Dynamic color is the same move on a different input: change `Theme.color` and the entire palette re-derives from the new seed — no per-role editing anywhere. Contrast is orthogonal (`standard` / `medium` / `high`) for readers who need it."""
+    """Dark mode is **not** a second stylesheet. It is one input flipped: `Theme.scheme` between `M3e.Values.light` and `M3e.Values.dark`. The docs app holds `scheme` in its `Shared.Model` and toggles it; the whole role palette re-derives for the new scheme and every component follows. Dynamic color is the same move on a different input: change `Theme.color` and the entire palette re-derives from the new seed — no per-role editing anywhere. Contrast is orthogonal (`standard` / `medium` / `high`) for readers who need it."""
 
 
 darkCode : String
 darkCode =
     """-- Light/dark is one input, held in the model and flipped:
-Theme.scheme (if model.dark then M3e.Token.dark else M3e.Token.light)
+Theme.scheme (if model.dark then M3e.Values.dark else M3e.Values.light)
 
 -- Dynamic color is one input too — a new seed re-derives every role:
 Theme.color model.brandSeed"""
@@ -185,7 +185,7 @@ reskinCode =
     """-- Before: the default seed, standard density, default corners.
 Theme.view
     [ Theme.color "#4285F4"
-    , Theme.scheme M3e.Token.light
+    , Theme.scheme M3e.Values.light
     , Theme.density 0
     ]
     [ appBody ]
@@ -194,8 +194,8 @@ Theme.view
 -- density and corner language shift globally. appBody is untouched.
 Theme.view
     [ Theme.color "#6750A4"          -- brand accent — every role re-derives
-    , Theme.scheme M3e.Token.light
-    , Theme.contrast M3e.Token.medium -- a touch more contrast for the new palette
+    , Theme.scheme M3e.Values.light
+    , Theme.contrast M3e.Values.medium -- a touch more contrast for the new palette
     , Theme.density -1                -- slightly more compact
     ]
     [ appBody ]                        -- shapes: set the corner default in the Kit,

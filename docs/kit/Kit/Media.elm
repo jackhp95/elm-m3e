@@ -19,8 +19,8 @@ this is a card-media convenience over them, not a new seam.
 import Html.Attributes
 import Kit.Shape as Shape exposing (Corner)
 import Kit.Surface as Surface exposing (Surface)
-import Markup.Element exposing (Element)
-import Markup.Html.Attr exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Attribute exposing (Attr)
 import M3e.Kind
 import Seam
 
@@ -30,7 +30,7 @@ import Seam
 (layout sizing, alignment, …) and `kids` (an `<img>`, an icon placeholder, …)
 compose on as with `Kit.Surface.view`.
 -}
-view : Surface -> Corner -> List (Attr c msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+view : Surface -> Corner -> List (Attr c msg) -> List (Element s adm_ msg) -> Element { k | html : M3e.Kind.Brand } adm_ msg
 view role corner attrs kids =
     Surface.view role
         (Shape.corner corner

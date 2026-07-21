@@ -9,10 +9,10 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -97,7 +97,7 @@ surfaces =
 {-| A container/on-container pairing row: the bold role beside its container, so the
 "on" color is read directly off each layer/form.
 -}
-accentRow : Accent -> Element { s | html : M3e.Kind.Brand } msg
+accentRow : Accent -> Element { s | html : M3e.Kind.Brand } adm_ msg
 accentRow accent =
     Layout.div "grid grid-cols-2 gap-3"
         [ swatch ( accent.name, accent.baseBg, accent.base )
@@ -105,7 +105,7 @@ accentRow accent =
         ]
 
 
-swatch : ( String, String, Surface ) -> Element { s | html : M3e.Kind.Brand } msg
+swatch : ( String, String, Surface ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 swatch ( label, bg, role ) =
     Surface.view role
         [ Layout.class "flex flex-col justify-between p-4 min-h-24"
@@ -117,18 +117,18 @@ swatch ( label, bg, role ) =
         ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Color" ]
+        [ Markup.M3e.text "Color" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Color · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
@@ -180,11 +180,11 @@ view _ _ =
     }
 
 
-forcedColorsCard : Element { s | card : M3e.Kind.Brand } msg
+forcedColorsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 forcedColorsCard =
     M3e.card
         [ M3e.variantOutlined ]
-        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text "Test it" ])
+        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.M3e.text "Test it" ])
         , M3e.cardSlotContent
             (Kit.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
         ]

@@ -30,10 +30,10 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -146,7 +146,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "List-detail · elm-m3e"
     , body =
-        [ Element.toNode (Element.map PagesMsg.fromMsg (screen model)) ]
+        [ HtmlIr.Element.toNode (HtmlIr.Element.map PagesMsg.fromMsg (screen model)) ]
     }
 
 
@@ -154,7 +154,7 @@ view _ _ model =
 body, with a mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so
 only the panes scroll.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } Msg
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -168,7 +168,7 @@ screen model =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -185,7 +185,7 @@ exampleFooter =
         }
 
 
-appBar : Element { s | appBar : M3e.Kind.Brand } msg
+appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
         [ M3e.appBarSlotTitle (Kit.text "Contacts") ]
@@ -200,7 +200,7 @@ adaptivity: a single column on compact (list, then detail beneath), two panes on
 `md:` and up (a fixed `md:w-80` list beside a filling detail). Both panes scroll
 independently.
 -}
-body : Model -> Element { s | html : M3e.Kind.Brand } Msg
+body : Model -> Element { s | html : M3e.Kind.Brand } adm_ Msg
 body model =
     Layout.div "flex flex-1 flex-col overflow-hidden md:flex-row"
         [ listPane model.selected
@@ -210,7 +210,7 @@ body model =
 
 {-| The master list — full-width on compact, a fixed rail on `md:`.
 -}
-listPane : Int -> Element { s | html : M3e.Kind.Brand, list : M3e.Kind.Brand } Msg
+listPane : Int -> Element { s | html : M3e.Kind.Brand, list : M3e.Kind.Brand } adm_ Msg
 listPane selected =
     Layout.div "shrink-0 overflow-y-auto border-outline-variant/40 md:w-80 md:border-r"
         [ M3e.list []
@@ -226,7 +226,7 @@ surface. `ListItem` is a passive display component, so the click affordance is
 added the userland way: a `role="button"` and a `Native.onClick` (see the Mail
 example — the `@m3e/web` list item does not carry an interactive/onClick fact).
 -}
-contactRow : Int -> Int -> Contact -> Element { s | listItem : M3e.Kind.Brand } Msg
+contactRow : Int -> Int -> Contact -> Element { s | listItem : M3e.Kind.Brand } adm_ Msg
 contactRow selected index contact =
     let
         rowSurface : Surface
@@ -251,7 +251,7 @@ contactRow selected index contact =
 
 {-| The detail pane — fills the rest on `md:`, stacks beneath the list on compact.
 -}
-detailPane : Contact -> Element { s | html : M3e.Kind.Brand } msg
+detailPane : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 detailPane contact =
     Layout.div "flex-1 overflow-y-auto p-4 md:p-8"
         [ Layout.div "mx-auto flex w-full max-w-xl flex-col gap-6"
@@ -261,7 +261,7 @@ detailPane contact =
         ]
 
 
-header : Contact -> Element { s | html : M3e.Kind.Brand } msg
+header : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 header contact =
     Layout.colWith "flex flex-col items-center gap-3 pt-2"
         [ Avatar.initials contact.initials
@@ -272,7 +272,7 @@ header contact =
 
 {-| The contact's fields, as a surface-container card of divided rows.
 -}
-detailCard : Contact -> Element { s | html : M3e.Kind.Brand } msg
+detailCard : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 detailCard contact =
     Surface.view Surface.surfaceContainer
         [ Shape.corner Shape.large, Layout.class "overflow-hidden flex flex-col" ]
@@ -284,7 +284,7 @@ detailCard contact =
         )
 
 
-fieldRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } msg
+fieldRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 fieldRow iconName label value =
     M3e.listItem []
         [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
@@ -310,19 +310,19 @@ fallbackContact =
 -- NAVIGATION ------------------------------------------------------------------
 
 
-desktopRail : Element { s | navRail : M3e.Kind.Brand } msg
+desktopRail : Element { s | navRail : M3e.Kind.Brand } adm_ msg
 desktopRail =
     M3e.navRail [ Layout.class "hidden md:flex shrink-0" ]
         (List.map navItem destinations)
 
 
-mobileBar : Element { s | navBar : M3e.Kind.Brand } msg
+mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
     M3e.navBar [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map navItem destinations)
 
 
-navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } msg
+navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 navItem d =
     M3e.navItem
         [ M3e.attrSelected (d.label == "Contacts") ]

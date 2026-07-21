@@ -20,11 +20,8 @@ would be a natural extension: take a position value and map it to the matching
 
 -}
 
-import Html
-import Html.Attributes
-import Markup.Element.Internal as Element exposing (Element)
-import Markup.Html.Attr as Attr
-import Markup.Node as Node
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
 import M3e.Kind
 
 
@@ -32,15 +29,13 @@ import M3e.Kind
 and badge may carry different slot kinds; the result is a positioned `<span>`
 wrapper carrying the `html` kind.
 -}
-on : { anchor : Element sa msg, badge : Element sb msg } -> Element { k | html : M3e.Kind.Brand } msg
+on : { anchor : Element sa anchorAdm msg, badge : Element sb badgeAdm msg } -> Element { k | html : M3e.Kind.Brand } adm_ msg
 on { anchor, badge } =
-    Node.fromComponent
-        (\a c -> Html.span (Html.Attributes.class "relative inline-flex" :: List.map Attr.toAttribute a) c)
-        []
-        [ Element.toNode anchor
-        , Node.fromComponent
-            (\a c -> Html.span (Html.Attributes.class "pointer-events-none absolute right-0 top-0" :: List.map Attr.toAttribute a) c)
-            []
-            [ Element.toNode badge ]
+    Ir.node "span"
+        [ Ir.attribute "class" "relative inline-flex" ]
+        [ HtmlIr.Element.toNode anchor
+        , Ir.node "span"
+            [ Ir.attribute "class" "pointer-events-none absolute right-0 top-0" ]
+            [ HtmlIr.Element.toNode badge ]
         ]
-        |> Element.fromNode
+        |> Ir.fromNode

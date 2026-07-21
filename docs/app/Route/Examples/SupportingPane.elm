@@ -28,10 +28,10 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import Markup.Kind
-import Markup.Element as Element exposing (Element)
+import HtmlIr.Kind
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
@@ -93,14 +93,14 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Supporting pane · elm-m3e"
     , body =
-        [ Element.toNode screen ]
+        [ HtmlIr.Element.toNode screen ]
     }
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 primary/supporting body, with a mobile bottom bar.
 -}
-screen : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+screen : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 screen =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -116,7 +116,7 @@ screen =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -133,7 +133,7 @@ exampleFooter =
         }
 
 
-appBar : Element { s | appBar : M3e.Kind.Brand } msg
+appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
         [ M3e.appBarSlotTitle (Kit.text "Rally redesign") ]
@@ -148,7 +148,7 @@ pane BELOW the primary on compact and BESIDE it on expanded. `flex-1` lets the
 primary grow; `lg:w-80 lg:shrink-0` fixes the supporting pane's width so it never
 crowds the primary.
 -}
-body : Element { s | html : M3e.Kind.Brand } msg
+body : Element { s | html : M3e.Kind.Brand } adm_ msg
 body =
     Layout.div "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6 lg:flex-row"
         [ primary
@@ -158,7 +158,7 @@ body =
 
 {-| The primary region: the focus content. Flexes to fill the row.
 -}
-primary : Element { s | html : M3e.Kind.Brand } msg
+primary : Element { s | html : M3e.Kind.Brand } adm_ msg
 primary =
     Layout.colWith "flex flex-1 flex-col gap-4 min-w-0"
         [ Kit.headline Value.small [ Kit.onSurface ] [ Kit.text "Project overview" ]
@@ -169,7 +169,7 @@ primary =
         ]
 
 
-summaryCard : Element { s | card : M3e.Kind.Brand } msg
+summaryCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 summaryCard =
     M3e.card [ M3e.variantElevated ]
         [ M3e.cardSlotHeader (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "This sprint" ])
@@ -183,7 +183,7 @@ summaryCard =
         ]
 
 
-metric : String -> String -> Element { s | html : M3e.Kind.Brand } msg
+metric : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 metric value label =
     Layout.colWith "flex flex-col"
         [ Kit.headline Value.medium [ Kit.primary ] [ Kit.text value ]
@@ -191,7 +191,7 @@ metric value label =
         ]
 
 
-milestonesCard : Element { s | card : M3e.Kind.Brand } msg
+milestonesCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 milestonesCard =
     M3e.card [ M3e.variantFilled ]
         [ M3e.cardSlotHeader (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "Milestones" ])
@@ -207,7 +207,7 @@ milestonesCard =
         ]
 
 
-milestoneRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } msg
+milestoneRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 milestoneRow iconName label status =
     M3e.listItem []
         [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
@@ -220,7 +220,7 @@ milestoneRow iconName label status =
 {-| The supporting pane: secondary, related material. Fixed width beside the
 primary on `lg:`, reflowed beneath it on compact.
 -}
-supporting : Element { s | html : M3e.Kind.Brand } msg
+supporting : Element { s | html : M3e.Kind.Brand } adm_ msg
 supporting =
     Layout.div "shrink-0 lg:w-80"
         [ Surface.view Surface.surfaceContainer
@@ -248,7 +248,7 @@ activity =
     ]
 
 
-activityRow : Activity -> Element { s | html : M3e.Kind.Brand } msg
+activityRow : Activity -> Element { s | html : M3e.Kind.Brand } adm_ msg
 activityRow a =
     Layout.rowWith "flex items-start gap-3"
         [ Avatar.initials a.initials
@@ -259,7 +259,7 @@ activityRow a =
         ]
 
 
-tag : String -> Element { s | assistChip : M3e.Kind.Brand } msg
+tag : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 tag label =
     M3e.assistChip [] [ Kit.text label ]
 
@@ -268,19 +268,19 @@ tag label =
 -- NAVIGATION ------------------------------------------------------------------
 
 
-desktopRail : Element { s | navRail : M3e.Kind.Brand } msg
+desktopRail : Element { s | navRail : M3e.Kind.Brand } adm_ msg
 desktopRail =
     M3e.navRail [ Layout.class "hidden md:flex shrink-0" ]
         (List.map navItem destinations)
 
 
-mobileBar : Element { s | navBar : M3e.Kind.Brand } msg
+mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
     M3e.navBar [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map navItem destinations)
 
 
-navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } msg
+navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 navItem d =
     M3e.navItem
         [ M3e.attrSelected (d.label == "Overview") ]

@@ -8,10 +8,10 @@ import Html
 import Kit
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -80,7 +80,7 @@ densityScaleClass n =
         "[--md-sys-density-scale:0]"
 
 
-demoBar : Int -> Element { s | html : M3e.Kind.Brand } msg
+demoBar : Int -> Element { s | html : M3e.Kind.Brand } adm_ msg
 demoBar scaleValue =
     Layout.div "space-y-2"
         [ Kit.labelText Value.large
@@ -97,18 +97,18 @@ demoBar scaleValue =
         ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Density" ]
+        [ Markup.M3e.text "Density" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Density · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
@@ -120,7 +120,7 @@ view _ _ =
                     ]
                 , M3e.card
                     [ M3e.variantOutlined ]
-                    [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text "Density scale, 0 to -3" ])
+                    [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.M3e.text "Density scale, 0 to -3" ])
                     , M3e.cardSlotContent
                         (Layout.div "space-y-6"
                             [ demoBar 0

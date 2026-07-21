@@ -18,11 +18,11 @@ import Kit
 import Kit.Surface as Surface
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e
+import HtmlIr.Element exposing (Element)
 import M3e.Shape as Shape
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -91,7 +91,7 @@ cornerScale =
     ]
 
 
-cornerSwatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } msg
+cornerSwatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 cornerSwatch ( rounded, label, value ) =
     Layout.div "flex flex-col gap-2"
         [ Surface.view Surface.primaryContainer
@@ -110,7 +110,7 @@ tokens' open phantom rows unify into one wide record in the list literal, and
 passing the token through (rather than a literal enum) keeps the barrel-flatten
 rule from firing on a per-shape enum value.
 -}
-namedShapes : List (Element { s | html : M3e.Kind.Brand } msg)
+namedShapes : List (Element { s | html : M3e.Kind.Brand } adm_ msg)
 namedShapes =
     -- The lambda is inlined (no top-level `namedSwatch` signature) on purpose:
     -- `Shape.name` wants a wide closed record, and the tokens' open phantom rows
@@ -138,18 +138,18 @@ namedShapes =
         ]
 
 
-pageHeading : Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
         [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.Atoms.text "Shape" ]
+        [ Markup.M3e.text "Shape" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Shape · elm-m3e"
     , body =
-        [ Element.toNode
+        [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.section "space-y-3"
                     [ pageHeading

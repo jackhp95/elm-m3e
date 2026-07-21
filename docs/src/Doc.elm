@@ -156,7 +156,7 @@ markdown raw =
 
 
 {-| The route content pane: the standard `M3e.contentPane` wrapper every docs
-route hands to `Element.toNode` at its root.
+route hands to `HtmlIr.Element.toNode` at its root.
 -}
 pane : List (Element { s | html : M3e.Kind.Brand } (M3e.ContentPane.ChildAdmittedBy childAdm) msg) -> Element { r | contentPane : M3e.Kind.Brand } freeAdm msg
 pane items =
