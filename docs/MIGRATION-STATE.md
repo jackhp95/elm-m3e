@@ -1,93 +1,84 @@
 # Migration State — elm-m3e docs app → phantom substrate
 
 **Branch:** phantom-migration  
-**Agent:** subagent:docs-app-migrator (sonnet, high effort)  
-**Started:** 2026-07-20
+**Agent:** subagent:docs-app-finisher (sonnet, high effort)  
+**Started:** 2026-07-20  
+**Status:** COMPLETE ✅
 
-## What's done
+## Gates
 
-### Phase 0 — Setup
-- [x] Symlinked `/Users/jack/Documents/code/elm-m3e/docs/node_modules` → `docs/node_modules`
-- [x] Copied `.elm-pages/` from main checkout into phantom docs
-- [x] Updated `docs/elm.json` source-dirs:
-  - Removed `../../elm-cem/markup/src`
-  - Added `../../elm-html-intermediate-representation/src`
-  - Added `../../elm-typed-html/src`
+| Gate | Result |
+|------|--------|
+| 1. `elm make` full app compile | ✅ exit 0 (26 modules fixed) |
+| 2. `pnpm run build:ci` (reference + elm-pages build) | ✅ exit 0 |
+| 3. Playwright `146 passed` | ✅ 146/146 |
+| 4. `Unsafe.fromHtml` shim count | ✅ 0 |
 
-## Error count at phase start: ~50+ MODULE NOT FOUND errors
+## What was done
 
-## Next step: Phase 1 — Mechanical import/type remapping across all 62 .elm files
+### Phase 0–3 (prior agent)
+- Rewired `elm.json` source-dirs to HtmlIr/TypedHtml substrates
+- Migrated kit, layout, view, shared, error-page, src/Doc*, Route batch 1
+- Bulk sweep of imports/tokens/arity across 49 files
 
-## Key mappings discovered
+### Phase 4 (prior agent, partial)
+- Reduced from ~50 MODULE_NOT_FOUND → 26 modules with ~190 residue errors
+- All residue: fused-barrel vocabulary (attr*, variant*, size*, slot*)
 
-| Old import | New import |
-|---|---|
-| `Markup.Element as Element exposing (Element)` | `HtmlIr.Element exposing (Element)` |
-| `Markup.Node as Node exposing (Node)` | `HtmlIr.Node as Node exposing (Node)` |
-| `Markup.Html.Attr exposing (Attr)` | `HtmlIr.Attribute exposing (Attr)` |
-| `Markup.Kind.Shared` | `HtmlIr.Kind.Shared` |
-| `Markup.Aria as Aria` | `TypedHtml.Aria as Aria` |
-| `Markup.Atoms.text` | `M3e.text` |
-| `Markup.Atoms` (import removed) | usages → `M3e.text` |
-| `Markup.Attributes as Attrs` | `M3e.Attributes as Attrs` |
-| `M3e.Token as Value` / `M3e.Token.Supported` | `M3e.Values` / `HtmlIr.Kind.Supported` |
-| `M3e.Native.*` | `TypedHtml.*` / per-module |
-| `M3e.Kind` | `M3e.Kind` (unchanged) |
-| `M3e.Kind.Brand` | `M3e.Kind.Brand` (unchanged) |
+### Phase 5 (this agent — finisher)
+All 26 modules with errors fixed:
 
-## Shorthand attrs that are gone from barrel (must use per-component):
+**Residue class 1 — `M3e.attr<Pascal>` → `M3e.Attributes.<camel>`**
+- `attrName`, `attrLevel`, `attrSelected`, `attrChecked`, `attrOpen`, `attrInset`
+- `attrExtended`, `attrHref`, `attrMax`, `attrMin`, `attrStep`, `attrDiscrete`
+- `attrLabelled`, `attrValue`, `attrOpticalSize`, `attrValueFloat`
 
-| Old `M3e.*` | New |
-|---|---|
-| `M3e.schemeAuto/Light/Dark` | `M3e.Theme.scheme M3e.Values.auto/light/dark` |
-| `M3e.contrastStandard/Medium/High` | `M3e.Theme.contrast M3e.Values.standard/medium/high` |
-| `M3e.attrColor s` | `M3e.Theme.color s` |
-| `M3e.attrDensity f` | `M3e.Theme.density f` |
-| `M3e.sizeSmall` | `M3e.AppBar.size M3e.Values.small` |
-| `M3e.attrLevel n` | `M3e.Attributes.level n` (or `M3e.Heading.level`) |
-| `M3e.variantDisplay` | `M3e.Heading.variant M3e.Values.display` |
-| `M3e.variantTitle` | `M3e.Heading.variant M3e.Values.title` |
-| `M3e.variantOutlined` | `M3e.Attributes.variant M3e.Values.outlined` |
-| `M3e.variantFilled` | `M3e.Attributes.variant M3e.Values.filled` |
-| `M3e.attrName s` | `M3e.Attributes.name s` |
-| `M3e.attrHref s` | `M3e.Attributes.href s` |
-| `M3e.attrTarget s` | `M3e.Attributes.target s` |
-| `M3e.attrRel s` | `M3e.Attributes.rel s` |
-| `M3e.attrChecked b` | `M3e.Attributes.checked b` |
-| `M3e.attrOpen b` | `M3e.Attributes.open b` |
-| `M3e.attrSelected b` | `M3e.Attributes.selected b` |
-| `M3e.attrStart b` | `M3e.Attributes.start b` |
-| `M3e.attrEnd b` | `M3e.Attributes.end b` |
-| `M3e.startModeAuto` | `M3e.DrawerContainer.startMode M3e.Values.auto` |
-| `M3e.endModeAuto` | `M3e.DrawerContainer.endMode M3e.Values.auto` |
-| `M3e.appBarSlotTitle el` | `M3e.AppBar.title el` |
-| `M3e.appBarSlotSubtitle el` | `M3e.AppBar.subtitle el` |
-| `M3e.appBarSlotLeading el` | `M3e.AppBar.leading el` |
-| `M3e.appBarSlotTrailing el` | `M3e.AppBar.trailing el` |
-| `M3e.cardSlotHeader el` | `M3e.Card.header el` (TBC) |
-| `M3e.cardSlotContent el` | `M3e.Card.content el` (TBC) |
-| `M3e.navMenuItemSlotLabel el` | `M3e.NavMenuItem.label el` |
-| `M3e.navMenuItemSlotIcon el` | `M3e.NavMenuItem.icon el` |
-| `M3e.formFieldSlotLabel id el` | `M3e.FormField.label id el` (TBC) |
-| `M3e.formFieldSlotHint el` | `M3e.FormField.hint el` (TBC) |
-| `M3e.formFieldSlotDefault id el` | `M3e.FormField.default id el` (TBC) |
-| `M3e.drawerContainerSlotStart el` | `M3e.DrawerContainer.start el` |
-| `M3e.drawerContainerSlotEnd el` | `M3e.DrawerContainer.end el` |
+**Residue class 2 — Fused enum setters → `M3e.Attributes.<attr> Value.<token>`**
+- `variantFilled/Outlined/Tonal/Text/Elevated/Standard/Primary/PrimaryContainer`
+- `variantDisplay/Title/Headline`
+- `sizeSmall/Medium`
+- `modeExpanded`
 
-## Kit/Seam changes needed
+**Residue class 3 — Slot wrappers → per-component slot fns**
+- `M3e.appBarSlot*` → `M3e.AppBar.*`
+- `M3e.cardSlot*` → `M3e.Card.*`
+- `M3e.listItemSlot*` → `M3e.ListItem.*`
+- `M3e.navItemSlot*` → `M3e.NavItem.*`
+- `M3e.fabSlot*` → `M3e.Fab.*`
+- `M3e.searchBarSlot*` → `M3e.SearchBar.*`
+- `M3e.assistChipSlot*` → `M3e.AssistChip.*`
+- `M3e.slotIcon/Header/Content` → `M3e.Button.icon` / `M3e.Card.header` / `M3e.Card.content`
 
-- `Seam.elm` (kit/): uses `Markup.Element.Internal`, `Markup.Html.Attr.Internal`, `Markup.Node.Internal`, `M3e.Seam.*` — all need to move to new IR
-- `kit/Native.elm`: uses `M3e.Native` which is now `TypedHtml`
-- `kit/Kit.elm`: uses old `M3e.Token`, `Markup.Element`, etc.
-- `src/Layout.elm`: uses `Markup.Element`, `Markup.Html.Attr`
+**Residue class 4 — Free-string icon name**
+- `M3e.ariaLabel s` → `Aria.label s` (`import TypedHtml.Aria as Aria`)
+- `M3e.attrName "icon-name"` → `TA.name "icon-name"` (`import TypedHtml.Attributes as TA`)
+  - API gap: `M3e.Attributes.name` / `M3e.Icon.name` takes `Value ShapeName` (enum),
+    not a free string. Material icon names are free strings — routed through
+    `TypedHtml.Attributes.name` which is a raw string attribute setter.
 
-## Known sharp edges / API gaps found
+**Residue class 5 — Other fixes**
+- `Markup.M3e.text` → `M3e.text`
+- `M3e.linear` → `M3e.linearProgressIndicator`
+- `Native.node Html.input` / `Html.node "div"` → `Native.node "input"` / `"div"`
+- `Element { ... } Msg` → `Element { ... } adm_ Msg` (missing third type arg)
+- `type alias Row msg` → `type alias Row adm_ msg` (unbound type variable)
+- `Value.Supported` → `HtmlIr.Kind.Supported`
+- Duplicate `import M3e` removed from 6 files
 
-- `M3e.Native.type_` (String → Attr) has NO direct equivalent; TypedHtml has no `type_` string setter. Need `M3e.Unsafe.fromHtml` or `HtmlIr.Internal` escape for `input[type=color]` / `input[type=email]`.
-- `Markup.Kind.Shared` → `HtmlIr.Kind.Shared` (different package/module name)
-- Element arity: old = `Element supports msg`, new = `Element accepts admittedBy msg` (TWO phantom rows)
-- `Node.toHtml` was `Markup.Node.toHtml`, now `HtmlIr.Node.toHtml`
-- `Element.toNode` was `Markup.Element.toNode`, now `HtmlIr.Element.toNode`
-- `Seam.recast` / `Seam.asElement` etc. reference `Markup.*Internal` — these need to be rewritten against HtmlIr.Internal
+**Build script fixes**
+- `docs/scripts/extract-reference.mjs`: symlink HtmlIr/TypedHtml src into scratch
+  package so `elm make --docs` finds them (the scratch project is `type: package`
+  without source-directories; symlinks under `src/` are the only path)
+- `docs/scripts/examples-gen/verify-examples.mjs`: add IR/TH dirs to `SRC_DIRS`
 
-## Phase 2 status: NOT STARTED
+## Known pre-existing issue (out of scope)
+- `build:examples-config` fails because generated examples reference `M3e.Html.*`
+  (the Html layer) which doesn't exist in the phantom repo. The `build:ci` script
+  skips this step and succeeds. Fix requires updating the example oracle/config.
+
+## API gaps discovered and recorded
+
+| Gap | Location | Workaround used |
+|-----|----------|-----------------|
+| `M3e.Attributes.name` / `M3e.Icon.name` takes `Value ShapeName`, not `String` — can't set Material icon names via typed API | `M3e/Attributes.elm`, `M3e/Icon.elm` | `TypedHtml.Attributes.name "icon-name"` (raw string attr) |
+| `M3e.Html.*` layer absent from phantom src | generated examples only | N/A (pre-existing, not introduced here) |

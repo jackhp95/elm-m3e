@@ -38,7 +38,12 @@ const M3E_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", ".
 const LIB_SRC = `${M3E_ROOT}/src`;
 const KIT_SRC = `${M3E_ROOT}/docs/kit`;
 const ELM_BIN = `${M3E_ROOT}/docs/node_modules/.bin/elm`;
-const SRC_DIRS = [LIB_SRC, KIT_SRC];
+// Phantom substrate: HtmlIr.* and TypedHtml.* live in sibling repos.
+// Paths mirror the source-directories in docs/elm.json (relative to docs/).
+const DOCS_DIR = `${M3E_ROOT}/docs`;
+const IR_SRC = resolve(DOCS_DIR, "../../elm-html-intermediate-representation/src");
+const TH_SRC = resolve(DOCS_DIR, "../../elm-typed-html/src");
+const SRC_DIRS = [LIB_SRC, KIT_SRC, IR_SRC, TH_SRC];
 
 // Re-export the reference walker unchanged, and a 1-arg `moduleResolves` bound to
 // this project's library source dirs. verify-roundtrip.mjs and
