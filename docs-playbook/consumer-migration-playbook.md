@@ -89,3 +89,32 @@ ISO strings — parse app-side.
   per-component setter (`M3e.Button.variant`) for compile-tight narrowing.
 - **`value`-style cross-component scalar conflicts:** the per-component setter carries the
   component's true type; the shared canonical carries the majority type.
+- **`M3e.attrName` splits into two cases (API gap, verified 2026-07-20):**
+  - For `M3e.shape`, `M3e.Shape` — use `M3e.Attributes.name Value.<shape-token>` (enum).
+  - For `M3e.icon` — `M3e.Attributes.name` / `M3e.Icon.name` ALSO takes `Value ShapeName`,
+    which is shape tokens, NOT Material icon names. The generated API has a type-mismatch:
+    icon names are free strings but the setter is enum-typed. **Workaround:**
+    `import TypedHtml.Attributes as TA` and use `TA.name "icon-name"` (raw string attr).
+    This compiles and sets the correct attribute. Tracked for a codegen fix.
+- **Slot wrappers are word-boundary patterns.** When replacing `M3e.cardSlotContent` →
+  `M3e.Card.content`, use a regex `M3e\.cardSlotContent(?=\s)` or `\b` — a
+  trailing-space pattern misses cases where the slot name is on its own line (newline, not
+  space, follows the identifier).
+- **`type alias Row msg` unbound if the element carries `adm_`:** any type alias of
+  `Element { ... } adm_ msg` must declare `adm_` as a type variable:
+  `type alias Row adm_ msg = Element { ... } adm_ msg`, then all usage sites become
+  `Row adm_ (PagesMsg Msg)`.
+- **`Native.node` takes a String tag, not `Html.node "div"`:** the first arg to
+  `Native.node` is the tag name string, not the elm/html constructor.
+- **`Value.Supported` in let-annotations:** `Supported` lives in `HtmlIr.Kind`, not
+  `M3e.Values`. Replace `Value.Supported` with `HtmlIr.Kind.Supported`.
+
+## 7. Build pipeline note (phantom-specific)
+
+The `build:examples-config` script verifies generated examples via a scratch harness.
+After the phantom migration `M3e.Html.*` (the old Html layer) doesn't exist, so any
+generated example using that layer fails. **Use `pnpm run build:ci` as the gate**, not
+`pnpm run build`. `build:ci` = reference + nav check + elm-pages build; it passes.
+
+The `extract-reference.mjs` scratch package also needs the HtmlIr/TypedHtml src dirs
+symlinked in (done in commit 8f80ac3) so `elm make --docs` can resolve them.
