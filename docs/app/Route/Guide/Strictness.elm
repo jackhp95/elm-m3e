@@ -78,7 +78,7 @@ button; they only change what you're allowed to leave out.
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
     M3e.button [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [] |> Seam.recast)
+        [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
         , Kit.text "Save"
         ]
 
