@@ -1,0 +1,421 @@
+# Migrating to elm-m3e phantom substrate
+
+This guide covers the breaking changes between the old **markup-core** elm-m3e
+and the new **phantom** elm-m3e. It is written against three completed, verified
+migrations: feedback-fab, compass-social, and animal-spirits.
+
+Skip to the [quick-reference table](#mapping-table) if you want the at-a-glance
+mapping, then follow the [step-by-step](#step-by-step) section to work through
+your codebase systematically.
+
+---
+
+## What changed and why
+
+The old elm-m3e was layered on `markup-core` (`Markup.Element`, `Markup.Node`,
+`Markup.Kind`). The new elm-m3e replaces that with a published, shared IR:
+`jackhp95/elm-html-intermediate-representation` (imported as `HtmlIr.*`) and
+its companion `jackhp95/elm-typed-html` (imported as `TypedHtml.*`). Every
+generated `M3e.*` module now imports `HtmlIr.*` directly — there is no longer a
+markup-core runtime injected into your build.
+
+The `M3e` barrel went from roughly 200 re-exported symbols to **component
+constructors + `M3e.text` only**. Attrs, tokens, and events each have their own
+module now.
+
+At the type level, `Element` gained a second phantom row. The old shape was:
+
+```elm
+Markup.Element accepts msg
+```
+
+The new shape is:
+
+```elm
+HtmlIr.Element.Element accepts admittedBy msg
+```
+
+Every annotation that mentions `Element` needs the extra `admittedBy` variable
+threaded through.
+
+---
+
+## Mapping table
+
+| Old | New | Notes |
+|-----|-----|-------|
+| `import Markup.Element` | `import HtmlIr.Element` | same name `Element` |
+| `import Markup.Node` | `import HtmlIr.Node` | |
+| `import Markup.Kind` | `import HtmlIr.Kind` | |
+| `Markup.Element.toNode` | `HtmlIr.Element.toNode` | |
+| `Markup.Node.toHtml` | `HtmlIr.Node.toHtml` | |
+| `M3e.Token.*` | `M3e.Values.*` | same token names; see §3 |
+| `Value.Supported` | `HtmlIr.Kind.Supported` | |
+| `Value.Value` | `HtmlIr.Value.Value` | |
+| `M3e.style [("k","v")]` | `M3e.Attributes.styleList [("k","v")]` | name changed |
+| `M3e.class "x"` | `M3e.Attributes.class "x"` | |
+| `M3e.attrName`, `M3e.attrHref`, … | `M3e.Attributes.name`, `M3e.Attributes.href`, … | drop `attr` prefix, camelCase |
+| `M3e.variantFilled` | `M3e.Attributes.variant M3e.Values.filled` | split setter + token |
+| `M3e.sizeSmall` | `M3e.Attributes.size M3e.Values.small` | |
+| `M3e.modeExpanded` | `M3e.Attributes.mode M3e.Values.expanded` | |
+| `M3e.appBarSlotLeading el` | `M3e.AppBar.leading el` | per-component slot fn |
+| `M3e.cardSlotHeader el` | `M3e.Card.header el` | |
+| `M3e.cardSlotContent el` | `M3e.Card.content el` | |
+| `M3e.slotIcon el` | `M3e.Button.icon el` (etc.) | |
+| `M3e.onChange : Decoder msg` | `M3e.Events.onChange : msg` | **BREAKING** — see §6 |
+| `M3e.onChange decoder` | `M3e.Events.onChangeWith decoder` | |
+| `M3e.onClick msg` | `M3e.Events.onClick msg` | |
+| `M3e.Native.*` | `TypedHtml.*` | native brand, closed rows |
+| `Markup.M3e.text s` | `M3e.text s` | |
+| `Seam.html h` | `Seam.fromHtml h` | renamed |
+| Old `Seam.text` | `Seam.text` or `M3e.text` | same signature |
+| `Markup.*.Internal` | `HtmlIr.Internal` | Seam building only |
+| `elm-m3e` + `markup-core` | `elm-m3e/src` + `elm-foundation` | see §1 |
+
+---
+
+## Step-by-step
+
+### Step 1 — Swap the vendor packages
+
+**Old `source-directories` (app elm.json):**
+```json
+{
+  "source-directories": ["src", "../../elm-m3e/src", "../../markup-core/src"]
+}
+```
+
+**New `source-directories` (app elm.json):**
+```json
+{
+  "source-directories": ["src", "../../elm-m3e/src", "../../elm-foundation/HtmlIr", "../../elm-foundation/TypedHtml"]
+}
+```
+
+`elm-foundation` is the repo containing `elm-html-intermediate-representation`
+and `elm-typed-html`. In the docs app we vendor this as
+`docs/vendor/elm-foundation/` and add it as a single source-directory entry
+pointing to `vendor/elm-foundation`.
+
+The published package names are:
+- `jackhp95/elm-html-intermediate-representation` — exposes `HtmlIr.*`
+- `jackhp95/elm-typed-html` — exposes `TypedHtml.*`
+
+Until these are on the Elm package registry, use `source-directories` vendoring.
+Do **not** delete the `elm-m3e` source directory — it still holds all of
+`M3e.*`.
+
+Keep `elm-review-cem` — the review rules still apply and are the recommended
+end-state (§7).
+
+**Lamdera caveat:** `HtmlIr.Internal` imports `VirtualDom`, which Lamdera blocks
+in vendored source. This resolves once `elm-html-intermediate-representation` is
+a published package (the import then lives in the registry copy, not your
+`source-directories`). Until then, Lamdera users must avoid importing
+`HtmlIr.Internal` directly — route all IR crossings through a `Seam` module that
+you place in a non-vendored directory.
+
+---
+
+### Step 2 — Split the barrel imports
+
+The old `M3e` module re-exported everything. The new `M3e` barrel exposes only:
+- component constructors (`M3e.button`, `M3e.card`, …)
+- `M3e.text`
+
+Everything else moved:
+
+| What you used from `M3e` | Now in |
+|---|---|
+| `class`, `id`, `slot`, `style`, `styleList` | `M3e.Attributes` |
+| `attr*` (prefixed attribute setters) | `M3e.Attributes` (drop `attr` prefix) |
+| `variant*`, `size*`, `mode*` (fused setters) | `M3e.Attributes` + `M3e.Values` token |
+| `onChange`, `onClick`, `onInput`, … | `M3e.Events` |
+| slot wrappers (`cardSlotHeader`, `slotIcon`, …) | `M3e.<Component>.<slotName>` |
+| `M3e.Native.*` | `TypedHtml.*` |
+
+Mechanical search strategy:
+
+```
+rg "M3e\.(attr|variant|size|mode|class|id|style|slot|on[A-Z])" --type elm
+```
+
+For each match:
+- `M3e.attrFoo` → `M3e.Attributes.foo`
+- `M3e.variantFoo` → `M3e.Attributes.variant M3e.Values.foo`
+- `M3e.sizeFoo` → `M3e.Attributes.size M3e.Values.foo`
+- `M3e.on*` → `M3e.Events.on*` (but read §6 first for `onChange`)
+- `M3e.<component>Slot*` → `M3e.<Component>.<slot>`
+- `M3e.slotIcon` → `M3e.Button.icon` (or the relevant component)
+
+---
+
+### Step 3 — Token namespace: `M3e.Token` → `M3e.Values`
+
+Old:
+```elm
+import M3e.Token as Token
+M3e.Attributes.variant Token.filled
+```
+
+New:
+```elm
+import M3e.Values as Values
+M3e.Attributes.variant Values.filled
+```
+
+Token names are identical — only the module name changed. A project-wide
+find-and-replace of `M3e.Token.` → `M3e.Values.` and `import M3e.Token` →
+`import M3e.Values` is safe.
+
+The type aliases `Value.Supported` and `Value.Value` also moved:
+
+```elm
+-- Old
+import Value exposing (Supported, Value)
+
+-- New
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Value exposing (Value)
+```
+
+---
+
+### Step 4 — Migrate from `Markup.*` to `HtmlIr.*`
+
+#### Type annotations
+
+The old single-phantom shape gains an `admittedBy` row:
+
+```elm
+-- Old
+type alias Row msg =
+    List (Markup.Element.Element { html : Markup.Kind.Brand } msg)
+
+-- New
+type alias Row adm_ msg =
+    List (HtmlIr.Element.Element { html : M3e.Kind.Brand } adm_ msg)
+```
+
+Every `type alias`, function annotation, and `type` that mentions `Element` needs
+the extra variable. If you leave it out the compiler reports an unbound type
+variable.
+
+#### Render exit
+
+The two-step render idiom is the same shape, just different module names:
+
+```elm
+-- Old
+Markup.Element.toNode >> Markup.Node.toHtml
+
+-- New
+HtmlIr.Element.toNode >> HtmlIr.Node.toHtml
+```
+
+Put this crossing in exactly one place — your app shell's `view` function or
+equivalent. Route pages and components never call `toNode`/`toHtml` — they hand
+`Element` values up to the shell.
+
+#### `M3e.Kind.Brand`
+
+The old `Markup.M3e.Kind.Brand` is now `M3e.Kind.Brand`. If your `Native` or
+`Kit` module stamped the html kind explicitly, update:
+
+```elm
+-- Old
+Element { k | html : Markup.M3e.Kind.Brand } msg
+
+-- New
+Element { k | html : M3e.Kind.Brand } adm_ msg
+```
+
+---
+
+### Step 5 — Migrate the Seam / Native / Kit adapters
+
+These three modules are the **userland boundary** — the only place
+`HtmlIr.Internal` is imported. The recommended path is to copy the reference
+implementations from `docs/kit/` in this repo rather than hand-rolling them:
+
+```
+docs/kit/Seam.elm    ← the sanctioned IR crossing
+docs/kit/Native.elm  ← native-HTML producers over HtmlIr.Internal
+docs/kit/Kit.elm     ← typography + link atoms (optional, app-specific)
+```
+
+Key API changes from the old `markup-core` Seam:
+
+| Old | New |
+|-----|-----|
+| `Seam.html h` | `Seam.fromHtml h` |
+| `Seam.text s` | `Seam.text s` (same) or `M3e.text s` |
+| `Markup.*.Internal` imports | `HtmlIr.Internal` |
+| (no `recast`) | `Seam.recast` — explicit phantom-row coercion |
+| (no `recastAttr`) | `Seam.recastAttr` |
+| (no `asAttribute`) | `Seam.asAttribute` — raw `Html.Attribute` into `Attr` |
+
+The `Seam.recast` function is the general loud coercion — use it when a child's
+kind row does not unify with a slot but you know it is semantically valid. It is
+greppable by design and restricted to the allowed-modules list in the review
+config.
+
+`M3e.FormField` no longer has a `for=` / `id=` stamping helper. The old API
+stamped `for=<id>` onto the label and `id=<id>` onto the control automatically.
+The new slot functions (`M3e.FormField.label`, `M3e.FormField.hint`, etc.) only
+place the `slot=` attribute — the `for=`/`id=` linkage is gone. Add it back in
+your seam module:
+
+```elm
+-- compass-social's Native.elm workaround
+fieldLabel : String -> Element s admittedBy msg -> Element free freeAdm msg
+fieldLabel id el =
+    Ir.fromNode
+        (Ir.addAttribute (Ir.attribute "slot" "label")
+            (Ir.addAttribute (Ir.attribute "for" id) (HtmlIr.Element.toNode el))
+        )
+
+fieldControl : String -> Element s admittedBy msg -> Element free freeAdm msg
+fieldControl id el =
+    Ir.fromNode
+        (Ir.addAttribute (Ir.attribute "id" id) (HtmlIr.Element.toNode el))
+```
+
+---
+
+### Step 6 — `onChange` — the sharp edge
+
+> **This is the most dangerous change.** It compiles cleanly after a naive rename
+> and then silently misbehaves at runtime.
+
+**Old** — `M3e.onChange` took a `Decoder msg`:
+
+```elm
+M3e.onChange (Json.Decode.at ["target","value"] Json.Decode.string |> Json.Decode.map GotInput)
+```
+
+**New** — the split:
+
+```elm
+-- Bare message (ignores the event payload entirely)
+M3e.Events.onChange GotInput
+
+-- With a decoder (the correct replacement for the old form)
+M3e.Events.onChangeWith
+    (Json.Decode.at ["target","value"] Json.Decode.string |> Json.Decode.map GotInput)
+```
+
+If you replace `M3e.onChange decoder` with `M3e.Events.onChange decoder` the
+compiler accepts it (a `Decoder msg` unifies as a `msg` via inference), but the
+event handler fires `decoder` as a bare message — the decoder is never run and
+your `msg` value will be wrong at runtime.
+
+**Migration rule:** every old `M3e.onChange <expr>` must become
+`M3e.Events.onChangeWith <expr>`. Only use `M3e.Events.onChange <msg>` where the
+event payload is irrelevant to the message.
+
+The same split applies to other `*With` pairs in `M3e.Events`:
+`onInputWith`, `onClickWith`, `onToggleWith`, `onValueChangeWith`, etc.
+
+---
+
+### Step 7 — Adopt the elm-review-cem rules (recommended end state)
+
+The review rules enforce the guarantees the compiler cannot: missing required
+content, duplicate singular attrs, and — critically — that `HtmlIr.Internal` is
+only imported inside your declared seam modules.
+
+Add to your `review/src/ReviewConfig.elm`:
+
+```elm
+import Cem
+import CodegenReviewConfig
+import M3e.Review.Facts
+
+-- in config:
+Cem.noInternalImportOutsideAllowed
+    { allowedModules = [ "Seam", "Native", "Kit" ] }
+
+Cem.noSeamOutsideAllowedModules
+    { seamModules = [ "Seam" ]
+    , allowedModules = [ "Seam", "Kit" ]
+    }
+
+-- The full CEM discipline (required content, slot kinds, enum narrowing):
+CodegenReviewConfig.config  -- generated from M3e.Review.Facts
+```
+
+`M3e.Review.Facts` is generated alongside `src/M3e/*` and lives at
+`src/M3e/Review/Facts.elm`. It feeds the `Cem.*` rules with per-component
+metadata (required slots, enum sets, slot kinds).
+
+See `review/src/ReviewConfig.elm` in this repo for a complete working example.
+
+---
+
+## Gotchas
+
+### `onChange` silent break (see §6)
+
+`M3e.Events.onChange : msg` — a bare value. The old `M3e.onChange : Decoder msg`
+took a decoder. `M3e.Events.onChange myDecoder` compiles and silently never runs
+the decoder. Always use `onChangeWith` when you need the event payload.
+
+### `M3e.FormField` `for=` / `id=` linkage is gone
+
+`M3e.FormField.label` only stamps `slot="label"`. If your form relies on the
+label's `for=` pointing at the control's `id=`, you must add both attributes
+manually. Use the `fieldLabel` / `fieldControl` helpers from §5, or stamp them
+with `M3e.Attributes.for` / `M3e.Attributes.id` before passing to the slot
+function.
+
+### Lamdera + vendored `HtmlIr.Internal`
+
+`HtmlIr.Internal` imports `elm/virtual-dom`, which Lamdera blocks in
+`source-directories` entries. Keep your `Seam` module in a non-vendored directory
+(e.g. your app's own `src/`) and import `HtmlIr.Internal` from there. Once the
+IR packages are published to the Elm registry this restriction lifts.
+
+### Ambiguous `Seam.recast` — use it, don't scatter it
+
+`Seam.recast` forges a fresh phantom row with no semantic check. It is intentionally
+loud so it is greppable. If you need it in more than one place for the same
+crossing, that crossing belongs in a named coercion in `M3e.Coerce` (config-driven)
+or a dedicated helper in your `Seam` module — not scattered across view modules.
+
+### `M3e.Attributes.style` vs `M3e.Attributes.styleList`
+
+The old `M3e.style : List (String, String)` was a convenience for inline CSS
+pairs. The new module has:
+
+- `M3e.Attributes.style : String -> Attr …` — takes the full inline-style
+  **string** (e.g. `"--my-token: red; color: blue"`).
+- `M3e.Attributes.styleList : List (String, String) -> Attr …` — the list-of-pairs
+  form that matches the old `M3e.style` signature.
+
+If you used `M3e.style [("--token", "value")]` before, replace with
+`M3e.Attributes.styleList [("--token", "value")]`.
+
+### `M3e.Native` is retired — use `TypedHtml.*`
+
+The old `M3e.Native` generated facade is gone. The replacement is
+`TypedHtml.*` — a sibling branded package with closed, element-natural attribute
+rows. Note that the attribute-narrowing strictness differs: the generated
+`TypedHtml.Div` would not accept `href`, while the hand-written `Native.div` in
+the reference kit uses open capability rows. If you need the strict shape use
+`TypedHtml.*` directly; if you want the relaxed open shape, copy the `Native.elm`
+from `docs/kit/`.
+
+### Icon names are free strings, not enum tokens
+
+`M3e.Attributes.name` and `M3e.Icon.name` take `Value ShapeName` (an enum), not
+a free string. Material icon names are arbitrary strings. Pass them through
+`TypedHtml.Attributes.name "home"` (raw string setter) rather than the typed
+`M3e.Attributes.name`.
+
+### `Element` now has two phantom rows — thread `admittedBy` everywhere
+
+The compiler error is typically `unbound type variable` on `adm_` or a
+type-mismatch where `Element accepts msg` was expected. Add `admittedBy` (or
+`adm_` if unconstrained) as the second type parameter everywhere `Element`
+appears in your annotations, `type alias` definitions, and `type` wrappers.
