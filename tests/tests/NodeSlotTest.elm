@@ -1,36 +1,37 @@
 module NodeSlotTest exposing (suite)
 
-{-| Regression tests for issue #79: `Node.addAttr` must not silently drop the
-`slot=` attribute when the underlying node is a `Raw` escape hatch (produced by
-`Seam.fromHtml`, or by `Element.map` / `Node.map`, which re-wrap their result as
-`Raw`). Before the fix the `Raw` branch returned the node unchanged, so
+{-| Regression tests for issue #79: placing content into a named slot must not
+silently drop the `slot=` attribute when the underlying node is a `Raw` escape
+hatch (produced by `Seam.fromHtml`, or by `HtmlIr.Element.map`, which re-wraps
+its result). Before the fix the `Raw` branch returned the node unchanged, so
 escape-hatched or mapped content silently landed in the component's default slot
 instead of the named slot it was assigned to.
+
+Ported to the phantom substrate: `M3e.Element`/`M3e.Node`/`M3e.Element.Internal`
+were retired in favour of `HtmlIr.*`. Named-slot placement is now the
+`Seam.slot` primitive (which stamps `slot=` via `HtmlIr.Internal.addAttribute`,
+promoting a `Raw`/`Text` leaf to a `<span>` rather than dropping the attribute).
+
 -}
 
 import Expect
 import Html
 import Html.Attributes as Attr
-import M3e.Element as Element
-import M3e.Element.Internal as EI
-import M3e.Node as Node
+import HtmlIr.Element as Element
+import HtmlIr.Node as Node
 import Seam
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
 
 
-{-| Render slot-tagged content down to Html so we can query it.
+{-| Render slot-tagged content down to Html so we can query it. `Seam.slot ""`
+is the identity placement (no `slot=`); a named slot stamps `slot="name"`.
 -}
-renderSlotted : String -> Element.Element supported msg -> Html.Html msg
+renderSlotted : String -> Element.Element accepts admittedBy msg -> Html.Html msg
 renderSlotted name el =
-    (if name == "" then
-        el
-
-     else
-        EI.withSlot name el
-    )
-        |> EI.toNode
+    Seam.slot name el
+        |> Element.toNode
         |> Node.toHtml
 
 
