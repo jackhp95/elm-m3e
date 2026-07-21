@@ -89,13 +89,10 @@ ISO strings — parse app-side.
   per-component setter (`M3e.Button.variant`) for compile-tight narrowing.
 - **`value`-style cross-component scalar conflicts:** the per-component setter carries the
   component's true type; the shared canonical carries the majority type.
-- **`M3e.attrName` splits into two cases (API gap, verified 2026-07-20):**
-  - For `M3e.shape`, `M3e.Shape` — use `M3e.Attributes.name Value.<shape-token>` (enum).
-  - For `M3e.icon` — `M3e.Attributes.name` / `M3e.Icon.name` ALSO takes `Value ShapeName`,
-    which is shape tokens, NOT Material icon names. The generated API has a type-mismatch:
-    icon names are free strings but the setter is enum-typed. **Workaround:**
-    `import TypedHtml.Attributes as TA` and use `TA.name "icon-name"` (raw string attr).
-    This compiles and sets the correct attribute. Tracked for a codegen fix.
+- **`M3e.attrName` splits by component:** shape-ish components → `M3e.Attributes.name
+  Value.<token>` (enum). `M3e.icon` → `M3e.Icon.name "icon-name"` (free string —
+  the member's own type wins over the brand union; FIXED in codegen 2026-07-20;
+  `TypedHtml.Attributes.name` also still works).
 - **Slot wrappers are word-boundary patterns.** When replacing `M3e.cardSlotContent` →
   `M3e.Card.content`, use a regex `M3e\.cardSlotContent(?=\s)` or `\b` — a
   trailing-space pattern misses cases where the slot name is on its own line (newline, not

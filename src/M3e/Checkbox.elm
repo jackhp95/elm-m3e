@@ -16,16 +16,16 @@ A checkbox that allows a user to select one or more options from a limited numbe
 
 -}
 
+import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
+import Json.Encode
 import M3e.Attributes
 import M3e.Events
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
-import M3e.Values
 
 
 {-| The kind row `m3e-checkbox` produces (open — composes into any slot naming it).
@@ -92,11 +92,11 @@ indeterminate =
     M3e.Attributes.indeterminate
 
 
-{-| See `M3e.Attributes.name`.
+{-| The `name` attribute (this component's type differs from the shared canonical).
 -}
-name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
-name =
-    M3e.Attributes.name
+name : String -> Attr { c | name : Supported } msg
+name value_ =
+    Ir.attribute "name" value_
 
 
 {-| See `M3e.Attributes.required`.
@@ -247,9 +247,9 @@ withIndeterminate value_ (Builder b) =
 
 {-| Pipe form of `name` — consumes its capability (write-once).
 -}
-withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName : String -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
 withName value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+    Builder { b | attrs = Ir.attribute "name" value_ :: b.attrs }
 
 
 {-| Pipe form of `required` — consumes its capability (write-once).
