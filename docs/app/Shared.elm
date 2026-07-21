@@ -22,19 +22,22 @@ import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class)
 import Html.Events
+import HtmlIr.Attribute
+import HtmlIr.Element as Element exposing (Element)
+import HtmlIr.Kind
+import HtmlIr.Node as Node
 import Json.Decode as Decode
 import Kit
 import Kit.Surface as Surface
 import M3e
-import Markup.Aria as Aria
-import Markup.Atoms
-import Markup.Attributes as Attrs
-import Markup.Element as Element exposing (Element)
-import Markup.Html.Attr exposing (Attr)
-import M3e.Native
-import Markup.Node as Node
+import M3e.AppBar
+import M3e.Attributes
+import M3e.DrawerContainer
+import M3e.FormField
 import M3e.Kind
-import M3e.Token as Value exposing (Value)
+import M3e.NavMenuItem
+import M3e.Theme
+import M3e.Values as Value
 import Native
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -42,6 +45,7 @@ import Ports
 import Route exposing (Route)
 import Seam
 import SharedTemplate exposing (SharedTemplate)
+import TypedHtml.Aria as Aria
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -298,35 +302,35 @@ data =
 
 {-| Convenience alias: convert any `Element` to `Html`.
 -}
-toHtml : Element any msg -> Html msg
+toHtml : Element any anyAdm msg -> Html msg
 toHtml =
     Element.toNode >> Node.toHtml
 
 
-schemeAttr : Scheme -> Attr { c | scheme : Value.Supported } msg
+schemeAttr : Scheme -> HtmlIr.Attribute.Attr { c | scheme : HtmlIr.Kind.Supported } msg
 schemeAttr scheme =
     case scheme of
         Auto ->
-            M3e.schemeAuto
+            M3e.Theme.scheme Value.auto
 
         Light ->
-            M3e.schemeLight
+            M3e.Theme.scheme Value.light
 
         Dark ->
-            M3e.schemeDark
+            M3e.Theme.scheme Value.dark
 
 
-contrastAttr : Contrast -> Attr { c | contrast : Value.Supported } msg
+contrastAttr : Contrast -> HtmlIr.Attribute.Attr { c | contrast : HtmlIr.Kind.Supported } msg
 contrastAttr contrast =
     case contrast of
         Standard ->
-            M3e.contrastStandard
+            M3e.Theme.contrast Value.standard
 
         Medium ->
-            M3e.contrastMedium
+            M3e.Theme.contrast Value.medium
 
         High ->
-            M3e.contrastHigh
+            M3e.Theme.contrast Value.high
 
 
 view :
@@ -343,13 +347,13 @@ view sharedData page model toMsg pageView =
     let
         -- `themed` wraps content Elements in `<m3e-theme>` and does the single
         -- `Node.toHtml` conversion.
-        themed : List (Element { html : M3e.Kind.Brand } msg) -> Html msg
+        themed : List (Element { html : M3e.Kind.Brand } admittedBy msg) -> Html msg
         themed children =
             M3e.theme
-                [ M3e.attrColor model.seed
+                [ M3e.Theme.color model.seed
                 , schemeAttr model.scheme
                 , contrastAttr model.contrast
-                , M3e.attrDensity model.density
+                , M3e.Theme.density model.density
 
                 -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
                 -- control has no effect unless we drive `--md-sys-density-scale` (which
@@ -437,19 +441,19 @@ appShellBar =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container-low shadow-md-level1" ]
         [ M3e.appBar
-            [ M3e.sizeSmall
-            , Attrs.id "docs-app-bar"
+            [ M3e.AppBar.size Value.small
+            , M3e.Attributes.id "docs-app-bar"
             ]
-            [ M3e.appBarSlotTitle (Kit.text "elm-m3e")
-            , M3e.appBarSlotSubtitle (Kit.text "Material 3 Expressive for Elm")
-            , M3e.appBarSlotLeading
+            [ M3e.AppBar.title (Kit.text "elm-m3e")
+            , M3e.AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
+            , M3e.AppBar.leading
                 (Seam.recast
                     (Native.span [ Seam.asAttribute (class "flex items-center") ]
                         [ brandMark, menuButton ]
                     )
                 )
-            , M3e.appBarSlotTrailing (Seam.recast githubLink)
-            , M3e.appBarSlotTrailing (Seam.recast settingsButton)
+            , M3e.AppBar.trailing (Seam.recast githubLink)
+            , M3e.AppBar.trailing (Seam.recast settingsButton)
             ]
             |> toHtml
         ]
@@ -459,7 +463,7 @@ appShellBar =
 rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
 (the drawer takes over there), shown from `md` up.
 -}
-brandMark : Element { html : M3e.Kind.Brand } Msg
+brandMark : Element { html : M3e.Kind.Brand } admittedBy Msg
 brandMark =
     Native.span
         [ Seam.asAttribute (class "ms-2 me-1 hidden md:inline-flex")
@@ -468,19 +472,19 @@ brandMark =
         -- isn't announced alongside the "elm-m3e" title next to it.
         , Seam.asAttribute (attribute "aria-hidden" "true")
         ]
-        [ M3e.icon [ M3e.attrName "palette" ] [] ]
+        [ M3e.icon [ Native.attribute "name" "palette" ] [] ]
 
 
 {-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
 viewports (the side drawer is always visible there).
 -}
-menuButton : Element { html : M3e.Kind.Brand } Msg
+menuButton : Element { html : M3e.Kind.Brand } admittedBy Msg
 menuButton =
     Native.span
         [ Seam.asAttribute (class "md:hidden") ]
         [ M3e.iconButton
             [ Aria.label "Toggle navigation", Native.onClick MenuClicked ]
-            [ M3e.icon [ M3e.attrName "menu" ] [] ]
+            [ M3e.icon [ Native.attribute "name" "menu" ] [] ]
         ]
 
 
@@ -491,13 +495,13 @@ glyph was a stand-in. The SVG rides in via the docs' `raw-html` custom element
 (same seam as `Doc.rawPreview`); parsed inside a `<template>` it lands in the SVG
 namespace and renders as a real vector.
 -}
-githubLink : Element { iconButton : M3e.Kind.Brand } Msg
+githubLink : Element { iconButton : M3e.Kind.Brand } admittedBy Msg
 githubLink =
     M3e.iconButton
         [ Aria.label "GitHub repository"
-        , M3e.attrHref "https://github.com/jackhp95/elm-m3e"
-        , M3e.attrTarget "_blank"
-        , M3e.attrRel "noreferrer noopener"
+        , M3e.Attributes.href "https://github.com/jackhp95/elm-m3e"
+        , M3e.Attributes.target "_blank"
+        , M3e.Attributes.rel "noreferrer noopener"
         ]
         [ Seam.fromHtml githubMark ]
 
@@ -519,11 +523,11 @@ githubMarkSvg =
 {-| The app-bar settings control: a plain icon button that flips `settingsOpen`,
 which drives the end drawer's `open` state. (Was a Card popover trigger.)
 -}
-settingsButton : Element { iconButton : M3e.Kind.Brand } Msg
+settingsButton : Element { iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
         [ Aria.label "Settings", Native.onClick ToggleSettings ]
-        [ M3e.icon [ M3e.attrName "settings" ] [] ]
+        [ M3e.icon [ Native.attribute "name" "settings" ] [] ]
 
 
 
@@ -544,7 +548,7 @@ direction); only their LOCATION moved from the old Card popover into this end
 drawer.
 
 -}
-settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } Msg
+settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
 settingsDrawerContent model =
     Native.div
         [ Seam.asAttribute (Attr.id "settings-drawer")
@@ -562,28 +566,28 @@ settingsDrawerContent model =
         ]
 
 
-controlLabel : String -> Element { s | html : M3e.Kind.Brand } Msg
-controlLabel label =
-    Kit.labelText Value.large [ Kit.onSurface ] [ Kit.text label ]
+controlLabel : String -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
+controlLabel lbl =
+    Kit.labelText Value.large [ Kit.onSurface ] [ Kit.text lbl ]
 
 
 {-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
 children, each a checked/label/onClick triple.
 -}
-segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } Msg
+segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 segmented segments =
     M3e.segmentedButton []
         (List.map
-            (\( label, checked, msg ) ->
+            (\( lbl, isChecked, msg ) ->
                 M3e.buttonSegment
-                    [ M3e.attrChecked checked, Native.onClick msg ]
-                    [ Markup.Atoms.text label ]
+                    [ M3e.Attributes.checked isChecked, Native.onClick msg ]
+                    [ M3e.text lbl ]
             )
             segments
         )
 
 
-schemeSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } Msg
+schemeSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 schemeSegmented model =
     segmented
         [ ( "Light", model.scheme == Light, SetScheme Light )
@@ -592,7 +596,7 @@ schemeSegmented model =
         ]
 
 
-contrastSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } Msg
+contrastSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 contrastSegmented model =
     segmented
         [ ( "Standard", model.contrast == Standard, SetContrast Standard )
@@ -608,18 +612,22 @@ shared id (`"seed-color"`), with the live hex shown as the field hint. The
 `#settings-drawer input[type="color"]` rule in `style.css` still rounds the
 swatch. `onInput` crosses via the one sanctioned `Seam.asAttribute`.
 -}
-seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } Msg
+seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
-    M3e.formField [ M3e.variantOutlined ]
-        [ M3e.formFieldSlotLabel "seed-color" (Native.label [] [ Kit.text "Source color" ])
-        , M3e.formFieldSlotHint (Kit.code Value.small [ Kit.onSurfaceVariant ] [ Kit.text model.seed ])
-        , M3e.formFieldSlotDefault "seed-color"
-            (M3e.Native.input
-                [ M3e.Native.type_ "color"
-                , M3e.Native.value model.seed
-                , Seam.asAttribute (Html.Events.onInput SetSeed)
-                ]
+    M3e.formField [ M3e.FormField.variant Value.outlined ]
+        [ M3e.FormField.label
+            (Native.label
+                [ Native.attribute "for" "seed-color" ]
+                [ Kit.text "Source color" ]
             )
+        , M3e.FormField.hint
+            (Kit.code Value.small [ Kit.onSurfaceVariant ] [ Kit.text model.seed ])
+        , Native.input
+            [ Native.attribute "id" "seed-color"
+            , Native.attribute "type" "color"
+            , Native.attribute "value" model.seed
+            , Seam.asAttribute (Html.Events.onInput SetSeed)
+            ]
         ]
 
 
@@ -639,7 +647,7 @@ densityClass d =
         "[--md-sys-density-scale:0]"
 
 
-densitySegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } Msg
+densitySegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 densitySegmented model =
     segmented
         [ ( "0", model.density == 0, SetDensity 0 )
@@ -649,7 +657,7 @@ densitySegmented model =
         ]
 
 
-directionSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } Msg
+directionSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 directionSegmented model =
     segmented
         [ ( "LTR", model.dir == Ltr, SetDirection Ltr )
@@ -742,11 +750,11 @@ drawerShell toMsg model page components body =
             normalizePath (UrlPath.toAbsolute page.path)
     in
     M3e.drawerContainer
-        [ Attrs.id "docs-drawer"
-        , M3e.startModeAuto
-        , M3e.attrStart (not (isMobile model) || model.showMenu)
-        , M3e.endModeAuto
-        , M3e.attrEnd model.settingsOpen
+        [ M3e.Attributes.id "docs-drawer"
+        , M3e.DrawerContainer.startMode Value.auto
+        , M3e.Attributes.start (not (isMobile model) || model.showMenu)
+        , M3e.DrawerContainer.endMode Value.auto
+        , M3e.Attributes.end model.settingsOpen
 
         -- Sync our drawer booleans from the element's own `change` event (scrim
         -- click, Esc, breakpoint auto-close) so element-driven closes don't leave
@@ -754,14 +762,14 @@ drawerShell toMsg model page components body =
         -- Shared.Msg decoder is mapped to the outer msg via `toMsg`.
         , Seam.asAttribute (Html.Events.on "change" (Decode.map toMsg drawerChangeDecoder))
         ]
-        [ M3e.drawerContainerSlotStart
+        [ M3e.DrawerContainer.start
             -- Wrap the nav-menu in a native `<nav>` landmark so AT users can
             -- jump straight to navigation (and skip past it via the skip-link).
             (Native.nav
                 [ Seam.asAttribute (attribute "aria-label" "Primary") ]
                 [ navMenu components currentPath ]
             )
-        , M3e.drawerContainerSlotEnd
+        , M3e.DrawerContainer.end
             (Element.map toMsg (settingsDrawerContent model))
         , Seam.fromHtml
             -- The page body is the `<main>` landmark and the skip-link target.
@@ -797,7 +805,7 @@ link-kind label slots in cleanly and the item navigates like any anchor — no
 `onClick` intercept. Groups (`navGroup`/`componentsGroup`) nest via each item's
 child list; only the group on the current route is opened.
 -}
-navMenu : List NavComponent -> String -> Element { s | navMenu : M3e.Kind.Brand } msg
+navMenu : List NavComponent -> String -> Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 navMenu components currentPath =
     M3e.navMenu []
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
@@ -807,22 +815,19 @@ navMenu components currentPath =
         )
 
 
-{-| The single top-level **Components** nav group. Its children are the per-category
-subgroups (Actions, Selection, …), each of which expands to that category's component
-links — so the sidebar carries one "Components" parent instead of seven sibling
-category groups (#106).
+{-| The single top-level **Components** nav group.
 -}
-componentsGroup : List NavComponent -> String -> Element { s | navMenuItem : M3e.Kind.Brand } msg
+componentsGroup : List NavComponent -> String -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 componentsGroup components currentPath =
     M3e.navMenuItem
         (if String.startsWith "/components/" currentPath then
-            [ M3e.attrOpen True ]
+            [ M3e.Attributes.open True ]
 
          else
             []
         )
-        (M3e.navMenuItemSlotLabel (Markup.Atoms.text "Components")
-            :: M3e.navMenuItemSlotIcon (M3e.icon [ M3e.attrName "widgets" ] [] |> Seam.recast)
+        (M3e.NavMenuItem.label (M3e.text "Components")
+            :: M3e.NavMenuItem.icon (M3e.icon [ Native.attribute "name" "widgets" ] [] |> Seam.recast)
             :: navLeaf currentPath ( "/components/all", "All components" )
             :: List.map
                 (\( category, glyph ) ->
@@ -838,29 +843,29 @@ componentsGroup components currentPath =
         )
 
 
-navGroup : String -> String -> String -> List ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } msg
-navGroup currentPath glyph title items =
+navGroup : String -> String -> String -> List ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
+navGroup currentPath glyph grpTitle items =
     M3e.navMenuItem
         -- Only SET `open` when this group holds the current route. `open` is a
         -- controlled property, so setting it False pins the group closed and the
         -- user can't expand it; leaving it unset lets the component toggle freely.
         (if List.any (\( path, _ ) -> path == currentPath) items then
-            [ M3e.attrOpen True ]
+            [ M3e.Attributes.open True ]
 
          else
             []
         )
-        (M3e.navMenuItemSlotLabel (Markup.Atoms.text title)
-            :: M3e.navMenuItemSlotIcon (M3e.icon [ M3e.attrName glyph ] [] |> Seam.recast)
+        (M3e.NavMenuItem.label (M3e.text grpTitle)
+            :: M3e.NavMenuItem.icon (M3e.icon [ Native.attribute "name" glyph ] [] |> Seam.recast)
             :: List.map (navLeaf currentPath) items
         )
 
 
-navLeaf : String -> ( String, String ) -> Element { navMenuItem : M3e.Kind.Brand } msg
-navLeaf currentPath ( path, label ) =
+navLeaf : String -> ( String, String ) -> Element { navMenuItem : M3e.Kind.Brand } admittedBy msg
+navLeaf currentPath ( path, lbl ) =
     M3e.navMenuItem
-        [ M3e.attrSelected (path == currentPath) ]
-        [ M3e.navMenuItemSlotLabel (Kit.link path [ Kit.text label ] |> Seam.recast) ]
+        [ M3e.Attributes.selected (path == currentPath) ]
+        [ M3e.NavMenuItem.label (Kit.link path [ Kit.text lbl ] |> Seam.recast) ]
 
 
 {-| The component-nav categories, in display order, each paired with its Material

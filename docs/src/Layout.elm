@@ -5,13 +5,9 @@ module Layout exposing
     , class
     )
 
-{-| Named tag helpers over raw HTML for the docs app's layout seam. Layout intent
-is named at the call site via an exact class string.
+{-| Named tag helpers over raw HTML for the docs app's layout seam.
 
-The library (`M3e.*`) is deliberately layout-unopinionated. This module belongs to
-the **docs app** and centralises the hand-rolled flex/grid wrappers so a layout
-`<div>`/`<section>` is a named crossing in one place rather than a scattered `Seam`.
-
+Migrated to the phantom substrate: `Markup.*` → `HtmlIr.*`.
 
 ## Named layout wrappers
 
@@ -36,9 +32,10 @@ the **docs app** and centralises the hand-rolled flex/grid wrappers so a layout
 
 import Html.Attributes as Attr
 import Html.Events
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
 import M3e.Kind
-import Markup.Element exposing (Element)
-import Markup.Html.Attr
 import Native
 import Seam
 
@@ -47,28 +44,23 @@ import Seam
 -- NAMED LAYOUT WRAPPERS -------------------------------------------------------
 
 
-{-| A flex row wrapper carrying exact Tailwind classes, passed through
-byte-for-byte — never alter it.
+{-| A flex row wrapper carrying exact Tailwind classes.
 -}
-rowWith : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+rowWith : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 rowWith =
     div
 
 
 {-| A flex column wrapper carrying exact Tailwind classes.
 -}
-colWith : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+colWith : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 colWith =
     div
 
 
 {-| A CSS grid wrapper carrying exact Tailwind classes.
-
-The class argument should include the `grid` utility and any column/gap
-configuration; it is passed through byte-for-byte.
-
 -}
-gridWith : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+gridWith : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 gridWith =
     div
 
@@ -78,86 +70,57 @@ gridWith =
 
 
 {-| A `<div>` element carrying the given Tailwind class string verbatim.
-
-This is the catch-all escape: any layout `<div>` whose classes do not
-match a preset should use this function. The class string is passed through
-exactly — never add, drop, or reorder classes here.
-
 -}
-div : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+div : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 div cls children =
     Native.div [ Seam.asAttribute (Attr.class cls) ] children
 
 
-{-| A `<div>` carrying the given Tailwind class string verbatim plus an `id`
-attribute, so the block can be deep-linked (e.g. `/components/all#button`).
-Same discipline as `div`: the class string is passed through exactly.
+{-| A `<div>` carrying the given Tailwind class string verbatim plus an `id`.
 -}
-divWithId : String -> String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+divWithId : String -> String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 divWithId id cls children =
     Native.div [ Seam.asAttribute (Attr.id id), Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<section>` element carrying the given Tailwind class string verbatim.
-
-Use for semantic page sections (headings, content areas) whose classes do
-not match the `sectionWith` shorthand.
-
 -}
-section : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+section : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 section cls children =
     Native.section [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<span>` element carrying the given Tailwind class string verbatim.
-
-Use for inline layout wrappers (icon containers, badge anchors, etc.).
-
 -}
-span : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+span : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 span cls children =
     Native.span [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<nav>` element carrying the given Tailwind class string verbatim.
-
-Use for navigation landmark wrappers.
-
 -}
-nav : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+nav : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 nav cls children =
     Native.nav [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<ul>` element carrying the given Tailwind class string verbatim.
-
-Use for unstyled or utility-classed unordered lists.
-
 -}
-ul : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+ul : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 ul cls children =
     Native.ul [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<li>` element carrying the given Tailwind class string verbatim.
-
-Use for list items whose layout is driven by Tailwind utilities.
-
 -}
-li : String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+li : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 li cls children =
     Native.li [ Seam.asAttribute (Attr.class cls) ] children
 
 
-{-| A native `<button>` carrying the given Tailwind class string verbatim and an
-`onClick` handler.
-
-For docs-app affordances that need a plain clickable button without an M3e
-component (e.g. the `/components/all` reveal gate). Keeps the `Seam`/`onClick`
-crossing fenced in this adapter, so feature routes stay seam-free.
-
+{-| A native `<button>` carrying the given Tailwind class string verbatim.
 -}
-button : msg -> String -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+button : msg -> String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 button onClick cls children =
     Native.button
         [ Seam.asAttribute (Html.Events.onClick onClick)
@@ -167,13 +130,7 @@ button onClick cls children =
 
 
 {-| A layout class string as a composable attribute.
-
-Use this to put layout utilities (flex/grid/gap/padding/margin) on an element
-built by another seam producer — e.g. layout classes on a `Kit.Surface.view` —
-without reaching for `Seam` in feature code. Layout-only, same discipline as the
-tag helpers above.
-
 -}
-class : String -> Markup.Html.Attr.Attr c msg
+class : String -> Attr c msg
 class cls =
     Seam.asAttribute (Attr.class cls)

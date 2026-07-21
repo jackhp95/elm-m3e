@@ -7,18 +7,9 @@ module Native exposing
 
 {-| Native-HTML IR producers for userland composition.
 
-**Covered tags come from the generated typed facade `M3e.Native`** (see `docs/DESIGN.md` §4):
-the constructors and their HTML-natural, element-constrained attribute setters are
-now generated over the `*.Internal` crossings, so `Native.div [ M3e.Native.href … ]`
-is a compile error and semantic tags carry a real kind (`a` → `link`,
-`label` → `label`). This module re-exports them under the familiar unqualified
-names so existing feature/docs code keeps composing by name.
-
-The remaining hand-written helpers are the tags the generator does not emit
-(`br`, `em`, `hr`, `node`, `ol`, `small`, `strong`) plus the untyped escapes
-(`attribute`, `style`, `onClick`) — the deliberately-open crossings a team uses
-to name an arbitrary raw attribute/event without reaching for `Seam` at the call
-site.
+**Migrated to the phantom substrate.** All constructors now go through
+`HtmlIr.Internal.node` (the untyped forger) via the local `node` helper, which
+stamps the M3e brand's `html` kind. Native elements carry `{ k | html : M3e.Kind.Brand }`.
 
 @docs a, div, footer, header, img, input, label, li, nav, p, section, span, ul
 @docs button, select, textarea
@@ -30,241 +21,265 @@ site.
 import Html exposing (Html)
 import Html.Attributes
 import Html.Events
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
 import M3e.Kind
-import M3e.Native
-import M3e.Token exposing (Supported)
-import Markup.Element.Internal as Element exposing (Element)
-import Markup.Html.Attr.Internal as Attr exposing (Attr)
-import Markup.Kind
-import Markup.Node as Node
-import Seam
 
 
-
--- COVERED TAGS — re-exported from the generated typed facade `M3e.Native` -------
-
-
-{-| An `<a>` anchor (link kind). See [`M3e.Native.a`](M3e-Native#a).
--}
-a :
-    List (Attr { download : Supported, href : Supported, rel : Supported, slot : Supported, target : Supported } msg)
-    -> List (Element s msg)
-    -> Element { k | sharedLink : Markup.Kind.Shared } msg
-a =
-    M3e.Native.a
+-- GENERIC BUILDER (the Seam crossing) ----------------------------------------
 
 
-{-| A `<div>`. See [`M3e.Native.div`](M3e-Native#div).
--}
-div : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-div =
-    M3e.Native.div
-
-
-{-| A `<span>`. See [`M3e.Native.span`](M3e-Native#span).
--}
-span : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-span =
-    M3e.Native.span
-
-
-{-| A `<section>`. See [`M3e.Native.section`](M3e-Native#section).
--}
-section : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-section =
-    M3e.Native.section
-
-
-{-| A `<nav>`. See [`M3e.Native.nav`](M3e-Native#nav).
--}
-nav : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-nav =
-    M3e.Native.nav
-
-
-{-| A `<header>`. See [`M3e.Native.header`](M3e-Native#header).
--}
-header : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-header =
-    M3e.Native.header
-
-
-{-| A `<footer>`. See [`M3e.Native.footer`](M3e-Native#footer).
--}
-footer : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-footer =
-    M3e.Native.footer
-
-
-{-| A `<p>`. See [`M3e.Native.p`](M3e-Native#p).
--}
-p : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-p =
-    M3e.Native.p
-
-
-{-| A `<ul>`. See [`M3e.Native.ul`](M3e-Native#ul).
--}
-ul : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-ul =
-    M3e.Native.ul
-
-
-{-| An `<li>`. See [`M3e.Native.li`](M3e-Native#li).
--}
-li : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
-li =
-    M3e.Native.li
-
-
-{-| An `<img>` (void). See [`M3e.Native.img`](M3e-Native#img).
--}
-img :
-    List (Attr { alt : Supported, height : Supported, slot : Supported, src : Supported, width : Supported } msg)
-    -> Element { k | html : M3e.Kind.Brand } msg
-img =
-    M3e.Native.img
-
-
-{-| A `<label>` (label kind). See [`M3e.Native.label`](M3e-Native#label).
--}
-label :
-    List (Attr { for : Supported, slot : Supported } msg)
-    -> List (Element s msg)
-    -> Element { k | sharedLabel : Markup.Kind.Shared } msg
-label =
-    M3e.Native.label
-
-
-{-| An `<input>` (void). See [`M3e.Native.input`](M3e-Native#input).
--}
-input :
-    List (Attr { checked : Supported, disabled : Supported, max : Supported, min : Supported, multiple : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, slot : Supported, step : Supported, type_ : Supported, value : Supported } msg)
-    -> Element { k | html : M3e.Kind.Brand } msg
-input =
-    M3e.Native.input
-
-
-{-| A `<button>`. See [`M3e.Native.button`](M3e-Native#button).
--}
-button :
-    List (Attr { disabled : Supported, name : Supported, slot : Supported, type_ : Supported, value : Supported } msg)
-    -> List (Element s msg)
-    -> Element { k | html : M3e.Kind.Brand } msg
-button =
-    M3e.Native.button
-
-
-{-| A `<select>`. See [`M3e.Native.select`](M3e-Native#select).
--}
-select :
-    List (Attr { disabled : Supported, multiple : Supported, name : Supported, required : Supported, slot : Supported } msg)
-    -> List (Element s msg)
-    -> Element { k | html : M3e.Kind.Brand } msg
-select =
-    M3e.Native.select
-
-
-{-| A `<textarea>`. See [`M3e.Native.textarea`](M3e-Native#textarea).
--}
-textarea :
-    List (Attr { cols : Supported, disabled : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, rows : Supported, slot : Supported, value : Supported } msg)
-    -> List (Element s msg)
-    -> Element { k | html : M3e.Kind.Brand } msg
-textarea =
-    M3e.Native.textarea
-
-
-
--- UNCOVERED TAGS — the generic helper + tags the generator does not emit --------
-
-
-{-| Build a native element from any `Html` constructor. The catch-all producer for
-tags the generated `M3e.Native` does not emit; carries the `html` kind so it drops
-into any `any` slot.
+{-| Build a native element from any tag name. Carries the `html` kind so it
+drops into any slot that admits it.
 -}
 node :
-    (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
+    String
     -> List (Attr c msg)
-    -> List (Element s msg)
-    -> Element { k | html : M3e.Kind.Brand } msg
-node tag attrs kids =
-    Node.fromComponent
-        (\ha hc -> tag (List.map Attr.toAttribute ha) hc)
-        (List.map Attr.forget attrs)
-        (List.map Element.toNode kids)
-        |> Element.fromNode
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+node tagName attrs kids =
+    Ir.fromNode
+        (Ir.node tagName attrs (List.map HtmlIr.Element.toNode kids))
+
+
+-- COVERED TAGS ----------------------------------------------------------------
+
+
+{-| An `<a>` anchor — open capability row, html kind.
+-}
+a :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+a =
+    node "a"
+
+
+{-| A `<div>`.
+-}
+div :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+div =
+    node "div"
+
+
+{-| A `<span>`.
+-}
+span :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+span =
+    node "span"
+
+
+{-| A `<section>`.
+-}
+section :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+section =
+    node "section"
+
+
+{-| A `<nav>`.
+-}
+nav :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+nav =
+    node "nav"
+
+
+{-| A `<header>`.
+-}
+header :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+header =
+    node "header"
+
+
+{-| A `<footer>`.
+-}
+footer :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+footer =
+    node "footer"
+
+
+{-| A `<p>`.
+-}
+p :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+p =
+    node "p"
+
+
+{-| A `<ul>`.
+-}
+ul :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+ul =
+    node "ul"
+
+
+{-| An `<li>`.
+-}
+li :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+li =
+    node "li"
+
+
+{-| An `<img>` (void).
+-}
+img :
+    List (Attr c msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+img attrs =
+    node "img" attrs []
+
+
+{-| A `<label>`.
+-}
+label :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+label =
+    node "label"
+
+
+{-| An `<input>` (void).
+-}
+input :
+    List (Attr c msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+input attrs =
+    node "input" attrs []
+
+
+{-| A `<button>`.
+-}
+button :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+button =
+    node "button"
+
+
+{-| A `<select>`.
+-}
+select :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+select =
+    node "select"
+
+
+{-| A `<textarea>`.
+-}
+textarea :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+textarea =
+    node "textarea"
+
+
+-- UNCOVERED TAGS --------------------------------------------------------------
 
 
 {-| A `<strong>` element.
 -}
-strong : List (Attr c msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+strong :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 strong =
-    node Html.strong
+    node "strong"
 
 
 {-| An `<em>` element.
 -}
-em : List (Attr c msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+em :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 em =
-    node Html.em
+    node "em"
 
 
 {-| A `<small>` element.
 -}
-small : List (Attr c msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+small :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 small =
-    node Html.small
+    node "small"
 
 
 {-| An `<ol>` element.
 -}
-ol : List (Attr c msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+ol :
+    List (Attr c msg)
+    -> List (Element s admittedBy msg)
+    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 ol =
-    node Html.ol
+    node "ol"
 
 
 {-| A `<br>` element.
 -}
-br : Element { k | html : M3e.Kind.Brand } msg
+br : Element { k | html : M3e.Kind.Brand } freeAdm msg
 br =
-    node Html.br [] []
+    node "br" [] []
 
 
 {-| An `<hr>` element.
 -}
-hr : Element { k | html : M3e.Kind.Brand } msg
+hr : Element { k | html : M3e.Kind.Brand } freeAdm msg
 hr =
-    node Html.hr [] []
-
+    node "hr" [] []
 
 
 -- NATIVE ATTRIBUTE / EVENT ESCAPES --------------------------------------------
 
 
-{-| A raw HTML attribute (`role`, `id`, `dir`, `data-*`, …) as a typed `Attr`
-carrying a fully-open capability row, so it composes onto any native element or
-component. The one named crossing for plain string attributes — feature code
-names the attribute instead of reaching for `Seam`. For HTML-natural, element-
-constrained attributes (`href`, `for`, `type_`, `src`, …) prefer the typed
-setters on [`M3e.Native`](M3e-Native).
+{-| A raw HTML attribute as a typed `Attr` carrying a fully-open capability row.
 -}
 attribute : String -> String -> Attr c msg
 attribute name value =
-    Seam.asAttribute (Html.Attributes.attribute name value)
+    Ir.fromHtmlAttribute (Html.Attributes.attribute name value)
 
 
-{-| A raw inline CSS declaration (e.g. a `--md-sys-*` custom property) as a typed
-`Attr`. The style counterpart of `attribute`.
+{-| A raw inline CSS declaration as a typed `Attr`.
 -}
 style : String -> String -> Attr c msg
 style key value =
-    Seam.asAttribute (Html.Attributes.style key value)
+    Ir.fromHtmlAttribute (Html.Attributes.style key value)
 
 
-{-| A native `click` handler as a typed `Attr`, for wiring a message onto a native
-element (or a component that has no typed action of its own).
+{-| A native `click` handler as a typed `Attr`.
 -}
 onClick : msg -> Attr c msg
 onClick msg =
-    Seam.asAttribute (Html.Events.onClick msg)
+    Ir.fromHtmlAttribute (Html.Events.onClick msg)

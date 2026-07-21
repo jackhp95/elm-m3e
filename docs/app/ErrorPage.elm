@@ -2,7 +2,7 @@ module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound,
 
 import Doc
 import Effect exposing (Effect)
-import Markup.Element as Element
+import HtmlIr.Element as Element
 import View exposing (View)
 
 
