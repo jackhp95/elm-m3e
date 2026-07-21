@@ -6,8 +6,7 @@
         ".elm-pages",
         "../src",
         "kit",
-        "../../elm-html-intermediate-representation/src",
-        "../../elm-typed-html/src"
+        "vendor/elm-foundation"
     ],
     "elm-version": "0.19.1",
     "dependencies": {

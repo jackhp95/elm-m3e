@@ -166,23 +166,21 @@ function setupScratch() {
   fs.rmSync(path.join(SCRATCH, "src"), { recursive: true, force: true });
   fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
   fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
-  // The phantom substrate (HtmlIr.* and TypedHtml.*) lives in sibling repos.
-  // Symlink those source trees into the scratch src so `elm make --docs` finds
-  // them — packages have no source-directories field, so they must sit under src/.
-  // Relative to docs/ (here/../), matching the source-dirs in docs/elm.json.
+  // The phantom substrate (HtmlIr.* and TypedHtml.*) lives in UNPUBLISHED sibling
+  // repos, so its source is vendored into docs/vendor/elm-foundation (a committed
+  // source-directory; see vendor/elm-foundation/VENDORED_FROM.txt and
+  // `pnpm run build:vendor`). Symlink those vendored trees into the scratch src so
+  // `elm make --docs` finds them — packages have no source-directories field, so
+  // they must sit under src/. Using the committed vendor (not the `../../elm-*`
+  // siblings) is what makes this build self-contained on CI, where only elm-m3e is
+  // cloned. The names mirror what docs/elm.json exposes via that source-directory.
   const DOCS = path.resolve(here, "..");
-  const IR_SRC = path.resolve(DOCS, "../../elm-html-intermediate-representation/src");
-  const TH_SRC = path.resolve(DOCS, "../../elm-typed-html/src");
-  for (const [srcDir, names] of [
-    [IR_SRC, ["HtmlIr", "HtmlIr.elm"]],
-    [TH_SRC, ["TypedHtml", "TypedHtml.elm"]],
-  ]) {
-    for (const name of names) {
-      const target = path.join(srcDir, name.replace(".", path.sep));
-      const link = path.join(SCRATCH, "src", name.replace(".", path.sep));
-      if (fs.existsSync(target)) {
-        fs.symlinkSync(target, link);
-      }
+  const FOUNDATION_SRC = path.resolve(DOCS, "vendor/elm-foundation");
+  for (const name of ["HtmlIr", "HtmlIr.elm", "TypedHtml", "TypedHtml.elm"]) {
+    const target = path.join(FOUNDATION_SRC, name.replace(".", path.sep));
+    const link = path.join(SCRATCH, "src", name.replace(".", path.sep));
+    if (fs.existsSync(target)) {
+      fs.symlinkSync(target, link);
     }
   }
   // The barrel module (`module M3e`) is a sibling file. It's a *copy* (not a

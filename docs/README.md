@@ -53,6 +53,7 @@ dev server rebuilds.
 
 | script            | does                                                     |
 | ----------------- | -------------------------------------------------------- |
+| `build:vendor`    | Re-copies the unpublished HtmlIr.* / TypedHtml.* source into `vendor/elm-foundation` (a committed elm.json source-directory). Run after changing either sibling, then commit — the committed copy is what CI compiles. |
 | `build:reference` | Extracts API reference JSON from `elm make --docs`.      |
 | `build:examples`  | Builds the examples data JSON from the example sources.  |
 | `build:assets`    | Runs `build:reference` then `build:examples`.            |
