@@ -24,6 +24,7 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Node exposing (Node)
 import HtmlIr.Value exposing (Value)
+import Json.Decode
 import M3e.Attributes
 import M3e.Events
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
@@ -144,11 +145,11 @@ onChange =
     M3e.Events.onChange
 
 
-{-| See `M3e.Events.onToggle`.
+{-| Typed `toggle` event: decodes `newState` as String.
 -}
-onToggle : msg -> Attr { c | onToggle : Supported } msg
-onToggle =
-    M3e.Events.onToggle
+onToggle : (String -> msg) -> Attr { c | onToggle : Supported } msg
+onToggle toMsg =
+    Ir.on "toggle" (Json.Decode.map toMsg (Json.Decode.at [ "newState" ] Json.Decode.string))
 
 
 {-| See `M3e.Events.onBeforeinput`.
@@ -311,9 +312,9 @@ withOnChange value_ (Builder b) =
 
 {-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
-withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle : (String -> msg) -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
 withOnToggle value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+    Builder { b | attrs = onToggle value_ :: b.attrs }
 
 
 {-| Pipe form of `onBeforeinput` — consumes its capability (write-once).

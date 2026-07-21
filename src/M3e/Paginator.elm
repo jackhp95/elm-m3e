@@ -26,6 +26,7 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Node exposing (Node)
 import HtmlIr.Value exposing (Value)
+import Json.Decode
 import M3e.Attributes
 import M3e.Events
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
@@ -200,11 +201,11 @@ showFirstLastButtons =
     M3e.Attributes.showFirstLastButtons
 
 
-{-| See `M3e.Events.onPage`.
+{-| Typed `page` event: decodes `detail.pageIndex` as String.
 -}
-onPage : msg -> Attr { c | onPage : Supported } msg
-onPage =
-    M3e.Events.onPage
+onPage : (String -> msg) -> Attr { c | onPage : Supported } msg
+onPage toMsg =
+    Ir.on "page" (Json.Decode.map toMsg (Json.Decode.at [ "detail", "pageIndex" ] Json.Decode.string))
 
 
 {-| Place an element into the named `first-page-icon` slot (input constrained to the
@@ -415,9 +416,9 @@ withShowFirstLastButtons value_ (Builder b) =
 
 {-| Pipe form of `onPage` — consumes its capability (write-once).
 -}
-withOnPage : msg -> Builder { a | onPage : Available } slotCaps msg -> Builder { a | onPage : Used } slotCaps msg
+withOnPage : (String -> msg) -> Builder { a | onPage : Available } slotCaps msg -> Builder { a | onPage : Used } slotCaps msg
 withOnPage value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onPage value_ :: b.attrs }
+    Builder { b | attrs = onPage value_ :: b.attrs }
 
 
 {-| Pipe form of the `first-page-icon` slot — consumes its capability (write-once).

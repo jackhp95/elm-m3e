@@ -26,6 +26,7 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Node exposing (Node)
 import HtmlIr.Value exposing (Value)
+import Json.Decode
 import M3e.Attributes
 import M3e.Events
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
@@ -177,11 +178,11 @@ startAt =
     M3e.Attributes.startAt
 
 
-{-| See `M3e.Events.onChange`.
+{-| Typed `change` event: decodes `target.date` as String.
 -}
-onChange : msg -> Attr { c | onChange : Supported } msg
-onChange =
-    M3e.Events.onChange
+onChange : (String -> msg) -> Attr { c | onChange : Supported } msg
+onChange toMsg =
+    Ir.on "change" (Json.Decode.map toMsg (Json.Decode.at [ "target", "date" ] Json.Decode.string))
 
 
 {-| Place an element into the named `header` slot (input constrained to the
@@ -365,9 +366,9 @@ withStartView value_ (Builder b) =
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
-withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange : (String -> msg) -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
 withOnChange value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+    Builder { b | attrs = onChange value_ :: b.attrs }
 
 
 {-| Pipe form of the `header` slot — consumes its capability (write-once).
