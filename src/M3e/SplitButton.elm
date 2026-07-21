@@ -1,141 +1,239 @@
-module M3e.SplitButton exposing (view, variant, size, leadingButton, trailingButton)
+module M3e.SplitButton exposing
+    ( view, el, build, toElement
+    , Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Size, size, Variant, variant
+    , leadingButton, trailingButton
+    , withClass, withId, withLeadingButton, withSize, withSlot, withStyle, withTrailingButton, withVariant
+    )
 
-{-| A button used to show an action with a menu of related actions.
+{-| The `m3e-split-button` component — strict per-component surface.
 
-**Component Info:**
+A button used to show an action with a menu of related actions.
 
-  - **Extends:** `LitElement`
-
-**Slots:**
-
-  - `leading-button`: The leading button used to perform the primary action.
-  - `trailing-button`: The trailing icon button used to open a menu of related actions.
-
-<!-- elm-cem:docmeta category=Actions -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Anatomy" -->
-```elm
-[ M3e.SplitButton.view [] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu" ] [] ]) ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu", M3e.Menu.positionX M3e.Token.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Variants" -->
-```elm
-[ M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Token.filled ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Token.tonal ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Token.outlined ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Token.elevated ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu1", M3e.Menu.positionX M3e.Token.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Sizes" -->
-```elm
-[ M3e.SplitButton.view [ M3e.SplitButton.size M3e.Token.extraSmall ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Token.small ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Token.medium ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Token.large ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
-    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Token.extraLarge ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu2", M3e.Menu.positionX M3e.Token.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.SplitButton.view [ M3e.SplitButton.size M3e.Token.extraSmall, M3e.Attributes.class "density-3" ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu3" ] [] ]) ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu3", M3e.Menu.positionX M3e.Token.before, M3e.Attributes.class "density-3" ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
-    ]
-```
-
-@docs view, variant, size, leadingButton, trailingButton
+@docs view, el, build, toElement
+@docs Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Size, size, Variant, variant
+@docs leadingButton, trailingButton
+@docs withClass, withId, withLeadingButton, withSize, withSlot, withStyle, withTrailingButton, withVariant
 
 -}
 
-import M3e.Html.SplitButton
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-split-button>` element (lazy IR).
+{-| The kind row `m3e-split-button` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | splitButton : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , id : Supported
+    , size : Supported
+    , slot : Supported
+    , style : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the `leading-button` slot admits.
+-}
+type alias LeadingButtonSlot =
+    { button : Brand }
+
+
+{-| The kinds the `trailing-button` slot admits.
+-}
+type alias TrailingButtonSlot =
+    { iconButton : Brand }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | splitButton : Ctx }
+
+
+{-| The `size` values valid on this component (compile-tight narrowing).
+-}
+type alias Size =
+    { extraLarge : Supported
+    , extraSmall : Supported
+    , large : Supported
+    , medium : Supported
+    , small : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { elevated : Supported
+    , filled : Supported
+    , outlined : Supported
+    , tonal : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { variant : M3e.Token.Supported
-            , size : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | splitButton : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.SplitButton.splitButton
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-split-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The appearance variant of the button. (default: `"filled"`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-variant :
-    M3e.Token.Value
-        { elevated : M3e.Token.Supported
-        , filled : M3e.Token.Supported
-        , outlined : M3e.Token.Supported
-        , tonal : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.SplitButton.variant
+el :
+    { leadingButton : Element LeadingButtonSlot (ChildAdmittedBy childAdm) msg
+    , trailingButton : Element TrailingButtonSlot (ChildAdmittedBy childAdm) msg
+    }
+    -> List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading-button") (HtmlIr.Element.toNode required_.leadingButton)) :: Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-button") (HtmlIr.Element.toNode required_.trailingButton)) :: children)
 
 
-{-| The size of the button. (default: `"small"`)
+{-| Narrowed value setter for `size`. Tokens come from `M3e.Values`.
 -}
-size :
-    M3e.Token.Value
-        { extraLarge : M3e.Token.Supported
-        , extraSmall : M3e.Token.Supported
-        , large : M3e.Token.Supported
-        , medium : M3e.Token.Supported
-        , small : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | size : M3e.Token.Supported } msg
-size =
-    M3e.Html.SplitButton.size
+size : Value Size -> Attr { c | size : Supported } msg
+size value_ =
+    Ir.attribute "size" (HtmlIr.Value.toString value_)
 
 
-{-| Place content in the `leading-button` slot.
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
 -}
-leadingButton :
-    Markup.Element.Element { button : M3e.Kind.Brand } msg
-    -> Markup.Element.Element k msg
-leadingButton el =
-    Markup.Element.Internal.placeSlot "leading-button" el
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
 
 
-{-| Place content in the `trailing-button` slot.
+{-| Place an element into the named `leading-button` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-trailingButton :
-    Markup.Element.Element { iconButton : M3e.Kind.Brand } msg
-    -> Markup.Element.Element k msg
-trailingButton el =
-    Markup.Element.Internal.placeSlot "trailing-button" el
+leadingButton : Element LeadingButtonSlot admittedBy msg -> Element free freeAdmittedBy msg
+leadingButton element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading-button") (HtmlIr.Element.toNode element))
+
+
+{-| Place an element into the named `trailing-button` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
+-}
+trailingButton : Element TrailingButtonSlot admittedBy msg -> Element free freeAdmittedBy msg
+trailingButton element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-button") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , size : Available
+    , slot : Available
+    , style : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { leadingButton : Available
+    , trailingButton : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { leadingButton : Element LeadingButtonSlot (ChildAdmittedBy childAdm) msg
+    , trailingButton : Element TrailingButtonSlot (ChildAdmittedBy childAdm) msg
+    }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode (leadingButton required_.leadingButton), HtmlIr.Element.toNode (trailingButton required_.trailingButton) ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-split-button" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `size` — consumes its capability (write-once).
+-}
+withSize : Value Size -> Builder { a | size : Available } slotCaps msg -> Builder { a | size : Used } slotCaps msg
+withSize value_ (Builder b) =
+    Builder { b | attrs = size value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of the `leading-button` slot — consumes its capability (write-once).
+-}
+withLeadingButton : Element LeadingButtonSlot admittedBy msg -> Builder attrCaps { s | leadingButton : Available } msg -> Builder attrCaps { s | leadingButton : Used } msg
+withLeadingButton element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (leadingButton element) :: b.children }
+
+
+{-| Pipe form of the `trailing-button` slot — consumes its capability (write-once).
+-}
+withTrailingButton : Element TrailingButtonSlot admittedBy msg -> Builder attrCaps { s | trailingButton : Available } msg -> Builder attrCaps { s | trailingButton : Used } msg
+withTrailingButton element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (trailingButton element) :: b.children }

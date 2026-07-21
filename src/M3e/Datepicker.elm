@@ -1,358 +1,512 @@
 module M3e.Datepicker exposing
-    ( view, variant, clearable, date, maxDate, minDate
-    , range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
-    , nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
-    , confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , StartView, startView, Variant, variant
+    , clearLabel, clearable, confirmLabel, date, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
+    , withClass, withClearLabel, withClearable, withConfirmLabel, withDate, withDismissLabel, withId, withLabel, withMaxDate, withMinDate, withNextMonthLabel, withNextMultiYearLabel, withNextYearLabel, withOnBeforetoggle, withOnChange, withOnToggle, withPreviousMonthLabel, withPreviousMultiYearLabel, withPreviousYearLabel, withRange, withRangeEnd, withRangeStart, withSlot, withStartAt, withStartView, withStyle, withVariant
     )
 
-{-| Presents a date picker on a temporary surface.
+{-| The `m3e-datepicker` component — strict per-component surface.
 
-**Component Info:**
+Presents a date picker on a temporary surface.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the selected date changes.
-  - `beforetoggle`: Dispatched before the toggle state changes.
-  - `toggle`: Dispatched after the toggle state has changed.
-
-<!-- elm-cem:docmeta category=Text inputs -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [ Native.attribute "for" "fld1" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld1" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld1" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "datepicker" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto, M3e.Attributes.id "datepicker" ] []
-    ]
-```
-
-<!-- elm-cem:example title="Variants" -->
-```elm
-M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto ] []
-```
-
-<!-- elm-cem:example title="Date selection" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld8" (Native.node Html.label [ Native.attribute "for" "fld8" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld8" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld8" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker5" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto, M3e.Attributes.id "picker5", M3e.Datepicker.date "2026-01-01", M3e.Datepicker.clearable True ] []
-    ]
-```
-
-<!-- elm-cem:example title="Start date" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld7" (Native.node Html.label [ Native.attribute "for" "fld7" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld7" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld7" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker4" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto, M3e.Attributes.id "picker4", M3e.Datepicker.startAt "2026-01-01" ] []
-    ]
-```
-
-<!-- elm-cem:example title="Start view" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld6" (Native.node Html.label [ Native.attribute "for" "fld6" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld6" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld6" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker3" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto, M3e.Attributes.id "picker3", M3e.Datepicker.startView M3e.Token.multiYear ] []
-    ]
-```
-
-<!-- elm-cem:example title="Date ranges" -->
-```elm
-[ M3e.FormField.view [ M3e.Attributes.id "range-field", M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld5" (Native.node Html.label [ Native.attribute "for" "fld5" ] [ Kit.text "Date Range Field" ]), M3e.FormField.control "fld5" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld5" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "date-range" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY - MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Attributes.id "date-range", M3e.Datepicker.rangeStart "2026-01-01", M3e.Datepicker.rangeEnd "2026-01-09", M3e.Datepicker.startAt "2026-01-01" ] []
-    ]
-```
-
-<!-- elm-cem:example title="Min and max dates" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld4" (Native.node Html.label [ Native.attribute "for" "fld4" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld4" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld4" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker1" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Attributes.id "picker1", M3e.Datepicker.startAt "2026-04-01", M3e.Datepicker.minDate "2026-01-01", M3e.Datepicker.maxDate "2026-04-30" ] []
-    ]
-```
-
-<!-- elm-cem:example title="Blackout dates" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld3" (Native.node Html.label [ Native.attribute "for" "fld3" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld3" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld3" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "blackout-dates" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto, M3e.Attributes.id "blackout-dates" ] []
-    ]
-```
-
-<!-- elm-cem:example title="Special dates" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld2" (Native.node Html.label [ Native.attribute "for" "fld2" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld2" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld2" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "special-dates" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Token.auto, M3e.Attributes.id "special-dates", M3e.Datepicker.startAt "2026-04-01" ] []
-    ]
-```
-
-@docs view, variant, clearable, date, maxDate, minDate
-@docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
-@docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
-@docs confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs StartView, startView, Variant, variant
+@docs clearLabel, clearable, confirmLabel, date, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
+@docs withClass, withClearLabel, withClearable, withConfirmLabel, withDate, withDismissLabel, withId, withLabel, withMaxDate, withMinDate, withNextMonthLabel, withNextMultiYearLabel, withNextYearLabel, withOnBeforetoggle, withOnChange, withOnToggle, withPreviousMonthLabel, withPreviousMultiYearLabel, withPreviousYearLabel, withRange, withRangeEnd, withRangeStart, withSlot, withStartAt, withStartView, withStyle, withVariant
 
 -}
 
-import M3e.Html.Datepicker
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-datepicker>` element (lazy IR).
+{-| The kind row `m3e-datepicker` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | datepicker : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , clearLabel : Supported
+    , clearable : Supported
+    , confirmLabel : Supported
+    , date : Supported
+    , dismissLabel : Supported
+    , id : Supported
+    , label : Supported
+    , maxDate : Supported
+    , minDate : Supported
+    , nextMonthLabel : Supported
+    , nextMultiYearLabel : Supported
+    , nextYearLabel : Supported
+    , onBeforetoggle : Supported
+    , onChange : Supported
+    , onToggle : Supported
+    , previousMonthLabel : Supported
+    , previousMultiYearLabel : Supported
+    , previousYearLabel : Supported
+    , range : Supported
+    , rangeEnd : Supported
+    , rangeStart : Supported
+    , slot : Supported
+    , startAt : Supported
+    , startView : Supported
+    , style : Supported
+    , variant : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | datepicker : Ctx }
+
+
+{-| The `startView` values valid on this component (compile-tight narrowing).
+-}
+type alias StartView =
+    { month : Supported
+    , multiYear : Supported
+    , year : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { auto : Supported
+    , docked : Supported
+    , modal : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { variant : M3e.Token.Supported
-            , clearable : M3e.Token.Supported
-            , date : M3e.Token.Supported
-            , maxDate : M3e.Token.Supported
-            , minDate : M3e.Token.Supported
-            , range : M3e.Token.Supported
-            , rangeEnd : M3e.Token.Supported
-            , rangeStart : M3e.Token.Supported
-            , startAt : M3e.Token.Supported
-            , startView : M3e.Token.Supported
-            , previousMonthLabel : M3e.Token.Supported
-            , nextMonthLabel : M3e.Token.Supported
-            , previousYearLabel : M3e.Token.Supported
-            , nextYearLabel : M3e.Token.Supported
-            , previousMultiYearLabel : M3e.Token.Supported
-            , nextMultiYearLabel : M3e.Token.Supported
-            , clearLabel : M3e.Token.Supported
-            , confirmLabel : M3e.Token.Supported
-            , dismissLabel : M3e.Token.Supported
-            , label : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onBeforetoggle : M3e.Token.Supported
-            , onToggle : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | datepicker : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Datepicker.datepicker
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-datepicker" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The appearance variant of the picker. (default: `"docked"`)
+{-| Narrowed value setter for `startView`. Tokens come from `M3e.Values`.
 -}
-variant :
-    M3e.Token.Value
-        { auto : M3e.Token.Supported
-        , docked : M3e.Token.Supported
-        , modal : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.Datepicker.variant
+startView : Value StartView -> Attr { c | startView : Supported } msg
+startView value_ =
+    Ir.attribute "start-view" (HtmlIr.Value.toString value_)
 
 
-{-| Whether the user can clear the selected date and close the picker. (default: `false`)
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
 -}
-clearable : Bool -> Markup.Html.Attr.Attr { c | clearable : M3e.Token.Supported } msg
-clearable =
-    M3e.Html.Datepicker.clearable
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
 
 
-{-| The selected date. (default: `null`)
+{-| See `M3e.Attributes.clearLabel`.
 -}
-date : String -> Markup.Html.Attr.Attr { c | date : M3e.Token.Supported } msg
-date =
-    M3e.Html.Datepicker.date
-
-
-{-| The maximum date that can be selected. (default: `null`)
--}
-maxDate : String -> Markup.Html.Attr.Attr { c | maxDate : M3e.Token.Supported } msg
-maxDate =
-    M3e.Html.Datepicker.maxDate
-
-
-{-| The minimum date that can be selected. (default: `null`)
--}
-minDate : String -> Markup.Html.Attr.Attr { c | minDate : M3e.Token.Supported } msg
-minDate =
-    M3e.Html.Datepicker.minDate
-
-
-{-| Whether a range of dates can be selected. (default: `false`)
--}
-range : Bool -> Markup.Html.Attr.Attr { c | range : M3e.Token.Supported } msg
-range =
-    M3e.Html.Datepicker.range
-
-
-{-| End of a date range. (default: `null`)
--}
-rangeEnd : String -> Markup.Html.Attr.Attr { c | rangeEnd : M3e.Token.Supported } msg
-rangeEnd =
-    M3e.Html.Datepicker.rangeEnd
-
-
-{-| Start of a date range. (default: `null`)
--}
-rangeStart : String -> Markup.Html.Attr.Attr { c | rangeStart : M3e.Token.Supported } msg
-rangeStart =
-    M3e.Html.Datepicker.rangeStart
-
-
-{-| A date specifying the period (month or year) to start the calendar in. (default: `null`)
--}
-startAt : String -> Markup.Html.Attr.Attr { c | startAt : M3e.Token.Supported } msg
-startAt =
-    M3e.Html.Datepicker.startAt
-
-
-{-| The initial view used to select a date. (default: `"month"`)
--}
-startView :
-    M3e.Token.Value
-        { month : M3e.Token.Supported
-        , multiYear : M3e.Token.Supported
-        , year : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | startView : M3e.Token.Supported } msg
-startView =
-    M3e.Html.Datepicker.startView
-
-
-{-| The accessible label given to the button used to move to the previous month. (default: `"Previous month"`)
--}
-previousMonthLabel :
-    String
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | previousMonthLabel : M3e.Token.Supported
-            }
-            msg
-previousMonthLabel =
-    M3e.Html.Datepicker.previousMonthLabel
-
-
-{-| The accessible label given to the button used to move to the next month. (default: `"Next month"`)
--}
-nextMonthLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | nextMonthLabel : M3e.Token.Supported } msg
-nextMonthLabel =
-    M3e.Html.Datepicker.nextMonthLabel
-
-
-{-| The accessible label given to the button used to move to the previous year. (default: `"Previous year"`)
--}
-previousYearLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | previousYearLabel : M3e.Token.Supported } msg
-previousYearLabel =
-    M3e.Html.Datepicker.previousYearLabel
-
-
-{-| The accessible label given to the button used to move to the next year. (default: `"Next year"`)
--}
-nextYearLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | nextYearLabel : M3e.Token.Supported } msg
-nextYearLabel =
-    M3e.Html.Datepicker.nextYearLabel
-
-
-{-| The accessible label given to the button used to move to the previous 24 years. (default: `"Previous 24 years"`)
--}
-previousMultiYearLabel :
-    String
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | previousMultiYearLabel : M3e.Token.Supported
-            }
-            msg
-previousMultiYearLabel =
-    M3e.Html.Datepicker.previousMultiYearLabel
-
-
-{-| The accessible label given to the button used to move to the next 24 years. (default: `"Next 24 years"`)
--}
-nextMultiYearLabel :
-    String
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | nextMultiYearLabel : M3e.Token.Supported
-            }
-            msg
-nextMultiYearLabel =
-    M3e.Html.Datepicker.nextMultiYearLabel
-
-
-{-| The label given to the button used clear the selected date and close the picker. (default: `"Clear"`)
--}
-clearLabel : String -> Markup.Html.Attr.Attr { c | clearLabel : M3e.Token.Supported } msg
+clearLabel : String -> Attr { c | clearLabel : Supported } msg
 clearLabel =
-    M3e.Html.Datepicker.clearLabel
+    M3e.Attributes.clearLabel
 
 
-{-| The label given to the button used apply the selected date and close the picker. (default: `"OK"`)
+{-| See `M3e.Attributes.clearable`.
 -}
-confirmLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | confirmLabel : M3e.Token.Supported } msg
+clearable : Bool -> Attr { c | clearable : Supported } msg
+clearable =
+    M3e.Attributes.clearable
+
+
+{-| See `M3e.Attributes.confirmLabel`.
+-}
+confirmLabel : String -> Attr { c | confirmLabel : Supported } msg
 confirmLabel =
-    M3e.Html.Datepicker.confirmLabel
+    M3e.Attributes.confirmLabel
 
 
-{-| The label given to the button used discard the selected date and close the picker. (default: `"Cancel"`)
+{-| See `M3e.Attributes.date`.
 -}
-dismissLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | dismissLabel : M3e.Token.Supported } msg
+date : String -> Attr { c | date : Supported } msg
+date =
+    M3e.Attributes.date
+
+
+{-| See `M3e.Attributes.dismissLabel`.
+-}
+dismissLabel : String -> Attr { c | dismissLabel : Supported } msg
 dismissLabel =
-    M3e.Html.Datepicker.dismissLabel
+    M3e.Attributes.dismissLabel
 
 
-{-| The label given to the the picker. (default: `"Select date"`)
+{-| See `M3e.Attributes.label`.
 -}
-label : String -> Markup.Html.Attr.Attr { c | label : M3e.Token.Supported } msg
+label : String -> Attr { c | label : Supported } msg
 label =
-    M3e.Html.Datepicker.label
+    M3e.Attributes.label
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Attributes.maxDate`.
 -}
-onChange :
-    (String -> msg)
-    -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+maxDate : String -> Attr { c | maxDate : Supported } msg
+maxDate =
+    M3e.Attributes.maxDate
+
+
+{-| See `M3e.Attributes.minDate`.
+-}
+minDate : String -> Attr { c | minDate : Supported } msg
+minDate =
+    M3e.Attributes.minDate
+
+
+{-| See `M3e.Attributes.nextMonthLabel`.
+-}
+nextMonthLabel : String -> Attr { c | nextMonthLabel : Supported } msg
+nextMonthLabel =
+    M3e.Attributes.nextMonthLabel
+
+
+{-| See `M3e.Attributes.nextMultiYearLabel`.
+-}
+nextMultiYearLabel : String -> Attr { c | nextMultiYearLabel : Supported } msg
+nextMultiYearLabel =
+    M3e.Attributes.nextMultiYearLabel
+
+
+{-| See `M3e.Attributes.nextYearLabel`.
+-}
+nextYearLabel : String -> Attr { c | nextYearLabel : Supported } msg
+nextYearLabel =
+    M3e.Attributes.nextYearLabel
+
+
+{-| See `M3e.Attributes.previousMonthLabel`.
+-}
+previousMonthLabel : String -> Attr { c | previousMonthLabel : Supported } msg
+previousMonthLabel =
+    M3e.Attributes.previousMonthLabel
+
+
+{-| See `M3e.Attributes.previousMultiYearLabel`.
+-}
+previousMultiYearLabel : String -> Attr { c | previousMultiYearLabel : Supported } msg
+previousMultiYearLabel =
+    M3e.Attributes.previousMultiYearLabel
+
+
+{-| See `M3e.Attributes.previousYearLabel`.
+-}
+previousYearLabel : String -> Attr { c | previousYearLabel : Supported } msg
+previousYearLabel =
+    M3e.Attributes.previousYearLabel
+
+
+{-| See `M3e.Attributes.range`.
+-}
+range : Bool -> Attr { c | range : Supported } msg
+range =
+    M3e.Attributes.range
+
+
+{-| See `M3e.Attributes.rangeEnd`.
+-}
+rangeEnd : String -> Attr { c | rangeEnd : Supported } msg
+rangeEnd =
+    M3e.Attributes.rangeEnd
+
+
+{-| See `M3e.Attributes.rangeStart`.
+-}
+rangeStart : String -> Attr { c | rangeStart : Supported } msg
+rangeStart =
+    M3e.Attributes.rangeStart
+
+
+{-| See `M3e.Attributes.startAt`.
+-}
+startAt : String -> Attr { c | startAt : Supported } msg
+startAt =
+    M3e.Attributes.startAt
+
+
+{-| See `M3e.Events.onChange`.
+-}
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.Datepicker.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `beforetoggle` events.
+{-| See `M3e.Events.onBeforetoggle`.
 -}
-onBeforetoggle :
-    msg
-    -> Markup.Html.Attr.Attr { c | onBeforetoggle : M3e.Token.Supported } msg
+onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
 onBeforetoggle =
-    M3e.Html.Datepicker.onBeforetoggle
+    M3e.Events.onBeforetoggle
 
 
-{-| Listen for `toggle` events.
+{-| See `M3e.Events.onToggle`.
 -}
-onToggle : msg -> Markup.Html.Attr.Attr { c | onToggle : M3e.Token.Supported } msg
+onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Html.Datepicker.onToggle
+    M3e.Events.onToggle
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , clearLabel : Available
+    , clearable : Available
+    , confirmLabel : Available
+    , date : Available
+    , dismissLabel : Available
+    , id : Available
+    , label : Available
+    , maxDate : Available
+    , minDate : Available
+    , nextMonthLabel : Available
+    , nextMultiYearLabel : Available
+    , nextYearLabel : Available
+    , onBeforetoggle : Available
+    , onChange : Available
+    , onToggle : Available
+    , previousMonthLabel : Available
+    , previousMultiYearLabel : Available
+    , previousYearLabel : Available
+    , range : Available
+    , rangeEnd : Available
+    , rangeStart : Available
+    , slot : Available
+    , startAt : Available
+    , startView : Available
+    , style : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-datepicker" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `clearLabel` — consumes its capability (write-once).
+-}
+withClearLabel : String -> Builder { a | clearLabel : Available } slotCaps msg -> Builder { a | clearLabel : Used } slotCaps msg
+withClearLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.clearLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `clearable` — consumes its capability (write-once).
+-}
+withClearable : Bool -> Builder { a | clearable : Available } slotCaps msg -> Builder { a | clearable : Used } slotCaps msg
+withClearable value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.clearable value_ :: b.attrs }
+
+
+{-| Pipe form of `confirmLabel` — consumes its capability (write-once).
+-}
+withConfirmLabel : String -> Builder { a | confirmLabel : Available } slotCaps msg -> Builder { a | confirmLabel : Used } slotCaps msg
+withConfirmLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.confirmLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `date` — consumes its capability (write-once).
+-}
+withDate : String -> Builder { a | date : Available } slotCaps msg -> Builder { a | date : Used } slotCaps msg
+withDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.date value_ :: b.attrs }
+
+
+{-| Pipe form of `dismissLabel` — consumes its capability (write-once).
+-}
+withDismissLabel : String -> Builder { a | dismissLabel : Available } slotCaps msg -> Builder { a | dismissLabel : Used } slotCaps msg
+withDismissLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.dismissLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `label` — consumes its capability (write-once).
+-}
+withLabel : String -> Builder { a | label : Available } slotCaps msg -> Builder { a | label : Used } slotCaps msg
+withLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.label value_ :: b.attrs }
+
+
+{-| Pipe form of `maxDate` — consumes its capability (write-once).
+-}
+withMaxDate : String -> Builder { a | maxDate : Available } slotCaps msg -> Builder { a | maxDate : Used } slotCaps msg
+withMaxDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.maxDate value_ :: b.attrs }
+
+
+{-| Pipe form of `minDate` — consumes its capability (write-once).
+-}
+withMinDate : String -> Builder { a | minDate : Available } slotCaps msg -> Builder { a | minDate : Used } slotCaps msg
+withMinDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.minDate value_ :: b.attrs }
+
+
+{-| Pipe form of `nextMonthLabel` — consumes its capability (write-once).
+-}
+withNextMonthLabel : String -> Builder { a | nextMonthLabel : Available } slotCaps msg -> Builder { a | nextMonthLabel : Used } slotCaps msg
+withNextMonthLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.nextMonthLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `nextMultiYearLabel` — consumes its capability (write-once).
+-}
+withNextMultiYearLabel : String -> Builder { a | nextMultiYearLabel : Available } slotCaps msg -> Builder { a | nextMultiYearLabel : Used } slotCaps msg
+withNextMultiYearLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.nextMultiYearLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `nextYearLabel` — consumes its capability (write-once).
+-}
+withNextYearLabel : String -> Builder { a | nextYearLabel : Available } slotCaps msg -> Builder { a | nextYearLabel : Used } slotCaps msg
+withNextYearLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.nextYearLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `previousMonthLabel` — consumes its capability (write-once).
+-}
+withPreviousMonthLabel : String -> Builder { a | previousMonthLabel : Available } slotCaps msg -> Builder { a | previousMonthLabel : Used } slotCaps msg
+withPreviousMonthLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.previousMonthLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `previousMultiYearLabel` — consumes its capability (write-once).
+-}
+withPreviousMultiYearLabel : String -> Builder { a | previousMultiYearLabel : Available } slotCaps msg -> Builder { a | previousMultiYearLabel : Used } slotCaps msg
+withPreviousMultiYearLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.previousMultiYearLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `previousYearLabel` — consumes its capability (write-once).
+-}
+withPreviousYearLabel : String -> Builder { a | previousYearLabel : Available } slotCaps msg -> Builder { a | previousYearLabel : Used } slotCaps msg
+withPreviousYearLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.previousYearLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `range` — consumes its capability (write-once).
+-}
+withRange : Bool -> Builder { a | range : Available } slotCaps msg -> Builder { a | range : Used } slotCaps msg
+withRange value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.range value_ :: b.attrs }
+
+
+{-| Pipe form of `rangeEnd` — consumes its capability (write-once).
+-}
+withRangeEnd : String -> Builder { a | rangeEnd : Available } slotCaps msg -> Builder { a | rangeEnd : Used } slotCaps msg
+withRangeEnd value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.rangeEnd value_ :: b.attrs }
+
+
+{-| Pipe form of `rangeStart` — consumes its capability (write-once).
+-}
+withRangeStart : String -> Builder { a | rangeStart : Available } slotCaps msg -> Builder { a | rangeStart : Used } slotCaps msg
+withRangeStart value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.rangeStart value_ :: b.attrs }
+
+
+{-| Pipe form of `startAt` — consumes its capability (write-once).
+-}
+withStartAt : String -> Builder { a | startAt : Available } slotCaps msg -> Builder { a | startAt : Used } slotCaps msg
+withStartAt value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.startAt value_ :: b.attrs }
+
+
+{-| Pipe form of `startView` — consumes its capability (write-once).
+-}
+withStartView : Value StartView -> Builder { a | startView : Available } slotCaps msg -> Builder { a | startView : Used } slotCaps msg
+withStartView value_ (Builder b) =
+    Builder { b | attrs = startView value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
+-}
+withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg -> Builder { a | onBeforetoggle : Used } slotCaps msg
+withOnBeforetoggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforetoggle value_ :: b.attrs }
+
+
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
+-}
+withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }

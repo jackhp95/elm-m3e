@@ -1,155 +1,207 @@
-module M3e.ButtonGroup exposing (view, multi, size, variant)
+module M3e.ButtonGroup exposing
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Size, size, Variant, variant
+    , multi
+    , withChild, withClass, withId, withMulti, withSize, withSlot, withStyle, withVariant
+    )
 
-{-| Organizes buttons and adds interactions between them.
+{-| The `m3e-button-group` component — strict per-component surface.
 
-**Component Info:**
+Organizes buttons and adds interactions between them.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Actions -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Standard" -->
-```elm
-M3e.ButtonGroup.view [] [ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] [] ], M3e.IconButton.view [ M3e.IconButton.width M3e.Token.wide, M3e.IconButton.variant M3e.Token.filled ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "more_vert" ] [] ] ]
-```
-
-<!-- elm-cem:example title="Standard (2)" -->
-```elm
-M3e.ButtonGroup.view [] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), Kit.text "Share" ] ]
-```
-
-<!-- elm-cem:example title="Standard (3)" -->
-```elm
-M3e.ButtonGroup.view [] [ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.width M3e.Token.wide ] [ M3e.Icon.view [ M3e.Icon.name "fast_rewind" ] [] ], M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), Kit.text "Play" ], M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.width M3e.Token.wide ] [ M3e.Icon.view [ M3e.Icon.name "fast_forward" ] [] ] ]
-```
-
-<!-- elm-cem:example title="Connected" -->
-```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Token.connected ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Share" ] ]
-```
-
-<!-- elm-cem:example title="Sizes" -->
-```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.size M3e.Token.large ] [ M3e.IconButton.view [ M3e.IconButton.size M3e.Token.large ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ], M3e.IconButton.view [ M3e.IconButton.size M3e.Token.large ] [ M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] [] ], M3e.IconButton.view [ M3e.IconButton.size M3e.Token.large, M3e.IconButton.width M3e.Token.wide, M3e.IconButton.variant M3e.Token.filled ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ], M3e.IconButton.view [ M3e.IconButton.size M3e.Token.large ] [ M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] [] ], M3e.IconButton.view [ M3e.IconButton.size M3e.Token.large ] [ M3e.Icon.view [ M3e.Icon.name "more_vert" ] [] ] ]
-```
-
-<!-- elm-cem:example title="Sizes (2)" -->
-```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.size M3e.Token.large, M3e.ButtonGroup.variant M3e.Token.connected ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.size M3e.Token.large, M3e.Button.toggle True ] [ Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.size M3e.Token.large, M3e.Button.toggle True ] [ Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.size M3e.Token.large, M3e.Button.toggle True ] [ Kit.text "Share" ] ]
-```
-
-<!-- elm-cem:example title="Selection" -->
-```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.multi True ] [ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "format_bold" ] [] ], M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "format_italic" ] [] ], M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "format_underlined" ] [] ] ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.ButtonGroup.view [ M3e.Attributes.class "density-3" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), Kit.text "Share" ] ]
-    , Native.br
-    , M3e.ButtonGroup.view [ M3e.Attributes.class "density-2" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), Kit.text "Share" ] ]
-    , Native.br
-    , M3e.ButtonGroup.view [ M3e.Attributes.class "density-1" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), Kit.text "Share" ] ]
-    , Native.br
-    , M3e.ButtonGroup.view [ M3e.Attributes.class "density-0" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), Kit.text "Share" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Density (2)" -->
-```elm
-[ M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Token.connected, M3e.Attributes.class "density-3" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Share" ] ]
-    , Native.br
-    , M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Token.connected, M3e.Attributes.class "density-2" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Share" ] ]
-    , Native.br
-    , M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Token.connected, M3e.Attributes.class "density-1" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Share" ] ]
-    , Native.br
-    , M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Token.connected, M3e.Attributes.class "density-0" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Start" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Directions" ], M3e.Button.view [ M3e.Button.variant M3e.Token.tonal, M3e.Button.toggle True ] [ Kit.text "Share" ] ]
-    ]
-```
-
-@docs view, multi, size, variant
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Size, size, Variant, variant
+@docs multi
+@docs withChild, withClass, withId, withMulti, withSize, withSlot, withStyle, withVariant
 
 -}
 
-import M3e.Html.ButtonGroup
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-button-group>` element (lazy IR).
+{-| The kind row `m3e-button-group` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | buttonGroup : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , id : Supported
+    , multi : Supported
+    , size : Supported
+    , slot : Supported
+    , style : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { button : Brand
+    , iconButton : Brand
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | buttonGroup : Ctx }
+
+
+{-| The `size` values valid on this component (compile-tight narrowing).
+-}
+type alias Size =
+    { extraLarge : Supported
+    , extraSmall : Supported
+    , large : Supported
+    , medium : Supported
+    , small : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { connected : Supported
+    , standard : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { multi : M3e.Token.Supported
-            , size : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { button : M3e.Kind.Brand
-                , iconButton : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | buttonGroup : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.ButtonGroup.buttonGroup
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-button-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether multiple toggle buttons can be selected. (default: `false`)
+{-| Narrowed value setter for `size`. Tokens come from `M3e.Values`.
 -}
-multi : Bool -> Markup.Html.Attr.Attr { c | multi : M3e.Token.Supported } msg
+size : Value Size -> Attr { c | size : Supported } msg
+size value_ =
+    Ir.attribute "size" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+-}
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.multi`.
+-}
+multi : Bool -> Attr { c | multi : Supported } msg
 multi =
-    M3e.Html.ButtonGroup.multi
+    M3e.Attributes.multi
 
 
-{-| The size of the group. (default: `"small"`)
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
 -}
-size :
-    M3e.Token.Value
-        { extraLarge : M3e.Token.Supported
-        , extraSmall : M3e.Token.Supported
-        , large : M3e.Token.Supported
-        , medium : M3e.Token.Supported
-        , small : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | size : M3e.Token.Supported } msg
-size =
-    M3e.Html.ButtonGroup.size
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
 
 
-{-| The appearance variant of the group. (default: `"standard"`)
+{-| Every attribute/event capability, still writable.
 -}
-variant :
-    M3e.Token.Value
-        { connected : M3e.Token.Supported
-        , standard : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.ButtonGroup.variant
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , multi : Available
+    , size : Available
+    , slot : Available
+    , style : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-button-group" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `multi` — consumes its capability (write-once).
+-}
+withMulti : Bool -> Builder { a | multi : Available } slotCaps msg -> Builder { a | multi : Used } slotCaps msg
+withMulti value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.multi value_ :: b.attrs }
+
+
+{-| Pipe form of `size` — consumes its capability (write-once).
+-}
+withSize : Value Size -> Builder { a | size : Available } slotCaps msg -> Builder { a | size : Used } slotCaps msg
+withSize value_ (Builder b) =
+    Builder { b | attrs = size value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

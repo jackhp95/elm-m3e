@@ -1,125 +1,256 @@
 module M3e.SearchBar exposing
-    ( view, clearable, clearLabel, onClear, leading, input
-    , trailing, clearIcon
+    ( view, el, build, toElement
+    , Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , clearLabel, clearable, onClear
+    , clearIcon, input, leading, trailing
+    , withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
     )
 
-{-| A bar that provides a prominent entry point for search.
+{-| The `m3e-search-bar` component — strict per-component surface.
 
-**Component Info:**
+A bar that provides a prominent entry point for search.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `clear`: Dispatched when the search term is cleared.
-
-**Slots:**
-
-  - `leading`: Renders content before the input of the bar.
-  - `input`: Renders the input of the bar.
-  - `trailing`: Renders content after the input of the bar.
-
-@docs view, clearable, clearLabel, onClear, leading, input
-@docs trailing, clearIcon
+@docs view, el, build, toElement
+@docs Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs clearLabel, clearable, onClear
+@docs clearIcon, input, leading, trailing
+@docs withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
 
 -}
 
-import M3e.Html.SearchBar
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-search-bar>` element (lazy IR).
+{-| The kind row `m3e-search-bar` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | searchBar : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , clearLabel : Supported
+    , clearable : Supported
+    , id : Supported
+    , onClear : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the `clear-icon` slot admits.
+-}
+type alias ClearIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `leading` slot admits.
+-}
+type alias LeadingSlot =
+    { iconButton : Brand
+    , sharedIcon : Shared
+    }
+
+
+{-| The kinds the `trailing` slot admits.
+-}
+type alias TrailingSlot =
+    { iconButton : Brand
+    , sharedIcon : Shared
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | searchBar : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { clearable : M3e.Token.Supported
-            , clearLabel : M3e.Token.Supported
-            , onClear : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | searchBar : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.SearchBar.searchBar
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-search-bar" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the bar presents a button used to clear the search term. (default: `false`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-clearable : Bool -> Markup.Html.Attr.Attr { c | clearable : M3e.Token.Supported } msg
-clearable =
-    M3e.Html.SearchBar.clearable
+el :
+    { input : Element childAccepts (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (HtmlIr.Element.toNode required_.input)) :: children)
 
 
-{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`)
+{-| See `M3e.Attributes.clearLabel`.
 -}
-clearLabel : String -> Markup.Html.Attr.Attr { c | clearLabel : M3e.Token.Supported } msg
+clearLabel : String -> Attr { c | clearLabel : Supported } msg
 clearLabel =
-    M3e.Html.SearchBar.clearLabel
+    M3e.Attributes.clearLabel
 
 
-{-| Listen for `clear` events.
+{-| See `M3e.Attributes.clearable`.
 -}
-onClear : msg -> Markup.Html.Attr.Attr { c | onClear : M3e.Token.Supported } msg
+clearable : Bool -> Attr { c | clearable : Supported } msg
+clearable =
+    M3e.Attributes.clearable
+
+
+{-| See `M3e.Events.onClear`.
+-}
+onClear : msg -> Attr { c | onClear : Supported } msg
 onClear =
-    M3e.Html.SearchBar.onClear
+    M3e.Events.onClear
 
 
-{-| Place content in the `leading` slot.
+{-| Place an element into the named `clear-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-leading :
-    Markup.Element.Element
-        { sharedIcon : Markup.Kind.Shared
-        , iconButton : M3e.Kind.Brand
-        }
-        msg
-    -> Markup.Element.Element k msg
-leading el =
-    Markup.Element.Internal.placeSlot "leading" el
+clearIcon : Element ClearIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+clearIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "clear-icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `input` slot.
+{-| Place an element into the named `input` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-input : Markup.Element.Element any msg -> Markup.Element.Element k msg
-input el =
-    Markup.Element.Internal.placeSlot "input" el
+input : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+input element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `trailing` slot.
+{-| Place an element into the named `leading` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-trailing :
-    Markup.Element.Element
-        { sharedIcon : Markup.Kind.Shared
-        , iconButton : M3e.Kind.Brand
-        }
-        msg
-    -> Markup.Element.Element k msg
-trailing el =
-    Markup.Element.Internal.placeSlot "trailing" el
+leading : Element LeadingSlot admittedBy msg -> Element free freeAdmittedBy msg
+leading element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `clear-icon` slot.
+{-| Place an element into the named `trailing` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-clearIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-clearIcon el =
-    Markup.Element.Internal.placeSlot "clear-icon" el
+trailing : Element TrailingSlot admittedBy msg -> Element free freeAdmittedBy msg
+trailing element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , clearLabel : Available
+    , clearable : Available
+    , id : Available
+    , onClear : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { clearIcon : Available
+    , input : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { input : Element childAccepts (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode (input required_.input) ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-search-bar" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `clearLabel` — consumes its capability (write-once).
+-}
+withClearLabel : String -> Builder { a | clearLabel : Available } slotCaps msg -> Builder { a | clearLabel : Used } slotCaps msg
+withClearLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.clearLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `clearable` — consumes its capability (write-once).
+-}
+withClearable : Bool -> Builder { a | clearable : Available } slotCaps msg -> Builder { a | clearable : Used } slotCaps msg
+withClearable value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.clearable value_ :: b.attrs }
+
+
+{-| Pipe form of `onClear` — consumes its capability (write-once).
+-}
+withOnClear : msg -> Builder { a | onClear : Available } slotCaps msg -> Builder { a | onClear : Used } slotCaps msg
+withOnClear value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onClear value_ :: b.attrs }
+
+
+{-| Pipe form of the `clear-icon` slot — consumes its capability (write-once).
+-}
+withClearIcon : Element ClearIconSlot admittedBy msg -> Builder attrCaps { s | clearIcon : Available } msg -> Builder attrCaps { s | clearIcon : Used } msg
+withClearIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (clearIcon element) :: b.children }
+
+
+{-| Pipe form of the `input` slot — consumes its capability (write-once).
+-}
+withInput : Element childAccepts admittedBy msg -> Builder attrCaps { s | input : Available } msg -> Builder attrCaps { s | input : Used } msg
+withInput element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (input element) :: b.children }

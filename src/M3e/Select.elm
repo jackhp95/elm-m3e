@@ -1,215 +1,351 @@
 module M3e.Select exposing
-    ( view, disabled, hideSelectionIndicator, multi, name, panelClass
-    , required, onChange, onToggle, onBeforeinput, onInput, arrow
-    , value
+    ( view, el, build, toElement
+    , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
+    , arrow, value
+    , withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
     )
 
-{-| A form control that allows users to select a value from a set of predefined options.
+{-| The `m3e-select` component — strict per-component surface.
 
-**Component Info:**
+A form control that allows users to select a value from a set of predefined options.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the selected state changes.
-  - `toggle`: No description
-  - `beforeinput`: Dispatched before the selected state changes.
-  - `input`: Dispatched when the selected state changes.
-
-**Slots:**
-
-  - `arrow`: Renders the dropdown arrow.
-  - `value`: Renders the selected value(s).
-
-<!-- elm-cem:docmeta category=Text inputs -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "select1" (Native.node Html.label [ Native.attribute "for" "select1" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select1" (M3e.Select.view [ M3e.Attributes.id "select1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-```
-
-<!-- elm-cem:example title="Empty options" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "select2" (Native.node Html.label [ Native.attribute "for" "select2" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select2" (M3e.Select.view [ M3e.Attributes.id "select2" ] [ M3e.Option.view [ M3e.Option.value "" ] [ Kit.text "None" ], M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-```
-
-<!-- elm-cem:example title="Selection" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "select4" (Native.node Html.label [ Native.attribute "for" "select4" ] [ Kit.text "Toppings" ]), M3e.FormField.control "select4" (M3e.Select.view [ M3e.Attributes.id "select4", M3e.Select.multi True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Extra cheese" ], M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Mushroom" ], M3e.Option.view [] [ Kit.text "Onion" ], M3e.Option.view [] [ Kit.text "Pepperoni" ], M3e.Option.view [] [ Kit.text "Sausage" ], M3e.Option.view [] [ Kit.text "Tomato" ] ]) ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "select5" (Native.node Html.label [ Native.attribute "for" "select5" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select5" (M3e.Select.view [ M3e.Attributes.id "select5", M3e.Select.disabled True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-```
-
-<!-- elm-cem:example title="Disabling (2)" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "select6" (Native.node Html.label [ Native.attribute "for" "select6" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select6" (M3e.Select.view [ M3e.Attributes.id "select6" ] [ M3e.Option.view [ M3e.Option.disabled True ] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-```
-
-<!-- elm-cem:example title="Required" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "select7" (Native.node Html.label [ Native.attribute "for" "select7" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select7" (M3e.Select.view [ M3e.Attributes.id "select7", M3e.Select.required True ] [ M3e.Option.view [ M3e.Option.value "" ] [ Kit.text "None" ], M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.FormField.view [ M3e.Attributes.class "density-3" ] [ M3e.FormField.label "ds1" (Native.node Html.label [ Native.attribute "for" "ds1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "ds1" (M3e.Select.view [ M3e.Attributes.id "ds1", M3e.Select.panelClass "density-3" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    , M3e.FormField.view [ M3e.Attributes.class "density-2" ] [ M3e.FormField.label "ds2" (Native.node Html.label [ Native.attribute "for" "ds2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "ds2" (M3e.Select.view [ M3e.Attributes.id "ds2", M3e.Select.panelClass "density-2" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    , M3e.FormField.view [ M3e.Attributes.class "density-1" ] [ M3e.FormField.label "ds3" (Native.node Html.label [ Native.attribute "for" "ds3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "ds3" (M3e.Select.view [ M3e.Attributes.id "ds3", M3e.Select.panelClass "density-1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    , M3e.FormField.view [ M3e.Attributes.class "density-0" ] [ M3e.FormField.label "ds4" (Native.node Html.label [ Native.attribute "for" "ds4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "ds4" (M3e.Select.view [ M3e.Attributes.id "ds4", M3e.Select.panelClass "density-0" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    ]
-```
-
-@docs view, disabled, hideSelectionIndicator, multi, name, panelClass
-@docs required, onChange, onToggle, onBeforeinput, onInput, arrow
-@docs value
+@docs view, el, build, toElement
+@docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
+@docs arrow, value
+@docs withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
 
 -}
 
-import M3e.Html.Select
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
+import M3e.Values
 
 
-{-| Build the `<m3e-select>` element (lazy IR).
+{-| The kind row `m3e-select` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | select : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , hideSelectionIndicator : Supported
+    , id : Supported
+    , multi : Supported
+    , name : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onInput : Supported
+    , onToggle : Supported
+    , panelClass : Supported
+    , required : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { option : Brand }
+
+
+{-| The kinds the `arrow` slot admits.
+-}
+type alias ArrowSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | select : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , hideSelectionIndicator : M3e.Token.Supported
-            , multi : M3e.Token.Supported
-            , name : M3e.Token.Supported
-            , panelClass : M3e.Token.Supported
-            , required : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onToggle : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { option : M3e.Kind.Brand } msg)
-    -> Markup.Element.Element { s | select : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Select.select
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-select" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the element is disabled. (default: `false`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+el :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (required_.content :: children)
+
+
+{-| See `M3e.Attributes.disabled`.
+-}
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.Select.disabled
+    M3e.Attributes.disabled
 
 
-{-| Whether to hide the selection indicator for single select options. (default: `false`)
+{-| See `M3e.Attributes.hideSelectionIndicator`.
 -}
-hideSelectionIndicator :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | hideSelectionIndicator : M3e.Token.Supported
-            }
-            msg
+hideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
 hideSelectionIndicator =
-    M3e.Html.Select.hideSelectionIndicator
+    M3e.Attributes.hideSelectionIndicator
 
 
-{-| Whether multiple options can be selected. (default: `false`)
+{-| See `M3e.Attributes.multi`.
 -}
-multi : Bool -> Markup.Html.Attr.Attr { c | multi : M3e.Token.Supported } msg
+multi : Bool -> Attr { c | multi : Supported } msg
 multi =
-    M3e.Html.Select.multi
+    M3e.Attributes.multi
 
 
-{-| The name that identifies the element when submitting the associated form.
+{-| See `M3e.Attributes.name`.
 -}
-name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
+name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
 name =
-    M3e.Html.Select.name
+    M3e.Attributes.name
 
 
-{-| Class or list of classes to be applied to the select's overlay panel. (default: `""`)
+{-| See `M3e.Attributes.panelClass`.
 -}
-panelClass : String -> Markup.Html.Attr.Attr { c | panelClass : M3e.Token.Supported } msg
+panelClass : String -> Attr { c | panelClass : Supported } msg
 panelClass =
-    M3e.Html.Select.panelClass
+    M3e.Attributes.panelClass
 
 
-{-| Whether the element is required. (default: `false`)
+{-| See `M3e.Attributes.required`.
 -}
-required : Bool -> Markup.Html.Attr.Attr { c | required : M3e.Token.Supported } msg
+required : Bool -> Attr { c | required : Supported } msg
 required =
-    M3e.Html.Select.required
+    M3e.Attributes.required
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Events.onChange`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.Select.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `toggle` events.
+{-| See `M3e.Events.onToggle`.
 -}
-onToggle :
-    (String -> msg)
-    -> Markup.Html.Attr.Attr { c | onToggle : M3e.Token.Supported } msg
+onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Html.Select.onToggle
+    M3e.Events.onToggle
 
 
-{-| Listen for `beforeinput` events.
+{-| See `M3e.Events.onBeforeinput`.
 -}
-onBeforeinput : msg -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.Select.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput : msg -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.Select.onInput
+    M3e.Events.onInput
 
 
-{-| Place content in the `arrow` slot.
+{-| Place an element into the named `arrow` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-arrow :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-arrow el =
-    Markup.Element.Internal.placeSlot "arrow" el
+arrow : Element ArrowSlot admittedBy msg -> Element free freeAdmittedBy msg
+arrow element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "arrow") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `value` slot.
+{-| Place an element into the named `value` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-value : Markup.Element.Element any msg -> Markup.Element.Element k msg
-value el =
-    Markup.Element.Internal.placeSlot "value" el
+value : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+value element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "value") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , hideSelectionIndicator : Available
+    , id : Available
+    , multi : Available
+    , name : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onInput : Available
+    , onToggle : Available
+    , panelClass : Available
+    , required : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { arrow : Available
+    , value : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-select" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
+-}
+withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg -> Builder { a | hideSelectionIndicator : Used } slotCaps msg
+withHideSelectionIndicator value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideSelectionIndicator value_ :: b.attrs }
+
+
+{-| Pipe form of `multi` — consumes its capability (write-once).
+-}
+withMulti : Bool -> Builder { a | multi : Available } slotCaps msg -> Builder { a | multi : Used } slotCaps msg
+withMulti value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.multi value_ :: b.attrs }
+
+
+{-| Pipe form of `name` — consumes its capability (write-once).
+-}
+withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+
+
+{-| Pipe form of `panelClass` — consumes its capability (write-once).
+-}
+withPanelClass : String -> Builder { a | panelClass : Available } slotCaps msg -> Builder { a | panelClass : Used } slotCaps msg
+withPanelClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.panelClass value_ :: b.attrs }
+
+
+{-| Pipe form of `required` — consumes its capability (write-once).
+-}
+withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
+withRequired value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.required value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
+-}
+withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of the `arrow` slot — consumes its capability (write-once).
+-}
+withArrow : Element ArrowSlot admittedBy msg -> Builder attrCaps { s | arrow : Available } msg -> Builder attrCaps { s | arrow : Used } msg
+withArrow element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (arrow element) :: b.children }
+
+
+{-| Pipe form of the `value` slot — consumes its capability (write-once).
+-}
+withValue : Element childAccepts admittedBy msg -> Builder attrCaps { s | value : Available } msg -> Builder attrCaps { s | value : Used } msg
+withValue element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (value element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

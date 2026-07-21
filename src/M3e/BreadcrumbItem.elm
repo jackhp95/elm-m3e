@@ -1,146 +1,305 @@
 module M3e.BreadcrumbItem exposing
-    ( view, itemLabel, disabled, current, href, target
-    , download, rel, onClick, icon
+    ( view, build, toElement
+    , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Current, current
+    , disabled, download, href, itemLabel, rel, target, onClick
+    , icon
+    , withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withItemLabel, withOnClick, withRel, withSlot, withStyle, withTarget
     )
 
-{-| An item in a breadcrumb.
+{-| The `m3e-breadcrumb-item` component — strict per-component surface.
 
-**Component Info:**
+An item in a breadcrumb.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `click`: Dispatched when the element is clicked.
-
-**Slots:**
-
-  - `icon`: Renders an icon before the item's label.
-
-@docs view, itemLabel, disabled, current, href, target
-@docs download, rel, onClick, icon
+@docs view, build, toElement
+@docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Current, current
+@docs disabled, download, href, itemLabel, rel, target, onClick
+@docs icon
+@docs withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withItemLabel, withOnClick, withRel, withSlot, withStyle, withTarget
 
 -}
 
-import M3e.Html.BreadcrumbItem
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-breadcrumb-item>` element (lazy IR).
+{-| The kind row `m3e-breadcrumb-item` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | breadcrumbItem : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , current : Supported
+    , disabled : Supported
+    , download : Supported
+    , href : Supported
+    , id : Supported
+    , itemLabel : Supported
+    , onClick : Supported
+    , rel : Supported
+    , slot : Supported
+    , style : Supported
+    , target : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { sharedIcon : Shared
+    , sharedText : Shared
+    }
+
+
+{-| The kinds the `icon` slot admits.
+-}
+type alias IconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | breadcrumbItem : Ctx }
+
+
+{-| The `current` values valid on this component (compile-tight narrowing).
+-}
+type alias Current =
+    { date : Supported
+    , location : Supported
+    , page : Supported
+    , step : Supported
+    , time : Supported
+    , true : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { itemLabel : M3e.Token.Supported
-            , disabled : M3e.Token.Supported
-            , current : M3e.Token.Supported
-            , href : M3e.Token.Supported
-            , target : M3e.Token.Supported
-            , download : M3e.Token.Supported
-            , rel : M3e.Token.Supported
-            , onClick : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { sharedText : Markup.Kind.Shared
-                , sharedIcon : Markup.Kind.Shared
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | breadcrumbItem : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.BreadcrumbItem.breadcrumbItem
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-breadcrumb-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The accessible label given to the item's internal button. (default: `""`)
+{-| Narrowed value setter for `current`. Tokens come from `M3e.Values`.
 -}
-itemLabel : String -> Markup.Html.Attr.Attr { c | itemLabel : M3e.Token.Supported } msg
-itemLabel =
-    M3e.Html.BreadcrumbItem.itemLabel
+current : Value Current -> Attr { c | current : Supported } msg
+current value_ =
+    Ir.attribute "current" (HtmlIr.Value.toString value_)
 
 
-{-| Whether the element is disabled. (default: `false`)
+{-| See `M3e.Attributes.disabled`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.BreadcrumbItem.disabled
+    M3e.Attributes.disabled
 
 
-{-| Indicates the current item in the breadcrumb path.
+{-| See `M3e.Attributes.download`.
 -}
-current :
-    M3e.Token.Value
-        { date : M3e.Token.Supported
-        , location : M3e.Token.Supported
-        , page : M3e.Token.Supported
-        , step : M3e.Token.Supported
-        , time : M3e.Token.Supported
-        , true : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | current : M3e.Token.Supported } msg
-current =
-    M3e.Html.BreadcrumbItem.current
-
-
-{-| The URL to which the internal breadcrumb link button points. (default: `""`)
--}
-href : String -> Markup.Html.Attr.Attr { c | href : M3e.Token.Supported } msg
-href =
-    M3e.Html.BreadcrumbItem.href
-
-
-{-| The target of the internal breadcrumb link button. (default: `""`)
--}
-target : String -> Markup.Html.Attr.Attr { c | target : M3e.Token.Supported } msg
-target =
-    M3e.Html.BreadcrumbItem.target
-
-
-{-| A value indicating whether the internal link target will be downloaded, optionally specifying a file name. (default: `null`)
--}
-download : String -> Markup.Html.Attr.Attr { c | download : M3e.Token.Supported } msg
+download : String -> Attr { c | download : Supported } msg
 download =
-    M3e.Html.BreadcrumbItem.download
+    M3e.Attributes.download
 
 
-{-| The relationship between the internal link target and the document. (default: `""`)
+{-| See `M3e.Attributes.href`.
 -}
-rel : String -> Markup.Html.Attr.Attr { c | rel : M3e.Token.Supported } msg
+href : String -> Attr { c | href : Supported } msg
+href =
+    M3e.Attributes.href
+
+
+{-| See `M3e.Attributes.itemLabel`.
+-}
+itemLabel : String -> Attr { c | itemLabel : Supported } msg
+itemLabel =
+    M3e.Attributes.itemLabel
+
+
+{-| See `M3e.Attributes.rel`.
+-}
+rel : String -> Attr { c | rel : Supported } msg
 rel =
-    M3e.Html.BreadcrumbItem.rel
+    M3e.Attributes.rel
 
 
-{-| Listen for `click` events.
+{-| See `M3e.Attributes.target`.
 -}
-onClick : msg -> Markup.Html.Attr.Attr { c | onClick : M3e.Token.Supported } msg
+target : String -> Attr { c | target : Supported } msg
+target =
+    M3e.Attributes.target
+
+
+{-| See `M3e.Events.onClick`.
+-}
+onClick : msg -> Attr { c | onClick : Supported } msg
 onClick =
-    M3e.Html.BreadcrumbItem.onClick
+    M3e.Events.onClick
 
 
-{-| Place content in the `icon` slot.
+{-| Place an element into the named `icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-icon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-icon el =
-    Markup.Element.Internal.placeSlot "icon" el
+icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
+icon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , current : Available
+    , disabled : Available
+    , download : Available
+    , href : Available
+    , id : Available
+    , itemLabel : Available
+    , onClick : Available
+    , rel : Available
+    , slot : Available
+    , style : Available
+    , target : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { icon : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-breadcrumb-item" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `current` — consumes its capability (write-once).
+-}
+withCurrent : Value Current -> Builder { a | current : Available } slotCaps msg -> Builder { a | current : Used } slotCaps msg
+withCurrent value_ (Builder b) =
+    Builder { b | attrs = current value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `download` — consumes its capability (write-once).
+-}
+withDownload : String -> Builder { a | download : Available } slotCaps msg -> Builder { a | download : Used } slotCaps msg
+withDownload value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.download value_ :: b.attrs }
+
+
+{-| Pipe form of `href` — consumes its capability (write-once).
+-}
+withHref : String -> Builder { a | href : Available } slotCaps msg -> Builder { a | href : Used } slotCaps msg
+withHref value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.href value_ :: b.attrs }
+
+
+{-| Pipe form of `itemLabel` — consumes its capability (write-once).
+-}
+withItemLabel : String -> Builder { a | itemLabel : Available } slotCaps msg -> Builder { a | itemLabel : Used } slotCaps msg
+withItemLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.itemLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `rel` — consumes its capability (write-once).
+-}
+withRel : String -> Builder { a | rel : Available } slotCaps msg -> Builder { a | rel : Used } slotCaps msg
+withRel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.rel value_ :: b.attrs }
+
+
+{-| Pipe form of `target` — consumes its capability (write-once).
+-}
+withTarget : String -> Builder { a | target : Available } slotCaps msg -> Builder { a | target : Used } slotCaps msg
+withTarget value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.target value_ :: b.attrs }
+
+
+{-| Pipe form of `onClick` — consumes its capability (write-once).
+-}
+withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
+withOnClick value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onClick value_ :: b.attrs }
+
+
+{-| Pipe form of the `icon` slot — consumes its capability (write-once).
+-}
+withIcon : Element IconSlot admittedBy msg -> Builder attrCaps { s | icon : Available } msg -> Builder attrCaps { s | icon : Used } msg
+withIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (icon element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

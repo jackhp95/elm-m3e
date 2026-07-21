@@ -1,169 +1,350 @@
 module M3e.FilterChip exposing
-    ( view, disabled, disabledInteractive, selected, value, variant
-    , onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
+    ( view, el, build, toElement
+    , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Variant, variant
+    , disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
+    , icon, trailingIcon
+    , withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
     )
 
-{-| A chip users interact with to select/deselect options.
+{-| The `m3e-filter-chip` component — strict per-component surface.
 
-**Component Info:**
+A chip users interact with to select/deselect options.
 
-  - **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
-
-**Events:**
-
-  - `beforeinput`: Dispatched before the selected state changes.
-  - `input`: Dispatched when the selected state changes.
-  - `change`: Dispatched when the selected state changes.
-  - `click`: Dispatched when the element is clicked.
-
-**Slots:**
-
-  - `icon`: Renders an icon before the chip's label.
-  - `trailing-icon`: Renders an icon after the chip's label.
-
-@docs view, disabled, disabledInteractive, selected, value, variant
-@docs onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
+@docs view, el, build, toElement
+@docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Variant, variant
+@docs disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
+@docs icon, trailingIcon
+@docs withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
 
 -}
 
-import M3e.Html.FilterChip
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-filter-chip>` element (lazy IR).
+{-| The kind row `m3e-filter-chip` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | filterChip : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , disabledInteractive : Supported
+    , id : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onClick : Supported
+    , onInput : Supported
+    , selected : Supported
+    , slot : Supported
+    , style : Supported
+    , value : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { sharedText : Shared }
+
+
+{-| The kinds the `icon` slot admits.
+-}
+type alias IconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `trailing-icon` slot admits.
+-}
+type alias TrailingIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | filterChip : Ctx }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { elevated : Supported
+    , outlined : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , disabledInteractive : M3e.Token.Supported
-            , selected : M3e.Token.Supported
-            , value : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onClick : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
-    -> Markup.Element.Element { s | filterChip : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.FilterChip.filterChip
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-filter-chip" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| A value indicating whether the element is disabled. (default: `false`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+el :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (required_.content :: children)
+
+
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+-}
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.disabled`.
+-}
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.FilterChip.disabled
+    M3e.Attributes.disabled
 
 
-{-| A value indicating whether the element is disabled and interactive. (default: `false`)
+{-| See `M3e.Attributes.disabledInteractive`.
 -}
-disabledInteractive :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | disabledInteractive : M3e.Token.Supported
-            }
-            msg
+disabledInteractive : Bool -> Attr { c | disabledInteractive : Supported } msg
 disabledInteractive =
-    M3e.Html.FilterChip.disabledInteractive
+    M3e.Attributes.disabledInteractive
 
 
-{-| A value indicating whether the element is selected. (default: `false`)
+{-| See `M3e.Attributes.selected`.
 -}
-selected : Bool -> Markup.Html.Attr.Attr { c | selected : M3e.Token.Supported } msg
+selected : Bool -> Attr { c | selected : Supported } msg
 selected =
-    M3e.Html.FilterChip.selected
+    M3e.Attributes.selected
 
 
-{-| A string representing the value of the chip.
+{-| See `M3e.Attributes.value`.
 -}
-value : String -> Markup.Html.Attr.Attr { c | value : M3e.Token.Supported } msg
+value : String -> Attr { c | value : Supported } msg
 value =
-    M3e.Html.FilterChip.value
+    M3e.Attributes.value
 
 
-{-| The appearance variant of the chip. (default: `"outlined"`)
+{-| See `M3e.Events.onBeforeinput`.
 -}
-variant :
-    M3e.Token.Value
-        { elevated : M3e.Token.Supported
-        , outlined : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.FilterChip.variant
-
-
-{-| Listen for `beforeinput` events.
--}
-onBeforeinput :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.FilterChip.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.FilterChip.onInput
+    M3e.Events.onInput
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Events.onChange`.
 -}
-onChange :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.FilterChip.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `click` events.
+{-| See `M3e.Events.onClick`.
 -}
-onClick : msg -> Markup.Html.Attr.Attr { c | onClick : M3e.Token.Supported } msg
+onClick : msg -> Attr { c | onClick : Supported } msg
 onClick =
-    M3e.Html.FilterChip.onClick
+    M3e.Events.onClick
 
 
-{-| Place content in the `icon` slot.
+{-| Place an element into the named `icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-icon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-icon el =
-    Markup.Element.Internal.placeSlot "icon" el
+icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
+icon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `trailing-icon` slot.
+{-| Place an element into the named `trailing-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-trailingIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-trailingIcon el =
-    Markup.Element.Internal.placeSlot "trailing-icon" el
+trailingIcon : Element TrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+trailingIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-icon") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , disabledInteractive : Available
+    , id : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onClick : Available
+    , onInput : Available
+    , selected : Available
+    , slot : Available
+    , style : Available
+    , value : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { icon : Available
+    , trailingIcon : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-filter-chip" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `disabledInteractive` — consumes its capability (write-once).
+-}
+withDisabledInteractive : Bool -> Builder { a | disabledInteractive : Available } slotCaps msg -> Builder { a | disabledInteractive : Used } slotCaps msg
+withDisabledInteractive value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabledInteractive value_ :: b.attrs }
+
+
+{-| Pipe form of `selected` — consumes its capability (write-once).
+-}
+withSelected : Bool -> Builder { a | selected : Available } slotCaps msg -> Builder { a | selected : Used } slotCaps msg
+withSelected value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.selected value_ :: b.attrs }
+
+
+{-| Pipe form of `value` — consumes its capability (write-once).
+-}
+withValue : String -> Builder { a | value : Available } slotCaps msg -> Builder { a | value : Used } slotCaps msg
+withValue value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.value value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onClick` — consumes its capability (write-once).
+-}
+withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
+withOnClick value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onClick value_ :: b.attrs }
+
+
+{-| Pipe form of the `icon` slot — consumes its capability (write-once).
+-}
+withIcon : Element IconSlot admittedBy msg -> Builder attrCaps { s | icon : Available } msg -> Builder attrCaps { s | icon : Used } msg
+withIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (icon element) :: b.children }
+
+
+{-| Pipe form of the `trailing-icon` slot — consumes its capability (write-once).
+-}
+withTrailingIcon : Element TrailingIconSlot admittedBy msg -> Builder attrCaps { s | trailingIcon : Available } msg -> Builder attrCaps { s | trailingIcon : Used } msg
+withTrailingIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (trailingIcon element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

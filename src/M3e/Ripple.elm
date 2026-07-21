@@ -1,86 +1,202 @@
-module M3e.Ripple exposing (view, centered, disabled, for, radius, unbounded)
+module M3e.Ripple exposing
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , centered, disabled, for, radius, unbounded
+    , withCentered, withClass, withDisabled, withFor, withId, withRadius, withSlot, withStyle, withUnbounded
+    )
 
-{-| Connects user input to screen reactions using ripples.
+{-| The `m3e-ripple` component — strict per-component surface.
 
-**Component Info:**
+Connects user input to screen reactions using ripples.
 
-  - **Extends:** `LitElement`
-
-@docs view, centered, disabled, for, radius, unbounded
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs centered, disabled, for, radius, unbounded
+@docs withCentered, withClass, withDisabled, withFor, withId, withRadius, withSlot, withStyle, withUnbounded
 
 -}
 
-import M3e.Html.Ripple
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-ripple>` element (lazy IR).
+{-| The kind row `m3e-ripple` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | ripple : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { centered : Supported
+    , class : Supported
+    , disabled : Supported
+    , for : Supported
+    , id : Supported
+    , radius : Supported
+    , slot : Supported
+    , style : Supported
+    , unbounded : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | ripple : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { centered : M3e.Token.Supported
-            , disabled : M3e.Token.Supported
-            , for : M3e.Token.Supported
-            , radius : M3e.Token.Supported
-            , unbounded : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | ripple : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Ripple.ripple
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-ripple" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the ripple always originates from the center of the element's bounds, rather
-than originating from the location of the click event. (default: `false`)
+{-| See `M3e.Attributes.centered`.
 -}
-centered : Bool -> Markup.Html.Attr.Attr { c | centered : M3e.Token.Supported } msg
+centered : Bool -> Attr { c | centered : Supported } msg
 centered =
-    M3e.Html.Ripple.centered
+    M3e.Attributes.centered
 
 
-{-| Whether click events will not trigger the ripple.
-Ripples can be still controlled manually by using the `show` and 'hide' methods. (default: `false`)
+{-| See `M3e.Attributes.disabled`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.Ripple.disabled
+    M3e.Attributes.disabled
 
 
-{-| The identifier of the interactive control to which this element is attached. (default: `null`)
+{-| See `M3e.Attributes.for`.
 -}
-for : String -> Markup.Html.Attr.Attr { c | for : M3e.Token.Supported } msg
+for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Html.Ripple.for
+    M3e.Attributes.for
 
 
-{-| The radius, in pixels, of the ripple. (default: `null`)
+{-| See `M3e.Attributes.radius`.
 -}
-radius : Float -> Markup.Html.Attr.Attr { c | radius : M3e.Token.Supported } msg
+radius : Float -> Attr { c | radius : Supported } msg
 radius =
-    M3e.Html.Ripple.radius
+    M3e.Attributes.radius
 
 
-{-| Whether the ripple is visible outside the element's bounds. (default: `false`)
+{-| See `M3e.Attributes.unbounded`.
 -}
-unbounded : Bool -> Markup.Html.Attr.Attr { c | unbounded : M3e.Token.Supported } msg
+unbounded : Bool -> Attr { c | unbounded : Supported } msg
 unbounded =
-    M3e.Html.Ripple.unbounded
+    M3e.Attributes.unbounded
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { centered : Available
+    , class : Available
+    , disabled : Available
+    , for : Available
+    , id : Available
+    , radius : Available
+    , slot : Available
+    , style : Available
+    , unbounded : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-ripple" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `centered` — consumes its capability (write-once).
+-}
+withCentered : Bool -> Builder { a | centered : Available } slotCaps msg -> Builder { a | centered : Used } slotCaps msg
+withCentered value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.centered value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `for` — consumes its capability (write-once).
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
+withFor value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+
+
+{-| Pipe form of `radius` — consumes its capability (write-once).
+-}
+withRadius : Float -> Builder { a | radius : Available } slotCaps msg -> Builder { a | radius : Used } slotCaps msg
+withRadius value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.radius value_ :: b.attrs }
+
+
+{-| Pipe form of `unbounded` — consumes its capability (write-once).
+-}
+withUnbounded : Bool -> Builder { a | unbounded : Available } slotCaps msg -> Builder { a | unbounded : Used } slotCaps msg
+withUnbounded value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.unbounded value_ :: b.attrs }

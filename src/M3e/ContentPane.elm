@@ -1,57 +1,130 @@
-module M3e.ContentPane exposing (view)
+module M3e.ContentPane exposing
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , withChild, withClass, withId, withSlot, withStyle
+    )
 
-{-| A shaped surface for vertically scrollable content.
+{-| The `m3e-content-pane` component — strict per-component surface.
 
-**Component Info:**
+A shaped surface for vertically scrollable content.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Containment -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Usage" -->
-```elm
-M3e.ContentPane.view [] [ M3e.Heading.view [ M3e.Heading.tocIgnore True, M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.large ] [ Kit.text "Content header" ], Native.p [] [ Kit.text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae ligula at ipsum pulvinar tincidunt.\n    Integer feugiat, tortor non aliquet facilisis, velit risus faucibus lorem, vitae porttitor justo arcu\n    nec sapien. Curabitur euismod, urna vel placerat dictum, augue sem ullamcorper velit, id interdum neque\n    magna non nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.\n    Suspendisse potenti. Praesent ac orci eget urna volutpat fermentum. Donec non mi sed sapien gravida\n    aliquet. Vivamus at orci id libero scelerisque convallis. Pellentesque habitant morbi tristique senectus\n    et netus et malesuada fames ac turpis egestas. Cras ac erat id velit pharetra luctus. Mauris sed nisl\n    sed arcu facilisis tincidunt. Aliquam erat volutpat. Sed sit amet massa non magna gravida cursus. Sed\n    vulputate, velit id suscipit convallis, lorem ipsum varius neque, sed porttitor lacus justo vitae\n    libero. Integer at felis vel lacus porta posuere. Aenean non lorem ac nulla gravida tincidunt.\n    Pellentesque vel urna id libero dictum gravida. Donec sit amet velit nec sapien ultricies tincidunt.\n    Vivamus in augue id libero sodales tincidunt. Integer id lorem nec sapien bibendum tincidunt. Sed id\n    lacus non justo viverra tincidunt. Curabitur id risus vitae justo tincidunt gravida. Vivamus id ligula\n    non ipsum porta tincidunt. Pellentesque id lorem nec sapien dictum tincidunt. Integer id lorem nec\n    sapien bibendum tincidunt." ] ]
-```
-
-<!-- elm-cem:example title="Content header" -->
-```elm
-M3e.ContentPane.view [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.large ] [ Kit.text "Content header" ], Native.p [] [] ]
-```
-
-@docs view
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs withChild, withClass, withId, withSlot, withStyle
 
 -}
 
-import M3e.Html.ContentPane
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-content-pane>` element (lazy IR).
+{-| The kind row `m3e-content-pane` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | contentPane : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , id : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | contentPane : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 view :
-    List (Markup.Html.Attr.Attr { slot : M3e.Token.Supported } msg)
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | contentPane : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.ContentPane.contentPane
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-content-pane" attrs (List.map HtmlIr.Element.toNode children))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-content-pane" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

@@ -1,119 +1,251 @@
 module M3e.MultiYearView exposing
-    ( view, active, today, date, activeDate, minDate
-    , maxDate, onChange, onActiveChange
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , active, activeDate, date, maxDate, minDate, today, onChange, onActiveChange
+    , withActive, withActiveDate, withClass, withDate, withId, withMaxDate, withMinDate, withOnActiveChange, withOnChange, withSlot, withStyle, withToday
     )
 
-{-| An internal component used to display a year selector in a calendar.
+{-| The `m3e-multi-year-view` component — strict per-component surface.
 
-**Component Info:**
+An internal component used to display a year selector in a calendar.
 
-  - **Extends:** `CalendarViewElementBase` from `/src/calendar/CalendarViewElementBase`
-
-**Events:**
-
-  - `change`: No description
-  - `active-change`: No description
-
-@docs view, active, today, date, activeDate, minDate
-@docs maxDate, onChange, onActiveChange
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs active, activeDate, date, maxDate, minDate, today, onChange, onActiveChange
+@docs withActive, withActiveDate, withClass, withDate, withId, withMaxDate, withMinDate, withOnActiveChange, withOnChange, withSlot, withStyle, withToday
 
 -}
 
-import M3e.Html.MultiYearView
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-multi-year-view>` element (lazy IR).
+{-| The kind row `m3e-multi-year-view` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | multiYearView : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { active : Supported
+    , activeDate : Supported
+    , class : Supported
+    , date : Supported
+    , id : Supported
+    , maxDate : Supported
+    , minDate : Supported
+    , onActiveChange : Supported
+    , onChange : Supported
+    , slot : Supported
+    , style : Supported
+    , today : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | multiYearView : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { active : M3e.Token.Supported
-            , today : M3e.Token.Supported
-            , date : M3e.Token.Supported
-            , activeDate : M3e.Token.Supported
-            , minDate : M3e.Token.Supported
-            , maxDate : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onActiveChange : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | multiYearView : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.MultiYearView.multiYearView
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-multi-year-view" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the view is active. (default: `false`)
+{-| See `M3e.Attributes.active`.
 -}
-active : Bool -> Markup.Html.Attr.Attr { c | active : M3e.Token.Supported } msg
+active : Bool -> Attr { c | active : Supported } msg
 active =
-    M3e.Html.MultiYearView.active
+    M3e.Attributes.active
 
 
-{-| Today's date. (default: `new Date()`)
+{-| See `M3e.Attributes.activeDate`.
 -}
-today : String -> Markup.Html.Attr.Attr { c | today : M3e.Token.Supported } msg
-today =
-    M3e.Html.MultiYearView.today
-
-
-{-| The selected date. (default: `null`)
--}
-date : String -> Markup.Html.Attr.Attr { c | date : M3e.Token.Supported } msg
-date =
-    M3e.Html.MultiYearView.date
-
-
-{-| The active date. (default: `new Date()`)
--}
-activeDate : String -> Markup.Html.Attr.Attr { c | activeDate : M3e.Token.Supported } msg
+activeDate : String -> Attr { c | activeDate : Supported } msg
 activeDate =
-    M3e.Html.MultiYearView.activeDate
+    M3e.Attributes.activeDate
 
 
-{-| The minimum date that can be selected. (default: `null`)
+{-| See `M3e.Attributes.date`.
 -}
-minDate : String -> Markup.Html.Attr.Attr { c | minDate : M3e.Token.Supported } msg
-minDate =
-    M3e.Html.MultiYearView.minDate
+date : String -> Attr { c | date : Supported } msg
+date =
+    M3e.Attributes.date
 
 
-{-| The maximum date that can be selected. (default: `null`)
+{-| See `M3e.Attributes.maxDate`.
 -}
-maxDate : String -> Markup.Html.Attr.Attr { c | maxDate : M3e.Token.Supported } msg
+maxDate : String -> Attr { c | maxDate : Supported } msg
 maxDate =
-    M3e.Html.MultiYearView.maxDate
+    M3e.Attributes.maxDate
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Attributes.minDate`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+minDate : String -> Attr { c | minDate : Supported } msg
+minDate =
+    M3e.Attributes.minDate
+
+
+{-| See `M3e.Attributes.today`.
+-}
+today : String -> Attr { c | today : Supported } msg
+today =
+    M3e.Attributes.today
+
+
+{-| See `M3e.Events.onChange`.
+-}
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.MultiYearView.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `active-change` events.
+{-| See `M3e.Events.onActiveChange`.
 -}
-onActiveChange :
-    msg
-    -> Markup.Html.Attr.Attr { c | onActiveChange : M3e.Token.Supported } msg
+onActiveChange : msg -> Attr { c | onActiveChange : Supported } msg
 onActiveChange =
-    M3e.Html.MultiYearView.onActiveChange
+    M3e.Events.onActiveChange
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { active : Available
+    , activeDate : Available
+    , class : Available
+    , date : Available
+    , id : Available
+    , maxDate : Available
+    , minDate : Available
+    , onActiveChange : Available
+    , onChange : Available
+    , slot : Available
+    , style : Available
+    , today : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-multi-year-view" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `active` — consumes its capability (write-once).
+-}
+withActive : Bool -> Builder { a | active : Available } slotCaps msg -> Builder { a | active : Used } slotCaps msg
+withActive value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.active value_ :: b.attrs }
+
+
+{-| Pipe form of `activeDate` — consumes its capability (write-once).
+-}
+withActiveDate : String -> Builder { a | activeDate : Available } slotCaps msg -> Builder { a | activeDate : Used } slotCaps msg
+withActiveDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.activeDate value_ :: b.attrs }
+
+
+{-| Pipe form of `date` — consumes its capability (write-once).
+-}
+withDate : String -> Builder { a | date : Available } slotCaps msg -> Builder { a | date : Used } slotCaps msg
+withDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.date value_ :: b.attrs }
+
+
+{-| Pipe form of `maxDate` — consumes its capability (write-once).
+-}
+withMaxDate : String -> Builder { a | maxDate : Available } slotCaps msg -> Builder { a | maxDate : Used } slotCaps msg
+withMaxDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.maxDate value_ :: b.attrs }
+
+
+{-| Pipe form of `minDate` — consumes its capability (write-once).
+-}
+withMinDate : String -> Builder { a | minDate : Available } slotCaps msg -> Builder { a | minDate : Used } slotCaps msg
+withMinDate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.minDate value_ :: b.attrs }
+
+
+{-| Pipe form of `today` — consumes its capability (write-once).
+-}
+withToday : String -> Builder { a | today : Available } slotCaps msg -> Builder { a | today : Used } slotCaps msg
+withToday value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.today value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onActiveChange` — consumes its capability (write-once).
+-}
+withOnActiveChange : msg -> Builder { a | onActiveChange : Available } slotCaps msg -> Builder { a | onActiveChange : Used } slotCaps msg
+withOnActiveChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onActiveChange value_ :: b.attrs }

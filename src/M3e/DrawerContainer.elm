@@ -1,186 +1,288 @@
 module M3e.DrawerContainer exposing
-    ( view, end, endMode, endDivider, start, startMode
-    , startDivider, onChange, startSlot, endSlot
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , EndMode, endMode, StartMode, startMode
+    , endDivider, startDivider, onChange
+    , end, start
+    , withChild, withClass, withEnd, withEndDivider, withEndMode, withEndSlot, withId, withOnChange, withSlot, withStart, withStartDivider, withStartMode, withStartSlot, withStyle
     )
 
-{-| A container for one or two sliding drawers.
+{-| The `m3e-drawer-container` component — strict per-component surface.
 
-**Component Info:**
+A container for one or two sliding drawers.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the state of the start or end drawers change.
-
-**Slots:**
-
-  - `start`: Renders the start drawer.
-  - `end`: Renders the end drawer.
-
-<!-- elm-cem:docmeta category=Navigation -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Drawers" -->
-```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.end True ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ], M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]) ]
-```
-
-<!-- elm-cem:example title="Sizes" -->
-```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True ] [ M3e.DrawerContainer.startSlot (Native.div [ Native.attribute "style" "width: 200px" ] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
-```
-
-<!-- elm-cem:example title="Modes" -->
-```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Token.push ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
-```
-
-<!-- elm-cem:example title="Modes (2)" -->
-```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Token.over ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
-```
-
-<!-- elm-cem:example title="Dividers" -->
-```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Token.side, M3e.DrawerContainer.endDivider True ] [ Native.div [] [ Kit.text "Main content" ], M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]) ]
-```
-
-<!-- elm-cem:example title="Toggle" -->
-```elm
-[ M3e.IconButton.view [ M3e.Aria.label "Menu", M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "menu" ] [], M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "menu_open" ] []), M3e.DrawerToggle.view [ M3e.DrawerToggle.for "nav-drawer" ] [] ]
-    , M3e.DrawerContainer.view [ M3e.DrawerContainer.startMode M3e.Token.over ] [ M3e.DrawerContainer.startSlot (Native.div [ Native.attribute "id" "nav-drawer" ] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Accessibility" -->
-```elm
-M3e.DrawerContainer.view [] [ M3e.DrawerContainer.startSlot (Native.nav [] []), Native.node Html.main_ [] [], M3e.DrawerContainer.endSlot (Native.node Html.aside [] []) ]
-```
-
-@docs view, end, endMode, endDivider, start, startMode
-@docs startDivider, onChange, startSlot, endSlot
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs EndMode, endMode, StartMode, startMode
+@docs endDivider, startDivider, onChange
+@docs end, start
+@docs withChild, withClass, withEnd, withEndDivider, withEndMode, withEndSlot, withId, withOnChange, withSlot, withStart, withStartDivider, withStartMode, withStartSlot, withStyle
 
 -}
 
-import M3e.Html.DrawerContainer
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-drawer-container>` element (lazy IR).
+{-| The kind row `m3e-drawer-container` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | drawerContainer : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , end : Supported
+    , endDivider : Supported
+    , endMode : Supported
+    , id : Supported
+    , onChange : Supported
+    , slot : Supported
+    , start : Supported
+    , startDivider : Supported
+    , startMode : Supported
+    , style : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | drawerContainer : Ctx }
+
+
+{-| The `endMode` values valid on this component (compile-tight narrowing).
+-}
+type alias EndMode =
+    { auto : Supported
+    , over : Supported
+    , push : Supported
+    , side : Supported
+    }
+
+
+{-| The `startMode` values valid on this component (compile-tight narrowing).
+-}
+type alias StartMode =
+    { auto : Supported
+    , over : Supported
+    , push : Supported
+    , side : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { end : M3e.Token.Supported
-            , endMode : M3e.Token.Supported
-            , endDivider : M3e.Token.Supported
-            , start : M3e.Token.Supported
-            , startMode : M3e.Token.Supported
-            , startDivider : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | drawerContainer : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.DrawerContainer.drawerContainer
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-drawer-container" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the end drawer is open. (default: `false`)
+{-| Narrowed value setter for `endMode`. Tokens come from `M3e.Values`.
 -}
-end : Bool -> Markup.Html.Attr.Attr { c | end : M3e.Token.Supported } msg
-end =
-    M3e.Html.DrawerContainer.end
+endMode : Value EndMode -> Attr { c | endMode : Supported } msg
+endMode value_ =
+    Ir.attribute "end-mode" (HtmlIr.Value.toString value_)
 
 
-{-| The behavior mode of the end drawer. (default: `"side"`)
+{-| Narrowed value setter for `startMode`. Tokens come from `M3e.Values`.
 -}
-endMode :
-    M3e.Token.Value
-        { auto : M3e.Token.Supported
-        , over : M3e.Token.Supported
-        , push : M3e.Token.Supported
-        , side : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | endMode : M3e.Token.Supported } msg
-endMode =
-    M3e.Html.DrawerContainer.endMode
+startMode : Value StartMode -> Attr { c | startMode : Supported } msg
+startMode value_ =
+    Ir.attribute "start-mode" (HtmlIr.Value.toString value_)
 
 
-{-| Whether to show a divider between the end drawer and content for `side` mode. (default: `false`)
+{-| See `M3e.Attributes.endDivider`.
 -}
-endDivider : Bool -> Markup.Html.Attr.Attr { c | endDivider : M3e.Token.Supported } msg
+endDivider : Bool -> Attr { c | endDivider : Supported } msg
 endDivider =
-    M3e.Html.DrawerContainer.endDivider
+    M3e.Attributes.endDivider
 
 
-{-| Whether the start drawer is open. (default: `false`)
+{-| See `M3e.Attributes.startDivider`.
 -}
-start : Bool -> Markup.Html.Attr.Attr { c | start : M3e.Token.Supported } msg
-start =
-    M3e.Html.DrawerContainer.start
-
-
-{-| The behavior mode of the start drawer. (default: `"side"`)
--}
-startMode :
-    M3e.Token.Value
-        { auto : M3e.Token.Supported
-        , over : M3e.Token.Supported
-        , push : M3e.Token.Supported
-        , side : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | startMode : M3e.Token.Supported } msg
-startMode =
-    M3e.Html.DrawerContainer.startMode
-
-
-{-| Whether to show a divider between the start drawer and content for `side` mode. (default: `false`)
--}
-startDivider : Bool -> Markup.Html.Attr.Attr { c | startDivider : M3e.Token.Supported } msg
+startDivider : Bool -> Attr { c | startDivider : Supported } msg
 startDivider =
-    M3e.Html.DrawerContainer.startDivider
+    M3e.Attributes.startDivider
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Events.onChange`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.DrawerContainer.onChange
+    M3e.Events.onChange
 
 
-{-| Place content in the `start` slot.
+{-| Place an element into the named `end` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-startSlot : Markup.Element.Element any msg -> Markup.Element.Element k msg
-startSlot el =
-    Markup.Element.Internal.placeSlot "start" el
+end : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+end element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "end") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `end` slot.
+{-| Place an element into the named `start` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-endSlot : Markup.Element.Element any msg -> Markup.Element.Element k msg
-endSlot el =
-    Markup.Element.Internal.placeSlot "end" el
+start : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+start element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , end : Available
+    , endDivider : Available
+    , endMode : Available
+    , id : Available
+    , onChange : Available
+    , slot : Available
+    , start : Available
+    , startDivider : Available
+    , startMode : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { end : Available
+    , start : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-drawer-container" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `end` — consumes its capability (write-once).
+-}
+withEnd : Bool -> Builder { a | end : Available } slotCaps msg -> Builder { a | end : Used } slotCaps msg
+withEnd value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.end value_ :: b.attrs }
+
+
+{-| Pipe form of `endDivider` — consumes its capability (write-once).
+-}
+withEndDivider : Bool -> Builder { a | endDivider : Available } slotCaps msg -> Builder { a | endDivider : Used } slotCaps msg
+withEndDivider value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.endDivider value_ :: b.attrs }
+
+
+{-| Pipe form of `endMode` — consumes its capability (write-once).
+-}
+withEndMode : Value EndMode -> Builder { a | endMode : Available } slotCaps msg -> Builder { a | endMode : Used } slotCaps msg
+withEndMode value_ (Builder b) =
+    Builder { b | attrs = endMode value_ :: b.attrs }
+
+
+{-| Pipe form of `start` — consumes its capability (write-once).
+-}
+withStart : Bool -> Builder { a | start : Available } slotCaps msg -> Builder { a | start : Used } slotCaps msg
+withStart value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.start value_ :: b.attrs }
+
+
+{-| Pipe form of `startDivider` — consumes its capability (write-once).
+-}
+withStartDivider : Bool -> Builder { a | startDivider : Available } slotCaps msg -> Builder { a | startDivider : Used } slotCaps msg
+withStartDivider value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.startDivider value_ :: b.attrs }
+
+
+{-| Pipe form of `startMode` — consumes its capability (write-once).
+-}
+withStartMode : Value StartMode -> Builder { a | startMode : Available } slotCaps msg -> Builder { a | startMode : Used } slotCaps msg
+withStartMode value_ (Builder b) =
+    Builder { b | attrs = startMode value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of the `end` slot — consumes its capability (write-once).
+-}
+withEndSlot : Element childAccepts admittedBy msg -> Builder attrCaps { s | end : Available } msg -> Builder attrCaps { s | end : Used } msg
+withEndSlot element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (end element) :: b.children }
+
+
+{-| Pipe form of the `start` slot — consumes its capability (write-once).
+-}
+withStartSlot : Element childAccepts admittedBy msg -> Builder attrCaps { s | start : Available } msg -> Builder attrCaps { s | start : Used } msg
+withStartSlot element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (start element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

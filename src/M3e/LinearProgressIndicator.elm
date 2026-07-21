@@ -1,48 +1,52 @@
-module M3e.ThemeIcon exposing
+module M3e.LinearProgressIndicator exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , Scheme, scheme, Variant, variant
-    , color
-    , withClass, withColor, withId, withScheme, withSlot, withStyle, withVariant
+    , Mode, mode, Variant, variant
+    , bufferValue, max, value
+    , withBufferValue, withClass, withId, withMax, withMode, withSlot, withStyle, withValue, withVariant
     )
 
-{-| The `m3e-theme-icon` component — strict per-component surface.
+{-| The `m3e-linear-progress-indicator` component — strict per-component surface.
 
-An icon that visually presents a preview of a theme.
+A horizontal bar for indicating progress and activity.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs Scheme, scheme, Variant, variant
-@docs color
-@docs withClass, withColor, withId, withScheme, withSlot, withStyle, withVariant
+@docs Mode, mode, Variant, variant
+@docs bufferValue, max, value
+@docs withBufferValue, withClass, withId, withMax, withMode, withSlot, withStyle, withValue, withVariant
 
 -}
 
+import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Node exposing (Node)
 import HtmlIr.Value exposing (Value)
+import Json.Encode
 import M3e.Attributes
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| The kind row `m3e-theme-icon` produces (open — composes into any slot naming it).
+{-| The kind row `m3e-linear-progress-indicator` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | themeIcon : Brand }
+    { s | linearProgressIndicator : Brand }
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , color : Supported
+    { bufferValue : Supported
+    , class : Supported
     , id : Supported
-    , scheme : Supported
+    , max : Supported
+    , mode : Supported
     , slot : Supported
     , style : Supported
+    , value : Supported
     , variant : Supported
     }
 
@@ -50,30 +54,24 @@ type alias Attrs =
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | themeIcon : Ctx }
+    { childAdm | linearProgressIndicator : Ctx }
 
 
-{-| The `scheme` values valid on this component (compile-tight narrowing).
+{-| The `mode` values valid on this component (compile-tight narrowing).
 -}
-type alias Scheme =
-    { auto : Supported
-    , dark : Supported
-    , light : Supported
+type alias Mode =
+    { buffer : Supported
+    , determinate : Supported
+    , indeterminate : Supported
+    , query : Supported
     }
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { content : Supported
-    , expressive : Supported
-    , fidelity : Supported
-    , fruitSalad : Supported
-    , monochrome : Supported
-    , neutral : Supported
-    , rainbow : Supported
-    , tonalSpot : Supported
-    , vibrant : Supported
+    { flat : Supported
+    , wavy : Supported
     }
 
 
@@ -84,14 +82,14 @@ view :
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
 view attrs children =
-    Ir.fromNode (Ir.node "m3e-theme-icon" attrs (List.map HtmlIr.Element.toNode children))
+    Ir.fromNode (Ir.node "m3e-linear-progress-indicator" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Narrowed value setter for `scheme`. Tokens come from `M3e.Values`.
+{-| Narrowed value setter for `mode`. Tokens come from `M3e.Values`.
 -}
-scheme : Value Scheme -> Attr { c | scheme : Supported } msg
-scheme value_ =
-    Ir.attribute "scheme" (HtmlIr.Value.toString value_)
+mode : Value Mode -> Attr { c | mode : Supported } msg
+mode value_ =
+    Ir.attribute "mode" (HtmlIr.Value.toString value_)
 
 
 {-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
@@ -101,11 +99,25 @@ variant value_ =
     Ir.attribute "variant" (HtmlIr.Value.toString value_)
 
 
-{-| See `M3e.Attributes.color`.
+{-| See `M3e.Attributes.bufferValue`.
 -}
-color : String -> Attr { c | color : Supported } msg
-color =
-    M3e.Attributes.color
+bufferValue : Float -> Attr { c | bufferValue : Supported } msg
+bufferValue =
+    M3e.Attributes.bufferValue
+
+
+{-| See `M3e.Attributes.max`.
+-}
+max : Float -> Attr { c | max : Supported } msg
+max =
+    M3e.Attributes.max
+
+
+{-| The `value` attribute (this component's type differs from the shared canonical).
+-}
+value : Float -> Attr { c | value : Supported } msg
+value value_ =
+    Ir.property "value" (Json.Encode.float value_)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
@@ -118,12 +130,14 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , color : Available
+    { bufferValue : Available
+    , class : Available
     , id : Available
-    , scheme : Available
+    , max : Available
+    , mode : Available
     , slot : Available
     , style : Available
+    , value : Available
     , variant : Available
     }
 
@@ -145,7 +159,7 @@ build =
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-theme-icon" (List.reverse b.attrs) (List.reverse b.children))
+    Ir.fromNode (Ir.node "m3e-linear-progress-indicator" (List.reverse b.attrs) (List.reverse b.children))
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
@@ -176,18 +190,32 @@ withStyle value_ (Builder b) =
     Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
 
 
-{-| Pipe form of `color` — consumes its capability (write-once).
+{-| Pipe form of `bufferValue` — consumes its capability (write-once).
 -}
-withColor : String -> Builder { a | color : Available } slotCaps msg -> Builder { a | color : Used } slotCaps msg
-withColor value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.color value_ :: b.attrs }
+withBufferValue : Float -> Builder { a | bufferValue : Available } slotCaps msg -> Builder { a | bufferValue : Used } slotCaps msg
+withBufferValue value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.bufferValue value_ :: b.attrs }
 
 
-{-| Pipe form of `scheme` — consumes its capability (write-once).
+{-| Pipe form of `max` — consumes its capability (write-once).
 -}
-withScheme : Value Scheme -> Builder { a | scheme : Available } slotCaps msg -> Builder { a | scheme : Used } slotCaps msg
-withScheme value_ (Builder b) =
-    Builder { b | attrs = scheme value_ :: b.attrs }
+withMax : Float -> Builder { a | max : Available } slotCaps msg -> Builder { a | max : Used } slotCaps msg
+withMax value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.max value_ :: b.attrs }
+
+
+{-| Pipe form of `mode` — consumes its capability (write-once).
+-}
+withMode : Value Mode -> Builder { a | mode : Available } slotCaps msg -> Builder { a | mode : Used } slotCaps msg
+withMode value_ (Builder b) =
+    Builder { b | attrs = mode value_ :: b.attrs }
+
+
+{-| Pipe form of `value` — consumes its capability (write-once).
+-}
+withValue : Float -> Builder { a | value : Available } slotCaps msg -> Builder { a | value : Used } slotCaps msg
+withValue value_ (Builder b) =
+    Builder { b | attrs = Ir.property "value" (Json.Encode.float value_) :: b.attrs }
 
 
 {-| Pipe form of `variant` — consumes its capability (write-once).

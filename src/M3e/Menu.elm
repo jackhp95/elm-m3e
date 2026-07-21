@@ -1,206 +1,264 @@
 module M3e.Menu exposing
-    ( view, positionX, positionY, variant, submenu, onBeforetoggle
-    , onToggle
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , PositionX, positionX, PositionY, positionY, Variant, variant
+    , submenu, onBeforetoggle, onToggle
+    , withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withPositionX, withPositionY, withSlot, withStyle, withSubmenu, withVariant
     )
 
-{-| Presents a list of choices on a temporary surface.
+{-| The `m3e-menu` component — strict per-component surface.
 
-**Component Info:**
+Presents a list of choices on a temporary surface.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `beforetoggle`: Dispatched before the toggle state changes.
-  - `toggle`: Dispatched after the toggle state has changed.
-
-<!-- elm-cem:docmeta category=Navigation -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [ Kit.text "Menu" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu1" ] [ M3e.MenuItem.view [] [ Kit.text "Item 1" ], M3e.MenuItem.view [] [ Kit.text "Item 2" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Variants" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "vmenu1" ] [ Kit.text "Vibrant menu" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "vmenu1", M3e.Menu.variant M3e.Token.vibrant ] [ M3e.MenuItem.view [] [ Kit.text "Item 1" ], M3e.MenuItem.view [] [ Kit.text "Item 2" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Icons" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu8" ] [ Kit.text "Menu items with icons" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu8" ] [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "dialpad" ] []), Kit.text "Redial" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "voicemail" ] []), Kit.text "Check voice mail" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "notifications_off" ] []), Kit.text "Disable alerts" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu9" ] [ Kit.text "Menu with disabled items" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu9" ] [ M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "dialpad" ] []), Kit.text "Redial" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "voicemail" ] []), Kit.text "Check voice mail" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "notifications_off" ] []), Kit.text "Disable alerts" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Checkboxes" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [ Kit.text "Menu with checkboxes" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu2" ] [ M3e.MenuItemCheckbox.view [ M3e.MenuItemCheckbox.checked True ] [ M3e.MenuItemCheckbox.icon (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []), Kit.text "Bold" ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.icon (M3e.Icon.view [ M3e.Icon.name "format_italic" ] []), Kit.text "Italic" ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.icon (M3e.Icon.view [ M3e.Icon.name "format_underlined" ] []), Kit.text "Underline" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Radios" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu3" ] [ Kit.text "Menu with radios" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu3" ] [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ Kit.text "Ascending" ], M3e.MenuItemRadio.view [] [ Kit.text "Descending" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Radios (2)" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu4" ] [ Kit.text "Menu with radio groups" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu4" ] [ M3e.MenuItemGroup.view [] [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ Kit.text "Ascending" ], M3e.MenuItemRadio.view [] [ Kit.text "Descending" ] ], M3e.Divider.view [] [], M3e.MenuItemGroup.view [] [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ Kit.text "Alphabetical" ], M3e.MenuItemRadio.view [] [ Kit.text "By Date" ] ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Submenus" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu5" ] [ Kit.text "Menu with submenus" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu5" ] [ M3e.MenuItem.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu6" ] [ Kit.text "Fruits with A" ] ], M3e.MenuItem.view [] [ Kit.text "Grapes" ], M3e.MenuItem.view [] [ Kit.text "Olive" ], M3e.MenuItem.view [] [ Kit.text "Orange" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu6" ] [ M3e.MenuItem.view [] [ Kit.text "Apricot" ], M3e.MenuItem.view [] [ Kit.text "Avocado" ], M3e.MenuItem.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu7" ] [ Kit.text "Apples" ] ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu7" ] [ M3e.MenuItem.view [] [ Kit.text "Fuji" ], M3e.MenuItem.view [] [ Kit.text "Granny Smith" ], M3e.MenuItem.view [] [ Kit.text "Red Delicious" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu-density-3" ] [ Kit.text "Density -3" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu-density-3", M3e.Attributes.class "density-3" ] [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 1" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 2" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 3" ] ]
-    , M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu-density-2" ] [ Kit.text "Density -2" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu-density-2", M3e.Attributes.class "density-2" ] [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 1" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 2" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 3" ] ]
-    , M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu-density-1" ] [ Kit.text "Density -1" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu-density-1", M3e.Attributes.class "density-1" ] [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 1" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 2" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 3" ] ]
-    , M3e.Button.view [] [ M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu-density-0" ] [ Kit.text "Density 0" ] ]
-    , M3e.Menu.view [ M3e.Attributes.id "menu-density-0", M3e.Attributes.class "density-0" ] [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 1" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 2" ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Item 3" ] ]
-    ]
-```
-
-@docs view, positionX, positionY, variant, submenu, onBeforetoggle
-@docs onToggle
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs PositionX, positionX, PositionY, positionY, Variant, variant
+@docs submenu, onBeforetoggle, onToggle
+@docs withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withPositionX, withPositionY, withSlot, withStyle, withSubmenu, withVariant
 
 -}
 
-import M3e.Html.Menu
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-menu>` element (lazy IR).
+{-| The kind row `m3e-menu` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | menu : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , id : Supported
+    , onBeforetoggle : Supported
+    , onToggle : Supported
+    , positionX : Supported
+    , positionY : Supported
+    , slot : Supported
+    , style : Supported
+    , submenu : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { divider : Brand
+    , menuItem : Brand
+    , menuItemCheckbox : Brand
+    , menuItemGroup : Brand
+    , menuItemRadio : Brand
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | menu : Ctx }
+
+
+{-| The `positionX` values valid on this component (compile-tight narrowing).
+-}
+type alias PositionX =
+    { after : Supported
+    , before : Supported
+    }
+
+
+{-| The `positionY` values valid on this component (compile-tight narrowing).
+-}
+type alias PositionY =
+    { above : Supported
+    , below : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { standard : Supported
+    , vibrant : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { positionX : M3e.Token.Supported
-            , positionY : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , submenu : M3e.Token.Supported
-            , onBeforetoggle : M3e.Token.Supported
-            , onToggle : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { menuItem : M3e.Kind.Brand
-                , menuItemCheckbox : M3e.Kind.Brand
-                , menuItemRadio : M3e.Kind.Brand
-                , menuItemGroup : M3e.Kind.Brand
-                , divider : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | menu : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Menu.menu
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-menu" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The position of the menu, on the x-axis. (default: `"after"`)
+{-| Narrowed value setter for `positionX`. Tokens come from `M3e.Values`.
 -}
-positionX :
-    M3e.Token.Value
-        { after : M3e.Token.Supported
-        , before : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | positionX : M3e.Token.Supported } msg
-positionX =
-    M3e.Html.Menu.positionX
+positionX : Value PositionX -> Attr { c | positionX : Supported } msg
+positionX value_ =
+    Ir.attribute "position-x" (HtmlIr.Value.toString value_)
 
 
-{-| The position of the menu, on the y-axis. (default: `"below"`)
+{-| Narrowed value setter for `positionY`. Tokens come from `M3e.Values`.
 -}
-positionY :
-    M3e.Token.Value { above : M3e.Token.Supported, below : M3e.Token.Supported }
-    -> Markup.Html.Attr.Attr { c | positionY : M3e.Token.Supported } msg
-positionY =
-    M3e.Html.Menu.positionY
+positionY : Value PositionY -> Attr { c | positionY : Supported } msg
+positionY value_ =
+    Ir.attribute "position-y" (HtmlIr.Value.toString value_)
 
 
-{-| The appearance variant of the menu. (default: `"standard"`)
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
 -}
-variant :
-    M3e.Token.Value
-        { standard : M3e.Token.Supported
-        , vibrant : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.Menu.variant
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
 
 
-{-| A value indicating whether the menu is a submenu. (default: `false`)
+{-| See `M3e.Attributes.submenu`.
 -}
-submenu : Bool -> Markup.Html.Attr.Attr { c | submenu : M3e.Token.Supported } msg
+submenu : Bool -> Attr { c | submenu : Supported } msg
 submenu =
-    M3e.Html.Menu.submenu
+    M3e.Attributes.submenu
 
 
-{-| Listen for `beforetoggle` events.
+{-| See `M3e.Events.onBeforetoggle`.
 -}
-onBeforetoggle :
-    msg
-    -> Markup.Html.Attr.Attr { c | onBeforetoggle : M3e.Token.Supported } msg
+onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
 onBeforetoggle =
-    M3e.Html.Menu.onBeforetoggle
+    M3e.Events.onBeforetoggle
 
 
-{-| Listen for `toggle` events.
+{-| See `M3e.Events.onToggle`.
 -}
-onToggle :
-    (String -> msg)
-    -> Markup.Html.Attr.Attr { c | onToggle : M3e.Token.Supported } msg
+onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Html.Menu.onToggle
+    M3e.Events.onToggle
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , onBeforetoggle : Available
+    , onToggle : Available
+    , positionX : Available
+    , positionY : Available
+    , slot : Available
+    , style : Available
+    , submenu : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-menu" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `positionX` — consumes its capability (write-once).
+-}
+withPositionX : Value PositionX -> Builder { a | positionX : Available } slotCaps msg -> Builder { a | positionX : Used } slotCaps msg
+withPositionX value_ (Builder b) =
+    Builder { b | attrs = positionX value_ :: b.attrs }
+
+
+{-| Pipe form of `positionY` — consumes its capability (write-once).
+-}
+withPositionY : Value PositionY -> Builder { a | positionY : Available } slotCaps msg -> Builder { a | positionY : Used } slotCaps msg
+withPositionY value_ (Builder b) =
+    Builder { b | attrs = positionY value_ :: b.attrs }
+
+
+{-| Pipe form of `submenu` — consumes its capability (write-once).
+-}
+withSubmenu : Bool -> Builder { a | submenu : Available } slotCaps msg -> Builder { a | submenu : Used } slotCaps msg
+withSubmenu value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.submenu value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
+-}
+withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg -> Builder { a | onBeforetoggle : Used } slotCaps msg
+withOnBeforetoggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforetoggle value_ :: b.attrs }
+
+
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
+-}
+withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

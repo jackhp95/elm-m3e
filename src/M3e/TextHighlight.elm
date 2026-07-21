@@ -1,109 +1,225 @@
-module M3e.TextHighlight exposing (view, caseSensitive, disabled, mode, term, onHighlight)
+module M3e.TextHighlight exposing
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Mode, mode
+    , caseSensitive, disabled, term, onHighlight
+    , withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
+    )
 
-{-| Highlights text which matches a given search term.
+{-| The `m3e-text-highlight` component — strict per-component surface.
 
-**Component Info:**
+Highlights text which matches a given search term.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `highlight`: Dispatched when content is highlighted.
-
-<!-- elm-cem:docmeta category=Layout & style -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Highlight a term" -->
-```elm
-M3e.TextHighlight.view [ M3e.TextHighlight.term "trail" ] [ Kit.text "Discover the top ten hiking trails. Every trail on the list has a difficulty rating and each trail entry links to a map." ]
-```
-
-@docs view, caseSensitive, disabled, mode, term, onHighlight
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Mode, mode
+@docs caseSensitive, disabled, term, onHighlight
+@docs withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
 
 -}
 
-import M3e.Html.TextHighlight
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-text-highlight>` element (lazy IR).
+{-| The kind row `m3e-text-highlight` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | textHighlight : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { caseSensitive : Supported
+    , class : Supported
+    , disabled : Supported
+    , id : Supported
+    , mode : Supported
+    , onHighlight : Supported
+    , slot : Supported
+    , style : Supported
+    , term : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | textHighlight : Ctx }
+
+
+{-| The `mode` values valid on this component (compile-tight narrowing).
+-}
+type alias Mode =
+    { contains : Supported
+    , endsWith : Supported
+    , startsWith : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { caseSensitive : M3e.Token.Supported
-            , disabled : M3e.Token.Supported
-            , mode : M3e.Token.Supported
-            , term : M3e.Token.Supported
-            , onHighlight : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | textHighlight : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.TextHighlight.textHighlight
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-text-highlight" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether matching is case sensitive. (default: `false`)
+{-| Narrowed value setter for `mode`. Tokens come from `M3e.Values`.
 -}
-caseSensitive :
-    Bool
-    -> Markup.Html.Attr.Attr { c | caseSensitive : M3e.Token.Supported } msg
+mode : Value Mode -> Attr { c | mode : Supported } msg
+mode value_ =
+    Ir.attribute "mode" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.caseSensitive`.
+-}
+caseSensitive : Bool -> Attr { c | caseSensitive : Supported } msg
 caseSensitive =
-    M3e.Html.TextHighlight.caseSensitive
+    M3e.Attributes.caseSensitive
 
 
-{-| A value indicating whether text highlighting is disabled. (default: `false`)
+{-| See `M3e.Attributes.disabled`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.TextHighlight.disabled
+    M3e.Attributes.disabled
 
 
-{-| The mode in which to highlight text. (default: `"contains"`)
+{-| See `M3e.Attributes.term`.
 -}
-mode :
-    M3e.Token.Value
-        { contains : M3e.Token.Supported
-        , endsWith : M3e.Token.Supported
-        , startsWith : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | mode : M3e.Token.Supported } msg
-mode =
-    M3e.Html.TextHighlight.mode
-
-
-{-| The term to highlight. (default: `""`)
--}
-term : String -> Markup.Html.Attr.Attr { c | term : M3e.Token.Supported } msg
+term : String -> Attr { c | term : Supported } msg
 term =
-    M3e.Html.TextHighlight.term
+    M3e.Attributes.term
 
 
-{-| Listen for `highlight` events.
+{-| See `M3e.Events.onHighlight`.
 -}
-onHighlight : msg -> Markup.Html.Attr.Attr { c | onHighlight : M3e.Token.Supported } msg
+onHighlight : msg -> Attr { c | onHighlight : Supported } msg
 onHighlight =
-    M3e.Html.TextHighlight.onHighlight
+    M3e.Events.onHighlight
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { caseSensitive : Available
+    , class : Available
+    , disabled : Available
+    , id : Available
+    , mode : Available
+    , onHighlight : Available
+    , slot : Available
+    , style : Available
+    , term : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-text-highlight" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `caseSensitive` — consumes its capability (write-once).
+-}
+withCaseSensitive : Bool -> Builder { a | caseSensitive : Available } slotCaps msg -> Builder { a | caseSensitive : Used } slotCaps msg
+withCaseSensitive value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.caseSensitive value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `mode` — consumes its capability (write-once).
+-}
+withMode : Value Mode -> Builder { a | mode : Available } slotCaps msg -> Builder { a | mode : Used } slotCaps msg
+withMode value_ (Builder b) =
+    Builder { b | attrs = mode value_ :: b.attrs }
+
+
+{-| Pipe form of `term` — consumes its capability (write-once).
+-}
+withTerm : String -> Builder { a | term : Available } slotCaps msg -> Builder { a | term : Used } slotCaps msg
+withTerm value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.term value_ :: b.attrs }
+
+
+{-| Pipe form of `onHighlight` — consumes its capability (write-once).
+-}
+withOnHighlight : msg -> Builder { a | onHighlight : Available } slotCaps msg -> Builder { a | onHighlight : Used } slotCaps msg
+withOnHighlight value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onHighlight value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

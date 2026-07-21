@@ -1,235 +1,338 @@
 module M3e.FormField exposing
-    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, control
-    , prefix, prefixText, label, suffix, suffixText, hint
-    , error
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
+    , hideRequiredMarker
+    , error, hint, label, prefix, prefixText, suffix, suffixText
+    , withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withLabel, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
     )
 
-{-| A container for form controls that applies Material Design styling and behavior.
+{-| The `m3e-form-field` component — strict per-component surface.
 
-**Component Info:**
+A container for form controls that applies Material Design styling and behavior.
 
-  - **Extends:** `LitElement`
-
-**Slots:**
-
-  - `prefix`: Renders content before the fields's control.
-  - `prefix-text`: Renders text before the fields's control.
-  - `suffix`: Renders content after the fields's control.
-  - `suffix-text`: Renders text after the fields's control.
-  - `hint`: Renders hint text in the fields's subscript, when the control is valid.
-  - `error`: Renders error text in the fields's subscript, when the control is invalid.
-
-<!-- elm-cem:docmeta category=Text inputs -->
-
-
-## Examples
-
-
-### Variants
-
-<!-- elm-cem:example title="Variants" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [ Native.attribute "for" "fld1" ] [ Kit.text "Outlined" ]), M3e.FormField.control "fld1" (Native.node Html.input [ Native.attribute "id" "fld1" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled ] [ M3e.FormField.label "fld2" (Native.node Html.label [ Native.attribute "for" "fld2" ] [ Kit.text "Filled" ]), M3e.FormField.control "fld2" (Native.node Html.input [ Native.attribute "id" "fld2" ] []) ]
-    ]
-```
-
-
-### Examples
-
-<!-- elm-cem:example title="Float label" -->
-```elm
-M3e.FormField.view [ M3e.FormField.floatLabel M3e.Token.always ] [ M3e.FormField.label "fld3" (Native.node Html.label [ Native.attribute "for" "fld3" ] [ Kit.text "Always float label" ]), M3e.FormField.control "fld3" (Native.node Html.input [ Native.attribute "id" "fld3" ] []) ]
-```
-
-<!-- elm-cem:example title="Hint labels" -->
-```elm
-M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Token.auto ] [ M3e.FormField.label "fld4" (Native.node Html.label [ Native.attribute "for" "fld4" ] [ Kit.text "Field w/ hint" ]), M3e.FormField.control "fld4" (Native.node Html.input [ Native.attribute "id" "fld4" ] []), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]) ]
-```
-
-<!-- elm-cem:example title="Error messages" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld5" (Native.node Html.label [ Native.attribute "for" "fld5" ] [ Kit.text "Required field" ]), M3e.FormField.control "fld5" (Native.node Html.input [ Native.attribute "id" "fld5", Native.attribute "required" "" ] []), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]) ]
-```
-
-<!-- elm-cem:example title="Error messages (2)" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld6" (Native.node Html.label [ Native.attribute "for" "fld6" ] [ Kit.text "Required field" ]), M3e.FormField.control "fld6" (Native.node Html.input [ Native.attribute "id" "fld6", Native.attribute "required" "" ] []), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.error (Native.span [] [ Kit.text "Custom error message" ]) ]
-```
-
-<!-- elm-cem:example title="Hiding the required marker" -->
-```elm
-M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label "fld7" (Native.node Html.label [ Native.attribute "for" "fld7" ] [ Kit.text "Required field" ]), M3e.FormField.control "fld7" (Native.node Html.input [ Native.attribute "id" "fld7", Native.attribute "required" "" ] []) ]
-```
-
-<!-- elm-cem:example title="Prefix and suffix" -->
-```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [ Native.attribute "for" "fld8" ] [ Kit.text "Amount" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.control "fld8" (Native.node Html.input [ Native.attribute "id" "fld8", Native.attribute "type" "number", Native.attribute "placeholder" "0" ] []), M3e.FormField.suffixText (Native.span [] [ Kit.text ".00" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "clear" ] [] ]) ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined, M3e.Attributes.class "density-3" ] [ M3e.FormField.label "dfld1" (Native.node Html.label [ Native.attribute "for" "dfld1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld1" (Native.node Html.input [ Native.attribute "id" "dfld1" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined, M3e.Attributes.class "density-2" ] [ M3e.FormField.label "dfld2" (Native.node Html.label [ Native.attribute "for" "dfld2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld2" (Native.node Html.input [ Native.attribute "id" "dfld2" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined, M3e.Attributes.class "density-1" ] [ M3e.FormField.label "dfld3" (Native.node Html.label [ Native.attribute "for" "dfld3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld3" (Native.node Html.input [ Native.attribute "id" "dfld3" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.outlined, M3e.Attributes.class "density-0" ] [ M3e.FormField.label "dfld4" (Native.node Html.label [ Native.attribute "for" "dfld4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld4" (Native.node Html.input [ Native.attribute "id" "dfld4" ] []) ]
-    ]
-```
-
-<!-- elm-cem:example title="Density (2)" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled, M3e.Attributes.class "density-3" ] [ M3e.FormField.label "dfld5" (Native.node Html.label [ Native.attribute "for" "dfld5" ] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld5" (Native.node Html.input [ Native.attribute "id" "dfld5" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled, M3e.Attributes.class "density-2" ] [ M3e.FormField.label "dfld6" (Native.node Html.label [ Native.attribute "for" "dfld6" ] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld6" (Native.node Html.input [ Native.attribute "id" "dfld6" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled, M3e.Attributes.class "density-1" ] [ M3e.FormField.label "dfld7" (Native.node Html.label [ Native.attribute "for" "dfld7" ] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld7" (Native.node Html.input [ Native.attribute "id" "dfld7" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled, M3e.Attributes.class "density-0" ] [ M3e.FormField.label "dfld8" (Native.node Html.label [ Native.attribute "for" "dfld8" ] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld8" (Native.node Html.input [ Native.attribute "id" "dfld8" ] []) ]
-    ]
-```
-
-@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, control
-@docs prefix, prefixText, label, suffix, suffixText, hint
-@docs error
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
+@docs hideRequiredMarker
+@docs error, hint, label, prefix, prefixText, suffix, suffixText
+@docs withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withLabel, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
 
 -}
 
-import M3e.Html.FormField
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-form-field>` element (lazy IR).
+{-| The kind row `m3e-form-field` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | formField : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , floatLabel : Supported
+    , hideRequiredMarker : Supported
+    , hideSubscript : Supported
+    , id : Supported
+    , slot : Supported
+    , style : Supported
+    , variant : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | formField : Ctx }
+
+
+{-| The `floatLabel` values valid on this component (compile-tight narrowing).
+-}
+type alias FloatLabel =
+    { always : Supported
+    , auto : Supported
+    }
+
+
+{-| The `hideSubscript` values valid on this component (compile-tight narrowing).
+-}
+type alias HideSubscript =
+    { always : Supported
+    , auto : Supported
+    , never : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { filled : Supported
+    , outlined : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { floatLabel : M3e.Token.Supported
-            , hideRequiredMarker : M3e.Token.Supported
-            , hideSubscript : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | formField : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.FormField.formField
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-form-field" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Specifies whether the label should float always or only when necessary. (default: `"auto"`)
+{-| Narrowed value setter for `floatLabel`. Tokens come from `M3e.Values`.
 -}
-floatLabel :
-    M3e.Token.Value { always : M3e.Token.Supported, auto : M3e.Token.Supported }
-    -> Markup.Html.Attr.Attr { c | floatLabel : M3e.Token.Supported } msg
-floatLabel =
-    M3e.Html.FormField.floatLabel
+floatLabel : Value FloatLabel -> Attr { c | floatLabel : Supported } msg
+floatLabel value_ =
+    Ir.attribute "float-label" (HtmlIr.Value.toString value_)
 
 
-{-| Whether the required marker should be hidden. (default: `false`)
+{-| Narrowed value setter for `hideSubscript`. Tokens come from `M3e.Values`.
 -}
-hideRequiredMarker :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | hideRequiredMarker : M3e.Token.Supported
-            }
-            msg
+hideSubscript : Value HideSubscript -> Attr { c | hideSubscript : Supported } msg
+hideSubscript value_ =
+    Ir.attribute "hide-subscript" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+-}
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.hideRequiredMarker`.
+-}
+hideRequiredMarker : Bool -> Attr { c | hideRequiredMarker : Supported } msg
 hideRequiredMarker =
-    M3e.Html.FormField.hideRequiredMarker
+    M3e.Attributes.hideRequiredMarker
 
 
-{-| Whether subscript content is hidden. (default: `"auto"`)
+{-| Place an element into the named `error` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-hideSubscript :
-    M3e.Token.Value
-        { always : M3e.Token.Supported
-        , auto : M3e.Token.Supported
-        , never : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | hideSubscript : M3e.Token.Supported } msg
-hideSubscript =
-    M3e.Html.FormField.hideSubscript
+error : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+error element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "error") (HtmlIr.Element.toNode element))
 
 
-{-| The appearance variant of the field. (default: `"outlined"`)
+{-| Place an element into the named `hint` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-variant :
-    M3e.Token.Value
-        { filled : M3e.Token.Supported
-        , outlined : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.FormField.variant
+hint : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+hint element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "hint") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `(default)` slot, wiring its `id=` from the required `id` so the label and control are associated.
+{-| Place an element into the named `label` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-control : String -> Markup.Element.Element k msg -> Markup.Element.Element k msg
-control id_ el =
-    Markup.Element.withAttr "id" id_ el
+label : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+label element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "label") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `prefix` slot.
+{-| Place an element into the named `prefix` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-prefix : Markup.Element.Element any msg -> Markup.Element.Element k msg
-prefix el =
-    Markup.Element.Internal.placeSlot "prefix" el
+prefix : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+prefix element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prefix") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `prefix-text` slot.
+{-| Place an element into the named `prefix-text` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-prefixText : Markup.Element.Element any msg -> Markup.Element.Element k msg
-prefixText el =
-    Markup.Element.Internal.placeSlot "prefix-text" el
+prefixText : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+prefixText element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prefix-text") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `label` slot, wiring its `for=` from the required `id` so the label and control are associated.
+{-| Place an element into the named `suffix` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-label : String -> Markup.Element.Element any msg -> Markup.Element.Element k msg
-label id_ el =
-    Markup.Element.Internal.placeSlot
-        "label"
-        (Markup.Element.withAttr "for" id_ el)
+suffix : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+suffix element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "suffix") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `suffix` slot.
+{-| Place an element into the named `suffix-text` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-suffix : Markup.Element.Element any msg -> Markup.Element.Element k msg
-suffix el =
-    Markup.Element.Internal.placeSlot "suffix" el
+suffixText : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+suffixText element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "suffix-text") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `suffix-text` slot.
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
 -}
-suffixText : Markup.Element.Element any msg -> Markup.Element.Element k msg
-suffixText el =
-    Markup.Element.Internal.placeSlot "suffix-text" el
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
 
 
-{-| Place content in the `hint` slot.
+{-| Every attribute/event capability, still writable.
 -}
-hint : Markup.Element.Element any msg -> Markup.Element.Element k msg
-hint el =
-    Markup.Element.Internal.placeSlot "hint" el
+type alias AttrCaps =
+    { class : Available
+    , floatLabel : Available
+    , hideRequiredMarker : Available
+    , hideSubscript : Available
+    , id : Available
+    , slot : Available
+    , style : Available
+    , variant : Available
+    }
 
 
-{-| Place content in the `error` slot.
+{-| Every singular named-slot capability, still writable.
 -}
-error : Markup.Element.Element any msg -> Markup.Element.Element k msg
-error el =
-    Markup.Element.Internal.placeSlot "error" el
+type alias SlotCaps =
+    { error : Available
+    , hint : Available
+    , label : Available
+    , prefix : Available
+    , prefixText : Available
+    , suffix : Available
+    , suffixText : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-form-field" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `floatLabel` — consumes its capability (write-once).
+-}
+withFloatLabel : Value FloatLabel -> Builder { a | floatLabel : Available } slotCaps msg -> Builder { a | floatLabel : Used } slotCaps msg
+withFloatLabel value_ (Builder b) =
+    Builder { b | attrs = floatLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `hideRequiredMarker` — consumes its capability (write-once).
+-}
+withHideRequiredMarker : Bool -> Builder { a | hideRequiredMarker : Available } slotCaps msg -> Builder { a | hideRequiredMarker : Used } slotCaps msg
+withHideRequiredMarker value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideRequiredMarker value_ :: b.attrs }
+
+
+{-| Pipe form of `hideSubscript` — consumes its capability (write-once).
+-}
+withHideSubscript : Value HideSubscript -> Builder { a | hideSubscript : Available } slotCaps msg -> Builder { a | hideSubscript : Used } slotCaps msg
+withHideSubscript value_ (Builder b) =
+    Builder { b | attrs = hideSubscript value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of the `error` slot — consumes its capability (write-once).
+-}
+withError : Element childAccepts admittedBy msg -> Builder attrCaps { s | error : Available } msg -> Builder attrCaps { s | error : Used } msg
+withError element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (error element) :: b.children }
+
+
+{-| Pipe form of the `hint` slot — consumes its capability (write-once).
+-}
+withHint : Element childAccepts admittedBy msg -> Builder attrCaps { s | hint : Available } msg -> Builder attrCaps { s | hint : Used } msg
+withHint element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (hint element) :: b.children }
+
+
+{-| Pipe form of the `label` slot — consumes its capability (write-once).
+-}
+withLabel : Element childAccepts admittedBy msg -> Builder attrCaps { s | label : Available } msg -> Builder attrCaps { s | label : Used } msg
+withLabel element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (label element) :: b.children }
+
+
+{-| Pipe form of the `prefix` slot — consumes its capability (write-once).
+-}
+withPrefix : Element childAccepts admittedBy msg -> Builder attrCaps { s | prefix : Available } msg -> Builder attrCaps { s | prefix : Used } msg
+withPrefix element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (prefix element) :: b.children }
+
+
+{-| Pipe form of the `prefix-text` slot — consumes its capability (write-once).
+-}
+withPrefixText : Element childAccepts admittedBy msg -> Builder attrCaps { s | prefixText : Available } msg -> Builder attrCaps { s | prefixText : Used } msg
+withPrefixText element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (prefixText element) :: b.children }
+
+
+{-| Pipe form of the `suffix` slot — consumes its capability (write-once).
+-}
+withSuffix : Element childAccepts admittedBy msg -> Builder attrCaps { s | suffix : Available } msg -> Builder attrCaps { s | suffix : Used } msg
+withSuffix element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (suffix element) :: b.children }
+
+
+{-| Pipe form of the `suffix-text` slot — consumes its capability (write-once).
+-}
+withSuffixText : Element childAccepts admittedBy msg -> Builder attrCaps { s | suffixText : Available } msg -> Builder attrCaps { s | suffixText : Used } msg
+withSuffixText element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (suffixText element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

@@ -1,261 +1,448 @@
 module M3e.Paginator exposing
-    ( view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
-    , length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
-    , previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon, nextPageIcon
-    , lastPageIcon
+    ( view, build, toElement
+    , Is, Attrs, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , PageSizeVariant, pageSizeVariant
+    , disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, previousPageLabel, showFirstLastButtons, onPage
+    , firstPageIcon, lastPageIcon, nextPageIcon, previousPageIcon
+    , withClass, withDisabled, withFirstPageIcon, withFirstPageLabel, withHidePageSize, withId, withItemsPerPageLabel, withLastPageIcon, withLastPageLabel, withLength, withNextPageIcon, withNextPageLabel, withOnPage, withPageIndex, withPageSize, withPageSizeVariant, withPageSizes, withPreviousPageIcon, withPreviousPageLabel, withShowFirstLastButtons, withSlot, withStyle
     )
 
-{-| Provides navigation for paged information, typically used with a table.
+{-| The `m3e-paginator` component — strict per-component surface.
 
-**Component Info:**
+Provides navigation for paged information, typically used with a table.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `page`: Dispatched when a user selects a different page size or navigates to another page.
-
-**Slots:**
-
-  - `first-page-icon`: Slot for a custom first-page icon.
-  - `previous-page-icon`: Slot for a custom previous-page icon.
-  - `next-page-icon`: Slot for a custom next-page icon.
-  - `last-page-icon`: Slot for a custom last-page icon.
-
-<!-- elm-cem:docmeta category=Navigation -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Paginator.view [ M3e.Paginator.length 100 ] []
-```
-
-<!-- elm-cem:example title="Navigation actions" -->
-```elm
-M3e.Paginator.view [ M3e.Paginator.length 100, M3e.Paginator.showFirstLastButtons True ] []
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-M3e.Paginator.view [ M3e.Attributes.class "density-3", M3e.Paginator.length 100, M3e.Paginator.showFirstLastButtons True ] []
-```
-
-@docs view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
-@docs length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
-@docs previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon, nextPageIcon
-@docs lastPageIcon
+@docs view, build, toElement
+@docs Is, Attrs, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs PageSizeVariant, pageSizeVariant
+@docs disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, previousPageLabel, showFirstLastButtons, onPage
+@docs firstPageIcon, lastPageIcon, nextPageIcon, previousPageIcon
+@docs withClass, withDisabled, withFirstPageIcon, withFirstPageLabel, withHidePageSize, withId, withItemsPerPageLabel, withLastPageIcon, withLastPageLabel, withLength, withNextPageIcon, withNextPageLabel, withOnPage, withPageIndex, withPageSize, withPageSizeVariant, withPageSizes, withPreviousPageIcon, withPreviousPageLabel, withShowFirstLastButtons, withSlot, withStyle
 
 -}
 
-import M3e.Html.Paginator
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-paginator>` element (lazy IR).
+{-| The kind row `m3e-paginator` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | paginator : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , firstPageLabel : Supported
+    , hidePageSize : Supported
+    , id : Supported
+    , itemsPerPageLabel : Supported
+    , lastPageLabel : Supported
+    , length : Supported
+    , nextPageLabel : Supported
+    , onPage : Supported
+    , pageIndex : Supported
+    , pageSize : Supported
+    , pageSizeVariant : Supported
+    , pageSizes : Supported
+    , previousPageLabel : Supported
+    , showFirstLastButtons : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the `first-page-icon` slot admits.
+-}
+type alias FirstPageIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `last-page-icon` slot admits.
+-}
+type alias LastPageIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `next-page-icon` slot admits.
+-}
+type alias NextPageIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `previous-page-icon` slot admits.
+-}
+type alias PreviousPageIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | paginator : Ctx }
+
+
+{-| The `pageSizeVariant` values valid on this component (compile-tight narrowing).
+-}
+type alias PageSizeVariant =
+    { filled : Supported
+    , outlined : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , firstPageLabel : M3e.Token.Supported
-            , hidePageSize : M3e.Token.Supported
-            , itemsPerPageLabel : M3e.Token.Supported
-            , lastPageLabel : M3e.Token.Supported
-            , length : M3e.Token.Supported
-            , nextPageLabel : M3e.Token.Supported
-            , pageIndex : M3e.Token.Supported
-            , pageSize : M3e.Token.Supported
-            , pageSizes : M3e.Token.Supported
-            , pageSizeVariant : M3e.Token.Supported
-            , previousPageLabel : M3e.Token.Supported
-            , showFirstLastButtons : M3e.Token.Supported
-            , onPage : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | paginator : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Paginator.paginator
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-paginator" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the element is disabled. (default: `false`)
+{-| Narrowed value setter for `pageSizeVariant`. Tokens come from `M3e.Values`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+pageSizeVariant : Value PageSizeVariant -> Attr { c | pageSizeVariant : Supported } msg
+pageSizeVariant value_ =
+    Ir.attribute "page-size-variant" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.disabled`.
+-}
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.Paginator.disabled
+    M3e.Attributes.disabled
 
 
-{-| The accessible label given to the button used to move to the first page. (default: `"First page"`)
+{-| See `M3e.Attributes.firstPageLabel`.
 -}
-firstPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | firstPageLabel : M3e.Token.Supported } msg
+firstPageLabel : String -> Attr { c | firstPageLabel : Supported } msg
 firstPageLabel =
-    M3e.Html.Paginator.firstPageLabel
+    M3e.Attributes.firstPageLabel
 
 
-{-| Whether to hide page size selection. (default: `false`)
+{-| See `M3e.Attributes.hidePageSize`.
 -}
-hidePageSize : Bool -> Markup.Html.Attr.Attr { c | hidePageSize : M3e.Token.Supported } msg
+hidePageSize : Bool -> Attr { c | hidePageSize : Supported } msg
 hidePageSize =
-    M3e.Html.Paginator.hidePageSize
+    M3e.Attributes.hidePageSize
 
 
-{-| The label for the page size selector. (default: `"Items per page:"`)
+{-| See `M3e.Attributes.itemsPerPageLabel`.
 -}
-itemsPerPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | itemsPerPageLabel : M3e.Token.Supported } msg
+itemsPerPageLabel : String -> Attr { c | itemsPerPageLabel : Supported } msg
 itemsPerPageLabel =
-    M3e.Html.Paginator.itemsPerPageLabel
+    M3e.Attributes.itemsPerPageLabel
 
 
-{-| The accessible label given to the button used to move to the last page. (default: `"Last page"`)
+{-| See `M3e.Attributes.lastPageLabel`.
 -}
-lastPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | lastPageLabel : M3e.Token.Supported } msg
+lastPageLabel : String -> Attr { c | lastPageLabel : Supported } msg
 lastPageLabel =
-    M3e.Html.Paginator.lastPageLabel
+    M3e.Attributes.lastPageLabel
 
 
-{-| The length of the total number of items which are being paginated. (default: `0`)
+{-| See `M3e.Attributes.length`.
 -}
-length : Float -> Markup.Html.Attr.Attr { c | length : M3e.Token.Supported } msg
+length : Float -> Attr { c | length : Supported } msg
 length =
-    M3e.Html.Paginator.length
+    M3e.Attributes.length
 
 
-{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`)
+{-| See `M3e.Attributes.nextPageLabel`.
 -}
-nextPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | nextPageLabel : M3e.Token.Supported } msg
+nextPageLabel : String -> Attr { c | nextPageLabel : Supported } msg
 nextPageLabel =
-    M3e.Html.Paginator.nextPageLabel
+    M3e.Attributes.nextPageLabel
 
 
-{-| The zero-based page index of the displayed list of items. (default: `0`)
+{-| See `M3e.Attributes.pageIndex`.
 -}
-pageIndex : Float -> Markup.Html.Attr.Attr { c | pageIndex : M3e.Token.Supported } msg
+pageIndex : Float -> Attr { c | pageIndex : Supported } msg
 pageIndex =
-    M3e.Html.Paginator.pageIndex
+    M3e.Attributes.pageIndex
 
 
-{-| The number of items to display in a page. (default: `50`)
+{-| See `M3e.Attributes.pageSize`.
 -}
-pageSize :
-    M3e.Token.Value { number : M3e.Token.Supported, all : M3e.Token.Supported }
-    -> Markup.Html.Attr.Attr { c | pageSize : M3e.Token.Supported } msg
+pageSize : String -> Attr { c | pageSize : Supported } msg
 pageSize =
-    M3e.Html.Paginator.pageSize
+    M3e.Attributes.pageSize
 
 
-{-| A comma separated list of available page sizes. (default: `"5,10,25,50,100"`)
+{-| See `M3e.Attributes.pageSizes`.
 -}
-pageSizes : String -> Markup.Html.Attr.Attr { c | pageSizes : M3e.Token.Supported } msg
+pageSizes : String -> Attr { c | pageSizes : Supported } msg
 pageSizes =
-    M3e.Html.Paginator.pageSizes
+    M3e.Attributes.pageSizes
 
 
-{-| The appearance variant of the page size field. (default: `"outlined"`)
+{-| See `M3e.Attributes.previousPageLabel`.
 -}
-pageSizeVariant :
-    M3e.Token.Value
-        { filled : M3e.Token.Supported
-        , outlined : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | pageSizeVariant : M3e.Token.Supported } msg
-pageSizeVariant =
-    M3e.Html.Paginator.pageSizeVariant
-
-
-{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`)
--}
-previousPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | previousPageLabel : M3e.Token.Supported } msg
+previousPageLabel : String -> Attr { c | previousPageLabel : Supported } msg
 previousPageLabel =
-    M3e.Html.Paginator.previousPageLabel
+    M3e.Attributes.previousPageLabel
 
 
-{-| Whether to show first/last buttons. (default: `false`)
+{-| See `M3e.Attributes.showFirstLastButtons`.
 -}
-showFirstLastButtons :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | showFirstLastButtons : M3e.Token.Supported
-            }
-            msg
+showFirstLastButtons : Bool -> Attr { c | showFirstLastButtons : Supported } msg
 showFirstLastButtons =
-    M3e.Html.Paginator.showFirstLastButtons
+    M3e.Attributes.showFirstLastButtons
 
 
-{-| Listen for `page` events.
+{-| See `M3e.Events.onPage`.
 -}
-onPage :
-    (Int -> msg)
-    -> Markup.Html.Attr.Attr { c | onPage : M3e.Token.Supported } msg
+onPage : msg -> Attr { c | onPage : Supported } msg
 onPage =
-    M3e.Html.Paginator.onPage
+    M3e.Events.onPage
 
 
-{-| Place content in the `first-page-icon` slot.
+{-| Place an element into the named `first-page-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-firstPageIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-firstPageIcon el =
-    Markup.Element.Internal.placeSlot "first-page-icon" el
+firstPageIcon : Element FirstPageIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+firstPageIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "first-page-icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `previous-page-icon` slot.
+{-| Place an element into the named `last-page-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-previousPageIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-previousPageIcon el =
-    Markup.Element.Internal.placeSlot "previous-page-icon" el
+lastPageIcon : Element LastPageIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+lastPageIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "last-page-icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `next-page-icon` slot.
+{-| Place an element into the named `next-page-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-nextPageIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-nextPageIcon el =
-    Markup.Element.Internal.placeSlot "next-page-icon" el
+nextPageIcon : Element NextPageIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+nextPageIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "next-page-icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `last-page-icon` slot.
+{-| Place an element into the named `previous-page-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-lastPageIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-lastPageIcon el =
-    Markup.Element.Internal.placeSlot "last-page-icon" el
+previousPageIcon : Element PreviousPageIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+previousPageIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "previous-page-icon") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , firstPageLabel : Available
+    , hidePageSize : Available
+    , id : Available
+    , itemsPerPageLabel : Available
+    , lastPageLabel : Available
+    , length : Available
+    , nextPageLabel : Available
+    , onPage : Available
+    , pageIndex : Available
+    , pageSize : Available
+    , pageSizeVariant : Available
+    , pageSizes : Available
+    , previousPageLabel : Available
+    , showFirstLastButtons : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { firstPageIcon : Available
+    , lastPageIcon : Available
+    , nextPageIcon : Available
+    , previousPageIcon : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-paginator" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `firstPageLabel` — consumes its capability (write-once).
+-}
+withFirstPageLabel : String -> Builder { a | firstPageLabel : Available } slotCaps msg -> Builder { a | firstPageLabel : Used } slotCaps msg
+withFirstPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.firstPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `hidePageSize` — consumes its capability (write-once).
+-}
+withHidePageSize : Bool -> Builder { a | hidePageSize : Available } slotCaps msg -> Builder { a | hidePageSize : Used } slotCaps msg
+withHidePageSize value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hidePageSize value_ :: b.attrs }
+
+
+{-| Pipe form of `itemsPerPageLabel` — consumes its capability (write-once).
+-}
+withItemsPerPageLabel : String -> Builder { a | itemsPerPageLabel : Available } slotCaps msg -> Builder { a | itemsPerPageLabel : Used } slotCaps msg
+withItemsPerPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.itemsPerPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `lastPageLabel` — consumes its capability (write-once).
+-}
+withLastPageLabel : String -> Builder { a | lastPageLabel : Available } slotCaps msg -> Builder { a | lastPageLabel : Used } slotCaps msg
+withLastPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.lastPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `length` — consumes its capability (write-once).
+-}
+withLength : Float -> Builder { a | length : Available } slotCaps msg -> Builder { a | length : Used } slotCaps msg
+withLength value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.length value_ :: b.attrs }
+
+
+{-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
+-}
+withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg -> Builder { a | nextPageLabel : Used } slotCaps msg
+withNextPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.nextPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `pageIndex` — consumes its capability (write-once).
+-}
+withPageIndex : Float -> Builder { a | pageIndex : Available } slotCaps msg -> Builder { a | pageIndex : Used } slotCaps msg
+withPageIndex value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.pageIndex value_ :: b.attrs }
+
+
+{-| Pipe form of `pageSize` — consumes its capability (write-once).
+-}
+withPageSize : String -> Builder { a | pageSize : Available } slotCaps msg -> Builder { a | pageSize : Used } slotCaps msg
+withPageSize value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.pageSize value_ :: b.attrs }
+
+
+{-| Pipe form of `pageSizeVariant` — consumes its capability (write-once).
+-}
+withPageSizeVariant : Value PageSizeVariant -> Builder { a | pageSizeVariant : Available } slotCaps msg -> Builder { a | pageSizeVariant : Used } slotCaps msg
+withPageSizeVariant value_ (Builder b) =
+    Builder { b | attrs = pageSizeVariant value_ :: b.attrs }
+
+
+{-| Pipe form of `pageSizes` — consumes its capability (write-once).
+-}
+withPageSizes : String -> Builder { a | pageSizes : Available } slotCaps msg -> Builder { a | pageSizes : Used } slotCaps msg
+withPageSizes value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.pageSizes value_ :: b.attrs }
+
+
+{-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
+-}
+withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg -> Builder { a | previousPageLabel : Used } slotCaps msg
+withPreviousPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.previousPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `showFirstLastButtons` — consumes its capability (write-once).
+-}
+withShowFirstLastButtons : Bool -> Builder { a | showFirstLastButtons : Available } slotCaps msg -> Builder { a | showFirstLastButtons : Used } slotCaps msg
+withShowFirstLastButtons value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.showFirstLastButtons value_ :: b.attrs }
+
+
+{-| Pipe form of `onPage` — consumes its capability (write-once).
+-}
+withOnPage : msg -> Builder { a | onPage : Available } slotCaps msg -> Builder { a | onPage : Used } slotCaps msg
+withOnPage value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onPage value_ :: b.attrs }
+
+
+{-| Pipe form of the `first-page-icon` slot — consumes its capability (write-once).
+-}
+withFirstPageIcon : Element FirstPageIconSlot admittedBy msg -> Builder attrCaps { s | firstPageIcon : Available } msg -> Builder attrCaps { s | firstPageIcon : Used } msg
+withFirstPageIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (firstPageIcon element) :: b.children }
+
+
+{-| Pipe form of the `last-page-icon` slot — consumes its capability (write-once).
+-}
+withLastPageIcon : Element LastPageIconSlot admittedBy msg -> Builder attrCaps { s | lastPageIcon : Available } msg -> Builder attrCaps { s | lastPageIcon : Used } msg
+withLastPageIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (lastPageIcon element) :: b.children }
+
+
+{-| Pipe form of the `next-page-icon` slot — consumes its capability (write-once).
+-}
+withNextPageIcon : Element NextPageIconSlot admittedBy msg -> Builder attrCaps { s | nextPageIcon : Available } msg -> Builder attrCaps { s | nextPageIcon : Used } msg
+withNextPageIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (nextPageIcon element) :: b.children }
+
+
+{-| Pipe form of the `previous-page-icon` slot — consumes its capability (write-once).
+-}
+withPreviousPageIcon : Element PreviousPageIconSlot admittedBy msg -> Builder attrCaps { s | previousPageIcon : Available } msg -> Builder attrCaps { s | previousPageIcon : Used } msg
+withPreviousPageIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (previousPageIcon element) :: b.children }

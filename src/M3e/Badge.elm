@@ -1,119 +1,209 @@
-module M3e.Badge exposing (view, size, position, for)
+module M3e.Badge exposing
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Position, position, Size, size
+    , for
+    , withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
+    )
 
-{-| A visual indicator used to label content.
+{-| The `m3e-badge` component — strict per-component surface.
 
-**Component Info:**
+A visual indicator used to label content.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Communication -->
-
-
-## Examples
-
-
-### Sizes
-
-<!-- elm-cem:example title="Sizes" -->
-```elm
-[ M3e.Badge.view [ M3e.Badge.size M3e.Token.small ] [ Kit.text "10" ]
-    , M3e.Badge.view [ M3e.Badge.size M3e.Token.medium ] [ Kit.text "10" ]
-    , M3e.Badge.view [ M3e.Badge.size M3e.Token.large ] [ Kit.text "10" ]
-    ]
-```
-
-
-### Examples
-
-<!-- elm-cem:example title="Anchoring" -->
-```elm
-[ M3e.Button.view [ M3e.Attributes.id "btn", M3e.Button.variant M3e.Token.outlined ] [ Kit.text "Button" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.aboveAfter ] [ Kit.text "AA" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.aboveBefore ] [ Kit.text "AB" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.belowBefore ] [ Kit.text "BB" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.belowAfter ] [ Kit.text "BA" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.before ] [ Kit.text "BE" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.after ] [ Kit.text "AF" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.above ] [ Kit.text "A" ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Token.below ] [ Kit.text "B" ]
-    ]
-```
-
-@docs view, size, position, for
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Position, position, Size, size
+@docs for
+@docs withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
 
 -}
 
-import M3e.Html.Badge
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-badge>` element (lazy IR).
+{-| The kind row `m3e-badge` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | badge : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , for : Supported
+    , id : Supported
+    , position : Supported
+    , size : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { sharedText : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | badge : Ctx }
+
+
+{-| The `position` values valid on this component (compile-tight narrowing).
+-}
+type alias Position =
+    { above : Supported
+    , aboveAfter : Supported
+    , aboveBefore : Supported
+    , after : Supported
+    , before : Supported
+    , below : Supported
+    , belowAfter : Supported
+    , belowBefore : Supported
+    }
+
+
+{-| The `size` values valid on this component (compile-tight narrowing).
+-}
+type alias Size =
+    { large : Supported
+    , medium : Supported
+    , small : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { size : M3e.Token.Supported
-            , position : M3e.Token.Supported
-            , for : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
-    -> Markup.Element.Element { s | badge : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Badge.badge
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-badge" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The size of the badge. (default: `"medium"`)
+{-| Narrowed value setter for `position`. Tokens come from `M3e.Values`.
 -}
-size :
-    M3e.Token.Value
-        { large : M3e.Token.Supported
-        , medium : M3e.Token.Supported
-        , small : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | size : M3e.Token.Supported } msg
-size =
-    M3e.Html.Badge.size
+position : Value Position -> Attr { c | position : Supported } msg
+position value_ =
+    Ir.attribute "position" (HtmlIr.Value.toString value_)
 
 
-{-| The position of the badge, when attached to another element. (default: `"above-after"`)
+{-| Narrowed value setter for `size`. Tokens come from `M3e.Values`.
 -}
-position :
-    M3e.Token.Value
-        { above : M3e.Token.Supported
-        , aboveAfter : M3e.Token.Supported
-        , aboveBefore : M3e.Token.Supported
-        , after : M3e.Token.Supported
-        , before : M3e.Token.Supported
-        , below : M3e.Token.Supported
-        , belowAfter : M3e.Token.Supported
-        , belowBefore : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | position : M3e.Token.Supported } msg
-position =
-    M3e.Html.Badge.position
+size : Value Size -> Attr { c | size : Supported } msg
+size value_ =
+    Ir.attribute "size" (HtmlIr.Value.toString value_)
 
 
-{-| The identifier of the interactive control to which this element is attached. (default: `null`)
+{-| See `M3e.Attributes.for`.
 -}
-for : String -> Markup.Html.Attr.Attr { c | for : M3e.Token.Supported } msg
+for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Html.Badge.for
+    M3e.Attributes.for
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , for : Available
+    , id : Available
+    , position : Available
+    , size : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-badge" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `for` — consumes its capability (write-once).
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
+withFor value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+
+
+{-| Pipe form of `position` — consumes its capability (write-once).
+-}
+withPosition : Value Position -> Builder { a | position : Available } slotCaps msg -> Builder { a | position : Used } slotCaps msg
+withPosition value_ (Builder b) =
+    Builder { b | attrs = position value_ :: b.attrs }
+
+
+{-| Pipe form of `size` — consumes its capability (write-once).
+-}
+withSize : Value Size -> Builder { a | size : Available } slotCaps msg -> Builder { a | size : Used } slotCaps msg
+withSize value_ (Builder b) =
+    Builder { b | attrs = size value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

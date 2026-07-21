@@ -1,243 +1,429 @@
 module M3e.SplitPane exposing
-    ( view, detents, label, max, min, orientation
-    , overshootLimit, step, value, wrapDetents, name, disabled
-    , onChange, onBeforeinput, onInput, start, end
+    ( view, el, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Orientation, orientation
+    , detents, disabled, label, max, min, name, overshootLimit, step, value, valueformatter, wrapDetents, onChange, onBeforeinput, onInput
+    , end, start
+    , withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
     )
 
-{-| A dual-view layout that separates content with a movable drag handle.
+{-| The `m3e-split-pane` component — strict per-component surface.
 
-**Component Info:**
+A dual-view layout that separates content with a movable drag handle.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the user finishes adjusting the drag handle.
-  - `beforeinput`: Dispatched continuously before the user adjusts the drag handle.
-  - `input`: Dispatched continuously while the user adjusts the drag handle.
-
-**Slots:**
-
-  - `start`: Renders content at the logical start side of the pane.
-  - `end`: Renders content at the logical end side of the pane.
-
-<!-- elm-cem:docmeta category=Containment -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
-```
-
-<!-- elm-cem:example title="Orientation" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.orientation M3e.Token.vertical ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
-```
-
-<!-- elm-cem:example title="Min and max sizes" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.min 25, M3e.SplitPane.max 75 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
-```
-
-<!-- elm-cem:example title="Step size" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.step 10 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
-```
-
-<!-- elm-cem:example title="Detents" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.detents "0 25 50 75 100", M3e.SplitPane.wrapDetents True ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.disabled True ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
-```
-
-<!-- elm-cem:example title="Conditional rendering" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 50 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [ Native.attribute "hidden" "" ] []) ]
-```
-
-<!-- elm-cem:example title="Nested panes" -->
-```elm
-M3e.SplitPane.view [ M3e.SplitPane.value 25, M3e.Attributes.class "complex" ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.orientation M3e.Token.vertical ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]) ]
-```
-
-@docs view, detents, label, max, min, orientation
-@docs overshootLimit, step, value, wrapDetents, name, disabled
-@docs onChange, onBeforeinput, onInput, start, end
+@docs view, el, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Orientation, orientation
+@docs detents, disabled, label, max, min, name, overshootLimit, step, value, valueformatter, wrapDetents, onChange, onBeforeinput, onInput
+@docs end, start
+@docs withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
 
 -}
 
-import M3e.Html.SplitPane
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import Html.Attributes
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import Json.Encode
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
+import M3e.Values
 
 
-{-| Build the `<m3e-split-pane>` element (lazy IR).
+{-| The kind row `m3e-split-pane` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | splitPane : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , detents : Supported
+    , disabled : Supported
+    , id : Supported
+    , label : Supported
+    , max : Supported
+    , min : Supported
+    , name : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onInput : Supported
+    , orientation : Supported
+    , overshootLimit : Supported
+    , slot : Supported
+    , step : Supported
+    , style : Supported
+    , value : Supported
+    , valueformatter : Supported
+    , wrapDetents : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | splitPane : Ctx }
+
+
+{-| The `orientation` values valid on this component (compile-tight narrowing).
+-}
+type alias Orientation =
+    { auto : Supported
+    , horizontal : Supported
+    , vertical : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { detents : M3e.Token.Supported
-            , label : M3e.Token.Supported
-            , max : M3e.Token.Supported
-            , min : M3e.Token.Supported
-            , orientation : M3e.Token.Supported
-            , overshootLimit : M3e.Token.Supported
-            , step : M3e.Token.Supported
-            , valueFloat : M3e.Token.Supported
-            , wrapDetents : M3e.Token.Supported
-            , name : M3e.Token.Supported
-            , disabled : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | splitPane : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.SplitPane.splitPane
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-split-pane" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Detents (discrete sizes) the start pane can snap to. (default: `[]`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-detents : String -> Markup.Html.Attr.Attr { c | detents : M3e.Token.Supported } msg
+el :
+    { end : Element childAccepts (ChildAdmittedBy childAdm) msg
+    , start : Element childAccepts (ChildAdmittedBy childAdm) msg
+    }
+    -> List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "end") (HtmlIr.Element.toNode required_.end)) :: Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (HtmlIr.Element.toNode required_.start)) :: children)
+
+
+{-| Narrowed value setter for `orientation`. Tokens come from `M3e.Values`.
+-}
+orientation : Value Orientation -> Attr { c | orientation : Supported } msg
+orientation value_ =
+    Ir.attribute "orientation" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.detents`.
+-}
+detents : String -> Attr { c | detents : Supported } msg
 detents =
-    M3e.Html.SplitPane.detents
+    M3e.Attributes.detents
 
 
-{-| The accessible label given to the movable drag handle. (default: `"Resize panes"`)
+{-| See `M3e.Attributes.disabled`.
 -}
-label : String -> Markup.Html.Attr.Attr { c | label : M3e.Token.Supported } msg
-label =
-    M3e.Html.SplitPane.label
-
-
-{-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`)
--}
-max : Float -> Markup.Html.Attr.Attr { c | max : M3e.Token.Supported } msg
-max =
-    M3e.Html.SplitPane.max
-
-
-{-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`)
--}
-min : Float -> Markup.Html.Attr.Attr { c | min : M3e.Token.Supported } msg
-min =
-    M3e.Html.SplitPane.min
-
-
-{-| The orientation of the split. (default: `"horizontal"`)
--}
-orientation :
-    M3e.Token.Value
-        { auto : M3e.Token.Supported
-        , horizontal : M3e.Token.Supported
-        , vertical : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | orientation : M3e.Token.Supported } msg
-orientation =
-    M3e.Html.SplitPane.orientation
-
-
-{-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`)
--}
-overshootLimit :
-    Float
-    -> Markup.Html.Attr.Attr { c | overshootLimit : M3e.Token.Supported } msg
-overshootLimit =
-    M3e.Html.SplitPane.overshootLimit
-
-
-{-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`)
--}
-step : Float -> Markup.Html.Attr.Attr { c | step : M3e.Token.Supported } msg
-step =
-    M3e.Html.SplitPane.step
-
-
-{-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`)
--}
-value : Float -> Markup.Html.Attr.Attr { c | valueFloat : M3e.Token.Supported } msg
-value =
-    M3e.Html.SplitPane.value
-
-
-{-| Whether cycling through detents will wrap. (default: `false`)
--}
-wrapDetents : Bool -> Markup.Html.Attr.Attr { c | wrapDetents : M3e.Token.Supported } msg
-wrapDetents =
-    M3e.Html.SplitPane.wrapDetents
-
-
-{-| The name that identifies the element when submitting the associated form.
--}
-name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
-name =
-    M3e.Html.SplitPane.name
-
-
-{-| Whether the element is disabled. (default: `false`)
--}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.SplitPane.disabled
+    M3e.Attributes.disabled
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Attributes.label`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+label : String -> Attr { c | label : Supported } msg
+label =
+    M3e.Attributes.label
+
+
+{-| See `M3e.Attributes.max`.
+-}
+max : Float -> Attr { c | max : Supported } msg
+max =
+    M3e.Attributes.max
+
+
+{-| See `M3e.Attributes.min`.
+-}
+min : Float -> Attr { c | min : Supported } msg
+min =
+    M3e.Attributes.min
+
+
+{-| See `M3e.Attributes.name`.
+-}
+name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
+name =
+    M3e.Attributes.name
+
+
+{-| See `M3e.Attributes.overshootLimit`.
+-}
+overshootLimit : Float -> Attr { c | overshootLimit : Supported } msg
+overshootLimit =
+    M3e.Attributes.overshootLimit
+
+
+{-| See `M3e.Attributes.step`.
+-}
+step : Float -> Attr { c | step : Supported } msg
+step =
+    M3e.Attributes.step
+
+
+{-| The `value` attribute (this component's type differs from the shared canonical).
+-}
+value : Float -> Attr { c | value : Supported } msg
+value value_ =
+    Ir.property "value" (Json.Encode.float value_)
+
+
+{-| See `M3e.Attributes.valueformatter`.
+-}
+valueformatter : String -> Attr { c | valueformatter : Supported } msg
+valueformatter =
+    M3e.Attributes.valueformatter
+
+
+{-| See `M3e.Attributes.wrapDetents`.
+-}
+wrapDetents : Bool -> Attr { c | wrapDetents : Supported } msg
+wrapDetents =
+    M3e.Attributes.wrapDetents
+
+
+{-| See `M3e.Events.onChange`.
+-}
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.SplitPane.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `beforeinput` events.
+{-| See `M3e.Events.onBeforeinput`.
 -}
-onBeforeinput : msg -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.SplitPane.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput : msg -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.SplitPane.onInput
+    M3e.Events.onInput
 
 
-{-| Place content in the `start` slot.
+{-| Place an element into the named `end` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-start : Markup.Element.Element any msg -> Markup.Element.Element k msg
-start el =
-    Markup.Element.Internal.placeSlot "start" el
+end : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+end element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "end") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `end` slot.
+{-| Place an element into the named `start` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-end : Markup.Element.Element any msg -> Markup.Element.Element k msg
-end el =
-    Markup.Element.Internal.placeSlot "end" el
+start : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+start element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , detents : Available
+    , disabled : Available
+    , id : Available
+    , label : Available
+    , max : Available
+    , min : Available
+    , name : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onInput : Available
+    , orientation : Available
+    , overshootLimit : Available
+    , slot : Available
+    , step : Available
+    , style : Available
+    , value : Available
+    , valueformatter : Available
+    , wrapDetents : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { end : Available
+    , start : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { end : Element childAccepts (ChildAdmittedBy childAdm) msg
+    , start : Element childAccepts (ChildAdmittedBy childAdm) msg
+    }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode (end required_.end), HtmlIr.Element.toNode (start required_.start) ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-split-pane" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `detents` — consumes its capability (write-once).
+-}
+withDetents : String -> Builder { a | detents : Available } slotCaps msg -> Builder { a | detents : Used } slotCaps msg
+withDetents value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.detents value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `label` — consumes its capability (write-once).
+-}
+withLabel : String -> Builder { a | label : Available } slotCaps msg -> Builder { a | label : Used } slotCaps msg
+withLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.label value_ :: b.attrs }
+
+
+{-| Pipe form of `max` — consumes its capability (write-once).
+-}
+withMax : Float -> Builder { a | max : Available } slotCaps msg -> Builder { a | max : Used } slotCaps msg
+withMax value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.max value_ :: b.attrs }
+
+
+{-| Pipe form of `min` — consumes its capability (write-once).
+-}
+withMin : Float -> Builder { a | min : Available } slotCaps msg -> Builder { a | min : Used } slotCaps msg
+withMin value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.min value_ :: b.attrs }
+
+
+{-| Pipe form of `name` — consumes its capability (write-once).
+-}
+withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+
+
+{-| Pipe form of `orientation` — consumes its capability (write-once).
+-}
+withOrientation : Value Orientation -> Builder { a | orientation : Available } slotCaps msg -> Builder { a | orientation : Used } slotCaps msg
+withOrientation value_ (Builder b) =
+    Builder { b | attrs = orientation value_ :: b.attrs }
+
+
+{-| Pipe form of `overshootLimit` — consumes its capability (write-once).
+-}
+withOvershootLimit : Float -> Builder { a | overshootLimit : Available } slotCaps msg -> Builder { a | overshootLimit : Used } slotCaps msg
+withOvershootLimit value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.overshootLimit value_ :: b.attrs }
+
+
+{-| Pipe form of `step` — consumes its capability (write-once).
+-}
+withStep : Float -> Builder { a | step : Available } slotCaps msg -> Builder { a | step : Used } slotCaps msg
+withStep value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.step value_ :: b.attrs }
+
+
+{-| Pipe form of `value` — consumes its capability (write-once).
+-}
+withValue : Float -> Builder { a | value : Available } slotCaps msg -> Builder { a | value : Used } slotCaps msg
+withValue value_ (Builder b) =
+    Builder { b | attrs = Ir.property "value" (Json.Encode.float value_) :: b.attrs }
+
+
+{-| Pipe form of `valueformatter` — consumes its capability (write-once).
+-}
+withValueformatter : String -> Builder { a | valueformatter : Available } slotCaps msg -> Builder { a | valueformatter : Used } slotCaps msg
+withValueformatter value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.valueformatter value_ :: b.attrs }
+
+
+{-| Pipe form of `wrapDetents` — consumes its capability (write-once).
+-}
+withWrapDetents : Bool -> Builder { a | wrapDetents : Available } slotCaps msg -> Builder { a | wrapDetents : Used } slotCaps msg
+withWrapDetents value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.wrapDetents value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of the `end` slot — consumes its capability (write-once).
+-}
+withEnd : Element childAccepts admittedBy msg -> Builder attrCaps { s | end : Available } msg -> Builder attrCaps { s | end : Used } msg
+withEnd element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (end element) :: b.children }
+
+
+{-| Pipe form of the `start` slot — consumes its capability (write-once).
+-}
+withStart : Element childAccepts admittedBy msg -> Builder attrCaps { s | start : Available } msg -> Builder attrCaps { s | start : Used } msg
+withStart element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (start element) :: b.children }

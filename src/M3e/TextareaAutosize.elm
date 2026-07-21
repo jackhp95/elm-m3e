@@ -1,103 +1,186 @@
-module M3e.TextareaAutosize exposing (view, disabled, for, maxRows, minRows)
+module M3e.TextareaAutosize exposing
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , disabled, for, maxRows, minRows
+    , withClass, withDisabled, withFor, withId, withMaxRows, withMinRows, withSlot, withStyle
+    )
 
-{-| A non-visual element used to automatically resize a `textarea` to fit its content.
+{-| The `m3e-textarea-autosize` component — strict per-component surface.
 
-**Component Info:**
+A non-visual element used to automatically resize a `textarea` to fit its content.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Text inputs -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled ] [ M3e.FormField.label "field" (Native.node Html.label [ Native.attribute "for" "field" ] [ Kit.text "Textarea Autosize" ]), M3e.FormField.control "field" (Native.node Html.textarea [ Native.attribute "id" "field" ] [ Kit.text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." ]) ]
-    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field" ] []
-    ]
-```
-
-<!-- elm-cem:example title="Min and max rows" -->
-```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Token.filled ] [ M3e.FormField.label "field2" (Native.node Html.label [ Native.attribute "for" "field2" ] [ Kit.text "Textarea Autosize" ]), M3e.FormField.control "field2" (Native.node Html.textarea [ Native.attribute "id" "field2" ] [ Kit.text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." ]) ]
-    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field2", M3e.TextareaAutosize.maxRows 5 ] []
-    ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field", M3e.TextareaAutosize.disabled True ] []
-```
-
-@docs view, disabled, for, maxRows, minRows
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs disabled, for, maxRows, minRows
+@docs withClass, withDisabled, withFor, withId, withMaxRows, withMinRows, withSlot, withStyle
 
 -}
 
-import M3e.Html.TextareaAutosize
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-textarea-autosize>` element (lazy IR).
+{-| The kind row `m3e-textarea-autosize` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | textareaAutosize : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , for : Supported
+    , id : Supported
+    , maxRows : Supported
+    , minRows : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | textareaAutosize : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , for : M3e.Token.Supported
-            , maxRows : M3e.Token.Supported
-            , minRows : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | textareaAutosize : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.TextareaAutosize.textareaAutosize
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-textarea-autosize" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether auto-sizing is disabled. (default: `false`)
+{-| See `M3e.Attributes.disabled`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.TextareaAutosize.disabled
+    M3e.Attributes.disabled
 
 
-{-| The identifier of the interactive control to which this element is attached. (default: `null`)
+{-| See `M3e.Attributes.for`.
 -}
-for : String -> Markup.Html.Attr.Attr { c | for : M3e.Token.Supported } msg
+for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Html.TextareaAutosize.for
+    M3e.Attributes.for
 
 
-{-| The maximum amount of rows in the `textarea`. (default: `0`)
+{-| See `M3e.Attributes.maxRows`.
 -}
-maxRows : Float -> Markup.Html.Attr.Attr { c | maxRows : M3e.Token.Supported } msg
+maxRows : Float -> Attr { c | maxRows : Supported } msg
 maxRows =
-    M3e.Html.TextareaAutosize.maxRows
+    M3e.Attributes.maxRows
 
 
-{-| The minimum amount of rows in the `textarea`. (default: `0`)
+{-| See `M3e.Attributes.minRows`.
 -}
-minRows : Float -> Markup.Html.Attr.Attr { c | minRows : M3e.Token.Supported } msg
+minRows : Float -> Attr { c | minRows : Supported } msg
 minRows =
-    M3e.Html.TextareaAutosize.minRows
+    M3e.Attributes.minRows
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , for : Available
+    , id : Available
+    , maxRows : Available
+    , minRows : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-textarea-autosize" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `for` — consumes its capability (write-once).
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
+withFor value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+
+
+{-| Pipe form of `maxRows` — consumes its capability (write-once).
+-}
+withMaxRows : Float -> Builder { a | maxRows : Available } slotCaps msg -> Builder { a | maxRows : Used } slotCaps msg
+withMaxRows value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.maxRows value_ :: b.attrs }
+
+
+{-| Pipe form of `minRows` — consumes its capability (write-once).
+-}
+withMinRows : Float -> Builder { a | minRows : Available } slotCaps msg -> Builder { a | minRows : Used } slotCaps msg
+withMinRows value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.minRows value_ :: b.attrs }

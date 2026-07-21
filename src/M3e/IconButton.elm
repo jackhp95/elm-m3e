@@ -1,400 +1,535 @@
 module M3e.IconButton exposing
-    ( view, disabled, disabledInteractive, name, selected, shape
-    , size, toggle, type_, value, variant, width
-    , onBeforeinput, onInput, onChange, onClick, href, target
-    , rel, download, selectedSlot
+    ( view, el, build, toElement
+    , Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
+    , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
+    , selected
+    , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
     )
 
-{-| An icon button users interact with to perform a supplementary action.
+{-| The `m3e-icon-button` component — strict per-component surface.
 
-**Component Info:**
+An icon button users interact with to perform a supplementary action.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `beforeinput`: Dispatched before a toggle button's selected state changes.
-  - `input`: Dispatched when a toggle button's selected state changes.
-  - `change`: Dispatched when a toggle button's selected state changes.
-  - `click`: Dispatched when the element is clicked.
-
-**Slots:**
-
-  - `selected`: Renders an icon, when selected.
-
-<!-- elm-cem:docmeta category=Actions -->
-
-
-## Examples
-
-
-### Variants
-
-<!-- elm-cem:example title="Variants" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.outlined ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.standard ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Shapes" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.shape M3e.Token.square ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.shape M3e.Token.square ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.outlined, M3e.IconButton.shape M3e.Token.square ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.standard, M3e.IconButton.shape M3e.Token.square ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Toggle" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.outlined, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.standard, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
-    ]
-```
-
-
-### Sizes
-
-<!-- elm-cem:example title="Sizes" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.size M3e.Token.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.size M3e.Token.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.size M3e.Token.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.size M3e.Token.large ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.size M3e.Token.extraLarge ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    ]
-```
-
-
-### Width
-
-<!-- elm-cem:example title="Widths" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.width M3e.Token.narrow ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.width M3e.Token.wide ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    ]
-```
-
-
-### Examples
-
-<!-- elm-cem:example title="Toggle (2)" -->
-```elm
-M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "close" ] [], M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-```
-
-<!-- elm-cem:example title="Toggle (3)" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.shape M3e.Token.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.shape M3e.Token.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.outlined, M3e.IconButton.shape M3e.Token.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.standard, M3e.IconButton.shape M3e.Token.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
-    , Native.br
-    , Native.br
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.shape M3e.Token.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.shape M3e.Token.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.outlined, M3e.IconButton.shape M3e.Token.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.standard, M3e.IconButton.shape M3e.Token.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.disabled True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.disabledInteractive True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Links" -->
-```elm
-M3e.IconButton.view [ M3e.IconButton.variant M3e.Token.tonal, M3e.IconButton.href "https://www.google.com", M3e.IconButton.target "_blank" ] [ M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] [] ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.IconButton.view [ M3e.Attributes.class "density-3", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.Attributes.class "density-2", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.Attributes.class "density-1", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.Attributes.class "density-0", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Density (2)" -->
-```elm
-[ M3e.IconButton.view [ M3e.Attributes.class "density-3", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.Attributes.class "density-2", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.Attributes.class "density-1", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.Attributes.class "density-0", M3e.IconButton.variant M3e.Token.filled, M3e.IconButton.size M3e.Token.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    ]
-```
-
-@docs view, disabled, disabledInteractive, name, selected, shape
-@docs size, toggle, type_, value, variant, width
-@docs onBeforeinput, onInput, onChange, onClick, href, target
-@docs rel, download, selectedSlot
+@docs view, el, build, toElement
+@docs Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
+@docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
+@docs selected
+@docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
 
 -}
 
-import M3e.Html.IconButton
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
+import M3e.Values
 
 
-{-| Build the `<m3e-icon-button>` element (lazy IR).
+{-| The kind row `m3e-icon-button` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | iconButton : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , disabledInteractive : Supported
+    , download : Supported
+    , href : Supported
+    , id : Supported
+    , name : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onClick : Supported
+    , onInput : Supported
+    , rel : Supported
+    , selected : Supported
+    , shape : Supported
+    , size : Supported
+    , slot : Supported
+    , style : Supported
+    , target : Supported
+    , toggle : Supported
+    , type_ : Supported
+    , value : Supported
+    , variant : Supported
+    , width : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { bottomSheetAction : Brand
+    , bottomSheetTrigger : Brand
+    , datepickerToggle : Brand
+    , dialogAction : Brand
+    , dialogTrigger : Brand
+    , drawerToggle : Brand
+    , fabMenuTrigger : Brand
+    , menuTrigger : Brand
+    , navRailToggle : Brand
+    , richTooltipAction : Brand
+    , sharedIcon : Shared
+    , stepperNext : Brand
+    , stepperPrevious : Brand
+    , stepperReset : Brand
+    }
+
+
+{-| The kinds the `selected` slot admits.
+-}
+type alias SelectedSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | iconButton : Ctx }
+
+
+{-| The `shape` values valid on this component (compile-tight narrowing).
+-}
+type alias Shape =
+    { rounded : Supported
+    , square : Supported
+    }
+
+
+{-| The `size` values valid on this component (compile-tight narrowing).
+-}
+type alias Size =
+    { extraLarge : Supported
+    , extraSmall : Supported
+    , large : Supported
+    , medium : Supported
+    , small : Supported
+    }
+
+
+{-| The `type_` values valid on this component (compile-tight narrowing).
+-}
+type alias Type =
+    { button : Supported
+    , reset : Supported
+    , submit : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { filled : Supported
+    , outlined : Supported
+    , standard : Supported
+    , tonal : Supported
+    }
+
+
+{-| The `width` values valid on this component (compile-tight narrowing).
+-}
+type alias Width =
+    { default : Supported
+    , narrow : Supported
+    , wide : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , disabledInteractive : M3e.Token.Supported
-            , download : M3e.Token.Supported
-            , href : M3e.Token.Supported
-            , name : M3e.Token.Supported
-            , rel : M3e.Token.Supported
-            , selected : M3e.Token.Supported
-            , shape : M3e.Token.Supported
-            , size : M3e.Token.Supported
-            , target : M3e.Token.Supported
-            , toggle : M3e.Token.Supported
-            , type_ : M3e.Token.Supported
-            , value : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , width : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onClick : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { sharedIcon : Markup.Kind.Shared
-                , menuTrigger : M3e.Kind.Brand
-                , dialogTrigger : M3e.Kind.Brand
-                , fabMenuTrigger : M3e.Kind.Brand
-                , bottomSheetTrigger : M3e.Kind.Brand
-                , navRailToggle : M3e.Kind.Brand
-                , drawerToggle : M3e.Kind.Brand
-                , datepickerToggle : M3e.Kind.Brand
-                , dialogAction : M3e.Kind.Brand
-                , bottomSheetAction : M3e.Kind.Brand
-                , richTooltipAction : M3e.Kind.Brand
-                , stepperReset : M3e.Kind.Brand
-                , stepperPrevious : M3e.Kind.Brand
-                , stepperNext : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | iconButton : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.IconButton.iconButton
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-icon-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the element is disabled. (default: `false`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+el :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (required_.content :: children)
+
+
+{-| Narrowed value setter for `shape`. Tokens come from `M3e.Values`.
+-}
+shape : Value Shape -> Attr { c | shape : Supported } msg
+shape value_ =
+    Ir.attribute "shape" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `size`. Tokens come from `M3e.Values`.
+-}
+size : Value Size -> Attr { c | size : Supported } msg
+size value_ =
+    Ir.attribute "size" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `type_`. Tokens come from `M3e.Values`.
+-}
+type_ : Value Type -> Attr { c | type_ : Supported } msg
+type_ value_ =
+    Ir.attribute "type" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+-}
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `width`. Tokens come from `M3e.Values`.
+-}
+width : Value Width -> Attr { c | width : Supported } msg
+width value_ =
+    Ir.attribute "width" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.disabled`.
+-}
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.IconButton.disabled
+    M3e.Attributes.disabled
 
 
-{-| Whether the element is disabled and interactive. (default: `false`)
+{-| See `M3e.Attributes.disabledInteractive`.
 -}
-disabledInteractive :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | disabledInteractive : M3e.Token.Supported
-            }
-            msg
+disabledInteractive : Bool -> Attr { c | disabledInteractive : Supported } msg
 disabledInteractive =
-    M3e.Html.IconButton.disabledInteractive
+    M3e.Attributes.disabledInteractive
 
 
-{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form.
+{-| See `M3e.Attributes.download`.
 -}
-name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
-name =
-    M3e.Html.IconButton.name
-
-
-{-| Whether the toggle button is selected. (default: `false`)
--}
-selected : Bool -> Markup.Html.Attr.Attr { c | selected : M3e.Token.Supported } msg
-selected =
-    M3e.Html.IconButton.selected
-
-
-{-| The shape of the button. (default: `"rounded"`)
--}
-shape :
-    M3e.Token.Value
-        { rounded : M3e.Token.Supported
-        , square : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | shape : M3e.Token.Supported } msg
-shape =
-    M3e.Html.IconButton.shape
-
-
-{-| The size of the button. (default: `"small"`)
--}
-size :
-    M3e.Token.Value
-        { extraLarge : M3e.Token.Supported
-        , extraSmall : M3e.Token.Supported
-        , large : M3e.Token.Supported
-        , medium : M3e.Token.Supported
-        , small : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | size : M3e.Token.Supported } msg
-size =
-    M3e.Html.IconButton.size
-
-
-{-| Whether the button will toggle between selected and unselected states. (default: `false`)
--}
-toggle : Bool -> Markup.Html.Attr.Attr { c | toggle : M3e.Token.Supported } msg
-toggle =
-    M3e.Html.IconButton.toggle
-
-
-{-| The type of the element. (default: `"button"`)
--}
-type_ :
-    M3e.Token.Value
-        { button : M3e.Token.Supported
-        , reset : M3e.Token.Supported
-        , submit : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | type_ : M3e.Token.Supported } msg
-type_ =
-    M3e.Html.IconButton.type_
-
-
-{-| The value associated with the element's name when it's submitted with form data.
--}
-value : String -> Markup.Html.Attr.Attr { c | value : M3e.Token.Supported } msg
-value =
-    M3e.Html.IconButton.value
-
-
-{-| The appearance variant of the button. (default: `"standard"`)
--}
-variant :
-    M3e.Token.Value
-        { filled : M3e.Token.Supported
-        , outlined : M3e.Token.Supported
-        , standard : M3e.Token.Supported
-        , tonal : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.IconButton.variant
-
-
-{-| The width of the button. (default: `"default"`)
--}
-width :
-    M3e.Token.Value
-        { default : M3e.Token.Supported
-        , narrow : M3e.Token.Supported
-        , wide : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | width : M3e.Token.Supported } msg
-width =
-    M3e.Html.IconButton.width
-
-
-{-| Listen for `beforeinput` events.
--}
-onBeforeinput :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
-onBeforeinput =
-    M3e.Html.IconButton.onBeforeinput
-
-
-{-| Listen for `input` events.
--}
-onInput :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
-onInput =
-    M3e.Html.IconButton.onInput
-
-
-{-| Listen for `change` events.
--}
-onChange :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
-onChange =
-    M3e.Html.IconButton.onChange
-
-
-{-| Listen for `click` events.
--}
-onClick : msg -> Markup.Html.Attr.Attr { c | onClick : M3e.Token.Supported } msg
-onClick =
-    M3e.Html.IconButton.onClick
-
-
-{-| The URL to which the link button points. (default: `""`)
--}
-href : String -> Markup.Html.Attr.Attr { c | href : M3e.Token.Supported } msg
-href =
-    M3e.Html.IconButton.href
-
-
-{-| The target of the link button. (default: `""`)
--}
-target : String -> Markup.Html.Attr.Attr { c | target : M3e.Token.Supported } msg
-target =
-    M3e.Html.IconButton.target
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`)
--}
-rel : String -> Markup.Html.Attr.Attr { c | rel : M3e.Token.Supported } msg
-rel =
-    M3e.Html.IconButton.rel
-
-
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
--}
-download : String -> Markup.Html.Attr.Attr { c | download : M3e.Token.Supported } msg
+download : String -> Attr { c | download : Supported } msg
 download =
-    M3e.Html.IconButton.download
+    M3e.Attributes.download
 
 
-{-| Place content in the `selected` slot.
+{-| See `M3e.Attributes.href`.
 -}
-selectedSlot :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-selectedSlot el =
-    Markup.Element.Internal.placeSlot "selected" el
+href : String -> Attr { c | href : Supported } msg
+href =
+    M3e.Attributes.href
+
+
+{-| See `M3e.Attributes.name`.
+-}
+name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
+name =
+    M3e.Attributes.name
+
+
+{-| See `M3e.Attributes.rel`.
+-}
+rel : String -> Attr { c | rel : Supported } msg
+rel =
+    M3e.Attributes.rel
+
+
+{-| See `M3e.Attributes.target`.
+-}
+target : String -> Attr { c | target : Supported } msg
+target =
+    M3e.Attributes.target
+
+
+{-| See `M3e.Attributes.toggle`.
+-}
+toggle : Bool -> Attr { c | toggle : Supported } msg
+toggle =
+    M3e.Attributes.toggle
+
+
+{-| See `M3e.Attributes.value`.
+-}
+value : String -> Attr { c | value : Supported } msg
+value =
+    M3e.Attributes.value
+
+
+{-| See `M3e.Events.onBeforeinput`.
+-}
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
+onBeforeinput =
+    M3e.Events.onBeforeinput
+
+
+{-| See `M3e.Events.onInput`.
+-}
+onInput : msg -> Attr { c | onInput : Supported } msg
+onInput =
+    M3e.Events.onInput
+
+
+{-| See `M3e.Events.onChange`.
+-}
+onChange : msg -> Attr { c | onChange : Supported } msg
+onChange =
+    M3e.Events.onChange
+
+
+{-| See `M3e.Events.onClick`.
+-}
+onClick : msg -> Attr { c | onClick : Supported } msg
+onClick =
+    M3e.Events.onClick
+
+
+{-| Place an element into the named `selected` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
+-}
+selected : Element SelectedSlot admittedBy msg -> Element free freeAdmittedBy msg
+selected element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "selected") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , disabledInteractive : Available
+    , download : Available
+    , href : Available
+    , id : Available
+    , name : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onClick : Available
+    , onInput : Available
+    , rel : Available
+    , selected : Available
+    , shape : Available
+    , size : Available
+    , slot : Available
+    , style : Available
+    , target : Available
+    , toggle : Available
+    , type_ : Available
+    , value : Available
+    , variant : Available
+    , width : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { selected : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-icon-button" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `disabledInteractive` — consumes its capability (write-once).
+-}
+withDisabledInteractive : Bool -> Builder { a | disabledInteractive : Available } slotCaps msg -> Builder { a | disabledInteractive : Used } slotCaps msg
+withDisabledInteractive value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabledInteractive value_ :: b.attrs }
+
+
+{-| Pipe form of `download` — consumes its capability (write-once).
+-}
+withDownload : String -> Builder { a | download : Available } slotCaps msg -> Builder { a | download : Used } slotCaps msg
+withDownload value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.download value_ :: b.attrs }
+
+
+{-| Pipe form of `href` — consumes its capability (write-once).
+-}
+withHref : String -> Builder { a | href : Available } slotCaps msg -> Builder { a | href : Used } slotCaps msg
+withHref value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.href value_ :: b.attrs }
+
+
+{-| Pipe form of `name` — consumes its capability (write-once).
+-}
+withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+
+
+{-| Pipe form of `rel` — consumes its capability (write-once).
+-}
+withRel : String -> Builder { a | rel : Available } slotCaps msg -> Builder { a | rel : Used } slotCaps msg
+withRel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.rel value_ :: b.attrs }
+
+
+{-| Pipe form of `selected` — consumes its capability (write-once).
+-}
+withSelected : Bool -> Builder { a | selected : Available } slotCaps msg -> Builder { a | selected : Used } slotCaps msg
+withSelected value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.selected value_ :: b.attrs }
+
+
+{-| Pipe form of `shape` — consumes its capability (write-once).
+-}
+withShape : Value Shape -> Builder { a | shape : Available } slotCaps msg -> Builder { a | shape : Used } slotCaps msg
+withShape value_ (Builder b) =
+    Builder { b | attrs = shape value_ :: b.attrs }
+
+
+{-| Pipe form of `size` — consumes its capability (write-once).
+-}
+withSize : Value Size -> Builder { a | size : Available } slotCaps msg -> Builder { a | size : Used } slotCaps msg
+withSize value_ (Builder b) =
+    Builder { b | attrs = size value_ :: b.attrs }
+
+
+{-| Pipe form of `target` — consumes its capability (write-once).
+-}
+withTarget : String -> Builder { a | target : Available } slotCaps msg -> Builder { a | target : Used } slotCaps msg
+withTarget value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.target value_ :: b.attrs }
+
+
+{-| Pipe form of `toggle` — consumes its capability (write-once).
+-}
+withToggle : Bool -> Builder { a | toggle : Available } slotCaps msg -> Builder { a | toggle : Used } slotCaps msg
+withToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.toggle value_ :: b.attrs }
+
+
+{-| Pipe form of `type_` — consumes its capability (write-once).
+-}
+withType : Value Type -> Builder { a | type_ : Available } slotCaps msg -> Builder { a | type_ : Used } slotCaps msg
+withType value_ (Builder b) =
+    Builder { b | attrs = type_ value_ :: b.attrs }
+
+
+{-| Pipe form of `value` — consumes its capability (write-once).
+-}
+withValue : String -> Builder { a | value : Available } slotCaps msg -> Builder { a | value : Used } slotCaps msg
+withValue value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.value value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `width` — consumes its capability (write-once).
+-}
+withWidth : Value Width -> Builder { a | width : Available } slotCaps msg -> Builder { a | width : Used } slotCaps msg
+withWidth value_ (Builder b) =
+    Builder { b | attrs = width value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onClick` — consumes its capability (write-once).
+-}
+withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
+withOnClick value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onClick value_ :: b.attrs }
+
+
+{-| Pipe form of the `selected` slot — consumes its capability (write-once).
+-}
+withSelectedSlot : Element SelectedSlot admittedBy msg -> Builder attrCaps { s | selected : Available } msg -> Builder attrCaps { s | selected : Used } msg
+withSelectedSlot element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (selected element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

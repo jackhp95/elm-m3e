@@ -1,306 +1,434 @@
 module M3e.Autocomplete exposing
-    ( view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
-    , hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
-    , for, onChange, onQuery, onToggle, loadingSlot, noData
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Filter, filter
+    , autoActivate, caseSensitive, for, hideLoading, hideNoData, hideSelectionIndicator, loadingLabel, noDataLabel, panelClass, required, resultsLabel, onChange, onQuery, onToggle
+    , loading, noData
+    , withAutoActivate, withCaseSensitive, withChild, withClass, withFilter, withFor, withHideLoading, withHideNoData, withHideSelectionIndicator, withId, withLoading, withLoadingLabel, withLoadingSlot, withNoData, withNoDataLabel, withOnChange, withOnQuery, withOnToggle, withPanelClass, withRequired, withResultsLabel, withSlot, withStyle
     )
 
-{-| Enhances a text input with suggested options.
+{-| The `m3e-autocomplete` component — strict per-component surface.
 
-**Component Info:**
+Enhances a text input with suggested options.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the committed value changes due to selecting an option or clearing the input.
-  - `query`: Dispatched when the input is focused or when the user modifies its value.
-  - `toggle`: Dispatched when the options menu opens or closes.
-
-**Slots:**
-
-  - `loading`: Renders content when loading options.
-  - `no-data`: Renders content when there are no options to show.
-
-<!-- elm-cem:docmeta category=Text inputs -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit" (Native.node Html.label [ Native.attribute "for" "fruit" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit" (Native.node Html.input [ Native.attribute "id" "fruit" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Filter modes" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit5" (Native.node Html.label [ Native.attribute "for" "fruit5" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit5" (Native.node Html.input [ Native.attribute "id" "fruit5" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit5", M3e.Autocomplete.filter M3e.Token.startsWith, M3e.Autocomplete.caseSensitive True ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Custom filtering" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit4" (Native.node Html.label [ Native.attribute "for" "fruit4" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit4" (Native.node Html.input [ Native.attribute "id" "fruit4" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Attributes.class "custom-filter", M3e.Autocomplete.for "fruit4" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="No data" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit6" (Native.node Html.label [ Native.attribute "for" "fruit6" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit6" (Native.node Html.input [ Native.attribute "id" "fruit6", Native.attribute "value" "Pear" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit6", M3e.Autocomplete.noDataLabel "No data" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Initial load" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "state" (Native.node Html.label [ Native.attribute "for" "state" ] [ Kit.text "State" ]), M3e.FormField.control "state" (Native.node Html.input [ Native.attribute "id" "state" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Attributes.class "lazy", M3e.Autocomplete.for "state" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
-    ]
-```
-
-<!-- elm-cem:example title="Search as you type" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "state2" (Native.node Html.label [ Native.attribute "for" "state2" ] [ Kit.text "State" ]), M3e.FormField.control "state2" (Native.node Html.input [ Native.attribute "id" "state2" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Attributes.class "search", M3e.Autocomplete.for "state2", M3e.Autocomplete.filter M3e.Token.none ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
-    ]
-```
-
-<!-- elm-cem:example title="Requiring an option to be selected" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit2" (Native.node Html.label [ Native.attribute "for" "fruit2" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit2" (Native.node Html.input [ Native.attribute "id" "fruit2", Native.attribute "value" "Apple" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit2", M3e.Autocomplete.required True ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Automatic activation" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit3" (Native.node Html.label [ Native.attribute "for" "fruit3" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit3" (Native.node Html.input [ Native.attribute "id" "fruit3" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit3", M3e.Autocomplete.autoActivate True ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Chips" -->
-```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit7" (Native.node Html.label [ Native.attribute "for" "fruit7" ] [ Kit.text "Choose your favorite fruits" ]), M3e.FormField.control "" (M3e.InputChipSet.view [ M3e.Aria.label "Enter favorite fruits" ] [ M3e.InputChipSet.input (Native.node Html.input [ Native.attribute "id" "fruit7", Native.attribute "placeholder" "Add fruit..." ] []) ]) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit7" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.FormField.view [ M3e.Attributes.class "density-3" ] [ M3e.FormField.label "d1" (Native.node Html.label [ Native.attribute "for" "d1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "d1" (Native.node Html.input [ Native.attribute "id" "d1" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d1", M3e.Autocomplete.panelClass "density-3" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    , M3e.FormField.view [ M3e.Attributes.class "density-2" ] [ M3e.FormField.label "d2" (Native.node Html.label [ Native.attribute "for" "d2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "d2" (Native.node Html.input [ Native.attribute "id" "d2" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d2", M3e.Autocomplete.panelClass "density-2" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    , M3e.FormField.view [ M3e.Attributes.class "density-1" ] [ M3e.FormField.label "d3" (Native.node Html.label [ Native.attribute "for" "d3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "d3" (Native.node Html.input [ Native.attribute "id" "d3" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d3", M3e.Autocomplete.panelClass "density-1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    , M3e.FormField.view [ M3e.Attributes.class "density-0" ] [ M3e.FormField.label "d4" (Native.node Html.label [ Native.attribute "for" "d4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "d4" (Native.node Html.input [ Native.attribute "id" "d4" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d4", M3e.Autocomplete.panelClass "density-0" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    ]
-```
-
-@docs view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
-@docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
-@docs for, onChange, onQuery, onToggle, loadingSlot, noData
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Filter, filter
+@docs autoActivate, caseSensitive, for, hideLoading, hideNoData, hideSelectionIndicator, loadingLabel, noDataLabel, panelClass, required, resultsLabel, onChange, onQuery, onToggle
+@docs loading, noData
+@docs withAutoActivate, withCaseSensitive, withChild, withClass, withFilter, withFor, withHideLoading, withHideNoData, withHideSelectionIndicator, withId, withLoading, withLoadingLabel, withLoadingSlot, withNoData, withNoDataLabel, withOnChange, withOnQuery, withOnToggle, withPanelClass, withRequired, withResultsLabel, withSlot, withStyle
 
 -}
 
-import M3e.Html.Autocomplete
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-autocomplete>` element (lazy IR).
+{-| The kind row `m3e-autocomplete` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | autocomplete : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { autoActivate : Supported
+    , caseSensitive : Supported
+    , class : Supported
+    , filter : Supported
+    , for : Supported
+    , hideLoading : Supported
+    , hideNoData : Supported
+    , hideSelectionIndicator : Supported
+    , id : Supported
+    , loading : Supported
+    , loadingLabel : Supported
+    , noDataLabel : Supported
+    , onChange : Supported
+    , onQuery : Supported
+    , onToggle : Supported
+    , panelClass : Supported
+    , required : Supported
+    , resultsLabel : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { optgroup : Brand
+    , option : Brand
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | autocomplete : Ctx }
+
+
+{-| The `filter` values valid on this component (compile-tight narrowing).
+-}
+type alias Filter =
+    { contains : Supported
+    , endsWith : Supported
+    , none : Supported
+    , startsWith : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { autoActivate : M3e.Token.Supported
-            , caseSensitive : M3e.Token.Supported
-            , filter : M3e.Token.Supported
-            , hideSelectionIndicator : M3e.Token.Supported
-            , hideLoading : M3e.Token.Supported
-            , hideNoData : M3e.Token.Supported
-            , loading : M3e.Token.Supported
-            , loadingLabel : M3e.Token.Supported
-            , noDataLabel : M3e.Token.Supported
-            , panelClass : M3e.Token.Supported
-            , required : M3e.Token.Supported
-            , for : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onQuery : M3e.Token.Supported
-            , onToggle : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { option : M3e.Kind.Brand
-                , optgroup : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | autocomplete : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Autocomplete.autocomplete
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-autocomplete" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the first option should be automatically activated. (default: `false`)
+{-| Narrowed value setter for `filter`. Tokens come from `M3e.Values`.
 -}
-autoActivate : Bool -> Markup.Html.Attr.Attr { c | autoActivate : M3e.Token.Supported } msg
+filter : Value Filter -> Attr { c | filter : Supported } msg
+filter value_ =
+    Ir.attribute "filter" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.autoActivate`.
+-}
+autoActivate : Bool -> Attr { c | autoActivate : Supported } msg
 autoActivate =
-    M3e.Html.Autocomplete.autoActivate
+    M3e.Attributes.autoActivate
 
 
-{-| Whether filtering is case sensitive. (default: `false`)
+{-| See `M3e.Attributes.caseSensitive`.
 -}
-caseSensitive :
-    Bool
-    -> Markup.Html.Attr.Attr { c | caseSensitive : M3e.Token.Supported } msg
+caseSensitive : Bool -> Attr { c | caseSensitive : Supported } msg
 caseSensitive =
-    M3e.Html.Autocomplete.caseSensitive
+    M3e.Attributes.caseSensitive
 
 
-{-| Mode in which to filter options. (default: `"contains"`)
+{-| See `M3e.Attributes.for`.
 -}
-filter :
-    M3e.Token.Value
-        { contains : M3e.Token.Supported
-        , endsWith : M3e.Token.Supported
-        , none : M3e.Token.Supported
-        , startsWith : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | filter : M3e.Token.Supported } msg
-filter =
-    M3e.Html.Autocomplete.filter
-
-
-{-| Whether to hide the selection indicator. (default: `false`)
--}
-hideSelectionIndicator :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | hideSelectionIndicator : M3e.Token.Supported
-            }
-            msg
-hideSelectionIndicator =
-    M3e.Html.Autocomplete.hideSelectionIndicator
-
-
-{-| Whether to hide the menu when loading options. (default: `false`)
--}
-hideLoading : Bool -> Markup.Html.Attr.Attr { c | hideLoading : M3e.Token.Supported } msg
-hideLoading =
-    M3e.Html.Autocomplete.hideLoading
-
-
-{-| Whether to hide the menu when there are no options to show. (default: `false`)
--}
-hideNoData : Bool -> Markup.Html.Attr.Attr { c | hideNoData : M3e.Token.Supported } msg
-hideNoData =
-    M3e.Html.Autocomplete.hideNoData
-
-
-{-| Whether options are being loaded. (default: `false`)
--}
-loading : Bool -> Markup.Html.Attr.Attr { c | loading : M3e.Token.Supported } msg
-loading =
-    M3e.Html.Autocomplete.loading
-
-
-{-| The text announced and presented when loading options. (default: `"Loading..."`)
--}
-loadingLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | loadingLabel : M3e.Token.Supported } msg
-loadingLabel =
-    M3e.Html.Autocomplete.loadingLabel
-
-
-{-| The text announced and presented when no options are available for the current term. (default: `"No options"`)
--}
-noDataLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | noDataLabel : M3e.Token.Supported } msg
-noDataLabel =
-    M3e.Html.Autocomplete.noDataLabel
-
-
-{-| Class or list of classes to be applied to the autocomplete's overlay panel. (default: `""`)
--}
-panelClass : String -> Markup.Html.Attr.Attr { c | panelClass : M3e.Token.Supported } msg
-panelClass =
-    M3e.Html.Autocomplete.panelClass
-
-
-{-| Whether the user is required to make a selection when interacting with the autocomplete. (default: `false`)
--}
-required : Bool -> Markup.Html.Attr.Attr { c | required : M3e.Token.Supported } msg
-required =
-    M3e.Html.Autocomplete.required
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`)
--}
-for : String -> Markup.Html.Attr.Attr { c | for : M3e.Token.Supported } msg
+for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Html.Autocomplete.for
+    M3e.Attributes.for
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Attributes.hideLoading`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+hideLoading : Bool -> Attr { c | hideLoading : Supported } msg
+hideLoading =
+    M3e.Attributes.hideLoading
+
+
+{-| See `M3e.Attributes.hideNoData`.
+-}
+hideNoData : Bool -> Attr { c | hideNoData : Supported } msg
+hideNoData =
+    M3e.Attributes.hideNoData
+
+
+{-| See `M3e.Attributes.hideSelectionIndicator`.
+-}
+hideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
+hideSelectionIndicator =
+    M3e.Attributes.hideSelectionIndicator
+
+
+{-| See `M3e.Attributes.loadingLabel`.
+-}
+loadingLabel : String -> Attr { c | loadingLabel : Supported } msg
+loadingLabel =
+    M3e.Attributes.loadingLabel
+
+
+{-| See `M3e.Attributes.noDataLabel`.
+-}
+noDataLabel : String -> Attr { c | noDataLabel : Supported } msg
+noDataLabel =
+    M3e.Attributes.noDataLabel
+
+
+{-| See `M3e.Attributes.panelClass`.
+-}
+panelClass : String -> Attr { c | panelClass : Supported } msg
+panelClass =
+    M3e.Attributes.panelClass
+
+
+{-| See `M3e.Attributes.required`.
+-}
+required : Bool -> Attr { c | required : Supported } msg
+required =
+    M3e.Attributes.required
+
+
+{-| See `M3e.Attributes.resultsLabel`.
+-}
+resultsLabel : String -> Attr { c | resultsLabel : Supported } msg
+resultsLabel =
+    M3e.Attributes.resultsLabel
+
+
+{-| See `M3e.Events.onChange`.
+-}
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.Autocomplete.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `query` events.
+{-| See `M3e.Events.onQuery`.
 -}
-onQuery : msg -> Markup.Html.Attr.Attr { c | onQuery : M3e.Token.Supported } msg
+onQuery : msg -> Attr { c | onQuery : Supported } msg
 onQuery =
-    M3e.Html.Autocomplete.onQuery
+    M3e.Events.onQuery
 
 
-{-| Listen for `toggle` events.
+{-| See `M3e.Events.onToggle`.
 -}
-onToggle : msg -> Markup.Html.Attr.Attr { c | onToggle : M3e.Token.Supported } msg
+onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Html.Autocomplete.onToggle
+    M3e.Events.onToggle
 
 
-{-| Place content in the `loading` slot.
+{-| Place an element into the named `loading` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-loadingSlot : Markup.Element.Element any msg -> Markup.Element.Element k msg
-loadingSlot el =
-    Markup.Element.Internal.placeSlot "loading" el
+loading : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+loading element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "loading") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `no-data` slot.
+{-| Place an element into the named `no-data` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-noData : Markup.Element.Element any msg -> Markup.Element.Element k msg
-noData el =
-    Markup.Element.Internal.placeSlot "no-data" el
+noData : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+noData element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "no-data") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { autoActivate : Available
+    , caseSensitive : Available
+    , class : Available
+    , filter : Available
+    , for : Available
+    , hideLoading : Available
+    , hideNoData : Available
+    , hideSelectionIndicator : Available
+    , id : Available
+    , loading : Available
+    , loadingLabel : Available
+    , noDataLabel : Available
+    , onChange : Available
+    , onQuery : Available
+    , onToggle : Available
+    , panelClass : Available
+    , required : Available
+    , resultsLabel : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { loading : Available
+    , noData : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-autocomplete" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `autoActivate` — consumes its capability (write-once).
+-}
+withAutoActivate : Bool -> Builder { a | autoActivate : Available } slotCaps msg -> Builder { a | autoActivate : Used } slotCaps msg
+withAutoActivate value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.autoActivate value_ :: b.attrs }
+
+
+{-| Pipe form of `caseSensitive` — consumes its capability (write-once).
+-}
+withCaseSensitive : Bool -> Builder { a | caseSensitive : Available } slotCaps msg -> Builder { a | caseSensitive : Used } slotCaps msg
+withCaseSensitive value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.caseSensitive value_ :: b.attrs }
+
+
+{-| Pipe form of `filter` — consumes its capability (write-once).
+-}
+withFilter : Value Filter -> Builder { a | filter : Available } slotCaps msg -> Builder { a | filter : Used } slotCaps msg
+withFilter value_ (Builder b) =
+    Builder { b | attrs = filter value_ :: b.attrs }
+
+
+{-| Pipe form of `for` — consumes its capability (write-once).
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
+withFor value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+
+
+{-| Pipe form of `hideLoading` — consumes its capability (write-once).
+-}
+withHideLoading : Bool -> Builder { a | hideLoading : Available } slotCaps msg -> Builder { a | hideLoading : Used } slotCaps msg
+withHideLoading value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideLoading value_ :: b.attrs }
+
+
+{-| Pipe form of `hideNoData` — consumes its capability (write-once).
+-}
+withHideNoData : Bool -> Builder { a | hideNoData : Available } slotCaps msg -> Builder { a | hideNoData : Used } slotCaps msg
+withHideNoData value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideNoData value_ :: b.attrs }
+
+
+{-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
+-}
+withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg -> Builder { a | hideSelectionIndicator : Used } slotCaps msg
+withHideSelectionIndicator value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideSelectionIndicator value_ :: b.attrs }
+
+
+{-| Pipe form of `loading` — consumes its capability (write-once).
+-}
+withLoading : Bool -> Builder { a | loading : Available } slotCaps msg -> Builder { a | loading : Used } slotCaps msg
+withLoading value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.loading value_ :: b.attrs }
+
+
+{-| Pipe form of `loadingLabel` — consumes its capability (write-once).
+-}
+withLoadingLabel : String -> Builder { a | loadingLabel : Available } slotCaps msg -> Builder { a | loadingLabel : Used } slotCaps msg
+withLoadingLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.loadingLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `noDataLabel` — consumes its capability (write-once).
+-}
+withNoDataLabel : String -> Builder { a | noDataLabel : Available } slotCaps msg -> Builder { a | noDataLabel : Used } slotCaps msg
+withNoDataLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.noDataLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `panelClass` — consumes its capability (write-once).
+-}
+withPanelClass : String -> Builder { a | panelClass : Available } slotCaps msg -> Builder { a | panelClass : Used } slotCaps msg
+withPanelClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.panelClass value_ :: b.attrs }
+
+
+{-| Pipe form of `required` — consumes its capability (write-once).
+-}
+withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
+withRequired value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.required value_ :: b.attrs }
+
+
+{-| Pipe form of `resultsLabel` — consumes its capability (write-once).
+-}
+withResultsLabel : String -> Builder { a | resultsLabel : Available } slotCaps msg -> Builder { a | resultsLabel : Used } slotCaps msg
+withResultsLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.resultsLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onQuery` — consumes its capability (write-once).
+-}
+withOnQuery : msg -> Builder { a | onQuery : Available } slotCaps msg -> Builder { a | onQuery : Used } slotCaps msg
+withOnQuery value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onQuery value_ :: b.attrs }
+
+
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
+-}
+withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+
+
+{-| Pipe form of the `loading` slot — consumes its capability (write-once).
+-}
+withLoadingSlot : Element childAccepts admittedBy msg -> Builder attrCaps { s | loading : Available } msg -> Builder attrCaps { s | loading : Used } msg
+withLoadingSlot element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (loading element) :: b.children }
+
+
+{-| Pipe form of the `no-data` slot — consumes its capability (write-once).
+-}
+withNoData : Element childAccepts admittedBy msg -> Builder attrCaps { s | noData : Available } msg -> Builder attrCaps { s | noData : Used } msg
+withNoData element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (noData element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

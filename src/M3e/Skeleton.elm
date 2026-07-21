@@ -1,139 +1,202 @@
-module M3e.Skeleton exposing (view, animation, shape, loaded)
+module M3e.Skeleton exposing
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Animation, animation, Shape, shape
+    , loaded
+    , withAnimation, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
+    )
 
-{-| A visual placeholder that mimics the layout of content while it's still loading.
+{-| The `m3e-skeleton` component — strict per-component surface.
 
-**Component Info:**
+A visual placeholder that mimics the layout of content while it's still loading.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Communication -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-[ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Attributes.id "toggle1" ] [], Kit.text "Loaded" ]
-    , Native.br
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Attributes.id "skeleton1" ] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ] ]
-    ]
-```
-
-<!-- elm-cem:example title="Card Header" -->
-```elm
-M3e.Skeleton.view [] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ] ]
-```
-
-<!-- elm-cem:example title="Shape" -->
-```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.circular ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.rounded ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.square ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.auto ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px; border-radius: 16px" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Animation" -->
-```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.circular, M3e.Skeleton.animation M3e.Token.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.rounded, M3e.Skeleton.animation M3e.Token.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.square, M3e.Skeleton.animation M3e.Token.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.auto, M3e.Skeleton.animation M3e.Token.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px; border-radius: 16px" ] [] ]
-    ]
-```
-
-<!-- elm-cem:example title="Animation (2)" -->
-```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.circular, M3e.Skeleton.animation M3e.Token.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.rounded, M3e.Skeleton.animation M3e.Token.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.square, M3e.Skeleton.animation M3e.Token.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
-    , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Token.auto, M3e.Skeleton.animation M3e.Token.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px; border-radius: 16px" ] [] ]
-    ]
-```
-
-@docs view, animation, shape, loaded
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Animation, animation, Shape, shape
+@docs loaded
+@docs withAnimation, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
 
 -}
 
-import M3e.Html.Skeleton
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-skeleton>` element (lazy IR).
+{-| The kind row `m3e-skeleton` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | skeleton : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { animation : Supported
+    , class : Supported
+    , id : Supported
+    , loaded : Supported
+    , shape : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | skeleton : Ctx }
+
+
+{-| The `animation` values valid on this component (compile-tight narrowing).
+-}
+type alias Animation =
+    { none : Supported
+    , pulse : Supported
+    , wave : Supported
+    }
+
+
+{-| The `shape` values valid on this component (compile-tight narrowing).
+-}
+type alias Shape =
+    { auto : Supported
+    , circular : Supported
+    , rounded : Supported
+    , square : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { animation : M3e.Token.Supported
-            , shape : M3e.Token.Supported
-            , loaded : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | skeleton : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Skeleton.skeleton
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-skeleton" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The animation effect of the skeleton. (default: `"wave"`)
+{-| Narrowed value setter for `animation`. Tokens come from `M3e.Values`.
 -}
-animation :
-    M3e.Token.Value
-        { none : M3e.Token.Supported
-        , pulse : M3e.Token.Supported
-        , wave : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | animation : M3e.Token.Supported } msg
-animation =
-    M3e.Html.Skeleton.animation
+animation : Value Animation -> Attr { c | animation : Supported } msg
+animation value_ =
+    Ir.attribute "animation" (HtmlIr.Value.toString value_)
 
 
-{-| The shape of the skeleton. (default: `"auto"`)
+{-| Narrowed value setter for `shape`. Tokens come from `M3e.Values`.
 -}
-shape :
-    M3e.Token.Value
-        { auto : M3e.Token.Supported
-        , circular : M3e.Token.Supported
-        , rounded : M3e.Token.Supported
-        , square : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | shape : M3e.Token.Supported } msg
-shape =
-    M3e.Html.Skeleton.shape
+shape : Value Shape -> Attr { c | shape : Supported } msg
+shape value_ =
+    Ir.attribute "shape" (HtmlIr.Value.toString value_)
 
 
-{-| Whether the content of the skeleton has been loaded. (default: `false`)
+{-| See `M3e.Attributes.loaded`.
 -}
-loaded : Bool -> Markup.Html.Attr.Attr { c | loaded : M3e.Token.Supported } msg
+loaded : Bool -> Attr { c | loaded : Supported } msg
 loaded =
-    M3e.Html.Skeleton.loaded
+    M3e.Attributes.loaded
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { animation : Available
+    , class : Available
+    , id : Available
+    , loaded : Available
+    , shape : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-skeleton" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `animation` — consumes its capability (write-once).
+-}
+withAnimation : Value Animation -> Builder { a | animation : Available } slotCaps msg -> Builder { a | animation : Used } slotCaps msg
+withAnimation value_ (Builder b) =
+    Builder { b | attrs = animation value_ :: b.attrs }
+
+
+{-| Pipe form of `loaded` — consumes its capability (write-once).
+-}
+withLoaded : Bool -> Builder { a | loaded : Available } slotCaps msg -> Builder { a | loaded : Used } slotCaps msg
+withLoaded value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.loaded value_ :: b.attrs }
+
+
+{-| Pipe form of `shape` — consumes its capability (write-once).
+-}
+withShape : Value Shape -> Builder { a | shape : Available } slotCaps msg -> Builder { a | shape : Used } slotCaps msg
+withShape value_ (Builder b) =
+    Builder { b | attrs = shape value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

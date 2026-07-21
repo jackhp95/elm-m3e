@@ -1,195 +1,385 @@
 module M3e.NavItem exposing
-    ( view, disabled, disabledInteractive, download, href, orientation
-    , rel, selected, target, onBeforeinput, onInput, onChange
-    , onClick, icon, selectedIcon
+    ( view, build, toElement
+    , Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Orientation, orientation
+    , disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
+    , icon, selectedIcon
+    , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
     )
 
-{-| An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
+{-| The `m3e-nav-item` component — strict per-component surface.
 
-**Component Info:**
+An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `beforeinput`: Dispatched before the selected state changes.
-  - `input`: Dispatched when the selected state changes.
-  - `change`: Dispatched when the selected state changes.
-  - `click`: Dispatched when the element is clicked.
-
-**Slots:**
-
-  - `icon`: Renders the icon of the item.
-  - `selected-icon`: Renders the icon of the item when selected.
-
-@docs view, disabled, disabledInteractive, download, href, orientation
-@docs rel, selected, target, onBeforeinput, onInput, onChange
-@docs onClick, icon, selectedIcon
+@docs view, build, toElement
+@docs Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Orientation, orientation
+@docs disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
+@docs icon, selectedIcon
+@docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
 
 -}
 
-import M3e.Html.NavItem
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-nav-item>` element (lazy IR).
+{-| The kind row `m3e-nav-item` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | navItem : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , disabledInteractive : Supported
+    , download : Supported
+    , href : Supported
+    , id : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onClick : Supported
+    , onInput : Supported
+    , orientation : Supported
+    , rel : Supported
+    , selected : Supported
+    , slot : Supported
+    , style : Supported
+    , target : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { sharedText : Shared }
+
+
+{-| The kinds the `icon` slot admits.
+-}
+type alias IconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `selected-icon` slot admits.
+-}
+type alias SelectedIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | navItem : Ctx }
+
+
+{-| The `orientation` values valid on this component (compile-tight narrowing).
+-}
+type alias Orientation =
+    { horizontal : Supported
+    , vertical : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , disabledInteractive : M3e.Token.Supported
-            , download : M3e.Token.Supported
-            , href : M3e.Token.Supported
-            , orientation : M3e.Token.Supported
-            , rel : M3e.Token.Supported
-            , selected : M3e.Token.Supported
-            , target : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onClick : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
-    -> Markup.Element.Element { s | navItem : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.NavItem.navItem
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-nav-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| A value indicating whether the element is disabled. (default: `false`)
+{-| Narrowed value setter for `orientation`. Tokens come from `M3e.Values`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+orientation : Value Orientation -> Attr { c | orientation : Supported } msg
+orientation value_ =
+    Ir.attribute "orientation" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.disabled`.
+-}
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.NavItem.disabled
+    M3e.Attributes.disabled
 
 
-{-| A value indicating whether the element is disabled and interactive. (default: `false`)
+{-| See `M3e.Attributes.disabledInteractive`.
 -}
-disabledInteractive :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | disabledInteractive : M3e.Token.Supported
-            }
-            msg
+disabledInteractive : Bool -> Attr { c | disabledInteractive : Supported } msg
 disabledInteractive =
-    M3e.Html.NavItem.disabledInteractive
+    M3e.Attributes.disabledInteractive
 
 
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
+{-| See `M3e.Attributes.download`.
 -}
-download : String -> Markup.Html.Attr.Attr { c | download : M3e.Token.Supported } msg
+download : String -> Attr { c | download : Supported } msg
 download =
-    M3e.Html.NavItem.download
+    M3e.Attributes.download
 
 
-{-| The URL to which the link button points. (default: `""`)
+{-| See `M3e.Attributes.href`.
 -}
-href : String -> Markup.Html.Attr.Attr { c | href : M3e.Token.Supported } msg
+href : String -> Attr { c | href : Supported } msg
 href =
-    M3e.Html.NavItem.href
+    M3e.Attributes.href
 
 
-{-| The layout orientation of the item. (default: `"vertical"`)
+{-| See `M3e.Attributes.rel`.
 -}
-orientation :
-    M3e.Token.Value
-        { horizontal : M3e.Token.Supported
-        , vertical : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | orientation : M3e.Token.Supported } msg
-orientation =
-    M3e.Html.NavItem.orientation
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`)
--}
-rel : String -> Markup.Html.Attr.Attr { c | rel : M3e.Token.Supported } msg
+rel : String -> Attr { c | rel : Supported } msg
 rel =
-    M3e.Html.NavItem.rel
+    M3e.Attributes.rel
 
 
-{-| A value indicating whether the element is selected. (default: `false`)
+{-| See `M3e.Attributes.selected`.
 -}
-selected : Bool -> Markup.Html.Attr.Attr { c | selected : M3e.Token.Supported } msg
+selected : Bool -> Attr { c | selected : Supported } msg
 selected =
-    M3e.Html.NavItem.selected
+    M3e.Attributes.selected
 
 
-{-| The target of the link button. (default: `""`)
+{-| See `M3e.Attributes.target`.
 -}
-target : String -> Markup.Html.Attr.Attr { c | target : M3e.Token.Supported } msg
+target : String -> Attr { c | target : Supported } msg
 target =
-    M3e.Html.NavItem.target
+    M3e.Attributes.target
 
 
-{-| Listen for `beforeinput` events.
+{-| See `M3e.Events.onBeforeinput`.
 -}
-onBeforeinput :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.NavItem.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.NavItem.onInput
+    M3e.Events.onInput
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Events.onChange`.
 -}
-onChange :
-    (Bool -> msg)
-    -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.NavItem.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `click` events.
+{-| See `M3e.Events.onClick`.
 -}
-onClick : msg -> Markup.Html.Attr.Attr { c | onClick : M3e.Token.Supported } msg
+onClick : msg -> Attr { c | onClick : Supported } msg
 onClick =
-    M3e.Html.NavItem.onClick
+    M3e.Events.onClick
 
 
-{-| Place content in the `icon` slot.
+{-| Place an element into the named `icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-icon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-icon el =
-    Markup.Element.Internal.placeSlot "icon" el
+icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
+icon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `selected-icon` slot.
+{-| Place an element into the named `selected-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-selectedIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-selectedIcon el =
-    Markup.Element.Internal.placeSlot "selected-icon" el
+selectedIcon : Element SelectedIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+selectedIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "selected-icon") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , disabledInteractive : Available
+    , download : Available
+    , href : Available
+    , id : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onClick : Available
+    , onInput : Available
+    , orientation : Available
+    , rel : Available
+    , selected : Available
+    , slot : Available
+    , style : Available
+    , target : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { icon : Available
+    , selectedIcon : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-nav-item" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `disabledInteractive` — consumes its capability (write-once).
+-}
+withDisabledInteractive : Bool -> Builder { a | disabledInteractive : Available } slotCaps msg -> Builder { a | disabledInteractive : Used } slotCaps msg
+withDisabledInteractive value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabledInteractive value_ :: b.attrs }
+
+
+{-| Pipe form of `download` — consumes its capability (write-once).
+-}
+withDownload : String -> Builder { a | download : Available } slotCaps msg -> Builder { a | download : Used } slotCaps msg
+withDownload value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.download value_ :: b.attrs }
+
+
+{-| Pipe form of `href` — consumes its capability (write-once).
+-}
+withHref : String -> Builder { a | href : Available } slotCaps msg -> Builder { a | href : Used } slotCaps msg
+withHref value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.href value_ :: b.attrs }
+
+
+{-| Pipe form of `orientation` — consumes its capability (write-once).
+-}
+withOrientation : Value Orientation -> Builder { a | orientation : Available } slotCaps msg -> Builder { a | orientation : Used } slotCaps msg
+withOrientation value_ (Builder b) =
+    Builder { b | attrs = orientation value_ :: b.attrs }
+
+
+{-| Pipe form of `rel` — consumes its capability (write-once).
+-}
+withRel : String -> Builder { a | rel : Available } slotCaps msg -> Builder { a | rel : Used } slotCaps msg
+withRel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.rel value_ :: b.attrs }
+
+
+{-| Pipe form of `selected` — consumes its capability (write-once).
+-}
+withSelected : Bool -> Builder { a | selected : Available } slotCaps msg -> Builder { a | selected : Used } slotCaps msg
+withSelected value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.selected value_ :: b.attrs }
+
+
+{-| Pipe form of `target` — consumes its capability (write-once).
+-}
+withTarget : String -> Builder { a | target : Available } slotCaps msg -> Builder { a | target : Used } slotCaps msg
+withTarget value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.target value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onClick` — consumes its capability (write-once).
+-}
+withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
+withOnClick value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onClick value_ :: b.attrs }
+
+
+{-| Pipe form of the `icon` slot — consumes its capability (write-once).
+-}
+withIcon : Element IconSlot admittedBy msg -> Builder attrCaps { s | icon : Available } msg -> Builder attrCaps { s | icon : Used } msg
+withIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (icon element) :: b.children }
+
+
+{-| Pipe form of the `selected-icon` slot — consumes its capability (write-once).
+-}
+withSelectedIcon : Element SelectedIconSlot admittedBy msg -> Builder attrCaps { s | selectedIcon : Available } msg -> Builder attrCaps { s | selectedIcon : Used } msg
+withSelectedIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (selectedIcon element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

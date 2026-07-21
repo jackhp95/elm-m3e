@@ -1,131 +1,241 @@
 module M3e.Icon exposing
-    ( view, filled, grade, opticalSize, name, variant
-    , weight
+    ( view, build, toElement
+    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Grade, grade, Variant, variant
+    , filled, name, opticalSize, weight
+    , withClass, withFilled, withGrade, withId, withName, withOpticalSize, withSlot, withStyle, withVariant, withWeight
     )
 
-{-| A small symbol used to easily identify an action or category.
+{-| The `m3e-icon` component — strict per-component surface.
 
-**Component Info:**
+A small symbol used to easily identify an action or category.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Layout & style -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic icons" -->
-```elm
-M3e.Icon.view [ M3e.Icon.name "home" ] []
-```
-
-<!-- elm-cem:example title="SVG icons" -->
-```elm
-[ M3e.Icon.view [ M3e.Icon.variant M3e.Token.outlined, M3e.Icon.name "search" ] []
-    , M3e.Icon.view [ M3e.Icon.variant M3e.Token.outlined, M3e.Icon.name "home" ] []
-    , M3e.Icon.view [ M3e.Icon.variant M3e.Token.outlined, M3e.Icon.name "settings" ] []
-    , M3e.Icon.view [ M3e.Icon.variant M3e.Token.outlined, M3e.Icon.name "favorite" ] []
-    , M3e.Icon.view [ M3e.Icon.variant M3e.Token.outlined, M3e.Icon.name "notifications" ] []
-    ]
-```
-
-@docs view, filled, grade, opticalSize, name, variant
-@docs weight
+@docs view, build, toElement
+@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Grade, grade, Variant, variant
+@docs filled, name, opticalSize, weight
+@docs withClass, withFilled, withGrade, withId, withName, withOpticalSize, withSlot, withStyle, withVariant, withWeight
 
 -}
 
-import M3e.Html.Icon
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Ctx, Used)
+import M3e.Values
 
 
-{-| Build the `<m3e-icon>` element (lazy IR).
+{-| The kind row `m3e-icon` produces — the SHARED icon atom kind, admissible
+into any library's opted-in slot.
+-}
+type alias Is s =
+    { s | sharedIcon : Shared }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , filled : Supported
+    , grade : Supported
+    , id : Supported
+    , name : Supported
+    , opticalSize : Supported
+    , slot : Supported
+    , style : Supported
+    , variant : Supported
+    , weight : Supported
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | icon : Ctx }
+
+
+{-| The `grade` values valid on this component (compile-tight narrowing).
+-}
+type alias Grade =
+    { high : Supported
+    , low : Supported
+    , medium : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { outlined : Supported
+    , rounded : Supported
+    , sharp : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { filled : M3e.Token.Supported
-            , grade : M3e.Token.Supported
-            , opticalSize : M3e.Token.Supported
-            , name : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , weight : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | sharedIcon : Markup.Kind.Shared } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Icon.icon
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-icon" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the icon is filled. (default: `false`)
+{-| Narrowed value setter for `grade`. Tokens come from `M3e.Values`.
 -}
-filled : Bool -> Markup.Html.Attr.Attr { c | filled : M3e.Token.Supported } msg
+grade : Value Grade -> Attr { c | grade : Supported } msg
+grade value_ =
+    Ir.attribute "grade" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+-}
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.filled`.
+-}
+filled : Bool -> Attr { c | filled : Supported } msg
 filled =
-    M3e.Html.Icon.filled
+    M3e.Attributes.filled
 
 
-{-| The grade of the icon. (default: `"medium"`)
+{-| See `M3e.Attributes.name`.
 -}
-grade :
-    M3e.Token.Value
-        { high : M3e.Token.Supported
-        , low : M3e.Token.Supported
-        , medium : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | grade : M3e.Token.Supported } msg
-grade =
-    M3e.Html.Icon.grade
-
-
-{-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`)
--}
-opticalSize : Float -> Markup.Html.Attr.Attr { c | opticalSize : M3e.Token.Supported } msg
-opticalSize =
-    M3e.Html.Icon.opticalSize
-
-
-{-| The name of the icon. (default: `""`)
--}
-name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
+name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
 name =
-    M3e.Html.Icon.name
+    M3e.Attributes.name
 
 
-{-| The appearance variant of the icon. (default: `"outlined"`)
+{-| See `M3e.Attributes.opticalSize`.
 -}
-variant :
-    M3e.Token.Value
-        { outlined : M3e.Token.Supported
-        , rounded : M3e.Token.Supported
-        , sharp : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.Icon.variant
+opticalSize : Float -> Attr { c | opticalSize : Supported } msg
+opticalSize =
+    M3e.Attributes.opticalSize
 
 
-{-| A value from 100 to 700 indicating the weight of the icon. (default: `400`)
+{-| See `M3e.Attributes.weight`.
 -}
-weight : Int -> Markup.Html.Attr.Attr { c | weight : M3e.Token.Supported } msg
+weight : Int -> Attr { c | weight : Supported } msg
 weight =
-    M3e.Html.Icon.weight
+    M3e.Attributes.weight
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , filled : Available
+    , grade : Available
+    , id : Available
+    , name : Available
+    , opticalSize : Available
+    , slot : Available
+    , style : Available
+    , variant : Available
+    , weight : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-icon" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `filled` — consumes its capability (write-once).
+-}
+withFilled : Bool -> Builder { a | filled : Available } slotCaps msg -> Builder { a | filled : Used } slotCaps msg
+withFilled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.filled value_ :: b.attrs }
+
+
+{-| Pipe form of `grade` — consumes its capability (write-once).
+-}
+withGrade : Value Grade -> Builder { a | grade : Available } slotCaps msg -> Builder { a | grade : Used } slotCaps msg
+withGrade value_ (Builder b) =
+    Builder { b | attrs = grade value_ :: b.attrs }
+
+
+{-| Pipe form of `name` — consumes its capability (write-once).
+-}
+withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+
+
+{-| Pipe form of `opticalSize` — consumes its capability (write-once).
+-}
+withOpticalSize : Float -> Builder { a | opticalSize : Available } slotCaps msg -> Builder { a | opticalSize : Used } slotCaps msg
+withOpticalSize value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.opticalSize value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `weight` — consumes its capability (write-once).
+-}
+withWeight : Int -> Builder { a | weight : Available } slotCaps msg -> Builder { a | weight : Used } slotCaps msg
+withWeight value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.weight value_ :: b.attrs }

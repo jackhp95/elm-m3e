@@ -1,65 +1,136 @@
-module M3e.NavMenu exposing (view)
+module M3e.NavMenu exposing
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , withChild, withClass, withId, withSlot, withStyle
+    )
 
-{-| A hierarchical menu, typically used on larger devices, that allows a user to switch between views.
+{-| The `m3e-nav-menu` component — strict per-component surface.
 
-**Component Info:**
+A hierarchical menu, typically used on larger devices, that allows a user to switch between views.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Navigation -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Multilevel menus" -->
-```elm
-M3e.NavMenu.view [] [ M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch", M3e.Aria.hidden "true" ] []), M3e.NavMenuItem.label (Kit.text "Getting Started"), M3e.NavMenuItem.view [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "widgets", M3e.Aria.hidden "true" ] []), M3e.NavMenuItem.label (Kit.text "Overview") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2", M3e.Aria.hidden "true" ] []), M3e.NavMenuItem.label (Kit.text "Installation") ] ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Actions"), M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Button") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon Button") ] ] ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-M3e.NavMenu.view [] [ M3e.NavMenuItem.view [ M3e.NavMenuItem.open True, M3e.NavMenuItem.disabled True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch", M3e.Aria.hidden "true" ] []), M3e.NavMenuItem.label (Kit.text "Getting Started"), M3e.NavMenuItem.view [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "widgets", M3e.Aria.hidden "true" ] []), M3e.NavMenuItem.label (Kit.text "Overview") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2", M3e.Aria.hidden "true" ] []), M3e.NavMenuItem.label (Kit.text "Installation") ] ], M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.label (Kit.text "Actions"), M3e.NavMenuItem.view [ M3e.NavMenuItem.disabled True ] [ M3e.NavMenuItem.label (Kit.text "Button") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon Button") ] ] ]
-```
-
-@docs view
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs withChild, withClass, withId, withSlot, withStyle
 
 -}
 
-import M3e.Html.NavMenu
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-nav-menu>` element (lazy IR).
+{-| The kind row `m3e-nav-menu` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | navMenu : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , id : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { divider : Brand
+    , navMenuItem : Brand
+    , navMenuItemGroup : Brand
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | navMenu : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List (Markup.Html.Attr.Attr { slot : M3e.Token.Supported } msg)
-    ->
-        List
-            (Markup.Element.Element
-                { navMenuItem : M3e.Kind.Brand
-                , navMenuItemGroup : M3e.Kind.Brand
-                , divider : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | navMenu : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.NavMenu.navMenu
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-nav-menu" attrs (List.map HtmlIr.Element.toNode children))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-nav-menu" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

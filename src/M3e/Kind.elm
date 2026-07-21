@@ -1,19 +1,40 @@
-module M3e.Kind exposing (Brand)
+module M3e.Kind exposing
+    ( Brand, Ctx
+    , Available, Used
+    )
 
-{-| Per-library kind brand — the phantom marker type for private-tier
-component kind rows (`{ s | button : M3e.Kind.Brand }`).
+{-| The library's private phantom markers and named kind/context sets.
 
-This type is opaque and nullary. Each library mints its own `Brand`
-in its own namespace so Elm's nominal type system keeps them distinct —
-a foreign library's elements are rejected by slots expecting this brand,
-without any runtime cost.
+`Brand` marks this library's kind-row fields; `Ctx` marks its context-row
+fields. Both are nominal and private to this library — a foreign library's
+markers never unify with them, even under the same field name.
+`Available`/`Used` are the pipe-builder's write-once capability markers.
 
-@docs Brand
+@docs Brand, Ctx
+@docs Available, Used
 
 -}
 
 
-{-| The per-library phantom kind marker. Never constructed by user code.
+{-| The private kind marker (never constructed).
 -}
 type Brand
     = Brand_
+
+
+{-| The private context marker (never constructed).
+-}
+type Ctx
+    = Ctx_
+
+
+{-| Pipe-builder capability: still writable.
+-}
+type Available
+    = Available_
+
+
+{-| Pipe-builder capability: consumed.
+-}
+type Used
+    = Used_

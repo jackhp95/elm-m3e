@@ -1,159 +1,250 @@
-module M3e.Heading exposing (view, emphasized, level, size, variant, tocIgnore)
+module M3e.Heading exposing
+    ( view, el, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Size, size, Variant, variant
+    , emphasized, level, tocIgnore
+    , withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
+    )
 
-{-| A heading to a page or section.
+{-| The `m3e-heading` component — strict per-component surface.
 
-**Component Info:**
+A heading to a page or section.
 
-  - **Extends:** `LitElement`
-
-<!-- elm-cem:docmeta category=Layout & style -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Typescale variants and sizes" -->
-```elm
-[ M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.large ] [ Kit.text "Display Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.medium ] [ Kit.text "Display Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small ] [ Kit.text "Display Small" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.headline, M3e.Heading.size M3e.Token.large ] [ Kit.text "Headline Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.headline, M3e.Heading.size M3e.Token.medium ] [ Kit.text "Headline Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.headline, M3e.Heading.size M3e.Token.small ] [ Kit.text "Headline Small" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.title, M3e.Heading.size M3e.Token.large ] [ Kit.text "Title Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.title, M3e.Heading.size M3e.Token.medium ] [ Kit.text "Title Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.title, M3e.Heading.size M3e.Token.small ] [ Kit.text "Title Small" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.label, M3e.Heading.size M3e.Token.large ] [ Kit.text "Label Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.label, M3e.Heading.size M3e.Token.medium ] [ Kit.text "Label Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.label, M3e.Heading.size M3e.Token.small ] [ Kit.text "Label Small" ]
-    ]
-```
-
-<!-- elm-cem:example title="Emphasized typescale" -->
-```elm
-[ M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.large, M3e.Heading.emphasized True ] [ Kit.text "Display Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.medium, M3e.Heading.emphasized True ] [ Kit.text "Display Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small, M3e.Heading.emphasized True ] [ Kit.text "Display Small" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.headline, M3e.Heading.size M3e.Token.large, M3e.Heading.emphasized True ] [ Kit.text "Headline Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.headline, M3e.Heading.size M3e.Token.medium, M3e.Heading.emphasized True ] [ Kit.text "Headline Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.headline, M3e.Heading.size M3e.Token.small, M3e.Heading.emphasized True ] [ Kit.text "Headline Small" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.title, M3e.Heading.size M3e.Token.large, M3e.Heading.emphasized True ] [ Kit.text "Title Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.title, M3e.Heading.size M3e.Token.medium, M3e.Heading.emphasized True ] [ Kit.text "Title Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.title, M3e.Heading.size M3e.Token.small, M3e.Heading.emphasized True ] [ Kit.text "Title Small" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.label, M3e.Heading.size M3e.Token.large, M3e.Heading.emphasized True ] [ Kit.text "Label Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.label, M3e.Heading.size M3e.Token.medium, M3e.Heading.emphasized True ] [ Kit.text "Label Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.label, M3e.Heading.size M3e.Token.small, M3e.Heading.emphasized True ] [ Kit.text "Label Small" ]
-    ]
-```
-
-
-### Sizes
-
-<!-- elm-cem:example title="Label Small" -->
-```elm
-[ M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.large ] [ Kit.text "Display Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.medium ] [ Kit.text "Display Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small ] [ Kit.text "Display Small" ]
-    ]
-```
-
-<!-- elm-cem:example title="Label Small (2)" -->
-```elm
-[ M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.large, M3e.Heading.emphasized True ] [ Kit.text "Display Large" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.medium, M3e.Heading.emphasized True ] [ Kit.text "Display Medium" ]
-    , M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small, M3e.Heading.emphasized True ] [ Kit.text "Display Small" ]
-    ]
-```
-
-@docs view, emphasized, level, size, variant, tocIgnore
+@docs view, el, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Size, size, Variant, variant
+@docs emphasized, level, tocIgnore
+@docs withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
 
 -}
 
-import M3e.Html.Heading
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-heading>` element (lazy IR).
+{-| The kind row `m3e-heading` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | heading : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , emphasized : Supported
+    , id : Supported
+    , level : Supported
+    , size : Supported
+    , slot : Supported
+    , style : Supported
+    , tocIgnore : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { sharedText : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | heading : Ctx }
+
+
+{-| The `size` values valid on this component (compile-tight narrowing).
+-}
+type alias Size =
+    { large : Supported
+    , medium : Supported
+    , small : Supported
+    }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { display : Supported
+    , headline : Supported
+    , label : Supported
+    , title : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { emphasized : M3e.Token.Supported
-            , level : M3e.Token.Supported
-            , size : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , tocIgnore : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
-    -> Markup.Element.Element { s | heading : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Heading.heading
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-heading" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the heading uses an emphasized typescale. (default: `false`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-emphasized : Bool -> Markup.Html.Attr.Attr { c | emphasized : M3e.Token.Supported } msg
+el :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (required_.content :: children)
+
+
+{-| Narrowed value setter for `size`. Tokens come from `M3e.Values`.
+-}
+size : Value Size -> Attr { c | size : Supported } msg
+size value_ =
+    Ir.attribute "size" (HtmlIr.Value.toString value_)
+
+
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+-}
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.emphasized`.
+-}
+emphasized : Bool -> Attr { c | emphasized : Supported } msg
 emphasized =
-    M3e.Html.Heading.emphasized
+    M3e.Attributes.emphasized
 
 
-{-| The accessibility level of the heading.
+{-| See `M3e.Attributes.level`.
 -}
-level : Int -> Markup.Html.Attr.Attr { c | level : M3e.Token.Supported } msg
+level : Int -> Attr { c | level : Supported } msg
 level =
-    M3e.Html.Heading.level
+    M3e.Attributes.level
 
 
-{-| The size of the heading. (default: `"medium"`)
+{-| See `M3e.Attributes.tocIgnore`.
 -}
-size :
-    M3e.Token.Value
-        { large : M3e.Token.Supported
-        , medium : M3e.Token.Supported
-        , small : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | size : M3e.Token.Supported } msg
-size =
-    M3e.Html.Heading.size
-
-
-{-| The appearance variant of the heading. (default: `"display"`)
--}
-variant :
-    M3e.Token.Value
-        { display : M3e.Token.Supported
-        , headline : M3e.Token.Supported
-        , label : M3e.Token.Supported
-        , title : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.Heading.variant
-
-
-{-| Exclude this heading from the table of contents generated by an `m3e-toc` component. `m3e-toc-ignore` is a valueless presence marker the `m3e-toc` reads from heading elements; it is not an `m3e-heading` CEM attribute, so it is injected here as a heading-scoped synthetic capability.
--}
-tocIgnore : Bool -> Markup.Html.Attr.Attr { c | tocIgnore : M3e.Token.Supported } msg
+tocIgnore : Bool -> Attr { c | tocIgnore : Supported } msg
 tocIgnore =
-    M3e.Html.Heading.tocIgnore
+    M3e.Attributes.tocIgnore
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , emphasized : Available
+    , id : Available
+    , level : Available
+    , size : Available
+    , slot : Available
+    , style : Available
+    , tocIgnore : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-heading" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `emphasized` — consumes its capability (write-once).
+-}
+withEmphasized : Bool -> Builder { a | emphasized : Available } slotCaps msg -> Builder { a | emphasized : Used } slotCaps msg
+withEmphasized value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.emphasized value_ :: b.attrs }
+
+
+{-| Pipe form of `level` — consumes its capability (write-once).
+-}
+withLevel : Int -> Builder { a | level : Available } slotCaps msg -> Builder { a | level : Used } slotCaps msg
+withLevel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.level value_ :: b.attrs }
+
+
+{-| Pipe form of `size` — consumes its capability (write-once).
+-}
+withSize : Value Size -> Builder { a | size : Available } slotCaps msg -> Builder { a | size : Used } slotCaps msg
+withSize value_ (Builder b) =
+    Builder { b | attrs = size value_ :: b.attrs }
+
+
+{-| Pipe form of `tocIgnore` — consumes its capability (write-once).
+-}
+withTocIgnore : Bool -> Builder { a | tocIgnore : Available } slotCaps msg -> Builder { a | tocIgnore : Used } slotCaps msg
+withTocIgnore value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.tocIgnore value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

@@ -1,140 +1,269 @@
 module M3e.Snackbar exposing
-    ( view, action, closeLabel, dismissible, duration, onBeforetoggle
-    , onToggle, closeIcon
+    ( view, el, build, toElement
+    , Is, Attrs, Content, CloseIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
+    , closeIcon
+    , withAction, withChild, withClass, withCloseIcon, withCloseLabel, withDismissible, withDuration, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle
     )
 
-{-| Presents short updates about application processes at the bottom of the screen.
+{-| The `m3e-snackbar` component — strict per-component surface.
 
-**Component Info:**
+Presents short updates about application processes at the bottom of the screen.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `beforetoggle`: Dispatched before the toggle state changes.
-  - `toggle`: Dispatched after the toggle state has changed.
-
-**Slots:**
-
-  - `close-icon`: Renders the icon of the button used to close the snackbar.
-
-<!-- elm-cem:docmeta category=Communication -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Snackbar service" -->
-```elm
-M3e.Button.view [ M3e.Attributes.id "example1" ] [ Kit.text "Delete file" ]
-```
-
-<!-- elm-cem:example title="Actions" -->
-```elm
-M3e.Button.view [ M3e.Attributes.id "example2" ] [ Kit.text "Delete file" ]
-```
-
-<!-- elm-cem:example title="Dismissal" -->
-```elm
-M3e.Button.view [ M3e.Attributes.id "example3" ] [ Kit.text "Delete file" ]
-```
-
-@docs view, action, closeLabel, dismissible, duration, onBeforetoggle
-@docs onToggle, closeIcon
+@docs view, el, build, toElement
+@docs Is, Attrs, Content, CloseIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
+@docs closeIcon
+@docs withAction, withChild, withClass, withCloseIcon, withCloseLabel, withDismissible, withDuration, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle
 
 -}
 
-import M3e.Html.Snackbar
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-snackbar>` element (lazy IR).
+{-| The kind row `m3e-snackbar` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | snackbar : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { action : Supported
+    , class : Supported
+    , closeLabel : Supported
+    , dismissible : Supported
+    , duration : Supported
+    , id : Supported
+    , onBeforetoggle : Supported
+    , onToggle : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { sharedText : Shared }
+
+
+{-| The kinds the `close-icon` slot admits.
+-}
+type alias CloseIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | snackbar : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { action : M3e.Token.Supported
-            , closeLabel : M3e.Token.Supported
-            , dismissible : M3e.Token.Supported
-            , duration : M3e.Token.Supported
-            , onBeforetoggle : M3e.Token.Supported
-            , onToggle : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
-    -> Markup.Element.Element { s | snackbar : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Snackbar.snackbar
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-snackbar" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The label of the snackbar's action. (default: `""`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-action : String -> Markup.Html.Attr.Attr { c | action : M3e.Token.Supported } msg
+el :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (required_.content :: children)
+
+
+{-| See `M3e.Attributes.action`.
+-}
+action : String -> Attr { c | action : Supported } msg
 action =
-    M3e.Html.Snackbar.action
+    M3e.Attributes.action
 
 
-{-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`)
+{-| See `M3e.Attributes.closeLabel`.
 -}
-closeLabel : String -> Markup.Html.Attr.Attr { c | closeLabel : M3e.Token.Supported } msg
+closeLabel : String -> Attr { c | closeLabel : Supported } msg
 closeLabel =
-    M3e.Html.Snackbar.closeLabel
+    M3e.Attributes.closeLabel
 
 
-{-| Whether a button is presented that can be used to close the snackbar. (default: `false`)
+{-| See `M3e.Attributes.dismissible`.
 -}
-dismissible : Bool -> Markup.Html.Attr.Attr { c | dismissible : M3e.Token.Supported } msg
+dismissible : Bool -> Attr { c | dismissible : Supported } msg
 dismissible =
-    M3e.Html.Snackbar.dismissible
+    M3e.Attributes.dismissible
 
 
-{-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`)
+{-| See `M3e.Attributes.duration`.
 -}
-duration : Float -> Markup.Html.Attr.Attr { c | duration : M3e.Token.Supported } msg
+duration : Float -> Attr { c | duration : Supported } msg
 duration =
-    M3e.Html.Snackbar.duration
+    M3e.Attributes.duration
 
 
-{-| Listen for `beforetoggle` events.
+{-| See `M3e.Events.onBeforetoggle`.
 -}
-onBeforetoggle :
-    msg
-    -> Markup.Html.Attr.Attr { c | onBeforetoggle : M3e.Token.Supported } msg
+onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
 onBeforetoggle =
-    M3e.Html.Snackbar.onBeforetoggle
+    M3e.Events.onBeforetoggle
 
 
-{-| Listen for `toggle` events.
+{-| See `M3e.Events.onToggle`.
 -}
-onToggle : msg -> Markup.Html.Attr.Attr { c | onToggle : M3e.Token.Supported } msg
+onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Html.Snackbar.onToggle
+    M3e.Events.onToggle
 
 
-{-| Place content in the `close-icon` slot.
+{-| Place an element into the named `close-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-closeIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-closeIcon el =
-    Markup.Element.Internal.placeSlot "close-icon" el
+closeIcon : Element CloseIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+closeIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "close-icon") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { action : Available
+    , class : Available
+    , closeLabel : Available
+    , dismissible : Available
+    , duration : Available
+    , id : Available
+    , onBeforetoggle : Available
+    , onToggle : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { closeIcon : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-snackbar" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `action` — consumes its capability (write-once).
+-}
+withAction : String -> Builder { a | action : Available } slotCaps msg -> Builder { a | action : Used } slotCaps msg
+withAction value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.action value_ :: b.attrs }
+
+
+{-| Pipe form of `closeLabel` — consumes its capability (write-once).
+-}
+withCloseLabel : String -> Builder { a | closeLabel : Available } slotCaps msg -> Builder { a | closeLabel : Used } slotCaps msg
+withCloseLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.closeLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `dismissible` — consumes its capability (write-once).
+-}
+withDismissible : Bool -> Builder { a | dismissible : Available } slotCaps msg -> Builder { a | dismissible : Used } slotCaps msg
+withDismissible value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.dismissible value_ :: b.attrs }
+
+
+{-| Pipe form of `duration` — consumes its capability (write-once).
+-}
+withDuration : Float -> Builder { a | duration : Available } slotCaps msg -> Builder { a | duration : Used } slotCaps msg
+withDuration value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.duration value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
+-}
+withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg -> Builder { a | onBeforetoggle : Used } slotCaps msg
+withOnBeforetoggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforetoggle value_ :: b.attrs }
+
+
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
+-}
+withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+
+
+{-| Pipe form of the `close-icon` slot — consumes its capability (write-once).
+-}
+withCloseIcon : Element CloseIconSlot admittedBy msg -> Builder attrCaps { s | closeIcon : Available } msg -> Builder attrCaps { s | closeIcon : Used } msg
+withCloseIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (closeIcon element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

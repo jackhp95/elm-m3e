@@ -1,181 +1,293 @@
 module M3e.Stepper exposing
-    ( view, headerPosition, labelPosition, linear, orientation, onChange
-    , onBeforeinput, onInput, step, panel
+    ( view, build, toElement
+    , Is, Attrs, PanelSlot, StepSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , HeaderPosition, headerPosition, LabelPosition, labelPosition, Orientation, orientation
+    , linear, onChange, onBeforeinput, onInput
+    , panel, step
+    , withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
     )
 
-{-| Provides a wizard-like workflow by dividing content into logical steps.
+{-| The `m3e-stepper` component — strict per-component surface.
 
-**Component Info:**
+Provides a wizard-like workflow by dividing content into logical steps.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the selected step changes.
-  - `beforeinput`: Dispatched before the selected state of a step changes.
-  - `input`: Dispatched when the selected state of a step changes.
-
-**Slots:**
-
-  - `step`: Renders a step.
-  - `panel`: Renders a panel.
-
-<!-- elm-cem:docmeta category=Navigation -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Stepper.view [] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step1" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step2" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step3" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step1" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name" (Native.node Html.label [ Native.attribute "for" "name" ] [ Kit.text "Name" ]), M3e.FormField.control "name" (Native.node Html.input [ Native.attribute "name" "name", Native.attribute "id" "name", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step2" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address" (Native.node Html.label [ Native.attribute "for" "address" ] [ Kit.text "Address" ]), M3e.FormField.control "address" (Native.node Html.input [ Native.attribute "name" "address", Native.attribute "id" "address", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step3" ] [ Kit.text "Done", M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]) ]) ]
-```
-
-<!-- elm-cem:example title="Orientation" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.orientation M3e.Token.vertical ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step4" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step5" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step6" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step4" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name2" (Native.node Html.label [ Native.attribute "for" "name2" ] [ Kit.text "Name" ]), M3e.FormField.control "name2" (Native.node Html.input [ Native.attribute "name" "name2", Native.attribute "id" "name2", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step5" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address2" (Native.node Html.label [ Native.attribute "for" "address2" ] [ Kit.text "Address" ]), M3e.FormField.control "address2" (Native.node Html.input [ Native.attribute "name" "address2", Native.attribute "id" "address2", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step6" ] [ Kit.text "Done", M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]) ]) ]
-```
-
-<!-- elm-cem:example title="Header positions" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.headerPosition M3e.Token.below ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step7" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step8" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step9" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step7" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name3" (Native.node Html.label [ Native.attribute "for" "name3" ] [ Kit.text "Name" ]), M3e.FormField.control "name3" (Native.node Html.input [ Native.attribute "name" "name3", Native.attribute "id" "name3", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step8" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address3" (Native.node Html.label [ Native.attribute "for" "address3" ] [ Kit.text "Address" ]), M3e.FormField.control "address3" (Native.node Html.input [ Native.attribute "name" "address3", Native.attribute "id" "address3", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step9" ] [ Kit.text "Done", M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]) ]) ]
-```
-
-<!-- elm-cem:example title="Label positions" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.labelPosition M3e.Token.below ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step10" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step11" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step12" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step10" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name4" (Native.node Html.label [ Native.attribute "for" "name4" ] [ Kit.text "Name" ]), M3e.FormField.control "name4" (Native.node Html.input [ Native.attribute "name" "name4", Native.attribute "id" "name4", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step11" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address4" (Native.node Html.label [ Native.attribute "for" "address4" ] [ Kit.text "Address" ]), M3e.FormField.control "address4" (Native.node Html.input [ Native.attribute "name" "address4", Native.attribute "id" "address4", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step12" ] [ Kit.text "Done", M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]) ]) ]
-```
-
-<!-- elm-cem:example title="Stepper buttons" -->
-```elm
-M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]
-```
-
-<!-- elm-cem:example title="Linear stepper" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.linear True ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step13", M3e.Step.editable True ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step14", M3e.Step.editable True ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step15" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step13" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name5" (Native.node Html.label [ Native.attribute "for" "name5" ] [ Kit.text "Name" ]), M3e.FormField.control "name5" (Native.node Html.input [ Native.attribute "name" "name5", Native.attribute "id" "name5", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step14" ] [ Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address5" (Native.node Html.label [ Native.attribute "for" "address5" ] [ Kit.text "Address" ]), M3e.FormField.control "address5" (Native.node Html.input [ Native.attribute "name" "address5", Native.attribute "id" "address5", Native.attribute "required" "" ] []) ] ], M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [ M3e.Attributes.id "step15" ] [ Kit.text "Done", M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]) ]) ]
-```
-
-@docs view, headerPosition, labelPosition, linear, orientation, onChange
-@docs onBeforeinput, onInput, step, panel
+@docs view, build, toElement
+@docs Is, Attrs, PanelSlot, StepSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs HeaderPosition, headerPosition, LabelPosition, labelPosition, Orientation, orientation
+@docs linear, onChange, onBeforeinput, onInput
+@docs panel, step
+@docs withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
 
 -}
 
-import M3e.Html.Stepper
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-stepper>` element (lazy IR).
+{-| The kind row `m3e-stepper` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | stepper : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , headerPosition : Supported
+    , id : Supported
+    , labelPosition : Supported
+    , linear : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onInput : Supported
+    , orientation : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the `panel` slot admits.
+-}
+type alias PanelSlot =
+    { stepPanel : Brand }
+
+
+{-| The kinds the `step` slot admits.
+-}
+type alias StepSlot =
+    { step : Brand }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | stepper : Ctx }
+
+
+{-| The `headerPosition` values valid on this component (compile-tight narrowing).
+-}
+type alias HeaderPosition =
+    { above : Supported
+    , below : Supported
+    }
+
+
+{-| The `labelPosition` values valid on this component (compile-tight narrowing).
+-}
+type alias LabelPosition =
+    { below : Supported
+    , end : Supported
+    }
+
+
+{-| The `orientation` values valid on this component (compile-tight narrowing).
+-}
+type alias Orientation =
+    { auto : Supported
+    , horizontal : Supported
+    , vertical : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { headerPosition : M3e.Token.Supported
-            , labelPosition : M3e.Token.Supported
-            , linear : M3e.Token.Supported
-            , orientation : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | stepper : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.Stepper.stepper
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-stepper" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The position of the step header, when oriented horizontally. (default: `"above"`)
+{-| Narrowed value setter for `headerPosition`. Tokens come from `M3e.Values`.
 -}
-headerPosition :
-    M3e.Token.Value { above : M3e.Token.Supported, below : M3e.Token.Supported }
-    -> Markup.Html.Attr.Attr { c | headerPosition : M3e.Token.Supported } msg
-headerPosition =
-    M3e.Html.Stepper.headerPosition
+headerPosition : Value HeaderPosition -> Attr { c | headerPosition : Supported } msg
+headerPosition value_ =
+    Ir.attribute "header-position" (HtmlIr.Value.toString value_)
 
 
-{-| The position of the step labels, when oriented horizontally. (default: `"end"`)
+{-| Narrowed value setter for `labelPosition`. Tokens come from `M3e.Values`.
 -}
-labelPosition :
-    M3e.Token.Value { below : M3e.Token.Supported, end : M3e.Token.Supported }
-    -> Markup.Html.Attr.Attr { c | labelPosition : M3e.Token.Supported } msg
-labelPosition =
-    M3e.Html.Stepper.labelPosition
+labelPosition : Value LabelPosition -> Attr { c | labelPosition : Supported } msg
+labelPosition value_ =
+    Ir.attribute "label-position" (HtmlIr.Value.toString value_)
 
 
-{-| Whether the validity of previous steps should be checked or not. (default: `false`)
+{-| Narrowed value setter for `orientation`. Tokens come from `M3e.Values`.
 -}
-linear : Bool -> Markup.Html.Attr.Attr { c | linear : M3e.Token.Supported } msg
+orientation : Value Orientation -> Attr { c | orientation : Supported } msg
+orientation value_ =
+    Ir.attribute "orientation" (HtmlIr.Value.toString value_)
+
+
+{-| See `M3e.Attributes.linear`.
+-}
+linear : Bool -> Attr { c | linear : Supported } msg
 linear =
-    M3e.Html.Stepper.linear
+    M3e.Attributes.linear
 
 
-{-| The orientation of the stepper. (default: `"horizontal"`)
+{-| See `M3e.Events.onChange`.
 -}
-orientation :
-    M3e.Token.Value
-        { auto : M3e.Token.Supported
-        , horizontal : M3e.Token.Supported
-        , vertical : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | orientation : M3e.Token.Supported } msg
-orientation =
-    M3e.Html.Stepper.orientation
-
-
-{-| Listen for `change` events.
--}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.Stepper.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `beforeinput` events.
+{-| See `M3e.Events.onBeforeinput`.
 -}
-onBeforeinput : msg -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.Stepper.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput : msg -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.Stepper.onInput
+    M3e.Events.onInput
 
 
-{-| Place content in the `step` slot.
+{-| Place an element into the named `panel` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-step :
-    Markup.Element.Element { step : M3e.Kind.Brand } msg
-    -> Markup.Element.Element k msg
-step el =
-    Markup.Element.Internal.placeSlot "step" el
+panel : Element PanelSlot admittedBy msg -> Element free freeAdmittedBy msg
+panel element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "panel") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `panel` slot.
+{-| Place an element into the named `step` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-panel :
-    Markup.Element.Element { stepPanel : M3e.Kind.Brand } msg
-    -> Markup.Element.Element k msg
-panel el =
-    Markup.Element.Internal.placeSlot "panel" el
+step : Element StepSlot admittedBy msg -> Element free freeAdmittedBy msg
+step element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "step") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , headerPosition : Available
+    , id : Available
+    , labelPosition : Available
+    , linear : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onInput : Available
+    , orientation : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-stepper" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `headerPosition` — consumes its capability (write-once).
+-}
+withHeaderPosition : Value HeaderPosition -> Builder { a | headerPosition : Available } slotCaps msg -> Builder { a | headerPosition : Used } slotCaps msg
+withHeaderPosition value_ (Builder b) =
+    Builder { b | attrs = headerPosition value_ :: b.attrs }
+
+
+{-| Pipe form of `labelPosition` — consumes its capability (write-once).
+-}
+withLabelPosition : Value LabelPosition -> Builder { a | labelPosition : Available } slotCaps msg -> Builder { a | labelPosition : Used } slotCaps msg
+withLabelPosition value_ (Builder b) =
+    Builder { b | attrs = labelPosition value_ :: b.attrs }
+
+
+{-| Pipe form of `linear` — consumes its capability (write-once).
+-}
+withLinear : Bool -> Builder { a | linear : Available } slotCaps msg -> Builder { a | linear : Used } slotCaps msg
+withLinear value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.linear value_ :: b.attrs }
+
+
+{-| Pipe form of `orientation` — consumes its capability (write-once).
+-}
+withOrientation : Value Orientation -> Builder { a | orientation : Available } slotCaps msg -> Builder { a | orientation : Used } slotCaps msg
+withOrientation value_ (Builder b) =
+    Builder { b | attrs = orientation value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }

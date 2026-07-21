@@ -1,101 +1,198 @@
-module M3e.FabMenu exposing (view, variant, onBeforetoggle, onToggle)
+module M3e.FabMenu exposing
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Variant, variant
+    , onBeforetoggle, onToggle
+    , withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle, withVariant
+    )
 
-{-| A menu, opened from a floating action button (FAB), used to display multiple related actions.
+{-| The `m3e-fab-menu` component — strict per-component surface.
 
-**Component Info:**
+A menu, opened from a floating action button (FAB), used to display multiple related actions.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `beforetoggle`: Dispatched before the toggle state changes.
-  - `toggle`: Dispatched after the toggle state has changed.
-
-<!-- elm-cem:docmeta category=Actions -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Icons" -->
-```elm
-M3e.FabMenuItem.view [] [ M3e.FabMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "email", M3e.Icon.filled True ] []), Kit.text "Email" ]
-```
-
-@docs view, variant, onBeforetoggle, onToggle
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Variant, variant
+@docs onBeforetoggle, onToggle
+@docs withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle, withVariant
 
 -}
 
-import M3e.Html.FabMenu
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-fab-menu>` element (lazy IR).
+{-| The kind row `m3e-fab-menu` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | fabMenu : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , id : Supported
+    , onBeforetoggle : Supported
+    , onToggle : Supported
+    , slot : Supported
+    , style : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { fabMenuItem : Brand
+    , menuItem : Brand
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | fabMenu : Ctx }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { primary : Supported
+    , secondary : Supported
+    , tertiary : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { variant : M3e.Token.Supported
-            , onBeforetoggle : M3e.Token.Supported
-            , onToggle : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { fabMenuItem : M3e.Kind.Brand
-                , menuItem : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | fabMenu : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.FabMenu.fabMenu
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-fab-menu" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The appearance variant of the menu. (default: `"primary"`)
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
 -}
-variant :
-    M3e.Token.Value
-        { primary : M3e.Token.Supported
-        , secondary : M3e.Token.Supported
-        , tertiary : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.FabMenu.variant
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
 
 
-{-| Listen for `beforetoggle` events.
+{-| See `M3e.Events.onBeforetoggle`.
 -}
-onBeforetoggle :
-    msg
-    -> Markup.Html.Attr.Attr { c | onBeforetoggle : M3e.Token.Supported } msg
+onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
 onBeforetoggle =
-    M3e.Html.FabMenu.onBeforetoggle
+    M3e.Events.onBeforetoggle
 
 
-{-| Listen for `toggle` events.
+{-| See `M3e.Events.onToggle`.
 -}
-onToggle : msg -> Markup.Html.Attr.Attr { c | onToggle : M3e.Token.Supported } msg
+onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Html.FabMenu.onToggle
+    M3e.Events.onToggle
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , onBeforetoggle : Available
+    , onToggle : Available
+    , slot : Available
+    , style : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-fab-menu" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
+-}
+withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg -> Builder { a | onBeforetoggle : Used } slotCaps msg
+withOnBeforetoggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforetoggle value_ :: b.attrs }
+
+
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
+-}
+withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
+withOnToggle value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

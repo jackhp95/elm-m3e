@@ -1,134 +1,258 @@
 module M3e.SlideGroup exposing
-    ( view, disabled, nextPageLabel, previousPageLabel, threshold, vertical
+    ( view, build, toElement
+    , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , disabled, nextPageLabel, previousPageLabel, threshold, vertical
     , nextIcon, prevIcon
+    , withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
     )
 
-{-| Presents pagination controls used to scroll overflowing content.
+{-| The `m3e-slide-group` component — strict per-component surface.
 
-**Component Info:**
+Presents pagination controls used to scroll overflowing content.
 
-  - **Extends:** `LitElement`
-
-**Slots:**
-
-  - `next-icon`: Renders the icon to present for the next button.
-  - `prev-icon`: Renders the icon to present for the previous button.
-
-<!-- elm-cem:docmeta category=Navigation -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.SlideGroup.view [] [ Native.div [] [ Kit.text "Item 1" ], Native.div [] [ Kit.text "Item 2" ], Native.div [] [ Kit.text "Item 3" ], Native.div [] [ Kit.text "Item 4" ], Native.div [] [ Kit.text "Item 5" ], Native.div [] [ Kit.text "Item 6" ], Native.div [] [ Kit.text "Item 7" ], Native.div [] [ Kit.text "Item 8" ], Native.div [] [ Kit.text "Item 9" ], Native.div [] [ Kit.text "Item 10" ], Native.div [] [ Kit.text "Item 11" ], Native.div [] [ Kit.text "Item 12" ], Native.div [] [ Kit.text "Item 13" ], Native.div [] [ Kit.text "Item 14" ], Native.div [] [ Kit.text "Item 15" ], Native.div [] [ Kit.text "Item 16" ], Native.div [] [ Kit.text "Item 17" ], Native.div [] [ Kit.text "Item 18" ], Native.div [] [ Kit.text "Item 19" ], Native.div [] [ Kit.text "Item 20" ] ]
-```
-
-<!-- elm-cem:example title="Orientation" -->
-```elm
-M3e.SlideGroup.view [ M3e.SlideGroup.vertical True ] [ Native.div [] [ Kit.text "Item 1" ], Native.div [] [ Kit.text "Item 2" ], Native.div [] [ Kit.text "Item 3" ], Native.div [] [ Kit.text "Item 4" ], Native.div [] [ Kit.text "Item 5" ], Native.div [] [ Kit.text "Item 6" ], Native.div [] [ Kit.text "Item 7" ], Native.div [] [ Kit.text "Item 8" ], Native.div [] [ Kit.text "Item 9" ], Native.div [] [ Kit.text "Item 10" ], Native.div [] [ Kit.text "Item 11" ], Native.div [] [ Kit.text "Item 12" ], Native.div [] [ Kit.text "Item 13" ], Native.div [] [ Kit.text "Item 14" ], Native.div [] [ Kit.text "Item 15" ], Native.div [] [ Kit.text "Item 16" ], Native.div [] [ Kit.text "Item 17" ], Native.div [] [ Kit.text "Item 18" ], Native.div [] [ Kit.text "Item 19" ], Native.div [] [ Kit.text "Item 20" ] ]
-```
-
-@docs view, disabled, nextPageLabel, previousPageLabel, threshold, vertical
+@docs view, build, toElement
+@docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIcon, prevIcon
+@docs withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
 
 -}
 
-import M3e.Html.SlideGroup
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Kind
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Node exposing (Node)
+import M3e.Attributes
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| Build the `<m3e-slide-group>` element (lazy IR).
+{-| The kind row `m3e-slide-group` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | slideGroup : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , id : Supported
+    , nextPageLabel : Supported
+    , previousPageLabel : Supported
+    , slot : Supported
+    , style : Supported
+    , threshold : Supported
+    , vertical : Supported
+    }
+
+
+{-| The kinds the `next-icon` slot admits.
+-}
+type alias NextIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The kinds the `prev-icon` slot admits.
+-}
+type alias PrevIconSlot =
+    { sharedIcon : Shared }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | slideGroup : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , nextPageLabel : M3e.Token.Supported
-            , previousPageLabel : M3e.Token.Supported
-            , threshold : M3e.Token.Supported
-            , vertical : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | slideGroup : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.SlideGroup.slideGroup
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-slide-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether scroll buttons are disabled. (default: `false`)
+{-| See `M3e.Attributes.disabled`.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.SlideGroup.disabled
+    M3e.Attributes.disabled
 
 
-{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`)
+{-| See `M3e.Attributes.nextPageLabel`.
 -}
-nextPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | nextPageLabel : M3e.Token.Supported } msg
+nextPageLabel : String -> Attr { c | nextPageLabel : Supported } msg
 nextPageLabel =
-    M3e.Html.SlideGroup.nextPageLabel
+    M3e.Attributes.nextPageLabel
 
 
-{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`)
+{-| See `M3e.Attributes.previousPageLabel`.
 -}
-previousPageLabel :
-    String
-    -> Markup.Html.Attr.Attr { c | previousPageLabel : M3e.Token.Supported } msg
+previousPageLabel : String -> Attr { c | previousPageLabel : Supported } msg
 previousPageLabel =
-    M3e.Html.SlideGroup.previousPageLabel
+    M3e.Attributes.previousPageLabel
 
 
-{-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`)
+{-| See `M3e.Attributes.threshold`.
 -}
-threshold : Float -> Markup.Html.Attr.Attr { c | threshold : M3e.Token.Supported } msg
+threshold : Float -> Attr { c | threshold : Supported } msg
 threshold =
-    M3e.Html.SlideGroup.threshold
+    M3e.Attributes.threshold
 
 
-{-| Whether content is oriented vertically. (default: `false`)
+{-| See `M3e.Attributes.vertical`.
 -}
-vertical : Bool -> Markup.Html.Attr.Attr { c | vertical : M3e.Token.Supported } msg
+vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
-    M3e.Html.SlideGroup.vertical
+    M3e.Attributes.vertical
 
 
-{-| Place content in the `next-icon` slot.
+{-| Place an element into the named `next-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-nextIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-nextIcon el =
-    Markup.Element.Internal.placeSlot "next-icon" el
+nextIcon : Element NextIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+nextIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "next-icon") (HtmlIr.Element.toNode element))
 
 
-{-| Place content in the `prev-icon` slot.
+{-| Place an element into the named `prev-icon` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
 -}
-prevIcon :
-    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
-    -> Markup.Element.Element k msg
-prevIcon el =
-    Markup.Element.Internal.placeSlot "prev-icon" el
+prevIcon : Element PrevIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+prevIcon element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (HtmlIr.Element.toNode element))
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , id : Available
+    , nextPageLabel : Available
+    , previousPageLabel : Available
+    , slot : Available
+    , style : Available
+    , threshold : Available
+    , vertical : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    { nextIcon : Available
+    , prevIcon : Available
+    }
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-slide-group" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
+-}
+withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg -> Builder { a | nextPageLabel : Used } slotCaps msg
+withNextPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.nextPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
+-}
+withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg -> Builder { a | previousPageLabel : Used } slotCaps msg
+withPreviousPageLabel value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.previousPageLabel value_ :: b.attrs }
+
+
+{-| Pipe form of `threshold` — consumes its capability (write-once).
+-}
+withThreshold : Float -> Builder { a | threshold : Available } slotCaps msg -> Builder { a | threshold : Used } slotCaps msg
+withThreshold value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.threshold value_ :: b.attrs }
+
+
+{-| Pipe form of `vertical` — consumes its capability (write-once).
+-}
+withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg -> Builder { a | vertical : Used } slotCaps msg
+withVertical value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.vertical value_ :: b.attrs }
+
+
+{-| Pipe form of the `next-icon` slot — consumes its capability (write-once).
+-}
+withNextIcon : Element NextIconSlot admittedBy msg -> Builder attrCaps { s | nextIcon : Available } msg -> Builder attrCaps { s | nextIcon : Used } msg
+withNextIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (nextIcon element) :: b.children }
+
+
+{-| Pipe form of the `prev-icon` slot — consumes its capability (write-once).
+-}
+withPrevIcon : Element PrevIconSlot admittedBy msg -> Builder attrCaps { s | prevIcon : Available } msg -> Builder attrCaps { s | prevIcon : Used } msg
+withPrevIcon element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode (prevIcon element) :: b.children }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

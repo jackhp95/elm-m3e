@@ -1,170 +1,263 @@
 module M3e.SegmentedButton exposing
-    ( view, disabled, hideSelectionIndicator, multi, name, onChange
-    , onBeforeinput, onInput
+    ( view, el, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+    , withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle
     )
 
-{-| A button that allows a user to select from a limited set of options.
+{-| The `m3e-segmented-button` component — strict per-component surface.
 
-**Component Info:**
+A button that allows a user to select from a limited set of options.
 
-  - **Extends:** `LitElement`
-
-**Events:**
-
-  - `change`: Dispatched when the checked state of a segment changes.
-  - `beforeinput`: Dispatched before the checked state of a segment changes.
-  - `input`: Dispatched when the checked state of a segment changes.
-
-<!-- elm-cem:docmeta category=Actions -->
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Anatomy" -->
-```elm
-M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
-```
-
-<!-- elm-cem:example title="Icons" -->
-```elm
-M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), Kit.text "Design" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), Kit.text "Accessibility" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
-```
-
-<!-- elm-cem:example title="Selection" -->
-```elm
-M3e.SegmentedButton.view [ M3e.SegmentedButton.multi True ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.disabled True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), Kit.text "Design" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), Kit.text "Accessibility" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
-```
-
-<!-- elm-cem:example title="Disabling (2)" -->
-```elm
-M3e.SegmentedButton.view [ M3e.SegmentedButton.disabled True ] [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), Kit.text "Design" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), Kit.text "Accessibility" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
-```
-
-<!-- elm-cem:example title="Hiding the selection indicator" -->
-```elm
-M3e.SegmentedButton.view [ M3e.SegmentedButton.hideSelectionIndicator True ] [ M3e.ButtonSegment.view [] [ Kit.text "Design" ], M3e.ButtonSegment.view [] [ Kit.text "Accessibility" ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
-```
-
-<!-- elm-cem:example title="Density" -->
-```elm
-[ M3e.SegmentedButton.view [ M3e.Attributes.class "density-3" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
-    , Native.br
-    , Native.br
-    , M3e.SegmentedButton.view [ M3e.Attributes.class "density-2" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
-    , Native.br
-    , Native.br
-    , M3e.SegmentedButton.view [ M3e.Attributes.class "density-1" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
-    , Native.br
-    , Native.br
-    , M3e.SegmentedButton.view [ M3e.Attributes.class "density-0" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
-    ]
-```
-
-@docs view, disabled, hideSelectionIndicator, multi, name, onChange
-@docs onBeforeinput, onInput
+@docs view, el, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+@docs withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle
 
 -}
 
-import M3e.Html.SegmentedButton
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
+import M3e.Values
 
 
-{-| Build the `<m3e-segmented-button>` element (lazy IR).
+{-| The kind row `m3e-segmented-button` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | segmentedButton : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , hideSelectionIndicator : Supported
+    , id : Supported
+    , multi : Supported
+    , name : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onInput : Supported
+    , slot : Supported
+    , style : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { buttonSegment : Brand }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | segmentedButton : Ctx }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { disabled : M3e.Token.Supported
-            , hideSelectionIndicator : M3e.Token.Supported
-            , multi : M3e.Token.Supported
-            , name : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    -> List (Markup.Element.Element { buttonSegment : M3e.Kind.Brand } msg)
-    -> Markup.Element.Element { s | segmentedButton : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.SegmentedButton.segmentedButton
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-segmented-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether the element is disabled. (default: `false`)
+{-| Required-content constructor — missing required content is unwritable.
 -}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+el :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+el required_ attrs children =
+    view attrs (required_.content :: children)
+
+
+{-| See `M3e.Attributes.disabled`.
+-}
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.SegmentedButton.disabled
+    M3e.Attributes.disabled
 
 
-{-| Whether to hide the selection indicator. (default: `false`)
+{-| See `M3e.Attributes.hideSelectionIndicator`.
 -}
-hideSelectionIndicator :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | hideSelectionIndicator : M3e.Token.Supported
-            }
-            msg
+hideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
 hideSelectionIndicator =
-    M3e.Html.SegmentedButton.hideSelectionIndicator
+    M3e.Attributes.hideSelectionIndicator
 
 
-{-| Whether multiple options can be selected. (default: `false`)
+{-| See `M3e.Attributes.multi`.
 -}
-multi : Bool -> Markup.Html.Attr.Attr { c | multi : M3e.Token.Supported } msg
+multi : Bool -> Attr { c | multi : Supported } msg
 multi =
-    M3e.Html.SegmentedButton.multi
+    M3e.Attributes.multi
 
 
-{-| The name that identifies the element when submitting the associated form.
+{-| See `M3e.Attributes.name`.
 -}
-name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
+name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
 name =
-    M3e.Html.SegmentedButton.name
+    M3e.Attributes.name
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Events.onChange`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.SegmentedButton.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `beforeinput` events.
+{-| See `M3e.Events.onBeforeinput`.
 -}
-onBeforeinput : msg -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.SegmentedButton.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput : msg -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.SegmentedButton.onInput
+    M3e.Events.onInput
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , hideSelectionIndicator : Available
+    , id : Available
+    , multi : Available
+    , name : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onInput : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build :
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    -> Builder AttrCaps SlotCaps msg
+build required_ =
+    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-segmented-button" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
+-}
+withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg -> Builder { a | hideSelectionIndicator : Used } slotCaps msg
+withHideSelectionIndicator value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideSelectionIndicator value_ :: b.attrs }
+
+
+{-| Pipe form of `multi` — consumes its capability (write-once).
+-}
+withMulti : Bool -> Builder { a | multi : Available } slotCaps msg -> Builder { a | multi : Used } slotCaps msg
+withMulti value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.multi value_ :: b.attrs }
+
+
+{-| Pipe form of `name` — consumes its capability (write-once).
+-}
+withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }

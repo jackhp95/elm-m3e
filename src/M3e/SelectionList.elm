@@ -1,138 +1,279 @@
 module M3e.SelectionList exposing
-    ( view, hideSelectionIndicator, multi, variant, name, disabled
-    , onChange, onBeforeinput, onInput
+    ( view, build, toElement
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Variant, variant
+    , disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+    , withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle, withVariant
     )
 
-{-| A list of selectable options.
+{-| The `m3e-selection-list` component — strict per-component surface.
 
-**Component Info:**
+A list of selectable options.
 
-  - **Extends:** `M3eListElement` from `/src/list/ListElement`
-
-**Events:**
-
-  - `change`: Dispatched when the selected state of an option changes.
-  - `beforeinput`: Dispatched before the selected state of an option changes.
-  - `input`: Dispatched when the selected state of an option changes.
-
-@docs view, hideSelectionIndicator, multi, variant, name, disabled
-@docs onChange, onBeforeinput, onInput
+@docs view, build, toElement
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Variant, variant
+@docs disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+@docs withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle, withVariant
 
 -}
 
-import M3e.Html.SelectionList
-import M3e.Kind
-import M3e.Token
-import Markup.Element
-import Markup.Element.Internal
-import Markup.Html.Attr
-import Markup.Html.Attr.Internal
-import Markup.Node
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Node exposing (Node)
+import HtmlIr.Value exposing (Value)
+import M3e.Attributes
+import M3e.Events
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
+import M3e.Values
 
 
-{-| Build the `<m3e-selection-list>` element (lazy IR).
+{-| The kind row `m3e-selection-list` produces (open — composes into any slot naming it).
+-}
+type alias Is s =
+    { s | selectionList : Brand }
+
+
+{-| The closed attribute-capability row.
+-}
+type alias Attrs =
+    { class : Supported
+    , disabled : Supported
+    , hideSelectionIndicator : Supported
+    , id : Supported
+    , multi : Supported
+    , name : Supported
+    , onBeforeinput : Supported
+    , onChange : Supported
+    , onInput : Supported
+    , slot : Supported
+    , style : Supported
+    , variant : Supported
+    }
+
+
+{-| The kinds the default slot admits.
+-}
+type alias Content =
+    { divider : Brand
+    , expandableListItem : Brand
+    , listOption : Brand
+    }
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    { childAdm | selectionList : Ctx }
+
+
+{-| The `variant` values valid on this component (compile-tight narrowing).
+-}
+type alias Variant =
+    { segmented : Supported
+    , standard : Supported
+    }
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 view :
-    List
-        (Markup.Html.Attr.Attr
-            { hideSelectionIndicator : M3e.Token.Supported
-            , multi : M3e.Token.Supported
-            , variant : M3e.Token.Supported
-            , name : M3e.Token.Supported
-            , disabled : M3e.Token.Supported
-            , onChange : M3e.Token.Supported
-            , onBeforeinput : M3e.Token.Supported
-            , onInput : M3e.Token.Supported
-            , slot : M3e.Token.Supported
-            }
-            msg
-        )
-    ->
-        List
-            (Markup.Element.Element
-                { listOption : M3e.Kind.Brand
-                , expandableListItem : M3e.Kind.Brand
-                , divider : M3e.Kind.Brand
-                }
-                msg
-            )
-    -> Markup.Element.Element { s | selectionList : M3e.Kind.Brand } msg
-view attributes children =
-    Markup.Element.Internal.fromNode
-        (Markup.Node.fromComponent
-            (\erased ch ->
-                M3e.Html.SelectionList.selectionList
-                    (List.map Markup.Html.Attr.Internal.forget erased)
-                    ch
-            )
-            (List.map Markup.Html.Attr.Internal.forget attributes)
-            (List.map Markup.Element.toNode children)
-        )
+    List (Attr Attrs msg)
+    -> List (Element Content (ChildAdmittedBy childAdm) msg)
+    -> Element (Is s) admittedBy msg
+view attrs children =
+    Ir.fromNode (Ir.node "m3e-selection-list" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Whether to hide the selection indicator. (default: `false`)
+{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
 -}
-hideSelectionIndicator :
-    Bool
-    ->
-        Markup.Html.Attr.Attr
-            { c
-                | hideSelectionIndicator : M3e.Token.Supported
-            }
-            msg
-hideSelectionIndicator =
-    M3e.Html.SelectionList.hideSelectionIndicator
+variant : Value Variant -> Attr { c | variant : Supported } msg
+variant value_ =
+    Ir.attribute "variant" (HtmlIr.Value.toString value_)
 
 
-{-| Whether multiple items can be selected. (default: `false`)
+{-| See `M3e.Attributes.disabled`.
 -}
-multi : Bool -> Markup.Html.Attr.Attr { c | multi : M3e.Token.Supported } msg
-multi =
-    M3e.Html.SelectionList.multi
-
-
-{-| The appearance variant of the list. (default: `"standard"`)
--}
-variant :
-    M3e.Token.Value
-        { segmented : M3e.Token.Supported
-        , standard : M3e.Token.Supported
-        }
-    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
-variant =
-    M3e.Html.SelectionList.variant
-
-
-{-| The name that identifies the element when submitting the associated form.
--}
-name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
-name =
-    M3e.Html.SelectionList.name
-
-
-{-| Whether the element is disabled. (default: `false`)
--}
-disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Html.SelectionList.disabled
+    M3e.Attributes.disabled
 
 
-{-| Listen for `change` events.
+{-| See `M3e.Attributes.hideSelectionIndicator`.
 -}
-onChange : msg -> Markup.Html.Attr.Attr { c | onChange : M3e.Token.Supported } msg
+hideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
+hideSelectionIndicator =
+    M3e.Attributes.hideSelectionIndicator
+
+
+{-| See `M3e.Attributes.multi`.
+-}
+multi : Bool -> Attr { c | multi : Supported } msg
+multi =
+    M3e.Attributes.multi
+
+
+{-| See `M3e.Attributes.name`.
+-}
+name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
+name =
+    M3e.Attributes.name
+
+
+{-| See `M3e.Events.onChange`.
+-}
+onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Html.SelectionList.onChange
+    M3e.Events.onChange
 
 
-{-| Listen for `beforeinput` events.
+{-| See `M3e.Events.onBeforeinput`.
 -}
-onBeforeinput : msg -> Markup.Html.Attr.Attr { c | onBeforeinput : M3e.Token.Supported } msg
+onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Html.SelectionList.onBeforeinput
+    M3e.Events.onBeforeinput
 
 
-{-| Listen for `input` events.
+{-| See `M3e.Events.onInput`.
 -}
-onInput : msg -> Markup.Html.Attr.Attr { c | onInput : M3e.Token.Supported } msg
+onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Html.SelectionList.onInput
+    M3e.Events.onInput
+
+
+{-| The pipe-builder: capabilities are consumed Available→Used, so writing
+a singular attribute or slot twice is unwritable.
+-}
+type Builder attrCaps slotCaps msg
+    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , hideSelectionIndicator : Available
+    , id : Available
+    , multi : Available
+    , name : Available
+    , onBeforeinput : Available
+    , onChange : Available
+    , onInput : Available
+    , slot : Available
+    , style : Available
+    , variant : Available
+    }
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg
+build =
+    Builder { attrs = [], children = [] }
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
+toElement (Builder b) =
+    Ir.fromNode (Ir.node "m3e-selection-list" (List.reverse b.attrs) (List.reverse b.children))
+
+
+{-| Pipe form of `class` — consumes its capability (write-once).
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
+withClass value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+
+
+{-| Pipe form of `id` — consumes its capability (write-once).
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
+withId value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+
+
+{-| Pipe form of `slot` — consumes its capability (write-once).
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
+withSlot value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+
+
+{-| Pipe form of `style` — consumes its capability (write-once).
+-}
+withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+
+
+{-| Pipe form of `disabled` — consumes its capability (write-once).
+-}
+withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
+withDisabled value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+
+
+{-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
+-}
+withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg -> Builder { a | hideSelectionIndicator : Used } slotCaps msg
+withHideSelectionIndicator value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.hideSelectionIndicator value_ :: b.attrs }
+
+
+{-| Pipe form of `multi` — consumes its capability (write-once).
+-}
+withMulti : Bool -> Builder { a | multi : Available } slotCaps msg -> Builder { a | multi : Used } slotCaps msg
+withMulti value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.multi value_ :: b.attrs }
+
+
+{-| Pipe form of `name` — consumes its capability (write-once).
+-}
+withName : Value M3e.Values.Name -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
+withName value_ (Builder b) =
+    Builder { b | attrs = M3e.Attributes.name value_ :: b.attrs }
+
+
+{-| Pipe form of `variant` — consumes its capability (write-once).
+-}
+withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
+withVariant value_ (Builder b) =
+    Builder { b | attrs = variant value_ :: b.attrs }
+
+
+{-| Pipe form of `onChange` — consumes its capability (write-once).
+-}
+withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
+withOnChange value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+
+
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
+-}
+withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
+withOnBeforeinput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+
+
+{-| Pipe form of `onInput` — consumes its capability (write-once).
+-}
+withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
+withOnInput value_ (Builder b) =
+    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+
+
+{-| Pipe form of a default-slot child (repeatable).
+-}
+withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withChild element (Builder b) =
+    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
