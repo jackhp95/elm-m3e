@@ -3,8 +3,9 @@
     "source-directories": [
         "src",
         "../src",
-        "../../elm-review-cem/src",
-        "../../elm-cem/markup/src"
+        "../../elm-review-cem-phantom/src",
+        "../../elm-html-intermediate-representation/src",
+        "../../elm-typed-html/src"
     ],
     "elm-version": "0.19.1",
     "dependencies": {

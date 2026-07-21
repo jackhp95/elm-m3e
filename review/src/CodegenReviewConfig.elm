@@ -32,5 +32,5 @@ config =
     -- `Native`/`Layout`/`Kit` adapters) may import an interior module. The docs
     -- `Doc`/`Shared` adapters cross through `Seam`, so they need no Internal
     -- import and are deliberately absent here.
-    , NoInternalImportOutsideAllowed.rule [ "M3e", "Native", "Layout", "Kit", "Seam" ]
+    , NoInternalImportOutsideAllowed.rule [ "M3e", "TypedHtml", "HtmlIr", "Native", "Layout", "Kit", "Seam" ]
     ]

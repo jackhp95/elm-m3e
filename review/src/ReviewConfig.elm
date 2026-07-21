@@ -61,7 +61,21 @@ config =
         , complexity
         , toHtmlGate
         ]
-        |> List.map (ignoreElmPages >> ignoreLibraryTests)
+        |> List.map (ignoreElmPages >> ignoreLibraryTests >> ignoreGeneratedSubstrate)
+
+
+{-| The generated brand surfaces and the IR are regenerated wholesale (the
+regen-diff gates own their hygiene) — style rules must not lint them. The
+cem discipline rules check CALL SITES in app code, so nothing load-bearing
+is lost.
+-}
+ignoreGeneratedSubstrate : Rule -> Rule
+ignoreGeneratedSubstrate =
+    Rule.ignoreErrorsForDirectories
+        [ "../src/"
+        , "../../elm-typed-html/src/"
+        , "../../elm-html-intermediate-representation/src/"
+        ]
 
 
 {-| `.elm-pages/` is fully generated routing/metadata — NO rule should lint it
