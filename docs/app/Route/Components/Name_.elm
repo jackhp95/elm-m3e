@@ -19,7 +19,9 @@ import Head
 import Kit
 import Layout
 import M3e
-import M3e
+import M3e.Attributes
+import M3e.Card
+import M3e.ListItem
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
@@ -149,8 +151,8 @@ header component =
     Layout.div "space-y-4"
         (Layout.div "flex flex-wrap items-center gap-3"
             (M3e.heading
-                [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-                [ Markup.M3e.text component.name ]
+                [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+                [ M3e.text component.name ]
                 :: categoryChip component.category
             )
             :: summaryBlock component.summary
@@ -225,8 +227,8 @@ apiSection : List Doc.Data.Member -> Element { s | html : M3e.Kind.Brand, headin
 apiSection members =
     Layout.div "space-y-6"
         (M3e.heading
-            [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ]
-            [ Markup.M3e.text "API" ]
+            [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+            [ M3e.text "API" ]
             :: List.filterMap (apiGroup members) apiGroups
         )
 
@@ -259,8 +261,8 @@ apiGroup members ( label, roles ) =
             Just
                 (Layout.div "space-y-3"
                     [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text label ]
-                    , M3e.card [ M3e.variantOutlined ]
-                        [ M3e.cardSlotContent (M3e.list [] (List.map memberRow group)) ]
+                    , M3e.card [ M3e.Attributes.variant Value.outlined ]
+                        [ M3e.Card.content (M3e.list [] (List.map memberRow group)) ]
                     ]
                 )
 
@@ -289,6 +291,6 @@ memberRow m =
                     []
 
                 else
-                    [ M3e.listItemSlotSupportingText (Doc.markdown m.doc) ]
+                    [ M3e.ListItem.supportingText (Doc.markdown m.doc) ]
                )
         )

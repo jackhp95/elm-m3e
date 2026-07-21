@@ -13,7 +13,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import M3e
+import M3e.Attributes
+import M3e.Card
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
@@ -88,18 +89,18 @@ stateRow ( token, value, trigger ) =
 demoButtons : Element { s | html : M3e.Kind.Brand } adm_ msg
 demoButtons =
     Layout.div "flex flex-wrap gap-3 p-2"
-        [ M3e.button [ M3e.variantFilled ] [ Kit.text "Filled" ]
-        , M3e.button [ M3e.variantTonal ] [ Kit.text "Tonal" ]
-        , M3e.button [ M3e.variantOutlined ] [ Kit.text "Outlined" ]
-        , M3e.button [ M3e.variantText ] [ Kit.text "Text" ]
+        [ M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Filled" ]
+        , M3e.button [ M3e.Attributes.variant Value.tonal ] [ Kit.text "Tonal" ]
+        , M3e.button [ M3e.Attributes.variant Value.outlined ] [ Kit.text "Outlined" ]
+        , M3e.button [ M3e.Attributes.variant Value.text ] [ Kit.text "Text" ]
         ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.M3e.text "State Layers" ]
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "State Layers" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -119,8 +120,8 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ Doc.sectionHeading "The three opacities"
                     , M3e.card
-                        [ M3e.variantOutlined ]
-                        [ M3e.cardSlotContent
+                        [ M3e.Attributes.variant Value.outlined ]
+                        [ M3e.Card.content
                             (Layout.div "flex flex-col px-2"
                                 (List.intersperse (M3e.divider [] []) (List.map stateRow states))
                             )
@@ -133,7 +134,7 @@ view _ _ =
                             [ Kit.onSurfaceVariant ]
                             [ Kit.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]
                         ]
-                    , M3e.card [ M3e.variantOutlined ] [ M3e.cardSlotContent demoButtons ]
+                    , M3e.card [ M3e.Attributes.variant Value.outlined ] [ M3e.Card.content demoButtons ]
                     ]
                 ]
             )

@@ -28,6 +28,12 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
+import M3e.Attributes
+import TypedHtml.Attributes as TA
+import M3e.AppBar
+import M3e.Card
+import M3e.ListItem
+import M3e.NavItem
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
@@ -136,7 +142,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.appBarSlotTitle (Kit.text "Rally redesign") ]
+        [ M3e.AppBar.title (Kit.text "Rally redesign") ]
 
 
 
@@ -171,9 +177,9 @@ primary =
 
 summaryCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 summaryCard =
-    M3e.card [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "This sprint" ])
-        , M3e.cardSlotContent
+    M3e.card [ M3e.Attributes.variant Value.elevated ]
+        [ M3e.Card.header (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "This sprint" ])
+        , M3e.Card.content
             (Layout.div "flex flex-wrap gap-6 pt-1"
                 [ metric "12" "Tasks done"
                 , metric "3" "In review"
@@ -193,11 +199,11 @@ metric value label =
 
 milestonesCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 milestonesCard =
-    M3e.card [ M3e.variantFilled ]
-        [ M3e.cardSlotHeader (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "Milestones" ])
-        , M3e.cardSlotContent
+    M3e.card [ M3e.Attributes.variant Value.filled ]
+        [ M3e.Card.header (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "Milestones" ])
+        , M3e.Card.content
             (Layout.div "flex flex-col"
-                (List.intersperse (M3e.divider [ M3e.attrInset True ] [])
+                (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                     [ milestoneRow "check_circle" "Motion tokens" "Shipped"
                     , milestoneRow "pending" "Adaptive nav" "In progress"
                     , milestoneRow "radio_button_unchecked" "A11y pass" "Not started"
@@ -210,9 +216,9 @@ milestonesCard =
 milestoneRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 milestoneRow iconName label status =
     M3e.listItem []
-        [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
-        , M3e.listItemSlotTrailing
+        , M3e.ListItem.trailing
             (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text status ])
         ]
 
@@ -283,7 +289,7 @@ mobileBar =
 navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 navItem d =
     M3e.navItem
-        [ M3e.attrSelected (d.label == "Overview") ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.selected (d.label == "Overview") ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.label
         ]

@@ -14,8 +14,12 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
+import TypedHtml.Attributes as TA
+import M3e.Attributes
+import M3e.Button
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -69,8 +73,8 @@ shown as real compiler text, not built here.
 -}
 savedButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 savedButton =
-    M3e.button [ M3e.variantFilled ]
-        [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] [])
+    M3e.button [ M3e.Attributes.variant Value.filled ]
+        [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
         , Kit.text "Save"
         ]
 
@@ -119,8 +123,8 @@ valid =
 
 validCode : String
 validCode =
-    """M3e.button [ M3e.variantFilled ]
-    [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] [])
+    """M3e.button [ M3e.Attributes.variant Value.filled ]
+    [ M3e.slotIcon (M3e.icon [ TA.name "save" ] [])
     , Kit.text "Save"
     ]"""
 
@@ -132,7 +136,7 @@ broken =
 
 brokenCode : String
 brokenCode =
-    """M3e.button [ M3e.variantFilled ]
+    """M3e.button [ M3e.Attributes.variant Value.filled ]
     [ M3e.slotIcon (M3e.chip [] [ Kit.text "not an icon" ])
     , Kit.text "Save"
     ]"""
@@ -157,7 +161,7 @@ Hint: Seems like a record field typo. Maybe chip should be icon?"""
 
 readError : String
 readError =
-    """Read it the plain way: *"this is a chip; the icon slot only takes icons."* The compiler even guesses your intent — *maybe chip should be icon?* You never shipped a broken button, because it was never a value you could build. The same guard covers variants: a variant that doesn't exist isn't a name you can type — only the real tokens (`M3e.variantFilled`, `M3e.variantOutlined`, …) exist at all.
+    """Read it the plain way: *"this is a chip; the icon slot only takes icons."* The compiler even guesses your intent — *maybe chip should be icon?* You never shipped a broken button, because it was never a value you could build. The same guard covers variants: a variant that doesn't exist isn't a name you can type — only the real tokens (`M3e.Attributes.variant Value.filled`, `M3e.Attributes.variant Value.outlined`, …) exist at all.
 
 **The browser never sees the mistake — the compiler does.**
 

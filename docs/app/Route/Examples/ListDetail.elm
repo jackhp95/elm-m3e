@@ -30,6 +30,11 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
+import M3e.Attributes
+import TypedHtml.Attributes as TA
+import M3e.AppBar
+import M3e.ListItem
+import M3e.NavItem
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
@@ -188,7 +193,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.appBarSlotTitle (Kit.text "Contacts") ]
+        [ M3e.AppBar.title (Kit.text "Contacts") ]
 
 
 
@@ -214,7 +219,7 @@ listPane : Int -> Element { s | html : M3e.Kind.Brand, list : M3e.Kind.Brand } a
 listPane selected =
     Layout.div "shrink-0 overflow-y-auto border-outline-variant/40 md:w-80 md:border-r"
         [ M3e.list []
-            (List.intersperse (M3e.divider [ M3e.attrInset True ] [])
+            (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                 (List.indexedMap (contactRow selected) contacts)
             )
         ]
@@ -243,9 +248,9 @@ contactRow selected index contact =
         , Native.attribute "role" "button"
         , Native.onClick (SelectContact index)
         ]
-        [ M3e.listItemSlotLeading (Avatar.initials contact.initials)
+        [ M3e.ListItem.leading (Avatar.initials contact.initials)
         , Kit.text contact.name
-        , M3e.listItemSlotSupportingText (Kit.text contact.role)
+        , M3e.ListItem.supportingText (Kit.text contact.role)
         ]
 
 
@@ -276,7 +281,7 @@ detailCard : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 detailCard contact =
     Surface.view Surface.surfaceContainer
         [ Shape.corner Shape.large, Layout.class "overflow-hidden flex flex-col" ]
-        (List.intersperse (M3e.divider [ M3e.attrInset True ] [])
+        (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
             [ fieldRow "mail" "Email" contact.email
             , fieldRow "call" "Phone" contact.phone
             , fieldRow "sticky_note_2" "Note" contact.note
@@ -287,9 +292,9 @@ detailCard contact =
 fieldRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 fieldRow iconName label value =
     M3e.listItem []
-        [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
-        , M3e.listItemSlotSupportingText (Kit.text value)
+        , M3e.ListItem.supportingText (Kit.text value)
         ]
 
 
@@ -325,7 +330,7 @@ mobileBar =
 navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 navItem d =
     M3e.navItem
-        [ M3e.attrSelected (d.label == "Contacts") ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.selected (d.label == "Contacts") ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.label
         ]

@@ -14,8 +14,11 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
+import M3e.Attributes
+import M3e.Card
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -70,11 +73,11 @@ the two can never drift.
 -}
 settingsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 settingsCard =
-    M3e.card [ M3e.variantOutlined ]
-        [ M3e.slotHeader
-            (M3e.heading [ M3e.variantTitle, M3e.attrLevel 2 ] [ Kit.text "Account settings" ])
-        , M3e.slotContent
-            (M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ])
+    M3e.card [ M3e.Attributes.variant Value.outlined ]
+        [ M3e.Card.header
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Kit.text "Account settings" ])
+        , M3e.Card.content
+            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ])
         ]
 
 
@@ -112,7 +115,7 @@ body : String
 body =
     """Every component is a typed Elm value. Import the one-import `M3e` barrel, build a value in the shape `M3e.<name> [ attributes ] [ children ]`, and hand it to `HtmlIr.Element.toNode` at your app's root. Here is the start of our panel: an outlined card, a title, and a **Save** button.
 
-Look at the shape. Attributes like `M3e.variantFilled` go in the first list; content goes in the second. That is the whole API — one import, one shape, every component.
+Look at the shape. Attributes like `M3e.Attributes.variant Value.filled` go in the first list; content goes in the second. That is the whole API — one import, one shape, every component.
 
 (One deliberate choice: the Guide writes the generic setters — `M3e.slotHeader`, not `M3e.cardSlotHeader` — because in [the tooling chapter](/guide/tooling-refactors) you'll watch the linter upgrade exactly this code to the component-precise form, for you.)"""
 
@@ -124,11 +127,11 @@ import M3e
 
 
 settingsCard =
-    M3e.card [ M3e.variantOutlined ]
+    M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.slotHeader
-            (M3e.heading [ M3e.variantTitle, M3e.attrLevel 2 ] [ Kit.text "Account settings" ])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Kit.text "Account settings" ])
         , M3e.slotContent
-            (M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ])
+            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ])
         ]"""
 
 

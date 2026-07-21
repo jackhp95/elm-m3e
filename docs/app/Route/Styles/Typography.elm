@@ -7,7 +7,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import M3e
+import M3e.Attributes
+import M3e.Card
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
@@ -98,8 +99,8 @@ row ( exhibit, cls, metrics ) =
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.M3e.text "Typography" ]
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Typography" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -119,8 +120,8 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ Doc.sectionHeading "The scale, live"
                     , M3e.card
-                        [ M3e.variantOutlined ]
-                        [ M3e.cardSlotContent
+                        [ M3e.Attributes.variant Value.outlined ]
+                        [ M3e.Card.content
                             (Layout.div "flex flex-col px-2"
                                 (List.intersperse (M3e.divider [] []) (List.map row scale))
                             )

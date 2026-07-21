@@ -131,7 +131,7 @@ looseEnum : String
 looseEnum =
     """### An enum token type-checks but is rejected
 
-**Cause:** at a looser layer, a token was accepted by the types but isn't valid for *this specific component*. **Symptom:** it compiles, but the linter flags it. **Fix:** use one of the component's real tokens. (At the top layer this can't happen — only the real tokens exist as names, e.g. `M3e.variantFilled`.)"""
+**Cause:** at a looser layer, a token was accepted by the types but isn't valid for *this specific component*. **Symptom:** it compiles, but the linter flags it. **Fix:** use one of the component's real tokens. (At the top layer this can't happen — only the real tokens exist as names, e.g. `M3e.Attributes.variant Value.filled`.)"""
 
 
 looseEnumNote : String
@@ -144,14 +144,14 @@ missingName : String
 missingName =
     """### A control has no accessible name
 
-**Cause:** an icon-only control with no visible text and no `aria-label`. **Symptom:** it compiles, but the linter refuses it. **Fix:** add the accessible name — `M3e.ariaLabel "…"`."""
+**Cause:** an icon-only control with no visible text and no `aria-label`. **Symptom:** it compiles, but the linter refuses it. **Fix:** add the accessible name — `Aria.label "…"`."""
 
 
 missingNameError : String
 missingNameError =
     """MissingRequiredAttribute: Component `iconButton` requires attribute
 `aria-label` but this call doesn't provide it.
-Add `M3e.ariaLabel "..."` to the attrs list."""
+Add `Aria.label "..."` to the attrs list."""
 
 
 greenLint : String

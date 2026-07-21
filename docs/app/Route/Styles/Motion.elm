@@ -7,7 +7,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import M3e
+import M3e.Attributes
+import M3e.Card
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
@@ -62,8 +63,8 @@ head _ =
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.M3e.text "Motion" ]
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Motion" ]
 
 
 {-| A `(token, value)` reference table: the CSS custom property on the left, its
@@ -72,8 +73,8 @@ literal value on the right, divider-separated inside an outlined card.
 tokenTable : List ( String, String ) -> Element { r | card : M3e.Kind.Brand } adm_ msg
 tokenTable rows =
     M3e.card
-        [ M3e.variantOutlined ]
-        [ M3e.cardSlotContent
+        [ M3e.Attributes.variant Value.outlined ]
+        [ M3e.Card.content
             (Layout.div "flex flex-col px-2"
                 (List.intersperse (M3e.divider [] []) (List.map tokenRow rows))
             )

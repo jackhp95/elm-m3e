@@ -23,6 +23,13 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
+import M3e.AppBar
+import M3e.Attributes
+import M3e.ListItem
+import M3e.NavItem
+import M3e.SliderThumb
+import TypedHtml.Aria as Aria
+import TypedHtml.Attributes as TA
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
@@ -176,7 +183,7 @@ view _ _ model =
 mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so only the
 content column scrolls.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } (PagesMsg Msg)
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -216,9 +223,9 @@ exampleFooter =
 
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
-    M3e.appBar [ M3e.sizeMedium ]
-        [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "menu" ] [])
-        , M3e.appBarSlotTitle (Kit.text "Settings")
+    M3e.appBar [ M3e.Attributes.size Value.medium ]
+        [ M3e.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
+        , M3e.AppBar.title (Kit.text "Settings")
         ]
 
 
@@ -238,7 +245,7 @@ sections =
 
 {-| Desktop navigation rail — hidden below the `md` breakpoint.
 -}
-desktopRail : String -> Element { s | navRail : M3e.Kind.Brand } (PagesMsg Msg)
+desktopRail : String -> Element { s | navRail : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 desktopRail current =
     M3e.navRail [ Layout.class "hidden md:flex shrink-0" ]
         (List.map (navItem current) sections)
@@ -247,19 +254,19 @@ desktopRail current =
 {-| Mobile bottom navigation bar — hidden at `md` and up, pinned to the viewport
 bottom so it stays put while the content scrolls.
 -}
-mobileBar : String -> Element { s | navBar : M3e.Kind.Brand } (PagesMsg Msg)
+mobileBar : String -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 mobileBar current =
     M3e.navBar [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map (navItem current) sections)
 
 
-navItem : String -> ( String, String, String ) -> Element { s | navItem : M3e.Kind.Brand } (PagesMsg Msg)
+navItem : String -> ( String, String, String ) -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navItem current ( section, name, iconName ) =
     M3e.navItem
-        [ M3e.attrSelected (section == current)
+        [ M3e.Attributes.selected (section == current)
         , Native.onClick (PagesMsg.fromMsg (SelectSection section))
         ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , Kit.text name
         ]
 
@@ -274,11 +281,11 @@ they must share ONE type to live in a single list, so `Row` names the union of
 every field any row needs. Each producing function's `view` returns an open row,
 which widens to fill this closed record.
 -}
-type alias Row msg =
+type alias Row adm_ msg =
     Element { html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
 
 
-content : Model -> List (Element { s | html : M3e.Kind.Brand } (PagesMsg Msg))
+content : Model -> List (Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg))
 content model =
     [ accountCard
     , sectionCard "Notifications"
@@ -308,7 +315,7 @@ content model =
 {-| A settings section: an overline heading above a rounded surface-container card
 whose `ListItem` rows are separated by `Divider`s.
 -}
-sectionCard : String -> List (Row (PagesMsg Msg)) -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+sectionCard : String -> List (Row adm_ (PagesMsg Msg)) -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 sectionCard heading rows =
     Layout.div "flex flex-col gap-2"
         [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text heading ]
@@ -320,15 +327,15 @@ sectionCard heading rows =
 
 {-| Interleave `Divider`s between rows so groups read as one card.
 -}
-dividize : List (Row msg) -> List (Row msg)
+dividize : List (Row adm_ msg) -> List (Row adm_ msg)
 dividize rows =
-    List.intersperse (M3e.divider [ M3e.attrInset True ] []) rows
+    List.intersperse (M3e.divider [ M3e.Attributes.inset True ] []) rows
 
 
 {-| The account header: a profile card (avatar + name + email) followed by a
 drill-in row for managing the account.
 -}
-accountCard : Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+accountCard : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 accountCard =
     Layout.div "flex flex-col gap-2"
         [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text "Account" ]
@@ -336,10 +343,10 @@ accountCard =
             [ Shape.corner Shape.large, Layout.class "overflow-hidden flex flex-col" ]
             (dividize
                 [ M3e.listItem []
-                    [ M3e.listItemSlotLeading (Avatar.initials "JD")
+                    [ M3e.ListItem.leading (Avatar.initials "JD")
                     , Kit.text "Jane Doe"
-                    , M3e.listItemSlotSupportingText (Kit.text "jane@example.com")
-                    , M3e.listItemSlotTrailing (M3e.icon [ M3e.attrName "chevron_right" ] [])
+                    , M3e.ListItem.supportingText (Kit.text "jane@example.com")
+                    , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
                     ]
                 , linkRow "manage_accounts" "Manage account" "Password, 2FA, connected apps"
                 , linkRow "sync" "Sync & backup" "Last synced 2 minutes ago"
@@ -350,16 +357,16 @@ accountCard =
 
 {-| A toggle row: leading icon, label + supporting text, trailing `Switch`.
 -}
-switchRow : String -> String -> String -> Bool -> Msg -> Row (PagesMsg Msg)
+switchRow : String -> String -> String -> Bool -> Msg -> Row adm_ (PagesMsg Msg)
 switchRow iconName label supporting on toggle =
     M3e.listItem []
-        [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
-        , M3e.listItemSlotSupportingText (Kit.text supporting)
-        , M3e.listItemSlotTrailing
+        , M3e.ListItem.supportingText (Kit.text supporting)
+        , M3e.ListItem.trailing
             (M3e.switch
-                [ M3e.ariaLabel label
-                , M3e.attrChecked on
+                [ Aria.label label
+                , M3e.Attributes.checked on
                 , Native.onClick (PagesMsg.fromMsg toggle)
                 ]
                 []
@@ -369,17 +376,17 @@ switchRow iconName label supporting on toggle =
 
 {-| A theme-choice row backed by a `Radio` (single group via shared `name`).
 -}
-themeRow : String -> String -> String -> String -> Row (PagesMsg Msg)
+themeRow : String -> String -> String -> String -> Row adm_ (PagesMsg Msg)
 themeRow theme label iconName current =
     M3e.listItem []
-        [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
-        , M3e.listItemSlotTrailing
+        , M3e.ListItem.trailing
             (M3e.radio
-                [ M3e.ariaLabel label
-                , M3e.attrName "theme"
-                , M3e.attrValue theme
-                , M3e.attrChecked (theme == current)
+                [ Aria.label label
+                , TA.name "theme"
+                , M3e.Attributes.value theme
+                , M3e.Attributes.checked (theme == current)
                 , Native.onClick (PagesMsg.fromMsg (SetTheme theme))
                 ]
                 []
@@ -391,45 +398,45 @@ themeRow theme label iconName current =
 supporting-text, so this row is a plain layout (leading icon + label above the
 slider) rather than a `ListItem` with the control crammed into a text slot.
 -}
-densityRow : Row msg
+densityRow : Row adm_ msg
 densityRow =
     Layout.colWith "flex flex-col gap-3 px-4 py-3"
         [ Layout.rowWith "flex items-center gap-4"
-            [ M3e.icon [ M3e.attrName "density_medium" ] []
+            [ M3e.icon [ TA.name "density_medium" ] []
             , Kit.text "Display density"
             ]
         , M3e.slider
-            [ M3e.attrMin 0
-            , M3e.attrMax 3
-            , M3e.attrStep 1
-            , M3e.attrDiscrete True
-            , M3e.attrLabelled True
-            , M3e.ariaLabel "Display density"
+            [ M3e.Attributes.min 0
+            , M3e.Attributes.max 3
+            , M3e.Attributes.step 1
+            , M3e.Attributes.discrete True
+            , M3e.Attributes.labelled True
+            , Aria.label "Display density"
             , Layout.class "w-full"
             ]
-            [ M3e.sliderThumb [ M3e.attrValueFloat 2 ] [] ]
+            [ M3e.sliderThumb [ M3e.SliderThumb.value 2 ] [] ]
         ]
 
 
 {-| A drill-in row: label + supporting text with a trailing chevron.
 -}
-linkRow : String -> String -> String -> Row msg
+linkRow : String -> String -> String -> Row adm_ msg
 linkRow iconName label supporting =
     M3e.listItem []
-        [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
-        , M3e.listItemSlotSupportingText (Kit.text supporting)
-        , M3e.listItemSlotTrailing (M3e.icon [ M3e.attrName "chevron_right" ] [])
+        , M3e.ListItem.supportingText (Kit.text supporting)
+        , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
         ]
 
 
 {-| A static info row: label with a trailing value tinted as a variant.
 -}
-infoRow : String -> String -> String -> Row msg
+infoRow : String -> String -> String -> Row adm_ msg
 infoRow iconName label value =
     M3e.listItem []
-        [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
-        , M3e.listItemSlotTrailing
+        , M3e.ListItem.trailing
             (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text value ])
         ]

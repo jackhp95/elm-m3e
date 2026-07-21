@@ -29,6 +29,14 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
+import TypedHtml.Attributes as TA
+import TypedHtml.Aria as Aria
+import M3e.Attributes
+import M3e.AppBar
+import M3e.Card
+import M3e.NavItem
+import M3e.SearchBar
+import M3e.AssistChip
 import M3e
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
@@ -210,7 +218,7 @@ view _ _ model =
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
 that only appears on small screens.
 -}
-shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } (PagesMsg Msg)
+shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
 shell model =
     Layout.div "flex h-screen w-full flex-col"
         [ appBar
@@ -245,15 +253,15 @@ exampleFooter =
         }
 
 
-appBar : Element { s | appBar : M3e.Kind.Brand } (PagesMsg Msg)
+appBar : Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar =
     M3e.appBar []
-        [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "public" ] [])
-        , M3e.appBarSlotTitle (Kit.text "Wander")
-        , M3e.appBarSlotTrailing
+        [ M3e.AppBar.leading (M3e.icon [ TA.name "public" ] [])
+        , M3e.AppBar.title (Kit.text "Wander")
+        , M3e.AppBar.trailing
             (M3e.iconButton
-                [ M3e.variantStandard, M3e.ariaLabel "Notifications" ]
-                [ M3e.icon [ M3e.attrName "notifications" ] [] ]
+                [ M3e.Attributes.variant Value.standard, Aria.label "Notifications" ]
+                [ M3e.icon [ TA.name "notifications" ] [] ]
             )
         ]
 
@@ -264,7 +272,7 @@ appBar =
 
 {-| The desktop navigation rail, hidden below the `md` breakpoint.
 -}
-navRail : Dest -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+navRail : Dest -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navRail current =
     Layout.div "hidden md:flex"
         [ M3e.navRail []
@@ -272,20 +280,20 @@ navRail current =
         ]
 
 
-railItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.Brand } (PagesMsg Msg)
+railItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 railItem current ( dest, iconName, label ) =
     M3e.navItem
-        [ M3e.attrSelected (dest == current)
+        [ M3e.Attributes.selected (dest == current)
         , Native.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
         ]
 
 
 {-| The mobile bottom navigation bar, hidden at and above the `md` breakpoint.
 -}
-navBar : Dest -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+navBar : Dest -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar current =
     Layout.div "md:hidden"
         [ M3e.navBar []
@@ -293,13 +301,13 @@ navBar current =
         ]
 
 
-barItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.Brand } (PagesMsg Msg)
+barItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 barItem current ( dest, iconName, label ) =
     M3e.navItem
-        [ M3e.attrSelected (dest == current)
+        [ M3e.Attributes.selected (dest == current)
         , Native.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName iconName ] [])
+        [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , Kit.text label
         ]
 
@@ -308,7 +316,7 @@ barItem current ( dest, iconName, label ) =
 -- CONTENT
 
 
-content : Model -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+content : Model -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 content model =
     Layout.div "flex flex-col gap-8 p-4 md:p-8"
         [ hero
@@ -324,7 +332,7 @@ uses): every category's rail is mounted in the track, and switching the category
 tab slides the prior rail out and the new one in. The static "Nearby getaways"
 rail below is category-independent and stays put.
 -}
-popularRails : Category -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+popularRails : Category -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 popularRails current =
     Doc.Slider.slidingPanels
         (categoryIndex current)
@@ -348,7 +356,7 @@ categoryIndex current =
 {-| A search hero: a headline over a `SearchBar`, wrapped in a tinted, extra-large
 `Surface` panel.
 -}
-hero : Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+hero : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 hero =
     Surface.view Surface.surfaceContainer
         [ Shape.corner Shape.extraLarge, Layout.class "flex flex-col gap-4 p-6 md:p-8" ]
@@ -360,28 +368,28 @@ hero =
         ]
 
 
-searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } (PagesMsg Msg)
+searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 searchBar =
     M3e.searchBar
         []
-        [ M3e.searchBarSlotInput (Native.node Html.input [] [])
-        , M3e.searchBarSlotLeading (M3e.icon [ M3e.attrName "search" ] [])
-        , M3e.searchBarSlotTrailing (M3e.icon [ M3e.attrName "tune" ] [])
+        [ M3e.SearchBar.input (Native.node "input" [] [])
+        , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
+        , M3e.SearchBar.trailing (M3e.icon [ TA.name "tune" ] [])
         ]
 
 
 {-| Category tabs (Flights / Stays / Experiences) that reselect the rails' data.
 -}
-categoryTabs : Category -> Element { s | tabs : M3e.Kind.Brand } (PagesMsg Msg)
+categoryTabs : Category -> Element { s | tabs : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 categoryTabs current =
     M3e.tabs []
         (List.map (categoryTab current) categories)
 
 
-categoryTab : Category -> ( Category, String ) -> Element { s | tab : M3e.Kind.Brand } (PagesMsg Msg)
+categoryTab : Category -> ( Category, String ) -> Element { s | tab : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 categoryTab current ( category, label ) =
     M3e.tab
-        [ M3e.attrSelected (category == current)
+        [ M3e.Attributes.selected (category == current)
         , Native.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
         [ Kit.text label ]
@@ -393,7 +401,7 @@ categoryTab current ( category, label ) =
 
 {-| A titled, horizontally-scrolling strip of destination cards.
 -}
-rail : String -> List Place -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+rail : String -> List Place -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 rail heading places =
     Layout.section "flex flex-col gap-4"
         [ Kit.title Value.large [] [ Kit.text heading ]
@@ -405,12 +413,12 @@ rail heading places =
 {-| One destination card: shape-clipped tinted media, name + region, a rating
 `AssistChip` with a star, and a price. Fixed width so cards line up in the rail.
 -}
-placeCard : Place -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+placeCard : Place -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 placeCard place =
     Layout.div "w-56 shrink-0"
-        [ M3e.card [ M3e.variantElevated ]
-            [ M3e.cardSlotHeader (media place)
-            , M3e.cardSlotContent
+        [ M3e.card [ M3e.Attributes.variant Value.elevated ]
+            [ M3e.Card.header (media place)
+            , M3e.Card.content
                 (Layout.div "flex flex-col gap-2"
                     [ Kit.title Value.medium [] [ Kit.text place.name ]
                     , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text place.region ]
@@ -432,13 +440,13 @@ media place =
     Media.view place.tint
         Shape.large
         [ Layout.class "flex h-28 w-full items-end p-3" ]
-        [ M3e.icon [ M3e.attrName "image" ] [] ]
+        [ M3e.icon [ TA.name "image" ] [] ]
 
 
-ratingChip : String -> Element { s | assistChip : M3e.Kind.Brand } (PagesMsg Msg)
+ratingChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 ratingChip rating =
     M3e.assistChip
         []
-        [ Markup.M3e.text rating
-        , M3e.assistChipSlotIcon (M3e.icon [ M3e.attrName "star", M3e.attrFilled True ] [])
+        [ M3e.text rating
+        , M3e.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] [])
         ]

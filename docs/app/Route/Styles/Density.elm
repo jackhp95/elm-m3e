@@ -4,11 +4,11 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import Html
 import Kit
 import Layout
 import M3e
-import M3e
+import M3e.Attributes
+import M3e.Card
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
@@ -86,12 +86,12 @@ demoBar scaleValue =
         [ Kit.labelText Value.large
             [ Kit.onSurfaceVariant ]
             [ Kit.text ("density scale " ++ String.fromInt scaleValue) ]
-        , Native.node (Html.node "div")
+        , Native.node "div"
             [ Layout.class (densityScaleClass scaleValue ++ " flex flex-wrap gap-2") ]
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        M3e.button [ M3e.variantFilled ] [ Kit.text "Action" ]
+                        M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Action" ]
                     )
             )
         ]
@@ -100,8 +100,8 @@ demoBar scaleValue =
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.M3e.text "Density" ]
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Density" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -119,9 +119,9 @@ view _ _ =
                         ]
                     ]
                 , M3e.card
-                    [ M3e.variantOutlined ]
-                    [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.M3e.text "Density scale, 0 to -3" ])
-                    , M3e.cardSlotContent
+                    [ M3e.Attributes.variant Value.outlined ]
+                    [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
+                    , M3e.Card.content
                         (Layout.div "space-y-6"
                             [ demoBar 0
                             , demoBar -1

@@ -125,7 +125,7 @@ composed =
 emailCode : String
 emailCode =
     """emailField =
-    M3e.formField [ M3e.variantOutlined ]
+    M3e.formField [ M3e.Attributes.variant Value.outlined ]
         [ M3e.formFieldSlotLabel "email-field"
             (M3e.Native.label [] [ Kit.text "Email address" ])
         , M3e.formFieldSlotHint (Kit.text "We'll never share it.")

@@ -25,8 +25,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
+import M3e.Attributes
 import HtmlIr.Element exposing (Element)
-import M3e
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -126,8 +126,8 @@ view app _ model =
         heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } adm_ Msg
         heading =
             M3e.heading
-                [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-                [ Markup.M3e.text "All components" ]
+                [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+                [ M3e.text "All components" ]
 
         content : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Msg)
         content =
@@ -242,8 +242,8 @@ stackedBlocks model d =
                         [ Layout.divWithId component.slug
                             "cv-auto space-y-6 scroll-mt-24"
                             (M3e.heading
-                                [ M3e.variantHeadline, M3e.sizeMedium, M3e.attrLevel 2 ]
-                                [ Markup.M3e.text component.name ]
+                                [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]
+                                [ M3e.text component.name ]
                                 :: Usage.usageBlocks offset model examples
                             )
                         ]

@@ -1,7 +1,7 @@
 module Route.Guide.Accessibility exposing (ActionData, Data, Model, Msg, route)
 
 {-| Guide (`/guide/accessibility`): the accessibility reference for elm-m3e —
-the named-slot vs `M3e.Aria.label` / `M3e.ariaLabel` decision, focus behavior in
+the named-slot vs `M3e.Aria.label` / `Aria.label` decision, focus behavior in
 Dialog / Menu / BottomSheet (what `@m3e/web` handles vs what the Elm author wires),
 keyboard interaction per component family, and testing with the Playwright a11y-tree
 harness in `docs/tests-browser/`. The narrow "accessible name is required" teaching
@@ -16,8 +16,11 @@ import Head
 import Head.Seo as Seo
 import Layout
 import M3e
+import M3e.Attributes
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import TypedHtml.Aria as Aria
+import TypedHtml.Attributes as TA
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -58,7 +61,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "The elm-m3e accessibility reference: named slot vs M3e.ariaLabel, focus in dialogs/menus/sheets, keyboard per component family, and testing with the Playwright a11y-tree harness."
+        , description = "The elm-m3e accessibility reference: named slot vs Aria.label, focus in dialogs/menus/sheets, keyboard per component family, and testing with the Playwright a11y-tree harness."
         , locale = Nothing
         , title = "Accessibility reference · elm-m3e"
         }
@@ -70,8 +73,8 @@ name, so the page itself passes the a11y-tree check it describes.
 -}
 labeledBack : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 labeledBack =
-    M3e.iconButton [ M3e.ariaLabel "Back" ]
-        [ M3e.icon [ M3e.attrName "arrow_back" ] [] ]
+    M3e.iconButton [ Aria.label "Back" ]
+        [ M3e.icon [ TA.name "arrow_back" ] [] ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -145,20 +148,20 @@ The shipped, correct icon-only control (this one renders and announces as "Back"
 nameCode : String
 nameCode =
     """-- Visible text: the slot content is the name. Nothing extra.
-M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
 -- Icon-only: the name is REQUIRED — supply it explicitly.
-M3e.iconButton [ M3e.ariaLabel "Back" ]
-    [ M3e.icon [ M3e.attrName "arrow_back" ] [] ]
+M3e.iconButton [ Aria.label "Back" ]
+    [ M3e.icon [ TA.name "arrow_back" ] [] ]
 
 -- Sneaky case: a Switch/Radio in a list row whose visible label is a SIBLING
 -- ListItem text, not its own — it still needs its own name.
-M3e.switch [ M3e.ariaLabel "Push notifications", M3e.attrChecked on ] []"""
+M3e.switch [ Aria.label "Push notifications", M3e.Attributes.checked on ] []"""
 
 
 nameLayers : String
 nameLayers =
-    """The ARIA setter exists on three layers; pick the one matching the layer you're building on: the top layer's barrel `M3e.ariaLabel "Back"` / `M3e.ariaLabelledby "…"`, the Html layer's `M3e.Aria.label "Back"` / `M3e.Aria.labelledby "…"`, or the raw layer's `M3e.Raw.Aria.label "Back"`. They are first-class on *every* component, right where you reach for the other attributes — accessibility is not a separate module you have to remember to import. The trailing `Switch`/`Radio` in the [Settings example](/examples/settings) pass `M3e.ariaLabel label` on every control for exactly the sibling-label reason above."""
+    """The ARIA setter exists on three layers; pick the one matching the layer you're building on: the top layer's barrel `Aria.label "Back"` / `M3e.ariaLabelledby "…"`, the Html layer's `M3e.Aria.label "Back"` / `M3e.Aria.labelledby "…"`, or the raw layer's `M3e.Raw.Aria.label "Back"`. They are first-class on *every* component, right where you reach for the other attributes — accessibility is not a separate module you have to remember to import. The trailing `Switch`/`Radio` in the [Settings example](/examples/settings) pass `Aria.label label` on every control for exactly the sibling-label reason above."""
 
 
 focusBody : String
@@ -170,7 +173,7 @@ focusCode : String
 focusCode =
     """-- Elm owns the open STATE; @m3e/web owns the focus trap + Escape + return-focus.
 M3e.dialog
-    [ M3e.attrOpen model.dialogOpen
+    [ M3e.Attributes.open model.dialogOpen
     , Dialog.onClose (PagesMsg.fromMsg CloseDialog)
     ]
     [ M3e.dialogSlotHeadline (Kit.text "Delete file?")
@@ -198,7 +201,7 @@ keyboardBody =
 | **Slider** | Arrow keys step the value; `Home`/`End` go to min/max |
 | **Dialog / BottomSheet** | `Esc` closes; `Tab` is trapped within |
 
-Two things this table implies you own: give a `Radio` group **one shared `name`** so it reads and arrows as a single control (the Settings `themeRow` uses `M3e.attrName "theme"`), and keep **DOM/slot children in meaningful order**, because screen readers and Tab both follow source order."""
+Two things this table implies you own: give a `Radio` group **one shared `name`** so it reads and arrows as a single control (the Settings `themeRow` uses `TA.name "theme"`), and keep **DOM/slot children in meaningful order**, because screen readers and Tab both follow source order."""
 
 
 divisionBody : String
@@ -207,7 +210,7 @@ divisionBody =
 
 | Handled by `@m3e/web` (the element) | You wire (Elm side) |
 |-------------------------------------|---------------------|
-| Roving focus / arrow-key nav within a component | The **accessible name** of icon-only controls (`M3e.ariaLabel`) |
+| Roving focus / arrow-key nav within a component | The **accessible name** of icon-only controls (`Aria.label`) |
 | Focus trap, `Escape`, return-focus on its own overlays | **Focus across route/state changes** (into a new page's heading) |
 | Focus ring / focus-visible (strengthen with `Theme.strongFocus`) | **Grouping semantics** you own (shared `name` on a radio group) |
 | `disabled` / `checked` state on the element | **Live-region / status** announcements for your app's state changes |
@@ -217,7 +220,7 @@ And never signal state by **color alone** — the knowledge base's `color-only-s
 
 reviewBody : String
 reviewBody =
-    """The codegen-aware review rules (from `elm-review-cem`, wired in `review/src/ReviewConfig.elm`) are accessibility feedback, not bureaucracy. `missingRequiredAttribute` on a control that lists `aria-label` in its required attributes means "this control has no accessible name; add `M3e.ariaLabel`" — it reads the per-component facts and refuses the nameless control when elm-review runs in CI. `RequireSlot` means a required semantic slot (a label, a title) is absent — often the same "no accessible name" problem seen as structure. These are **advisory / report-only** for content the analyzer can't resolve statically (dynamic, `List.map`-built rows): a static-analysis limit, not a bug. A green `elm-review` is *necessary but not sufficient* — still spot-check the a11y tree."""
+    """The codegen-aware review rules (from `elm-review-cem`, wired in `review/src/ReviewConfig.elm`) are accessibility feedback, not bureaucracy. `missingRequiredAttribute` on a control that lists `aria-label` in its required attributes means "this control has no accessible name; add `Aria.label`" — it reads the per-component facts and refuses the nameless control when elm-review runs in CI. `RequireSlot` means a required semantic slot (a label, a title) is absent — often the same "no accessible name" problem seen as structure. These are **advisory / report-only** for content the analyzer can't resolve statically (dynamic, `List.map`-built rows): a static-analysis limit, not a bug. A green `elm-review` is *necessary but not sufficient* — still spot-check the a11y tree."""
 
 
 testingBody : String
@@ -252,7 +255,7 @@ testingNote =
 
 recap : String
 recap =
-    """- **Accessible name**: visible text names itself; **icon-only controls require** `M3e.ariaLabel` (or `labelledby`) — first-class on every component.
+    """- **Accessible name**: visible text names itself; **icon-only controls require** `Aria.label` (or `labelledby`) — first-class on every component.
 - **Overlays own their focus**: `@m3e/web` traps focus, handles `Escape`, and returns focus on close for `Dialog`/`Menu`/`BottomSheet`. You own the **open state** and **focus across route/state changes**.
 - **Keyboard is free per family** — roving focus, arrows, `Enter`/`Esc`. You still own a radio group's **shared `name`** and **source order**.
 - Read `missingRequiredAttribute` / `RequireSlot` as a11y guidance; they are **advisory for dynamic content**, so **spot-check the a11y tree** with the Playwright harness.

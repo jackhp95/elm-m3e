@@ -23,6 +23,15 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
+import M3e.SliderThumb
+import M3e.Attributes
+import TypedHtml.Attributes as TA
+import TypedHtml.Aria as Aria
+import M3e.AppBar
+import M3e.Card
+import M3e.ListItem
+import M3e.NavItem
+import M3e.Fab
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
@@ -216,10 +225,10 @@ exampleFooter =
 
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
-    M3e.appBar [ M3e.sizeSmall ]
-        [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "analytics" ] [])
-        , M3e.appBarSlotTitle (Kit.title Value.large [] [ Kit.text "Aperture Analytics" ])
-        , M3e.appBarSlotTrailing
+    M3e.appBar [ M3e.Attributes.size Value.small ]
+        [ M3e.AppBar.leading (M3e.icon [ TA.name "analytics" ] [])
+        , M3e.AppBar.title (Kit.title Value.large [] [ Kit.text "Aperture Analytics" ])
+        , M3e.AppBar.trailing
             (Layout.div "flex items-center gap-1"
                 [ iconAction "search"
                 , iconAction "notifications"
@@ -232,8 +241,8 @@ appBar =
 iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction name =
     M3e.iconButton
-        [ M3e.variantStandard, M3e.ariaLabel name ]
-        [ M3e.icon [ M3e.attrName name ] [] ]
+        [ M3e.Attributes.variant Value.standard, Aria.label name ]
+        [ M3e.icon [ TA.name name ] [] ]
 
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
@@ -249,8 +258,8 @@ desktopRail =
 railItem : Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 railItem d =
     M3e.navItem
-        [ M3e.attrHref "#", M3e.attrSelected d.selected ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.href "#", M3e.Attributes.selected d.selected ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.name
         ]
 
@@ -268,8 +277,8 @@ mobileBar =
 barItem : Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 barItem d =
     M3e.navItem
-        [ M3e.attrHref "#", M3e.attrSelected d.selected ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.href "#", M3e.Attributes.selected d.selected ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.name
         ]
 
@@ -278,9 +287,9 @@ fab : Element { s | html : M3e.Kind.Brand } adm_ msg
 fab =
     Layout.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
         [ M3e.fab
-            [ M3e.variantPrimary, M3e.attrExtended True, M3e.ariaLabel "Add" ]
-            [ M3e.icon [ M3e.attrName "add" ] []
-            , M3e.fabSlotLabel (Kit.text "New report")
+            [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
+            [ M3e.icon [ TA.name "add" ] []
+            , M3e.Fab.label (Kit.text "New report")
             ]
         ]
 
@@ -325,8 +334,8 @@ kpiRow =
 
 kpiCard : Kpi -> Element { s | card : M3e.Kind.Brand } adm_ msg
 kpiCard k =
-    M3e.card [ M3e.variantFilled ]
-        [ M3e.cardSlotContent
+    M3e.card [ M3e.Attributes.variant Value.filled ]
+        [ M3e.Card.content
             (Layout.div "flex flex-col gap-2 p-4"
                 [ Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text k.label ]
                 , Kit.display Value.small [] [ Kit.text k.value ]
@@ -348,7 +357,7 @@ trendDelta trend delta =
                     ( "trending_down", Kit.error )
     in
     Layout.div "flex items-center gap-1"
-        [ Kit.colored [ role ] [ M3e.icon [ M3e.attrName iconName ] [] ]
+        [ Kit.colored [ role ] [ M3e.icon [ TA.name iconName ] [] ]
         , Kit.labelText Value.large [ role ] [ Kit.text delta ]
         ]
 
@@ -371,7 +380,7 @@ accountRow a =
         [ Shape.corner Shape.large, Layout.class "flex items-center gap-3 p-3" ]
         [ Surface.view Surface.secondaryContainer
             [ Shape.corner Shape.full, Layout.class "flex items-center justify-center p-2" ]
-            [ M3e.icon [ M3e.attrName a.icon ] [] ]
+            [ M3e.icon [ TA.name a.icon ] [] ]
         , Layout.div "flex flex-col min-w-0"
             [ Kit.body Value.medium [] [ Kit.text a.name ]
             , Kit.title Value.medium [] [ Kit.text a.balance ]
@@ -398,8 +407,8 @@ budgetRow b =
             [ Kit.body Value.medium [] [ Kit.text b.category ]
             , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text b.amount ]
             ]
-        , M3e.linear
-            [ M3e.attrValueFloat b.used, M3e.attrMax b.max ]
+        , M3e.linearProgressIndicator
+            [ M3e.SliderThumb.value b.used, M3e.Attributes.max b.max ]
             []
         ]
 
@@ -430,10 +439,10 @@ activityRow a =
                 Kit.onSurface
     in
     M3e.listItem []
-        [ M3e.listItemSlotLeading
+        [ M3e.ListItem.leading
             (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text a.date ])
         , Kit.text a.description
-        , M3e.listItemSlotTrailing
+        , M3e.ListItem.trailing
             (Kit.title Value.medium [ role ] [ Kit.text a.amount ])
         ]
 
@@ -444,8 +453,8 @@ activityRow a =
 
 sectionCard : String -> Element any adm_ msg -> Element { r | card : M3e.Kind.Brand } adm_ msg
 sectionCard heading content =
-    M3e.card [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader
+    M3e.card [ M3e.Attributes.variant Value.elevated ]
+        [ M3e.Card.header
             (Kit.title Value.large [] [ Kit.text heading ])
-        , M3e.cardSlotContent content
+        , M3e.Card.content content
         ]

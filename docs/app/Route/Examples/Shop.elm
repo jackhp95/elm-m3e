@@ -27,6 +27,13 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
+import TypedHtml.Attributes as TA
+import TypedHtml.Aria as Aria
+import M3e.Attributes
+import M3e.AppBar
+import M3e.Card
+import M3e.NavItem
+import M3e.Fab
 import M3e
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Attribute exposing (Attr)
@@ -202,17 +209,17 @@ exampleFooter =
 {-| Top app bar: store name in the title slot, a search + cart action trailing.
 The cart button wears a Badge showing the live item count.
 -}
-appBar : Model -> Element { s | appBar : M3e.Kind.Brand } (PagesMsg Msg)
+appBar : Model -> Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar model =
     M3e.appBar
         [ Layout.class "px-2" ]
-        [ M3e.appBarSlotTitle
+        [ M3e.AppBar.title
             (Layout.div "flex items-center gap-2"
-                [ Kit.colored [ Kit.primary ] [ M3e.icon [ M3e.attrName "storefront", M3e.attrFilled True ] [] ]
+                [ Kit.colored [ Kit.primary ] [ M3e.icon [ TA.name "storefront", M3e.Attributes.filled True ] [] ]
                 , Kit.title Value.large [ Kit.onSurface ] [ Kit.text "Maru Market" ]
                 ]
             )
-        , M3e.appBarSlotTrailing
+        , M3e.AppBar.trailing
             (Layout.div "flex items-center gap-1"
                 [ iconAction "search"
                 , cartAction model.cart
@@ -223,13 +230,13 @@ appBar model =
 
 {-| Cart icon button carrying a Badge with the item count.
 -}
-cartAction : Int -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+cartAction : Int -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 cartAction count =
     Kit.Badge.on
         { anchor =
             M3e.iconButton
-                [ M3e.variantStandard, M3e.ariaLabel "Cart" ]
-                [ M3e.icon [ M3e.attrName "shopping_bag" ] [] ]
+                [ M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
+                [ M3e.icon [ TA.name "shopping_bag" ] [] ]
         , badge =
             M3e.badge [] [ Kit.text (String.fromInt count) ]
         }
@@ -237,7 +244,7 @@ cartAction count =
 
 {-| Left navigation rail — desktop only.
 -}
-navRail : Model -> Element { s | navRail : M3e.Kind.Brand } (PagesMsg Msg)
+navRail : Model -> Element { s | navRail : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navRail model =
     M3e.navRail
         [ Layout.class "hidden shrink-0 md:flex" ]
@@ -246,7 +253,7 @@ navRail model =
 
 {-| Bottom navigation bar — mobile only.
 -}
-navBar : Model -> Element { s | navBar : M3e.Kind.Brand } (PagesMsg Msg)
+navBar : Model -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar model =
     M3e.navBar
         [ Layout.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
@@ -266,32 +273,32 @@ destinations =
     ]
 
 
-railItem : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } (PagesMsg Msg)
+railItem : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 railItem current dest =
     navDestination current dest
 
 
-barItem : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } (PagesMsg Msg)
+barItem : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 barItem current dest =
     navDestination current dest
 
 
-navDestination : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } (PagesMsg Msg)
+navDestination : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navDestination current dest =
     let
-        attrs : List (Attr { c | selected : Value.Supported, onClick : Value.Supported } (PagesMsg Msg))
+        attrs : List (Attr { c | selected : HtmlIr.Kind.Supported, onClick : HtmlIr.Kind.Supported } (PagesMsg Msg))
         attrs =
             case dest.category of
                 Just cat ->
-                    [ M3e.attrSelected (cat == current)
+                    [ M3e.Attributes.selected (cat == current)
                     , Native.onClick (PagesMsg.fromMsg (SetCategory cat))
                     ]
 
                 Nothing ->
-                    [ M3e.attrSelected False ]
+                    [ M3e.Attributes.selected False ]
     in
     M3e.navItem attrs
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName dest.icon ] [])
+        [ M3e.NavItem.icon (M3e.icon [ TA.name dest.icon ] [])
         , Kit.text dest.label
         ]
 
@@ -315,7 +322,7 @@ hero =
 {-| Category filter toolbar: a single-select FilterChipSet that scrolls
 horizontally on narrow screens, plus a sort action.
 -}
-filterBar : String -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+filterBar : String -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 filterBar current =
     Layout.div "flex items-center gap-2"
         [ Layout.div "min-w-0 flex-1 overflow-x-auto"
@@ -326,18 +333,18 @@ filterBar current =
         ]
 
 
-categoryChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } (PagesMsg Msg)
+categoryChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 categoryChip current cat =
     M3e.filterChip
-        [ M3e.attrSelected (cat == current)
+        [ M3e.Attributes.selected (cat == current)
         , Native.onClick (PagesMsg.fromMsg (SetCategory cat))
         ]
-        [ Markup.M3e.text cat ]
+        [ M3e.text cat ]
 
 
 {-| Responsive product grid: 1 col on mobile, 2 on small, 3/4 on larger screens.
 -}
-productGrid : List Product -> Element { s | html : M3e.Kind.Brand } (PagesMsg Msg)
+productGrid : List Product -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 productGrid shown =
     Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         (List.map productCard shown)
@@ -345,22 +352,22 @@ productGrid shown =
 
 {-| A product card: shape-clipped media, name, price, add-to-cart action.
 -}
-productCard : Product -> Element { s | card : M3e.Kind.Brand } (PagesMsg Msg)
+productCard : Product -> Element { s | card : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 productCard product =
-    M3e.card [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader (media product)
-        , M3e.cardSlotContent
+    M3e.card [ M3e.Attributes.variant Value.elevated ]
+        [ M3e.Card.header (media product)
+        , M3e.Card.content
             (Layout.div "flex flex-col gap-0.5 px-1"
                 [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text product.name ]
                 , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text product.category ]
                 ]
             )
-        , M3e.cardSlotActions
+        , M3e.Card.actions
             (Layout.div "flex w-full items-center justify-between px-1"
                 [ Kit.title Value.large [ Kit.primary ] [ Kit.text product.price ]
                 , M3e.iconButton
-                    [ M3e.variantTonal, M3e.ariaLabel "Add to cart", Native.onClick (PagesMsg.fromMsg AddToCart) ]
-                    [ M3e.icon [ M3e.attrName "add_shopping_cart" ] [] ]
+                    [ M3e.Attributes.variant Value.tonal, Aria.label "Add to cart", Native.onClick (PagesMsg.fromMsg AddToCart) ]
+                    [ M3e.icon [ TA.name "add_shopping_cart" ] [] ]
                 ]
             )
         ]
@@ -372,7 +379,7 @@ media : Product -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media product =
     Surface.view product.media
         [ Shape.corner Shape.large, Layout.class "flex aspect-square items-center justify-center" ]
-        [ M3e.icon [ M3e.attrName product.icon, M3e.attrOpticalSize 48 ] [] ]
+        [ M3e.icon [ TA.name product.icon, M3e.Attributes.opticalSize 48 ] [] ]
 
 
 {-| A floating checkout action over the content.
@@ -382,9 +389,9 @@ checkoutFab =
     Layout.div "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6"
         [ Layout.span "pointer-events-auto"
             [ M3e.fab
-                [ M3e.variantPrimary, M3e.attrExtended True, M3e.ariaLabel "Checkout" ]
-                [ M3e.icon [ M3e.attrName "shopping_cart_checkout" ] []
-                , M3e.fabSlotLabel (Kit.text "Checkout")
+                [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Checkout" ]
+                [ M3e.icon [ TA.name "shopping_cart_checkout" ] []
+                , M3e.Fab.label (Kit.text "Checkout")
                 ]
             ]
         ]
@@ -395,5 +402,5 @@ checkoutFab =
 iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction icon =
     M3e.iconButton
-        [ M3e.variantStandard, M3e.ariaLabel icon ]
-        [ M3e.icon [ M3e.attrName icon ] [] ]
+        [ M3e.Attributes.variant Value.standard, Aria.label icon ]
+        [ M3e.icon [ TA.name icon ] [] ]

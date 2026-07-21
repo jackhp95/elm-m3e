@@ -124,13 +124,13 @@ convert =
 convertBefore : String
 convertBefore =
     """-- generic (loose) — what you might write, or teach
-M3e.listItem [] [ M3e.slotLeading (M3e.icon [ M3e.attrName "star" ] []) ]"""
+M3e.listItem [] [ M3e.slotLeading (M3e.icon [ TA.name "star" ] []) ]"""
 
 
 convertAfter : String
 convertAfter =
     """-- after autofix: the component-specific, kind-precise setter
-M3e.listItem [] [ M3e.listItemSlotLeading (M3e.icon [ M3e.attrName "star" ] []) ]"""
+M3e.listItem [] [ M3e.ListItem.leading (M3e.icon [ TA.name "star" ] []) ]"""
 
 
 pipeline : String

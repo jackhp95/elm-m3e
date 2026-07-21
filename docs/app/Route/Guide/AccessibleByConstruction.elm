@@ -15,8 +15,11 @@ import Head
 import Head.Seo as Seo
 import Layout
 import M3e
+import M3e.Attributes
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import TypedHtml.Aria as Aria
+import TypedHtml.Attributes as TA
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -70,8 +73,8 @@ beside the real output of the `missingRequiredAttribute` rule.
 -}
 helpButton : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 helpButton =
-    M3e.iconButton [ M3e.ariaLabel "Help" ]
-        [ M3e.icon [ M3e.attrName "help" ] [] ]
+    M3e.iconButton [ Aria.label "Help" ]
+        [ M3e.icon [ TA.name "help" ] [] ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -106,7 +109,7 @@ view _ _ =
 
 intro : String
 intro =
-    """Accessibility here is built into the shape of the components, not bolted on as a checklist at the end. The clearest case: a control with no visible text. Our settings panel needs a small **help** button that's just an icon. A sighted user sees a "?"; a screen-reader user needs a name to read. So that name is **required** — and the accessible-name attributes (`M3e.ariaLabel`, `labelledby`, `describedby`) are first-class setters on every component, right where you'd reach for them."""
+    """Accessibility here is built into the shape of the components, not bolted on as a checklist at the end. The clearest case: a control with no visible text. Our settings panel needs a small **help** button that's just an icon. A sighted user sees a "?"; a screen-reader user needs a name to read. So that name is **required** — and the accessible-name attributes (`Aria.label`, `labelledby`, `describedby`) are first-class setters on every component, right where you'd reach for them."""
 
 
 labeled : String
@@ -116,8 +119,8 @@ labeled =
 
 labeledCode : String
 labeledCode =
-    """M3e.iconButton [ M3e.ariaLabel "Help" ]
-    [ M3e.icon [ M3e.attrName "help" ] [] ]"""
+    """M3e.iconButton [ Aria.label "Help" ]
+    [ M3e.icon [ TA.name "help" ] [] ]"""
 
 
 nameless : String
@@ -128,7 +131,7 @@ nameless =
 namelessCode : String
 namelessCode =
     """M3e.iconButton []
-    [ M3e.icon [ M3e.attrName "help" ] [] ]"""
+    [ M3e.icon [ TA.name "help" ] [] ]"""
 
 
 linterText : String

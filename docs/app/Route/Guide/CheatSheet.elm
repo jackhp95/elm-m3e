@@ -122,7 +122,7 @@ barrelVsSpecific =
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, generic vocabulary
-M3e.button [ M3e.variantFilled ] [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] []), Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.slotIcon (M3e.icon [ TA.name "save" ] []), Kit.text "Save" ]
 
 -- component module — component-scoped, tighter types
 M3e.Button.view [ M3e.Button.variant M3e.Values.filled ] [ Kit.text "Save" ]"""
@@ -136,7 +136,7 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form — everything optional; the tersest
-M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
 -- required record — the compiler demands the parts it can't do without
 M3e.Record.Button.view { content = …, action = … } [] []

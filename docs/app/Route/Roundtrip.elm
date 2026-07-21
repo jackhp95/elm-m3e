@@ -300,7 +300,7 @@ surfaceLegendText =
 | **bottom** | `M3e.Raw.*` — bare tags and attributes. | the bottom layer ([the layers](/guide/the-layers)) |
 | **record** | `M3e.Record.Button.view { … }` — required parts can't be forgotten. | the required-record [call-shape](/guide/strictness) |
 | **build** | `M3e.Build.Button.button { … }` piped into `build` — one-only setters unwritable twice. | the pipeline [call-shape](/guide/strictness) |
-| **barrel** | `M3e.button` — one import; the generic `M3e.variantFilled` / `M3e.slotIcon` vocabulary. | the one-import API the Guide teaches ([reference](/reference)) |
+| **barrel** | `M3e.button` — one import; the generic `M3e.Attributes.variant Value.filled` / `M3e.slotIcon` vocabulary. | the one-import API the Guide teaches ([reference](/reference)) |
 
 The three layers and the two call-shapes are *different axes*: a layer is how much the types check; a call-shape is what you're forced to supply. The barrel vs a specific `M3e.Button` module is a *third* axis — only which import you reach through."""
 

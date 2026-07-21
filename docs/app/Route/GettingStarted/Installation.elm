@@ -7,8 +7,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
+import M3e.Attributes
 import HtmlIr.Element exposing (Element)
-import M3e
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -61,15 +61,15 @@ head _ =
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
     M3e.heading
-        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-        [ Markup.M3e.text "Installation" ]
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Installation" ]
 
 
 stepHeading : String -> Element { s | heading : M3e.Kind.Brand } adm_ msg
 stepHeading label =
     M3e.heading
-        [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ]
-        [ Markup.M3e.text label ]
+        [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+        [ M3e.text label ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

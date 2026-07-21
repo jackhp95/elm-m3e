@@ -15,8 +15,10 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
+import M3e.Attributes
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -70,7 +72,7 @@ slottable value), so the live demo is the top layer: this is the one you want.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
+    M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -132,7 +134,7 @@ sameButton =
 descentCode : String
 descentCode =
     """-- top: typed, slot-safe, composes anywhere a button fits
-M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
 -- one step down: attributes still typed, children raw, returns plain HTML
 -- (reach for this only when you're already outside the typed tree)

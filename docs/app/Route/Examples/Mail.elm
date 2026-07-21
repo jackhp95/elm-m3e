@@ -30,6 +30,15 @@ import Kit.Avatar as Avatar
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
+import M3e.Attributes
+import TypedHtml.Attributes as TA
+import TypedHtml.Aria as Aria
+import M3e.AppBar
+import M3e.ListItem
+import M3e.NavItem
+import M3e.Fab
+import M3e.SearchBar
+import M3e.AssistChip
 import M3e
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
@@ -243,7 +252,7 @@ exampleFooter =
 navRail : Element { s | html : M3e.Kind.Brand } adm_ Msg
 navRail =
     Layout.nav "hidden md:flex"
-        [ M3e.navRail [ M3e.modeExpanded ]
+        [ M3e.navRail [ M3e.Attributes.mode Value.expanded ]
             (List.indexedMap railItem destinations)
         ]
 
@@ -251,8 +260,8 @@ navRail =
 railItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ Msg
 railItem index d =
     M3e.navItem
-        [ M3e.attrSelected (index == 0) ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.selected (index == 0) ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.label
         ]
 
@@ -270,8 +279,8 @@ bottomBar =
 barItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ Msg
 barItem index d =
     M3e.navItem
-        [ M3e.attrSelected (index == 0) ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.selected (index == 0) ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.label
         ]
 
@@ -282,10 +291,10 @@ barItem index d =
 
 topBar : Element { s | appBar : M3e.Kind.Brand } adm_ Msg
 topBar =
-    M3e.appBar [ M3e.sizeMedium ]
-        [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "menu" ] [])
-        , M3e.appBarSlotTitle (Kit.text "Mail")
-        , M3e.appBarSlotTrailing searchBar
+    M3e.appBar [ M3e.Attributes.size Value.medium ]
+        [ M3e.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
+        , M3e.AppBar.title (Kit.text "Mail")
+        , M3e.AppBar.trailing searchBar
         ]
 
 
@@ -293,14 +302,14 @@ searchBar : Element { s | searchBar : M3e.Kind.Brand } adm_ Msg
 searchBar =
     M3e.searchBar
         []
-        [ M3e.searchBarSlotInput
-            (Native.node Html.input
+        [ M3e.SearchBar.input
+            (Native.node "input"
                 [ Native.attribute "placeholder" "Search mail"
                 , Native.attribute "type" "search"
                 ]
                 []
             )
-        , M3e.searchBarSlotLeading (M3e.icon [ M3e.attrName "search" ] [])
+        , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
         ]
 
 
@@ -348,7 +357,7 @@ messageList model =
 
 divider : Element { s | divider : M3e.Kind.Brand } adm_ msg
 divider =
-    M3e.divider [ M3e.attrInset True ] []
+    M3e.divider [ M3e.Attributes.inset True ] []
 
 
 messageRow : Int -> Int -> Message -> Element { s | listItem : M3e.Kind.Brand } adm_ Msg
@@ -368,16 +377,16 @@ messageRow selected index message =
         , Native.attribute "role" "button"
         , Native.onClick (SelectMessage index)
         ]
-        [ M3e.listItemSlotLeading (Avatar.initials message.initials)
+        [ M3e.ListItem.leading (Avatar.initials message.initials)
         , Kit.text message.sender
-        , M3e.listItemSlotSupportingText
+        , M3e.ListItem.supportingText
             (Layout.span "block"
                 [ Kit.body Value.medium [ Kit.onSurface ] [ Kit.text message.subject ]
                 , Layout.span "block"
                     [ Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.snippet ] ]
                 ]
             )
-        , M3e.listItemSlotTrailing
+        , M3e.ListItem.trailing
             (Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.time ])
         ]
 
@@ -411,8 +420,8 @@ labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 labelChip name =
     M3e.assistChip
         []
-        [ Markup.M3e.text name
-        , M3e.assistChipSlotIcon (M3e.icon [ M3e.attrName "label" ] [])
+        [ M3e.text name
+        , M3e.AssistChip.icon (M3e.icon [ TA.name "label" ] [])
         ]
 
 
@@ -426,11 +435,11 @@ composeFab : Element { s | html : M3e.Kind.Brand } adm_ msg
 composeFab =
     Layout.div "absolute bottom-20 right-6 md:bottom-6"
         [ M3e.fab
-            [ M3e.variantPrimaryContainer
-            , M3e.attrExtended True
-            , M3e.ariaLabel "Compose"
+            [ M3e.Attributes.variant Value.primaryContainer
+            , M3e.Attributes.extended True
+            , Aria.label "Compose"
             ]
-            [ M3e.icon [ M3e.attrName "edit" ] []
-            , M3e.fabSlotLabel (Kit.text "Compose")
+            [ M3e.icon [ TA.name "edit" ] []
+            , M3e.Fab.label (Kit.text "Compose")
             ]
         ]

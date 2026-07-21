@@ -26,6 +26,11 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
+import M3e.Attributes
+import TypedHtml.Attributes as TA
+import M3e.AppBar
+import M3e.Card
+import M3e.NavItem
 import HtmlIr.Kind
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
@@ -194,7 +199,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.appBarSlotTitle (Kit.text "Feed") ]
+        [ M3e.AppBar.title (Kit.text "Feed") ]
 
 
 
@@ -214,7 +219,7 @@ filterBar current =
 filterChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } adm_ Msg
 filterChip current category =
     M3e.filterChip
-        [ M3e.attrSelected (category == current)
+        [ M3e.Attributes.selected (category == current)
         , Native.onClick (SelectFilter category)
         ]
         [ Kit.text category ]
@@ -244,13 +249,13 @@ cardGrid shown =
 
 postCard : Post -> Element { s | card : M3e.Kind.Brand } adm_ msg
 postCard post =
-    M3e.card [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader
+    M3e.card [ M3e.Attributes.variant Value.elevated ]
+        [ M3e.Card.header
             (Surface.view post.media
                 [ Shape.corner Shape.medium, Layout.class "flex h-32 items-center justify-center" ]
-                [ M3e.icon [ M3e.attrName post.icon, Layout.class "text-4xl" ] [] ]
+                [ M3e.icon [ TA.name post.icon, Layout.class "text-4xl" ] [] ]
             )
-        , M3e.cardSlotContent
+        , M3e.Card.content
             (Layout.colWith "flex flex-col gap-2 pt-1"
                 [ Kit.labelText Value.small [ Kit.primary ] [ Kit.text (String.toUpper post.category) ]
                 , Kit.title Value.medium [ Kit.onSurface ] [ Kit.text post.title ]
@@ -280,7 +285,7 @@ mobileBar =
 navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 navItem d =
     M3e.navItem
-        [ M3e.attrSelected (d.label == "Home") ]
-        [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName d.icon ] [])
+        [ M3e.Attributes.selected (d.label == "Home") ]
+        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , Kit.text d.label
         ]

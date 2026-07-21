@@ -17,8 +17,11 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
+import TypedHtml.Attributes as TA
+import M3e.Attributes
+import M3e.Button
+import M3e.Values as Value
 import Seam
-import M3e
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Pages.Url
@@ -74,8 +77,8 @@ button; they only change what you're allowed to leave out.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.button [ M3e.variantFilled ]
-        [ M3e.slotIcon (M3e.icon [ M3e.attrName "save" ] [] |> Seam.recast)
+    M3e.button [ M3e.Attributes.variant Value.filled ]
+        [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [] |> Seam.recast)
         , Kit.text "Save"
         ]
 
@@ -130,7 +133,7 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form — everything optional; the tersest, easiest form
-M3e.button [ M3e.variantFilled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
 -- required record — the compiler now DEMANDS the parts a button can't do without
 M3e.Record.Button.view
