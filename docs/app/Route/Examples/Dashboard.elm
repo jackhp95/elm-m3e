@@ -18,27 +18,27 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Kind
 import Kit exposing (TextColor)
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import M3e.SliderThumb
-import M3e.Attributes
-import TypedHtml.Attributes as TA
-import TypedHtml.Aria as Aria
 import M3e.AppBar
+import M3e.Attributes
 import M3e.Card
+import M3e.Fab
+import M3e.Kind
 import M3e.ListItem
 import M3e.NavItem
-import M3e.Fab
-import HtmlIr.Kind
-import HtmlIr.Element exposing (Element)
-import M3e.Kind
+import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
+import TypedHtml.Aria as Aria
+import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 

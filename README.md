@@ -252,8 +252,9 @@ facts compile-time guarantees. Coverage now lives in four layers:
   errors, as is a wrong enum value or an unadmitted attribute. (Open `arbitrary`-default
   slots accept any element by design — their slot-kind correctness is elm-review
   guidance, not a compile-time fact; see the elm-review layer below.) Compile it via
-  `npm run measure-docs`, which wires the unpublished `HtmlIr.*` dependency with
-  `--dep-src` — a bare `elm make src/M3e.elm` fails on the missing IR module. The
+  `npm run gate` (split + docs-size gate + isolation probe), which wires the unpublished
+  `HtmlIr.*` dependency with `--dep-src` — a bare `elm make src/M3e.elm` fails on the
+  missing IR module. The
   per-component `build` shape carries positive/negative type-level checks in
   [`tests/build-shape/BuildShapeTest.elm`](tests/build-shape/BuildShapeTest.elm)
   and [`BuildShapeNegative.elm`](tests/build-shape/BuildShapeNegative.elm).
@@ -270,7 +271,7 @@ facts compile-time guarantees. Coverage now lives in four layers:
   IR core under [`tests/`](tests/): `NodeSlotTest.elm` (named-slot survives on
   `Raw`/mapped nodes, #79) and `IrCoreTest.elm` (`addChild` leaf no-op, `map`→`Raw`
   collapse, `slotWithAttr` for/id wiring, Text/Raw→`<span>` attr promotion). Run with
-  `npx elm-test@0.19.1 --compiler node_modules/.bin/elm`.
+  `npm test` (wraps `elm-test --compiler node_modules/.bin/elm` from `tests/`).
 - **Playwright** — [`docs/tests-browser/`](docs/tests-browser/), for the runtime contract
   (shadow DOM, DOM properties, the a11y tree) that only a real browser shows.
 

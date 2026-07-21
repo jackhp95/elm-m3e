@@ -10,9 +10,9 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element exposing (Element)
 import Kit
 import Layout
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url

@@ -6,7 +6,7 @@ built as a project overview screen. It is the worked reference the
 
 The difference from list-detail: the two regions are not peers. A wide **primary**
 region holds the focus content; a narrower **supporting** pane holds secondary,
-related material (activity, quick stats) that *supports* the primary without
+related material (activity, quick stats) that _supports_ the primary without
 competing. On expanded windows (`lg:`) they sit side by side, primary flexing and
 supporting fixed at `lg:w-80`. Below `lg:` the supporting pane reflows to the bottom
 of the primary column — it stays available but yields the top of the reading order to
@@ -22,25 +22,25 @@ one destination list. Tailwind is layout only; every visual token comes through 
 import BackendTask
 import ExampleNav
 import Head
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Kind
 import Kit
 import Kit.Avatar as Avatar
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import M3e.Attributes
-import TypedHtml.Attributes as TA
 import M3e.AppBar
+import M3e.Attributes
 import M3e.Card
+import M3e.Kind
 import M3e.ListItem
 import M3e.NavItem
-import HtmlIr.Kind
-import HtmlIr.Element exposing (Element)
-import M3e.Kind
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import TypedHtml.Attributes as TA
 import View exposing (View)
 
 
@@ -168,7 +168,8 @@ primary : Element { s | html : M3e.Kind.Brand } adm_ msg
 primary =
     Layout.colWith "flex flex-1 flex-col gap-4 min-w-0"
         [ Kit.headline Value.small [ Kit.onSurface ] [ Kit.text "Project overview" ]
-        , Kit.body Value.large [ Kit.onSurfaceVariant ]
+        , Kit.body Value.large
+            [ Kit.onSurfaceVariant ]
             [ Kit.text "The Rally redesign moves the metric cards to the top row and swaps the donut for a stacked bar so the trend reads at a glance. This quarter's focus is the motion pass and the adaptive navigation." ]
         , summaryCard
         , milestonesCard

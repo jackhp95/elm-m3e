@@ -11,13 +11,13 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element exposing (Element)
 import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
 import M3e.Attributes
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url

@@ -64,10 +64,17 @@ config =
         |> List.map (ignoreElmPages >> ignoreLibraryTests >> ignoreGeneratedSubstrate)
 
 
-{-| The generated brand surfaces and the IR are regenerated wholesale (the
-regen-diff gates own their hygiene) — style rules must not lint them. The
-cem discipline rules check CALL SITES in app code, so nothing load-bearing
-is lost.
+{-| The generated brand surfaces, the IR, and the vendored foundation copies
+are regenerated wholesale (the regen-diff gates own their hygiene) — style rules
+must not lint them. The cem discipline rules check CALL SITES in app code, so
+nothing load-bearing is lost.
+
+`vendor/` holds the `HtmlIr.*` and `TypedHtml.*` sources vendored for
+self-contained Netlify builds (commit 0c93150); they are byte-identical copies
+of `../../elm-html-intermediate-representation/src` and `../../elm-typed-html/src`,
+which are already excluded via the sibling paths below. Two path forms cover the
+vendored copies regardless of working directory:
+`vendor/elm-foundation/` (from docs/) and `../docs/vendor/elm-foundation/` (from repo root).
 -}
 ignoreGeneratedSubstrate : Rule -> Rule
 ignoreGeneratedSubstrate =
@@ -75,12 +82,14 @@ ignoreGeneratedSubstrate =
         [ "../src/"
         , "../../elm-typed-html/src/"
         , "../../elm-html-intermediate-representation/src/"
+        , "vendor/elm-foundation/"
+        , "../docs/vendor/elm-foundation/"
         ]
 
 
-{-| `.elm-pages/` is fully generated routing/metadata — NO rule should lint it
-(unlike `vendor/`, where correctness rules intentionally still run). Applied to
-EVERY rule here so generated routing code never enters the suppression baseline.
+{-| `.elm-pages/` is fully generated routing/metadata — NO rule should lint it.
+Applied to EVERY rule here so generated routing code never enters the suppression
+baseline.
 -}
 ignoreElmPages : Rule -> Rule
 ignoreElmPages =

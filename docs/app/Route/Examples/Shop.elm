@@ -21,29 +21,28 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
+import HtmlIr.Kind
 import Kit
 import Kit.Badge
 import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import TypedHtml.Attributes as TA
-import TypedHtml.Aria as Aria
-import M3e.Attributes
 import M3e.AppBar
+import M3e.Attributes
 import M3e.Card
-import M3e.NavItem
 import M3e.Fab
-import M3e
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Kind
 import M3e.Kind
+import M3e.NavItem
 import M3e.Values as Value
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
+import TypedHtml.Aria as Aria
+import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 

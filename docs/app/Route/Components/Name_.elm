@@ -16,14 +16,14 @@ import Doc.Usage as Usage exposing (UsageExample)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
+import HtmlIr.Element exposing (Element)
 import Kit
 import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
-import M3e.ListItem
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
+import M3e.ListItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)

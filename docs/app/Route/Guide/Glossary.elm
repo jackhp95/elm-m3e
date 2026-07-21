@@ -10,8 +10,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import Layout
 import HtmlIr.Element
+import Layout
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

@@ -11,8 +11,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import Layout
 import HtmlIr.Element exposing (Element)
+import Layout
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)

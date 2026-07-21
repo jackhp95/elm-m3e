@@ -22,11 +22,11 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element exposing (Element)
 import Kit
 import Layout
 import M3e
 import M3e.Attributes
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url

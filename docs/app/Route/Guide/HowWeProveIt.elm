@@ -21,9 +21,9 @@ import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
+import HtmlIr.Element
 import Json.Decode as Decode
 import Layout
-import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

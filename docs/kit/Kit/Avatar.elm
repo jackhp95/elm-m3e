@@ -13,11 +13,11 @@ code names the avatar instead of re-deriving the disc.
 -}
 
 import Html.Attributes
+import HtmlIr.Element exposing (Element)
 import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import M3e
-import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import M3e.Values as Value
 import Seam

@@ -1,4 +1,4 @@
-module Shared exposing (Contrast, Data, Direction, Model, Msg, Scheme, componentCategories, template, NavComponent)
+module Shared exposing (Contrast, Data, Direction, Model, Msg, NavComponent, Scheme, componentCategories, template)
 
 {-| The M3 application shell that frames every docs route.
 

@@ -2,9 +2,9 @@ module Route.Guide.Motion exposing (ActionData, Data, Model, Msg, route)
 
 {-| Guide (`/guide/motion`): the motion division of responsibility. Material 3
 Expressive motion (spring physics, shape morphing, state-layer ripples, enter/exit
-choreography) ships *inside* the `@m3e/web` custom elements and is driven by the
+choreography) ships _inside_ the `@m3e/web` custom elements and is driven by the
 `M3e.Theme` motion scheme — you do not hand-animate it. What the Elm author controls
-is the motion *between* those components: the AVT snackbar in `js/avt-snackbar.js`,
+is the motion _between_ those components: the AVT snackbar in `js/avt-snackbar.js`,
 cross-route view transitions, and honoring reduced-motion. Deep motion physics
 (spring constants, duration/easing tokens) lives in the m3e-okf knowledge base and the
 `/styles/motion` token page; this page draws the boundary.
@@ -14,8 +14,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import Layout
 import HtmlIr.Element
+import Layout
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

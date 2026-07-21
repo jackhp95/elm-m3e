@@ -10,6 +10,7 @@ module Kit exposing
 Migrated to the phantom substrate: `M3e.Seam`/`Markup.*` replaced by
 `HtmlIr.*` and `Seam`.
 
+
 ## Text producers
 
 @docs text, link, textLink
@@ -31,7 +32,6 @@ import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
-import HtmlIr.Value
 import HtmlIr.Value exposing (Value)
 import M3e.Kind
 import Native

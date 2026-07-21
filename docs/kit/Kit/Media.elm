@@ -17,10 +17,10 @@ this is a card-media convenience over them, not a new seam.
 -}
 
 import Html.Attributes
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
 import Kit.Shape as Shape exposing (Corner)
 import Kit.Surface as Surface exposing (Surface)
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Attribute exposing (Attr)
 import M3e.Kind
 import Seam
 
