@@ -133,6 +133,7 @@
         "M3e.Tooltip",
         "M3e.Tree",
         "M3e.TreeItem",
+        "M3e.Unsafe",
         "M3e.Values",
         "M3e.YearView"
     ],

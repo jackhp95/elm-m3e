@@ -2545,5 +2545,6 @@
     "fabMenuItem",
     "html",
     "stepperNext"
-  ]
+  ],
+  "_legacyHtml": true
 }
