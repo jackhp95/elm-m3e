@@ -12,14 +12,15 @@ module Doc.Usage exposing
 import Dict exposing (Dict)
 import Doc
 import Doc.Slider
+import HtmlIr.Element exposing (Element)
 import Json.Decode as Decode
 import Kit
 import Layout
 import M3e
-import Markup.Element exposing (Element)
+import M3e.Attributes
+import M3e.Heading
 import M3e.Kind
-import M3e.Token as Value
-import Markup.Atoms
+import M3e.Values as Value
 import Native
 
 
@@ -113,7 +114,7 @@ drops cleanly out of the top-level `space-y-10` rhythm).
 one page get disjoint tab-state ranges in a shared `Model`.
 
 -}
-usageBlocks : Int -> Model -> List UsageExample -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg)
+usageBlocks : Int -> Model -> List UsageExample -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 usageBlocks offset model examples =
     case examples of
         [] ->
@@ -122,8 +123,11 @@ usageBlocks offset model examples =
         _ ->
             [ Layout.div "space-y-6"
                 (M3e.heading
-                    [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ]
-                    [ Markup.Atoms.text "Usage" ]
+                    [ M3e.Heading.variant Value.headline
+                    , M3e.Heading.size Value.small
+                    , M3e.Attributes.level 2
+                    ]
+                    [ M3e.text "Usage" ]
                     :: List.concatMap (sectionBlock model)
                         (groupBySection (List.indexedMap (\i ex -> ( offset + i, ex )) examples))
                 )
@@ -134,21 +138,24 @@ usageBlocks offset model examples =
 followed by each example's live preview paired with its per-example code tabs.
 Examples carry their page-global index so each tab strip stays independent.
 -}
-sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg)
-sectionBlock model ( section, examples ) =
+sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
+sectionBlock model ( sec, examples ) =
     let
-        heading : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg)
-        heading =
-            if section == "" then
+        headingEl : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
+        headingEl =
+            if sec == "" then
                 []
 
             else
                 [ M3e.heading
-                    [ M3e.variantTitle, M3e.sizeLarge, M3e.attrLevel 3 ]
-                    [ Markup.Atoms.text section ]
+                    [ M3e.Heading.variant Value.title
+                    , M3e.Heading.size Value.large
+                    , M3e.Attributes.level 3
+                    ]
+                    [ M3e.text sec ]
                 ]
     in
-    heading ++ List.map (exampleBlock model) examples
+    headingEl ++ List.map (exampleBlock model) examples
 
 
 {-| A live preview paired with a per-example tab strip that switches its code
@@ -158,7 +165,7 @@ between the API surfaces by module name (optionally `M3e`, `M3e.Record` /
 surface (`defaultLayerFor`). Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
-exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg
+exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg
 exampleBlock model ( index, ex ) =
     let
         layer : Layer
@@ -249,16 +256,16 @@ paginates/scrolls them horizontally on narrow viewports natively, so there's no
 `overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
 trips a spurious vertical scrollbar on the control's state-layer bleed.
 -}
-layerTabs : Int -> Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg
+layerTabs : Int -> Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg
 layerTabs index current ex =
     M3e.tabs []
         (List.map
-            (\( label, layer ) ->
+            (\( lbl, layer ) ->
                 M3e.tab
-                    [ M3e.attrSelected (layer == current)
+                    [ M3e.Attributes.selected (layer == current)
                     , Native.onClick (SelectLayer index layer)
                     ]
-                    [ Markup.Atoms.text label ]
+                    [ M3e.text lbl ]
             )
             (layersFor ex)
         )
@@ -274,10 +281,10 @@ nothing for that surface to lift, the surface is identical to `M3e` by design, s
 we show a short rationale instead of a hollow duplicate.
 
 -}
-codeFor : Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand } msg
+codeFor : Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 codeFor layer ex =
     let
-        elmOrHtml : Maybe String -> Element { s | html : M3e.Kind.Brand } msg
+        elmOrHtml : Maybe String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
         elmOrHtml field =
             case field of
                 Just code ->
@@ -286,7 +293,7 @@ codeFor layer ex =
                 Nothing ->
                     Doc.code_ Doc.Xml ex.html
 
-        recordBuildCode : Maybe String -> String -> Element { s | html : M3e.Kind.Brand } msg
+        recordBuildCode : Maybe String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
         recordBuildCode field surface =
             case field of
                 Just code ->
@@ -322,7 +329,7 @@ We surface that fact rather than hiding the tab (a hidden tab reads as "this
 surface doesn't apply", which is the wrong lesson — it applies, it's just a no-op
 here).
 -}
-identicalSurfaceNote : String -> Element { s | html : M3e.Kind.Brand } msg
+identicalSurfaceNote : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 identicalSurfaceNote surface =
     Doc.message
         (surface

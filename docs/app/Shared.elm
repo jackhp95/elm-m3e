@@ -347,7 +347,7 @@ view sharedData page model toMsg pageView =
     let
         -- `themed` wraps content Elements in `<m3e-theme>` and does the single
         -- `Node.toHtml` conversion.
-        themed : List (Element { html : M3e.Kind.Brand } admittedBy msg) -> Html msg
+        themed : List (Element { html : M3e.Kind.Brand } (M3e.Theme.ChildAdmittedBy childAdm) msg) -> Html msg
         themed children =
             M3e.theme
                 [ M3e.Theme.color model.seed

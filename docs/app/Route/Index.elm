@@ -15,16 +15,18 @@ import Doc.Data
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html
+import HtmlIr.Element as Element exposing (Element)
 import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import Markup.Atoms
-import Markup.Element as Element exposing (Element)
+import M3e.Attributes
+import M3e.Button
+import M3e.Card
+import M3e.Heading
 import M3e.Kind
-import M3e.Token as Value
+import M3e.Values as Value
 import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -104,28 +106,31 @@ view app _ =
     }
 
 
-hero : Element { s | html : M3e.Kind.Brand } msg
+hero : Element { s | html : M3e.Kind.Brand } admittedBy msg
 hero =
     Layout.section "space-y-5"
         [ M3e.heading
-            [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
-            [ Markup.Atoms.text "Type-safe Material 3 Expressive for Elm" ]
+            [ M3e.Heading.variant Value.display
+            , M3e.Heading.size Value.small
+            , M3e.Attributes.level 1
+            ]
+            [ M3e.text "Type-safe Material 3 Expressive for Elm" ]
         , Layout.div "max-w-2xl"
             [ Kit.paragraph Value.large
                 [ Kit.onSurfaceVariant ]
                 [ Kit.text "Material 3 Expressive for Elm, over matraic's "
-                , Native.node (Html.node "code") [] [ Kit.text "@m3e/web" ]
+                , Native.node "code" [] [ Kit.text "@m3e/web" ]
                 , Kit.text " web components — where invalid UIs don't compile. Typed slots, enforced accessible names, and docs whose every example is machine-proven against the real components."
                 ]
             ]
         , Layout.div "flex flex-wrap items-center gap-3 pt-2"
-            [ M3e.button [ M3e.variantFilled, M3e.attrHref "/getting-started/installation" ] [ Kit.text "Get started" ]
-            , M3e.button [ M3e.variantOutlined, M3e.attrHref "/reference" ] [ Kit.text "Browse the API reference" ]
+            [ M3e.button [ M3e.Button.variant Value.filled, M3e.Button.href "/getting-started/installation" ] [ Kit.text "Get started" ]
+            , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/reference" ] [ Kit.text "Browse the API reference" ]
             ]
         , Layout.div "space-y-2 pt-4"
             [ Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text "Live theme — try the ⚙ settings in the app bar" ]
             , Layout.div "flex items-center gap-3"
-                [ M3e.avatar [ M3e.ariaLabel "Sample avatar" ] [ Native.img [ Native.attribute "src" "/avatar-sample.svg" ] ]
+                [ M3e.avatar [ Native.attribute "aria-label" "Sample avatar" ] [ Native.img [ Native.attribute "src" "/avatar-sample.svg" ] ]
                 , Layout.div "flex gap-3"
                     [ Surface.view Surface.primary [ Layout.class "block w-10 h-10", Shape.corner Shape.large ] []
                     , Surface.view Surface.tertiaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []
@@ -136,13 +141,9 @@ hero =
         ]
 
 
-{-| The "Why elm-m3e" highlight cards. The component count is derived from the
-single source of truth (`data/reference.json`, the same list that drives the
-drawer and the `/components/:name` pages), so the hero, status card, and nav
-stay in lockstep — hardcoding it is what let the home page drift (issue #188:
-home said 53, the catalogue was 54).
+{-| The "Why elm-m3e" highlight cards.
 -}
-highlights : Int -> Element { s | html : M3e.Kind.Brand } msg
+highlights : Int -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 highlights componentCount =
     Layout.section "space-y-6"
         [ Doc.sectionHeading "Why elm-m3e"
@@ -160,22 +161,22 @@ highlights componentCount =
         ]
 
 
-highlightCard : String -> String -> String -> Element { s | card : M3e.Kind.Brand } msg
-highlightCard iconName title body =
+highlightCard : String -> String -> String -> Element { s | card : M3e.Kind.Brand } admittedBy msg
+highlightCard iconName cardTitle cardBody =
     M3e.card
-        [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text title ])
-        , M3e.cardSlotContent
+        [ M3e.Card.variant Value.elevated ]
+        [ M3e.Card.header (M3e.heading [ M3e.Heading.variant Value.title ] [ M3e.text cardTitle ])
+        , M3e.Card.content
             (Layout.div "flex gap-3"
                 [ Layout.span "shrink-0"
-                    [ Kit.colored [ Kit.primary ] [ M3e.icon [ M3e.attrName iconName ] [] ] ]
-                , Kit.paragraph Value.large [ Kit.onSurface ] [ Kit.text body ]
+                    [ Kit.colored [ Kit.primary ] [ M3e.icon [ Native.attribute "name" iconName ] [] ] ]
+                , Kit.paragraph Value.large [ Kit.onSurface ] [ Kit.text cardBody ]
                 ]
             )
         ]
 
 
-statusGrid : Element { s | html : M3e.Kind.Brand } msg
+statusGrid : Element { s | html : M3e.Kind.Brand } admittedBy msg
 statusGrid =
     Layout.section "space-y-3"
         [ Doc.sectionHeading "Status"

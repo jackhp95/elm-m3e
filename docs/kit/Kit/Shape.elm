@@ -15,7 +15,7 @@ of writing `rounded-md-corner-large` through the seam.
 -}
 
 import Html.Attributes
-import Markup.Html.Attr exposing (Attr)
+import HtmlIr.Attribute exposing (Attr)
 import Seam
 
 

@@ -23,9 +23,8 @@ so every tab UI in the docs can reuse the one implementation.
 
 -}
 
-import Html
-import Markup.Element exposing (Element)
-import Markup.Html.Attr exposing (Attr)
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Native
 
@@ -37,17 +36,17 @@ renders the single panel plainly — no viewport/track wrapper — so the slider
 appears when there is actually something to slide between.
 
 -}
-slidingPanels : Int -> List (Element { s | html : M3e.Kind.Brand } msg) -> Element { r | html : M3e.Kind.Brand } msg
+slidingPanels : Int -> List (Element { s | html : M3e.Kind.Brand } admittedBy msg) -> Element { r | html : M3e.Kind.Brand } freeAdm msg
 slidingPanels activeIndex panels =
     case panels of
         [] ->
-            Native.node (Html.node "div") [] []
+            Native.node "div" [] []
 
         [ only ] ->
             -- Plain passthrough (a bare wrapper, no viewport/track): a single panel
             -- has nothing to slide against. The wrapper re-opens the phantom row so
             -- the one panel drops into any context the slider itself would.
-            Native.node (Html.node "div") [] [ only ]
+            Native.node "div" [] [ only ]
 
         _ ->
             let
@@ -59,28 +58,24 @@ slidingPanels activeIndex panels =
                 idx =
                     clamp 0 (count - 1) activeIndex
 
-                track : Element { k | html : M3e.Kind.Brand } msg
+                track : Element { k | html : M3e.Kind.Brand } trackAdm msg
                 track =
-                    Native.node (Html.node "div")
+                    Native.node "div"
                         [ Native.attribute "class" "sp-track"
                         , Native.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
                         ]
                         (List.indexedMap (panel idx) panels)
             in
-            Native.node (Html.node "slide-panels")
+            Native.node "slide-panels"
                 [ Native.attribute "class" "sp-viewport"
                 , Native.attribute "active-index" (String.fromInt idx)
                 ]
                 [ track ]
 
 
-{-| One panel wrapper: a `flex: 0 0 100%` cell holding the rendered panel. Inactive
-(off-screen) panels get `aria-hidden="true"` and the `inert` attribute so AT and
-keyboard focus skip them; the active panel carries neither (no `inert` on it). No
-`display:none` anywhere — panels stay measurable and find-in-page-searchable; they
-leave the viewport only via the track's `transform` plus the viewport's clip.
+{-| One panel wrapper: inactive panels get `aria-hidden="true"` and `inert`.
 -}
-panel : Int -> Int -> Element { s | html : M3e.Kind.Brand } msg -> Element { k | html : M3e.Kind.Brand } msg
+panel : Int -> Int -> Element { s | html : M3e.Kind.Brand } admittedBy msg -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 panel activeIndex i child =
     let
         inactive : Bool
@@ -104,4 +99,4 @@ panel activeIndex i child =
                         []
                    )
     in
-    Native.node (Html.node "div") attrs [ child ]
+    Native.node "div" attrs [ child ]

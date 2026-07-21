@@ -17,12 +17,16 @@ centralised here as named helpers (`rawPreview`, `markdown`, `code_`,
 import Doc.Fold as Fold
 import Html exposing (Html, a, code, div, node, p, pre, text)
 import Html.Attributes exposing (attribute, class, href)
+import HtmlIr.Element exposing (Element)
 import Kit
 import Layout
 import M3e
+import M3e.Attributes
+import M3e.Card
+import M3e.ContentPane
+import M3e.Heading
 import M3e.Kind
-import Markup.Atoms
-import Markup.Element exposing (Element)
+import M3e.Values as Value
 import Markdown.Parser
 import Markdown.Renderer
 import Seam
@@ -38,11 +42,11 @@ items instead, so the card stays within `max-w-full` without clipping — a live
 example's escaping menu/tooltip is free to overflow the card.
 
 -}
-showcase : Element { s | html : M3e.Kind.Brand } msg -> Element { r | card : M3e.Kind.Brand } msg
+showcase : Element { s | html : M3e.Kind.Brand } admittedBy msg -> Element { r | card : M3e.Kind.Brand } freeAdm msg
 showcase content =
     M3e.card
-        [ M3e.variantOutlined, Seam.asAttribute (class "max-w-full") ]
-        [ M3e.cardSlotContent content ]
+        [ M3e.Card.variant Value.outlined, Seam.asAttribute (class "max-w-full") ]
+        [ M3e.Card.content content ]
 
 
 {-| Render a raw HTML string as live DOM. The embedded `<m3e-*>` custom elements
@@ -54,7 +58,7 @@ injected subtree alone. Pre-render emits the empty wrapper; the content populate
 on hydration.
 
 -}
-rawPreview : String -> Element { s | html : M3e.Kind.Brand } msg
+rawPreview : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 rawPreview html =
     Seam.fromHtml
         (node "raw-html"
@@ -85,7 +89,7 @@ type Lang
 
 
 {-| -}
-code_ : Lang -> String -> Element { s | html : M3e.Kind.Brand } msg
+code_ : Lang -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 code_ lang s =
     let
         trimmed : String
@@ -145,7 +149,7 @@ Falls back to the raw text in a paragraph if parsing/rendering fails, so a
 malformed doc-comment never blanks the page. The `doc-prose` wrapper carries
 the prose spacing/typography from `style.css`.
 -}
-markdown : String -> Element { s | html : M3e.Kind.Brand } msg
+markdown : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 markdown raw =
     Seam.fromHtml
         (div [ class "doc-prose" ] (markdownBody raw))
@@ -154,29 +158,39 @@ markdown raw =
 {-| The route content pane: the standard `M3e.contentPane` wrapper every docs
 route hands to `Element.toNode` at its root.
 -}
-pane : List (Element { s | html : M3e.Kind.Brand } msg) -> Element { r | contentPane : M3e.Kind.Brand } msg
+pane : List (Element { s | html : M3e.Kind.Brand } (M3e.ContentPane.ChildAdmittedBy childAdm) msg) -> Element { r | contentPane : M3e.Kind.Brand } freeAdm msg
 pane items =
     M3e.contentPane [] items
 
 
 {-| A page's `<h1>`: display-small heading.
 -}
-pageHeading : String -> Element { s | heading : M3e.Kind.Brand } msg
+pageHeading : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading s =
-    M3e.heading [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ] [ Markup.Atoms.text s ]
+    M3e.heading
+        [ M3e.Heading.variant Value.display
+        , M3e.Heading.size Value.small
+        , M3e.Attributes.level 1
+        ]
+        [ M3e.text s ]
 
 
 {-| A section's `<h2>`: headline-small heading.
 -}
-sectionHeading : String -> Element { s | heading : M3e.Kind.Brand } msg
+sectionHeading : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
 sectionHeading s =
-    M3e.heading [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ] [ Markup.Atoms.text s ]
+    M3e.heading
+        [ M3e.Heading.variant Value.headline
+        , M3e.Heading.size Value.small
+        , M3e.Attributes.level 2
+        ]
+        [ M3e.text s ]
 
 
 {-| The chapter recap box: an "Recap" overline over rendered markdown, in a
 tinted container.
 -}
-recapBox : String -> Element { s | html : M3e.Kind.Brand } msg
+recapBox : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 recapBox md =
     Layout.div "rounded-md-corner-medium bg-surface-container p-4 space-y-2"
         [ Kit.overline [ Kit.primary ] [ Kit.text "Recap" ]
@@ -210,7 +224,7 @@ must not read as body prose (e.g. "these modules are yours to write"). The body 
 full Markdown, so it can carry links and inline `code`. Styled with the same surface
 tokens as the rest of the docs; a left accent bar marks it as a notice, not content.
 -}
-callout : String -> String -> Element { s | html : M3e.Kind.Brand } msg
+callout : String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 callout label body =
     Seam.fromHtml
         (div
@@ -227,7 +241,7 @@ the package's `exposed-modules`: they live in `docs/kit/` as copyable starters, 
 reader who pastes `Kit.text` into a fresh project must know to bring the module along.
 One definition, so the framing can't drift between pages.
 -}
-userlandNote : Element { s | html : M3e.Kind.Brand } msg
+userlandNote : Element { s | html : M3e.Kind.Brand } admittedBy msg
 userlandNote =
     callout "You write these"
         """`Kit`, `Native`, `Layout`, and `Seam` in these examples are **your own modules**, not part of the `elm-m3e` package — they won't resolve from a fresh install. The library ships the typed components (`M3e.*`); *you* supply the userland vocabulary that fills the gaps: `Kit.text` and typography, `Native` HTML producers, `Layout` wrappers, and the `Seam` escape hatch. Copy the paste-able starters from [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) and adapt them, or write your own — see [Your own seam](/guide/seams)."""
@@ -237,7 +251,7 @@ userlandNote =
 inline `<code>` block so it wraps within the list item; falls back to plain text
 if it doesn't tokenize as Elm.
 -}
-elmSignature : String -> Element { s | html : M3e.Kind.Brand } msg
+elmSignature : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 elmSignature s =
     let
         trimmed : String
@@ -260,7 +274,7 @@ elmSignature s =
 carrying the outline/hover chrome). Raw `<a>` because the library doesn't
 opinionate plain navigation anchors.
 -}
-anchorPill : { href : String, label : String } -> Element { s | html : M3e.Kind.Brand } msg
+anchorPill : { href : String, label : String } -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 anchorPill link =
     Seam.fromHtml
         (a
@@ -273,7 +287,7 @@ anchorPill link =
 
 {-| A horizontally-scrollable `<pre><code>` block for a verbatim signature line.
 -}
-preBlock : String -> Element { s | html : M3e.Kind.Brand } msg
+preBlock : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 preBlock s =
     Seam.fromHtml
         (pre [ class "overflow-x-auto" ]
@@ -284,7 +298,7 @@ preBlock s =
 {-| A minimal `<div><p>…</p></div>` text block, for framework surfaces (e.g. the
 error page) that render a plain message with no typed M3e producer at hand.
 -}
-message : String -> Element { s | html : M3e.Kind.Brand } msg
+message : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 message body =
     Seam.fromHtml
         (div [] [ p [] [ text body ] ])

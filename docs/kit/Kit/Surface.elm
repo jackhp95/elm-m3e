@@ -19,10 +19,9 @@ home for those classes (see `Kit`).
 
 -}
 
-import Html
 import Html.Attributes
-import Markup.Element exposing (Element)
-import Markup.Html.Attr exposing (Attr)
+import HtmlIr.Attribute exposing (Attr)
+import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Native
 import Seam
@@ -37,9 +36,9 @@ type Surface
 {-| Paint a `<div>` with the surface role's background + on-color. Extra `attrs`
 (layout, shape, `dir`, …) compose onto the same element so the background fills it.
 -}
-view : Surface -> List (Attr c msg) -> List (Element s msg) -> Element { k | html : M3e.Kind.Brand } msg
+view : Surface -> List (Attr c msg) -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 view (Surface roles) attrs kids =
-    Native.node Html.div
+    Native.div
         (Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on)) :: attrs)
         kids
 
@@ -54,8 +53,6 @@ asAttribute (Surface roles) =
     Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on))
 
 
-{-| The `outline-variant` border, as an attribute to compose onto a surface.
--}
 outlined : Attr c msg
 outlined =
     Seam.asAttribute (Html.Attributes.class "border border-outline-variant")
