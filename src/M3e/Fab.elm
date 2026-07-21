@@ -1,6 +1,6 @@
 module M3e.Fab exposing
     ( view, el, build, toElement
-    , Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, onClick
     , closeIcon, label
@@ -12,7 +12,7 @@ module M3e.Fab exposing
 A floating action button (FAB) used to present important actions.
 
 @docs view, el, build, toElement
-@docs Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, onClick
 @docs closeIcon, label
@@ -26,6 +26,7 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Node exposing (Node)
 import HtmlIr.Value exposing (Value)
+import M3e.Action
 import M3e.Attributes
 import M3e.Events
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
@@ -117,6 +118,26 @@ type alias Variant =
     }
 
 
+{-| The behaviours this component's required action admits (see `M3e.Action`).
+-}
+type alias ActionCaps =
+    { bottomSheetAction : Supported
+    , bottomSheetTrigger : Supported
+    , click : Supported
+    , datepickerToggle : Supported
+    , dialogAction : Supported
+    , dialogTrigger : Supported
+    , drawerToggle : Supported
+    , fabMenuTrigger : Supported
+    , link : Supported
+    , menuTrigger : Supported
+    , navRailToggle : Supported
+    , richTooltipAction : Supported
+    , stepperPrevious : Supported
+    , stepperReset : Supported
+    }
+
+
 {-| Standard constructor: `[attributes] [children]`.
 -}
 view :
@@ -127,15 +148,25 @@ view attrs children =
     Ir.fromNode (Ir.node "m3e-fab" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Required-content constructor — missing required content is unwritable.
+{-| Required-content (and action) constructor — omissions are unwritable.
 -}
 el :
-    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    { content : Element Content (ChildAdmittedBy childAdm) msg
+    , action : M3e.Action.Action ActionCaps msg
+    }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
 el required_ attrs children =
-    view attrs (required_.content :: children)
+    let
+        actioned =
+            Ir.fromNode (M3e.Action.wrapContent required_.action (HtmlIr.Element.toNode required_.content))
+    in
+    Ir.fromNode
+        (Ir.node "m3e-fab"
+            (M3e.Action.toAttrs required_.action ++ attrs)
+            (List.map HtmlIr.Element.toNode (actioned :: children))
+        )
 
 
 {-| Narrowed value setter for `size`. Tokens come from `M3e.Values`.
@@ -294,10 +325,12 @@ type alias SlotCaps =
 {-| Seed the pipe-builder.
 -}
 build :
-    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    { content : Element Content (ChildAdmittedBy childAdm) msg
+    , action : M3e.Action.Action ActionCaps msg
+    }
     -> Builder AttrCaps SlotCaps msg
 build required_ =
-    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+    Builder { attrs = M3e.Action.toAttrs required_.action, children = [ M3e.Action.wrapContent required_.action (HtmlIr.Element.toNode required_.content) ] }
 
 
 {-| Close the pipe-builder.

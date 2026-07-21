@@ -81,7 +81,7 @@ view attrs children =
     Ir.fromNode (Ir.node "m3e-option" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Required-content constructor — missing required content is unwritable.
+{-| Required-content (and action) constructor — omissions are unwritable.
 -}
 el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }

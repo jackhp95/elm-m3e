@@ -85,7 +85,7 @@ view attrs children =
     Ir.fromNode (Ir.node "m3e-search-bar" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| Required-content constructor — missing required content is unwritable.
+{-| Required-content (and action) constructor — omissions are unwritable.
 -}
 el :
     { input : Element childAccepts (ChildAdmittedBy childAdm) msg }
