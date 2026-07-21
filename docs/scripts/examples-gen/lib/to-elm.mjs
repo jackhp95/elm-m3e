@@ -32,14 +32,16 @@ function escapeElmString(s) {
 const isWhitespaceText = (node) =>
   node.nodeType === 3 && node.textContent.trim() === "";
 
-// Universal accessibility attributes: settable on ANY component (independent of
-// the phantom rows) via the `Aria` modules. Strict/middle layers use `M3e.Aria`
-// (open-row `Attr`); the bottom layer uses `M3e.Raw.Aria` (`Html.Attribute`).
+// Universal accessibility attributes: settable on ANY component via
+// `TypedHtml.Aria` (open-row `Attr`). The phantom substrate moved these
+// off the retired `M3e.Aria` module onto `TypedHtml.Aria`, which exposes
+// `label`, `labelledby`, and `describedby`. `aria-hidden` has no typed setter
+// in `TypedHtml.Aria`; it falls through to the `Native.attribute` Seam path.
 const ARIA_SETTER = {
   "aria-label": "label",
   "aria-labelledby": "labelledby",
   "aria-describedby": "describedby",
-  "aria-hidden": "hidden",
+  // aria-hidden: no TypedHtml.Aria setter — falls through to Native.attribute
 };
 
 // Universal HTML attributes: like Aria, these are settable on ANY component
@@ -378,9 +380,9 @@ function elementToElm(node, oracle) {
     // Required-record fields were consumed above; they are not setters.
     if (requiredHtmlNames.has(name)) continue;
 
-    // Universal aria-* setters (settable on any component via M3e.Aria).
+    // Universal aria-* setters (settable on any component via TypedHtml.Aria).
     if (ARIA_SETTER[name]) {
-      attrExprs.push(`M3e.Aria.${ARIA_SETTER[name]} "${escapeElmString(value)}"`);
+      attrExprs.push(`TypedHtml.Aria.${ARIA_SETTER[name]} "${escapeElmString(value)}"`);
       continue;
     }
 
@@ -435,7 +437,7 @@ function elementToElm(node, oracle) {
 
     const setterRef = `M3e.${mod}.${attr.setter}`;
     if (attr.kind === "enum") {
-      attrExprs.push(`${setterRef} M3e.Token.${camel(value)}`);
+      attrExprs.push(`${setterRef} M3e.Values.${camel(value)}`);
     } else if (attr.kind === "bool") {
       // Presence of a boolean attribute means "true".
       attrExprs.push(`${setterRef} True`);
@@ -651,7 +653,7 @@ function cemTypedAttr(entry, layer, name, value) {
   const setterRef = `${CEM_PREFIX[layer]}.${entry.module}.${attr.setter}`;
   if (attr.kind === "enum") {
     return layer === "middle"
-      ? `${setterRef} M3e.Token.${camel(value)}`
+      ? `${setterRef} M3e.Values.${camel(value)}`
       : `${setterRef} "${escapeElmString(value)}"`;
   }
   if (attr.kind === "bool") {
@@ -791,39 +793,21 @@ function cemChildren(node, oracle, layer) {
 /**
  * Convert an HTML string to the middle (`M3e.Html.*`) or bottom
  * (`M3e.Raw.*`) Elm layer.
+ *
+ * NOTE (phantom substrate migration): The M3e.Html.* and M3e.Raw.* layers do
+ * not exist in the phantom substrate. Both layers are unconditionally skipped
+ * so their examples gracefully degrade to null in the rich output (the UI
+ * simply hides those tabs). The internal implementation is retained so the
+ * oracle/CEM mapping stays exercisable once a replacement layer is added.
+ *
  * @param {"middle"|"bottom"} layer
  * @returns {{ code: string } | { skip: string }}
  */
 export function toElmCem(htmlString, oracle, layer) {
-  droppedAttrs = [];
-  seamedAttrs = [];
-  let document;
-  try {
-    ({ document } = parseHTML(`<html><body>${htmlString}</body></html>`));
-  } catch (err) {
-    return { skip: `parse error: ${err.message}` };
-  }
-
-  const roots = [...document.body.childNodes].filter(
-    (n) => !isWhitespaceText(n) && (n.nodeType === 1 || n.nodeType === 3),
-  );
-  if (roots.length === 0) {
-    return { skip: "empty example" };
-  }
-
-  try {
-    const codes = roots.map((n) => {
-      const slotName =
-        n.nodeType === 1 ? n.getAttribute("slot") || null : null;
-      return cemNodeToElm(n, oracle, layer, slotName);
-    });
-    return { code: codes.join("\n") };
-  } catch (err) {
-    if (err instanceof SkipError) {
-      return { skip: err.reason };
-    }
-    throw err;
-  }
+  // phantom-migration: M3e.Html.* / M3e.Raw.* layers retired; gracefully
+  // degrade every example on these surfaces to null.
+  const prefix = layer === "middle" ? "M3e.Html" : "M3e.Raw";
+  return { skip: `${prefix}.* layer retired in phantom substrate` };
 }
 
 /**

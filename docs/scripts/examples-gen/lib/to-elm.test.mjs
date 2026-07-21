@@ -11,13 +11,13 @@ test("button with icon slot + text", () => {
     `<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), Kit.text "New" ]`,
+    code: `M3e.Button.view [ M3e.Button.variant M3e.Values.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), Kit.text "New" ]`,
   });
 });
 
 test("plain text-only button", () => {
   assert.deepEqual(conv(`<m3e-button variant="tonal">Tonal</m3e-button>`), {
-    code: `M3e.Button.view [ M3e.Button.variant M3e.Token.tonal ] [ Kit.text "Tonal" ]`,
+    code: `M3e.Button.view [ M3e.Button.variant M3e.Values.tonal ] [ Kit.text "Tonal" ]`,
   });
 });
 
@@ -34,22 +34,22 @@ test("checkbox without aria-label converts (aria is optional)", () => {
 // IconButton exposes `view : List Attr -> List Element` (the retarget dropped
 // the `child`/`children` wrappers — a default child is now emitted as the raw
 // element itself). Its single default icon child is therefore the bare
-// `M3e.Icon.view (…)`. aria-label is a universal optional setter (M3e.Aria.label
+// `M3e.Icon.view (…)`. aria-label is a universal optional setter (TypedHtml.Aria.label
 // in the attribute list), NOT a required-record field.
 test("icon-button default icon slot -> raw element; aria is a setter", () => {
   const r = conv(
     `<m3e-icon-button aria-label="Toggle theme"><m3e-icon name="dark_mode"></m3e-icon></m3e-icon-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [] ]`,
+    code: `M3e.IconButton.view [ TypedHtml.Aria.label "Toggle theme" ] [ M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [] ]`,
   });
 });
 
-// aria-label is a universal setter (M3e.Aria.label), not a required record.
-test("checkbox aria-label -> M3e.Aria.label setter", () => {
+// aria-label is a universal setter (TypedHtml.Aria.label), not a required record.
+test("checkbox aria-label -> TypedHtml.Aria.label setter", () => {
   const r = conv(`<m3e-checkbox aria-label="Accept" checked></m3e-checkbox>`);
   assert.deepEqual(r, {
-    code: `M3e.Checkbox.view [ M3e.Aria.label "Accept", M3e.Checkbox.checked True ] []`,
+    code: `M3e.Checkbox.view [ TypedHtml.Aria.label "Accept", M3e.Checkbox.checked True ] []`,
   });
 });
 
@@ -79,7 +79,7 @@ test("top: typed `for` (m3e-app-bar) is preserved, not overridden by universal",
 test("icon-button with no default content converts (empty content)", () => {
   const r = conv(`<m3e-icon-button aria-label="X"></m3e-icon-button>`);
   assert.deepEqual(r, {
-    code: `M3e.IconButton.view [ M3e.Aria.label "X" ] []`,
+    code: `M3e.IconButton.view [ TypedHtml.Aria.label "X" ] []`,
   });
 });
 
@@ -95,9 +95,9 @@ test("bool attr on a 2-arg component (icon filled)", () => {
   });
 });
 
-test("enum attr rendered via M3e.Token with camelCase", () => {
+test("enum attr rendered via M3e.Values with camelCase", () => {
   assert.deepEqual(conv(`<m3e-button size="extra-large">Big</m3e-button>`), {
-    code: `M3e.Button.view [ M3e.Button.size M3e.Token.extraLarge ] [ Kit.text "Big" ]`,
+    code: `M3e.Button.view [ M3e.Button.size M3e.Values.extraLarge ] [ Kit.text "Big" ]`,
   });
 });
 
@@ -113,16 +113,16 @@ test("keyword attr `type` -> escaped `type_` setter", () => {
 
 // 3b: a valid enum value emits its Value token; an INVALID one degrades to an
 // explanatory comment (never silently — #199) rather than emitting a
-// non-existent `M3e.Token.extended` that would null the surface.
+// non-existent `M3e.Values.extended` that would null the surface.
 test("enum: valid value emits token, invalid value degrades to a comment", () => {
   assert.deepEqual(conv(`<m3e-nav-bar mode="expanded"></m3e-nav-bar>`), {
-    code: `M3e.NavBar.view [ M3e.NavBar.mode M3e.Token.expanded ] []`,
+    code: `M3e.NavBar.view [ M3e.NavBar.mode M3e.Values.expanded ] []`,
   });
   const bad = conv(`<m3e-nav-bar mode="extended"></m3e-nav-bar>`);
   // The bad value is NOT silently dropped: a grep-able block comment records what
   // was lost and why, so the gap is visible in the generated source.
   assert.match(bad.code, /\{- round-trip: dropped mode="extended" on m3e-nav-bar/);
-  assert.doesNotMatch(bad.code, /M3e\.Token\.extended/);
+  assert.doesNotMatch(bad.code, /M3e\.Values\.extended/);
 });
 
 // The retarget unwrapped the default slot: multiple default children are just
@@ -132,7 +132,7 @@ test("multiple default children -> raw elements in the flat content list", () =>
   assert.deepEqual(
     conv(`<m3e-button variant="text"><m3e-icon name="a"></m3e-icon>Hi</m3e-button>`),
     {
-      code: `M3e.Button.view [ M3e.Button.variant M3e.Token.text ] [ M3e.Icon.view [ M3e.Icon.name "a" ] [], Kit.text "Hi" ]`,
+      code: `M3e.Button.view [ M3e.Button.variant M3e.Values.text ] [ M3e.Icon.view [ M3e.Icon.name "a" ] [], Kit.text "Hi" ]`,
     },
   );
 });
@@ -160,7 +160,7 @@ test("non-typed attr is preserved via the Native.attribute Seam", () => {
 test("m3e element with id/class emits universal M3e.Attributes setters", () => {
   const r = conv(`<m3e-button variant="filled" id="x" class="y">Go</m3e-button>`);
   assert.deepEqual(r, {
-    code: `M3e.Button.view [ M3e.Button.variant M3e.Token.filled, M3e.Attributes.id "x", M3e.Attributes.class "y" ] [ Kit.text "Go" ]`,
+    code: `M3e.Button.view [ M3e.Button.variant M3e.Values.filled, M3e.Attributes.id "x", M3e.Attributes.class "y" ] [ Kit.text "Go" ]`,
   });
 });
 
@@ -238,7 +238,7 @@ test("tabs: interleaved children preserve source order (tab,tab,panel,panel)", (
 // A named-slot child carries its OWN expressible attributes through slot
 // composition: routing `<m3e-icon-button slot="trailing-button" aria-label="…">`
 // into SplitButton's typed `trailingButton` slot re-renders the child in full,
-// so its universal `aria-label` (M3e.Aria.label) survives — it is NOT dropped by
+// so its universal `aria-label` (TypedHtml.Aria.label) survives — it is NOT dropped by
 // the slot wrapper. (Regression for #199 Task A: aria-label lost on a slotted
 // child once the #198 dom-diff alignment stopped masking it.)
 test("named-slot child keeps its aria-label through slot composition", () => {
@@ -246,7 +246,7 @@ test("named-slot child keeps its aria-label through slot composition", () => {
     `<m3e-split-button><m3e-icon-button slot="trailing-button" aria-label="Keyboard arrow down"><m3e-icon name="keyboard_arrow_down"></m3e-icon></m3e-icon-button></m3e-split-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.SplitButton.view [] [ M3e.SplitButton.trailingButton (M3e.IconButton.view [ M3e.Aria.label "Keyboard arrow down" ] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [] ]) ]`,
+    code: `M3e.SplitButton.view [] [ M3e.SplitButton.trailingButton (M3e.IconButton.view [ TypedHtml.Aria.label "Keyboard arrow down" ] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [] ]) ]`,
   });
 });
 
@@ -325,97 +325,32 @@ test("anchor-wrapped card -> Kit.link", () => {
 });
 
 // --- Phase A1: middle (M3e.Html.*) + bottom (M3e.Raw.*) layers ---------
-// Mid/bottom are a uniform HTML->elm/html transpile: typed setters where they
-// exist, raw-attribute escape otherwise, raw Html children (no required-record
-// folding, no Content slot helpers). Enums are Value tokens at middle, raw
-// strings at bottom. Slots: M3e.Html.Attr.slot at middle / attribute "slot" at
-// bottom. Expected strings authored against the real per-layer modules.
+// NOTE (phantom substrate migration): M3e.Html.* and M3e.Raw.* were retired.
+// toElmCem now unconditionally returns { skip: "... retired ..." } for both
+// layers so every example gracefully degrades to null on those surfaces.
+// The tests below verify the skip contract (not specific code strings).
 
 const mid = (h) => toElmCem(h, oracle, "middle");
 const bot = (h) => toElmCem(h, oracle, "bottom");
 
-test("middle: button with icon slot + text", () => {
-  assert.deepEqual(
-    mid(`<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`),
-    {
-      code: `M3e.Html.Button.button [ M3e.Html.Button.variant M3e.Token.filled ] [ M3e.Html.Icon.icon [ M3e.Html.Attr.slot "icon", M3e.Html.Icon.name "add" ] [], Html.text "New" ]`,
-    },
-  );
+test("middle layer returns skip (M3e.Html.* retired)", () => {
+  const r = mid(`<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`);
+  assert.ok(r.skip, "expected a skip result");
+  assert.match(r.skip, /M3e\.Html/);
 });
 
-test("bottom: button with icon slot + text", () => {
-  assert.deepEqual(
-    bot(`<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`),
-    {
-      code: `M3e.Raw.Button.button [ M3e.Raw.Button.variant "filled" ] [ M3e.Raw.Icon.icon [ Html.Attributes.attribute "slot" "icon", M3e.Raw.Icon.name "add" ] [], Html.text "New" ]`,
-    },
-  );
+test("bottom layer returns skip (M3e.Raw.* retired)", () => {
+  const r = bot(`<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`);
+  assert.ok(r.skip, "expected a skip result");
+  assert.match(r.skip, /M3e\.Raw/);
 });
 
-test("middle: aria-label via universal M3e.Aria.label + typed bool", () => {
-  assert.deepEqual(mid(`<m3e-checkbox aria-label="Accept" checked></m3e-checkbox>`), {
-    code: `M3e.Html.Checkbox.checkbox [ M3e.Aria.label "Accept", M3e.Html.Checkbox.checked True ] []`,
-  });
-});
-
-test("bottom: aria-label via M3e.Raw.Aria.label + typed bool", () => {
-  assert.deepEqual(bot(`<m3e-checkbox aria-label="Accept" checked></m3e-checkbox>`), {
-    code: `M3e.Raw.Checkbox.checkbox [ M3e.Raw.Aria.label "Accept", M3e.Raw.Checkbox.checked True ] []`,
-  });
-});
-
-// Universal id/for/class/style: M3e.Attributes at the middle layer (open-row
-// Attr), M3e.Raw.Attributes at the bottom (raw Html.Attribute). Mirrors the
-// universal aria path; `style` parses to (k, v) tuples on both layers.
-test("middle: universal id/for/class/style via M3e.Attributes", () => {
-  const html = `<m3e-checkbox id="c1" class="a b" style="color: red; --x: 1px" for="ctrl" checked></m3e-checkbox>`;
-  assert.deepEqual(mid(html), {
-    code: `M3e.Html.Checkbox.checkbox [ M3e.Attributes.id "c1", M3e.Attributes.class "a b", M3e.Attributes.style [ ( "color", "red" ), ( "--x", "1px" ) ], M3e.Attributes.for "ctrl", M3e.Html.Checkbox.checked True ] []`,
-  });
-});
-
-test("bottom: universal id/for/class/style via M3e.Raw.Attributes", () => {
-  const html = `<m3e-checkbox id="c1" class="a b" style="color: red; --x: 1px" for="ctrl" checked></m3e-checkbox>`;
-  assert.deepEqual(bot(html), {
-    code: `M3e.Raw.Checkbox.checkbox [ M3e.Raw.Attributes.id "c1", M3e.Raw.Attributes.class "a b", M3e.Raw.Attributes.style [ ( "color", "red" ), ( "--x", "1px" ) ], M3e.Raw.Attributes.for "ctrl", M3e.Raw.Checkbox.checked True ] []`,
-  });
-});
-
-test("mid/bottom: plain text-only button", () => {
-  assert.deepEqual(mid(`<m3e-button variant="tonal">Tonal</m3e-button>`), {
-    code: `M3e.Html.Button.button [ M3e.Html.Button.variant M3e.Token.tonal ] [ Html.text "Tonal" ]`,
-  });
-  assert.deepEqual(bot(`<m3e-button variant="tonal">Tonal</m3e-button>`), {
-    code: `M3e.Raw.Button.button [ M3e.Raw.Button.variant "tonal" ] [ Html.text "Tonal" ]`,
-  });
-});
-
-test("mid/bottom: icon-button does NOT fold — aria setter + child element", () => {
-  const html = `<m3e-icon-button aria-label="Toggle theme"><m3e-icon name="dark_mode"></m3e-icon></m3e-icon-button>`;
-  assert.deepEqual(mid(html), {
-    code: `M3e.Html.IconButton.iconButton [ M3e.Aria.label "Toggle theme" ] [ M3e.Html.Icon.icon [ M3e.Html.Icon.name "dark_mode" ] [] ]`,
-  });
-  assert.deepEqual(bot(html), {
-    code: `M3e.Raw.IconButton.iconButton [ M3e.Raw.Aria.label "Toggle theme" ] [ M3e.Raw.Icon.icon [ M3e.Raw.Icon.name "dark_mode" ] [] ]`,
-  });
-});
-
-test("enum: Value token at middle, raw string at bottom", () => {
-  assert.deepEqual(mid(`<m3e-button size="extra-large">Big</m3e-button>`), {
-    code: `M3e.Html.Button.button [ M3e.Html.Button.size M3e.Token.extraLarge ] [ Html.text "Big" ]`,
-  });
-  assert.deepEqual(bot(`<m3e-button size="extra-large">Big</m3e-button>`), {
-    code: `M3e.Raw.Button.button [ M3e.Raw.Button.size "extra-large" ] [ Html.text "Big" ]`,
-  });
-});
-
-test("numeric attribute -> Float literal (no quotes) at all layers", () => {
+test("numeric attribute -> Float literal (no quotes) at top layer", () => {
   assert.deepEqual(conv(`<m3e-icon name="star" optical-size="24"></m3e-icon>`), {
     code: `M3e.Icon.view [ M3e.Icon.name "star", M3e.Icon.opticalSize 24 ] []`,
   });
-  assert.deepEqual(bot(`<m3e-icon name="star" optical-size="24"></m3e-icon>`), {
-    code: `M3e.Raw.Icon.icon [ M3e.Raw.Icon.name "star", M3e.Raw.Icon.opticalSize 24 ] []`,
-  });
+  // bottom layer is retired; skip is expected
+  assert.ok(bot(`<m3e-icon name="star" optical-size="24"></m3e-icon>`).skip);
 });
 
 test("void elements (<hr>/<br>) are 0-arg Native values, not called with args", () => {

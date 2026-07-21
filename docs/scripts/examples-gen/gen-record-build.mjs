@@ -4,6 +4,14 @@
 // (Standard `M3e.*`) code. NO new HTML->Elm converter is written here — this is a
 // thin harness around the real rules, built on lib/scratch-harness.mjs.
 //
+// NOTE (phantom substrate migration): The elm-review rules `Cem.TranslateToRecord`
+// and `Cem.TranslateToBuild` (which live in the external elm-review-cem package)
+// target the retired M3e.Record.* / M3e.Build.* API layers that no longer exist in
+// the phantom substrate. This script is therefore a NO-OP: it writes an empty
+// surfaces file so build-examples-data.mjs produces null record/build fields for
+// every example (the UI already handles null gracefully by showing a rationale tab).
+// Restore this script once the elm-review rules are updated for the new substrate.
+//
 // Mechanism (per surface):
 //   1. Write ALL examples' `top` code as bindings into one scratch Elm
 //      APPLICATION (a fresh tmpdir, source-dirs = real library sources) — the
@@ -38,127 +46,32 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  mkScratchDir,
-  writeCorpusApp,
-  writeReviewConfig,
-  runReviewJson,
-  applyEditsPartial,
-  parseBindings,
-  bindingName,
-} from "./lib/scratch-harness.mjs";
-import { compilingNames } from "./verify-examples.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 // docs/scripts/examples-gen/gen-record-build.mjs -> elm-m3e root is three up.
 const REPO = resolve(HERE, "..", "..", "..");
-const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/kit`];
-const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
-const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
 
 const RICH = resolve(REPO, "config/examples.rich.json");
 const OUT = resolve(REPO, "config/examples.surfaces.json");
 
-const RULE = { record: "Cem.TranslateToRecord", build: "Cem.TranslateToBuild" };
-const TOKEN = { record: "M3e.Record.", build: "M3e.Build." };
-
-const reviewElm = JSON.parse(readFileSync(`${REPO}/review/elm.json`, "utf8"));
-
-function reviewConfigFor(surface) {
-  return `module ReviewConfig exposing (config)
-
-import Review.Rule exposing (Rule)
-import ${RULE[surface]}
-import M3e.Review.Facts
-
-
-config : List Rule
-config =
-    [ ${RULE[surface]}.rule M3e.Review.Facts.facts ]
-`;
-}
-
 function main() {
+  // phantom-migration: NO-OP. The elm-review rules `Cem.TranslateToRecord` and
+  // `Cem.TranslateToBuild` target the retired M3e.Record.* / M3e.Build.* API
+  // layers (external elm-review-cem package, not yet updated for the phantom
+  // substrate). Write an empty surfaces file aligned with the rich corpus so
+  // build-examples-data.mjs produces null record/build fields; the UI renders
+  // the "identical by design" rationale tab for each example. Restore the full
+  // implementation below once the elm-review rules are updated.
   const rich = JSON.parse(readFileSync(RICH, "utf8"));
-
-  // Flatten every example to a binding keyed by (module, idx).
-  const items = [];
+  const emptyResult = {};
   for (const module of Object.keys(rich)) {
-    rich[module].forEach((ex, idx) => {
-      // A degraded example may have a null top (no strict M3e surface): there is
-      // no source to translate to Record/Build, so its entry stays {} (default).
-      if (ex.top == null) return;
-      items.push({ module, idx, name: bindingName(module, idx), code: ex.top });
-    });
+    emptyResult[module] = rich[module].map(() => ({}));
   }
-
-  const result = {}; // module -> [ { record, build } ]
-  for (const module of Object.keys(rich)) result[module] = rich[module].map(() => ({}));
-
-  const stats = {};
-  for (const surface of ["record", "build"]) {
-    const cfgDir = mkScratchDir(`d6-cfg-${surface}`);
-    const targetDir = mkScratchDir("d6-target");
-    writeReviewConfig(cfgDir, {
-      reviewSrcDir: `${REPO}/review/src`,
-      reviewElm,
-      // The codegen-aware translator rules now live in the jackhp95/elm-review-cem
-      // package; pull them in via source-dir until it is a published dependency.
-      extraSourceDirs: [`${REPO}/src`, `${REPO}/../elm-review-cem/src`],
-      reviewConfigElm: reviewConfigFor(surface),
-    });
-    const text = writeCorpusApp(targetDir, items, SRC_DIRS);
-    const json = runReviewJson(REVIEW_BIN, cfgDir, targetDir, ELM_BIN, { label: surface });
-    // Apply only the real target-surface CONVERSION edits; SKIP the whole-node
-    // Seam-escape fallbacks (their replacement never reaches the target surface),
-    // leaving every un-converted node exactly as it was (valid Standard `M3e.*`).
-    // (Empirically the two classes are disjoint: no edit both reaches the target
-    // surface and is a Seam escape, so filtering on the target token alone cleanly
-    // selects conversions.)
-    const token = TOKEN[surface];
-    const fixedByName = parseBindings(
-      applyEditsPartial(text, json, { skip: (f) => !f.string.includes(token) }),
-    );
-
-    // Candidate = code that reached the target surface (partial conversions
-    // included — a mixed Standard/target tree still counts). Otherwise the rule
-    // produced pure Seam residue (or identity) — fall back to top.
-    const candidates = {};
-    for (const it of items) {
-      const code = fixedByName[it.name];
-      if (code && code.includes(TOKEN[surface])) candidates[it.name] = code;
-    }
-    const ok = compilingNames(candidates);
-
-    let converted = 0, partial = 0, fallback = 0;
-    for (const it of items) {
-      const code = candidates[it.name];
-      const accept = code && ok.has(it.name);
-      const use = accept ? code : rich[it.module][it.idx].top;
-      if (accept) {
-        converted++;
-        // Partial = compiles + has a target ref but ALSO retains a Standard
-        // 2-segment `M3e.<Comp>.view` container/node (mixed tree).
-        if (/\bM3e\.[A-Z][A-Za-z0-9_]*\.view\b/.test(code)) partial++;
-      } else {
-        fallback++;
-      }
-      result[it.module][it.idx][surface] = use;
-    }
-    stats[surface] = { converted, partial, fallback };
-  }
-
-  writeFileSync(OUT, JSON.stringify(result, null, 2) + "\n");
-  const total = items.length;
-  console.log(`wrote ${OUT} — ${total} examples`);
-  for (const s of ["record", "build"]) {
-    const full = stats[s].converted - stats[s].partial;
-    console.log(
-      `  ${s}: ${stats[s].converted} converted (compiled + reached ${TOKEN[s]}*) ` +
-        `= ${full} full + ${stats[s].partial} partial (mixed Standard/target tree), ` +
-        `${stats[s].fallback} fell back to top`,
-    );
-  }
+  writeFileSync(OUT, JSON.stringify(emptyResult, null, 2) + "\n");
+  console.log(
+    `gen-record-build: NO-OP (phantom migration) — wrote empty ${OUT}; ` +
+      `record/build surfaces will show rationale tabs until rules are updated.`,
+  );
 }
 
 main();
