@@ -132,6 +132,7 @@ Everything else moved:
 | `variant*`, `size*`, `mode*` (fused setters) | `M3e.Attributes` + `M3e.Values` token |
 | `onChange`, `onClick`, `onInput`, … | `M3e.Events` |
 | slot wrappers (`cardSlotHeader`, `slotIcon`, …) | `M3e.<Component>.<slotName>` |
+| `aria-label` / accessibility attrs | `TypedHtml.Aria.*` (general a11y axis) |
 | `M3e.Native.*` | `TypedHtml.*` |
 
 Mechanical search strategy:
@@ -260,26 +261,30 @@ kind row does not unify with a slot but you know it is semantically valid. It is
 greppable by design and restricted to the allowed-modules list in the review
 config.
 
-`M3e.FormField` no longer has a `for=` / `id=` stamping helper. The old API
-stamped `for=<id>` onto the label and `id=<id>` onto the control automatically.
-The new slot functions (`M3e.FormField.label`, `M3e.FormField.hint`, etc.) only
-place the `slot=` attribute — the `for=`/`id=` linkage is gone. Add it back in
-your seam module:
+`M3e.FormField` wraps whatever you put in its **default slot** and styles it — it
+has no `label` slot of its own (the real CEM slots are `prefix`/`prefix-text`/
+`suffix`/`suffix-text`/`hint`/`error` plus the default). Associate a label with
+its control the standard HTML way: a native `<label for="x">` and the control's
+`<input id="x">` as **siblings in the default slot**. The browser's `for`/`id`
+match wires them; the form field styles the pair. There is no
+`M3e.FormField.label` slot function — the old idWiring that auto-stamped
+`for=`/`id=` was removed as redundant with native structural association.
+
+Build the label with your `Native` producers so it stays in the phantom substrate
+(no seam crossing), then `Seam.recast` to unify the label's row into the control
+list:
 
 ```elm
--- compass-social's Native.elm workaround
-fieldLabel : String -> Element s admittedBy msg -> Element free freeAdm msg
-fieldLabel id el =
-    Ir.fromNode
-        (Ir.addAttribute (Ir.attribute "slot" "label")
-            (Ir.addAttribute (Ir.attribute "for" id) (HtmlIr.Element.toNode el))
-        )
-
-fieldControl : String -> Element s admittedBy msg -> Element free freeAdm msg
-fieldControl id el =
-    Ir.fromNode
-        (Ir.addAttribute (Ir.attribute "id" id) (HtmlIr.Element.toNode el))
+M3e.formField []
+    [ Native.label [ Native.attribute "for" "email" ] [ M3e.text "Email" ]
+        |> Seam.recast
+    , M3e.textField [ M3e.Attributes.id "email" ] []
+    ]
 ```
+
+`Native.label` pins the element to `{ html : Brand }`; that row does not unify
+with the form field's default-slot list element, so `Seam.recast` coerces it in
+(loud + greppable, restricted to the allowed-modules list — as designed).
 
 ---
 
@@ -361,13 +366,21 @@ See `review/src/ReviewConfig.elm` in this repo for a complete working example.
 took a decoder. `M3e.Events.onChange myDecoder` compiles and silently never runs
 the decoder. Always use `onChangeWith` when you need the event payload.
 
-### `M3e.FormField` `for=` / `id=` linkage is gone
+### `M3e.FormField` has no label slot — use native association
 
-`M3e.FormField.label` only stamps `slot="label"`. If your form relies on the
-label's `for=` pointing at the control's `id=`, you must add both attributes
-manually. Use the `fieldLabel` / `fieldControl` helpers from §5, or stamp them
-with `M3e.Attributes.for` / `M3e.Attributes.id` before passing to the slot
-function.
+The form field has no `label` slot function; associate a label the standard HTML
+way — a native `<label for="x">` sibling to the control's `<input id="x">` in the
+default slot (see §5). The old idWiring that auto-stamped `for=`/`id=` was removed
+as redundant with native structural association.
+
+### Accessible names come from `TypedHtml.Aria.label`, not a per-brand setter
+
+`aria-label` is a global HTML attribute — set it via the shared a11y axis
+`TypedHtml.Aria.label "…"`, not a per-component m3e setter (m3e deliberately does
+**not** re-export it; there is no `M3e.Attributes.ariaLabel`). Icon-only `M3e.fab`
+and `M3e.iconButton` **require** an accessible name, and the `elm-review-cem`
+`Cem.missingRequiredAttribute` rule enforces this — it recognizes only the
+`TypedHtml.Aria.*` axis, so satisfy the requirement there.
 
 ### Lamdera + vendored `HtmlIr.Internal`
 
