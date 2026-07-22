@@ -4,7 +4,7 @@ module M3e.Stepper exposing
     , HeaderPosition, headerPosition, LabelPosition, labelPosition, Orientation, orientation
     , linear, onChange, onBeforeinput, onInput
     , panel, step
-    , withAriaLabel, withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
+    , withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
     )
 
 {-| The `m3e-stepper` component — strict per-component surface.
@@ -16,7 +16,7 @@ Provides a wizard-like workflow by dividing content into logical steps.
 @docs HeaderPosition, headerPosition, LabelPosition, labelPosition, Orientation, orientation
 @docs linear, onChange, onBeforeinput, onInput
 @docs panel, step
-@docs withAriaLabel, withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
+@docs withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
 
 -}
 
@@ -40,8 +40,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , headerPosition : Supported
     , id : Supported
     , labelPosition : Supported
@@ -183,8 +182,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , headerPosition : Available
     , id : Available
     , labelPosition : Available
@@ -216,13 +214,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-stepper" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

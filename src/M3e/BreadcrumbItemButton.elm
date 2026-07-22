@@ -4,7 +4,7 @@ module M3e.BreadcrumbItemButton exposing
     , Current, current
     , disabled, download, href, rel, target, onClick
     , icon
-    , withAriaLabel, withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
+    , withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
     )
 
 {-| The `m3e-breadcrumb-item-button` component — strict per-component surface.
@@ -14,7 +14,7 @@ module M3e.BreadcrumbItemButton exposing
 @docs Current, current
 @docs disabled, download, href, rel, target, onClick
 @docs icon
-@docs withAriaLabel, withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
+@docs withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
 
 -}
 
@@ -38,8 +38,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , current : Supported
     , disabled : Supported
     , download : Supported
@@ -162,8 +161,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , current : Available
     , disabled : Available
     , download : Available
@@ -196,13 +194,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-breadcrumb-item-button" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

@@ -3,7 +3,7 @@ module M3e.Select exposing
     , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
     , arrow, value
-    , withAriaLabel, withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
+    , withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
     )
 
 {-| The `m3e-select` component — strict per-component surface.
@@ -14,7 +14,7 @@ A form control that allows users to select a value from a set of predefined opti
 @docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value
-@docs withAriaLabel, withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
+@docs withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
 
 -}
 
@@ -40,8 +40,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , hideSelectionIndicator : Supported
     , id : Supported
@@ -193,8 +192,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , hideSelectionIndicator : Available
     , id : Available
@@ -233,13 +231,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-select" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

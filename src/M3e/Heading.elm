@@ -3,7 +3,7 @@ module M3e.Heading exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Size, size, Variant, variant
     , emphasized, level, tocIgnore
-    , withAriaLabel, withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
+    , withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
     )
 
 {-| The `m3e-heading` component — strict per-component surface.
@@ -14,7 +14,7 @@ A heading to a page or section.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Size, size, Variant, variant
 @docs emphasized, level, tocIgnore
-@docs withAriaLabel, withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
+@docs withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , emphasized : Supported
     , id : Supported
     , level : Supported
@@ -147,8 +146,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , emphasized : Available
     , id : Available
     , level : Available
@@ -180,13 +178,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-heading" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

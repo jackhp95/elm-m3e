@@ -4,7 +4,7 @@ module M3e.InputChip exposing
     , Variant, variant
     , disabled, disabledInteractive, removable, removeLabel, value, onRemove, onClick
     , avatar, icon, removeIcon
-    , withAriaLabel, withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
+    , withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
     )
 
 {-| The `m3e-input-chip` component — strict per-component surface.
@@ -16,7 +16,7 @@ A chip which represents a discrete piece of information entered by a user.
 @docs Variant, variant
 @docs disabled, disabledInteractive, removable, removeLabel, value, onRemove, onClick
 @docs avatar, icon, removeIcon
-@docs withAriaLabel, withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
+@docs withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
 
 -}
 
@@ -40,8 +40,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , id : Supported
@@ -205,8 +204,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , disabledInteractive : Available
     , id : Available
@@ -244,13 +242,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-input-chip" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

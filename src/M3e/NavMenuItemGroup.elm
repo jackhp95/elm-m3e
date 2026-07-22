@@ -2,7 +2,7 @@ module M3e.NavMenuItemGroup exposing
     ( view, build, toElement
     , Is, Attrs, Content, LabelSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , label
-    , withAriaLabel, withChild, withClass, withId, withLabel, withSlot, withStyle
+    , withChild, withClass, withId, withLabel, withSlot, withStyle
     )
 
 {-| The `m3e-nav-menu-item-group` component — strict per-component surface.
@@ -12,7 +12,7 @@ A top-level semantic grouping of items in a navigation menu.
 @docs view, build, toElement
 @docs Is, Attrs, Content, LabelSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs label
-@docs withAriaLabel, withChild, withClass, withId, withLabel, withSlot, withStyle
+@docs withChild, withClass, withId, withLabel, withSlot, withStyle
 
 -}
 
@@ -34,8 +34,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -90,8 +89,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , id : Available
     , slot : Available
     , style : Available
@@ -117,13 +115,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-nav-menu-item-group" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

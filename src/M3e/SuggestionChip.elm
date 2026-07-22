@@ -4,7 +4,7 @@ module M3e.SuggestionChip exposing
     , Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, value, onClick
     , icon
-    , withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
+    , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
 
 {-| The `m3e-suggestion-chip` component — strict per-component surface.
@@ -17,7 +17,7 @@ suggested responses or search filters.
 @docs Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, onClick
 @docs icon
-@docs withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
+@docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
 -}
 
@@ -44,8 +44,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , download : Supported
@@ -244,8 +243,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , disabledInteractive : Available
     , download : Available
@@ -286,13 +284,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-suggestion-chip" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

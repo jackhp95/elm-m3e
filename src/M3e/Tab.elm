@@ -3,7 +3,7 @@ module M3e.Tab exposing
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, for, selected, onBeforeinput, onInput, onChange, onClick
     , icon
-    , withAriaLabel, withChild, withClass, withDisabled, withFor, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle
+    , withChild, withClass, withDisabled, withFor, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle
     )
 
 {-| The `m3e-tab` component — strict per-component surface.
@@ -14,7 +14,7 @@ An interactive element that, when activated, presents an associated tab panel.
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, for, selected, onBeforeinput, onInput, onChange, onClick
 @docs icon
-@docs withAriaLabel, withChild, withClass, withDisabled, withFor, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle
+@docs withChild, withClass, withDisabled, withFor, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , for : Supported
     , id : Supported
@@ -147,8 +146,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , for : Available
     , id : Available
@@ -181,13 +179,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-tab" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

@@ -4,7 +4,7 @@ module M3e.NavItem exposing
     , Orientation, orientation
     , disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
     , icon, selectedIcon
-    , withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
+    , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
     )
 
 {-| The `m3e-nav-item` component — strict per-component surface.
@@ -16,7 +16,7 @@ An item, placed in a navigation bar or rail, used to navigate to destinations in
 @docs Orientation, orientation
 @docs disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
 @docs icon, selectedIcon
-@docs withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
+@docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
 
 -}
 
@@ -40,8 +40,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , download : Supported
@@ -212,8 +211,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , disabledInteractive : Available
     , download : Available
@@ -252,13 +250,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-nav-item" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

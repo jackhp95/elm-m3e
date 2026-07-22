@@ -4,7 +4,7 @@ module M3e.SplitPane exposing
     , Orientation, orientation
     , detents, disabled, label, max, min, name, overshootLimit, step, value, valueformatter, wrapDetents, onChange, onBeforeinput, onInput
     , end, start
-    , withAriaLabel, withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
+    , withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
     )
 
 {-| The `m3e-split-pane` component — strict per-component surface.
@@ -16,7 +16,7 @@ A dual-view layout that separates content with a movable drag handle.
 @docs Orientation, orientation
 @docs detents, disabled, label, max, min, name, overshootLimit, step, value, valueformatter, wrapDetents, onChange, onBeforeinput, onInput
 @docs end, start
-@docs withAriaLabel, withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
+@docs withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
 
 -}
 
@@ -42,8 +42,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , detents : Supported
     , disabled : Supported
     , id : Supported
@@ -234,8 +233,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , detents : Available
     , disabled : Available
     , id : Available
@@ -281,13 +279,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-split-pane" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

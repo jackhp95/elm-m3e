@@ -141,7 +141,7 @@ but this call doesn't provide it
 The Material 3 spec (and accessibility guidance) treats `aria-label` as required
 for iconButton.
 
-Add `M3e.Aria.label "..."` to the attrs list."""
+Add `Aria.label "..."` (from `import TypedHtml.Aria as Aria`) to the attrs list."""
 
 
 wiring : String

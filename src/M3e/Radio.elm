@@ -2,7 +2,7 @@ module M3e.Radio exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
-    , withAriaLabel, withChecked, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRequired, withSlot, withStyle, withValue
+    , withChecked, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRequired, withSlot, withStyle, withValue
     )
 
 {-| The `m3e-radio` component — strict per-component surface.
@@ -12,7 +12,7 @@ A radio button that allows a user to select one option from a set of options.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
-@docs withAriaLabel, withChecked, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRequired, withSlot, withStyle, withValue
+@docs withChecked, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRequired, withSlot, withStyle, withValue
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , checked : Supported
+    { checked : Supported
     , class : Supported
     , disabled : Supported
     , id : Supported
@@ -143,8 +142,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , checked : Available
+    { checked : Available
     , class : Available
     , disabled : Available
     , id : Available
@@ -178,13 +176,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-radio" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

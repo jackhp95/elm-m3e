@@ -3,7 +3,7 @@ module M3e.LinearProgressIndicator exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Mode, mode, Variant, variant
     , bufferValue, max, value
-    , withAriaLabel, withBufferValue, withClass, withId, withMax, withMode, withSlot, withStyle, withValue, withVariant
+    , withBufferValue, withClass, withId, withMax, withMode, withSlot, withStyle, withValue, withVariant
     )
 
 {-| The `m3e-linear-progress-indicator` component — strict per-component surface.
@@ -14,7 +14,7 @@ A horizontal bar for indicating progress and activity.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Mode, mode, Variant, variant
 @docs bufferValue, max, value
-@docs withAriaLabel, withBufferValue, withClass, withId, withMax, withMode, withSlot, withStyle, withValue, withVariant
+@docs withBufferValue, withClass, withId, withMax, withMode, withSlot, withStyle, withValue, withVariant
 
 -}
 
@@ -39,8 +39,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , bufferValue : Supported
+    { bufferValue : Supported
     , class : Supported
     , id : Supported
     , max : Supported
@@ -131,8 +130,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , bufferValue : Available
+    { bufferValue : Available
     , class : Available
     , id : Available
     , max : Available
@@ -162,13 +160,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-linear-progress-indicator" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

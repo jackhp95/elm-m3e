@@ -3,7 +3,7 @@ module M3e.Badge exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Position, position, Size, size
     , for
-    , withAriaLabel, withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
+    , withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
     )
 
 {-| The `m3e-badge` component — strict per-component surface.
@@ -14,7 +14,7 @@ A visual indicator used to label content.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Position, position, Size, size
 @docs for
-@docs withAriaLabel, withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
+@docs withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , for : Supported
     , id : Supported
     , position : Supported
@@ -124,8 +123,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , for : Available
     , id : Available
     , position : Available
@@ -153,13 +151,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-badge" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

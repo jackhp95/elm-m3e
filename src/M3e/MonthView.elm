@@ -2,7 +2,7 @@ module M3e.MonthView exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , active, activeDate, date, maxDate, minDate, rangeEnd, rangeStart, today, onChange, onActiveChange
-    , withActive, withActiveDate, withAriaLabel, withClass, withDate, withId, withMaxDate, withMinDate, withOnActiveChange, withOnChange, withRangeEnd, withRangeStart, withSlot, withStyle, withToday
+    , withActive, withActiveDate, withClass, withDate, withId, withMaxDate, withMinDate, withOnActiveChange, withOnChange, withRangeEnd, withRangeStart, withSlot, withStyle, withToday
     )
 
 {-| The `m3e-month-view` component — strict per-component surface.
@@ -12,7 +12,7 @@ An internal component used to display a single month in a calendar.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs active, activeDate, date, maxDate, minDate, rangeEnd, rangeStart, today, onChange, onActiveChange
-@docs withActive, withActiveDate, withAriaLabel, withClass, withDate, withId, withMaxDate, withMinDate, withOnActiveChange, withOnChange, withRangeEnd, withRangeStart, withSlot, withStyle, withToday
+@docs withActive, withActiveDate, withClass, withDate, withId, withMaxDate, withMinDate, withOnActiveChange, withOnChange, withRangeEnd, withRangeStart, withSlot, withStyle, withToday
 
 -}
 
@@ -37,7 +37,6 @@ type alias Is s =
 type alias Attrs =
     { active : Supported
     , activeDate : Supported
-    , ariaLabel : Supported
     , class : Supported
     , date : Supported
     , id : Supported
@@ -151,7 +150,6 @@ type Builder attrCaps slotCaps msg
 type alias AttrCaps =
     { active : Available
     , activeDate : Available
-    , ariaLabel : Available
     , class : Available
     , date : Available
     , id : Available
@@ -185,13 +183,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-month-view" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

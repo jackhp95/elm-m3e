@@ -1,5 +1,5 @@
 module M3e.Attributes exposing
-    ( ariaLabel, class, id, slot, style, styleList
+    ( class, id, slot, style, styleList
     , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, density, detent, detents, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, href, indeterminate, inline, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, min, minDate, minRows, modal, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, resultsLabel, returnValue, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, value, valueformatter, vertical, weight, wrap, wrapDetents
     , animation, contrast, current, dividers, endMode, filter, floatLabel, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, toggleDirection, togglePosition, touchGestures, type_, variant, width
     )
@@ -10,7 +10,7 @@ decides admittance. Enum setters here close over the library-wide UNION of
 values — cross-component misuse is caught by elm-review; reach for the
 per-component setters (`M3e.<Component>.<attr>`) for compile-tight narrowing.
 
-@docs ariaLabel, class, id, slot, style, styleList
+@docs class, id, slot, style, styleList
 @docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, density, detent, detents, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, href, indeterminate, inline, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, min, minDate, minRows, modal, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, resultsLabel, returnValue, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, value, valueformatter, vertical, weight, wrap, wrapDetents
 @docs animation, contrast, current, dividers, endMode, filter, floatLabel, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, toggleDirection, togglePosition, touchGestures, type_, variant, width
 
@@ -23,13 +23,6 @@ import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value exposing (Value)
 import Json.Encode
 import M3e.Values
-
-
-{-| The global `aria-label` attribute — the accessible name of an element.
--}
-ariaLabel : String -> Attr { c | ariaLabel : Supported } msg
-ariaLabel =
-    Ir.attribute "aria-label"
 
 
 {-| The global `class` attribute.

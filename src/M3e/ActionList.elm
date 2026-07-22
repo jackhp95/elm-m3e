@@ -2,7 +2,7 @@ module M3e.ActionList exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
-    , withAriaLabel, withChild, withClass, withId, withSlot, withStyle, withVariant
+    , withChild, withClass, withId, withSlot, withStyle, withVariant
     )
 
 {-| The `m3e-action-list` component — strict per-component surface.
@@ -12,7 +12,7 @@ A list of actions.
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
-@docs withAriaLabel, withChild, withClass, withId, withSlot, withStyle, withVariant
+@docs withChild, withClass, withId, withSlot, withStyle, withVariant
 
 -}
 
@@ -35,8 +35,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -94,8 +93,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , id : Available
     , slot : Available
     , style : Available
@@ -121,13 +119,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-action-list" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

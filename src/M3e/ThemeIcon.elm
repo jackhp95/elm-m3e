@@ -3,7 +3,7 @@ module M3e.ThemeIcon exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Scheme, scheme, Variant, variant
     , color
-    , withAriaLabel, withClass, withColor, withId, withScheme, withSlot, withStyle, withVariant
+    , withClass, withColor, withId, withScheme, withSlot, withStyle, withVariant
     )
 
 {-| The `m3e-theme-icon` component — strict per-component surface.
@@ -14,7 +14,7 @@ An icon that visually presents a preview of a theme.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Scheme, scheme, Variant, variant
 @docs color
-@docs withAriaLabel, withClass, withColor, withId, withScheme, withSlot, withStyle, withVariant
+@docs withClass, withColor, withId, withScheme, withSlot, withStyle, withVariant
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , color : Supported
     , id : Supported
     , scheme : Supported
@@ -119,8 +118,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , color : Available
     , id : Available
     , scheme : Available
@@ -148,13 +146,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-theme-icon" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

@@ -3,7 +3,7 @@ module M3e.ExpandableListItem exposing
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, open, onOpening, onOpened, onClosing, onClosed
     , items, leading, overline, supportingText, toggleIcon
-    , withAriaLabel, withChild, withClass, withDisabled, withId, withItems, withLeading, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOverline, withSlot, withStyle, withSupportingText, withToggleIcon
+    , withChild, withClass, withDisabled, withId, withItems, withLeading, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOverline, withSlot, withStyle, withSupportingText, withToggleIcon
     )
 
 {-| The `m3e-expandable-list-item` component — strict per-component surface.
@@ -14,7 +14,7 @@ An item in a list that can be expanded to show more items.
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, open, onOpening, onOpened, onClosing, onClosed
 @docs items, leading, overline, supportingText, toggleIcon
-@docs withAriaLabel, withChild, withClass, withDisabled, withId, withItems, withLeading, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOverline, withSlot, withStyle, withSupportingText, withToggleIcon
+@docs withChild, withClass, withDisabled, withId, withItems, withLeading, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOverline, withSlot, withStyle, withSupportingText, withToggleIcon
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , id : Supported
     , onClosed : Supported
@@ -199,8 +198,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , id : Available
     , onClosed : Available
@@ -236,13 +234,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-expandable-list-item" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

@@ -454,21 +454,25 @@ enforces pairing it with a real interactive child and a keyboard path.
 
 ### The ARIA hybrid
 
-The single highest-value ARIA setter, `aria-label`, **is** surfaced directly as a
-global on `M3e.Attributes` (`ariaLabel : String -> Attr`), so an accessible name is
-reachable without a second import — and icon-only controls (FAB, IconButton) require it
-as a record field (see §Required content). The broader ARIA surface (the full aria-\*
-family, `role` gating) is deliberately **not** generated into m3e; it lives in the
-**native brand**, `TypedHtml.Aria` (from `elm-typed-html`). m3e users reach the rest of
-ARIA by importing the native module and writing the setter inline in any component's
-attribute list:
+ARIA names — and the whole aria-\* family — are *global HTML attributes*, so m3e does
+**not** re-expose them per-brand. They live in one place: the **native brand**,
+`TypedHtml.Aria` (from `elm-typed-html`). A universal aria setter carries a fully-open
+capability row, so it flows into *any* component's attribute list — you import the
+native module once and reach for `Aria.label`/`Aria.describedBy`/… everywhere:
 
 ```elm
 import TypedHtml.Aria as Aria
 
-M3e.iconButton [ M3e.Attributes.ariaLabel "Back" ] []   -- the name, direct on M3e.Attributes
-M3e.iconButton [ Aria.describedBy "hint-1" ] []         -- the rest, via TypedHtml.Aria
+M3e.iconButton [ Aria.label "Back" ] []          -- the name, via TypedHtml.Aria
+M3e.iconButton [ Aria.describedBy "hint-1" ] []  -- the rest, same module
 ```
+
+The one place the name is *not* an optional attribute is where it is structurally
+required: icon-only controls (FAB, IconButton) take the accessible name as a **required
+record field** on the component itself (see §Required content), stamped inline as
+`aria-label` — so they cannot be constructed without a name. Everything else is the
+open native aria setter. `role` gating is deliberately **not** generated into m3e; it
+too lives in `TypedHtml.Aria`.
 
 This composes because a universal ARIA setter carries a **fully-open capability
 row** — it demands nothing of the element it lands on:

@@ -4,7 +4,7 @@ module M3e.IconButton exposing
     , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
     , selected
-    , withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
+    , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
     )
 
 {-| The `m3e-icon-button` component — strict per-component surface.
@@ -16,7 +16,7 @@ An icon button users interact with to perform a supplementary action.
 @docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
 @docs selected
-@docs withAriaLabel, withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
+@docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
 
 -}
 
@@ -43,8 +43,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , download : Supported
@@ -197,7 +196,7 @@ el required_ attrs children =
     in
     Ir.fromNode
         (Ir.node "m3e-icon-button"
-            (M3e.Attributes.ariaLabel required_.ariaLabel :: M3e.Action.toAttrs required_.action ++ attrs)
+            (Ir.attribute "aria-label" required_.ariaLabel :: M3e.Action.toAttrs required_.action ++ attrs)
             (List.map HtmlIr.Element.toNode (actioned :: children))
         )
 
@@ -346,8 +345,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , disabledInteractive : Available
     , download : Available
@@ -389,7 +387,7 @@ build :
     }
     -> Builder AttrCaps SlotCaps msg
 build required_ =
-    Builder { attrs = M3e.Attributes.ariaLabel required_.ariaLabel :: M3e.Action.toAttrs required_.action, children = [ M3e.Action.wrapContent required_.action (HtmlIr.Element.toNode required_.content) ] }
+    Builder { attrs = Ir.attribute "aria-label" required_.ariaLabel :: M3e.Action.toAttrs required_.action, children = [ M3e.Action.wrapContent required_.action (HtmlIr.Element.toNode required_.content) ] }
 
 
 {-| Close the pipe-builder.
@@ -397,13 +395,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-icon-button" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

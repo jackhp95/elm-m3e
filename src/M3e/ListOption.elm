@@ -3,7 +3,7 @@ module M3e.ListOption exposing
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, selected, value, onBeforeinput, onInput, onChange, onClick
     , leading, overline, supportingText, trailing
-    , withAriaLabel, withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
+    , withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
     )
 
 {-| The `m3e-list-option` component — strict per-component surface.
@@ -14,7 +14,7 @@ A selectable option in a list.
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, selected, value, onBeforeinput, onInput, onChange, onClick
 @docs leading, overline, supportingText, trailing
-@docs withAriaLabel, withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
+@docs withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , id : Supported
     , onBeforeinput : Supported
@@ -206,8 +205,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , id : Available
     , onBeforeinput : Available
@@ -243,13 +241,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-list-option" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

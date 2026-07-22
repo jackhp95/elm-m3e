@@ -2,7 +2,7 @@ module M3e.Divider exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , inset, insetEnd, insetStart, vertical
-    , withAriaLabel, withClass, withId, withInset, withInsetEnd, withInsetStart, withSlot, withStyle, withVertical
+    , withClass, withId, withInset, withInsetEnd, withInsetStart, withSlot, withStyle, withVertical
     )
 
 {-| The `m3e-divider` component — strict per-component surface.
@@ -12,7 +12,7 @@ A thin line that separates content in lists or other containers.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs inset, insetEnd, insetStart, vertical
-@docs withAriaLabel, withClass, withId, withInset, withInsetEnd, withInsetStart, withSlot, withStyle, withVertical
+@docs withClass, withId, withInset, withInsetEnd, withInsetStart, withSlot, withStyle, withVertical
 
 -}
 
@@ -34,8 +34,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , id : Supported
     , inset : Supported
     , insetEnd : Supported
@@ -100,8 +99,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , id : Available
     , inset : Available
     , insetEnd : Available
@@ -130,13 +128,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-divider" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

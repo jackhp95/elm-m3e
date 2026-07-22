@@ -2,7 +2,7 @@ module M3e.Ripple exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , centered, disabled, for, radius, unbounded
-    , withAriaLabel, withCentered, withClass, withDisabled, withFor, withId, withRadius, withSlot, withStyle, withUnbounded
+    , withCentered, withClass, withDisabled, withFor, withId, withRadius, withSlot, withStyle, withUnbounded
     )
 
 {-| The `m3e-ripple` component — strict per-component surface.
@@ -12,7 +12,7 @@ Connects user input to screen reactions using ripples.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs centered, disabled, for, radius, unbounded
-@docs withAriaLabel, withCentered, withClass, withDisabled, withFor, withId, withRadius, withSlot, withStyle, withUnbounded
+@docs withCentered, withClass, withDisabled, withFor, withId, withRadius, withSlot, withStyle, withUnbounded
 
 -}
 
@@ -34,8 +34,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , centered : Supported
+    { centered : Supported
     , class : Supported
     , disabled : Supported
     , for : Supported
@@ -108,8 +107,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , centered : Available
+    { centered : Available
     , class : Available
     , disabled : Available
     , for : Available
@@ -139,13 +137,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-ripple" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

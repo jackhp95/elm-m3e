@@ -4,7 +4,7 @@ module M3e.FormField exposing
     , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
     , hideRequiredMarker
     , error, hint, prefix, prefixText, suffix, suffixText
-    , withAriaLabel, withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
+    , withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
     )
 
 {-| The `m3e-form-field` component — strict per-component surface.
@@ -16,7 +16,7 @@ A container for form controls that applies Material Design styling and behavior.
 @docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
 @docs hideRequiredMarker
 @docs error, hint, prefix, prefixText, suffix, suffixText
-@docs withAriaLabel, withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
+@docs withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
 
 -}
 
@@ -39,8 +39,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , floatLabel : Supported
     , hideRequiredMarker : Supported
     , hideSubscript : Supported
@@ -181,8 +180,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , floatLabel : Available
     , hideRequiredMarker : Available
     , hideSubscript : Available
@@ -217,13 +215,6 @@ build =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-form-field" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

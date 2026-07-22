@@ -3,7 +3,7 @@ module M3e.TreeItem exposing
     , Is, Attrs, Content, IconSlot, LabelSlot, OpenToggleIconSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
     , icon, label, openToggleIcon, selectedIcon, toggleIcon
-    , withAriaLabel, withChild, withClass, withDisabled, withIcon, withId, withIndeterminate, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOpenToggleIcon, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
+    , withChild, withClass, withDisabled, withIcon, withId, withIndeterminate, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOpenToggleIcon, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
     )
 
 {-| The `m3e-tree-item` component — strict per-component surface.
@@ -14,7 +14,7 @@ An expandable item in a tree.
 @docs Is, Attrs, Content, IconSlot, LabelSlot, OpenToggleIconSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
 @docs icon, label, openToggleIcon, selectedIcon, toggleIcon
-@docs withAriaLabel, withChild, withClass, withDisabled, withIcon, withId, withIndeterminate, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOpenToggleIcon, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
+@docs withChild, withClass, withDisabled, withIcon, withId, withIndeterminate, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOpenToggleIcon, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , id : Supported
     , indeterminate : Supported
@@ -232,8 +231,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , id : Available
     , indeterminate : Available
@@ -274,13 +272,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-tree-item" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

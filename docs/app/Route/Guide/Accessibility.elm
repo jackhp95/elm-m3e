@@ -139,7 +139,7 @@ nameBody =
 
 - **Has visible text** (a labelled button, a nav item with a label) — the text *is* the name. The named/text slot supplies it; add nothing.
 - **Icon-only** (icon button, icon-only FAB, a `Switch`/`Radio` whose label sits in a sibling) — there is no text, so an explicit ARIA name is **required**.
-- **Name lives in another visible element** — reference it with `M3e.ariaLabelledby "that-id"` instead of duplicating the string.
+- **Name lives in another visible element** — reference it with `Aria.labelledby "that-id"` instead of duplicating the string.
 
 The shipped, correct icon-only control (this one renders and announces as "Back"):"""
 
@@ -160,7 +160,7 @@ M3e.switch [ Aria.label "Push notifications", M3e.Attributes.checked on ] []"""
 
 nameLayers : String
 nameLayers =
-    """The ARIA setter exists on three layers; pick the one matching the layer you're building on: the top layer's barrel `Aria.label "Back"` / `M3e.ariaLabelledby "…"`, the Html layer's `M3e.Aria.label "Back"` / `M3e.Aria.labelledby "…"`, or the raw layer's `M3e.Raw.Aria.label "Back"`. They are first-class on *every* component, right where you reach for the other attributes — accessibility is not a separate module you have to remember to import. The trailing `Switch`/`Radio` in the [Settings example](/examples/settings) pass `Aria.label label` on every control for exactly the sibling-label reason above."""
+    """The ARIA name is a *global HTML attribute*, so it comes from one place: the shared native IR's `TypedHtml.Aria` axis. Import it once (`import TypedHtml.Aria as Aria`) and reach for `Aria.label "Back"` or `Aria.labelledby "…"` on *any* component — every `M3e.*` attribute list accepts these globals, so elm-m3e does **not** re-expose a per-component `ariaLabel` setter. (The exception is icon-only `FAB`/`IconButton`, where the accessible name is a *required* argument of the component itself, not an optional attribute — see [Accessibility you can't forget](/guide/accessible-by-construction).) The trailing `Switch`/`Radio` in the [Settings example](/examples/settings) pass `Aria.label label` on every control for exactly the sibling-label reason above."""
 
 
 focusBody : String

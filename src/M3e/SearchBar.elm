@@ -3,7 +3,7 @@ module M3e.SearchBar exposing
     , Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , clearLabel, clearable, onClear
     , clearIcon, input, leading, trailing
-    , withAriaLabel, withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
+    , withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
     )
 
 {-| The `m3e-search-bar` component — strict per-component surface.
@@ -14,7 +14,7 @@ A bar that provides a prominent entry point for search.
 @docs Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs clearLabel, clearable, onClear
 @docs clearIcon, input, leading, trailing
-@docs withAriaLabel, withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
+@docs withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , clearLabel : Supported
     , clearable : Supported
     , id : Supported
@@ -160,8 +159,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , clearLabel : Available
     , clearable : Available
     , id : Available
@@ -193,13 +191,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-search-bar" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

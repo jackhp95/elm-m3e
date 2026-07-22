@@ -3,7 +3,7 @@ module M3e.SplitButton exposing
     , Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Size, size, Variant, variant
     , leadingButton, trailingButton
-    , withAriaLabel, withClass, withId, withLeadingButton, withSize, withSlot, withStyle, withTrailingButton, withVariant
+    , withClass, withId, withLeadingButton, withSize, withSlot, withStyle, withTrailingButton, withVariant
     )
 
 {-| The `m3e-split-button` component — strict per-component surface.
@@ -14,7 +14,7 @@ A button used to show an action with a menu of related actions.
 @docs Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Size, size, Variant, variant
 @docs leadingButton, trailingButton
-@docs withAriaLabel, withClass, withId, withLeadingButton, withSize, withSlot, withStyle, withTrailingButton, withVariant
+@docs withClass, withId, withLeadingButton, withSize, withSlot, withStyle, withTrailingButton, withVariant
 
 -}
 
@@ -37,8 +37,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , id : Supported
     , size : Supported
     , slot : Supported
@@ -149,8 +148,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , id : Available
     , size : Available
     , slot : Available
@@ -183,13 +181,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-split-button" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).

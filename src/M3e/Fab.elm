@@ -4,7 +4,7 @@ module M3e.Fab exposing
     , Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, onClick
     , closeIcon, label
-    , withAriaLabel, withChild, withClass, withCloseIcon, withDisabled, withDisabledInteractive, withDownload, withExtended, withHref, withId, withLabel, withLowered, withName, withOnClick, withRel, withSize, withSlot, withStyle, withTarget, withType, withValue, withVariant
+    , withChild, withClass, withCloseIcon, withDisabled, withDisabledInteractive, withDownload, withExtended, withHref, withId, withLabel, withLowered, withName, withOnClick, withRel, withSize, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
 
 {-| The `m3e-fab` component — strict per-component surface.
@@ -16,7 +16,7 @@ A floating action button (FAB) used to present important actions.
 @docs Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, onClick
 @docs closeIcon, label
-@docs withAriaLabel, withChild, withClass, withCloseIcon, withDisabled, withDisabledInteractive, withDownload, withExtended, withHref, withId, withLabel, withLowered, withName, withOnClick, withRel, withSize, withSlot, withStyle, withTarget, withType, withValue, withVariant
+@docs withChild, withClass, withCloseIcon, withDisabled, withDisabledInteractive, withDownload, withExtended, withHref, withId, withLabel, withLowered, withName, withOnClick, withRel, withSize, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
 -}
 
@@ -43,8 +43,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaLabel : Supported
-    , class : Supported
+    { class : Supported
     , disabled : Supported
     , disabledInteractive : Supported
     , download : Supported
@@ -167,7 +166,7 @@ el required_ attrs children =
     in
     Ir.fromNode
         (Ir.node "m3e-fab"
-            (M3e.Attributes.ariaLabel required_.ariaLabel :: M3e.Action.toAttrs required_.action ++ attrs)
+            (Ir.attribute "aria-label" required_.ariaLabel :: M3e.Action.toAttrs required_.action ++ attrs)
             (List.map HtmlIr.Element.toNode (actioned :: children))
         )
 
@@ -296,8 +295,7 @@ type Builder attrCaps slotCaps msg
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaLabel : Available
-    , class : Available
+    { class : Available
     , disabled : Available
     , disabledInteractive : Available
     , download : Available
@@ -335,7 +333,7 @@ build :
     }
     -> Builder AttrCaps SlotCaps msg
 build required_ =
-    Builder { attrs = M3e.Attributes.ariaLabel required_.ariaLabel :: M3e.Action.toAttrs required_.action, children = [ M3e.Action.wrapContent required_.action (HtmlIr.Element.toNode required_.content) ] }
+    Builder { attrs = Ir.attribute "aria-label" required_.ariaLabel :: M3e.Action.toAttrs required_.action, children = [ M3e.Action.wrapContent required_.action (HtmlIr.Element.toNode required_.content) ] }
 
 
 {-| Close the pipe-builder.
@@ -343,13 +341,6 @@ build required_ =
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node "m3e-fab" (List.reverse b.attrs) (List.reverse b.children))
-
-
-{-| Pipe form of `ariaLabel` — consumes its capability (write-once).
--}
-withAriaLabel : String -> Builder { a | ariaLabel : Available } slotCaps msg -> Builder { a | ariaLabel : Used } slotCaps msg
-withAriaLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.ariaLabel value_ :: b.attrs }
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
