@@ -90,13 +90,13 @@ with line-wrap churn that swamps the real API change):
 Then **verify it compiles**. Committed `src/` imports `HtmlIr.*` from the unpublished
 `elm-html-intermediate-representation` package, which is **not** in this repo's `elm.json`,
 so a bare `elm make src/M3e.elm` fails with `MODULE NOT FOUND: HtmlIr.Attribute`. Compile it
-against the IR source tree on the path — the repo's gate scripts do this for you via
-`--dep-src` (see "Verification gates" below), or, for a one-off, point an ad-hoc application
-`elm.json` at both `src/` and the IR `src/`:
+against the IR source tree on the path — either the whole-API docs pipeline, or a one-off
+ad-hoc application `elm.json` whose `source-directories` list both `src/` and the sibling IR
+`src/`:
 
 ```bash
-# The real, working compile/docs proof — from the repo root:
-npm run measure-docs   # runs split + elm make with --dep-src wiring the IR source
+# Whole-API compile + doc-comment proof — from the repo root:
+cd docs && pnpm run build:reference   # elm make --docs over the full M3e.* surface
 ```
 
 ## `config/slots.json` — the schema, and how edits flow
@@ -133,26 +133,24 @@ Editing config → rerun the regen command → the change shows in the `src` dif
 
 ## Verification gates
 
-The repo's real gates live in `scripts/` and are wired through `package.json`:
+elm-m3e is a **single Elm package** (repo root), so the whole `M3e.*` surface is
+verified by compiling it against the sibling IR checkout and running the review +
+docs pipelines. From `package.json`:
 
-- `npm run split` — partitions `src/` per `packages.json` and checks totality, disjointness,
-  and the package DAG.
-- `npm run measure-docs` — `split` + `scripts/measure-docs.mjs`; compiles each package and
-  measures generated doc size. It wires the unpublished IR dependency with
-  `--dep-src=jackhp95/elm-html-intermediate-representation=/Users/jack/Documents/code/elm-html-intermediate-representation/src`,
-  which is why it can compile `HtmlIr.*` when a bare `elm make` cannot.
-- `npm run isolation-probe` — `split` + `scripts/isolation-probe.mjs`; proves each package
-  compiles against only its declared deps.
-- `npm run gate` — `measure-docs` then `isolation-probe`.
+- `npm test` — the self-contained `tests/` project (IR-core + slot unit tests). Its
+  `elm.json` source-directories include `../src` and the `elm-html-intermediate-representation`
+  / `elm-typed-html` siblings, so it compiles the library against the real IR.
+- `elm-review --config review` (run from `docs/`) — compiles `../src` through
+  `docs/elm.json` and applies the codegen-aware `elm-review-cem` rules.
+- The docs job's `build:reference` (`cd docs && pnpm run build:reference`) runs a
+  whole-API `elm make --docs`, which fails hard if any exposed value lacks a doc
+  comment (the `elm publish` requirement).
 
-> **Known-red as of 2026-07-21:** `npm run gate` currently fails at the `split` step with a
-> DAG violation (`M3e.Attributes [elm-m3e-core] imports M3e.Values [elm-m3e]`). Root cause:
-> `packages.json` still describes the **retired** multi-package facet split
-> (`elm-m3e-core`/`-raw`/`-html`/`-record`/`-build`, `markup-core`, `M3e.Raw.*`/`M3e.Html.*`
-> buckets) that the merged 2-surface architecture no longer produces. This is a pre-existing
-> code issue, not a regen defect — the regen itself is clean (zero-diff). `packages.json`
-> needs re-authoring to the real surface before the gate goes green again; that is out of
-> scope for a docs pass and is flagged for the phantom-refactor code chunk.
+> **Retired:** the old facet-split gate (`npm run split`/`measure-docs`/`isolation-probe`/`gate`
+> over a multi-package `packages.json` family, plus `scripts/mirror-release.mjs`) was
+> removed with the split world — the merged architecture ships as the single
+> `jackhp95/elm-m3e` package. A single-package docs-size gate (the registry byte cap)
+> is a pending release decision (see the release audit's NB4).
 
 ## The `regen-on-bump.yml` automation
 

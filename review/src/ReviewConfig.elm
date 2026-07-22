@@ -98,9 +98,7 @@ ignoreElmPages =
 
 {-| The `tests/` project holds the library's own tests: `tests/tests/`
 (`IrCoreTest`/`NodeSlotTest` — elm-test unit tests that legitimately import the
-opaque-IR interiors and use `Seam` to construct fixtures) and
-`tests/build-shape/` (compile-only type-behavior fixtures whose bindings are
-deliberately unused/un-annotated to exercise inference). None of it is docs-app
+opaque-IR interiors and use `Seam` to construct fixtures). None of it is docs-app
 source, so it is not gated by the docs review — ignore the whole `tests/` tree
 for EVERY rule. Two path forms cover root- vs docs/-relative runs.
 -}

@@ -29,42 +29,37 @@ the owner runs the irreversible steps by hand, in order. Do not automate them.
 
 Do not release on a red or stale CI run. The three jobs in `.github/workflows/ci.yml`:
 
-1. **library** — `elm-format --validate` on the generated output, a compile of `src/M3e.elm`
-   with the IR dependency on the path (the package correctness proof), `elm-test` (kind/token
-   unit tests), and `elm-review` with the Cem rules + `NoProprietaryDsClasses`. Also runs
-   `npm run measure-docs` to verify the package's docs size is within the 700 KB Elm registry
-   gate.
-2. **docs** — the reference pipeline (`build:reference`, which runs `elm make --docs` and
-   **fails hard if any exposed value lacks a doc comment**) and the full elm-pages
-   production build.
+1. **library** — `elm-format --validate` on the generated output, `elm-test` (kind/token
+   unit tests, which compile `../src` against the sibling IR), and `elm-review` with the Cem
+   rules + `NoProprietaryDsClasses` (which compiles `../src` through `docs/elm.json`).
+2. **docs** — the reference pipeline (`build:reference`, which runs a whole-API `elm make
+   --docs` — the package correctness proof — and **fails hard if any exposed value lacks a
+   doc comment**) and the full elm-pages production build.
 3. **harness** — the Playwright runtime contract harness (the components actually upgrade
    and render in a browser).
 
 Each fetches the sibling public `jackhp95/elm-review-cem` at `../elm-review-cem`.
 
-## The publish gate: docs-size + `elm make --docs`
+## The publish gate: `elm make --docs`
 
 elm-m3e publishes as a **single Elm package** (`jackhp95/elm-m3e`) alongside its one runtime
 dependency, the shared IR (`jackhp95/elm-html-intermediate-representation`), which is
-published on its own. Before tagging:
+published on its own. Before tagging, run the whole-API docs compile:
 
 ```bash
-npm run measure-docs        # in elm-m3e/ — compiles with elm make --docs and
-                            # asserts docs.json ≤ 700 KB; must exit 0
+cd docs && pnpm run build:reference   # whole-API `elm make --docs`; must exit 0
 ```
 
-This validates that every exposed value has a doc comment (what `elm publish` requires)
-and that the package has not grown past the registry cap. A missing doc comment on any
-generated exposed value fails here. If it fails, fix it upstream in the generator/config and
-regenerate (see regenerating-elm-m3e), never by hand-editing `src/`.
+This validates that every exposed value has a doc comment (what `elm publish` requires). A
+missing doc comment on any generated exposed value fails here. If it fails, fix it upstream
+in the generator/config and regenerate (see regenerating-elm-m3e), never by hand-editing
+`src/`.
 
-> **Known-red / tooling drift (2026-07-21):** `npm run measure-docs` currently fails at its
-> `split` step, and `packages.json` + `scripts/mirror-release.mjs` still describe the
-> **retired** multi-package facet family (`elm-m3e-core`/`-raw`/`-html`/`-record`/`-build`,
-> `markup-core`). The merged 2-surface architecture ships as the single `jackhp95/elm-m3e`
-> package, so the facet-split gate and the mirror script must be re-authored to the real
-> single-package shape before a release. That re-authoring is a code task, flagged for the
-> phantom-refactor code chunk; treat the facet-family steps below as **not yet valid**.
+> **Docs-size gate is pending.** The old per-package docs-size assertion lived in the
+> now-retired facet-split machinery (`packages.json` + `npm run measure-docs`, deleted with
+> the split world). A single-package docs-size gate against the registry byte cap is an open
+> release decision (release audit NB4) — until it lands, check the docs.json byte size by
+> hand before tagging.
 
 ## `elm bump` discipline
 
@@ -90,13 +85,14 @@ elm-m3e releases as a **single Elm package** published from the repo root; its I
 is a separate package with its own release. Publish the IR **first** (elm-m3e's dep range
 must resolve), then elm-m3e.
 
-> The retired facet-family split (7 mirror repos, `scripts/mirror-release.mjs`) is no longer
-> the release path — see the "Known-red / tooling drift" note above. Publish the single
-> package directly.
+> The retired facet-family split (7 mirror repos, driven by the deleted `packages.json` +
+> `scripts/mirror-release.mjs`) is no longer the release path. Publish the single package
+> directly.
 
-1. **Confirm structure & license**: `npm run measure-docs` (compiles + ≤ 700 KB) once the
-   gate is re-authored; root `LICENSE`, root `elm.json` `"license"`, and `package.json` all
-   agree on **BSD-3-Clause**.
+1. **Confirm structure & license**: `cd docs && pnpm run build:reference` (whole-API compile +
+   doc-comment check); hand-check docs.json byte size against the 700 KB registry cap until
+   the single-package docs-size gate lands (NB4); root `LICENSE`, root `elm.json` `"license"`,
+   and `package.json` all agree on **BSD-3-Clause**.
 2. **Publish the IR dependency** `jackhp95/elm-html-intermediate-representation` (its own
    repo/runbook) so elm-m3e's dependency range resolves.
 3. **Publish elm-m3e** from the repo root. Publishing is permanent and cannot be undone.

@@ -38,8 +38,7 @@ docs/                  The elm-pages docs site + the design docs (read order bel
 docs/kit/              Userland producer kit (copyable, NOT in the package):
                        Kit (text/link), Native (native-HTML IR), Seam.
 review/                The codegen-aware elm-review config.
-tests/                 IR-core + slot unit tests (self-contained elm-test project);
-                       tests/build-shape/ holds the per-component build type-form checks.
+tests/                 IR-core + slot unit tests (self-contained elm-test project).
 ```
 
 ## Install
@@ -120,6 +119,7 @@ import Html exposing (Html)
 import HtmlIr.Element
 import HtmlIr.Node
 import M3e
+import M3e.Icon
 import M3e.TreeItem
 
 
@@ -128,7 +128,7 @@ tree =
     M3e.TreeItem.view
         [ M3e.TreeItem.open True ]                          -- attributes (phantom capability row)
         [ M3e.TreeItem.label (M3e.text "Getting Started")   -- a named slot (setter)
-        , M3e.TreeItem.icon (M3e.icon [ M3e.Attributes.name "folder" ] [])
+        , M3e.TreeItem.icon (M3e.icon [ M3e.Icon.name "folder" ] [])
         , M3e.TreeItem.view [] [ M3e.TreeItem.label (M3e.text "Child") ]
             -- a default-slot child is just the raw Element — no wrapper
         ]
@@ -168,8 +168,8 @@ import Html exposing (Html)
 import HtmlIr.Element
 import HtmlIr.Node
 import M3e
-import M3e.Attributes
 import M3e.Button
+import M3e.Icon
 import M3e.Values as Value
 
 
@@ -197,7 +197,7 @@ view model =
         , M3e.Button.onClick Clicked
         ]
         [ M3e.text ("Clicked " ++ String.fromInt model.count)
-        , M3e.Button.icon (M3e.icon [ M3e.Attributes.name "add" ] [])
+        , M3e.Button.icon (M3e.icon [ M3e.Icon.name "add" ] [])
         ]
         |> HtmlIr.Element.toNode
         |> HtmlIr.Node.toHtml
@@ -247,17 +247,15 @@ Deploy (Netlify): **Base directory** = `docs`; build/publish come from
 The old IR-introspection unit suite was removed — the per-component surface makes those
 facts compile-time guarantees. Coverage now lives in four layers:
 
-- **The type system** — a green compile of `src/M3e.elm` proves the *closed-slot*
+- **The type system** — a green compile of the `M3e.*` surface proves the *closed-slot*
   invariants: named-slot inputs and kind-restricted default child lists are compile
   errors, as is a wrong enum value or an unadmitted attribute. (Open `arbitrary`-default
   slots accept any element by design — their slot-kind correctness is elm-review
-  guidance, not a compile-time fact; see the elm-review layer below.) Compile it via
-  `npm run gate` (split + docs-size gate + isolation probe), which wires the unpublished
-  `HtmlIr.*` dependency with `--dep-src` — a bare `elm make src/M3e.elm` fails on the
-  missing IR module. The
-  per-component `build` shape carries positive/negative type-level checks in
-  [`tests/build-shape/BuildShapeTest.elm`](tests/build-shape/BuildShapeTest.elm)
-  and [`BuildShapeNegative.elm`](tests/build-shape/BuildShapeNegative.elm).
+  guidance, not a compile-time fact; see the elm-review layer below.) The library imports
+  the not-yet-published `HtmlIr.*` from its sibling checkout, so the full surface is
+  compiled in CI two ways: the `elm-review` step (which compiles `../src` through
+  `docs/elm.json`) and the docs pipeline's whole-API `elm make --docs`
+  (`docs` job → `build:reference`).
 - **elm-review rules** — the repo's strongest coverage. One rule is repo-local:
   `NoProprietaryDsClasses` (in [`review/src`](review/src/NoProprietaryDsClasses.elm)),
   with its own [`review/tests/`](review/tests/) suite (7 cases). It runs on top of the

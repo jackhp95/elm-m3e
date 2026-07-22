@@ -11,7 +11,7 @@ env:
 
 jobs:
   library:
-    name: Library — format, gate, test, review
+    name: Library — format, test, review
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -22,9 +22,10 @@ jobs:
       - name: Fetch elm-review-cem rules (sibling)
         run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
 
-      # `npm run gate` (split + measure-docs + isolation-probe) and `npm test`
-      # (the tests/ unit suite) both need HtmlIr.* source — clone the sibling so
-      # the --dep-src wiring and tests/elm.json source-directory both resolve.
+      # `npm test` (the tests/ unit suite), the `elm-review` step, and the docs
+      # job's `build:reference` full-surface `elm make --docs` all need HtmlIr.*
+      # source — clone the sibling so tests/elm.json, review/elm.json, and the
+      # docs pipeline source-directories all resolve.
       - name: Fetch elm-html-intermediate-representation (sibling)
         run: git clone --depth 1 https://github.com/jackhp95/elm-html-intermediate-representation.git "$GITHUB_WORKSPACE/../elm-html-intermediate-representation"
 
@@ -68,11 +69,13 @@ jobs:
       - name: elm-format --validate (hand-written surfaces)
         run: npm run format:check
 
-      # The correctness proof: split + docs-size gate + isolation probe.
-      # Replaces the retired bare `elm make src/M3e.elm` (which fails without
-      # the unpublished HtmlIr dep wired via --dep-src, which gate already does).
-      - name: Library gate (split + measure-docs + isolation-probe)
-        run: npm run gate
+      # NOTE: the retired facet-split gate (`npm run gate` → split + measure-docs
+      # + isolation-probe over the multi-package `packages.json` family) was
+      # removed with the split world (single-package now). Full-surface library
+      # compilation is still gated: the `elm-review` step below compiles `../src`
+      # via docs/elm.json, and the docs job's `build:reference` runs a whole-API
+      # `elm make --docs`. The single-package docs-size gate is a pending
+      # decision (see release audit NB4).
 
       # IR-core + slot unit tests live in the self-contained tests/ project
       # (its elm.json points at ../src, ../docs/kit, and the IR + typed-html
