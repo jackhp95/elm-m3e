@@ -70,7 +70,7 @@ supportRow browser note =
 
 featureItem : String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 featureItem note =
-    Native.li [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text note ] ]
+    Native.node "li" [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text note ] ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg

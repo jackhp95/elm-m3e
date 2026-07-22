@@ -207,7 +207,7 @@ JSON `role` — is what makes the ~650-member barrel navigable.
 -}
 barrelBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 barrelBlock c =
-    Native.section
+    Native.node "section"
         [ Native.attribute "id" c.slug, Layout.class "mt-12 scroll-mt-6 space-y-6" ]
         [ M3e.divider [] []
         , Native.node "h2"
@@ -256,7 +256,7 @@ barrelGroup label pred members =
             Layout.div "" []
 
         ms ->
-            Native.section
+            Native.node "section"
                 [ Layout.class "space-y-3" ]
                 [ Native.node "h3"
                     []
@@ -267,7 +267,7 @@ barrelGroup label pred members =
 
 componentBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 componentBlock c =
-    Native.section
+    Native.node "section"
         [ Native.attribute "id" c.slug, Layout.class "scroll-mt-6 space-y-4" ]
         [ M3e.divider [] []
         , Native.node "h2"
@@ -322,7 +322,7 @@ prose layoutCls size s =
             |> List.filter (\para -> String.trim para /= "")
             |> List.map
                 (\para ->
-                    Native.p [ Layout.class "mt-2 first:mt-0 whitespace-pre-line" ]
+                    Native.node "p" [ Layout.class "mt-2 first:mt-0 whitespace-pre-line" ]
                         [ Kit.body size [ Kit.onSurfaceVariant ] [ Kit.text para ] ]
                 )
         )

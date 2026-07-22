@@ -80,12 +80,13 @@ saveButton =
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Native.label [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ]
-        , Native.input
+        [ Native.node "label" [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ]
+        , Native.node "input"
             [ Native.attribute "id" "email-field"
             , Native.attribute "type" "email"
             , Native.attribute "name" "email"
             ]
+            []
         ]
 
 

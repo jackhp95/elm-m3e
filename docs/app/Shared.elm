@@ -448,7 +448,7 @@ appShellBar =
             , M3e.AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
             , M3e.AppBar.leading
                 (Seam.recast
-                    (Native.span [ Seam.asAttribute (class "flex items-center") ]
+                    (Native.node "span" [ Seam.asAttribute (class "flex items-center") ]
                         [ brandMark, menuButton ]
                     )
                 )
@@ -465,7 +465,7 @@ rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
 -}
 brandMark : Element { html : M3e.Kind.Brand } admittedBy Msg
 brandMark =
-    Native.span
+    Native.node "span"
         [ Seam.asAttribute (class "ms-2 me-1 hidden md:inline-flex")
 
         -- Purely decorative brand glyph — hide it from assistive tech so it
@@ -480,7 +480,7 @@ viewports (the side drawer is always visible there).
 -}
 menuButton : Element { html : M3e.Kind.Brand } admittedBy Msg
 menuButton =
-    Native.span
+    Native.node "span"
         [ Seam.asAttribute (class "md:hidden") ]
         [ M3e.iconButton
             [ Aria.label "Toggle navigation", Native.onClick MenuClicked ]
@@ -550,7 +550,7 @@ drawer.
 -}
 settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
 settingsDrawerContent model =
-    Native.div
+    Native.node "div"
         [ Seam.asAttribute (Attr.id "settings-drawer")
         , Seam.asAttribute (attribute "role" "complementary")
         ]
@@ -615,15 +615,16 @@ swatch. `onInput` crosses via the one sanctioned `Seam.asAttribute`.
 seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Native.label [ Native.attribute "for" "seed-color" ] [ Kit.text "Source color" ]
+        [ Native.node "label" [ Native.attribute "for" "seed-color" ] [ Kit.text "Source color" ]
         , M3e.FormField.hint
             (Kit.code Value.small [ Kit.onSurfaceVariant ] [ Kit.text model.seed ])
-        , Native.input
+        , Native.node "input"
             [ Native.attribute "id" "seed-color"
             , Native.attribute "type" "color"
             , Native.attribute "value" model.seed
             , Seam.asAttribute (Html.Events.onInput SetSeed)
             ]
+            []
         ]
 
 
@@ -761,7 +762,7 @@ drawerShell toMsg model page components body =
         [ M3e.DrawerContainer.start
             -- Wrap the nav-menu in a native `<nav>` landmark so AT users can
             -- jump straight to navigation (and skip past it via the skip-link).
-            (Native.nav
+            (Native.node "nav"
                 [ Seam.asAttribute (attribute "aria-label" "Primary") ]
                 [ navMenu components currentPath ]
             )

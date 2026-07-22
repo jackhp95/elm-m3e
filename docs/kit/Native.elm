@@ -1,19 +1,23 @@
 module Native exposing
-    ( a, div, footer, header, img, input, label, li, nav, p, section, span, ul
-    , button, select, textarea
-    , br, em, hr, node, ol, small, strong
+    ( node, custom
     , attribute, onClick, style
     )
 
-{-| Native-HTML IR producers for userland composition.
+{-| Escape-hatch IR producers — use `TypedHtml.*` for plain HTML tags.
 
-**Migrated to the phantom substrate.** All constructors now go through
-`HtmlIr.Internal.node` (the untyped forger) via the local `node` helper, which
-stamps the M3e brand's `html` kind. Native elements carry `{ k | html : M3e.Kind.Brand }`.
+This module exposes only what `TypedHtml.*` **cannot** express:
 
-@docs a, div, footer, header, img, input, label, li, nav, p, section, span, ul
-@docs button, select, textarea
-@docs br, em, hr, node, ol, small, strong
+  - `node` / `custom` — forging elements with a dynamic or custom-element tag
+    name and a fully-open capability row (no per-element row narrowing).
+  - `attribute`, `onClick`, `style` — injecting raw HTML attributes, event
+    handlers, or inline CSS into any typed `Attr` slot.
+
+For plain HTML elements (`div`, `span`, `label`, `input`, `a`, …) use the
+corresponding `TypedHtml.*` producer — it provides closed, element-natural
+attribute rows (`LabelAttrs`, `InputAttrs`, …) so mismatched attrs are a
+compile error rather than a runtime surprise.
+
+@docs node, custom
 @docs attribute, onClick, style
 
 -}
@@ -27,11 +31,16 @@ import M3e.Kind
 
 
 
--- GENERIC BUILDER (the Seam crossing) ----------------------------------------
+-- GENERIC BUILDERS ------------------------------------------------------------
 
 
 {-| Build a native element from any tag name. Carries the `html` kind so it
 drops into any slot that admits it.
+
+Use this for **dynamic tag names** (tag determined at runtime) or **custom
+elements** whose tag is not yet in `TypedHtml.*`. For all standard HTML tags
+reach for `TypedHtml.*` directly.
+
 -}
 node :
     String
@@ -43,224 +52,17 @@ node tagName attrs kids =
         (Ir.node tagName attrs (List.map HtmlIr.Element.toNode kids))
 
 
-
--- COVERED TAGS ----------------------------------------------------------------
-
-
-{-| An `<a>` anchor — open capability row, html kind.
+{-| Build a named custom element (e.g. `"my-widget"`). Thin alias over `node`
+that makes the intent explicit in call sites — search for `Native.custom` to
+find every custom-element forge in the codebase.
 -}
-a :
-    List (Attr c msg)
+custom :
+    String
+    -> List (Attr c msg)
     -> List (Element s admittedBy msg)
     -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-a =
-    node "a"
-
-
-{-| A `<div>`.
--}
-div :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-div =
-    node "div"
-
-
-{-| A `<span>`.
--}
-span :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-span =
-    node "span"
-
-
-{-| A `<section>`.
--}
-section :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-section =
-    node "section"
-
-
-{-| A `<nav>`.
--}
-nav :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-nav =
-    node "nav"
-
-
-{-| A `<header>`.
--}
-header :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-header =
-    node "header"
-
-
-{-| A `<footer>`.
--}
-footer :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-footer =
-    node "footer"
-
-
-{-| A `<p>`.
--}
-p :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-p =
-    node "p"
-
-
-{-| A `<ul>`.
--}
-ul :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-ul =
-    node "ul"
-
-
-{-| An `<li>`.
--}
-li :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-li =
-    node "li"
-
-
-{-| An `<img>` (void).
--}
-img :
-    List (Attr c msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-img attrs =
-    node "img" attrs []
-
-
-{-| A `<label>`.
--}
-label :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-label =
-    node "label"
-
-
-{-| An `<input>` (void).
--}
-input :
-    List (Attr c msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-input attrs =
-    node "input" attrs []
-
-
-{-| A `<button>`.
--}
-button :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-button =
-    node "button"
-
-
-{-| A `<select>`.
--}
-select :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-select =
-    node "select"
-
-
-{-| A `<textarea>`.
--}
-textarea :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-textarea =
-    node "textarea"
-
-
-
--- UNCOVERED TAGS --------------------------------------------------------------
-
-
-{-| A `<strong>` element.
--}
-strong :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-strong =
-    node "strong"
-
-
-{-| An `<em>` element.
--}
-em :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-em =
-    node "em"
-
-
-{-| A `<small>` element.
--}
-small :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-small =
-    node "small"
-
-
-{-| An `<ol>` element.
--}
-ol :
-    List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-ol =
-    node "ol"
-
-
-{-| A `<br>` element.
--}
-br : Element { k | html : M3e.Kind.Brand } freeAdm msg
-br =
-    node "br" [] []
-
-
-{-| An `<hr>` element.
--}
-hr : Element { k | html : M3e.Kind.Brand } freeAdm msg
-hr =
-    node "hr" [] []
+custom =
+    node
 
 
 
@@ -268,6 +70,10 @@ hr =
 
 
 {-| A raw HTML attribute as a typed `Attr` carrying a fully-open capability row.
+
+Use when `TypedHtml.Attributes` doesn't cover the attribute you need (custom
+data attributes, ARIA attributes not in `TypedHtml.Aria`, non-standard attrs).
+
 -}
 attribute : String -> String -> Attr c msg
 attribute name value =

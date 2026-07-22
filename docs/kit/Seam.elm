@@ -1,4 +1,4 @@
-module Seam exposing (asAttribute, asElement, fromHtml, label, link, recast, recastAttr, slot, text)
+module Seam exposing (asAttribute, asElement, field, fromHtml, label, link, recast, recastAttr, slot, text)
 
 {-| The **single** sanctioned userland boundary — migrated to the phantom substrate.
 
@@ -12,12 +12,14 @@ route through `HtmlIr.*` and `TypedHtml.*`.
 -}
 
 import Html exposing (Html)
-import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared)
 import HtmlIr.Node exposing (Node)
+import TypedHtml
+import TypedHtml.Attributes
+import TypedHtml.Form
 
 
 {-| Lift a raw `Html` leaf into an `Element`, stamping whatever phantom row the
@@ -76,30 +78,74 @@ recastAttr a =
 
 
 {-| The `text` seam: a bare text leaf carrying the `sharedText` kind.
+
+Delegates to `TypedHtml.text` — the canonical typed text producer.
+
 -}
 text : String -> Element { s | sharedText : Shared } admittedBy msg
-text s =
-    Ir.fromNode (Ir.text s)
+text =
+    TypedHtml.text
 
 
 {-| The `link` seam: a plain navigation anchor (`<a href>`) wrapping children.
 Carries the `sharedLink` kind.
+
+Built on `TypedHtml.a` + `TypedHtml.Attributes.href` — the typed anchor producer
+with closed `Attrs` (only anchor-natural attributes accepted).
+
 -}
 link : String -> List (Element s admittedBy msg) -> Element { k | sharedLink : Shared } linkAdm msg
 link href kids =
-    Ir.fromNode
-        (Ir.node "a"
-            [ Ir.fromHtmlAttribute (Html.Attributes.href href) ]
-            (List.map HtmlIr.Element.toNode kids)
-        )
+    recast (TypedHtml.a [ TypedHtml.Attributes.href href ] (List.map recast kids))
 
 
 {-| The `label` seam: a native `<label>` wrapping children. Carries the `sharedLabel` kind.
+
+Built on `TypedHtml.label` — the typed label producer with closed `LabelAttrs`
+(7 attributes: `class`, `for`, `id`, `role`, `slot`, `style`, and `form`).
+
 -}
 label : List (Element s admittedBy msg) -> Element { k | sharedLabel : Shared } labelAdm msg
 label kids =
-    Ir.fromNode
-        (Ir.node "label"
-            []
-            (List.map HtmlIr.Element.toNode kids)
+    recast (TypedHtml.label [] (List.map recast kids))
+
+
+
+-- STRUCTURAL HELPERS ----------------------------------------------------------
+
+
+{-| The canonical form-field structural-association pattern.
+
+Renders a native `<label for=id>` and a control `<input id=id>` (or any control
+element that accepts an `id` attribute) as **siblings in `m3e-form-field`'s
+default slot**. The browser's `for`/`id` match wires them into one accessible
+control; `m3e-form-field` styles the pair. No id-wiring injection — pure HTML.
+
+    M3e.formField []
+        (Seam.field "email"
+            { labelContent = [ Seam.text "Email address" ]
+            , control =
+                TypedHtml.input
+                    [ TypedHtml.Attributes.id "email"
+                    , TypedHtml.Attributes.for "email" -- type_ not shown here
+                    ]
+                    []
+                    |> Seam.recast
+            }
         )
+
+Pass `Seam.recast` around the control when its phantom row doesn't unify with
+the label's `html` row — that coercion is intentional and greppable.
+
+This helper supersedes the per-app `fieldLabel`/`fieldControl` helpers that
+feedback-fab, compass-social, and animal-spirits each hand-rolled.
+
+-}
+field :
+    String
+    -> { labelContent : List (Element s admittedBy msg), control : Element { k | html : r } admittedBy msg }
+    -> List (Element { k | html : r } admittedBy msg)
+field id_ { labelContent, control } =
+    [ recast (TypedHtml.label [ TypedHtml.Attributes.for id_ ] (List.map recast labelContent))
+    , control
+    ]

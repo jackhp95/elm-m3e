@@ -73,56 +73,56 @@ gridWith =
 -}
 div : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 div cls children =
-    Native.div [ Seam.asAttribute (Attr.class cls) ] children
+    Native.node "div" [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<div>` carrying the given Tailwind class string verbatim plus an `id`.
 -}
 divWithId : String -> String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 divWithId id cls children =
-    Native.div [ Seam.asAttribute (Attr.id id), Seam.asAttribute (Attr.class cls) ] children
+    Native.node "div" [ Seam.asAttribute (Attr.id id), Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<section>` element carrying the given Tailwind class string verbatim.
 -}
 section : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 section cls children =
-    Native.section [ Seam.asAttribute (Attr.class cls) ] children
+    Native.node "section" [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<span>` element carrying the given Tailwind class string verbatim.
 -}
 span : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 span cls children =
-    Native.span [ Seam.asAttribute (Attr.class cls) ] children
+    Native.node "span" [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<nav>` element carrying the given Tailwind class string verbatim.
 -}
 nav : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 nav cls children =
-    Native.nav [ Seam.asAttribute (Attr.class cls) ] children
+    Native.node "nav" [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<ul>` element carrying the given Tailwind class string verbatim.
 -}
 ul : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 ul cls children =
-    Native.ul [ Seam.asAttribute (Attr.class cls) ] children
+    Native.node "ul" [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<li>` element carrying the given Tailwind class string verbatim.
 -}
 li : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 li cls children =
-    Native.li [ Seam.asAttribute (Attr.class cls) ] children
+    Native.node "li" [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A native `<button>` carrying the given Tailwind class string verbatim.
 -}
 button : msg -> String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 button onClick cls children =
-    Native.button
+    Native.node "button"
         [ Seam.asAttribute (Html.Events.onClick onClick)
         , Seam.asAttribute (Attr.class cls)
         ]

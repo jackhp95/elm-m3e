@@ -243,10 +243,27 @@ These three modules are the **userland boundary** — the only place
 implementations from `docs/kit/` in this repo rather than hand-rolling them:
 
 ```
-docs/kit/Seam.elm    ← the sanctioned IR crossing
-docs/kit/Native.elm  ← native-HTML producers over HtmlIr.Internal
-docs/kit/Kit.elm     ← typography + link atoms (optional, app-specific)
+docs/kit/Seam.elm    ← the sanctioned IR crossings + text/link/label atoms + the `field` helper
+docs/kit/Native.elm  ← ESCAPE-ONLY producers (node/custom/attribute/style/onClick) — NOT a tag vocabulary
+docs/kit/Kit.elm     ← typography + app-specific atoms (optional)
 ```
+
+**Produce plain elements with `TypedHtml.*`, not `Native.*`.** `Native.elm` is
+deliberately **escapes-only** — `node` (dynamic/custom-element forge), `custom`,
+`attribute`, `style`, `onClick`. For plain HTML tags use the typed producers
+(`TypedHtml.div`/`.span`/`.label`/`.input`/…) — they carry **closed,
+element-natural attribute rows** (safer than an open-row hand-rolled forge).
+Re-forging a plain tag over `HtmlIr.Internal` when `TypedHtml.<tag>` exists is the
+redundancy the **`NoRedundantElementForge`** review rule flags; see the
+production-axis note for the rationale. `Seam.text`/`link`/`label` are thin atoms
+built **on** `TypedHtml`, not on `HtmlIr.Internal`.
+
+**Form fields:** use the one shared **`Seam.field id { labelContent, control }`**
+helper — a native `<label for=id>` and the control (`<input id=id>`) as
+**siblings in `m3e-form-field`'s default slot** (structural association; the
+browser's `for`/`id` match wires them). It supersedes the per-app
+`fieldLabel`/`fieldControl` helpers that feedback-fab / compass-social /
+animal-spirits each hand-rolled.
 
 Key API changes from the old `markup-core` Seam:
 

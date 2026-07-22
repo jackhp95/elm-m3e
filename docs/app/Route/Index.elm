@@ -130,7 +130,7 @@ hero =
         , Layout.div "space-y-2 pt-4"
             [ Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text "Live theme — try the ⚙ settings in the app bar" ]
             , Layout.div "flex items-center gap-3"
-                [ M3e.avatar [ Native.attribute "aria-label" "Sample avatar" ] [ Native.img [ Native.attribute "src" "/avatar-sample.svg" ] ]
+                [ M3e.avatar [ Native.attribute "aria-label" "Sample avatar" ] [ Native.node "img" [ Native.attribute "src" "/avatar-sample.svg" ] [] ]
                 , Layout.div "flex gap-3"
                     [ Surface.view Surface.primary [ Layout.class "block w-10 h-10", Shape.corner Shape.large ] []
                     , Surface.view Surface.tertiaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []

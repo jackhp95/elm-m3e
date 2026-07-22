@@ -282,7 +282,7 @@ Guide teaches (see the [reference](/reference)).
 -}
 surfaceLegend : Element { s | html : M3e.Kind.Brand } admittedBy msg
 surfaceLegend =
-    Native.section
+    Native.node "section"
         [ Layout.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
         [ Kit.overline [ Kit.primary ] [ Kit.text "What the form names mean" ]
         , Layout.div "text-on-surface-variant" [ Doc.markdown surfaceLegendText ]
@@ -307,7 +307,7 @@ The three layers and the two call-shapes are *different axes*: a layer is how mu
 
 summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 summarySection perSurface =
-    Native.section
+    Native.node "section"
         [ Layout.class "mt-12 space-y-4" ]
         [ Native.node "h2"
             []
@@ -366,7 +366,7 @@ surfaceRow ( name, agg ) =
 
 cellsSection : List Cell -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 cellsSection cells =
-    Native.section
+    Native.node "section"
         [ Layout.class "mt-12 space-y-4" ]
         [ M3e.divider [] []
         , Native.node "h2"

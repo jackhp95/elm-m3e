@@ -189,21 +189,21 @@ view _ _ =
                             [ Kit.text "The defining M3 Expressive interaction: a shape animates between two states rather than snapping. Buttons carry a full set of morph tokens for exactly this — a round or square resting shape and a distinct pressed shape it springs to and back from." ]
                         ]
                     , Layout.ul "list-disc space-y-1.5 pl-5"
-                        [ Native.li []
+                        [ Native.node "li" []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
                                 [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "--md-sys-shape-corner-*" ]
                                 , Kit.text " — the resting corner scale above."
                                 ]
                             ]
-                        , Native.li []
+                        , Native.node "li" []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
                                 [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "--m3e-button-*-shape-round / -shape-square" ]
                                 , Kit.text " — a button's resting shape per size variant."
                                 ]
                             ]
-                        , Native.li []
+                        , Native.node "li" []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
                                 [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "--m3e-button-*-shape-pressed-morph" ]

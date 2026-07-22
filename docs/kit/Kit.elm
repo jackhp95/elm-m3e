@@ -191,7 +191,7 @@ classAttr extras colors =
 -}
 colored : List TextColor -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 colored colors kids =
-    Native.span [ classAttr [] colors ] kids
+    Native.node "span" [ classAttr [] colors ] kids
 
 
 {-| Color roles as a composable attribute.

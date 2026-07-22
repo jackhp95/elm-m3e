@@ -38,7 +38,7 @@ type Surface
 -}
 view : Surface -> List (Attr c msg) -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 view (Surface roles) attrs kids =
-    Native.div
+    Native.node "div"
         (Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on)) :: attrs)
         kids
 

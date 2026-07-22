@@ -106,14 +106,14 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ Doc.sectionHeading "Schemes"
                     , Layout.ul "list-disc space-y-1.5 pl-5"
-                        [ Native.li []
+                        [ Native.node "li" []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
                                 [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Theme.MotionStandard" ]
                                 , Kit.text " — functional, restrained transitions."
                                 ]
                             ]
-                        , Native.li []
+                        , Native.node "li" []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
                                 [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Theme.MotionExpressive" ]
