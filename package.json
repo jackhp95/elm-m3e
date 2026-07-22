@@ -6,10 +6,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "split": "rm -rf dist-packages && node /Users/jack/Documents/code/elm-cem/bin/elm-cem.js split --packages=packages.json --src=src --out=dist-packages",
-    "measure-docs": "npm run split && node scripts/measure-docs.mjs --packages=packages.json --split-out=dist-packages --elm=node_modules/.bin/elm --dep-src=jackhp95/elm-html-intermediate-representation=/Users/jack/Documents/code/elm-html-intermediate-representation/src",
-    "isolation-probe": "npm run split && node scripts/isolation-probe.mjs --packages=packages.json --split-out=dist-packages --elm=node_modules/.bin/elm --dep-src=jackhp95/elm-html-intermediate-representation=/Users/jack/Documents/code/elm-html-intermediate-representation/src",
-    "gate": "npm run measure-docs && npm run isolation-probe",
     "format": "node_modules/.bin/elm-format --yes docs/app docs/src docs/kit",
     "format:check": "node_modules/.bin/elm-format --validate docs/app docs/src docs/kit",
     "test": "cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm"

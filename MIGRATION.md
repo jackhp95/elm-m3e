@@ -350,31 +350,47 @@ The review rules enforce the guarantees the compiler cannot: missing required
 content, duplicate singular attrs, and — critically — that `HtmlIr.Internal` is
 only imported inside your declared seam modules.
 
+The `jackhp95/elm-review-cem` package ships two composable presets that cover
+both jobs. `Cem.all` returns the whole facts-driven CEM discipline (valid enum
+values, required slots, singular slots/attrs, required attributes, slot kinds,
+component-module preference); `Cem.fences` returns the three boundary rules
+(`HtmlIr.Internal` containment, the seam boundary, and no-redundant-forge). Both
+take the generated review **facts** — `M3e.Review.Facts.facts` for the brand,
+`TypedHtml.Review.Facts.facts` for the native tags.
+
 Add to your `review/src/ReviewConfig.elm`:
 
 ```elm
 import Cem
-import CodegenReviewConfig
 import M3e.Review.Facts
+import Review.Rule exposing (Rule)
+import TypedHtml.Review.Facts
 
--- in config:
-Cem.noInternalImportOutsideAllowed
-    { allowedModules = [ "Seam", "Native", "Kit" ] }
 
-Cem.noSeamOutsideAllowedModules
-    { seamModules = [ "Seam" ]
-    , allowedModules = [ "Seam", "Kit" ]
-    }
-
--- The full CEM discipline (required content, slot kinds, enum narrowing):
-CodegenReviewConfig.config  -- generated from M3e.Review.Facts
+config : List Rule
+config =
+    -- The full CEM discipline (required content, slot kinds, enum narrowing):
+    Cem.all M3e.Review.Facts.facts
+        -- The boundary fences (Internal containment, seam gate, no redundant forge):
+        ++ Cem.fences
+            { brandRoots = [ "M3e" ]
+            , seamModules = [ "Seam" ]
+            , allowedModules = [ "Seam", "Native", "Kit" ]
+            , typedHtmlFacts = TypedHtml.Review.Facts.facts
+            }
 ```
 
 `M3e.Review.Facts` is generated alongside `src/M3e/*` and lives at
-`src/M3e/Review/Facts.elm`. It feeds the `Cem.*` rules with per-component
-metadata (required slots, enum sets, slot kinds).
+`src/M3e/Review/Facts.elm` (exposing `facts`); `TypedHtml.Review.Facts` comes
+with the vendored `elm-typed-html` foundation. They feed the `Cem.*` rules with
+per-component metadata (required slots, enum sets, slot kinds).
 
-See `review/src/ReviewConfig.elm` in this repo for a complete working example.
+> The individual rules are exposed too (`Cem.validEnumValue`, `Cem.requireSlot`,
+> `Cem.validSlotKindWith Cem.Lenient`, `Cem.preferBarrel`, …) if you want to
+> hand-assemble a config instead of taking the `Cem.all` preset wholesale.
+
+See `review/src/ReviewConfig.elm` in this repo for a complete working example
+(it hand-assembles the rules and swaps in `Cem.preferBarrel`).
 
 ---
 
@@ -442,12 +458,21 @@ the reference kit uses open capability rows. If you need the strict shape use
 `TypedHtml.*` directly; if you want the relaxed open shape, copy the `Native.elm`
 from `docs/kit/`.
 
-### Icon names are free strings, not enum tokens
+### Icon names are free strings — use `M3e.Icon.name`, not `M3e.Attributes.name`
 
-`M3e.Attributes.name` and `M3e.Icon.name` take `Value ShapeName` (an enum), not
-a free string. Material icon names are arbitrary strings. Pass them through
-`TypedHtml.Attributes.name "home"` (raw string setter) rather than the typed
-`M3e.Attributes.name`.
+Material icon names are arbitrary strings, but the two `name` setters differ:
+
+- `M3e.Icon.name : String -> Attr …` — the per-component setter. **This is the
+  one to use for icon names** (it takes a plain `String`), e.g.
+  `M3e.icon [ M3e.Icon.name "home" ] []`.
+- `M3e.Attributes.name : Value M3e.Values.Name -> Attr …` — the general-surface
+  setter closes over the library-wide **enum** union (`M3e.Values.Name`), so it
+  will **not** accept a free string — `M3e.Attributes.name "home"` is a
+  compile error (`String` vs `Value M3e.Values.Name`).
+
+So set icon names via `M3e.Icon.name "home"` (the idiom the docs app and every
+migrated consumer use). `TypedHtml.Attributes.name "home"` is the equivalent raw
+string setter on the native axis if you are building a native element.
 
 ### `Element` now has two phantom rows — thread `admittedBy` everywhere
 
