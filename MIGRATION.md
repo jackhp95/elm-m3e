@@ -108,12 +108,15 @@ Do **not** delete the `elm-m3e` source directory — it still holds all of
 Keep `elm-review-cem` — the review rules still apply and are the recommended
 end-state (§7).
 
-**Lamdera caveat:** `HtmlIr.Internal` imports `VirtualDom`, which Lamdera blocks
-in vendored source. This resolves once `elm-html-intermediate-representation` is
-a published package (the import then lives in the registry copy, not your
-`source-directories`). Until then, Lamdera users must avoid importing
-`HtmlIr.Internal` directly — route all IR crossings through a `Seam` module that
-you place in a non-vendored directory.
+**Lamdera caveat:** `HtmlIr.Internal` imports `VirtualDom`. In a Lamdera
+`source-directories` context that import resolves **only if `elm/virtual-dom` is
+a direct dependency** — so promote it from `indirect` to `direct` in your
+`elm.json` (a one-line change; verified on both animal-spirits and compass-social,
+which compile the pristine `HtmlIr.Internal` unchanged). You do **not** need to
+avoid `HtmlIr.Internal` or stub its maps — just keep the modules that import it
+(`Seam`/`Native`) in a non-vendored app directory (e.g. your `src/`), never inside
+the vendored trees. Once `elm-html-intermediate-representation` is published this
+is moot (the import lives in the registry copy).
 
 ---
 
@@ -384,10 +387,13 @@ and `M3e.iconButton` **require** an accessible name, and the `elm-review-cem`
 
 ### Lamdera + vendored `HtmlIr.Internal`
 
-`HtmlIr.Internal` imports `elm/virtual-dom`, which Lamdera blocks in
-`source-directories` entries. Keep your `Seam` module in a non-vendored directory
-(e.g. your app's own `src/`) and import `HtmlIr.Internal` from there. Once the
-IR packages are published to the Elm registry this restriction lifts.
+`HtmlIr.Internal` imports `elm/virtual-dom`. Under Lamdera that import resolves in
+vendored `source-directories` only when `elm/virtual-dom` is a **direct**
+dependency — promote it in `elm.json` (`indirect` → `direct`). Then keep the
+modules that import `HtmlIr.Internal` (`Seam`/`Native`) in a non-vendored app
+directory. No need to stub or avoid the real IR — animal-spirits and
+compass-social both compile the pristine `HtmlIr.Internal` this way. Publishing
+the IR packages to the registry makes this moot.
 
 ### Ambiguous `Seam.recast` — use it, don't scatter it
 
