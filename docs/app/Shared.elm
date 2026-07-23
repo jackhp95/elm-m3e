@@ -448,7 +448,8 @@ appShellBar =
             , M3e.AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
             , M3e.AppBar.leading
                 (Seam.recast
-                    (Native.node "span" [ Seam.asAttribute (class "flex items-center") ]
+                    (Native.node "span"
+                        [ Seam.asAttribute (class "flex items-center") ]
                         [ brandMark, menuButton ]
                     )
                 )

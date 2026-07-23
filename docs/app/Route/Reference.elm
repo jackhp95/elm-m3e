@@ -322,7 +322,8 @@ prose layoutCls size s =
             |> List.filter (\para -> String.trim para /= "")
             |> List.map
                 (\para ->
-                    Native.node "p" [ Layout.class "mt-2 first:mt-0 whitespace-pre-line" ]
+                    Native.node "p"
+                        [ Layout.class "mt-2 first:mt-0 whitespace-pre-line" ]
                         [ Kit.body size [ Kit.onSurfaceVariant ] [ Kit.text para ] ]
                 )
         )
