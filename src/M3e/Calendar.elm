@@ -21,14 +21,15 @@ A calendar used to select a date.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
+import HtmlIr.Value as Val exposing (Value)
 import Json.Decode
-import M3e.Attributes
-import M3e.Events
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -83,99 +84,99 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-calendar" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.calendar
 
 
-{-| Narrowed value setter for `startView`. Tokens come from `M3e.Values`.
+{-| The initial view used to select a date. (default: `"month"`)
 -}
 startView : Value StartView -> Attr { c | startView : Supported } msg
 startView value_ =
-    Ir.attribute "start-view" (HtmlIr.Value.toString value_)
+    Ir.attribute "start-view" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.date`.
 -}
 date : String -> Attr { c | date : Supported } msg
 date =
-    M3e.Attributes.date
+    A.date
 
 
 {-| See `M3e.Attributes.maxDate`.
 -}
 maxDate : String -> Attr { c | maxDate : Supported } msg
 maxDate =
-    M3e.Attributes.maxDate
+    A.maxDate
 
 
 {-| See `M3e.Attributes.minDate`.
 -}
 minDate : String -> Attr { c | minDate : Supported } msg
 minDate =
-    M3e.Attributes.minDate
+    A.minDate
 
 
 {-| See `M3e.Attributes.nextMonthLabel`.
 -}
 nextMonthLabel : String -> Attr { c | nextMonthLabel : Supported } msg
 nextMonthLabel =
-    M3e.Attributes.nextMonthLabel
+    A.nextMonthLabel
 
 
 {-| See `M3e.Attributes.nextMultiYearLabel`.
 -}
 nextMultiYearLabel : String -> Attr { c | nextMultiYearLabel : Supported } msg
 nextMultiYearLabel =
-    M3e.Attributes.nextMultiYearLabel
+    A.nextMultiYearLabel
 
 
 {-| See `M3e.Attributes.nextYearLabel`.
 -}
 nextYearLabel : String -> Attr { c | nextYearLabel : Supported } msg
 nextYearLabel =
-    M3e.Attributes.nextYearLabel
+    A.nextYearLabel
 
 
 {-| See `M3e.Attributes.previousMonthLabel`.
 -}
 previousMonthLabel : String -> Attr { c | previousMonthLabel : Supported } msg
 previousMonthLabel =
-    M3e.Attributes.previousMonthLabel
+    A.previousMonthLabel
 
 
 {-| See `M3e.Attributes.previousMultiYearLabel`.
 -}
 previousMultiYearLabel : String -> Attr { c | previousMultiYearLabel : Supported } msg
 previousMultiYearLabel =
-    M3e.Attributes.previousMultiYearLabel
+    A.previousMultiYearLabel
 
 
 {-| See `M3e.Attributes.previousYearLabel`.
 -}
 previousYearLabel : String -> Attr { c | previousYearLabel : Supported } msg
 previousYearLabel =
-    M3e.Attributes.previousYearLabel
+    A.previousYearLabel
 
 
 {-| See `M3e.Attributes.rangeEnd`.
 -}
 rangeEnd : String -> Attr { c | rangeEnd : Supported } msg
 rangeEnd =
-    M3e.Attributes.rangeEnd
+    A.rangeEnd
 
 
 {-| See `M3e.Attributes.rangeStart`.
 -}
 rangeStart : String -> Attr { c | rangeStart : Supported } msg
 rangeStart =
-    M3e.Attributes.rangeStart
+    A.rangeStart
 
 
 {-| See `M3e.Attributes.startAt`.
 -}
 startAt : String -> Attr { c | startAt : Supported } msg
 startAt =
-    M3e.Attributes.startAt
+    A.startAt
 
 
 {-| Typed `change` event: decodes `target.date` as String.
@@ -190,14 +191,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 header : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 header element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -235,144 +237,144 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-calendar" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-calendar" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `date` — consumes its capability (write-once).
 -}
 withDate : String -> Builder { a | date : Available } slotCaps msg -> Builder { a | date : Used } slotCaps msg
-withDate value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.date value_ :: b.attrs }
+withDate value_ =
+    B.withAttribute (A.date value_)
 
 
 {-| Pipe form of `maxDate` — consumes its capability (write-once).
 -}
 withMaxDate : String -> Builder { a | maxDate : Available } slotCaps msg -> Builder { a | maxDate : Used } slotCaps msg
-withMaxDate value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.maxDate value_ :: b.attrs }
+withMaxDate value_ =
+    B.withAttribute (A.maxDate value_)
 
 
 {-| Pipe form of `minDate` — consumes its capability (write-once).
 -}
 withMinDate : String -> Builder { a | minDate : Available } slotCaps msg -> Builder { a | minDate : Used } slotCaps msg
-withMinDate value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.minDate value_ :: b.attrs }
+withMinDate value_ =
+    B.withAttribute (A.minDate value_)
 
 
 {-| Pipe form of `nextMonthLabel` — consumes its capability (write-once).
 -}
 withNextMonthLabel : String -> Builder { a | nextMonthLabel : Available } slotCaps msg -> Builder { a | nextMonthLabel : Used } slotCaps msg
-withNextMonthLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.nextMonthLabel value_ :: b.attrs }
+withNextMonthLabel value_ =
+    B.withAttribute (A.nextMonthLabel value_)
 
 
 {-| Pipe form of `nextMultiYearLabel` — consumes its capability (write-once).
 -}
 withNextMultiYearLabel : String -> Builder { a | nextMultiYearLabel : Available } slotCaps msg -> Builder { a | nextMultiYearLabel : Used } slotCaps msg
-withNextMultiYearLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.nextMultiYearLabel value_ :: b.attrs }
+withNextMultiYearLabel value_ =
+    B.withAttribute (A.nextMultiYearLabel value_)
 
 
 {-| Pipe form of `nextYearLabel` — consumes its capability (write-once).
 -}
 withNextYearLabel : String -> Builder { a | nextYearLabel : Available } slotCaps msg -> Builder { a | nextYearLabel : Used } slotCaps msg
-withNextYearLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.nextYearLabel value_ :: b.attrs }
+withNextYearLabel value_ =
+    B.withAttribute (A.nextYearLabel value_)
 
 
 {-| Pipe form of `previousMonthLabel` — consumes its capability (write-once).
 -}
 withPreviousMonthLabel : String -> Builder { a | previousMonthLabel : Available } slotCaps msg -> Builder { a | previousMonthLabel : Used } slotCaps msg
-withPreviousMonthLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.previousMonthLabel value_ :: b.attrs }
+withPreviousMonthLabel value_ =
+    B.withAttribute (A.previousMonthLabel value_)
 
 
 {-| Pipe form of `previousMultiYearLabel` — consumes its capability (write-once).
 -}
 withPreviousMultiYearLabel : String -> Builder { a | previousMultiYearLabel : Available } slotCaps msg -> Builder { a | previousMultiYearLabel : Used } slotCaps msg
-withPreviousMultiYearLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.previousMultiYearLabel value_ :: b.attrs }
+withPreviousMultiYearLabel value_ =
+    B.withAttribute (A.previousMultiYearLabel value_)
 
 
 {-| Pipe form of `previousYearLabel` — consumes its capability (write-once).
 -}
 withPreviousYearLabel : String -> Builder { a | previousYearLabel : Available } slotCaps msg -> Builder { a | previousYearLabel : Used } slotCaps msg
-withPreviousYearLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.previousYearLabel value_ :: b.attrs }
+withPreviousYearLabel value_ =
+    B.withAttribute (A.previousYearLabel value_)
 
 
 {-| Pipe form of `rangeEnd` — consumes its capability (write-once).
 -}
 withRangeEnd : String -> Builder { a | rangeEnd : Available } slotCaps msg -> Builder { a | rangeEnd : Used } slotCaps msg
-withRangeEnd value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.rangeEnd value_ :: b.attrs }
+withRangeEnd value_ =
+    B.withAttribute (A.rangeEnd value_)
 
 
 {-| Pipe form of `rangeStart` — consumes its capability (write-once).
 -}
 withRangeStart : String -> Builder { a | rangeStart : Available } slotCaps msg -> Builder { a | rangeStart : Used } slotCaps msg
-withRangeStart value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.rangeStart value_ :: b.attrs }
+withRangeStart value_ =
+    B.withAttribute (A.rangeStart value_)
 
 
 {-| Pipe form of `startAt` — consumes its capability (write-once).
 -}
 withStartAt : String -> Builder { a | startAt : Available } slotCaps msg -> Builder { a | startAt : Used } slotCaps msg
-withStartAt value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.startAt value_ :: b.attrs }
+withStartAt value_ =
+    B.withAttribute (A.startAt value_)
 
 
 {-| Pipe form of `startView` — consumes its capability (write-once).
 -}
 withStartView : Value StartView -> Builder { a | startView : Available } slotCaps msg -> Builder { a | startView : Used } slotCaps msg
-withStartView value_ (Builder b) =
-    Builder { b | attrs = startView value_ :: b.attrs }
+withStartView value_ =
+    B.withAttribute (startView value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : (String -> msg) -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
-withOnChange value_ (Builder b) =
-    Builder { b | attrs = onChange value_ :: b.attrs }
+withOnChange value_ =
+    B.withAttribute (onChange value_)
 
 
 {-| Pipe form of the `header` slot — consumes its capability (write-once).
 -}
 withHeader : Element childAccepts admittedBy msg -> Builder attrCaps { s | header : Available } msg -> Builder attrCaps { s | header : Used } msg
-withHeader element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (header element) :: b.children }
+withHeader element =
+    B.withChild (El.toNode (header element))

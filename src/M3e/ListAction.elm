@@ -19,12 +19,13 @@ An item in a list that performs an action.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
-import HtmlIr.Node exposing (Node)
-import M3e.Attributes
-import M3e.Events
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -121,50 +122,50 @@ view :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-list-action" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.listAction
 
 
 {-| See `M3e.Attributes.disabled`.
 -}
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Attributes.disabled
+    A.disabled
 
 
 {-| See `M3e.Attributes.download`.
 -}
 download : String -> Attr { c | download : Supported } msg
 download =
-    M3e.Attributes.download
+    A.download
 
 
 {-| See `M3e.Attributes.href`.
 -}
 href : String -> Attr { c | href : Supported } msg
 href =
-    M3e.Attributes.href
+    A.href
 
 
 {-| See `M3e.Attributes.rel`.
 -}
 rel : String -> Attr { c | rel : Supported } msg
 rel =
-    M3e.Attributes.rel
+    A.rel
 
 
 {-| See `M3e.Attributes.target`.
 -}
 target : String -> Attr { c | target : Supported } msg
 target =
-    M3e.Attributes.target
+    A.target
 
 
 {-| See `M3e.Events.onClick`.
 -}
 onClick : msg -> Attr { c | onClick : Supported } msg
 onClick =
-    M3e.Events.onClick
+    Ev.onClick
 
 
 {-| Place an element into the named `leading` slot (input constrained to the
@@ -172,7 +173,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 leading : Element LeadingSlot admittedBy msg -> Element free freeAdmittedBy msg
 leading element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading") (El.toNode element))
 
 
 {-| Place an element into the named `overline` slot (input constrained to the
@@ -180,7 +181,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 overline : Element OverlineSlot admittedBy msg -> Element free freeAdmittedBy msg
 overline element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "overline") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "overline") (El.toNode element))
 
 
 {-| Place an element into the named `supporting-text` slot (input constrained to the
@@ -188,7 +189,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 supportingText : Element SupportingTextSlot admittedBy msg -> Element free freeAdmittedBy msg
 supportingText element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "supporting-text") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "supporting-text") (El.toNode element))
 
 
 {-| Place an element into the named `trailing` slot (input constrained to the
@@ -196,14 +197,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 trailing : Element TrailingSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailing element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -236,116 +238,116 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-list-action" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-list-action" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
-withDisabled value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
 {-| Pipe form of `download` — consumes its capability (write-once).
 -}
 withDownload : String -> Builder { a | download : Available } slotCaps msg -> Builder { a | download : Used } slotCaps msg
-withDownload value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.download value_ :: b.attrs }
+withDownload value_ =
+    B.withAttribute (A.download value_)
 
 
 {-| Pipe form of `href` — consumes its capability (write-once).
 -}
 withHref : String -> Builder { a | href : Available } slotCaps msg -> Builder { a | href : Used } slotCaps msg
-withHref value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.href value_ :: b.attrs }
+withHref value_ =
+    B.withAttribute (A.href value_)
 
 
 {-| Pipe form of `rel` — consumes its capability (write-once).
 -}
 withRel : String -> Builder { a | rel : Available } slotCaps msg -> Builder { a | rel : Used } slotCaps msg
-withRel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.rel value_ :: b.attrs }
+withRel value_ =
+    B.withAttribute (A.rel value_)
 
 
 {-| Pipe form of `target` — consumes its capability (write-once).
 -}
 withTarget : String -> Builder { a | target : Available } slotCaps msg -> Builder { a | target : Used } slotCaps msg
-withTarget value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.target value_ :: b.attrs }
+withTarget value_ =
+    B.withAttribute (A.target value_)
 
 
 {-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
-withOnClick value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onClick value_ :: b.attrs }
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)
 
 
 {-| Pipe form of the `leading` slot — consumes its capability (write-once).
 -}
 withLeading : Element LeadingSlot admittedBy msg -> Builder attrCaps { s | leading : Available } msg -> Builder attrCaps { s | leading : Used } msg
-withLeading element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (leading element) :: b.children }
+withLeading element =
+    B.withChild (El.toNode (leading element))
 
 
 {-| Pipe form of the `overline` slot — consumes its capability (write-once).
 -}
 withOverline : Element OverlineSlot admittedBy msg -> Builder attrCaps { s | overline : Available } msg -> Builder attrCaps { s | overline : Used } msg
-withOverline element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (overline element) :: b.children }
+withOverline element =
+    B.withChild (El.toNode (overline element))
 
 
 {-| Pipe form of the `supporting-text` slot — consumes its capability (write-once).
 -}
 withSupportingText : Element SupportingTextSlot admittedBy msg -> Builder attrCaps { s | supportingText : Available } msg -> Builder attrCaps { s | supportingText : Used } msg
-withSupportingText element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (supportingText element) :: b.children }
+withSupportingText element =
+    B.withChild (El.toNode (supportingText element))
 
 
 {-| Pipe form of the `trailing` slot — consumes its capability (write-once).
 -}
 withTrailing : Element TrailingSlot admittedBy msg -> Builder attrCaps { s | trailing : Available } msg -> Builder attrCaps { s | trailing : Used } msg
-withTrailing element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (trailing element) :: b.children }
+withTrailing element =
+    B.withChild (El.toNode (trailing element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

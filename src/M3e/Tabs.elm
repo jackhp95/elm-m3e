@@ -21,13 +21,14 @@ Organizes content into separate views where only one view can be visible at a ti
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
-import M3e.Attributes
-import M3e.Events
+import HtmlIr.Value as Val exposing (Value)
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -108,71 +109,71 @@ view :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-tabs" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.tabs
 
 
-{-| Narrowed value setter for `headerPosition`. Tokens come from `M3e.Values`.
+{-| The position of the tab headers. (default: `"before"`)
 -}
 headerPosition : Value HeaderPosition -> Attr { c | headerPosition : Supported } msg
 headerPosition value_ =
-    Ir.attribute "header-position" (HtmlIr.Value.toString value_)
+    Ir.attribute "header-position" (Val.toString value_)
 
 
-{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+{-| The appearance variant of the tabs. (default: `"secondary"`)
 -}
 variant : Value Variant -> Attr { c | variant : Supported } msg
 variant value_ =
-    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+    Ir.attribute "variant" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.disablePagination`.
 -}
 disablePagination : String -> Attr { c | disablePagination : Supported } msg
 disablePagination =
-    M3e.Attributes.disablePagination
+    A.disablePagination
 
 
 {-| See `M3e.Attributes.nextPageLabel`.
 -}
 nextPageLabel : String -> Attr { c | nextPageLabel : Supported } msg
 nextPageLabel =
-    M3e.Attributes.nextPageLabel
+    A.nextPageLabel
 
 
 {-| See `M3e.Attributes.previousPageLabel`.
 -}
 previousPageLabel : String -> Attr { c | previousPageLabel : Supported } msg
 previousPageLabel =
-    M3e.Attributes.previousPageLabel
+    A.previousPageLabel
 
 
 {-| See `M3e.Attributes.stretch`.
 -}
 stretch : Bool -> Attr { c | stretch : Supported } msg
 stretch =
-    M3e.Attributes.stretch
+    A.stretch
 
 
 {-| See `M3e.Events.onChange`.
 -}
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Events.onChange
+    Ev.onChange
 
 
 {-| See `M3e.Events.onBeforeinput`.
 -}
 onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Events.onBeforeinput
+    Ev.onBeforeinput
 
 
 {-| See `M3e.Events.onInput`.
 -}
 onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Events.onInput
+    Ev.onInput
 
 
 {-| Place an element into the named `next-icon` slot (input constrained to the
@@ -180,7 +181,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 nextIcon : Element NextIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 nextIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "next-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "next-icon") (El.toNode element))
 
 
 {-| Place an element into the named `panel` slot (input constrained to the
@@ -188,7 +189,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 panel : Element PanelSlot admittedBy msg -> Element free freeAdmittedBy msg
 panel element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "panel") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "panel") (El.toNode element))
 
 
 {-| Place an element into the named `prev-icon` slot (input constrained to the
@@ -196,14 +197,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 prevIcon : Element PrevIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 prevIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -237,123 +239,123 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-tabs" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-tabs" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `disablePagination` — consumes its capability (write-once).
 -}
 withDisablePagination : String -> Builder { a | disablePagination : Available } slotCaps msg -> Builder { a | disablePagination : Used } slotCaps msg
-withDisablePagination value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.disablePagination value_ :: b.attrs }
+withDisablePagination value_ =
+    B.withAttribute (A.disablePagination value_)
 
 
 {-| Pipe form of `headerPosition` — consumes its capability (write-once).
 -}
 withHeaderPosition : Value HeaderPosition -> Builder { a | headerPosition : Available } slotCaps msg -> Builder { a | headerPosition : Used } slotCaps msg
-withHeaderPosition value_ (Builder b) =
-    Builder { b | attrs = headerPosition value_ :: b.attrs }
+withHeaderPosition value_ =
+    B.withAttribute (headerPosition value_)
 
 
 {-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
 -}
 withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg -> Builder { a | nextPageLabel : Used } slotCaps msg
-withNextPageLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.nextPageLabel value_ :: b.attrs }
+withNextPageLabel value_ =
+    B.withAttribute (A.nextPageLabel value_)
 
 
 {-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
 -}
 withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg -> Builder { a | previousPageLabel : Used } slotCaps msg
-withPreviousPageLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.previousPageLabel value_ :: b.attrs }
+withPreviousPageLabel value_ =
+    B.withAttribute (A.previousPageLabel value_)
 
 
 {-| Pipe form of `stretch` — consumes its capability (write-once).
 -}
 withStretch : Bool -> Builder { a | stretch : Available } slotCaps msg -> Builder { a | stretch : Used } slotCaps msg
-withStretch value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.stretch value_ :: b.attrs }
+withStretch value_ =
+    B.withAttribute (A.stretch value_)
 
 
 {-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
-withVariant value_ (Builder b) =
-    Builder { b | attrs = variant value_ :: b.attrs }
+withVariant value_ =
+    B.withAttribute (variant value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
-withOnChange value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
 {-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
-withOnBeforeinput value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
 {-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
-withOnInput value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
 {-| Pipe form of the `next-icon` slot — consumes its capability (write-once).
 -}
 withNextIcon : Element NextIconSlot admittedBy msg -> Builder attrCaps { s | nextIcon : Available } msg -> Builder attrCaps { s | nextIcon : Used } msg
-withNextIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (nextIcon element) :: b.children }
+withNextIcon element =
+    B.withChild (El.toNode (nextIcon element))
 
 
 {-| Pipe form of the `prev-icon` slot — consumes its capability (write-once).
 -}
 withPrevIcon : Element PrevIconSlot admittedBy msg -> Builder attrCaps { s | prevIcon : Available } msg -> Builder attrCaps { s | prevIcon : Used } msg
-withPrevIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (prevIcon element) :: b.children }
+withPrevIcon element =
+    B.withChild (El.toNode (prevIcon element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

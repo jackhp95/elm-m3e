@@ -19,13 +19,14 @@ A lightweight, generic floating surface used to present content above the page.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
-import M3e.Attributes
-import M3e.Events
+import HtmlIr.Value as Val exposing (Value)
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -73,50 +74,51 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-floating-panel" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.floatingPanel
 
 
-{-| Narrowed value setter for `scrollStrategy`. Tokens come from `M3e.Values`.
+{-| The strategy that controls how the panel behaves when its trigger scrolls. (default: `"hide"`)
 -}
 scrollStrategy : Value ScrollStrategy -> Attr { c | scrollStrategy : Supported } msg
 scrollStrategy value_ =
-    Ir.attribute "scroll-strategy" (HtmlIr.Value.toString value_)
+    Ir.attribute "scroll-strategy" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.anchorOffset`.
 -}
 anchorOffset : Float -> Attr { c | anchorOffset : Supported } msg
 anchorOffset =
-    M3e.Attributes.anchorOffset
+    A.anchorOffset
 
 
 {-| See `M3e.Attributes.fitAnchorWidth`.
 -}
 fitAnchorWidth : Bool -> Attr { c | fitAnchorWidth : Supported } msg
 fitAnchorWidth =
-    M3e.Attributes.fitAnchorWidth
+    A.fitAnchorWidth
 
 
 {-| See `M3e.Events.onBeforetoggle`.
 -}
 onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
 onBeforetoggle =
-    M3e.Events.onBeforetoggle
+    Ev.onBeforetoggle
 
 
 {-| See `M3e.Events.onToggle`.
 -}
 onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Events.onToggle
+    Ev.onToggle
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -144,81 +146,81 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-floating-panel" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-floating-panel" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `anchorOffset` — consumes its capability (write-once).
 -}
 withAnchorOffset : Float -> Builder { a | anchorOffset : Available } slotCaps msg -> Builder { a | anchorOffset : Used } slotCaps msg
-withAnchorOffset value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.anchorOffset value_ :: b.attrs }
+withAnchorOffset value_ =
+    B.withAttribute (A.anchorOffset value_)
 
 
 {-| Pipe form of `fitAnchorWidth` — consumes its capability (write-once).
 -}
 withFitAnchorWidth : Bool -> Builder { a | fitAnchorWidth : Available } slotCaps msg -> Builder { a | fitAnchorWidth : Used } slotCaps msg
-withFitAnchorWidth value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.fitAnchorWidth value_ :: b.attrs }
+withFitAnchorWidth value_ =
+    B.withAttribute (A.fitAnchorWidth value_)
 
 
 {-| Pipe form of `scrollStrategy` — consumes its capability (write-once).
 -}
 withScrollStrategy : Value ScrollStrategy -> Builder { a | scrollStrategy : Available } slotCaps msg -> Builder { a | scrollStrategy : Used } slotCaps msg
-withScrollStrategy value_ (Builder b) =
-    Builder { b | attrs = scrollStrategy value_ :: b.attrs }
+withScrollStrategy value_ =
+    B.withAttribute (scrollStrategy value_)
 
 
 {-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg -> Builder { a | onBeforetoggle : Used } slotCaps msg
-withOnBeforetoggle value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onBeforetoggle value_ :: b.attrs }
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
 {-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
-withOnToggle value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

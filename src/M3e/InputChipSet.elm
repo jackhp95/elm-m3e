@@ -20,13 +20,14 @@ A container that transforms user input into a cohesive set of interactive chips,
 
 import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
 import Json.Encode
-import M3e.Attributes
-import M3e.Events
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -69,18 +70,18 @@ view :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-input-chip-set" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.inputChipSet
 
 
 {-| See `M3e.Attributes.disabled`.
 -}
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Attributes.disabled
+    A.disabled
 
 
-{-| The `name` attribute (this component's type differs from the shared canonical).
+{-| The name that identifies the element when submitting the associated form.
 -}
 name : String -> Attr { c | name : Supported } msg
 name value_ =
@@ -91,21 +92,21 @@ name value_ =
 -}
 required : Bool -> Attr { c | required : Supported } msg
 required =
-    M3e.Attributes.required
+    A.required
 
 
 {-| See `M3e.Attributes.vertical`.
 -}
 vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
-    M3e.Attributes.vertical
+    A.vertical
 
 
 {-| See `M3e.Events.onChange`.
 -}
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Events.onChange
+    Ev.onChange
 
 
 {-| Place an element into the named `input` slot (input constrained to the
@@ -113,14 +114,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 input : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 input element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -149,88 +151,88 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-input-chip-set" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-input-chip-set" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
-withDisabled value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
 {-| Pipe form of `name` — consumes its capability (write-once).
 -}
 withName : String -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
-withName value_ (Builder b) =
-    Builder { b | attrs = Ir.attribute "name" value_ :: b.attrs }
+withName value_ =
+    B.withAttribute (Ir.attribute "name" value_)
 
 
 {-| Pipe form of `required` — consumes its capability (write-once).
 -}
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
-withRequired value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.required value_ :: b.attrs }
+withRequired value_ =
+    B.withAttribute (A.required value_)
 
 
 {-| Pipe form of `vertical` — consumes its capability (write-once).
 -}
 withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg -> Builder { a | vertical : Used } slotCaps msg
-withVertical value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.vertical value_ :: b.attrs }
+withVertical value_ =
+    B.withAttribute (A.vertical value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
-withOnChange value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
 {-| Pipe form of the `input` slot — consumes its capability (write-once).
 -}
 withInput : Element childAccepts admittedBy msg -> Builder attrCaps { s | input : Available } msg -> Builder attrCaps { s | input : Used } msg
-withInput element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (input element) :: b.children }
+withInput element =
+    B.withChild (El.toNode (input element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

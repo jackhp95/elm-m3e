@@ -21,13 +21,14 @@ Enhances a text input with suggested options.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
-import M3e.Attributes
-import M3e.Events
+import HtmlIr.Value as Val exposing (Value)
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -93,113 +94,113 @@ view :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-autocomplete" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.autocomplete
 
 
-{-| Narrowed value setter for `filter`. Tokens come from `M3e.Values`.
+{-| Mode in which to filter options. (default: `"contains"`)
 -}
 filter : Value Filter -> Attr { c | filter : Supported } msg
 filter value_ =
-    Ir.attribute "filter" (HtmlIr.Value.toString value_)
+    Ir.attribute "filter" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.autoActivate`.
 -}
 autoActivate : Bool -> Attr { c | autoActivate : Supported } msg
 autoActivate =
-    M3e.Attributes.autoActivate
+    A.autoActivate
 
 
 {-| See `M3e.Attributes.caseSensitive`.
 -}
 caseSensitive : Bool -> Attr { c | caseSensitive : Supported } msg
 caseSensitive =
-    M3e.Attributes.caseSensitive
+    A.caseSensitive
 
 
 {-| See `M3e.Attributes.for`.
 -}
 for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Attributes.for
+    A.for
 
 
 {-| See `M3e.Attributes.hideLoading`.
 -}
 hideLoading : Bool -> Attr { c | hideLoading : Supported } msg
 hideLoading =
-    M3e.Attributes.hideLoading
+    A.hideLoading
 
 
 {-| See `M3e.Attributes.hideNoData`.
 -}
 hideNoData : Bool -> Attr { c | hideNoData : Supported } msg
 hideNoData =
-    M3e.Attributes.hideNoData
+    A.hideNoData
 
 
 {-| See `M3e.Attributes.hideSelectionIndicator`.
 -}
 hideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
 hideSelectionIndicator =
-    M3e.Attributes.hideSelectionIndicator
+    A.hideSelectionIndicator
 
 
 {-| See `M3e.Attributes.loadingLabel`.
 -}
 loadingLabel : String -> Attr { c | loadingLabel : Supported } msg
 loadingLabel =
-    M3e.Attributes.loadingLabel
+    A.loadingLabel
 
 
 {-| See `M3e.Attributes.noDataLabel`.
 -}
 noDataLabel : String -> Attr { c | noDataLabel : Supported } msg
 noDataLabel =
-    M3e.Attributes.noDataLabel
+    A.noDataLabel
 
 
 {-| See `M3e.Attributes.panelClass`.
 -}
 panelClass : String -> Attr { c | panelClass : Supported } msg
 panelClass =
-    M3e.Attributes.panelClass
+    A.panelClass
 
 
 {-| See `M3e.Attributes.required`.
 -}
 required : Bool -> Attr { c | required : Supported } msg
 required =
-    M3e.Attributes.required
+    A.required
 
 
 {-| See `M3e.Attributes.resultsLabel`.
 -}
 resultsLabel : String -> Attr { c | resultsLabel : Supported } msg
 resultsLabel =
-    M3e.Attributes.resultsLabel
+    A.resultsLabel
 
 
 {-| See `M3e.Events.onChange`.
 -}
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Events.onChange
+    Ev.onChange
 
 
 {-| See `M3e.Events.onQuery`.
 -}
 onQuery : msg -> Attr { c | onQuery : Supported } msg
 onQuery =
-    M3e.Events.onQuery
+    Ev.onQuery
 
 
 {-| See `M3e.Events.onToggle`.
 -}
 onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Events.onToggle
+    Ev.onToggle
 
 
 {-| Place an element into the named `loading` slot (input constrained to the
@@ -207,7 +208,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 loading : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 loading element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "loading") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "loading") (El.toNode element))
 
 
 {-| Place an element into the named `no-data` slot (input constrained to the
@@ -215,14 +216,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 noData : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 noData element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "no-data") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "no-data") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -263,172 +265,172 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-autocomplete" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-autocomplete" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `autoActivate` — consumes its capability (write-once).
 -}
 withAutoActivate : Bool -> Builder { a | autoActivate : Available } slotCaps msg -> Builder { a | autoActivate : Used } slotCaps msg
-withAutoActivate value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.autoActivate value_ :: b.attrs }
+withAutoActivate value_ =
+    B.withAttribute (A.autoActivate value_)
 
 
 {-| Pipe form of `caseSensitive` — consumes its capability (write-once).
 -}
 withCaseSensitive : Bool -> Builder { a | caseSensitive : Available } slotCaps msg -> Builder { a | caseSensitive : Used } slotCaps msg
-withCaseSensitive value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.caseSensitive value_ :: b.attrs }
+withCaseSensitive value_ =
+    B.withAttribute (A.caseSensitive value_)
 
 
 {-| Pipe form of `filter` — consumes its capability (write-once).
 -}
 withFilter : Value Filter -> Builder { a | filter : Available } slotCaps msg -> Builder { a | filter : Used } slotCaps msg
-withFilter value_ (Builder b) =
-    Builder { b | attrs = filter value_ :: b.attrs }
+withFilter value_ =
+    B.withAttribute (filter value_)
 
 
 {-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
-withFor value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
 {-| Pipe form of `hideLoading` — consumes its capability (write-once).
 -}
 withHideLoading : Bool -> Builder { a | hideLoading : Available } slotCaps msg -> Builder { a | hideLoading : Used } slotCaps msg
-withHideLoading value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.hideLoading value_ :: b.attrs }
+withHideLoading value_ =
+    B.withAttribute (A.hideLoading value_)
 
 
 {-| Pipe form of `hideNoData` — consumes its capability (write-once).
 -}
 withHideNoData : Bool -> Builder { a | hideNoData : Available } slotCaps msg -> Builder { a | hideNoData : Used } slotCaps msg
-withHideNoData value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.hideNoData value_ :: b.attrs }
+withHideNoData value_ =
+    B.withAttribute (A.hideNoData value_)
 
 
 {-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
 -}
 withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg -> Builder { a | hideSelectionIndicator : Used } slotCaps msg
-withHideSelectionIndicator value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.hideSelectionIndicator value_ :: b.attrs }
+withHideSelectionIndicator value_ =
+    B.withAttribute (A.hideSelectionIndicator value_)
 
 
 {-| Pipe form of `loading` — consumes its capability (write-once).
 -}
 withLoading : Bool -> Builder { a | loading : Available } slotCaps msg -> Builder { a | loading : Used } slotCaps msg
-withLoading value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.loading value_ :: b.attrs }
+withLoading value_ =
+    B.withAttribute (A.loading value_)
 
 
 {-| Pipe form of `loadingLabel` — consumes its capability (write-once).
 -}
 withLoadingLabel : String -> Builder { a | loadingLabel : Available } slotCaps msg -> Builder { a | loadingLabel : Used } slotCaps msg
-withLoadingLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.loadingLabel value_ :: b.attrs }
+withLoadingLabel value_ =
+    B.withAttribute (A.loadingLabel value_)
 
 
 {-| Pipe form of `noDataLabel` — consumes its capability (write-once).
 -}
 withNoDataLabel : String -> Builder { a | noDataLabel : Available } slotCaps msg -> Builder { a | noDataLabel : Used } slotCaps msg
-withNoDataLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.noDataLabel value_ :: b.attrs }
+withNoDataLabel value_ =
+    B.withAttribute (A.noDataLabel value_)
 
 
 {-| Pipe form of `panelClass` — consumes its capability (write-once).
 -}
 withPanelClass : String -> Builder { a | panelClass : Available } slotCaps msg -> Builder { a | panelClass : Used } slotCaps msg
-withPanelClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.panelClass value_ :: b.attrs }
+withPanelClass value_ =
+    B.withAttribute (A.panelClass value_)
 
 
 {-| Pipe form of `required` — consumes its capability (write-once).
 -}
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
-withRequired value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.required value_ :: b.attrs }
+withRequired value_ =
+    B.withAttribute (A.required value_)
 
 
 {-| Pipe form of `resultsLabel` — consumes its capability (write-once).
 -}
 withResultsLabel : String -> Builder { a | resultsLabel : Available } slotCaps msg -> Builder { a | resultsLabel : Used } slotCaps msg
-withResultsLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.resultsLabel value_ :: b.attrs }
+withResultsLabel value_ =
+    B.withAttribute (A.resultsLabel value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
-withOnChange value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
 {-| Pipe form of `onQuery` — consumes its capability (write-once).
 -}
 withOnQuery : msg -> Builder { a | onQuery : Available } slotCaps msg -> Builder { a | onQuery : Used } slotCaps msg
-withOnQuery value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onQuery value_ :: b.attrs }
+withOnQuery value_ =
+    B.withAttribute (Ev.onQuery value_)
 
 
 {-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
-withOnToggle value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)
 
 
 {-| Pipe form of the `loading` slot — consumes its capability (write-once).
 -}
 withLoadingSlot : Element childAccepts admittedBy msg -> Builder attrCaps { s | loading : Available } msg -> Builder attrCaps { s | loading : Used } msg
-withLoadingSlot element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (loading element) :: b.children }
+withLoadingSlot element =
+    B.withChild (El.toNode (loading element))
 
 
 {-| Pipe form of the `no-data` slot — consumes its capability (write-once).
 -}
 withNoData : Element childAccepts admittedBy msg -> Builder attrCaps { s | noData : Available } msg -> Builder attrCaps { s | noData : Used } msg
-withNoData element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (noData element) :: b.children }
+withNoData element =
+    B.withChild (El.toNode (noData element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)
