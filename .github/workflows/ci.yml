@@ -33,6 +33,14 @@ jobs:
       - name: Fetch elm-typed-html (sibling)
         run: git clone --depth 1 https://github.com/jackhp95/elm-typed-html.git "$GITHUB_WORKSPACE/../elm-typed-html"
 
+      # The elm-cem generator (public) provides the regen-drift + registry-check
+      # gates and the facts/src staged by registry-check. ELM_CEM_BIN defaults to
+      # this sibling path (../elm-cem/bin/elm-cem.js).
+      - name: Fetch elm-cem generator (sibling)
+        run: |
+          git clone --depth 1 https://github.com/jackhp95/elm-cem.git "$GITHUB_WORKSPACE/../elm-cem"
+          cd "$GITHUB_WORKSPACE/../elm-cem" && npm ci
+
       - uses: pnpm/action-setup@v6
         with:
           package_json_file: docs/package.json
@@ -82,6 +90,18 @@ jobs:
       # siblings). Run from there so elm-test picks up tests/elm.json.
       - name: elm-test (IR-core + slot unit tests)
         run: npm test
+
+      # Release gates (elm-cem #49). Materialize the @m3e/web CEM first (docs
+      # deps), then:
+      #   gate:drift    — committed src/ + elm.json match a fresh regen (NB5,
+      #                   the staleness that shipped four brands a generation
+      #                   behind).
+      #   gate:registry — the publishable package compiles registry-faithfully,
+      #                   resolving imports only from its declared deps (NB1/B2).
+      - name: regen-drift + registry-faithful gates
+        run: |
+          cd docs && pnpm install --frozen-lockfile && cd ..
+          npm run gate
 
       - name: elm-review
         # Run from docs/ so elm-review picks up docs/elm.json, which covers

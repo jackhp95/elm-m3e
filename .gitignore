@@ -24,3 +24,6 @@ node_modules
 
 # elm publish doc-build artifact (write to /tmp instead)
 docs.json
+
+# The elm-cem generator is cloned here by CI/regen workflows; never commit it.
+elm-cem/
