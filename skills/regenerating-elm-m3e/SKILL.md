@@ -42,15 +42,15 @@ from `elm-format --validate` because they are generated.)
 ## The regen command
 
 Run from the repo root (mirrors `regen-on-bump.yml`). The `elm-cem` generator is the
-sibling checkout `/Users/jack/Documents/code/elm-cem` — the exact path `package.json`'s
-`split` script already uses. Install its deps first (`cd /Users/jack/Documents/code/elm-cem
+sibling checkout `../elm-cem` — the exact path `package.json`'s
+`split` script already uses. Install its deps first (`cd ../elm-cem
 && npm ci`). It needs an `elm` 0.19.1 (this repo's `node_modules/.bin/elm` works).
 
 > **Use the sibling checkout — the in-repo clone is deleted.** An earlier workflow kept a
 > gitignored `elm-cem/` clone inside this repo; it was stuck on a pre-phantom commit and
 > emitted the retired `M3e/Build/`, `M3e/Aria.elm` etc., producing a large spurious diff.
 > That clone has been removed (pass 2, 2026-07-21). The sibling checkout
-> `/Users/jack/Documents/code/elm-cem` is the only local regen path — a regen with it is
+> `../elm-cem` is the only local regen path — a regen with it is
 > byte-for-byte zero-diff against committed `src/` (verified 2026-07-21: 132 files,
 > `diff -rq $TMP src` empty).
 
@@ -58,8 +58,8 @@ sibling checkout `/Users/jack/Documents/code/elm-cem` — the exact path `packag
 # PATH prepend is REQUIRED: the generator shells out to `elm`, which lives in THIS
 # repo's node_modules/.bin (not elm-cem's). Without it the regen fails SILENTLY —
 # exit 0, zero files, a bare "Compilation failed." line.
-PATH="/Users/jack/Documents/code/elm-m3e/node_modules/.bin:$PATH" \
-node /Users/jack/Documents/code/elm-cem/bin/elm-cem.js \
+PATH="$PWD/node_modules/.bin:$PATH" \
+node ${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js} \
   --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
   --config-from=config/slots.json \
   --config-from=config/native-mdn.json \
@@ -84,7 +84,7 @@ Then **format** (the raw output is not elm-formatted — committing it raw flood
 with line-wrap churn that swamps the real API change):
 
 ```bash
-/Users/jack/Documents/code/elm-cem/node_modules/.bin/elm-format src --yes
+../elm-cem/node_modules/.bin/elm-format src --yes
 ```
 
 Then **verify it compiles**. Committed `src/` imports `HtmlIr.*` from the unpublished
@@ -162,7 +162,7 @@ regen is **deterministic** — a no-op bump produces no commit (the workflow's `
 --quiet -- src` guard). You review the auto-committed diff like any code change.
 
 > **Caveat (GitHub lag):** the workflow clones `elm-cem` from GitHub `main`. The local
-> sibling checkout `/Users/jack/Documents/code/elm-cem` is already on the phantom pipeline
+> sibling checkout `../elm-cem` is already on the phantom pipeline
 > (local `main`, commit `7cebfde`), but GitHub `origin/main` of `elm-cem` still lags that
 > local commit — the push is human-gated (Stage F). Until Jack pushes, a CI-driven regen
 > clones the older GitHub `main` and may not match the committed `src/`. For a trustworthy
@@ -189,7 +189,7 @@ churn — all tracking real `@m3e/web` changes.
 ## Zero-diff verification after a toolchain change
 
 After bumping `elm-cem` or changing the generator with **no** intended output change, prove
-it: regenerate (with the sibling `/Users/jack/Documents/code/elm-cem`) + format, then
+it: regenerate (with the sibling `../elm-cem`) + format, then
 `git diff --stat src` should be **empty**. A non-empty diff means the toolchain change was
 not behavior-preserving — inspect it. This is the same determinism the golden suite in
 `elm-cem` gates. (Verified 2026-07-21: a full regen with the sibling checkout is byte-for-byte
