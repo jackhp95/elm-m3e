@@ -8,7 +8,10 @@
   "scripts": {
     "format": "node_modules/.bin/elm-format --yes docs/app docs/src docs/kit",
     "format:check": "node_modules/.bin/elm-format --validate docs/app docs/src docs/kit",
-    "test": "cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm"
+    "test": "cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm",
+    "gate:drift": "node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" regen-drift --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json",
+    "gate:registry": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" registry-check",
+    "gate": "npm run gate:drift && npm run gate:registry"
   },
   "devDependencies": {
     "elm": "0.19.1-6",
