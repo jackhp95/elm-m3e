@@ -275,6 +275,10 @@ facts compile-time guarantees. Coverage now lives in four layers:
 
 ## Docs
 
+- [`docs/composition.md`](docs/composition.md) — the **composition guide**: how to build
+  real UI by composing `M3e.*` with the `TypedHtml.*` native substrate — heterogeneous
+  and cross-brand children, list vs. builder form, typed forms, and when to escape to raw
+  `Html` — without reflexively dropping to `elm/html`.
 - [`docs/DESIGN.md`](docs/DESIGN.md) — the library's design: layers, slots, shapes, seams.
 - [`docs/CONFIG_SCHEMA.md`](docs/CONFIG_SCHEMA.md) — the `config/slots.json` schema.
 - The [documentation site](https://elm-m3e.netlify.app) — the Guide, reference, and examples.
