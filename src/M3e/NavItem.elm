@@ -3,7 +3,7 @@ module M3e.NavItem exposing
     , Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation
     , disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
-    , icon, selectedIcon
+    , icon, selectedIcon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
     )
 
@@ -15,7 +15,7 @@ An item, placed in a navigation bar or rail, used to navigate to destinations in
 @docs Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation
 @docs disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
-@docs icon, selectedIcon
+@docs icon, selectedIcon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
 
 -}
@@ -200,6 +200,15 @@ slot's kinds; output row free so it composes into the child list).
 selectedIcon : Element SelectedIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 selectedIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "selected-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

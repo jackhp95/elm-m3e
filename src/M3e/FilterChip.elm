@@ -3,7 +3,7 @@ module M3e.FilterChip exposing
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
     , disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
-    , icon, trailingIcon
+    , icon, trailingIcon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
     )
 
@@ -15,7 +15,7 @@ A chip users interact with to select/deselect options.
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
 @docs disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
-@docs icon, trailingIcon
+@docs icon, trailingIcon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
 
 -}
@@ -187,6 +187,15 @@ slot's kinds; output row free so it composes into the child list).
 trailingIcon : Element TrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailingIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

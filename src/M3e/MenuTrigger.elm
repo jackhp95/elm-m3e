@@ -2,6 +2,7 @@ module M3e.MenuTrigger exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , for
+    , child
     , withChild, withClass, withFor, withId, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ An element, nested within a clickable element, used to open a menu.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs for
+@docs child
 @docs withChild, withClass, withFor, withId, withSlot, withStyle
 
 -}
@@ -67,6 +69,15 @@ view =
 for : String -> Attr { c | for : Supported } msg
 for =
     A.for
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

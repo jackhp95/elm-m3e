@@ -3,6 +3,7 @@ module M3e.Collapsible exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation
     , noAnimate, open, onOpening, onOpened, onClosing, onClosed
+    , child
     , withChild, withClass, withId, withNoAnimate, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOrientation, withSlot, withStyle
     )
 
@@ -14,6 +15,7 @@ A container used to expand and collapse content.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation
 @docs noAnimate, open, onOpening, onOpened, onClosing, onClosed
+@docs child
 @docs withChild, withClass, withId, withNoAnimate, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOrientation, withSlot, withStyle
 
 -}
@@ -127,6 +129,15 @@ onClosing =
 onClosed : msg -> Attr { c | onClosed : Supported } msg
 onClosed =
     Ev.onClosed
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

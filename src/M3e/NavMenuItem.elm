@@ -2,7 +2,7 @@ module M3e.NavMenuItem exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, BadgeSlot, IconSlot, LabelSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
-    , badge, icon, label, selectedIcon, toggleIcon
+    , badge, icon, label, selectedIcon, toggleIcon, child
     , withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
     )
 
@@ -13,7 +13,7 @@ An expandable item, selectable item within a navigation menu.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, BadgeSlot, IconSlot, LabelSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
-@docs badge, icon, label, selectedIcon, toggleIcon
+@docs badge, icon, label, selectedIcon, toggleIcon, child
 @docs withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
 
 -}
@@ -214,6 +214,15 @@ slot's kinds; output row free so it composes into the child list).
 toggleIcon : Element ToggleIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 toggleIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "toggle-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

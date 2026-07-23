@@ -2,6 +2,7 @@ module M3e.Shape exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Name, name
+    , child
     , withChild, withClass, withId, withName, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ A shape used to add emphasis and decorative flair.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Name, name
+@docs child
 @docs withChild, withClass, withId, withName, withSlot, withStyle
 
 -}
@@ -109,6 +111,15 @@ view =
 name : Value Name -> Attr { c | name : Supported } msg
 name value_ =
     Ir.attribute "name" (Val.toString value_)
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

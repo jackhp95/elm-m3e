@@ -2,6 +2,7 @@ module M3e.Tree exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , cascade, multi, onChange
+    , child
     , withCascade, withChild, withClass, withId, withMulti, withOnChange, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ Presents hierarchical data in a tree structure.
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs cascade, multi, onChange
+@docs child
 @docs withCascade, withChild, withClass, withId, withMulti, withOnChange, withSlot, withStyle
 
 -}
@@ -87,6 +89,15 @@ multi =
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
     Ev.onChange
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

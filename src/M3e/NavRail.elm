@@ -3,6 +3,7 @@ module M3e.NavRail exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Mode, mode
     , onBeforeinput, onInput, onChange
+    , child
     , withChild, withClass, withId, withMode, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle
     )
 
@@ -14,6 +15,7 @@ A vertical bar, typically used on larger devices, that allows a user to switch b
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Mode, mode
 @docs onBeforeinput, onInput, onChange
+@docs child
 @docs withChild, withClass, withId, withMode, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle
 
 -}
@@ -110,6 +112,15 @@ onInput =
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
     Ev.onChange
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -3,6 +3,7 @@ module M3e.FloatingPanel exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , ScrollStrategy, scrollStrategy
     , anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
+    , child
     , withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withStyle
     )
 
@@ -14,6 +15,7 @@ A lightweight, generic floating surface used to present content above the page.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs ScrollStrategy, scrollStrategy
 @docs anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
+@docs child
 @docs withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withStyle
 
 -}
@@ -111,6 +113,15 @@ onBeforetoggle =
 onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
     Ev.onToggle
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

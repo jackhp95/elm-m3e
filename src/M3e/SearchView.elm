@@ -3,7 +3,7 @@ module M3e.SearchView exposing
     , Is, Attrs, ClearIconSlot, CloseIconSlot, ClosedLeadingSlot, ClosedTrailingSlot, OpenLeadingSlot, OpenTrailingSlot, SearchIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Mode, mode
     , clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
-    , clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon
+    , clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon, child
     , withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
     )
 
@@ -15,7 +15,7 @@ A surface that presents suggestions and results for a search.
 @docs Is, Attrs, ClearIconSlot, CloseIconSlot, ClosedLeadingSlot, ClosedTrailingSlot, OpenLeadingSlot, OpenTrailingSlot, SearchIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Mode, mode
 @docs clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
-@docs clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon
+@docs clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon, child
 @docs withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
 
 -}
@@ -279,6 +279,15 @@ slot's kinds; output row free so it composes into the child list).
 searchIcon : Element SearchIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 searchIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "search-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -3,7 +3,7 @@ module M3e.Autocomplete exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Filter, filter
     , autoActivate, caseSensitive, for, hideLoading, hideNoData, hideSelectionIndicator, loadingLabel, noDataLabel, panelClass, required, resultsLabel, onChange, onQuery, onToggle
-    , loading, noData
+    , loading, noData, child
     , withAutoActivate, withCaseSensitive, withChild, withClass, withFilter, withFor, withHideLoading, withHideNoData, withHideSelectionIndicator, withId, withLoading, withLoadingLabel, withLoadingSlot, withNoData, withNoDataLabel, withOnChange, withOnQuery, withOnToggle, withPanelClass, withRequired, withResultsLabel, withSlot, withStyle
     )
 
@@ -15,7 +15,7 @@ Enhances a text input with suggested options.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Filter, filter
 @docs autoActivate, caseSensitive, for, hideLoading, hideNoData, hideSelectionIndicator, loadingLabel, noDataLabel, panelClass, required, resultsLabel, onChange, onQuery, onToggle
-@docs loading, noData
+@docs loading, noData, child
 @docs withAutoActivate, withCaseSensitive, withChild, withClass, withFilter, withFor, withHideLoading, withHideNoData, withHideSelectionIndicator, withId, withLoading, withLoadingLabel, withLoadingSlot, withNoData, withNoDataLabel, withOnChange, withOnQuery, withOnToggle, withPanelClass, withRequired, withResultsLabel, withSlot, withStyle
 
 -}
@@ -217,6 +217,15 @@ slot's kinds; output row free so it composes into the child list).
 noData : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 noData element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "no-data") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

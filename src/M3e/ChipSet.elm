@@ -2,6 +2,7 @@ module M3e.ChipSet exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , vertical
+    , child
     , withChild, withClass, withId, withSlot, withStyle, withVertical
     )
 
@@ -12,6 +13,7 @@ A container used to organize chips into a cohesive unit.
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs vertical
+@docs child
 @docs withChild, withClass, withId, withSlot, withStyle, withVertical
 
 -}
@@ -75,6 +77,15 @@ view =
 vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
     A.vertical
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

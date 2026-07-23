@@ -3,6 +3,7 @@ module M3e.NavBar exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Mode, mode
     , onChange, onBeforeinput, onInput
+    , child
     , withChild, withClass, withId, withMode, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle
     )
 
@@ -14,6 +15,7 @@ A horizontal bar, typically used on smaller devices, that allows a user to switc
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Mode, mode
 @docs onChange, onBeforeinput, onInput
+@docs child
 @docs withChild, withClass, withId, withMode, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle
 
 -}
@@ -107,6 +109,15 @@ onBeforeinput =
 onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
     Ev.onInput
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

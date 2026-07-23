@@ -2,7 +2,7 @@ module M3e.Step exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , completed, disabled, editable, for, invalid, optional, selected, onBeforeinput, onInput, onChange, onClick
-    , doneIcon, editIcon, error, errorIcon, hint, icon
+    , doneIcon, editIcon, error, errorIcon, hint, icon, child
     , withChild, withClass, withCompleted, withDisabled, withDoneIcon, withEditIcon, withEditable, withError, withErrorIcon, withFor, withHint, withIcon, withId, withInvalid, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOptional, withSelected, withSlot, withStyle
     )
 
@@ -13,7 +13,7 @@ A step in a wizard-like workflow.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs completed, disabled, editable, for, invalid, optional, selected, onBeforeinput, onInput, onChange, onClick
-@docs doneIcon, editIcon, error, errorIcon, hint, icon
+@docs doneIcon, editIcon, error, errorIcon, hint, icon, child
 @docs withChild, withClass, withCompleted, withDisabled, withDoneIcon, withEditIcon, withEditable, withError, withErrorIcon, withFor, withHint, withIcon, withId, withInvalid, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOptional, withSelected, withSlot, withStyle
 
 -}
@@ -248,6 +248,15 @@ slot's kinds; output row free so it composes into the child list).
 icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
 icon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -2,7 +2,7 @@ module M3e.BottomSheet exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , detent, detents, handle, handleLabel, hideFriction, hideable, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
-    , header
+    , header, child
     , withChild, withClass, withDetent, withDetents, withHandle, withHandleLabel, withHeader, withHideFriction, withHideable, withId, withModal, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOvershootLimit, withSlot, withStyle
     )
 
@@ -13,7 +13,7 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs detent, detents, handle, handleLabel, hideFriction, hideable, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
-@docs header
+@docs header, child
 @docs withChild, withClass, withDetent, withDetents, withHandle, withHandleLabel, withHeader, withHideFriction, withHideable, withId, withModal, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOvershootLimit, withSlot, withStyle
 
 -}
@@ -182,6 +182,15 @@ slot's kinds; output row free so it composes into the child list).
 header : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 header element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

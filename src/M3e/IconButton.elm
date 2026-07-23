@@ -3,7 +3,7 @@ module M3e.IconButton exposing
     , Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
-    , selected
+    , selected, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
     )
 
@@ -15,7 +15,7 @@ An icon button users interact with to perform a supplementary action.
 @docs Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
-@docs selected
+@docs selected, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
 
 -}
@@ -332,6 +332,15 @@ slot's kinds; output row free so it composes into the child list).
 selected : Element SelectedSlot admittedBy msg -> Element free freeAdmittedBy msg
 selected element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "selected") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

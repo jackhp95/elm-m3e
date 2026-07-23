@@ -3,7 +3,7 @@ module M3e.Button exposing
     , Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
-    , icon, selected, selectedIcon, trailingIcon
+    , icon, selected, selectedIcon, trailingIcon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
     )
 
@@ -15,7 +15,7 @@ A button users interact with to perform an action.
 @docs Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
-@docs icon, selected, selectedIcon, trailingIcon
+@docs icon, selected, selectedIcon, trailingIcon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
 
 -}
@@ -362,6 +362,15 @@ slot's kinds; output row free so it composes into the child list).
 trailingIcon : Element TrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailingIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

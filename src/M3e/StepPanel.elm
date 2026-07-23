@@ -1,7 +1,7 @@
 module M3e.StepPanel exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , actions
+    , actions, child
     , withActions, withChild, withClass, withId, withSlot, withStyle
     )
 
@@ -11,7 +11,7 @@ A panel presented for a step in a wizard-like workflow.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs actions
+@docs actions, child
 @docs withActions, withChild, withClass, withId, withSlot, withStyle
 
 -}
@@ -67,6 +67,15 @@ slot's kinds; output row free so it composes into the child list).
 actions : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 actions element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "actions") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

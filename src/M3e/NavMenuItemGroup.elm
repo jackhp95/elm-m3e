@@ -1,7 +1,7 @@
 module M3e.NavMenuItemGroup exposing
     ( view, build, toElement
     , Is, Attrs, Content, LabelSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , label
+    , label, child
     , withChild, withClass, withId, withLabel, withSlot, withStyle
     )
 
@@ -11,7 +11,7 @@ A top-level semantic grouping of items in a navigation menu.
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, LabelSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs label
+@docs label, child
 @docs withChild, withClass, withId, withLabel, withSlot, withStyle
 
 -}
@@ -78,6 +78,15 @@ slot's kinds; output row free so it composes into the child list).
 label : Element LabelSlot admittedBy msg -> Element free freeAdmittedBy msg
 label element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "label") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

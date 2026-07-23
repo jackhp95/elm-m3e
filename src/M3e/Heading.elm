@@ -3,6 +3,7 @@ module M3e.Heading exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Size, size, Variant, variant
     , emphasized, level, tocIgnore
+    , child
     , withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
     )
 
@@ -14,6 +15,7 @@ A heading to a page or section.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Size, size, Variant, variant
 @docs emphasized, level, tocIgnore
+@docs child
 @docs withChild, withClass, withEmphasized, withId, withLevel, withSize, withSlot, withStyle, withTocIgnore, withVariant
 
 -}
@@ -135,6 +137,15 @@ level =
 tocIgnore : Bool -> Attr { c | tocIgnore : Supported } msg
 tocIgnore =
     A.tocIgnore
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

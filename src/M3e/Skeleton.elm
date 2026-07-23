@@ -3,6 +3,7 @@ module M3e.Skeleton exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Animation, animation, Shape, shape
     , loaded
+    , child
     , withAnimation, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
     )
 
@@ -14,6 +15,7 @@ A visual placeholder that mimics the layout of content while it's still loading.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Animation, animation, Shape, shape
 @docs loaded
+@docs child
 @docs withAnimation, withChild, withClass, withId, withLoaded, withShape, withSlot, withStyle
 
 -}
@@ -105,6 +107,15 @@ shape value_ =
 loaded : Bool -> Attr { c | loaded : Supported } msg
 loaded =
     A.loaded
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -3,6 +3,7 @@ module M3e.Toolbar exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Shape, shape, Variant, variant
     , elevated, vertical
+    , child
     , withChild, withClass, withElevated, withId, withShape, withSlot, withStyle, withVariant, withVertical
     )
 
@@ -14,6 +15,7 @@ Presents frequently used actions relevant to the current page.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Shape, shape, Variant, variant
 @docs elevated, vertical
+@docs child
 @docs withChild, withClass, withElevated, withId, withShape, withSlot, withStyle, withVariant, withVertical
 
 -}
@@ -110,6 +112,15 @@ elevated =
 vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
     A.vertical
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

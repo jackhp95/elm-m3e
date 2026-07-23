@@ -3,6 +3,7 @@ module M3e.Theme exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Contrast, contrast, Motion, motion, Scheme, scheme, Variant, variant
     , color, density, strongFocus, onChange
+    , child
     , withChild, withClass, withColor, withContrast, withDensity, withId, withMotion, withOnChange, withScheme, withSlot, withStrongFocus, withStyle, withVariant
     )
 
@@ -14,6 +15,7 @@ A non-visual element responsible for application-level theming.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Contrast, contrast, Motion, motion, Scheme, scheme, Variant, variant
 @docs color, density, strongFocus, onChange
+@docs child
 @docs withChild, withClass, withColor, withContrast, withDensity, withId, withMotion, withOnChange, withScheme, withSlot, withStrongFocus, withStyle, withVariant
 
 -}
@@ -168,6 +170,15 @@ strongFocus =
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
     Ev.onChange
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
