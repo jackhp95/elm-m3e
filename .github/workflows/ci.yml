@@ -26,19 +26,30 @@ jobs:
       # job's `build:reference` full-surface `elm make --docs` all need HtmlIr.*
       # source — clone the sibling so tests/elm.json, review/elm.json, and the
       # docs pipeline source-directories all resolve.
-      - name: Fetch elm-html-intermediate-representation (sibling)
-        run: git clone --depth 1 https://github.com/jackhp95/elm-html-intermediate-representation.git "$GITHUB_WORKSPACE/../elm-html-intermediate-representation"
+      # PRIVATE repo — authenticated clone. ELM_CEM_TOKEN is a PAT (classic:
+      # `repo` scope, or fine-grained: Contents:read) that can read the private
+      # jackhp95 sibling repos; set it as a repo/org Actions secret.
+      - name: Fetch elm-html-intermediate-representation (sibling, private)
+        env:
+          ELM_CEM_TOKEN: ${{ secrets.ELM_CEM_TOKEN }}
+        run: git clone --depth 1 "https://x-access-token:${ELM_CEM_TOKEN}@github.com/jackhp95/elm-html-intermediate-representation.git" "$GITHUB_WORKSPACE/../elm-html-intermediate-representation"
 
       # The tests/ elm.json also points at ../../elm-typed-html/src.
-      - name: Fetch elm-typed-html (sibling)
-        run: git clone --depth 1 https://github.com/jackhp95/elm-typed-html.git "$GITHUB_WORKSPACE/../elm-typed-html"
+      # PRIVATE repo — authenticated clone (same ELM_CEM_TOKEN).
+      - name: Fetch elm-typed-html (sibling, private)
+        env:
+          ELM_CEM_TOKEN: ${{ secrets.ELM_CEM_TOKEN }}
+        run: git clone --depth 1 "https://x-access-token:${ELM_CEM_TOKEN}@github.com/jackhp95/elm-typed-html.git" "$GITHUB_WORKSPACE/../elm-typed-html"
 
-      # The elm-cem generator (public) provides the regen-drift + registry-check
+      # The elm-cem generator provides the regen-drift + registry-check
       # gates and the facts/src staged by registry-check. ELM_CEM_BIN defaults to
       # this sibling path (../elm-cem/bin/elm-cem.js).
-      - name: Fetch elm-cem generator (sibling)
+      # PRIVATE repo — authenticated clone (same ELM_CEM_TOKEN).
+      - name: Fetch elm-cem generator (sibling, private)
+        env:
+          ELM_CEM_TOKEN: ${{ secrets.ELM_CEM_TOKEN }}
         run: |
-          git clone --depth 1 https://github.com/jackhp95/elm-cem.git "$GITHUB_WORKSPACE/../elm-cem"
+          git clone --depth 1 "https://x-access-token:${ELM_CEM_TOKEN}@github.com/jackhp95/elm-cem.git" "$GITHUB_WORKSPACE/../elm-cem"
           cd "$GITHUB_WORKSPACE/../elm-cem" && npm ci
 
       - uses: pnpm/action-setup@v6
