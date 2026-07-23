@@ -3,7 +3,7 @@ module M3e.BreadcrumbItem exposing
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Current, current
     , disabled, download, href, itemLabel, rel, target, onClick
-    , icon
+    , icon, child
     , withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withItemLabel, withOnClick, withRel, withSlot, withStyle, withTarget
     )
 
@@ -15,7 +15,7 @@ An item in a breadcrumb.
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Current, current
 @docs disabled, download, href, itemLabel, rel, target, onClick
-@docs icon
+@docs icon, child
 @docs withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withItemLabel, withOnClick, withRel, withSlot, withStyle, withTarget
 
 -}
@@ -160,6 +160,15 @@ slot's kinds; output row free so it composes into the child list).
 icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
 icon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

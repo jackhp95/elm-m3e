@@ -3,7 +3,7 @@ module M3e.DrawerContainer exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , EndMode, endMode, StartMode, startMode
     , endDivider, startDivider, onChange
-    , end, start
+    , end, start, child
     , withChild, withClass, withEnd, withEndDivider, withEndMode, withEndSlot, withId, withOnChange, withSlot, withStart, withStartDivider, withStartMode, withStartSlot, withStyle
     )
 
@@ -15,7 +15,7 @@ A container for one or two sliding drawers.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs EndMode, endMode, StartMode, startMode
 @docs endDivider, startDivider, onChange
-@docs end, start
+@docs end, start, child
 @docs withChild, withClass, withEnd, withEndDivider, withEndMode, withEndSlot, withId, withOnChange, withSlot, withStart, withStartDivider, withStartMode, withStartSlot, withStyle
 
 -}
@@ -143,6 +143,15 @@ slot's kinds; output row free so it composes into the child list).
 start : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 start element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

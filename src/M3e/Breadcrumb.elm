@@ -2,7 +2,7 @@ module M3e.Breadcrumb exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , wrap
-    , separator
+    , separator, child
     , withChild, withClass, withId, withSeparator, withSlot, withStyle, withWrap
     )
 
@@ -14,7 +14,7 @@ current location within an application.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs wrap
-@docs separator
+@docs separator, child
 @docs withChild, withClass, withId, withSeparator, withSlot, withStyle, withWrap
 
 -}
@@ -92,6 +92,15 @@ slot's kinds; output row free so it composes into the child list).
 separator : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 separator element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "separator") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

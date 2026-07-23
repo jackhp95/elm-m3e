@@ -2,7 +2,7 @@ module M3e.InputChipSet exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, name, required, vertical, onChange
-    , input
+    , input, child
     , withChild, withClass, withDisabled, withId, withInput, withName, withOnChange, withRequired, withSlot, withStyle, withVertical
     )
 
@@ -13,7 +13,7 @@ A container that transforms user input into a cohesive set of interactive chips,
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, name, required, vertical, onChange
-@docs input
+@docs input, child
 @docs withChild, withClass, withDisabled, withId, withInput, withName, withOnChange, withRequired, withSlot, withStyle, withVertical
 
 -}
@@ -115,6 +115,15 @@ slot's kinds; output row free so it composes into the child list).
 input : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 input element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

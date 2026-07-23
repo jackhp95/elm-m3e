@@ -3,7 +3,7 @@ module M3e.ExpansionHeader exposing
     , Is, Attrs, Content, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , ToggleDirection, toggleDirection, TogglePosition, togglePosition
     , disabled, hideToggle, onClick
-    , toggleIcon
+    , toggleIcon, child
     , withChild, withClass, withDisabled, withHideToggle, withId, withOnClick, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
     )
 
@@ -15,7 +15,7 @@ A button used to toggle the expanded state of an expansion panel.
 @docs Is, Attrs, Content, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs ToggleDirection, toggleDirection, TogglePosition, togglePosition
 @docs disabled, hideToggle, onClick
-@docs toggleIcon
+@docs toggleIcon, child
 @docs withChild, withClass, withDisabled, withHideToggle, withId, withOnClick, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
 
 -}
@@ -138,6 +138,15 @@ slot's kinds; output row free so it composes into the child list).
 toggleIcon : Element ToggleIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 toggleIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "toggle-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

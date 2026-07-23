@@ -3,7 +3,7 @@ module M3e.Card exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation, Type, type_, Variant, variant
     , actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, onClick
-    , actions, content, footer, header
+    , actions, content, footer, header, child
     , withActionable, withActions, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
 
@@ -15,7 +15,7 @@ A content container for text, images (or other media), and actions in the contex
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation, Type, type_, Variant, variant
 @docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, onClick
-@docs actions, content, footer, header
+@docs actions, content, footer, header, child
 @docs withActionable, withActions, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
 -}
@@ -238,6 +238,15 @@ slot's kinds; output row free so it composes into the child list).
 header : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 header element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

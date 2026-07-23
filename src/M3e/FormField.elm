@@ -3,7 +3,7 @@ module M3e.FormField exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
     , hideRequiredMarker
-    , error, hint, prefix, prefixText, suffix, suffixText
+    , error, hint, prefix, prefixText, suffix, suffixText, child
     , withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
     )
 
@@ -15,7 +15,7 @@ A container for form controls that applies Material Design styling and behavior.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
 @docs hideRequiredMarker
-@docs error, hint, prefix, prefixText, suffix, suffixText
+@docs error, hint, prefix, prefixText, suffix, suffixText, child
 @docs withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
 
 -}
@@ -169,6 +169,15 @@ slot's kinds; output row free so it composes into the child list).
 suffixText : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 suffixText element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "suffix-text") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -2,7 +2,7 @@ module M3e.Toc exposing
     ( view, build, toElement
     , Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , for, maxDepth
-    , overline, title
+    , overline, title, child
     , withChild, withClass, withFor, withId, withMaxDepth, withOverline, withSlot, withStyle, withTitle
     )
 
@@ -13,7 +13,7 @@ A table of contents that provides in-page scroll navigation.
 @docs view, build, toElement
 @docs Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs for, maxDepth
-@docs overline, title
+@docs overline, title, child
 @docs withChild, withClass, withFor, withId, withMaxDepth, withOverline, withSlot, withStyle, withTitle
 
 -}
@@ -105,6 +105,15 @@ slot's kinds; output row free so it composes into the child list).
 title : Element TitleSlot admittedBy msg -> Element free freeAdmittedBy msg
 title element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "title") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -2,7 +2,7 @@ module M3e.ListOption exposing
     ( view, build, toElement
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, selected, value, onBeforeinput, onInput, onChange, onClick
-    , leading, overline, supportingText, trailing
+    , leading, overline, supportingText, trailing, child
     , withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
     )
 
@@ -13,7 +13,7 @@ A selectable option in a list.
 @docs view, build, toElement
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, selected, value, onBeforeinput, onInput, onChange, onClick
-@docs leading, overline, supportingText, trailing
+@docs leading, overline, supportingText, trailing, child
 @docs withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
 
 -}
@@ -194,6 +194,15 @@ slot's kinds; output row free so it composes into the child list).
 trailing : Element TrailingSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailing element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

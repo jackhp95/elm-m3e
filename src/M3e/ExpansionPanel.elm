@@ -3,7 +3,7 @@ module M3e.ExpansionPanel exposing
     , Is, Attrs, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , ToggleDirection, toggleDirection, TogglePosition, togglePosition
     , disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
-    , actions, header, toggleIcon
+    , actions, header, toggleIcon, child
     , withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
     )
 
@@ -15,7 +15,7 @@ An expandable details-summary view.
 @docs Is, Attrs, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs ToggleDirection, toggleDirection, TogglePosition, togglePosition
 @docs disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
-@docs actions, header, toggleIcon
+@docs actions, header, toggleIcon, child
 @docs withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
 
 -}
@@ -194,6 +194,15 @@ slot's kinds; output row free so it composes into the child list).
 toggleIcon : Element ToggleIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 toggleIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "toggle-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

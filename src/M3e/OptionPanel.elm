@@ -3,7 +3,7 @@ module M3e.OptionPanel exposing
     , Is, Attrs, Content, LoadingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , ScrollStrategy, scrollStrategy, State, state
     , anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
-    , loading, noData
+    , loading, noData, child
     , withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
     )
 
@@ -15,7 +15,7 @@ Presents a list of options on a temporary surface.
 @docs Is, Attrs, Content, LoadingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs ScrollStrategy, scrollStrategy, State, state
 @docs anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
-@docs loading, noData
+@docs loading, noData, child
 @docs withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
 
 -}
@@ -161,6 +161,15 @@ slot's kinds; output row free so it composes into the child list).
 noData : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 noData element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "no-data") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

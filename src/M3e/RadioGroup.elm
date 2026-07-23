@@ -2,6 +2,7 @@ module M3e.RadioGroup exposing
     ( view, el, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
+    , child
     , withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ A container for a set of radio buttons.
 @docs view, el, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
+@docs child
 @docs withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
 
 -}
@@ -129,6 +131,15 @@ onInput =
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
     Ev.onChange
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

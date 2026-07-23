@@ -3,7 +3,7 @@ module M3e.Tabs exposing
     , Is, Attrs, Content, NextIconSlot, PanelSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , HeaderPosition, headerPosition, Variant, variant
     , disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
-    , nextIcon, panel, prevIcon
+    , nextIcon, panel, prevIcon, child
     , withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
     )
 
@@ -15,7 +15,7 @@ Organizes content into separate views where only one view can be visible at a ti
 @docs Is, Attrs, Content, NextIconSlot, PanelSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs HeaderPosition, headerPosition, Variant, variant
 @docs disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
-@docs nextIcon, panel, prevIcon
+@docs nextIcon, panel, prevIcon, child
 @docs withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
 
 -}
@@ -198,6 +198,15 @@ slot's kinds; output row free so it composes into the child list).
 prevIcon : Element PrevIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 prevIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

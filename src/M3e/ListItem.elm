@@ -1,7 +1,7 @@
 module M3e.ListItem exposing
     ( view, build, toElement
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , leading, overline, supportingText, trailing
+    , leading, overline, supportingText, trailing, child
     , withChild, withClass, withId, withLeading, withOverline, withSlot, withStyle, withSupportingText, withTrailing
     )
 
@@ -11,7 +11,7 @@ An item in a list.
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs leading, overline, supportingText, trailing
+@docs leading, overline, supportingText, trailing, child
 @docs withChild, withClass, withId, withLeading, withOverline, withSlot, withStyle, withSupportingText, withTrailing
 
 -}
@@ -135,6 +135,15 @@ slot's kinds; output row free so it composes into the child list).
 trailing : Element TrailingSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailing element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

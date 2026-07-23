@@ -2,6 +2,7 @@ module M3e.RichTooltipAction exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disableRestoreFocus
+    , child
     , withChild, withClass, withDisableRestoreFocus, withId, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ An element, nested within a clickable element, used to dismiss a parenting rich 
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disableRestoreFocus
+@docs child
 @docs withChild, withClass, withDisableRestoreFocus, withId, withSlot, withStyle
 
 -}
@@ -81,6 +83,15 @@ el required_ attrs children =
 disableRestoreFocus : Bool -> Attr { c | disableRestoreFocus : Supported } msg
 disableRestoreFocus =
     A.disableRestoreFocus
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -3,6 +3,7 @@ module M3e.Tooltip exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Position, position, TouchGestures, touchGestures
     , disabled, for, hideDelay, showDelay
+    , child
     , withChild, withClass, withDisabled, withFor, withHideDelay, withId, withPosition, withShowDelay, withSlot, withStyle, withTouchGestures
     )
 
@@ -14,6 +15,7 @@ Adds additional context to a button or other UI element.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Position, position, TouchGestures, touchGestures
 @docs disabled, for, hideDelay, showDelay
+@docs child
 @docs withChild, withClass, withDisabled, withFor, withHideDelay, withId, withPosition, withShowDelay, withSlot, withStyle, withTouchGestures
 
 -}
@@ -143,6 +145,15 @@ hideDelay =
 showDelay : Float -> Attr { c | showDelay : Supported } msg
 showDelay =
     A.showDelay
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -2,6 +2,7 @@ module M3e.Accordion exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , multi
+    , child
     , withChild, withClass, withId, withMulti, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ Combines multiple expansion panels in to an accordion.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs multi
+@docs child
 @docs withChild, withClass, withId, withMulti, withSlot, withStyle
 
 -}
@@ -81,6 +83,15 @@ el required_ attrs children =
 multi : Bool -> Attr { c | multi : Supported } msg
 multi =
     A.multi
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

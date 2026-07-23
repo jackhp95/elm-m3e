@@ -2,7 +2,7 @@ module M3e.SlideGroup exposing
     ( view, build, toElement
     , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, nextPageLabel, previousPageLabel, threshold, vertical
-    , nextIcon, prevIcon
+    , nextIcon, prevIcon, child
     , withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
     )
 
@@ -13,7 +13,7 @@ Presents pagination controls used to scroll overflowing content.
 @docs view, build, toElement
 @docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
-@docs nextIcon, prevIcon
+@docs nextIcon, prevIcon, child
 @docs withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
 
 -}
@@ -129,6 +129,15 @@ slot's kinds; output row free so it composes into the child list).
 prevIcon : Element PrevIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 prevIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

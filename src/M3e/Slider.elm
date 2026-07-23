@@ -3,6 +3,7 @@ module M3e.Slider exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Size, size
     , disabled, discrete, labelled, max, min, step, onBeforeinput, onInput, onChange
+    , child
     , withChild, withClass, withDisabled, withDiscrete, withId, withLabelled, withMax, withMin, withOnBeforeinput, withOnChange, withOnInput, withSize, withSlot, withStep, withStyle
     )
 
@@ -14,6 +15,7 @@ Allows for the selection of numeric values from a range.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Size, size
 @docs disabled, discrete, labelled, max, min, step, onBeforeinput, onInput, onChange
+@docs child
 @docs withChild, withClass, withDisabled, withDiscrete, withId, withLabelled, withMax, withMin, withOnBeforeinput, withOnChange, withOnInput, withSize, withSlot, withStep, withStyle
 
 -}
@@ -165,6 +167,15 @@ onInput =
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
     Ev.onChange
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

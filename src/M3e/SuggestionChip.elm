@@ -3,7 +3,7 @@ module M3e.SuggestionChip exposing
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, value, onClick
-    , icon
+    , icon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
 
@@ -16,7 +16,7 @@ suggested responses or search filters.
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, onClick
-@docs icon
+@docs icon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
 -}
@@ -230,6 +230,15 @@ slot's kinds; output row free so it composes into the child list).
 icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
 icon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

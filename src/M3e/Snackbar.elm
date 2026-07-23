@@ -2,7 +2,7 @@ module M3e.Snackbar exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, CloseIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
-    , closeIcon
+    , closeIcon, child
     , withAction, withChild, withClass, withCloseIcon, withCloseLabel, withDismissible, withDuration, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle
     )
 
@@ -13,7 +13,7 @@ Presents short updates about application processes at the bottom of the screen.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, CloseIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
-@docs closeIcon
+@docs closeIcon, child
 @docs withAction, withChild, withClass, withCloseIcon, withCloseLabel, withDismissible, withDuration, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle
 
 -}
@@ -138,6 +138,15 @@ slot's kinds; output row free so it composes into the child list).
 closeIcon : Element CloseIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 closeIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "close-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

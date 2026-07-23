@@ -2,7 +2,7 @@ module M3e.FabMenuItem exposing
     ( view, build, toElement
     , Is, Attrs, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, download, href, rel, target, onClick
-    , icon
+    , icon, child
     , withChild, withClass, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
     )
 
@@ -13,7 +13,7 @@ An item of a floating action button (FAB) menu.
 @docs view, build, toElement
 @docs Is, Attrs, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, download, href, rel, target, onClick
-@docs icon
+@docs icon, child
 @docs withChild, withClass, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
 
 -}
@@ -124,6 +124,15 @@ slot's kinds; output row free so it composes into the child list).
 icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
 icon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

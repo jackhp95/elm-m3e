@@ -2,6 +2,7 @@ module M3e.TocItem exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, selected, onClick
+    , child
     , withChild, withClass, withDisabled, withId, withOnClick, withSelected, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ An item in a table of contents.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, selected, onClick
+@docs child
 @docs withChild, withClass, withDisabled, withId, withOnClick, withSelected, withSlot, withStyle
 
 -}
@@ -98,6 +100,15 @@ selected =
 onClick : msg -> Attr { c | onClick : Supported } msg
 onClick =
     Ev.onClick
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

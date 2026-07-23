@@ -2,7 +2,7 @@ module M3e.Dialog exposing
     ( view, build, toElement
     , Is, Attrs, CloseIconSlot, HeaderSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
-    , actions, closeIcon, header
+    , actions, closeIcon, header, child
     , withActions, withAlert, withChild, withClass, withCloseIcon, withCloseLabel, withDisableClose, withDismissible, withHeader, withId, withNoFocusTrap, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle
     )
 
@@ -13,7 +13,7 @@ A dialog that provides important prompts in a user flow.
 @docs view, build, toElement
 @docs Is, Attrs, CloseIconSlot, HeaderSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
-@docs actions, closeIcon, header
+@docs actions, closeIcon, header, child
 @docs withActions, withAlert, withChild, withClass, withCloseIcon, withCloseLabel, withDisableClose, withDismissible, withHeader, withId, withNoFocusTrap, withOnCancel, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle
 
 -}
@@ -186,6 +186,15 @@ slot's kinds; output row free so it composes into the child list).
 header : Element HeaderSlot admittedBy msg -> Element free freeAdmittedBy msg
 header element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

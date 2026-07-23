@@ -3,7 +3,7 @@ module M3e.RichTooltip exposing
     , Is, Attrs, Content, SubheadSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Position, position, TouchGestures, touchGestures
     , disabled, for, hideDelay, showDelay, onBeforetoggle, onToggle
-    , actions, subhead
+    , actions, subhead, child
     , withActions, withChild, withClass, withDisabled, withFor, withHideDelay, withId, withOnBeforetoggle, withOnToggle, withPosition, withShowDelay, withSlot, withStyle, withSubhead, withTouchGestures
     )
 
@@ -15,7 +15,7 @@ Provides contextual details for a control, such as explaining the value or purpo
 @docs Is, Attrs, Content, SubheadSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Position, position, TouchGestures, touchGestures
 @docs disabled, for, hideDelay, showDelay, onBeforetoggle, onToggle
-@docs actions, subhead
+@docs actions, subhead, child
 @docs withActions, withChild, withClass, withDisabled, withFor, withHideDelay, withId, withOnBeforetoggle, withOnToggle, withPosition, withShowDelay, withSlot, withStyle, withSubhead, withTouchGestures
 
 -}
@@ -188,6 +188,15 @@ slot's kinds; output row free so it composes into the child list).
 subhead : Element SubheadSlot admittedBy msg -> Element free freeAdmittedBy msg
 subhead element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "subhead") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

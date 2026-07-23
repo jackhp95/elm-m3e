@@ -2,7 +2,7 @@ module M3e.MenuItemRadio exposing
     ( view, build, toElement
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , checked, disabled, onClick
-    , icon, trailingIcon
+    , icon, trailingIcon, child
     , withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
     )
 
@@ -13,7 +13,7 @@ An item of a menu which supports a mutually exclusive checkable state.
 @docs view, build, toElement
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs checked, disabled, onClick
-@docs icon, trailingIcon
+@docs icon, trailingIcon, child
 @docs withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
 
 -}
@@ -117,6 +117,15 @@ slot's kinds; output row free so it composes into the child list).
 trailingIcon : Element TrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailingIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

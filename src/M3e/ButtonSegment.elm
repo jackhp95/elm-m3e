@@ -2,7 +2,7 @@ module M3e.ButtonSegment exposing
     ( view, build, toElement
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , checked, disabled, value, onBeforeinput, onInput, onChange, onClick
-    , icon
+    , icon, child
     , withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValue
     )
 
@@ -13,7 +13,7 @@ A option that can be selected within a segmented button.
 @docs view, build, toElement
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs checked, disabled, value, onBeforeinput, onInput, onChange, onClick
-@docs icon
+@docs icon, child
 @docs withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValue
 
 -}
@@ -135,6 +135,15 @@ slot's kinds; output row free so it composes into the child list).
 icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
 icon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

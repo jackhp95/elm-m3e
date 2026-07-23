@@ -3,6 +3,7 @@ module M3e.TextHighlight exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Mode, mode
     , caseSensitive, disabled, term, onHighlight
+    , child
     , withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
     )
 
@@ -14,6 +15,7 @@ Highlights text which matches a given search term.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Mode, mode
 @docs caseSensitive, disabled, term, onHighlight
+@docs child
 @docs withCaseSensitive, withChild, withClass, withDisabled, withId, withMode, withOnHighlight, withSlot, withStyle, withTerm
 
 -}
@@ -112,6 +114,15 @@ term =
 onHighlight : msg -> Attr { c | onHighlight : Supported } msg
 onHighlight =
     Ev.onHighlight
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

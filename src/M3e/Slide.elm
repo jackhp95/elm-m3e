@@ -2,6 +2,7 @@ module M3e.Slide exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , selectedIndex
+    , child
     , withChild, withClass, withId, withSelectedIndex, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ A carousel-like container used to horizontally cycle through slotted items.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs selectedIndex
+@docs child
 @docs withChild, withClass, withId, withSelectedIndex, withSlot, withStyle
 
 -}
@@ -67,6 +69,15 @@ view =
 selectedIndex : Float -> Attr { c | selectedIndex : Supported } msg
 selectedIndex =
     A.selectedIndex
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

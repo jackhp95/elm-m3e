@@ -3,6 +3,7 @@ module M3e.Badge exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Position, position, Size, size
     , for
+    , child
     , withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
     )
 
@@ -14,6 +15,7 @@ A visual indicator used to label content.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Position, position, Size, size
 @docs for
+@docs child
 @docs withChild, withClass, withFor, withId, withPosition, withSize, withSlot, withStyle
 
 -}
@@ -112,6 +114,15 @@ size value_ =
 for : String -> Attr { c | for : Supported } msg
 for =
     A.for
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

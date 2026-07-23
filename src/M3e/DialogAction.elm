@@ -2,6 +2,7 @@ module M3e.DialogAction exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , returnValue
+    , child
     , withChild, withClass, withId, withReturnValue, withSlot, withStyle
     )
 
@@ -12,6 +13,7 @@ An element, nested within a clickable element, used to close a parenting dialog.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs returnValue
+@docs child
 @docs withChild, withClass, withId, withReturnValue, withSlot, withStyle
 
 -}
@@ -67,6 +69,15 @@ view =
 returnValue : String -> Attr { c | returnValue : Supported } msg
 returnValue =
     A.returnValue
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

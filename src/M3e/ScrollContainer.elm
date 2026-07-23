@@ -3,6 +3,7 @@ module M3e.ScrollContainer exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Dividers, dividers
     , thin
+    , child
     , withChild, withClass, withDividers, withId, withSlot, withStyle, withThin
     )
 
@@ -14,6 +15,7 @@ A vertically oriented content container which presents dividers above and below 
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Dividers, dividers
 @docs thin
+@docs child
 @docs withChild, withClass, withDividers, withId, withSlot, withStyle, withThin
 
 -}
@@ -88,6 +90,15 @@ dividers value_ =
 thin : Bool -> Attr { c | thin : Supported } msg
 thin =
     A.thin
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

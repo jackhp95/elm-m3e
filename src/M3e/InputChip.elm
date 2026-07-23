@@ -3,7 +3,7 @@ module M3e.InputChip exposing
     , Is, Attrs, Content, AvatarSlot, IconSlot, RemoveIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
     , disabled, disabledInteractive, removable, removeLabel, value, onRemove, onClick
-    , avatar, icon, removeIcon
+    , avatar, icon, removeIcon, child
     , withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
     )
 
@@ -15,7 +15,7 @@ A chip which represents a discrete piece of information entered by a user.
 @docs Is, Attrs, Content, AvatarSlot, IconSlot, RemoveIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
 @docs disabled, disabledInteractive, removable, removeLabel, value, onRemove, onClick
-@docs avatar, icon, removeIcon
+@docs avatar, icon, removeIcon, child
 @docs withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
 
 -}
@@ -193,6 +193,15 @@ slot's kinds; output row free so it composes into the child list).
 removeIcon : Element RemoveIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 removeIcon element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "remove-icon") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

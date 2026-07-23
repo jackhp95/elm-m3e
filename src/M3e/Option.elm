@@ -3,6 +3,7 @@ module M3e.Option exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , HighlightMode, highlightMode
     , disableHighlight, disabled, selected, term, value
+    , child
     , withChild, withClass, withDisableHighlight, withDisabled, withHighlightMode, withId, withSelected, withSlot, withStyle, withTerm, withValue
     )
 
@@ -14,6 +15,7 @@ An option that can be selected.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs HighlightMode, highlightMode
 @docs disableHighlight, disabled, selected, term, value
+@docs child
 @docs withChild, withClass, withDisableHighlight, withDisabled, withHighlightMode, withId, withSelected, withSlot, withStyle, withTerm, withValue
 
 -}
@@ -133,6 +135,15 @@ term =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

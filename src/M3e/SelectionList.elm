@@ -3,6 +3,7 @@ module M3e.SelectionList exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
     , disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+    , child
     , withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle, withVariant
     )
 
@@ -14,6 +15,7 @@ A list of selectable options.
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
 @docs disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+@docs child
 @docs withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withSlot, withStyle, withVariant
 
 -}
@@ -143,6 +145,15 @@ onBeforeinput =
 onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
     Ev.onInput
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

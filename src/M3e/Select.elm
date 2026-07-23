@@ -2,7 +2,7 @@ module M3e.Select exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
-    , arrow, value
+    , arrow, value, child
     , withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
     )
 
@@ -13,7 +13,7 @@ A form control that allows users to select a value from a set of predefined opti
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
-@docs arrow, value
+@docs arrow, value, child
 @docs withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
 
 -}
@@ -181,6 +181,15 @@ slot's kinds; output row free so it composes into the child list).
 value : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 value element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "value") (El.toNode element))
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -3,6 +3,7 @@ module M3e.FabMenu exposing
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
     , onBeforetoggle, onToggle
+    , child
     , withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle, withVariant
     )
 
@@ -14,6 +15,7 @@ A menu, opened from a floating action button (FAB), used to display multiple rel
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
 @docs onBeforetoggle, onToggle
+@docs child
 @docs withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withSlot, withStyle, withVariant
 
 -}
@@ -101,6 +103,15 @@ onBeforetoggle =
 onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
     Ev.onToggle
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

@@ -1,6 +1,7 @@
 module M3e.ContentPane exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , child
     , withChild, withClass, withId, withSlot, withStyle
     )
 
@@ -10,6 +11,7 @@ A shaped surface for vertically scrollable content.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs child
 @docs withChild, withClass, withId, withSlot, withStyle
 
 -}
@@ -57,6 +59,15 @@ view :
     -> Element (Is s) admittedBy msg
 view =
     H.contentPane
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

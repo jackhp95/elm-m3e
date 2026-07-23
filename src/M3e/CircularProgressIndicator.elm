@@ -3,6 +3,7 @@ module M3e.CircularProgressIndicator exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
     , indeterminate, max, value
+    , child
     , withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
     )
 
@@ -14,6 +15,7 @@ A circular indicator of progress and activity.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
 @docs indeterminate, max, value
+@docs child
 @docs withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
 
 -}
@@ -104,6 +106,15 @@ max =
 value : Float -> Attr { c | value : Supported } msg
 value value_ =
     Ir.property "value" (Json.Encode.float value_)
+
+
+{-| Place a pre-built element into the default (unnamed) slot (input
+constrained to the slot's kinds; output row free so it composes into the
+child list). The list-form sibling of the builder's `withChild`.
+-}
+child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+child element =
+    Ir.fromNode (El.toNode element)
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
