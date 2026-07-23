@@ -19,11 +19,12 @@ Presents pagination controls used to scroll overflowing content.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
-import HtmlIr.Node exposing (Node)
-import M3e.Attributes
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -75,43 +76,43 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-slide-group" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.slideGroup
 
 
 {-| See `M3e.Attributes.disabled`.
 -}
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Attributes.disabled
+    A.disabled
 
 
 {-| See `M3e.Attributes.nextPageLabel`.
 -}
 nextPageLabel : String -> Attr { c | nextPageLabel : Supported } msg
 nextPageLabel =
-    M3e.Attributes.nextPageLabel
+    A.nextPageLabel
 
 
 {-| See `M3e.Attributes.previousPageLabel`.
 -}
 previousPageLabel : String -> Attr { c | previousPageLabel : Supported } msg
 previousPageLabel =
-    M3e.Attributes.previousPageLabel
+    A.previousPageLabel
 
 
 {-| See `M3e.Attributes.threshold`.
 -}
 threshold : Float -> Attr { c | threshold : Supported } msg
 threshold =
-    M3e.Attributes.threshold
+    A.threshold
 
 
 {-| See `M3e.Attributes.vertical`.
 -}
 vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
-    M3e.Attributes.vertical
+    A.vertical
 
 
 {-| Place an element into the named `next-icon` slot (input constrained to the
@@ -119,7 +120,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 nextIcon : Element NextIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 nextIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "next-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "next-icon") (El.toNode element))
 
 
 {-| Place an element into the named `prev-icon` slot (input constrained to the
@@ -127,14 +128,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 prevIcon : Element PrevIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 prevIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "prev-icon") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -164,95 +166,95 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-slide-group" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-slide-group" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
-withDisabled value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
 {-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
 -}
 withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg -> Builder { a | nextPageLabel : Used } slotCaps msg
-withNextPageLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.nextPageLabel value_ :: b.attrs }
+withNextPageLabel value_ =
+    B.withAttribute (A.nextPageLabel value_)
 
 
 {-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
 -}
 withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg -> Builder { a | previousPageLabel : Used } slotCaps msg
-withPreviousPageLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.previousPageLabel value_ :: b.attrs }
+withPreviousPageLabel value_ =
+    B.withAttribute (A.previousPageLabel value_)
 
 
 {-| Pipe form of `threshold` — consumes its capability (write-once).
 -}
 withThreshold : Float -> Builder { a | threshold : Available } slotCaps msg -> Builder { a | threshold : Used } slotCaps msg
-withThreshold value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.threshold value_ :: b.attrs }
+withThreshold value_ =
+    B.withAttribute (A.threshold value_)
 
 
 {-| Pipe form of `vertical` — consumes its capability (write-once).
 -}
 withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg -> Builder { a | vertical : Used } slotCaps msg
-withVertical value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.vertical value_ :: b.attrs }
+withVertical value_ =
+    B.withAttribute (A.vertical value_)
 
 
 {-| Pipe form of the `next-icon` slot — consumes its capability (write-once).
 -}
 withNextIcon : Element NextIconSlot admittedBy msg -> Builder attrCaps { s | nextIcon : Available } msg -> Builder attrCaps { s | nextIcon : Used } msg
-withNextIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (nextIcon element) :: b.children }
+withNextIcon element =
+    B.withChild (El.toNode (nextIcon element))
 
 
 {-| Pipe form of the `prev-icon` slot — consumes its capability (write-once).
 -}
 withPrevIcon : Element PrevIconSlot admittedBy msg -> Builder attrCaps { s | prevIcon : Available } msg -> Builder attrCaps { s | prevIcon : Used } msg
-withPrevIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (prevIcon element) :: b.children }
+withPrevIcon element =
+    B.withChild (El.toNode (prevIcon element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

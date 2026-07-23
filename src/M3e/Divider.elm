@@ -17,11 +17,12 @@ A thin line that separates content in lists or other containers.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import M3e.Attributes
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -57,43 +58,44 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-divider" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.divider
 
 
 {-| See `M3e.Attributes.inset`.
 -}
 inset : Bool -> Attr { c | inset : Supported } msg
 inset =
-    M3e.Attributes.inset
+    A.inset
 
 
 {-| See `M3e.Attributes.insetEnd`.
 -}
 insetEnd : Bool -> Attr { c | insetEnd : Supported } msg
 insetEnd =
-    M3e.Attributes.insetEnd
+    A.insetEnd
 
 
 {-| See `M3e.Attributes.insetStart`.
 -}
 insetStart : Bool -> Attr { c | insetStart : Supported } msg
 insetStart =
-    M3e.Attributes.insetStart
+    A.insetStart
 
 
 {-| See `M3e.Attributes.vertical`.
 -}
 vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
-    M3e.Attributes.vertical
+    A.vertical
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -120,67 +122,67 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-divider" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-divider" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `inset` — consumes its capability (write-once).
 -}
 withInset : Bool -> Builder { a | inset : Available } slotCaps msg -> Builder { a | inset : Used } slotCaps msg
-withInset value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.inset value_ :: b.attrs }
+withInset value_ =
+    B.withAttribute (A.inset value_)
 
 
 {-| Pipe form of `insetEnd` — consumes its capability (write-once).
 -}
 withInsetEnd : Bool -> Builder { a | insetEnd : Available } slotCaps msg -> Builder { a | insetEnd : Used } slotCaps msg
-withInsetEnd value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.insetEnd value_ :: b.attrs }
+withInsetEnd value_ =
+    B.withAttribute (A.insetEnd value_)
 
 
 {-| Pipe form of `insetStart` — consumes its capability (write-once).
 -}
 withInsetStart : Bool -> Builder { a | insetStart : Available } slotCaps msg -> Builder { a | insetStart : Used } slotCaps msg
-withInsetStart value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.insetStart value_ :: b.attrs }
+withInsetStart value_ =
+    B.withAttribute (A.insetStart value_)
 
 
 {-| Pipe form of `vertical` — consumes its capability (write-once).
 -}
 withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg -> Builder { a | vertical : Used } slotCaps msg
-withVertical value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.vertical value_ :: b.attrs }
+withVertical value_ =
+    B.withAttribute (A.vertical value_)

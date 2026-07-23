@@ -19,12 +19,13 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import M3e.Attributes
-import M3e.Events
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -73,106 +74,106 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-bottom-sheet" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.bottomSheet
 
 
 {-| See `M3e.Attributes.detent`.
 -}
 detent : Float -> Attr { c | detent : Supported } msg
 detent =
-    M3e.Attributes.detent
+    A.detent
 
 
 {-| See `M3e.Attributes.detents`.
 -}
 detents : String -> Attr { c | detents : Supported } msg
 detents =
-    M3e.Attributes.detents
+    A.detents
 
 
 {-| See `M3e.Attributes.handle`.
 -}
 handle : Bool -> Attr { c | handle : Supported } msg
 handle =
-    M3e.Attributes.handle
+    A.handle
 
 
 {-| See `M3e.Attributes.handleLabel`.
 -}
 handleLabel : String -> Attr { c | handleLabel : Supported } msg
 handleLabel =
-    M3e.Attributes.handleLabel
+    A.handleLabel
 
 
 {-| See `M3e.Attributes.hideFriction`.
 -}
 hideFriction : Float -> Attr { c | hideFriction : Supported } msg
 hideFriction =
-    M3e.Attributes.hideFriction
+    A.hideFriction
 
 
 {-| See `M3e.Attributes.hideable`.
 -}
 hideable : Bool -> Attr { c | hideable : Supported } msg
 hideable =
-    M3e.Attributes.hideable
+    A.hideable
 
 
 {-| See `M3e.Attributes.modal`.
 -}
 modal : Bool -> Attr { c | modal : Supported } msg
 modal =
-    M3e.Attributes.modal
+    A.modal
 
 
 {-| See `M3e.Attributes.open`.
 -}
 open : Bool -> Attr { c | open : Supported } msg
 open =
-    M3e.Attributes.open
+    A.open
 
 
 {-| See `M3e.Attributes.overshootLimit`.
 -}
 overshootLimit : Float -> Attr { c | overshootLimit : Supported } msg
 overshootLimit =
-    M3e.Attributes.overshootLimit
+    A.overshootLimit
 
 
 {-| See `M3e.Events.onOpening`.
 -}
 onOpening : msg -> Attr { c | onOpening : Supported } msg
 onOpening =
-    M3e.Events.onOpening
+    Ev.onOpening
 
 
 {-| See `M3e.Events.onClosing`.
 -}
 onClosing : msg -> Attr { c | onClosing : Supported } msg
 onClosing =
-    M3e.Events.onClosing
+    Ev.onClosing
 
 
 {-| See `M3e.Events.onCancel`.
 -}
 onCancel : msg -> Attr { c | onCancel : Supported } msg
 onCancel =
-    M3e.Events.onCancel
+    Ev.onCancel
 
 
 {-| See `M3e.Events.onOpened`.
 -}
 onOpened : msg -> Attr { c | onOpened : Supported } msg
 onOpened =
-    M3e.Events.onOpened
+    Ev.onOpened
 
 
 {-| See `M3e.Events.onClosed`.
 -}
 onClosed : msg -> Attr { c | onClosed : Supported } msg
 onClosed =
-    M3e.Events.onClosed
+    Ev.onClosed
 
 
 {-| Place an element into the named `header` slot (input constrained to the
@@ -180,14 +181,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 header : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 header element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -225,151 +227,151 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-bottom-sheet" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-bottom-sheet" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `detent` — consumes its capability (write-once).
 -}
 withDetent : Float -> Builder { a | detent : Available } slotCaps msg -> Builder { a | detent : Used } slotCaps msg
-withDetent value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.detent value_ :: b.attrs }
+withDetent value_ =
+    B.withAttribute (A.detent value_)
 
 
 {-| Pipe form of `detents` — consumes its capability (write-once).
 -}
 withDetents : String -> Builder { a | detents : Available } slotCaps msg -> Builder { a | detents : Used } slotCaps msg
-withDetents value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.detents value_ :: b.attrs }
+withDetents value_ =
+    B.withAttribute (A.detents value_)
 
 
 {-| Pipe form of `handle` — consumes its capability (write-once).
 -}
 withHandle : Bool -> Builder { a | handle : Available } slotCaps msg -> Builder { a | handle : Used } slotCaps msg
-withHandle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.handle value_ :: b.attrs }
+withHandle value_ =
+    B.withAttribute (A.handle value_)
 
 
 {-| Pipe form of `handleLabel` — consumes its capability (write-once).
 -}
 withHandleLabel : String -> Builder { a | handleLabel : Available } slotCaps msg -> Builder { a | handleLabel : Used } slotCaps msg
-withHandleLabel value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.handleLabel value_ :: b.attrs }
+withHandleLabel value_ =
+    B.withAttribute (A.handleLabel value_)
 
 
 {-| Pipe form of `hideFriction` — consumes its capability (write-once).
 -}
 withHideFriction : Float -> Builder { a | hideFriction : Available } slotCaps msg -> Builder { a | hideFriction : Used } slotCaps msg
-withHideFriction value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.hideFriction value_ :: b.attrs }
+withHideFriction value_ =
+    B.withAttribute (A.hideFriction value_)
 
 
 {-| Pipe form of `hideable` — consumes its capability (write-once).
 -}
 withHideable : Bool -> Builder { a | hideable : Available } slotCaps msg -> Builder { a | hideable : Used } slotCaps msg
-withHideable value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.hideable value_ :: b.attrs }
+withHideable value_ =
+    B.withAttribute (A.hideable value_)
 
 
 {-| Pipe form of `modal` — consumes its capability (write-once).
 -}
 withModal : Bool -> Builder { a | modal : Available } slotCaps msg -> Builder { a | modal : Used } slotCaps msg
-withModal value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.modal value_ :: b.attrs }
+withModal value_ =
+    B.withAttribute (A.modal value_)
 
 
 {-| Pipe form of `open` — consumes its capability (write-once).
 -}
 withOpen : Bool -> Builder { a | open : Available } slotCaps msg -> Builder { a | open : Used } slotCaps msg
-withOpen value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.open value_ :: b.attrs }
+withOpen value_ =
+    B.withAttribute (A.open value_)
 
 
 {-| Pipe form of `overshootLimit` — consumes its capability (write-once).
 -}
 withOvershootLimit : Float -> Builder { a | overshootLimit : Available } slotCaps msg -> Builder { a | overshootLimit : Used } slotCaps msg
-withOvershootLimit value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.overshootLimit value_ :: b.attrs }
+withOvershootLimit value_ =
+    B.withAttribute (A.overshootLimit value_)
 
 
 {-| Pipe form of `onOpening` — consumes its capability (write-once).
 -}
 withOnOpening : msg -> Builder { a | onOpening : Available } slotCaps msg -> Builder { a | onOpening : Used } slotCaps msg
-withOnOpening value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onOpening value_ :: b.attrs }
+withOnOpening value_ =
+    B.withAttribute (Ev.onOpening value_)
 
 
 {-| Pipe form of `onClosing` — consumes its capability (write-once).
 -}
 withOnClosing : msg -> Builder { a | onClosing : Available } slotCaps msg -> Builder { a | onClosing : Used } slotCaps msg
-withOnClosing value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onClosing value_ :: b.attrs }
+withOnClosing value_ =
+    B.withAttribute (Ev.onClosing value_)
 
 
 {-| Pipe form of `onCancel` — consumes its capability (write-once).
 -}
 withOnCancel : msg -> Builder { a | onCancel : Available } slotCaps msg -> Builder { a | onCancel : Used } slotCaps msg
-withOnCancel value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onCancel value_ :: b.attrs }
+withOnCancel value_ =
+    B.withAttribute (Ev.onCancel value_)
 
 
 {-| Pipe form of `onOpened` — consumes its capability (write-once).
 -}
 withOnOpened : msg -> Builder { a | onOpened : Available } slotCaps msg -> Builder { a | onOpened : Used } slotCaps msg
-withOnOpened value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onOpened value_ :: b.attrs }
+withOnOpened value_ =
+    B.withAttribute (Ev.onOpened value_)
 
 
 {-| Pipe form of `onClosed` — consumes its capability (write-once).
 -}
 withOnClosed : msg -> Builder { a | onClosed : Available } slotCaps msg -> Builder { a | onClosed : Used } slotCaps msg
-withOnClosed value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onClosed value_ :: b.attrs }
+withOnClosed value_ =
+    B.withAttribute (Ev.onClosed value_)
 
 
 {-| Pipe form of the `header` slot — consumes its capability (write-once).
 -}
 withHeader : Element childAccepts admittedBy msg -> Builder attrCaps { s | header : Available } msg -> Builder attrCaps { s | header : Used } msg
-withHeader element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (header element) :: b.children }
+withHeader element =
+    B.withChild (El.toNode (header element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

@@ -19,12 +19,13 @@ A step in a wizard-like workflow.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
-import HtmlIr.Node exposing (Node)
-import M3e.Attributes
-import M3e.Events
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -109,8 +110,8 @@ view :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-step" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.step
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
@@ -128,77 +129,77 @@ el required_ attrs children =
 -}
 completed : Bool -> Attr { c | completed : Supported } msg
 completed =
-    M3e.Attributes.completed
+    A.completed
 
 
 {-| See `M3e.Attributes.disabled`.
 -}
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Attributes.disabled
+    A.disabled
 
 
 {-| See `M3e.Attributes.editable`.
 -}
 editable : Bool -> Attr { c | editable : Supported } msg
 editable =
-    M3e.Attributes.editable
+    A.editable
 
 
 {-| See `M3e.Attributes.for`.
 -}
 for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Attributes.for
+    A.for
 
 
 {-| See `M3e.Attributes.invalid`.
 -}
 invalid : Bool -> Attr { c | invalid : Supported } msg
 invalid =
-    M3e.Attributes.invalid
+    A.invalid
 
 
 {-| See `M3e.Attributes.optional`.
 -}
 optional : Bool -> Attr { c | optional : Supported } msg
 optional =
-    M3e.Attributes.optional
+    A.optional
 
 
 {-| See `M3e.Attributes.selected`.
 -}
 selected : Bool -> Attr { c | selected : Supported } msg
 selected =
-    M3e.Attributes.selected
+    A.selected
 
 
 {-| See `M3e.Events.onBeforeinput`.
 -}
 onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
 onBeforeinput =
-    M3e.Events.onBeforeinput
+    Ev.onBeforeinput
 
 
 {-| See `M3e.Events.onInput`.
 -}
 onInput : msg -> Attr { c | onInput : Supported } msg
 onInput =
-    M3e.Events.onInput
+    Ev.onInput
 
 
 {-| See `M3e.Events.onChange`.
 -}
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Events.onChange
+    Ev.onChange
 
 
 {-| See `M3e.Events.onClick`.
 -}
 onClick : msg -> Attr { c | onClick : Supported } msg
 onClick =
-    M3e.Events.onClick
+    Ev.onClick
 
 
 {-| Place an element into the named `done-icon` slot (input constrained to the
@@ -206,7 +207,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 doneIcon : Element DoneIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 doneIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "done-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "done-icon") (El.toNode element))
 
 
 {-| Place an element into the named `edit-icon` slot (input constrained to the
@@ -214,7 +215,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 editIcon : Element EditIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 editIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "edit-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "edit-icon") (El.toNode element))
 
 
 {-| Place an element into the named `error` slot (input constrained to the
@@ -222,7 +223,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 error : Element ErrorSlot admittedBy msg -> Element free freeAdmittedBy msg
 error element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "error") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "error") (El.toNode element))
 
 
 {-| Place an element into the named `error-icon` slot (input constrained to the
@@ -230,7 +231,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 errorIcon : Element ErrorIconSlot admittedBy msg -> Element free freeAdmittedBy msg
 errorIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "error-icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "error-icon") (El.toNode element))
 
 
 {-| Place an element into the named `hint` slot (input constrained to the
@@ -238,7 +239,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 hint : Element HintSlot admittedBy msg -> Element free freeAdmittedBy msg
 hint element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "hint") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "hint") (El.toNode element))
 
 
 {-| Place an element into the named `icon` slot (input constrained to the
@@ -246,14 +247,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
 icon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -295,165 +297,165 @@ build :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg
 build required_ =
-    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+    B.init "m3e-step" [] [ El.toNode required_.content ]
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-step" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `completed` — consumes its capability (write-once).
 -}
 withCompleted : Bool -> Builder { a | completed : Available } slotCaps msg -> Builder { a | completed : Used } slotCaps msg
-withCompleted value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.completed value_ :: b.attrs }
+withCompleted value_ =
+    B.withAttribute (A.completed value_)
 
 
 {-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
-withDisabled value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
 {-| Pipe form of `editable` — consumes its capability (write-once).
 -}
 withEditable : Bool -> Builder { a | editable : Available } slotCaps msg -> Builder { a | editable : Used } slotCaps msg
-withEditable value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.editable value_ :: b.attrs }
+withEditable value_ =
+    B.withAttribute (A.editable value_)
 
 
 {-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
-withFor value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
 {-| Pipe form of `invalid` — consumes its capability (write-once).
 -}
 withInvalid : Bool -> Builder { a | invalid : Available } slotCaps msg -> Builder { a | invalid : Used } slotCaps msg
-withInvalid value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.invalid value_ :: b.attrs }
+withInvalid value_ =
+    B.withAttribute (A.invalid value_)
 
 
 {-| Pipe form of `optional` — consumes its capability (write-once).
 -}
 withOptional : Bool -> Builder { a | optional : Available } slotCaps msg -> Builder { a | optional : Used } slotCaps msg
-withOptional value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.optional value_ :: b.attrs }
+withOptional value_ =
+    B.withAttribute (A.optional value_)
 
 
 {-| Pipe form of `selected` — consumes its capability (write-once).
 -}
 withSelected : Bool -> Builder { a | selected : Available } slotCaps msg -> Builder { a | selected : Used } slotCaps msg
-withSelected value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.selected value_ :: b.attrs }
+withSelected value_ =
+    B.withAttribute (A.selected value_)
 
 
 {-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg -> Builder { a | onBeforeinput : Used } slotCaps msg
-withOnBeforeinput value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onBeforeinput value_ :: b.attrs }
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
 {-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
-withOnInput value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onInput value_ :: b.attrs }
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
-withOnChange value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
 {-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
-withOnClick value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onClick value_ :: b.attrs }
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)
 
 
 {-| Pipe form of the `done-icon` slot — consumes its capability (write-once).
 -}
 withDoneIcon : Element DoneIconSlot admittedBy msg -> Builder attrCaps { s | doneIcon : Available } msg -> Builder attrCaps { s | doneIcon : Used } msg
-withDoneIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (doneIcon element) :: b.children }
+withDoneIcon element =
+    B.withChild (El.toNode (doneIcon element))
 
 
 {-| Pipe form of the `edit-icon` slot — consumes its capability (write-once).
 -}
 withEditIcon : Element EditIconSlot admittedBy msg -> Builder attrCaps { s | editIcon : Available } msg -> Builder attrCaps { s | editIcon : Used } msg
-withEditIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (editIcon element) :: b.children }
+withEditIcon element =
+    B.withChild (El.toNode (editIcon element))
 
 
 {-| Pipe form of the `error` slot — consumes its capability (write-once).
 -}
 withError : Element ErrorSlot admittedBy msg -> Builder attrCaps { s | error : Available } msg -> Builder attrCaps { s | error : Used } msg
-withError element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (error element) :: b.children }
+withError element =
+    B.withChild (El.toNode (error element))
 
 
 {-| Pipe form of the `error-icon` slot — consumes its capability (write-once).
 -}
 withErrorIcon : Element ErrorIconSlot admittedBy msg -> Builder attrCaps { s | errorIcon : Available } msg -> Builder attrCaps { s | errorIcon : Used } msg
-withErrorIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (errorIcon element) :: b.children }
+withErrorIcon element =
+    B.withChild (El.toNode (errorIcon element))
 
 
 {-| Pipe form of the `hint` slot — consumes its capability (write-once).
 -}
 withHint : Element HintSlot admittedBy msg -> Builder attrCaps { s | hint : Available } msg -> Builder attrCaps { s | hint : Used } msg
-withHint element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (hint element) :: b.children }
+withHint element =
+    B.withChild (El.toNode (hint element))
 
 
 {-| Pipe form of the `icon` slot — consumes its capability (write-once).
 -}
 withIcon : Element IconSlot admittedBy msg -> Builder attrCaps { s | icon : Available } msg -> Builder attrCaps { s | icon : Used } msg
-withIcon element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (icon element) :: b.children }
+withIcon element =
+    B.withChild (El.toNode (icon element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

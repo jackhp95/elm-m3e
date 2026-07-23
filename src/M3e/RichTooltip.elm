@@ -21,13 +21,14 @@ Provides contextual details for a control, such as explaining the value or purpo
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
-import M3e.Attributes
-import M3e.Events
+import HtmlIr.Value as Val exposing (Value)
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -102,8 +103,8 @@ view :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-rich-tooltip" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.richTooltip
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
@@ -117,60 +118,60 @@ el required_ attrs children =
     view attrs (required_.content :: children)
 
 
-{-| Narrowed value setter for `position`. Tokens come from `M3e.Values`.
+{-| The position of the tooltip. (default: `"below-after"`)
 -}
 position : Value Position -> Attr { c | position : Supported } msg
 position value_ =
-    Ir.attribute "position" (HtmlIr.Value.toString value_)
+    Ir.attribute "position" (Val.toString value_)
 
 
-{-| Narrowed value setter for `touchGestures`. Tokens come from `M3e.Values`.
+{-| The mode in which to handle touch gestures. (default: `"auto"`)
 -}
 touchGestures : Value TouchGestures -> Attr { c | touchGestures : Supported } msg
 touchGestures value_ =
-    Ir.attribute "touch-gestures" (HtmlIr.Value.toString value_)
+    Ir.attribute "touch-gestures" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.disabled`.
 -}
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
-    M3e.Attributes.disabled
+    A.disabled
 
 
 {-| See `M3e.Attributes.for`.
 -}
 for : String -> Attr { c | for : Supported } msg
 for =
-    M3e.Attributes.for
+    A.for
 
 
 {-| See `M3e.Attributes.hideDelay`.
 -}
 hideDelay : Float -> Attr { c | hideDelay : Supported } msg
 hideDelay =
-    M3e.Attributes.hideDelay
+    A.hideDelay
 
 
 {-| See `M3e.Attributes.showDelay`.
 -}
 showDelay : Float -> Attr { c | showDelay : Supported } msg
 showDelay =
-    M3e.Attributes.showDelay
+    A.showDelay
 
 
 {-| See `M3e.Events.onBeforetoggle`.
 -}
 onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
 onBeforetoggle =
-    M3e.Events.onBeforetoggle
+    Ev.onBeforetoggle
 
 
 {-| See `M3e.Events.onToggle`.
 -}
 onToggle : msg -> Attr { c | onToggle : Supported } msg
 onToggle =
-    M3e.Events.onToggle
+    Ev.onToggle
 
 
 {-| Place an element into the named `actions` slot (input constrained to the
@@ -178,7 +179,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 actions : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 actions element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "actions") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "actions") (El.toNode element))
 
 
 {-| Place an element into the named `subhead` slot (input constrained to the
@@ -186,14 +187,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 subhead : Element SubheadSlot admittedBy msg -> Element free freeAdmittedBy msg
 subhead element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "subhead") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "subhead") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -228,116 +230,116 @@ build :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg
 build required_ =
-    Builder { attrs = [], children = [ HtmlIr.Element.toNode required_.content ] }
+    B.init "m3e-rich-tooltip" [] [ El.toNode required_.content ]
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-rich-tooltip" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg -> Builder { a | disabled : Used } slotCaps msg
-withDisabled value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.disabled value_ :: b.attrs }
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
 {-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
-withFor value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.for value_ :: b.attrs }
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
 {-| Pipe form of `hideDelay` — consumes its capability (write-once).
 -}
 withHideDelay : Float -> Builder { a | hideDelay : Available } slotCaps msg -> Builder { a | hideDelay : Used } slotCaps msg
-withHideDelay value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.hideDelay value_ :: b.attrs }
+withHideDelay value_ =
+    B.withAttribute (A.hideDelay value_)
 
 
 {-| Pipe form of `position` — consumes its capability (write-once).
 -}
 withPosition : Value Position -> Builder { a | position : Available } slotCaps msg -> Builder { a | position : Used } slotCaps msg
-withPosition value_ (Builder b) =
-    Builder { b | attrs = position value_ :: b.attrs }
+withPosition value_ =
+    B.withAttribute (position value_)
 
 
 {-| Pipe form of `showDelay` — consumes its capability (write-once).
 -}
 withShowDelay : Float -> Builder { a | showDelay : Available } slotCaps msg -> Builder { a | showDelay : Used } slotCaps msg
-withShowDelay value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.showDelay value_ :: b.attrs }
+withShowDelay value_ =
+    B.withAttribute (A.showDelay value_)
 
 
 {-| Pipe form of `touchGestures` — consumes its capability (write-once).
 -}
 withTouchGestures : Value TouchGestures -> Builder { a | touchGestures : Available } slotCaps msg -> Builder { a | touchGestures : Used } slotCaps msg
-withTouchGestures value_ (Builder b) =
-    Builder { b | attrs = touchGestures value_ :: b.attrs }
+withTouchGestures value_ =
+    B.withAttribute (touchGestures value_)
 
 
 {-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg -> Builder { a | onBeforetoggle : Used } slotCaps msg
-withOnBeforetoggle value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onBeforetoggle value_ :: b.attrs }
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
 {-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg -> Builder { a | onToggle : Used } slotCaps msg
-withOnToggle value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onToggle value_ :: b.attrs }
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)
 
 
 {-| Pipe form of the `actions` slot — consumes its capability (write-once).
 -}
 withActions : Element childAccepts admittedBy msg -> Builder attrCaps { s | actions : Available } msg -> Builder attrCaps { s | actions : Used } msg
-withActions element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (actions element) :: b.children }
+withActions element =
+    B.withChild (El.toNode (actions element))
 
 
 {-| Pipe form of the `subhead` slot — consumes its capability (write-once).
 -}
 withSubhead : Element SubheadSlot admittedBy msg -> Builder attrCaps { s | subhead : Available } msg -> Builder attrCaps { s | subhead : Used } msg
-withSubhead element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (subhead element) :: b.children }
+withSubhead element =
+    B.withChild (El.toNode (subhead element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

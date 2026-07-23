@@ -19,12 +19,13 @@ Presents frequently used actions relevant to the current page.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
-import M3e.Attributes
+import HtmlIr.Value as Val exposing (Value)
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -79,43 +80,44 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-toolbar" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.toolbar
 
 
-{-| Narrowed value setter for `shape`. Tokens come from `M3e.Values`.
+{-| The shape of the toolbar. (default: `"square"`)
 -}
 shape : Value Shape -> Attr { c | shape : Supported } msg
 shape value_ =
-    Ir.attribute "shape" (HtmlIr.Value.toString value_)
+    Ir.attribute "shape" (Val.toString value_)
 
 
-{-| Narrowed value setter for `variant`. Tokens come from `M3e.Values`.
+{-| The appearance variant of the toolbar. (default: `"standard"`)
 -}
 variant : Value Variant -> Attr { c | variant : Supported } msg
 variant value_ =
-    Ir.attribute "variant" (HtmlIr.Value.toString value_)
+    Ir.attribute "variant" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.elevated`.
 -}
 elevated : Bool -> Attr { c | elevated : Supported } msg
 elevated =
-    M3e.Attributes.elevated
+    A.elevated
 
 
 {-| See `M3e.Attributes.vertical`.
 -}
 vertical : Bool -> Attr { c | vertical : Supported } msg
 vertical =
-    M3e.Attributes.vertical
+    A.vertical
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -142,74 +144,74 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-toolbar" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-toolbar" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `elevated` — consumes its capability (write-once).
 -}
 withElevated : Bool -> Builder { a | elevated : Available } slotCaps msg -> Builder { a | elevated : Used } slotCaps msg
-withElevated value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.elevated value_ :: b.attrs }
+withElevated value_ =
+    B.withAttribute (A.elevated value_)
 
 
 {-| Pipe form of `shape` — consumes its capability (write-once).
 -}
 withShape : Value Shape -> Builder { a | shape : Available } slotCaps msg -> Builder { a | shape : Used } slotCaps msg
-withShape value_ (Builder b) =
-    Builder { b | attrs = shape value_ :: b.attrs }
+withShape value_ =
+    B.withAttribute (shape value_)
 
 
 {-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg -> Builder { a | variant : Used } slotCaps msg
-withVariant value_ (Builder b) =
-    Builder { b | attrs = variant value_ :: b.attrs }
+withVariant value_ =
+    B.withAttribute (variant value_)
 
 
 {-| Pipe form of `vertical` — consumes its capability (write-once).
 -}
 withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg -> Builder { a | vertical : Used } slotCaps msg
-withVertical value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.vertical value_ :: b.attrs }
+withVertical value_ =
+    B.withAttribute (A.vertical value_)
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)

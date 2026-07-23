@@ -21,13 +21,14 @@ A container for one or two sliding drawers.
 -}
 
 import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
+import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
-import HtmlIr.Node exposing (Node)
-import HtmlIr.Value exposing (Value)
-import M3e.Attributes
-import M3e.Events
+import HtmlIr.Value as Val exposing (Value)
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Events as Ev
+import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -89,43 +90,43 @@ view :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view attrs children =
-    Ir.fromNode (Ir.node "m3e-drawer-container" attrs (List.map HtmlIr.Element.toNode children))
+view =
+    H.drawerContainer
 
 
-{-| Narrowed value setter for `endMode`. Tokens come from `M3e.Values`.
+{-| The behavior mode of the end drawer. (default: `"side"`)
 -}
 endMode : Value EndMode -> Attr { c | endMode : Supported } msg
 endMode value_ =
-    Ir.attribute "end-mode" (HtmlIr.Value.toString value_)
+    Ir.attribute "end-mode" (Val.toString value_)
 
 
-{-| Narrowed value setter for `startMode`. Tokens come from `M3e.Values`.
+{-| The behavior mode of the start drawer. (default: `"side"`)
 -}
 startMode : Value StartMode -> Attr { c | startMode : Supported } msg
 startMode value_ =
-    Ir.attribute "start-mode" (HtmlIr.Value.toString value_)
+    Ir.attribute "start-mode" (Val.toString value_)
 
 
 {-| See `M3e.Attributes.endDivider`.
 -}
 endDivider : Bool -> Attr { c | endDivider : Supported } msg
 endDivider =
-    M3e.Attributes.endDivider
+    A.endDivider
 
 
 {-| See `M3e.Attributes.startDivider`.
 -}
 startDivider : Bool -> Attr { c | startDivider : Supported } msg
 startDivider =
-    M3e.Attributes.startDivider
+    A.startDivider
 
 
 {-| See `M3e.Events.onChange`.
 -}
 onChange : msg -> Attr { c | onChange : Supported } msg
 onChange =
-    M3e.Events.onChange
+    Ev.onChange
 
 
 {-| Place an element into the named `end` slot (input constrained to the
@@ -133,7 +134,7 @@ slot's kinds; output row free so it composes into the child list).
 -}
 end : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 end element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "end") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "end") (El.toNode element))
 
 
 {-| Place an element into the named `start` slot (input constrained to the
@@ -141,14 +142,15 @@ slot's kinds; output row free so it composes into the child list).
 -}
 start : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 start element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (HtmlIr.Element.toNode element))
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (El.toNode element))
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable.
+a singular attribute or slot twice is unwritable. Aliases the shared builder in
+`Build.Internal`, closed over this component's `Attrs` row.
 -}
-type Builder attrCaps slotCaps msg
-    = Builder { attrs : List (Attr Attrs msg), children : List (Node msg) }
+type alias Builder attrCaps slotCaps msg =
+    B.Builder Attrs attrCaps slotCaps msg
 
 
 {-| Every attribute/event capability, still writable.
@@ -180,109 +182,109 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    Builder { attrs = [], children = [] }
+    B.init "m3e-drawer-container" [] []
 
 
-{-| Close the pipe-builder.
+{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
 -}
 toElement : Builder attrCaps slotCaps msg -> Element (Is s) admittedBy msg
-toElement (Builder b) =
-    Ir.fromNode (Ir.node "m3e-drawer-container" (List.reverse b.attrs) (List.reverse b.children))
+toElement =
+    B.toElement
 
 
 {-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg -> Builder { a | class : Used } slotCaps msg
-withClass value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.class value_ :: b.attrs }
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
 {-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg -> Builder { a | id : Used } slotCaps msg
-withId value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.id value_ :: b.attrs }
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
 {-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg -> Builder { a | slot : Used } slotCaps msg
-withSlot value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.slot value_ :: b.attrs }
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.style value_ :: b.attrs }
+withStyle value_ =
+    B.withAttribute (A.style value_)
 
 
 {-| Pipe form of `end` — consumes its capability (write-once).
 -}
 withEnd : Bool -> Builder { a | end : Available } slotCaps msg -> Builder { a | end : Used } slotCaps msg
-withEnd value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.end value_ :: b.attrs }
+withEnd value_ =
+    B.withAttribute (A.end value_)
 
 
 {-| Pipe form of `endDivider` — consumes its capability (write-once).
 -}
 withEndDivider : Bool -> Builder { a | endDivider : Available } slotCaps msg -> Builder { a | endDivider : Used } slotCaps msg
-withEndDivider value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.endDivider value_ :: b.attrs }
+withEndDivider value_ =
+    B.withAttribute (A.endDivider value_)
 
 
 {-| Pipe form of `endMode` — consumes its capability (write-once).
 -}
 withEndMode : Value EndMode -> Builder { a | endMode : Available } slotCaps msg -> Builder { a | endMode : Used } slotCaps msg
-withEndMode value_ (Builder b) =
-    Builder { b | attrs = endMode value_ :: b.attrs }
+withEndMode value_ =
+    B.withAttribute (endMode value_)
 
 
 {-| Pipe form of `start` — consumes its capability (write-once).
 -}
 withStart : Bool -> Builder { a | start : Available } slotCaps msg -> Builder { a | start : Used } slotCaps msg
-withStart value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.start value_ :: b.attrs }
+withStart value_ =
+    B.withAttribute (A.start value_)
 
 
 {-| Pipe form of `startDivider` — consumes its capability (write-once).
 -}
 withStartDivider : Bool -> Builder { a | startDivider : Available } slotCaps msg -> Builder { a | startDivider : Used } slotCaps msg
-withStartDivider value_ (Builder b) =
-    Builder { b | attrs = M3e.Attributes.startDivider value_ :: b.attrs }
+withStartDivider value_ =
+    B.withAttribute (A.startDivider value_)
 
 
 {-| Pipe form of `startMode` — consumes its capability (write-once).
 -}
 withStartMode : Value StartMode -> Builder { a | startMode : Available } slotCaps msg -> Builder { a | startMode : Used } slotCaps msg
-withStartMode value_ (Builder b) =
-    Builder { b | attrs = startMode value_ :: b.attrs }
+withStartMode value_ =
+    B.withAttribute (startMode value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg -> Builder { a | onChange : Used } slotCaps msg
-withOnChange value_ (Builder b) =
-    Builder { b | attrs = M3e.Events.onChange value_ :: b.attrs }
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
 {-| Pipe form of the `end` slot — consumes its capability (write-once).
 -}
 withEndSlot : Element childAccepts admittedBy msg -> Builder attrCaps { s | end : Available } msg -> Builder attrCaps { s | end : Used } msg
-withEndSlot element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (end element) :: b.children }
+withEndSlot element =
+    B.withChild (El.toNode (end element))
 
 
 {-| Pipe form of the `start` slot — consumes its capability (write-once).
 -}
 withStartSlot : Element childAccepts admittedBy msg -> Builder attrCaps { s | start : Available } msg -> Builder attrCaps { s | start : Used } msg
-withStartSlot element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode (start element) :: b.children }
+withStartSlot element =
+    B.withChild (El.toNode (start element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
 -}
 withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
-withChild element (Builder b) =
-    Builder { b | children = HtmlIr.Element.toNode element :: b.children }
+withChild element =
+    B.withChild (El.toNode element)
