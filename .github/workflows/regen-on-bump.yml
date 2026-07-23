@@ -27,12 +27,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-          # ELM_CEM_TOKEN is OPTIONAL. The generator jackhp95/elm-cem is public, so
-          # the clone step below needs no token. The only remaining reason for a PAT:
-          # a commit pushed with the default GITHUB_TOKEN does NOT re-trigger CI, so
-          # if you want the regen commit to auto-run CI on the PR, set ELM_CEM_TOKEN
-          # to a PAT with WRITE (contents) on this repo. Without it GITHUB_TOKEN still
-          # pushes the regen commit — you just re-run CI on the PR manually.
+          # ELM_CEM_TOKEN is REQUIRED: the generator jackhp95/elm-cem is PRIVATE,
+          # so the clone step below needs an authenticated token (a PAT — classic
+          # `repo` scope, or fine-grained Contents:read on the private jackhp95
+          # sibling repos). It doubles as the push token here: a commit pushed with
+          # the default GITHUB_TOKEN does NOT re-trigger CI, so pushing the regen
+          # commit with the PAT (WRITE contents on this repo) lets CI auto-run on
+          # the PR. Falls back to github.token for the checkout/push, but the clone
+          # step will fail without a PAT that can read the private generator.
           token: ${{ secrets.ELM_CEM_TOKEN || github.token }}
 
       - uses: pnpm/action-setup@v6
@@ -57,12 +59,14 @@ jobs:
         if: steps.changed.outputs.m3e == 'true'
         run: cd docs && pnpm install --frozen-lockfile
 
-      - name: Fetch the elm-cem generator (public, gitignored in this repo)
+      - name: Fetch the elm-cem generator (private, gitignored in this repo)
         if: steps.changed.outputs.m3e == 'true'
-        # jackhp95/elm-cem is public — a token-free clone, mirroring how ci.yml
-        # fetches the public elm-review-cem sibling.
+        # jackhp95/elm-cem is PRIVATE — authenticated clone, mirroring how ci.yml
+        # fetches the private siblings. Uses the same ELM_CEM_TOKEN PAT.
+        env:
+          ELM_CEM_TOKEN: ${{ secrets.ELM_CEM_TOKEN }}
         run: |
-          git clone --depth 1 https://github.com/jackhp95/elm-cem.git elm-cem
+          git clone --depth 1 "https://x-access-token:${ELM_CEM_TOKEN}@github.com/jackhp95/elm-cem.git" elm-cem
           cd elm-cem && npm ci
 
       - name: Regenerate src
