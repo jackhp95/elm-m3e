@@ -115,7 +115,7 @@ the slot's kinds and hands back a free row so it slots into the child list.
 
 ---
 
-## 4. Forms: typed native controls + `Field`
+## 4. Forms: typed native controls + accessible label/control pairing
 
 `TypedHtml` ships the native form controls with **payload-typed** events — the
 handler receives the value directly (like `elm/html`), no decoder needed:
