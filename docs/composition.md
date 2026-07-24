@@ -115,7 +115,7 @@ the slot's kinds and hands back a free row so it slots into the child list.
 
 ---
 
-## 4. Forms: typed native controls + `Field`
+## 4. Forms: typed native controls + accessible label/control pairing
 
 `TypedHtml` ships the native form controls with **payload-typed** events — the
 handler receives the value directly (like `elm/html`), no decoder needed:
@@ -145,37 +145,22 @@ TypedHtml.div []
 For a non-standard payload, `onInputWith` / `onChangeWith` / `onCheckWith` take a
 `Json.Decode.Decoder msg`.
 
-For the accessible `<label for>` ↔ control association, use
-`TypedHtml.Field.field`. You pass **one** id; it threads it through both halves
-so the `for` and the control `id` can never drift apart:
+For the accessible `<label for>` ↔ control association, use the native pattern:
+a `label` carrying `for` next to a control carrying the matching `id`. The `for`
+must match the control's `id` — keep them in sync so the two cannot drift apart:
 
 ```elm
-TypedHtml.Field.field "email"
-    { label = [ TypedHtml.text "Email address" ]
-    , control =
-        TypedHtml.input
-            [ TypedHtml.Attributes.id "email"
-            , TypedHtml.Attributes.type_ "email"
-            ]
-            []
-    }
-```
-
-`field` returns a *list* of sibling elements (the `<label>` then the control),
-so splice it into any container's child list:
-
-```elm
-TypedHtml.div []
-    (TypedHtml.Field.field "email"
-        { label = [ TypedHtml.text "Email address" ]
-        , control = TypedHtml.input [ TypedHtml.Attributes.id "email" ] []
-        }
-    )
+TypedHtml.label [ TypedHtml.Attributes.for "email" ] [ TypedHtml.text "Email" ]
+TypedHtml.input
+    [ TypedHtml.Attributes.id "email"
+    , TypedHtml.Attributes.type_ "email"
+    ]
+    []
 ```
 
 The id is caller-supplied by design — Elm is pure, so there is no auto-generated
-id. You supply a stable id and set it on the control; `field` guarantees the
-label half matches.
+id. You supply a stable id, set it on the control, and reference the same id in
+the label's `for`.
 
 ---
 
@@ -232,6 +217,6 @@ Everything above `toHtml` stays on the typed substrate; you do not thread
 | Mixed children in one slot | just put them in the list — permissive slots unify |
 | A pre-built element in the default slot | `M3e.Card.child element` |
 | A typed form control | `TypedHtml.input` / `textarea` / `select` + `TypedHtml.Events` |
-| An accessible label↔control pair | `TypedHtml.Field.field` |
+| An accessible label↔control pair | `TypedHtml.label [ ...for "x" ]` + control with `...id "x"` |
 | To embed genuine raw `Html` | `TypedHtml.Unsafe.fromHtml` (loud, greppable) |
 | To render to `elm/html` | `M3e.toHtml` / `TypedHtml.toHtml`, once, at the top |
