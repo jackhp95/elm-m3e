@@ -117,9 +117,11 @@ the slot's kinds and hands back a free row so it slots into the child list.
 
 ## 4. Forms: typed native controls + `Field`
 
-`TypedHtml` ships the native form controls with typed events —
-`TypedHtml.input` / `textarea` / `select`, wired via `TypedHtml.Events.onInput`
-and `onChange`:
+`TypedHtml` ships the native form controls with **payload-typed** events — the
+handler receives the value directly (like `elm/html`), no decoder needed:
+`onInput` / `onChange : (String -> msg)` and `onCheck : (Bool -> msg)`. The `Msg`
+constructors are taggers over the payload (`Typed : String -> Msg`,
+`Chose : String -> Msg`, `Toggled : Bool -> Msg`):
 
 ```elm
 TypedHtml.div []
@@ -129,14 +131,19 @@ TypedHtml.div []
         , TypedHtml.Events.onInput Typed
         ]
         []
-    , TypedHtml.textarea
-        [ TypedHtml.Events.onInput Typed ]
+    , TypedHtml.input
+        [ TypedHtml.Attributes.type_ "checkbox"
+        , TypedHtml.Events.onCheck Toggled
+        ]
         []
     , TypedHtml.select
         [ TypedHtml.Events.onChange Chose ]
         [ TypedHtml.option [] [ TypedHtml.text "One" ] ]
     ]
 ```
+
+For a non-standard payload, `onInputWith` / `onChangeWith` / `onCheckWith` take a
+`Json.Decode.Decoder msg`.
 
 For the accessible `<label for>` ↔ control association, use
 `TypedHtml.Field.field`. You pass **one** id; it threads it through both halves
