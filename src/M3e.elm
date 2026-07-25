@@ -1,5 +1,5 @@
 module M3e exposing
-    ( accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
+    ( accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
     , text
     , toHtml
     )
@@ -12,7 +12,7 @@ content, builder, narrowed values), and `M3e.Attributes` / `M3e.Events` /
 
 `toHtml` is the render bridge to `elm/html`.
 
-@docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
+@docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
 @docs text
 @docs toHtml
 
@@ -140,6 +140,11 @@ import M3e.TextOverflow
 import M3e.TextareaAutosize
 import M3e.Theme
 import M3e.ThemeIcon
+import M3e.Timepicker
+import M3e.TimepickerDial
+import M3e.TimepickerInput
+import M3e.TimepickerInputPeriodToggle
+import M3e.TimepickerToggle
 import M3e.Toc
 import M3e.TocItem
 import M3e.Toolbar
@@ -1307,6 +1312,56 @@ themeIcon :
     -> Element (M3e.ThemeIcon.Is s) admittedBy msg
 themeIcon =
     M3e.ThemeIcon.view
+
+
+{-| See `M3e.Timepicker.view`.
+-}
+timepicker :
+    List (Attr M3e.Timepicker.Attrs msg)
+    -> List (Element childAccepts (M3e.Timepicker.ChildAdmittedBy childAdm) msg)
+    -> Element (M3e.Timepicker.Is s) admittedBy msg
+timepicker =
+    M3e.Timepicker.view
+
+
+{-| See `M3e.TimepickerDial.view`.
+-}
+timepickerDial :
+    List (Attr M3e.TimepickerDial.Attrs msg)
+    -> List (Element childAccepts (M3e.TimepickerDial.ChildAdmittedBy childAdm) msg)
+    -> Element (M3e.TimepickerDial.Is s) admittedBy msg
+timepickerDial =
+    M3e.TimepickerDial.view
+
+
+{-| See `M3e.TimepickerInput.view`.
+-}
+timepickerInput :
+    List (Attr M3e.TimepickerInput.Attrs msg)
+    -> List (Element childAccepts (M3e.TimepickerInput.ChildAdmittedBy childAdm) msg)
+    -> Element (M3e.TimepickerInput.Is s) admittedBy msg
+timepickerInput =
+    M3e.TimepickerInput.view
+
+
+{-| See `M3e.TimepickerInputPeriodToggle.view`.
+-}
+timepickerInputPeriodToggle :
+    List (Attr M3e.TimepickerInputPeriodToggle.Attrs msg)
+    -> List (Element childAccepts (M3e.TimepickerInputPeriodToggle.ChildAdmittedBy childAdm) msg)
+    -> Element (M3e.TimepickerInputPeriodToggle.Is s) admittedBy msg
+timepickerInputPeriodToggle =
+    M3e.TimepickerInputPeriodToggle.view
+
+
+{-| See `M3e.TimepickerToggle.view`.
+-}
+timepickerToggle :
+    List (Attr M3e.TimepickerToggle.Attrs msg)
+    -> List (Element childAccepts (M3e.TimepickerToggle.ChildAdmittedBy childAdm) msg)
+    -> Element (M3e.TimepickerToggle.Is s) admittedBy msg
+timepickerToggle =
+    M3e.TimepickerToggle.view
 
 
 {-| See `M3e.Toc.view`.

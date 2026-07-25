@@ -64,7 +64,8 @@ type alias ChildAdmittedBy childAdm =
 {-| The `orientation` values valid on this component (compile-tight narrowing).
 -}
 type alias Orientation =
-    { horizontal : Supported
+    { both : Supported
+    , horizontal : Supported
     , vertical : Supported
     }
 

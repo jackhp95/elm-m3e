@@ -8,8 +8,13 @@
     "ActionElementBase",
     "MenuItemElementBase",
     "ProgressElementIndicatorBase",
-    "TooltipElementBase"
+    "TooltipElementBase",
+    "TimepickerInputElementBase"
   ],
+  "_renames": {
+    "TimepickerDial": { "attr:view": "viewAttr" },
+    "TimepickerInput": { "attr:view": "viewAttr" }
+  },
   "_actions": {
     "forWrappers": [
       {

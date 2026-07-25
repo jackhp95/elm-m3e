@@ -1,5 +1,5 @@
 module M3e.Events exposing
-    ( onActiveChange, onActiveChangeWith, onBeforeinput, onBeforeinputWith, onBeforetoggle, onBeforetoggleWith, onCancel, onCancelWith, onChange, onChangeWith, onClear, onClearWith, onClick, onClickWith, onClosed, onClosedWith, onClosing, onClosingWith, onHighlight, onHighlightWith, onInput, onInputWith, onInvalid, onInvalidWith, onOpened, onOpenedWith, onOpening, onOpeningWith, onPage, onPageWith, onQuery, onQueryWith, onRemove, onRemoveWith, onToggle, onToggleWith, onValueChange, onValueChangeWith
+    ( onActiveChange, onActiveChangeWith, onBeforeinput, onBeforeinputWith, onBeforetoggle, onBeforetoggleWith, onCancel, onCancelWith, onChange, onChangeWith, onClear, onClearWith, onClick, onClickWith, onClosed, onClosedWith, onClosing, onClosingWith, onHighlight, onHighlightWith, onInput, onInputWith, onInvalid, onInvalidWith, onOpened, onOpenedWith, onOpening, onOpeningWith, onPage, onPageWith, onQuery, onQueryWith, onRemove, onRemoveWith, onToggle, onToggleWith, onValueChange, onValueChangeWith, onViewChange, onViewChangeWith
     , delegate
     )
 
@@ -12,7 +12,7 @@ capability so it can be placed on a container and rely on DOM bubbling from an
 interactive descendant. Pair it with a real interactive child and a keyboard
 path (lint-checked).
 
-@docs onActiveChange, onActiveChangeWith, onBeforeinput, onBeforeinputWith, onBeforetoggle, onBeforetoggleWith, onCancel, onCancelWith, onChange, onChangeWith, onClear, onClearWith, onClick, onClickWith, onClosed, onClosedWith, onClosing, onClosingWith, onHighlight, onHighlightWith, onInput, onInputWith, onInvalid, onInvalidWith, onOpened, onOpenedWith, onOpening, onOpeningWith, onPage, onPageWith, onQuery, onQueryWith, onRemove, onRemoveWith, onToggle, onToggleWith, onValueChange, onValueChangeWith
+@docs onActiveChange, onActiveChangeWith, onBeforeinput, onBeforeinputWith, onBeforetoggle, onBeforetoggleWith, onCancel, onCancelWith, onChange, onChangeWith, onClear, onClearWith, onClick, onClickWith, onClosed, onClosedWith, onClosing, onClosingWith, onHighlight, onHighlightWith, onInput, onInputWith, onInvalid, onInvalidWith, onOpened, onOpenedWith, onOpening, onOpeningWith, onPage, onPageWith, onQuery, onQueryWith, onRemove, onRemoveWith, onToggle, onToggleWith, onValueChange, onValueChangeWith, onViewChange, onViewChangeWith
 @docs delegate
 
 -}
@@ -287,6 +287,20 @@ onValueChange msg =
 onValueChangeWith : Json.Decode.Decoder msg -> Attr { c | onValueChange : Supported } msg
 onValueChangeWith =
     Ir.on "value-change"
+
+
+{-| The `view-change` event.
+-}
+onViewChange : msg -> Attr { c | onViewChange : Supported } msg
+onViewChange msg =
+    Ir.on "view-change" (Json.Decode.succeed msg)
+
+
+{-| The `view-change` event with a custom payload decoder.
+-}
+onViewChangeWith : Json.Decode.Decoder msg -> Attr { c | onViewChange : Supported } msg
+onViewChangeWith =
+    Ir.on "view-change"
 
 
 {-| Forget an event's capability row (the bubbling escape).

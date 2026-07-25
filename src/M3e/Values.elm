@@ -1,7 +1,7 @@
 module M3e.Values exposing
-    ( Animation, Contrast, Current, Dividers, EndMode, Filter, FloatLabel, Grade, HeaderPosition, HideSubscript, HighlightMode, Icons, LabelPosition, Mode, Motion, Name, Orientation, PageSizeVariant, Position, PositionX, PositionY, Scheme, ScrollStrategy, Shape, Size, StartMode, StartView, State, ToggleDirection, TogglePosition, TouchGestures, Type, Variant, Width
-    , value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, above, aboveAfter, aboveBefore, aboveBelow, after, always, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, default, determinate, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, indeterminate, label, large, light, loading, location, low, medium, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, tonal, tonalSpot, triangle, true, uncontained, vertical, verySunny, vibrant, wave, wavy, wide, year
-    , animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Reset, type_Submit, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, widthDefault, widthNarrow, widthWide
+    ( Animation, Contrast, Current, Dividers, EndMode, Filter, FloatLabel, Format, Grade, HeaderPosition, HideSubscript, HighlightMode, Icons, LabelPosition, Mode, Motion, Name, Orientation, PageSizeVariant, Period, Position, PositionX, PositionY, Scheme, ScrollStrategy, Shape, Size, StartMode, StartView, State, ToggleDirection, TogglePosition, TouchGestures, Type, Variant, ViewAttr, Width
+    , value12, value12SidedCookie, value24, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, above, aboveAfter, aboveBefore, aboveBelow, after, always, am, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, default, determinate, dial, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, hour, indeterminate, input, label, large, light, loading, location, low, medium, minute, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, pm, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, second, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, tonal, tonalSpot, triangle, true, uncontained, vertical, verySunny, vibrant, wave, wavy, wide, year
+    , animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Reset, type_Submit, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
     )
 
 {-| The enum-value vocabulary: every token minted once (open row), plus the
@@ -10,9 +10,9 @@ portmanteaus (`variantFilled`, `shapeRounded`, …) for IDE discovery.
 General setters close over the union; per-component setters narrow — both
 are fed by these same tokens.
 
-@docs Animation, Contrast, Current, Dividers, EndMode, Filter, FloatLabel, Grade, HeaderPosition, HideSubscript, HighlightMode, Icons, LabelPosition, Mode, Motion, Name, Orientation, PageSizeVariant, Position, PositionX, PositionY, Scheme, ScrollStrategy, Shape, Size, StartMode, StartView, State, ToggleDirection, TogglePosition, TouchGestures, Type, Variant, Width
-@docs value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, above, aboveAfter, aboveBefore, aboveBelow, after, always, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, default, determinate, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, indeterminate, label, large, light, loading, location, low, medium, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, tonal, tonalSpot, triangle, true, uncontained, vertical, verySunny, vibrant, wave, wavy, wide, year
-@docs animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Reset, type_Submit, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, widthDefault, widthNarrow, widthWide
+@docs Animation, Contrast, Current, Dividers, EndMode, Filter, FloatLabel, Format, Grade, HeaderPosition, HideSubscript, HighlightMode, Icons, LabelPosition, Mode, Motion, Name, Orientation, PageSizeVariant, Period, Position, PositionX, PositionY, Scheme, ScrollStrategy, Shape, Size, StartMode, StartView, State, ToggleDirection, TogglePosition, TouchGestures, Type, Variant, ViewAttr, Width
+@docs value12, value12SidedCookie, value24, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, above, aboveAfter, aboveBefore, aboveBelow, after, always, am, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, default, determinate, dial, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, hour, indeterminate, input, label, large, light, loading, location, low, medium, minute, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, pm, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, second, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, tonal, tonalSpot, triangle, true, uncontained, vertical, verySunny, vibrant, wave, wavy, wide, year
+@docs animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Reset, type_Submit, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
 
 -}
 
@@ -89,6 +89,15 @@ type alias FloatLabel =
     }
 
 
+{-| The union row for `format` (from `TimepickerFormat`).
+-}
+type alias Format =
+    { value12 : Supported
+    , value24 : Supported
+    , auto : Supported
+    }
+
+
 {-| The union row for `grade` (from `IconGrade`).
 -}
 type alias Grade =
@@ -151,11 +160,13 @@ type alias Mode =
     , compact : Supported
     , contains : Supported
     , determinate : Supported
+    , dial : Supported
     , docked : Supported
     , endsWith : Supported
     , expanded : Supported
     , fullscreen : Supported
     , indeterminate : Supported
+    , input : Supported
     , query : Supported
     , startsWith : Supported
     }
@@ -214,6 +225,7 @@ type alias Name =
 -}
 type alias Orientation =
     { auto : Supported
+    , both : Supported
     , horizontal : Supported
     , vertical : Supported
     }
@@ -224,6 +236,14 @@ type alias Orientation =
 type alias PageSizeVariant =
     { filled : Supported
     , outlined : Supported
+    }
+
+
+{-| The union row for `period` (from `TimepickerPeriod`).
+-}
+type alias Period =
+    { am : Supported
+    , pm : Supported
     }
 
 
@@ -400,6 +420,15 @@ type alias Variant =
     }
 
 
+{-| The union row for `viewAttr`.
+-}
+type alias ViewAttr =
+    { hour : Supported
+    , minute : Supported
+    , second : Supported
+    }
+
+
 {-| The union row for `width` (from `IconButtonWidth`).
 -}
 type alias Width =
@@ -409,11 +438,25 @@ type alias Width =
     }
 
 
+{-| The `12` token.
+-}
+value12 : Value { v | value12 : Supported }
+value12 =
+    Ir.token "12"
+
+
 {-| The `12-sided-cookie` token.
 -}
 value12SidedCookie : Value { v | value12SidedCookie : Supported }
 value12SidedCookie =
     Ir.token "12-sided-cookie"
+
+
+{-| The `24` token.
+-}
+value24 : Value { v | value24 : Supported }
+value24 =
+    Ir.token "24"
 
 
 {-| The `4-leaf-clover` token.
@@ -498,6 +541,13 @@ after =
 always : Value { v | always : Supported }
 always =
     Ir.token "always"
+
+
+{-| The `am` token.
+-}
+am : Value { v | am : Supported }
+am =
+    Ir.token "am"
 
 
 {-| The `arch` token.
@@ -666,6 +716,13 @@ default =
 determinate : Value { v | determinate : Supported }
 determinate =
     Ir.token "determinate"
+
+
+{-| The `dial` token.
+-}
+dial : Value { v | dial : Supported }
+dial =
+    Ir.token "dial"
 
 
 {-| The `diamond` token.
@@ -843,11 +900,25 @@ horizontal =
     Ir.token "horizontal"
 
 
+{-| The `hour` token.
+-}
+hour : Value { v | hour : Supported }
+hour =
+    Ir.token "hour"
+
+
 {-| The `indeterminate` token.
 -}
 indeterminate : Value { v | indeterminate : Supported }
 indeterminate =
     Ir.token "indeterminate"
+
+
+{-| The `input` token.
+-}
+input : Value { v | input : Supported }
+input =
+    Ir.token "input"
 
 
 {-| The `label` token.
@@ -897,6 +968,13 @@ low =
 medium : Value { v | medium : Supported }
 medium =
     Ir.token "medium"
+
+
+{-| The `minute` token.
+-}
+minute : Value { v | minute : Supported }
+minute =
+    Ir.token "minute"
 
 
 {-| The `modal` token.
@@ -1032,6 +1110,13 @@ pixelTriangle =
     Ir.token "pixel-triangle"
 
 
+{-| The `pm` token.
+-}
+pm : Value { v | pm : Supported }
+pm =
+    Ir.token "pm"
+
+
 {-| The `primary` token.
 -}
 primary : Value { v | primary : Supported }
@@ -1107,6 +1192,13 @@ reset =
 rounded : Value { v | rounded : Supported }
 rounded =
     Ir.token "rounded"
+
+
+{-| The `second` token.
+-}
+second : Value { v | second : Supported }
+second =
+    Ir.token "second"
 
 
 {-| The `secondary` token.
@@ -1536,6 +1628,27 @@ floatLabelAuto =
     Ir.token "auto"
 
 
+{-| The `12` value of the `format` enum — same open row as `value12`, prefixed for discovery.
+-}
+formatValue12 : Value { v | value12 : Supported }
+formatValue12 =
+    Ir.token "12"
+
+
+{-| The `24` value of the `format` enum — same open row as `value24`, prefixed for discovery.
+-}
+formatValue24 : Value { v | value24 : Supported }
+formatValue24 =
+    Ir.token "24"
+
+
+{-| The `auto` value of the `format` enum — same open row as `auto`, prefixed for discovery.
+-}
+formatAuto : Value { v | auto : Supported }
+formatAuto =
+    Ir.token "auto"
+
+
 {-| The `high` value of the `grade` enum — same open row as `high`, prefixed for discovery.
 -}
 gradeHigh : Value { v | high : Supported }
@@ -1697,6 +1810,13 @@ modeDeterminate =
     Ir.token "determinate"
 
 
+{-| The `dial` value of the `mode` enum — same open row as `dial`, prefixed for discovery.
+-}
+modeDial : Value { v | dial : Supported }
+modeDial =
+    Ir.token "dial"
+
+
 {-| The `docked` value of the `mode` enum — same open row as `docked`, prefixed for discovery.
 -}
 modeDocked : Value { v | docked : Supported }
@@ -1730,6 +1850,13 @@ modeFullscreen =
 modeIndeterminate : Value { v | indeterminate : Supported }
 modeIndeterminate =
     Ir.token "indeterminate"
+
+
+{-| The `input` value of the `mode` enum — same open row as `input`, prefixed for discovery.
+-}
+modeInput : Value { v | input : Supported }
+modeInput =
+    Ir.token "input"
 
 
 {-| The `query` value of the `mode` enum — same open row as `query`, prefixed for discovery.
@@ -2012,6 +2139,13 @@ orientationAuto =
     Ir.token "auto"
 
 
+{-| The `both` value of the `orientation` enum — same open row as `both`, prefixed for discovery.
+-}
+orientationBoth : Value { v | both : Supported }
+orientationBoth =
+    Ir.token "both"
+
+
 {-| The `horizontal` value of the `orientation` enum — same open row as `horizontal`, prefixed for discovery.
 -}
 orientationHorizontal : Value { v | horizontal : Supported }
@@ -2038,6 +2172,20 @@ pageSizeVariantFilled =
 pageSizeVariantOutlined : Value { v | outlined : Supported }
 pageSizeVariantOutlined =
     Ir.token "outlined"
+
+
+{-| The `am` value of the `period` enum — same open row as `am`, prefixed for discovery.
+-}
+periodAm : Value { v | am : Supported }
+periodAm =
+    Ir.token "am"
+
+
+{-| The `pm` value of the `period` enum — same open row as `pm`, prefixed for discovery.
+-}
+periodPm : Value { v | pm : Supported }
+periodPm =
+    Ir.token "pm"
 
 
 {-| The `above` value of the `position` enum — same open row as `above`, prefixed for discovery.
@@ -2619,6 +2767,27 @@ variantVibrant =
 variantWavy : Value { v | wavy : Supported }
 variantWavy =
     Ir.token "wavy"
+
+
+{-| The `hour` value of the `viewAttr` enum — same open row as `hour`, prefixed for discovery.
+-}
+viewAttrHour : Value { v | hour : Supported }
+viewAttrHour =
+    Ir.token "hour"
+
+
+{-| The `minute` value of the `viewAttr` enum — same open row as `minute`, prefixed for discovery.
+-}
+viewAttrMinute : Value { v | minute : Supported }
+viewAttrMinute =
+    Ir.token "minute"
+
+
+{-| The `second` value of the `viewAttr` enum — same open row as `second`, prefixed for discovery.
+-}
+viewAttrSecond : Value { v | second : Supported }
+viewAttrSecond =
+    Ir.token "second"
 
 
 {-| The `default` value of the `width` enum — same open row as `default`, prefixed for discovery.
