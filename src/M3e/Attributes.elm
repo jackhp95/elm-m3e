@@ -1,7 +1,7 @@
 module M3e.Attributes exposing
     ( class, id, slot, style, styleList
-    , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, density, detent, detents, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, href, indeterminate, inline, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, min, minDate, minRows, modal, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, resultsLabel, returnValue, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, value, valueformatter, vertical, weight, wrap, wrapDetents
-    , animation, contrast, current, dividers, endMode, filter, floatLabel, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, toggleDirection, togglePosition, touchGestures, type_, variant, width
+    , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, blackouttimes, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, value, valueformatter, vertical, weight, wrap, wrapDetents
+    , animation, contrast, current, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
     )
 
 {-| The canonical shared attribute vocabulary. Every setter is an open
@@ -11,8 +11,8 @@ values — cross-component misuse is caught by elm-review; reach for the
 per-component setters (`M3e.<Component>.<attr>`) for compile-tight narrowing.
 
 @docs class, id, slot, style, styleList
-@docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, density, detent, detents, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, href, indeterminate, inline, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, min, minDate, minRows, modal, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, resultsLabel, returnValue, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, value, valueformatter, vertical, weight, wrap, wrapDetents
-@docs animation, contrast, current, dividers, endMode, filter, floatLabel, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, toggleDirection, togglePosition, touchGestures, type_, variant, width
+@docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, blackouttimes, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, value, valueformatter, vertical, weight, wrap, wrapDetents
+@docs animation, contrast, current, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
 
 -}
 
@@ -132,6 +132,13 @@ autoActivate value_ =
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
 
 
+{-| A function used to determine whether a time cannot be selected.
+-}
+blackouttimes : String -> Attr { c | blackouttimes : Supported } msg
+blackouttimes =
+    Ir.attribute "blackoutTimes"
+
+
 {-| A fractional value, between 0 and `max`, indicating buffer progress. (default: `0`)
 -}
 bufferValue : Float -> Attr { c | bufferValue : Supported } msg
@@ -223,7 +230,7 @@ completed value_ =
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
 
 
-{-| The label given to the button used apply the selected date and close the picker. (default: `"OK"`)
+{-| Label given to the button used apply the selected date and close the picker. (default: `"OK"`)
 -}
 confirmLabel : String -> Attr { c | confirmLabel : Supported } msg
 confirmLabel =
@@ -267,6 +274,13 @@ detent value_ =
 detents : String -> Attr { c | detents : Supported } msg
 detents =
     Ir.attribute "detents"
+
+
+{-| Label given to the the picker when in dial mode. (default: `"Select time"`)
+-}
+dialLabel : String -> Attr { c | dialLabel : Supported } msg
+dialLabel =
+    Ir.attribute "dial-label"
 
 
 {-| Whether users cannot click the backdrop or press ESC to dismiss the dialog. (default: `false`)
@@ -354,7 +368,7 @@ discrete value_ =
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
 
 
-{-| The label given to the button used discard the selected date and close the picker. (default: `"Cancel"`)
+{-| Label given to the button used discard the selected date and close the picker. (default: `"Cancel"`)
 -}
 dismissLabel : String -> Attr { c | dismissLabel : Supported } msg
 dismissLabel =
@@ -521,12 +535,34 @@ hideFriction value_ =
     Ir.property "hideFriction" (Json.Encode.float value_)
 
 
+{-| Whether to hide field labels. (default: `false`)
+-}
+hideLabels : Bool -> Attr { c | hideLabels : Supported } msg
+hideLabels value_ =
+    if value_ then
+        Ir.attribute "hide-labels" ""
+
+    else
+        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+
+
 {-| Whether to hide the menu when loading options. (default: `false`)
 -}
 hideLoading : Bool -> Attr { c | hideLoading : Supported } msg
 hideLoading value_ =
     if value_ then
         Ir.attribute "hide-loading" ""
+
+    else
+        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+
+
+{-| Whether to hide the mode toggle button. (default: `false`)
+-}
+hideModeToggle : Bool -> Attr { c | hideModeToggle : Supported } msg
+hideModeToggle value_ =
+    if value_ then
+        Ir.attribute "hide-mode-toggle" ""
 
     else
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
@@ -609,6 +645,20 @@ hideable value_ =
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
 
 
+{-| The hour, in 24-hour time, from 0..23. (default: `null`)
+-}
+hour : Float -> Attr { c | hour : Supported } msg
+hour value_ =
+    Ir.property "hour" (Json.Encode.float value_)
+
+
+{-| The label for the hour field. (default: `"Hour"`)
+-}
+hourLabel : String -> Attr { c | hourLabel : Supported } msg
+hourLabel =
+    Ir.attribute "hour-label"
+
+
 {-| The URL to which the link button points. (default: `""`)
 -}
 href : String -> Attr { c | href : Supported } msg
@@ -636,6 +686,13 @@ inline value_ =
 
     else
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+
+
+{-| Label given to the the picker when in input mode. (default: `"Edit time"`)
+-}
+inputLabel : String -> Attr { c | inputLabel : Supported } msg
+inputLabel =
+    Ir.attribute "input-label"
 
 
 {-| Whether the divider is indented with equal padding on both sides. (default: `false`)
@@ -825,6 +882,13 @@ maxRows value_ =
     Ir.property "maxRows" (Json.Encode.float value_)
 
 
+{-| The maximum time that can be selected. (default: `null`)
+-}
+maxTime : String -> Attr { c | maxTime : Supported } msg
+maxTime =
+    Ir.attribute "max-time"
+
+
 {-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`)
 -}
 min : Float -> Attr { c | min : Supported } msg
@@ -846,6 +910,27 @@ minRows value_ =
     Ir.property "minRows" (Json.Encode.float value_)
 
 
+{-| The minimum time that can be selected. (default: `null`)
+-}
+minTime : String -> Attr { c | minTime : Supported } msg
+minTime =
+    Ir.attribute "min-time"
+
+
+{-| The minute, from 0..59. (default: `null`)
+-}
+minute : Float -> Attr { c | minute : Supported } msg
+minute value_ =
+    Ir.property "minute" (Json.Encode.float value_)
+
+
+{-| The label for the minute field. (default: `"Minute"`)
+-}
+minuteLabel : String -> Attr { c | minuteLabel : Supported } msg
+minuteLabel =
+    Ir.attribute "minute-label"
+
+
 {-| Whether the bottom sheet behaves as modal. (default: `false`)
 -}
 modal : Bool -> Attr { c | modal : Supported } msg
@@ -855,6 +940,13 @@ modal value_ =
 
     else
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+
+
+{-| The accessible label given to the mode toggle button. (default: `"Toggle input picker"`)
+-}
+modeToggleLabel : String -> Attr { c | modeToggleLabel : Supported } msg
+modeToggleLabel =
+    Ir.attribute "mode-toggle-label"
 
 
 {-| Whether multiple items can be selected. (default: `false`)
@@ -989,6 +1081,13 @@ panelClass =
     Ir.attribute "panel-class"
 
 
+{-| The accessible label given to the period toggle. (default: `"AM or PM"`)
+-}
+periodToggleLabel : String -> Attr { c | periodToggleLabel : Supported } msg
+periodToggleLabel =
+    Ir.attribute "period-toggle-label"
+
+
 {-| The accessible label given to the button used to move to the previous month. (default: `"Previous month"`)
 -}
 previousMonthLabel : String -> Attr { c | previousMonthLabel : Supported } msg
@@ -1099,6 +1198,20 @@ returnValue =
     Ir.attribute "return-value"
 
 
+{-| The second, from 0..59. (default: `null`)
+-}
+second : Float -> Attr { c | second : Supported } msg
+second value_ =
+    Ir.property "second" (Json.Encode.float value_)
+
+
+{-| The label for the second field. (default: `"Second"`)
+-}
+secondLabel : String -> Attr { c | secondLabel : Supported } msg
+secondLabel =
+    Ir.attribute "second-label"
+
+
 {-| Marks this trigger as a secondary trigger for accessibility. Secondary triggers do not receive ARIA ownership. (default: `false`)
 -}
 secondary : Bool -> Attr { c | secondary : Supported } msg
@@ -1137,6 +1250,17 @@ showFirstLastButtons : Bool -> Attr { c | showFirstLastButtons : Supported } msg
 showFirstLastButtons value_ =
     if value_ then
         Ir.attribute "show-first-last-buttons" ""
+
+    else
+        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+
+
+{-| Whether to show seconds. (default: `false`)
+-}
+showSeconds : Bool -> Attr { c | showSeconds : Supported } msg
+showSeconds value_ =
+    if value_ then
+        Ir.attribute "show-seconds" ""
 
     else
         Ir.fromHtmlAttribute (Html.Attributes.style "" "")
@@ -1386,6 +1510,13 @@ floatLabel value_ =
     Ir.attribute "float-label" (HtmlIr.Value.toString value_)
 
 
+{-| Whether to use a 12‑hour or 24‑hour clock. (default: `"12"`)
+-}
+format : Value M3e.Values.Format -> Attr { c | format : Supported } msg
+format value_ =
+    Ir.attribute "format" (HtmlIr.Value.toString value_)
+
+
 {-| The grade of the icon. (default: `"medium"`)
 -}
 grade : Value M3e.Values.Grade -> Attr { c | grade : Supported } msg
@@ -1428,7 +1559,7 @@ labelPosition value_ =
     Ir.attribute "label-position" (HtmlIr.Value.toString value_)
 
 
-{-| The mode in which to highlight text. (default: `"contains"`)
+{-| The mode in which to select time. (default: `"dial"`)
 -}
 mode : Value M3e.Values.Mode -> Attr { c | mode : Supported } msg
 mode value_ =
@@ -1449,7 +1580,7 @@ name value_ =
     Ir.attribute "name" (HtmlIr.Value.toString value_)
 
 
-{-| The orientation of the stepper. (default: `"horizontal"`)
+{-| The orientation of the toggle. (default: `"vertical"`)
 -}
 orientation : Value M3e.Values.Orientation -> Attr { c | orientation : Supported } msg
 orientation value_ =
@@ -1461,6 +1592,13 @@ orientation value_ =
 pageSizeVariant : Value M3e.Values.PageSizeVariant -> Attr { c | pageSizeVariant : Supported } msg
 pageSizeVariant value_ =
     Ir.attribute "page-size-variant" (HtmlIr.Value.toString value_)
+
+
+{-| The 12-hour time period. (default: `"am"`)
+-}
+period : Value M3e.Values.Period -> Attr { c | period : Supported } msg
+period value_ =
+    Ir.attribute "period" (HtmlIr.Value.toString value_)
 
 
 {-| The position of the tooltip. (default: `"below"`)
@@ -1566,6 +1704,13 @@ type_ value_ =
 variant : Value M3e.Values.Variant -> Attr { c | variant : Supported } msg
 variant value_ =
     Ir.attribute "variant" (HtmlIr.Value.toString value_)
+
+
+{-| The view used to input time. (default: `"hour"`)
+-}
+viewAttr : Value M3e.Values.ViewAttr -> Attr { c | viewAttr : Supported } msg
+viewAttr value_ =
+    Ir.attribute "view" (HtmlIr.Value.toString value_)
 
 
 {-| The width of the button. (default: `"default"`)

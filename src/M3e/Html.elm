@@ -1,4 +1,4 @@
-module M3e.Html exposing (accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView)
+module M3e.Html exposing (accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView)
 
 {-| The loose, elm/html-like producer layer: one open-rowed constructor
 per element, each owning `Ir.node "<tag>"`. This is the foundation the
@@ -6,7 +6,7 @@ per element, each owning `Ir.node "<tag>"`. This is the foundation the
 its producer here and re-exposes it under a tightened signature. Depends
 only on the IR substrate — no component module is imported.
 
-@docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
+@docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
 
 -}
 
@@ -1289,6 +1289,61 @@ themeIcon :
     -> Element produced admittedBy msg
 themeIcon attrs children =
     Ir.fromNode (Ir.node "m3e-theme-icon" attrs (List.map El.toNode children))
+
+
+{-| The loose `m3e-timepicker` producer — open attribute/child rows, elm/html call
+shape. `M3e.Timepicker` tightens it (closed rows, slot admittance, narrowed values).
+-}
+timepicker :
+    List (Attr attrs msg)
+    -> List (Element children childAdmittedBy msg)
+    -> Element produced admittedBy msg
+timepicker attrs children =
+    Ir.fromNode (Ir.node "m3e-timepicker" attrs (List.map El.toNode children))
+
+
+{-| The loose `m3e-timepicker-dial` producer — open attribute/child rows, elm/html call
+shape. `M3e.TimepickerDial` tightens it (closed rows, slot admittance, narrowed values).
+-}
+timepickerDial :
+    List (Attr attrs msg)
+    -> List (Element children childAdmittedBy msg)
+    -> Element produced admittedBy msg
+timepickerDial attrs children =
+    Ir.fromNode (Ir.node "m3e-timepicker-dial" attrs (List.map El.toNode children))
+
+
+{-| The loose `m3e-timepicker-input` producer — open attribute/child rows, elm/html call
+shape. `M3e.TimepickerInput` tightens it (closed rows, slot admittance, narrowed values).
+-}
+timepickerInput :
+    List (Attr attrs msg)
+    -> List (Element children childAdmittedBy msg)
+    -> Element produced admittedBy msg
+timepickerInput attrs children =
+    Ir.fromNode (Ir.node "m3e-timepicker-input" attrs (List.map El.toNode children))
+
+
+{-| The loose `m3e-timepicker-input-period-toggle` producer — open attribute/child rows, elm/html call
+shape. `M3e.TimepickerInputPeriodToggle` tightens it (closed rows, slot admittance, narrowed values).
+-}
+timepickerInputPeriodToggle :
+    List (Attr attrs msg)
+    -> List (Element children childAdmittedBy msg)
+    -> Element produced admittedBy msg
+timepickerInputPeriodToggle attrs children =
+    Ir.fromNode (Ir.node "m3e-timepicker-input-period-toggle" attrs (List.map El.toNode children))
+
+
+{-| The loose `m3e-timepicker-toggle` producer — open attribute/child rows, elm/html call
+shape. `M3e.TimepickerToggle` tightens it (closed rows, slot admittance, narrowed values).
+-}
+timepickerToggle :
+    List (Attr attrs msg)
+    -> List (Element children childAdmittedBy msg)
+    -> Element produced admittedBy msg
+timepickerToggle attrs children =
+    Ir.fromNode (Ir.node "m3e-timepicker-toggle" attrs (List.map El.toNode children))
 
 
 {-| The loose `m3e-toc` producer — open attribute/child rows, elm/html call
