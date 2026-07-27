@@ -27,26 +27,23 @@ import Native
 {-| Which API surface a Usage example is shown in, by module name:
 
   - `Top` — `M3e` (the strict Standard surface, always present)
-  - `Record` — `M3e.Record` (the ④ record-of-slots surface; per-example)
-  - `Build` — `M3e.Build` (the ⑤ pipeline surface; per-example)
-  - `Middle` — `M3e.Html` (loose, always present)
-  - `Bottom` — `M3e.Raw` (raw elm/html-flavoured, always present)
+  - `Record` — `M3e.<Comp>.el { … }` (the ④ record-of-slots surface; per-example)
+  - `Build` — `M3e.<Comp>.build |> … |> toElement` (the ⑤ pipeline surface; per-example)
   - `Raw` — the raw `<m3e-*>` HTML (always present)
 
-`M3e`, `M3e.Html`, `M3e.Raw` and `HTML` are verified for every example, so
-those four tabs are always offered. `M3e.Record` / `M3e.Build` are offered
-whenever `M3e` (`top`) is — when their own field is non-null they show a real
-translation, and when it's null they show an _identical-by-design_ rationale
-(the example's content carried nothing for that surface to enforce). Only a
-composite with no single-component `top` form drops them entirely.
+`M3e` and `HTML` are verified for every example, so those two tabs are always
+offered. `M3e.Record` / `M3e.Build` are offered whenever `M3e` (`top`) is — when
+their own field is non-null they show a real translation, and when it's null they
+show an _identical-by-design_ rationale (the example's content carried nothing for
+that surface to enforce). Only a composite with no single-component `top` form
+drops them entirely. (The retired mid `M3e.Html.*` / bottom `M3e.Raw.*` layers no
+longer exist in the phantom substrate.)
 
 -}
 type Layer
     = Top
     | Record
     | Build
-    | Middle
-    | Bottom
     | Raw
 
 
@@ -74,20 +71,18 @@ update (SelectLayer index layer) model =
 
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
-API surface. Every Elm surface is optional — `top`/`mid`/`bottom` (M3e /
-M3e.Html / M3e.Raw) and `record` (M3e.Record) / `build` (M3e.Build) are each
-present only when that surface compiled to a distinct form for this example (else
-`Nothing`; the UI hides the `top`/`mid`/`bottom` tab, but keeps `record`/`build`
-as an identical-by-design rationale tab). `html` is the one guaranteed surface — its live preview always
-renders. `section` groups examples under a sub-heading ("" = ungrouped).
+API surface. Every Elm surface is optional — `top` (M3e) and `record`
+(`M3e.<Comp>.el`) / `build` (`M3e.<Comp>.build`) are each present only when that
+surface compiled to a distinct form for this example (else `Nothing`; the UI hides
+the `top` tab, but keeps `record`/`build` as an identical-by-design rationale tab).
+`html` is the one guaranteed surface — its live preview always renders. `section`
+groups examples under a sub-heading ("" = ungrouped).
 -}
 type alias UsageExample =
     { title : String
     , section : String
     , html : String
     , top : Maybe String
-    , mid : Maybe String
-    , bottom : Maybe String
     , record : Maybe String
     , build : Maybe String
     }
@@ -95,13 +90,11 @@ type alias UsageExample =
 
 usageExampleDecoder : Decode.Decoder UsageExample
 usageExampleDecoder =
-    Decode.map8 UsageExample
+    Decode.map6 UsageExample
         (Decode.field "title" Decode.string)
         (Decode.oneOf [ Decode.field "section" Decode.string, Decode.succeed "" ])
         (Decode.field "html" Decode.string)
         (Decode.oneOf [ Decode.field "top" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-        (Decode.oneOf [ Decode.field "mid" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-        (Decode.oneOf [ Decode.field "bottom" (Decode.nullable Decode.string), Decode.succeed Nothing ])
         (Decode.oneOf [ Decode.field "record" (Decode.nullable Decode.string), Decode.succeed Nothing ])
         (Decode.oneOf [ Decode.field "build" (Decode.nullable Decode.string), Decode.succeed Nothing ])
 
@@ -201,10 +194,9 @@ activeIndexFor layer ex =
 
 
 {-| The surfaces offered for one example, in fixed order. Each Elm surface
-(`M3e`, `M3e.Record`, `M3e.Build`, `M3e.Html`, `M3e.Raw`) appears only when
-it compiled for this example (its field is non-null); `HTML` is the one universal
-surface and is always offered last. Order: M3e, M3e.Record, M3e.Build, M3e.Html,
-M3e.Raw, HTML.
+(`M3e`, `M3e.Record`, `M3e.Build`) appears only when it compiled for this example
+(its field is non-null); `HTML` is the one universal surface and is always offered
+last. Order: M3e, M3e.Record, M3e.Build, HTML.
 -}
 layersFor : UsageExample -> List ( String, Layer )
 layersFor ex =
@@ -235,8 +227,6 @@ layersFor ex =
     optional ex.top "M3e" Top
         ++ recordBuild ex.record "M3e.Record" Record
         ++ recordBuild ex.build "M3e.Build" Build
-        ++ optional ex.mid "M3e.Html" Middle
-        ++ optional ex.bottom "M3e.Raw" Bottom
         ++ [ ( "HTML", Raw ) ]
 
 
@@ -274,11 +264,11 @@ layerTabs index current ex =
 {-| The code block for the selected surface. The Elm surfaces highlight as Elm;
 the raw `<m3e-*>` HTML surface highlights as plain markup.
 
-`Top`/`Middle`/`Bottom` are only offered by `layersFor` when their field is
-present, so their `Nothing` branch is defensive (falls back to HTML). `Record`
-and `Build` ARE offered with a null field — when this example's content had
-nothing for that surface to lift, the surface is identical to `M3e` by design, so
-we show a short rationale instead of a hollow duplicate.
+`Top` is only offered by `layersFor` when its field is present, so its `Nothing`
+branch is defensive (falls back to HTML). `Record` and `Build` ARE offered with a
+null field — when this example's content had nothing for that surface to lift, the
+surface is identical to `M3e` by design, so we show a short rationale instead of a
+hollow duplicate.
 
 -}
 codeFor : Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand } admittedBy msg
@@ -311,12 +301,6 @@ codeFor layer ex =
 
         Build ->
             recordBuildCode ex.build "M3e.Build"
-
-        Middle ->
-            elmOrHtml ex.mid
-
-        Bottom ->
-            elmOrHtml ex.bottom
 
         Raw ->
             Doc.code_ Doc.Xml ex.html

@@ -4,14 +4,6 @@
 // (Standard `M3e.*`) code. NO new HTML->Elm converter is written here — this is a
 // thin harness around the real rules, built on lib/scratch-harness.mjs.
 //
-// NOTE (phantom substrate migration): The elm-review rules `Cem.TranslateToRecord`
-// and `Cem.TranslateToBuild` (which live in the external elm-review-cem package)
-// target the retired M3e.Record.* / M3e.Build.* API layers that no longer exist in
-// the phantom substrate. This script is therefore a NO-OP: it writes an empty
-// surfaces file so build-examples-data.mjs produces null record/build fields for
-// every example (the UI already handles null gracefully by showing a rationale tab).
-// Restore this script once the elm-review rules are updated for the new substrate.
-//
 // Mechanism (per surface):
 //   1. Write ALL examples' `top` code as bindings into one scratch Elm
 //      APPLICATION (a fresh tmpdir, source-dirs = real library sources) — the
@@ -35,9 +27,19 @@
 //      single report-driven pass sidesteps the fixpoint entirely.
 //   4. Recover each binding's rewritten code, compile-verify the whole set, and
 //      keep an output only if it COMPILES and actually reaches the target surface
-//      (contains `M3e.Record.` / `M3e.Build.`). Everything else (identity, or a
-//      mixed tree that doesn't type-check) FALLS BACK to the `top` code so the
-//      tab is never broken (the UI then hides the Record/Build tab).
+//      (the rewrite CHANGED the code — record → `M3e.<Comp>.el { … }`, build →
+//      `M3e.<Comp>.build … |> … |> M3e.<Comp>.toElement`). Everything else
+//      (identity — the conservative rule declined to transform — or a mixed tree
+//      that doesn't type-check) is left null so build-examples-data.mjs produces a
+//      null field and the UI shows the "identical by design" rationale tab.
+//
+// Substrate note: the rules `Cem.translateToRecord` / `Cem.translateToBuild`
+// (elm-review-cem) target the CURRENT per-component `el` (required-record) and
+// `build` (builder-pipe) forms — NOT the retired `M3e.Record.*` / `M3e.Build.*`
+// module layers. translateToRecord only fires on the 29 components that have an
+// `el` required record; translateToBuild fires on all components; both are
+// conservative no-ops on non-statically-resolvable calls (so not every example
+// yields a record/build surface — that's expected).
 //
 // Output: config/examples.surfaces.json = { "<Module>": [ { record, build }, ... ] }
 // aligned index-for-index with config/examples.rich.json. build-examples-data.mjs
@@ -46,6 +48,16 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  mkScratchDir,
+  writeCorpusApp,
+  writeReviewConfig,
+  runReviewJson,
+  applyEditsPartial,
+  parseBindings,
+  bindingName,
+} from "./lib/scratch-harness.mjs";
+import { compilingNames } from "./verify-examples.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 // docs/scripts/examples-gen/gen-record-build.mjs -> elm-m3e root is three up.
@@ -54,23 +66,83 @@ const REPO = resolve(HERE, "..", "..", "..");
 const RICH = resolve(REPO, "config/examples.rich.json");
 const OUT = resolve(REPO, "config/examples.surfaces.json");
 
+const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/kit`];
+const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
+const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
+const reviewElm = JSON.parse(readFileSync(`${REPO}/review/elm.json`, "utf8"));
+
+// Each surface = one Cem translator rule run over the Standard `top` corpus.
+const SURFACES = [
+  { key: "record", imports: ["import Cem", "import M3e.Review.Facts"], ruleExpr: "Cem.translateToRecord M3e.Review.Facts.facts" },
+  { key: "build", imports: ["import Cem", "import M3e.Review.Facts"], ruleExpr: "Cem.translateToBuild M3e.Review.Facts.facts" },
+];
+
+// Run one translator rule over the { name -> code } corpus; return { name -> rewritten }.
+function runRule(items, { imports, ruleExpr, key }) {
+  const cfgDir = mkScratchDir(`surface-${key}-cfg`);
+  const targetDir = mkScratchDir(`surface-${key}-target`);
+  writeReviewConfig(cfgDir, {
+    reviewSrcDir: `${REPO}/review/src`,
+    reviewElm,
+    extraSourceDirs: [`${REPO}/src`, `${REPO}/../elm-review-cem/src`],
+    reviewConfigElm: `module ReviewConfig exposing (config)
+
+${imports.join("\n")}
+import Review.Rule exposing (Rule)
+
+
+config : List Rule
+config =
+    [ ${ruleExpr} ]
+`,
+  });
+  const text = writeCorpusApp(targetDir, items, SRC_DIRS);
+  const json = runReviewJson(REVIEW_BIN, cfgDir, targetDir, ELM_BIN, { label: `surface:${key}` });
+  return parseBindings(applyEditsPartial(text, json));
+}
+
 function main() {
-  // phantom-migration: NO-OP. The elm-review rules `Cem.TranslateToRecord` and
-  // `Cem.TranslateToBuild` target the retired M3e.Record.* / M3e.Build.* API
-  // layers (external elm-review-cem package, not yet updated for the phantom
-  // substrate). Write an empty surfaces file aligned with the rich corpus so
-  // build-examples-data.mjs produces null record/build fields; the UI renders
-  // the "identical by design" rationale tab for each example. Restore the full
-  // implementation below once the elm-review rules are updated.
   const rich = JSON.parse(readFileSync(RICH, "utf8"));
-  const emptyResult = {};
+
+  // One binding per example whose Standard `top` compiles (the corpus the rules
+  // require — the rewritten form is only trusted if it still compiles).
+  const items = [];
   for (const module of Object.keys(rich)) {
-    emptyResult[module] = rich[module].map(() => ({}));
+    rich[module].forEach((ex, idx) => {
+      if (ex.top == null) return;
+      items.push({ module, idx, name: bindingName(module, idx), code: ex.top });
+    });
   }
-  writeFileSync(OUT, JSON.stringify(emptyResult, null, 2) + "\n");
+
+  // Result skeleton aligned index-for-index with the rich corpus.
+  const out = {};
+  for (const module of Object.keys(rich)) out[module] = rich[module].map(() => ({}));
+
+  const counts = {};
+  for (const surface of SURFACES) {
+    const byName = runRule(items, surface);
+    // Trust a rewrite only if it CHANGED the code (the conservative rule fired)
+    // AND the whole rewritten corpus still compiles.
+    const candidates = {};
+    for (const it of items) candidates[it.name] = byName[it.name] ?? it.code;
+    const ok = compilingNames(candidates);
+
+    let kept = 0;
+    for (const it of items) {
+      const code = byName[it.name];
+      if (code && code !== it.code && ok.has(it.name)) {
+        out[it.module][it.idx][surface.key] = code;
+        kept++;
+      }
+    }
+    counts[surface.key] = kept;
+  }
+
+  writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
   console.log(
-    `gen-record-build: NO-OP (phantom migration) — wrote empty ${OUT}; ` +
-      `record/build surfaces will show rationale tabs until rules are updated.`,
+    `gen-record-build: over ${items.length} examples — ` +
+      SURFACES.map((s) => `${s.key} ${counts[s.key]}`).join(", ") +
+      ` → ${OUT} (non-transformed show the rationale tab).`,
   );
 }
 

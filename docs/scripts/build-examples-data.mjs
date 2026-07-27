@@ -4,12 +4,14 @@
 //
 // Output schema (consumed by Route.Components.Name_):
 //   { "<slug>": { category, examples: [ { title, section?, html,
-//                 top, mid, bottom, record, build } ] } }
+//                 top, record, build } ] } }
 // keyed by component SLUG (lowercased module name, matching reference.json
 // slugs and the /components/:slug route). `html` is always present; every Elm
-// surface (top/mid/bottom/record/build) is nullable — a null means that surface
-// didn't compile for this example, and the UI hides its tab. `formatElm`/
-// `surfaceOrNull` pass null straight through.
+// surface (top/record/build) is nullable — a null means that surface didn't
+// compile (or didn't translate) for this example, and the UI hides its tab.
+// `formatElm`/`surfaceOrNull` pass null straight through. (The retired mid
+// `M3e.Html.*` / bottom `M3e.Raw.*` layers no longer exist in the phantom
+// substrate and are no longer generated or surfaced.)
 //
 // The rich file is keyed by PascalCase module (e.g. "Button", "IconButton").
 // A module's slug is its lowercased name. A handful of corpus family-names
@@ -97,17 +99,16 @@ function formatElm(code) {
   return tryFormat(broken) ?? tryFormat(code) ?? code;
 }
 
-// The ④ Record / ⑤ Build surfaces (config/examples.surfaces.json) are produced
-// by the surface translator harness (gen-record-build.mjs), index-aligned with the
-// rich file. For every example the harness emits either the TRANSLATED surface
-// code (which contains an `M3e.Record.` / `M3e.Build.` reference) or a fallback
-// COPY of the top code (when the example doesn't cleanly convert). We surface a
-// tab only for a real translation: a fallback is stored as `null` here so the UI
-// hides the tab rather than showing a hollow duplicate of the M3e tab.
-function surfaceOrNull(code, token) {
-  return code && typeof code === "string" && code.includes(token)
-    ? formatElm(code)
-    : null;
+// The ④ Record (`M3e.<Comp>.el { … }`) / ⑤ Build (`M3e.<Comp>.build |> … |>
+// M3e.<Comp>.toElement`) surfaces (config/examples.surfaces.json) are produced by
+// the surface translator harness (gen-record-build.mjs), index-aligned with the
+// rich file. The harness writes a surface field ONLY when it genuinely translated
+// the example to that surface AND the result compiles; a non-translating example
+// leaves the field absent. So a present surface is always a real translation —
+// pass it through; an absent one becomes `null` and the UI hides the tab (shown as
+// an identical-by-design rationale tab) rather than a hollow duplicate of the M3e tab.
+function surfaceOrNull(code) {
+  return code && typeof code === "string" ? formatElm(code) : null;
 }
 
 // Derive `data/example-usage.json` — a map `componentSlug -> [{ title, route }]`
@@ -125,8 +126,9 @@ function buildExampleUsage(reference) {
   const camelBases = []; // { base, slug }, longest-first
   for (const c of reference) {
     const bare = c.module.replace(/^M3e\./, "");
-    for (const home of ["M3e", "M3e.Record", "M3e.Build"])
-      moduleToSlug.set(`${home}.${bare}`, c.slug);
+    // Only the top `M3e.*` module namespace survives the phantom substrate; the
+    // retired `M3e.Record.*` / `M3e.Build.*` component namespaces no longer exist.
+    moduleToSlug.set(`M3e.${bare}`, c.slug);
     camelBases.push({ base: lowerFirst(c.name), slug: c.slug });
   }
   camelBases.sort((a, b) => b.base.length - a.base.length);
@@ -229,10 +231,8 @@ function main() {
           ...(ex.section ? { section: ex.section } : {}),
           html: ex.html,
           top: formatElm(moduleBarrel[idx] ?? ex.top),
-          mid: formatElm(ex.mid),
-          bottom: formatElm(ex.bottom),
-          record: surfaceOrNull(surf.record, "M3e.Record."),
-          build: surfaceOrNull(surf.build, "M3e.Build."),
+          record: surfaceOrNull(surf.record),
+          build: surfaceOrNull(surf.build),
         };
       }),
     };

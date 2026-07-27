@@ -2,11 +2,6 @@
 // opt-in `PreferBarrel` elm-review rule over it, then write the barrel-first
 // result into a SEPARATE, index-aligned sidecar `config/examples.barrel.json`
 //
-// NOTE (phantom substrate migration): The `Cem.PreferBarrel` elm-review rule
-// (external elm-review-cem package) has not yet been updated for the phantom
-// substrate. This script is therefore a NO-OP: it writes an all-null barrel file
-// so build-examples-data.mjs falls back to the Standard `top` for every example.
-// Restore the full implementation once the rule is updated.
 // (exactly like gen-record-build.mjs writes examples.surfaces.json). The rich
 // file's `top` is LEFT UNTOUCHED so it stays the Standard source-of-truth that the
 // ④ Record / ⑤ Build translators derive from — this step is therefore order- and
@@ -36,6 +31,16 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  mkScratchDir,
+  writeCorpusApp,
+  writeReviewConfig,
+  runReviewJson,
+  applyEditsPartial,
+  parseBindings,
+  bindingName,
+} from "./lib/scratch-harness.mjs";
+import { compilingNames } from "./verify-examples.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 // docs/scripts/examples-gen/gen-barrel.mjs -> elm-m3e root is three up.
@@ -43,6 +48,11 @@ const REPO = resolve(HERE, "..", "..", "..");
 
 const RICH = resolve(REPO, "config/examples.rich.json");
 const BARREL = resolve(REPO, "config/examples.barrel.json");
+
+const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/kit`];
+const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
+const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
+const reviewElm = JSON.parse(readFileSync(`${REPO}/review/elm.json`, "utf8"));
 
 const REVIEW_CONFIG = `module ReviewConfig exposing (config)
 
@@ -57,17 +67,56 @@ config =
     [ Cem.PreferBarrel.ruleWith (Set.fromList M3e.Review.Facts.reExposedValueTokens) M3e.Review.Facts.facts ]
 `;
 
+// Run PreferBarrel over the { name -> code } corpus; return { name -> rewritten }.
+function barrelise(items) {
+  const cfgDir = mkScratchDir("barrel-cfg");
+  const targetDir = mkScratchDir("barrel-target");
+  writeReviewConfig(cfgDir, {
+    reviewSrcDir: `${REPO}/review/src`,
+    reviewElm,
+    extraSourceDirs: [`${REPO}/src`, `${REPO}/../elm-review-cem/src`],
+    reviewConfigElm: REVIEW_CONFIG,
+  });
+  const text = writeCorpusApp(targetDir, items, SRC_DIRS);
+  const json = runReviewJson(REVIEW_BIN, cfgDir, targetDir, ELM_BIN, { label: "barrel" });
+  return parseBindings(applyEditsPartial(text, json));
+}
+
 function main() {
-  // phantom-migration: NO-OP. `Cem.PreferBarrel` (external elm-review-cem) has not
-  // been updated for the phantom substrate. Write an all-null barrel file so
-  // build-examples-data.mjs falls back to the Standard `top` for every example.
   const rich = JSON.parse(readFileSync(RICH, "utf8"));
+
+  // One binding per example whose Standard `top` compiles (the corpus).
+  const items = [];
+  for (const module of Object.keys(rich)) {
+    rich[module].forEach((ex, idx) => {
+      if (ex.top == null) return;
+      items.push({ module, idx, name: bindingName(module, idx), code: ex.top });
+    });
+  }
+
+  const byName = barrelise(items);
+
+  // Keep the barrelised form only if it (a) actually changed and (b) compiles;
+  // otherwise null → build-examples-data.mjs falls back to the Standard `top`.
+  const candidates = {};
+  for (const it of items) candidates[it.name] = byName[it.name] ?? it.code;
+  const ok = compilingNames(candidates);
+
   const out = {};
   for (const module of Object.keys(rich)) out[module] = rich[module].map(() => null);
+  let barrelised = 0;
+  for (const it of items) {
+    const code = byName[it.name];
+    if (code && code !== it.code && ok.has(it.name)) {
+      out[it.module][it.idx] = code;
+      barrelised++;
+    }
+  }
+
   writeFileSync(BARREL, JSON.stringify(out, null, 2) + "\n");
   console.log(
-    `gen-barrel: NO-OP (phantom migration) — wrote all-null ${BARREL}; ` +
-      `Standard top used for every example until PreferBarrel rule is updated.`,
+    `gen-barrel: barrelised ${barrelised}/${items.length} examples → ${BARREL} ` +
+      `(non-barrelised keep the Standard top).`,
   );
 }
 

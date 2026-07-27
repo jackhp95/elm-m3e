@@ -19,12 +19,12 @@
 // If any sibling skips, the whole example skips with that reason.
 //
 // Every candidate example is then COMPILE-VERIFIED against the real M3e.* / Kit
-// API (see verify-examples.mjs) at EACH surface (top/mid/bottom) independently.
-// A surface that fails to compile (or that the converter couldn't map) has its
-// field NULLED and the example is KEPT — it ships at whatever surfaces compiled
-// plus its always-present HTML. Only registration-only <script>/<link> cards are
+// API (see verify-examples.mjs) at the Standard `M3e.*` (top) surface. A top that
+// fails to compile (or that the converter couldn't map) is NULLED and the example
+// is KEPT — it ships its always-present HTML surface (and any downstream
+// Record/Build/barrel surface). Only registration-only <script>/<link> cards are
 // filtered out. Each outcome is logged to config/examples.skipped.txt as either
-// `degraded: <surface>: <reason>` (kept, surface nulled) or `filtered:`.
+// `degraded: top: <reason>` (kept, top nulled) or `filtered:`.
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -32,7 +32,7 @@ import { dirname, resolve } from "node:path";
 import { parseHTML } from "linkedom";
 
 import { buildOracle } from "./lib/oracle.mjs";
-import { toElm, toElmCem } from "./lib/to-elm.mjs";
+import { toElm } from "./lib/to-elm.mjs";
 import { deriveSection } from "./lib/sections.mjs";
 import { pascal } from "./lib/naming.mjs";
 import { verifyExamples } from "./verify-examples.mjs";
@@ -85,17 +85,16 @@ function nodeToHtml(node) {
 }
 
 /**
- * Convert one mined example's raw HTML to Elm at the requested layer, handling
- * multi-root galleries.
- * @param {"top"|"middle"|"bottom"} layer
+ * Convert one mined example's raw HTML to the Standard `M3e.*` (top) surface,
+ * handling multi-root galleries. (The retired mid/bottom layers are no longer
+ * generated, so this converts the top surface only.)
  * @returns {{ code: string } | { skip: string }}
  */
-function convertExample(html, oracle, layer = "top") {
-  const convert = (h) =>
-    layer === "top" ? toElm(h, oracle) : toElmCem(h, oracle, layer);
+function convertExample(html, oracle) {
+  const convert = (h) => toElm(h, oracle);
   const roots = topLevelNodes(html);
 
-  // Single root (or empty) -> defer entirely to the layer converter.
+  // Single root (or empty) -> defer entirely to the converter.
   if (roots.length <= 1) {
     return convert(html);
   }
@@ -182,8 +181,8 @@ function main() {
       }
 
       // Convert the strict top surface. A converter skip is NOT a drop: the
-      // example still ships its HTML surface (and possibly mid/bottom); its
-      // `top` field simply becomes null. The skip reason is carried for the log.
+      // example still ships its HTML surface; its `top` field simply becomes
+      // null. The skip reason is carried for the log.
       const res = convertExample(rawHtml, oracle);
       const section = deriveSection(rawHtml, oracle);
       examples.push({
@@ -241,30 +240,22 @@ function main() {
   };
 
   // Top surface: code lives directly on the example (null ⇒ converter skip).
+  // The retired mid (`M3e.Html.*`) and bottom (`M3e.Raw.*`) layers no longer
+  // exist in the phantom substrate and are no longer generated. The Record/Build
+  // surfaces are produced downstream by gen-record-build.mjs (elm-review-driven).
   const topFail = verifyLayer((ex) => ex.code, "top");
-
-  // Generate the middle (M3e.Html.*) and bottom (M3e.Raw.*) surfaces for
-  // EVERY example (not only top-survivors), then verify each independently.
-  for (const module of Object.keys(generated)) {
-    for (const ex of generated[module].examples) {
-      ex.mid = convertExample(ex.html, oracle, "middle");
-      ex.bottom = convertExample(ex.html, oracle, "bottom");
-    }
-  }
-  const midFail = verifyLayer((ex) => ex.mid.code, "mid");
-  const botFail = verifyLayer((ex) => ex.bottom.code, "bottom");
 
   // Split the built data into two outputs (stable, alphabetized keys):
   //   sortedGenerated -> elm-cem-facing {examples:[{title,code,section}],docMeta}
   //                      (carries ONLY compiling top expressions)
-  //   rich            -> docs-facing   {Module:[{title,section,html,top,mid,bottom}]}
-  //                      (top/mid/bottom each string | null)
+  //   rich            -> docs-facing   {Module:[{title,section,html,top}]}
+  //                      (top string | null)
   const sortedGenerated = {};
   const rich = {};
   let fullyCompiled = 0;
   let degraded = 0;
   let droppedNoSurface = 0;
-  const nulled = { top: 0, mid: 0, bottom: 0 };
+  const nulled = { top: 0 };
 
   for (const key of Object.keys(generated).sort()) {
     const richExs = [];
@@ -272,33 +263,22 @@ function main() {
     generated[key].examples.forEach((ex, idx) => {
       const k = `${key}#${idx}`;
       const topReason = ex.topSkip || topFail.get(k) || null;
-      const midReason = ex.mid.skip || midFail.get(k) || null;
-      const botReason = ex.bottom.skip || botFail.get(k) || null;
 
       const top = topReason ? null : ex.code;
-      const mid = midReason ? null : ex.mid.code;
-      const bottom = botReason ? null : ex.bottom.code;
 
       // Defensive: drop only if the example truly has NO surface. `html` is
       // always present, so this branch is unreachable in practice.
-      if (!ex.html && top == null && mid == null && bottom == null) {
+      if (!ex.html && top == null) {
         droppedNoSurface += 1;
         skippedLines.push(`${key} :: ${ex.title} :: dropped: no surface`);
         return;
       }
 
-      if (topReason) nulled.top += 1;
-      if (midReason) nulled.mid += 1;
-      if (botReason) nulled.bottom += 1;
-
-      if (topReason || midReason || botReason) {
+      if (topReason) {
+        nulled.top += 1;
         degraded += 1;
-        const parts = [];
-        if (topReason) parts.push(`top: ${topReason}`);
-        if (midReason) parts.push(`mid: ${midReason}`);
-        if (botReason) parts.push(`bottom: ${botReason}`);
         skippedLines.push(
-          `${key} :: ${ex.title} :: degraded: ${parts.join(" | ")}`,
+          `${key} :: ${ex.title} :: degraded: top: ${topReason}`,
         );
       } else {
         fullyCompiled += 1;
@@ -309,8 +289,6 @@ function main() {
         ...(ex.section ? { section: ex.section } : {}),
         html: ex.html,
         top,
-        mid,
-        bottom,
       });
 
       // The elm-cem-facing generated.json carries ONLY a compiling top
@@ -349,8 +327,7 @@ function main() {
 
   console.log(
     `kept ${keptExamples} / total ${total} examples across ${componentCount} components: ` +
-      `${fullyCompiled} full-surface, ${degraded} degraded ` +
-      `(nulled top ${nulled.top}, mid ${nulled.mid}, bottom ${nulled.bottom}); ` +
+      `${fullyCompiled} compiled top, ${degraded} degraded (nulled top ${nulled.top}); ` +
       `filtered ${filtered} (registration-only), dropped ${droppedNoSurface} (no surface)`,
   );
   console.log(`components with zero examples: ${zeroExampleCount}`);
