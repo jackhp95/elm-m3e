@@ -1,0 +1,457 @@
+/* Tailwind v4 + matraic m3e token/utility bridge. */
+@import "tailwindcss";
+
+/* M3 design tokens (seed -> ref -> sys -> @theme keys).
+   Vendored from the private jackhp95/tailwind-m3e-web repo (see vendor/). */
+@import "./vendor/tailwind-m3e-web/src/index.css";
+/* Per-component CSS-variable utility setters for @m3e/web */
+@import "./vendor/tailwind-m3e-web/generated/utilities.css";
+
+/* Scan the docs routes and the Ui.* library for utility classes. */
+@source "./app";
+@source "../src";
+
+/* Self-hosted Material Symbols Outlined (woff2 bundled in public/, served at
+   site root). Replaces the Google Fonts <link>. The variable axes (opsz, wght,
+   FILL, GRAD) ride on the same file; @m3e/web sets them via font-variation. */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url("/material-symbols-outlined.woff2") format("woff2");
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+/* pablohirafuji/elm-syntax-highlight emits numbered token classes
+   (.elmsh1 … .elmsh7) plus a couple of state classes. Map them to M3
+   color tokens so light + dark schemes adapt automatically.
+   Reference (Monokai-ish convention):
+     .elmsh1 — comments
+     .elmsh2 — strings
+     .elmsh3 — keywords (if, case, let, module …)
+     .elmsh4 — types and built-ins
+     .elmsh5 — function declarations
+     .elmsh6 — literals / operators
+     .elmsh7 — numbers
+*/
+@layer components {
+  pre.elmsh,
+  code.elmsh {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  .elmsh1 {
+    color: var(--md-sys-color-on-surface-variant);
+    font-style: italic;
+  }
+
+  .elmsh2 {
+    color: var(--md-sys-color-secondary);
+  }
+
+  .elmsh3 {
+    color: var(--md-sys-color-primary);
+    font-weight: 500;
+  }
+
+  .elmsh4 {
+    color: var(--md-sys-color-tertiary);
+  }
+
+  .elmsh5 {
+    color: var(--md-sys-color-primary);
+  }
+
+  .elmsh6 {
+    color: var(--md-sys-color-secondary);
+  }
+
+  .elmsh7 {
+    color: var(--md-sys-color-secondary);
+  }
+
+  .elmsh-hl {
+    background: color-mix(in oklab, var(--md-sys-color-primary) 12%, transparent);
+  }
+
+  .elmsh-add {
+    background: color-mix(in oklab, var(--md-sys-color-tertiary-container) 60%, transparent);
+  }
+
+  .elmsh-del {
+    background: color-mix(in oklab, var(--md-sys-color-error-container) 60%, transparent);
+  }
+
+  .elmsh-strong {
+    font-weight: 600;
+  }
+
+  .elmsh-emphasis {
+    font-style: italic;
+  }
+}
+
+/* Auto-derived code folding (stream B2). `Doc.code_` emits a `.cf-root` tree of
+   nested native `<details>` (chevron folds) computed from indentation, plus `…`
+   folds for repeated siblings. Native `<details>` keeps folded content
+   find-in-page searchable + keyboard-toggleable with NO `display:none` of our
+   own — never add one, it would break find-in-page. */
+@layer components {
+  .cf-root {
+    white-space: pre;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  /* A single code line, and a fold header, share one left gutter so the chevron
+     never shifts code: equal-indent lines align regardless of header/leaf. */
+  .cf-leaf,
+  .cf-root summary.cf-summary {
+    display: block;
+    padding-inline-start: 1.3ch;
+    margin: 0;
+  }
+
+  .cf-root details.cf-fold {
+    margin: 0;
+  }
+
+  /* The fold header row. `position: relative` anchors the chevron in the gutter. */
+  .cf-root summary.cf-summary {
+    position: relative;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .cf-root summary.cf-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Rotating chevron in the shared gutter (currentColor, subdued). */
+  .cf-root summary.cf-summary::before {
+    content: "▸";
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--md-sys-color-on-surface-variant);
+    transition: transform 150ms ease;
+  }
+
+  .cf-root details.cf-fold[open] > summary.cf-summary::before {
+    transform: rotate(90deg);
+  }
+
+  /* Repeated-sibling `…` fold: distinct affordance, no chevron, subdued. */
+  .cf-root summary.cf-summary.cf-ellipsis {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .cf-root summary.cf-summary.cf-ellipsis::before {
+    content: none;
+  }
+
+  /* Visible keyboard focus ring consistent with the site's primary accent. */
+  .cf-root summary.cf-summary:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 1px;
+    border-radius: 2px;
+  }
+
+  /* No fold animation when the user asks to reduce motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .cf-root summary.cf-summary::before {
+      transition: none;
+    }
+  }
+}
+
+/* Sliding code panels (stream C). `Doc.Slider.slidingPanels` mounts every API-
+   surface panel in a horizontal `.sp-track` flex row inside a `<slide-panels>`
+   viewport; Elm sets the track's `transform: translateX(-N00%)` inline to bring
+   the active panel into view, and the JS custom element keeps the viewport height
+   locked to the active panel. No `display:none` on panels — off-screen is via the
+   transform + this viewport's clip only, so folds + find-in-page stay intact. */
+@layer components {
+  .sp-viewport {
+    display: block;
+    overflow: hidden;
+    /* JS sets the px height; this animates the change. Falls back to height:auto
+       (tallest panel) if the custom element never upgrades. */
+    transition: height 0.3s ease;
+  }
+
+  .sp-track {
+    display: flex;
+    /* Each panel keeps its own content height — WITHOUT this, the default
+       `align-items: stretch` grows every panel to the tallest sibling, so a tall
+       (or fold-expanded) inactive panel would leave empty space under a short
+       active one and defeat the per-panel height-sync. */
+    align-items: flex-start;
+    transition: transform 0.3s ease;
+  }
+
+  /* Each panel fills the viewport; min-width:0 lets the inner `.overflow-x-auto`
+     code box scroll horizontally instead of stretching the flex item. */
+  .sp-panel {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+
+  /* Honour reduced motion: switch instantly, no slide or height animation. */
+  @media (prefers-reduced-motion: reduce) {
+    .sp-viewport,
+    .sp-track {
+      transition: none;
+    }
+  }
+}
+
+/* M3 document base: the shell's <m3e-theme> cascades --md-sys-color-* /
+   --md-sys-typescale-* onto every descendant, but the bare <html>/<body>
+   outside that subtree needs the surface + type scale too, or the viewport
+   background and overscroll bleed white. (visual-gap.md P0.) */
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: Roboto, "Helvetica Neue", system-ui, -apple-system, sans-serif;
+    font-size: var(--md-sys-typescale-body-large-font-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+    letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  }
+
+  /* Global responsive-media reset. Replaced-content elements have an intrinsic
+     width (e.g. a horizontal <m3e-card>'s `<img slot="header">` is 480px) and
+     live in shadow flex slots that are `flex: 0 0 auto`, so without this they
+     overflow their container horizontally on narrow viewports. `height: auto`
+     preserves aspect ratio when the width is capped. Injected raw-corpus media
+     (Doc.rawPreview → innerHTML) has no Elm call site, so a global reset — not a
+     per-element setter — is the only lever. */
+  img,
+  video,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Match matraic's docs typography (their main.css): prose inherits body-large,
+     inline code + code blocks are 0.875em with a subtle primary tint, blocks wrap.
+     Content prose should NOT set a smaller text-body-* — let this base + the
+     <m3e-heading> type scale carry it, like the reference. */
+  code {
+    background-color: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-primary);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    font-size: 0.875em;
+    font-weight: inherit;
+  }
+
+  pre {
+    color: var(--md-sys-color-primary);
+    font-size: 0.875em;
+    font-weight: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Code inside a block (incl. syntax-highlighted) drops the inline chip styling. */
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    border-radius: 0;
+  }
+}
+
+/* Rendered Markdown (component overviews + API member docs, via elm-markdown).
+   Gives the generated <p>/<ul>/<h*>/<pre> a consistent vertical rhythm and the
+   M3 body type scale, so doc prose reads like the hand-authored routes. */
+@layer components {
+  .doc-prose {
+    font-size: var(--md-sys-typescale-body-large-font-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+  }
+
+  .doc-prose > * + * {
+    margin-block-start: 0.75rem;
+  }
+
+  .doc-prose ul,
+  .doc-prose ol {
+    padding-inline-start: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .doc-prose ul {
+    list-style: disc;
+  }
+
+  .doc-prose ol {
+    list-style: decimal;
+  }
+
+  .doc-prose h1,
+  .doc-prose h2,
+  .doc-prose h3,
+  .doc-prose h4 {
+    font-weight: 500;
+    margin-block-start: 1rem;
+  }
+
+  .doc-prose h1 {
+    font-size: var(--md-sys-typescale-title-large-font-size);
+  }
+
+  .doc-prose h2,
+  .doc-prose h3,
+  .doc-prose h4 {
+    font-size: var(--md-sys-typescale-title-medium-font-size);
+  }
+
+  .doc-prose a {
+    color: var(--md-sys-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .doc-prose pre {
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  /* Inside a list item the doc-prose margins would double up the row gap. */
+  .doc-prose li > p {
+    margin: 0;
+  }
+
+  .doc-prose table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: var(--md-sys-typescale-body-medium-font-size);
+  }
+
+  .doc-prose th,
+  .doc-prose td {
+    text-align: start;
+    padding: 0.5rem 0.75rem;
+    border-block-end: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .doc-prose th {
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+}
+
+/* ── App shell surfaces + settings drawer (clone of matraic's docs shell) ──
+   These are plain CSS rules (not Tailwind utilities): Elm cannot set a CSS
+   custom property (`element.style[--var]=…` is a no-op and `attribute "style"`
+   is clobbered on re-render), but a stylesheet rule sets the property on the
+   host and it pierces the shadow boundary into the m3e component — exactly how
+   matraic's `.docs-header-bar` / `.docs-drawer-container` do it. */
+
+/* App bar surface (matraic `.docs-header-bar`). */
+#docs-app-bar {
+  --m3e-app-bar-container-color: var(--md-sys-color-surface-container-low);
+}
+
+/* Drawer surfaces (matraic `.docs-drawer-container`): side drawers sit on
+   surface-container-low; the mobile modal (overlay) drawer on surface-container. */
+#docs-drawer {
+  --m3e-drawer-container-color: var(--md-sys-color-surface-container-low);
+  --m3e-modal-drawer-container-color: var(--md-sys-color-surface-container);
+}
+
+/* Settings end-drawer content (matraic `#settings-drawer`). */
+#settings-drawer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  box-sizing: border-box;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+}
+
+#settings-drawer m3e-segmented-button {
+  width: fit-content;
+}
+
+/* Round color swatch (matraic's `input[type="color"]`), scoped to the drawer. */
+#settings-drawer input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  outline-color: var(--md-sys-color-secondary);
+}
+
+#settings-drawer input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+#settings-drawer input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* Kitchen-sink page: skip rendering off-screen component blocks until scrolled
+   near, keeping the 329-example /components/all page snappy. contain-intrinsic-size
+   reserves an estimated height so the scrollbar stays stable. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 1200px;
+}
+
+/* Custom elements render raw, unstyled light-DOM until Lit upgrades them.
+   Hide undefined ones (opacity keeps the layout box → no shift), then fade in
+   on upgrade. :where() keeps specificity 0 so element-specific rules win. */
+:where(:not(:defined)) {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(:defined) {
+    transition: opacity 180ms ease-out;
+  }
+}
