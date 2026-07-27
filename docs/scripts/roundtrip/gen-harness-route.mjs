@@ -2,12 +2,12 @@
 // cell wrapped in a <div data-rt="Module/index/surface"> element. NOT committed
 // (gitignored) and NOT deployed (Netlify uses build:ci which never runs this).
 //
-// The docs app's View type is `{ title : String, body : List (M3e.Node.Node msg) }`
-// — body must be a list of Nodes, NOT Html. M3e.Node is opaque (no public
+// The docs app's View type is `{ title : String, body : List (HtmlIr.Node.Node msg) }`
+// — body must be a list of Nodes, NOT Html. HtmlIr.Node is opaque (no public
 // Html -> Node), so every cell is turned into an Element and then Element.toNode'd:
 //   - top/record/build/barrel surfaces already return Element  -> use the raw expr.
 //   - mid/bottom surfaces return `Html msg`                    -> lift via Seam.fromHtml.
-// The data-rt wrapper is a Native.div carrying a Seam.asAttribute attribute, so it
+// The data-rt wrapper is a TypedHtml.div carrying a Native.attribute attribute, so it
 // stays an Element the whole way. Per-cell bindings are un-annotated: each surface's
 // Element carries a different phantom capability row, so no single concrete
 // annotation is possible (this is exactly why verify-examples.mjs leaves bindings
@@ -31,7 +31,7 @@ const ELEMENT_SURFACES = new Set(["top", "record", "build", "barrel"]);
 // Modules imported under an alias / exposing — never emit them as plain imports
 // (a duplicate import is a compile error), and never let the forced-import scan
 // re-add them as plain imports either.
-const ALIASED = new Set(["M3e.Element", "PagesMsg"]);
+const ALIASED = new Set(["HtmlIr.Element", "PagesMsg"]);
 
 function bindingName(module, index, surface) {
   return `cell_${module.replace(/\./g, "_")}_${index}_${surface}`;
@@ -46,7 +46,7 @@ export function generateHarness(cells, resolves) {
 
   // Plain imports: the harness's own fixed deps plus every resolvable module the
   // cell expressions reference. Aliased/exposing modules are handled separately.
-  const imports = new Set(["Html", "Html.Attributes", "Native", "Seam"]);
+  const imports = new Set(["Html", "Html.Attributes", "Native", "Seam", "TypedHtml"]);
   for (const c of converted) {
     for (const mod of referencedModules(c.elm)) {
       if (STDLIB.has(mod.split(".")[0])) continue;
@@ -64,7 +64,7 @@ export function generateHarness(cells, resolves) {
   L.push("import BackendTask exposing (BackendTask)");
   L.push("import FatalError exposing (FatalError)");
   L.push("import Head");
-  L.push("import M3e.Element as Element");
+  L.push("import HtmlIr.Element as Element");
   L.push("import PagesMsg exposing (PagesMsg)");
   L.push("import RouteBuilder exposing (App, StatelessRoute)");
   L.push("import Shared");
@@ -125,7 +125,7 @@ export function generateHarness(cells, resolves) {
     const name = bindingName(c.module, c.index, c.surface);
     return (
       "        Element.toNode (Element.map PagesMsg.fromMsg " +
-      `(Native.div [ Seam.asAttribute (Html.Attributes.attribute "data-rt" "${id}") ] ${name}))`
+      `(TypedHtml.div [ Native.attribute "data-rt" "${id}" ] ${name}))`
     );
   });
   L.push(wrapped.join("\n        ,\n"));
