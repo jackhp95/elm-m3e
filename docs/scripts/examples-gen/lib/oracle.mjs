@@ -72,6 +72,15 @@ const ALIAS_ENUM_LITERALS = {
 // NOT `camel`, which folds a separator-free PascalCase word to all-lowercase.
 const decapitalize = (s) => (s ? s.charAt(0).toLowerCase() + s.slice(1) : s);
 
+// Is a slot `kinds` entry the shared text/link row? The current config vocab
+// spells these `shared:text` / `shared:link` (the `shared:` prefix marks a kind
+// several components produce, as opposed to a component-produced kind like
+// `treeItem`). An older vocab used bare `text` / `link`; accept both so the
+// fold-to-record / unwrap-to-Kit.text logic keys off the same predicate the
+// library's `LabelSlot = { sharedText, sharedLink }` type encodes.
+const isTextOrLinkKind = (k) =>
+  k === "text" || k === "link" || k === "shared:text" || k === "shared:link";
+
 // Fix A — tagName reconciliation. The @m3e/web 2.5.13 CEM carries the SAME
 // analyzer defect B1.5b fixed in the library generator: two element classes
 // have a WRONG class-level `tagName` that collides with a sibling —
@@ -258,7 +267,11 @@ export function buildOracle() {
 
       // slots
       const slotEntries = [];
-      const slotConfig = moduleConfig.slots ?? {};
+      // Config key is `admits` (per-slot accepted-kind curation). Reading the
+      // wrong key (`slots`) left `slotConfig` empty, so config-defined slots
+      // (incl. the config-only FormField `label`) and every slot's
+      // kinds/multi/required were lost. See config/slots.json + CONFIG_SCHEMA.md.
+      const slotConfig = moduleConfig.admits ?? {};
       // Required NAMED slots (e.g. NavMenuItem/TreeItem `label`) are folded by
       // the codegen into the view's required record as a field (NOT a slot
       // helper). Collect them so the mapper can source that field from the
@@ -313,8 +326,7 @@ export function buildOracle() {
         // ordinary slot HELPERS in the library — required-ness is enforced by
         // elm-review, not the record. Mirror that here so the mapper emits a
         // helper (not a phantom record field) for non-text/link required slots.
-        const foldsToRecord =
-          kinds.length > 0 && kinds.every((k) => k === "text" || k === "link");
+        const foldsToRecord = kinds.length > 0 && kinds.every(isTextOrLinkKind);
         if (rawName !== "" && required && !multi && foldsToRecord) {
           requiredSlots.push({
             field: camel(rawName),
@@ -353,8 +365,7 @@ export function buildOracle() {
         const multi = cfg.multi === true;
         slotEntries.push({ rawName, helper, kind, kinds, required, multi });
         seenRaw.add(rawName);
-        const foldsToRecord =
-          kinds.length > 0 && kinds.every((k) => k === "text" || k === "link");
+        const foldsToRecord = kinds.length > 0 && kinds.every(isTextOrLinkKind);
         if (rawName !== "" && required && !multi && foldsToRecord) {
           requiredSlots.push({ field: camel(rawName), rawName, kinds });
         }

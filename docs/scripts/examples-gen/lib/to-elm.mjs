@@ -354,7 +354,13 @@ function elementToElm(node, oracle) {
     const onlyTextLink =
       kinds &&
       kinds.length > 0 &&
-      kinds.every((k) => k === "text" || k === "link");
+      kinds.every(
+        (k) =>
+          k === "text" ||
+          k === "link" ||
+          k === "shared:text" ||
+          k === "shared:link",
+      );
     const expr = onlyTextLink
       ? textLinkSlotChild(matches[0], tag, field, oracle)
       : nodeToElm(matches[0], oracle);
