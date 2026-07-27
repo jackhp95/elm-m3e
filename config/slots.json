@@ -348,6 +348,13 @@
         ],
         "multi": false,
         "required": false
+      },
+      "label": {
+        "kinds": [
+          "any"
+        ],
+        "multi": false,
+        "required": false
       }
     }
   },
@@ -1279,6 +1286,28 @@
         ],
         "multi": false,
         "required": false
+      },
+      "leading-icon": {
+        "kinds": [
+          "shared:icon"
+        ],
+        "multi": false,
+        "required": false
+      },
+      "trailing-icon": {
+        "kinds": [
+          "shared:icon"
+        ],
+        "multi": false,
+        "required": false
+      },
+      "trailing-supporting-text": {
+        "kinds": [
+          "shared:text",
+          "html"
+        ],
+        "multi": false,
+        "required": false
       }
     }
   },
@@ -1352,6 +1381,28 @@
           "switch",
           "radio",
           "checkbox"
+        ],
+        "multi": false,
+        "required": false
+      },
+      "leading-icon": {
+        "kinds": [
+          "shared:icon"
+        ],
+        "multi": false,
+        "required": false
+      },
+      "trailing-icon": {
+        "kinds": [
+          "shared:icon"
+        ],
+        "multi": false,
+        "required": false
+      },
+      "trailing-supporting-text": {
+        "kinds": [
+          "shared:text",
+          "html"
         ],
         "multi": false,
         "required": false

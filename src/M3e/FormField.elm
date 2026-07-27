@@ -3,8 +3,8 @@ module M3e.FormField exposing
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
     , hideRequiredMarker
-    , error, hint, prefix, prefixText, suffix, suffixText, child
-    , withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
+    , error, hint, label, prefix, prefixText, suffix, suffixText, child
+    , withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withLabel, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
     )
 
 {-| The `m3e-form-field` component — strict per-component surface.
@@ -15,8 +15,8 @@ A container for form controls that applies Material Design styling and behavior.
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
 @docs hideRequiredMarker
-@docs error, hint, prefix, prefixText, suffix, suffixText, child
-@docs withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
+@docs error, hint, label, prefix, prefixText, suffix, suffixText, child
+@docs withChild, withClass, withError, withFloatLabel, withHideRequiredMarker, withHideSubscript, withHint, withId, withLabel, withPrefix, withPrefixText, withSlot, withStyle, withSuffix, withSuffixText, withVariant
 
 -}
 
@@ -139,6 +139,14 @@ hint element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "hint") (El.toNode element))
 
 
+{-| Place an element into the named `label` slot (input constrained to the
+slot's kinds; output row free so it composes into the child list).
+-}
+label : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+label element =
+    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "label") (El.toNode element))
+
+
 {-| Place an element into the named `prefix` slot (input constrained to the
 slot's kinds; output row free so it composes into the child list).
 -}
@@ -207,6 +215,7 @@ type alias AttrCaps =
 type alias SlotCaps =
     { error : Available
     , hint : Available
+    , label : Available
     , prefix : Available
     , prefixText : Available
     , suffix : Available
@@ -296,6 +305,13 @@ withError element =
 withHint : Element childAccepts admittedBy msg -> Builder attrCaps { s | hint : Available } msg -> Builder attrCaps { s | hint : Used } msg
 withHint element =
     B.withChild (El.toNode (hint element))
+
+
+{-| Pipe form of the `label` slot — consumes its capability (write-once).
+-}
+withLabel : Element childAccepts admittedBy msg -> Builder attrCaps { s | label : Available } msg -> Builder attrCaps { s | label : Used } msg
+withLabel element =
+    B.withChild (El.toNode (label element))
 
 
 {-| Pipe form of the `prefix` slot — consumes its capability (write-once).
