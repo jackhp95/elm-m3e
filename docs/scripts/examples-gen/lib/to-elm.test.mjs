@@ -273,7 +273,7 @@ test("card with header + content(div) slots", () => {
   assert.match(r.code, /M3e\.Card\.view/);
   assert.match(r.code, /M3e\.Card\.header/);
   assert.match(r.code, /M3e\.Card\.content/);
-  assert.match(r.code, /Native\.div/);
+  assert.match(r.code, /TypedHtml\.div/);
   assert.match(r.code, /M3e\.Heading\.view \[[^\]]*\] \[ Kit\.text "People" \]/);
   assert.match(r.code, /M3e\.Chip\.view \[\] \[ Kit\.text "Name" \]/);
   assert.doesNotMatch(r.code, /\.child/);
@@ -281,19 +281,20 @@ test("card with header + content(div) slots", () => {
 
 // --- (b) plain HTML + (c) anchor -> Kit.link --------------------------------
 
-test("plain div maps to Native.div", () => {
+test("plain div maps to TypedHtml.div", () => {
   const r = conv(`<div><m3e-icon name="a"></m3e-icon></div>`);
   assert.deepEqual(r, {
-    code: `Native.div [] [ M3e.Icon.view [ M3e.Icon.name "a" ] [] ]`,
+    code: `TypedHtml.div [] [ M3e.Icon.view [ M3e.Icon.name "a" ] [] ]`,
   });
 });
 
-// 3d-native: raw HTML attributes on a Native element are now CARRIED via
-// `Native.attribute` (were dropped in v1) so they round-trip.
+// 3d-native: raw HTML attributes on a plain element are now CARRIED via
+// `Native.attribute` (were dropped in v1) so they round-trip. The producer is
+// TypedHtml.div; the raw attr keeps the sanctioned Native.attribute escape.
 test("plain div carries its class attribute via Native.attribute", () => {
   const r = conv(`<div class="grid"><m3e-icon name="a"></m3e-icon></div>`);
   assert.deepEqual(r, {
-    code: `Native.div [ Native.attribute "class" "grid" ] [ M3e.Icon.view [ M3e.Icon.name "a" ] [] ]`,
+    code: `TypedHtml.div [ Native.attribute "class" "grid" ] [ M3e.Icon.view [ M3e.Icon.name "a" ] [] ]`,
   });
 });
 
@@ -302,20 +303,32 @@ test("input carries value/placeholder/type via Native.attribute", () => {
   const r = conv(`<m3e-menu><input type="text" placeholder="Name" value="Jo"></m3e-menu>`);
   assert.match(
     r.code,
-    /Native\.node Html\.input \[ Native\.attribute "type" "text", Native\.attribute "placeholder" "Name", Native\.attribute "value" "Jo" \] \[\]/,
+    /TypedHtml\.input \[ Native\.attribute "type" "text", Native\.attribute "placeholder" "Name", Native\.attribute "value" "Jo" \] \[\]/,
   );
 });
 
-// 3d-native: <img> (attrs-only Native) carries src.
+// 3d-native: <img> (TypedHtml.img, no children) carries src.
 test("img carries src via Native.attribute", () => {
   const r = conv(`<m3e-menu><img src="/x.png"></m3e-menu>`);
-  assert.match(r.code, /Native\.img \[ Native\.attribute "src" "\/x\.png" \]/);
+  assert.match(r.code, /TypedHtml\.img \[ Native\.attribute "src" "\/x\.png" \] \[\]/);
 });
 
-test("label maps to Native.node Html.label", () => {
+// Any tag TypedHtml models (label/input/form/…) now emits its TypedHtml producer
+// — the old `Native.node Html.<tag>` fallback was a type error on the phantom
+// substrate (Native.node takes a String, not the `Html.<tag>` function).
+test("label maps to TypedHtml.label", () => {
   const r = conv(`<label>Hi</label>`);
   assert.deepEqual(r, {
-    code: `Native.node Html.label [] [ Kit.text "Hi" ]`,
+    code: `TypedHtml.label [] [ Kit.text "Hi" ]`,
+  });
+});
+
+// A tag TypedHtml does NOT model falls through to `Native.node "<tag>"` — a
+// STRING tag name (the sanctioned dynamic/custom-element forge in Native.elm).
+test("unknown tag -> Native.node with a String tag name", () => {
+  const r = conv(`<my-widget>Hi</my-widget>`);
+  assert.deepEqual(r, {
+    code: `Native.node "my-widget" [] [ Kit.text "Hi" ]`,
   });
 });
 
@@ -353,13 +366,13 @@ test("numeric attribute -> Float literal (no quotes) at top layer", () => {
   assert.ok(bot(`<m3e-icon name="star" optical-size="24"></m3e-icon>`).skip);
 });
 
-test("void elements (<hr>/<br>) are 0-arg Native values, not called with args", () => {
+test("void elements (<hr>/<br>) -> TypedHtml 2-arg producer with empty lists", () => {
   assert.deepEqual(conv(`<m3e-menu id="m"><hr></m3e-menu>`), {
-    code: `M3e.Menu.view [ M3e.Attributes.id "m" ] [ Native.hr ]`,
+    code: `M3e.Menu.view [ M3e.Attributes.id "m" ] [ TypedHtml.hr [] [] ]`,
   });
 });
 
-test("<main> maps to Html.main_ (reserved name)", () => {
+test("<main> maps to TypedHtml.main_ (reserved name)", () => {
   const r = conv(`<m3e-drawer-container><main>Content</main></m3e-drawer-container>`);
-  assert.ok(r.code && /Native\.node Html\.main_ \[\]/.test(r.code), r.code || r.skip);
+  assert.ok(r.code && /TypedHtml\.main_ \[\]/.test(r.code), r.code || r.skip);
 });

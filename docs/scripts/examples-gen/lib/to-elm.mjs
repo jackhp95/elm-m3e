@@ -6,8 +6,9 @@
 //   - required-record view form (3-arg): named required fields (e.g.
 //     ariaLabel <- aria-label) AND a required single-value default slot folded
 //     into the record as a bare `content` field (IconButton/Heading/Chip).
-//   - plain (non-m3e) HTML: Native.<tag> for a known tag list, Native.node
-//     Html.<tag> otherwise, and <a href> -> Kit.link. v1 drops non-structural
+//   - plain (non-m3e) HTML: TypedHtml.<tag> (the phantom-substrate producer) for
+//     any tag TypedHtml models, `Native.node "<tag>"` (String tag name) for a
+//     tag it doesn't, and <a href> -> Kit.link. v1 drops non-structural
 //     attributes (class/id/for) rather than skipping the example.
 //
 // Anything genuinely unmappable short-circuits the example with { skip: reason }
@@ -110,28 +111,44 @@ function recordInvalidEnum(tag, name, value, attr) {
   console.error(`to-elm: dropped ${reason}`);
 }
 
-// Void (empty) elements whose `Native.<tag>` is a 0-arg value, not a function.
-const VOID_NATIVE_TAGS = new Set(["br", "hr"]);
+// Void (empty) elements: `br`/`hr`. On the phantom substrate these are ordinary
+// `TypedHtml.<tag> : List Attr -> List Element -> Element` producers (the elm/html
+// call shape), NOT 0-arg values — so they are emitted `TypedHtml.br [] []`. They
+// carry no children and (as before) drop their rare non-structural attributes.
+const VOID_TYPED_TAGS = new Set(["br", "hr"]);
 
-// Plain HTML tags that have a dedicated `Native.<tag>` constructor.
-const NATIVE_TAGS = new Set([
-  "div",
-  "span",
-  "section",
-  "nav",
-  "p",
-  "header",
-  "footer",
-  "strong",
-  "em",
-  "small",
-  "ul",
-  "ol",
-  "li",
-  "img",
-  "br",
-  "hr",
-]);
+// Plain HTML tags with a dedicated `TypedHtml.<tag>` producer on the phantom
+// substrate. This is the FULL set of HTML tag names TypedHtml exposes (verified
+// against docs/vendor/elm-foundation/TypedHtml.elm's exposing list), using real
+// HTML tag names — `main` is exposed as the reserved-name-escaped `main_`, mapped
+// by `typedHtmlProducer` below. `a`/`img`/`br`/`hr` also live here but are
+// intercepted earlier in plainElementToElm (Kit.link / childless forms).
+//
+// Any tag TypedHtml does NOT model falls through to the sanctioned `Native.node
+// "<tag>"` escape (a STRING tag name, per docs/kit/Native.elm). We deliberately do
+// NOT use the old `Native.node Html.<tag>` form: `Native.node` now takes a String,
+// so passing the `Html.<tag>` FUNCTION is a type error that nulled every example
+// hitting the fallback (label ×107, input ×56, form, …) — including all the
+// form-field label examples this migration is meant to restore.
+const TYPED_HTML_TAGS = new Set(
+  (
+    "a abbr address area article aside audio b base bdi bdo blockquote body br " +
+    "button canvas caption cite code col colgroup data datalist dd del details " +
+    "dfn dialog div dl dt em embed fieldset figcaption figure footer form h1 h2 " +
+    "h3 h4 h5 h6 head header hgroup hr i iframe img input ins kbd label legend li " +
+    "link main map mark menu meta meter nav noscript object ol optgroup option " +
+    "output p picture pre progress q rp rt ruby s samp script search section " +
+    "select slot small source span strong style sub summary sup table tbody td " +
+    "template textarea tfoot th thead time title tr track u ul var video wbr"
+  ).split(" "),
+);
+
+/** Map a lowercase HTML tag to its `TypedHtml.<producer>` function name, or null
+ * if TypedHtml doesn't model the tag. `main` -> `main_` (reserved-name escape). */
+function typedHtmlProducer(tag) {
+  if (tag === "main") return "main_";
+  return TYPED_HTML_TAGS.has(tag) ? tag : null;
+}
 
 /**
  * Sentinel thrown internally to short-circuit on the FIRST unmappable thing.
@@ -187,8 +204,8 @@ function childNodesToElm(node, oracle) {
 /**
  * Render the child of a required NAMED slot whose accepted `kinds` are
  * text/link (e.g. NavMenuItem/TreeItem `label`). The codegen types this field
- * as `Element { text, link }`, so a generic `Native.<tag>` wrapper (which
- * carries an `html` row) would NOT unify. We therefore unwrap:
+ * as `Element { text, link }`, so a generic `TypedHtml.<tag>` wrapper (which
+ * carries an `html`-family row) would NOT unify. We therefore unwrap:
  *   - <a href> child            -> Kit.link "href" [ ...text... ]
  *   - text-only wrapper/bare    -> Kit.text "..."   (span/div wrappers folded)
  * Anything richer than text/link genuinely can't be sourced honestly -> skip.
@@ -221,16 +238,17 @@ function textLinkSlotChild(node, tag, field, oracle) {
 }
 
 /**
- * Raw HTML attributes on a Native element, as `Native.attribute "n" "v"` exprs.
- * `Native.attribute` is the sanctioned `Seam.asAttribute (Html.Attributes.
- * attribute name value)` wrapper (the kit `Native.elm`) carrying a fully-open
- * capability row, so it composes onto any Native element (`div`/`input`/`img`/…)
- * regardless of that element's constrained attr row. This carries functional
- * attrs (`value`/`placeholder`/`type`/`src`/…) that were previously DROPPED,
- * so an `<input value="…">` round-trips. `slot` is excluded — a plain child of
- * an m3e container carries its slot structurally via the parent's slot helper,
- * not as an attribute here. `href` is excluded for the caller that already
- * emits it (`<a>` -> Kit.link).
+ * Raw HTML attributes on a plain element, as `Native.attribute "n" "v"` exprs.
+ * `Native.attribute` is the sanctioned raw-attribute escape (kit `Native.elm`):
+ * `Ir.fromHtmlAttribute (Html.Attributes.attribute name value) : Attr c msg`. Its
+ * capability row `c` is fully open, so it unifies into ANY producer's constrained
+ * attr row — a `TypedHtml.div`'s `List (Attr DivAttrs msg)` as readily as a
+ * `TypedHtml.img`'s `List (Attr Img.Attrs msg)`. This carries functional attrs
+ * (`value`/`placeholder`/`type`/`src`/…) that were previously DROPPED, so an
+ * `<input value="…">` round-trips. `slot` is excluded — a plain child of an m3e
+ * container carries its slot structurally via the parent's slot helper, not as an
+ * attribute here. `href` is excluded for the caller that already emits it
+ * (`<a>` -> Kit.link).
  */
 function nativeAttrExprs(node, { excludeHref = false } = {}) {
   const out = [];
@@ -259,33 +277,38 @@ function plainElementToElm(node, oracle) {
     return `Kit.link "${escapeElmString(href)}" ${list}`;
   }
 
-  // Void elements (`Native.br`/`Native.hr`) are 0-arg VALUES, not functions —
-  // they take neither attributes nor children, so their attrs cannot be carried.
-  if (VOID_NATIVE_TAGS.has(tag)) {
-    return `Native.${tag}`;
+  // Void elements (`TypedHtml.br`/`TypedHtml.hr`) take the standard 2-arg call
+  // shape but have no children; their rare non-structural attrs are dropped (as
+  // in v1), so they emit `TypedHtml.br [] []`.
+  if (VOID_TYPED_TAGS.has(tag)) {
+    return `TypedHtml.${tag} [] []`;
   }
 
   const attrs = nativeAttrExprs(node);
   const attrList = attrs.length === 0 ? "[]" : `[ ${attrs.join(", ")} ]`;
 
-  // `Native.img` takes ONLY attributes (no children): `img : List Attr -> ...`.
+  // `TypedHtml.img` takes the standard `List Attr -> List Element -> Element`
+  // shape; an <img> carries no children, so the child list is always `[]`. Its
+  // attrs (`src`/…) ARE carried via the Native.attribute escape.
   if (tag === "img") {
-    return `Native.img ${attrList}`;
+    return `TypedHtml.img ${attrList} []`;
   }
 
   const children = childNodesToElm(node, oracle);
   const list = children.length === 0 ? "[]" : `[ ${children.join(", ")} ]`;
 
-  if (NATIVE_TAGS.has(tag)) {
-    return `Native.${tag} ${attrList} ${list}`;
+  // Prefer the phantom-substrate `TypedHtml.<producer>` for any tag TypedHtml
+  // models (div/span/label/input/form/…). It gives a closed, element-natural attr
+  // row and unifies on the shared HtmlIr substrate with the m3e producers and the
+  // `Native.attribute` escape carried above.
+  const typedFn = typedHtmlProducer(tag);
+  if (typedFn) {
+    return `TypedHtml.${typedFn} ${attrList} ${list}`;
   }
 
-  // Any other tag (label, input, etc.) -> Native.node Html.<tag>. Emitted code
-  // references `Html.<tag>`, so the example module needs an `Html` import
-  // (handled by the orchestrator when assembling the module). `main` clashes
-  // with the app entrypoint, so elm/html exposes it as `main_`.
-  const htmlFn = tag === "main" ? "main_" : tag;
-  return `Native.node Html.${htmlFn} ${attrList} ${list}`;
+  // A tag TypedHtml does not model (dynamic / custom element): forge it via the
+  // sanctioned `Native.node` escape, which takes a STRING tag name (Native.elm).
+  return `Native.node "${escapeElmString(tag)}" ${attrList} ${list}`;
 }
 
 function elementToElm(node, oracle) {
@@ -350,7 +373,7 @@ function elementToElm(node, oracle) {
     }
     // A text/link-kinded slot (e.g. `label`) types as `Element { text, link }`.
     // Render it through the text/link unwrapper so a `<span>`/`<div>` wrapper
-    // folds to `Kit.text` rather than an incompatible `Native.<tag>`.
+    // folds to `Kit.text` rather than an incompatible `TypedHtml.<tag>`.
     const onlyTextLink =
       kinds &&
       kinds.length > 0 &&
@@ -601,7 +624,7 @@ const CEM_PREFIX = { middle: "M3e.Html", bottom: "M3e.Raw" };
 
 // Plain tags that map to a bare `Html.<tag>`; anything else -> `Html.node "tag"`.
 const HTML_TAGS = new Set([
-  ...NATIVE_TAGS,
+  ...TYPED_HTML_TAGS,
   "a",
   "label",
   "h1",

@@ -80,7 +80,16 @@ function compileAndCollectErrors(scratchDir) {
     execFileSync(
       ELM_BIN,
       ["make", "src/Verify.elm", "--output=/dev/null", "--report=json"],
-      { cwd: scratchDir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
+      {
+        cwd: scratchDir,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+        // The JSON error report for a whole-corpus compile can far exceed the
+        // 1 MB execFileSync default; a truncated buffer makes JSON.parse throw
+        // and the harness FATALs on a phantom "not JSON" error, masking the real
+        // per-example failures. Give it generous headroom (64 MB).
+        maxBuffer: 64 * 1024 * 1024,
+      },
     );
     return { report: null, byBinding: new Map() }; // clean compile
   } catch (err) {
