@@ -116,10 +116,11 @@ label kids =
 
 {-| The canonical form-field structural-association pattern.
 
-Renders a native `<label for=id>` and a control `<input id=id>` (or any control
-element that accepts an `id` attribute) as **siblings in `m3e-form-field`'s
-default slot**. The browser's `for`/`id` match wires them into one accessible
-control; `m3e-form-field` styles the pair. No id-wiring injection — pure HTML.
+Renders a native `<label for=id>` into `m3e-form-field`'s **`label` slot** and a
+control `<input id=id>` (or any control element that accepts an `id` attribute)
+into the default slot. Placing the label in `slot="label"` is what activates
+`m3e-form-field`'s floating-label behavior; the browser's `for`/`id` match still
+wires the pair into one accessible control. No id-wiring injection — pure HTML.
 
     M3e.formField []
         (Seam.field "email"
@@ -146,6 +147,6 @@ field :
     -> { labelContent : List (Element s admittedBy msg), control : Element { k | html : r } admittedBy msg }
     -> List (Element { k | html : r } admittedBy msg)
 field id_ { labelContent, control } =
-    [ recast (TypedHtml.label [ TypedHtml.Attributes.for id_ ] (List.map recast labelContent))
+    [ recast (slot "label" (TypedHtml.label [ TypedHtml.Attributes.for id_ ] (List.map recast labelContent)))
     , control
     ]
