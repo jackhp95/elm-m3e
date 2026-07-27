@@ -10,11 +10,17 @@ test("button module + variant enum + bool", () => {
   assert.deepEqual(variant.enumValues.slice().sort(), ["elevated","filled","outlined","text","tonal"]);
   assert.equal(b.attributes.find((a) => a.htmlName === "disabled").kind, "bool");
 });
-test("button slot helpers incl. selected->selectedSlot bump + default child", () => {
+test("button slot helpers are the BARE slot name (no +Slot bump); default child", () => {
   const b = oracle["m3e-button"];
   assert.equal(b.slots.find((s) => s.rawName === "icon").helper, "icon");
-  assert.equal(b.slots.find((s) => s.rawName === "selected").helper, "selectedSlot");
+  // The positional slot helper is the bare slot name even when it collides with
+  // an attribute (`selected`): the generator keeps the positional helper bare and
+  // resolves the clash only on the builder (`withSelectedSlot`).
+  assert.equal(b.slots.find((s) => s.rawName === "selected").helper, "selected");
   assert.equal(b.slots.find((s) => s.rawName === "").helper, "child");
+  // The colliding `selected` BOOLEAN attribute has no positional top setter (its
+  // name is taken by the slot helper), so the oracle drops it from `attributes`.
+  assert.ok(!b.attributes.some((a) => a.setter === "selected"));
 });
 test("icon-button module; aria-label is NOT a required field (universal setter)", () => {
   const ib = oracle["m3e-icon-button"];

@@ -55,13 +55,15 @@ test("checkbox aria-label -> TypedHtml.Aria.label setter", () => {
 
 // Universal HTML attributes (id/for/class/style) are settable on ANY component
 // via M3e.Attributes (open-row Attr), mirroring the universal aria path. `style`
-// parses the raw "k: v; k2: v2" string into a list of (k, v) tuples (CSS custom
-// properties survive). `for` here is universal because m3e-checkbox has no typed
-// `for` setter (components that DO map `for` keep their typed setter — see below).
-test("top: universal id/for/class/style via M3e.Attributes; style -> tuples", () => {
+// passes the raw `style="…"` value verbatim as a String — the generated
+// `M3e.Attributes.style : String -> Attr` takes the whole declaration string
+// (CSS custom properties survive), NOT a list of (k, v) tuples. `for` here is
+// universal because m3e-checkbox has no typed `for` setter (components that DO
+// map `for` keep their typed setter — see below).
+test("top: universal id/for/class/style via M3e.Attributes; style -> raw String", () => {
   const html = `<m3e-checkbox id="c1" class="a b" style="color: red; --x: 1px" for="ctrl" checked></m3e-checkbox>`;
   assert.deepEqual(conv(html), {
-    code: `M3e.Checkbox.view [ M3e.Attributes.id "c1", M3e.Attributes.class "a b", M3e.Attributes.style [ ( "color", "red" ), ( "--x", "1px" ) ], M3e.Attributes.for "ctrl", M3e.Checkbox.checked True ] []`,
+    code: `M3e.Checkbox.view [ M3e.Attributes.id "c1", M3e.Attributes.class "a b", M3e.Attributes.style "color: red; --x: 1px", M3e.Attributes.for "ctrl", M3e.Checkbox.checked True ] []`,
   });
 });
 

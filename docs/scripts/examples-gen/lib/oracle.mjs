@@ -2,7 +2,7 @@
 // (@m3e/web custom-elements.json) + config/slots.json. Feeds the HTML->Elm
 // mapper so it can turn `<m3e-button variant="filled">` into typed M3e.* calls.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { camel, pascal, safeField } from "./naming.mjs";
@@ -132,9 +132,25 @@ export function buildOracle() {
   // "m3e-linear-progress-indicator", ... } -> `M3e.Progress.linear`). Build a
   // tag -> { module, variant } map so the TOP mapper targets the group module.
   // (Middle/bottom layers keep the per-tag modules, which exist as-is.)
+  // Fold a `group` ONLY when its target module is ACTUALLY generated into the
+  // library (src/M3e/<Module>.elm). The generator ignores `group` and emits a
+  // per-tag module for every element, so a group whose unified module was never
+  // generated (e.g. `Progress` — the library ships separate
+  // `LinearProgressIndicator`/`CircularProgressIndicator` modules) is stale
+  // config: folding into `M3e.Progress.linear` emitted a non-existent variable.
+  // Skipping the fold lets each tag map to its real per-tag module.
   const groupByTag = {};
   for (const [module, cfg] of Object.entries(slots)) {
     if (cfg && cfg.group && typeof cfg.group === "object") {
+      const groupModuleExists = existsSync(
+        resolve(REPO_ROOT, "src", "M3e", `${module}.elm`),
+      );
+      if (!groupModuleExists) {
+        console.error(
+          `oracle: skipping stale group "${module}" (no generated src/M3e/${module}.elm); mapping members to per-tag modules`,
+        );
+        continue;
+      }
       for (const [variant, tag] of Object.entries(cfg.group)) {
         groupByTag[tag] = { module, variant };
       }
@@ -155,17 +171,17 @@ export function buildOracle() {
 
       // attributes
       const attributes = [];
-      const setterNames = new Set();
       for (const attr of d.attributes ?? []) {
         const htmlName = attr.name;
         // Attribute setters use the PLAIN camelCase name — the generator does
         // NOT reserved-bump them (Attr.elm: `elmName = camel attribute.name`),
-        // so `min`/`max`/etc. stay as-is. (`setterNames` is still tracked for
-        // the slot-helper collision bump below.) It DOES escape Elm keywords
+        // so `min`/`max`/etc. stay as-is. It DOES escape Elm keywords
         // (`type` -> `type_`), mirroring the generator's `safeField`, so a `type`
         // attribute targets the real `M3e.<Mod>.type_` setter (not `.type`).
+        // (An attribute whose name COLLIDES with a slot helper — e.g. `selected`,
+        // `start`, `end` — is dropped from the top surface after the slot loop
+        // below: the positional name belongs to the slot, not the attribute.)
         const setter = safeField(camel(htmlName));
-        setterNames.add(setter);
 
         const typeText = attr.type?.text ?? "";
         const enumSource = attr.parsedType?.text ?? attr.type?.text ?? "";
@@ -283,8 +299,15 @@ export function buildOracle() {
         if (rawName === "") {
           helper = "child";
         } else {
-          const base = camel(rawName);
-          helper = setterNames.has(base) ? base + "Slot" : base;
+          // The POSITIONAL slot helper is ALWAYS the bare slot name. When a slot
+          // name collides with an attribute setter (e.g. Button/IconButton
+          // `selected`, DrawerContainer `start`/`end`, Autocomplete `loading`),
+          // the generator resolves the clash on the BUILDER side only
+          // (`withSelectedSlot` vs `withSelected`) and keeps the positional
+          // helper bare (`selected`). A `+Slot`-bumped positional name
+          // (`selectedSlot`) is never exposed, so the previous bump emitted a
+          // non-existent variable and degraded every such example.
+          helper = camel(rawName);
         }
         // Fix B — the default (anonymous) slot's config lives under the
         // "unnamed" key in config/slots.json (NOT "default"). Reading the wrong
@@ -348,13 +371,9 @@ export function buildOracle() {
           cfgKey === "unnamed" || cfgKey === "default" ? "" : cfgKey;
         if (seenRaw.has(rawName)) continue;
         const cfg = slotConfig[cfgKey] ?? {};
-        const base = camel(rawName);
-        const helper =
-          rawName === ""
-            ? "child"
-            : setterNames.has(base)
-              ? base + "Slot"
-              : base;
+        // Positional slot helper is always the bare slot name (see the CEM-slot
+        // loop above): the generator bumps only the builder, never the helper.
+        const helper = rawName === "" ? "child" : camel(rawName);
         const kinds = Array.isArray(cfg.kinds)
           ? cfg.kinds
           : cfg.kinds != null
@@ -399,13 +418,29 @@ export function buildOracle() {
         if (helpers.size === 1) childSlotByKind[k] = [...helpers][0];
       }
 
+      // Attribute↔slot name collision: when an attribute setter shares its name
+      // with a slot helper (e.g. DrawerContainer `start`/`end`, Button/IconButton
+      // `selected`), the generator gives the POSITIONAL name to the SLOT (an
+      // `Element -> Element` helper) and exposes the attribute ONLY as a `withX`
+      // builder — there is NO positional attribute setter. Emitting
+      // `M3e.<mod>.start True` would therefore apply the slot helper to a Bool.
+      // Drop these attributes: at the strict positional TOP surface the boolean
+      // is unsettable, so it degrades as a dropped attr rather than nulling the
+      // whole example; the slot child still renders via the bare slot helper.
+      const slotHelperNames = new Set(
+        slotEntries.filter((s) => s.rawName !== "").map((s) => s.helper),
+      );
+      const attributesTop = attributes.filter(
+        (a) => !slotHelperNames.has(a.setter),
+      );
+
       oracle[tag] = {
         tag,
         module,
         // Produced kind (this element's kind as a child of another container).
         kind: decapitalize(module),
         childSlotByKind,
-        attributes,
+        attributes: attributesTop,
         requiredFields,
         requiredSlots,
         slots: slotEntries,
