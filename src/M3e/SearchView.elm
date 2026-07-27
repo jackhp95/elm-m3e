@@ -4,7 +4,7 @@ module M3e.SearchView exposing
     , Mode, mode
     , clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
     , clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon, child
-    , withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
+    , withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withClosedLeading, withClosedTrailing, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withOpenLeading, withOpenTrailing, withSearchIcon, withSlot, withStyle
     )
 
 {-| The `m3e-search-view` component — strict per-component surface.
@@ -16,7 +16,7 @@ A surface that presents suggestions and results for a search.
 @docs Mode, mode
 @docs clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
 @docs clearIcon, closeIcon, closedLeading, closedTrailing, input, openLeading, openTrailing, searchIcon, child
-@docs withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withSearchIcon, withSlot, withStyle
+@docs withChild, withClass, withClearIcon, withClearLabel, withCloseIcon, withCloseLabel, withClosedLeading, withClosedTrailing, withContained, withHideSearchIcon, withId, withInput, withMode, withOnBeforetoggle, withOnClear, withOnQuery, withOnToggle, withOpen, withOpenLeading, withOpenTrailing, withSearchIcon, withSlot, withStyle
 
 -}
 
@@ -468,6 +468,34 @@ withInput element =
 withSearchIcon : Element SearchIconSlot admittedBy msg -> Builder attrCaps { s | searchIcon : Available } msg -> Builder attrCaps { s | searchIcon : Used } msg
 withSearchIcon element =
     B.withChild (El.toNode (searchIcon element))
+
+
+{-| Pipe form of the `closed-leading` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withClosedLeading : Element ClosedLeadingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withClosedLeading element =
+    B.withChild (El.toNode (closedLeading element))
+
+
+{-| Pipe form of the `closed-trailing` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withClosedTrailing : Element ClosedTrailingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withClosedTrailing element =
+    B.withChild (El.toNode (closedTrailing element))
+
+
+{-| Pipe form of the `open-leading` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withOpenLeading : Element OpenLeadingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withOpenLeading element =
+    B.withChild (El.toNode (openLeading element))
+
+
+{-| Pipe form of the `open-trailing` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withOpenTrailing : Element OpenTrailingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withOpenTrailing element =
+    B.withChild (El.toNode (openTrailing element))
 
 
 {-| Pipe form of a default-slot child (repeatable).

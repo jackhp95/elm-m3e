@@ -4,7 +4,7 @@ module M3e.Tabs exposing
     , HeaderPosition, headerPosition, Variant, variant
     , disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
     , nextIcon, panel, prevIcon, child
-    , withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
+    , withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPanel, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
     )
 
 {-| The `m3e-tabs` component — strict per-component surface.
@@ -16,7 +16,7 @@ Organizes content into separate views where only one view can be visible at a ti
 @docs HeaderPosition, headerPosition, Variant, variant
 @docs disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
 @docs nextIcon, panel, prevIcon, child
-@docs withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
+@docs withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPanel, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
 
 -}
 
@@ -361,6 +361,13 @@ withNextIcon element =
 withPrevIcon : Element PrevIconSlot admittedBy msg -> Builder attrCaps { s | prevIcon : Available } msg -> Builder attrCaps { s | prevIcon : Used } msg
 withPrevIcon element =
     B.withChild (El.toNode (prevIcon element))
+
+
+{-| Pipe form of the `panel` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withPanel : Element PanelSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withPanel element =
+    B.withChild (El.toNode (panel element))
 
 
 {-| Pipe form of a default-slot child (repeatable).

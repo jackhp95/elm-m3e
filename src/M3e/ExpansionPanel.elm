@@ -4,7 +4,7 @@ module M3e.ExpansionPanel exposing
     , ToggleDirection, toggleDirection, TogglePosition, togglePosition
     , disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
     , actions, header, toggleIcon, child
-    , withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
+    , withActions, withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
     )
 
 {-| The `m3e-expansion-panel` component — strict per-component surface.
@@ -16,7 +16,7 @@ An expandable details-summary view.
 @docs ToggleDirection, toggleDirection, TogglePosition, togglePosition
 @docs disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
 @docs actions, header, toggleIcon, child
-@docs withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
+@docs withActions, withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
 
 -}
 
@@ -359,6 +359,13 @@ withHeader element =
 withToggleIcon : Element ToggleIconSlot admittedBy msg -> Builder attrCaps { s | toggleIcon : Available } msg -> Builder attrCaps { s | toggleIcon : Used } msg
 withToggleIcon element =
     B.withChild (El.toNode (toggleIcon element))
+
+
+{-| Pipe form of the `actions` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withActions : Element childAccepts admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withActions element =
+    B.withChild (El.toNode (actions element))
 
 
 {-| Pipe form of a default-slot child (repeatable).

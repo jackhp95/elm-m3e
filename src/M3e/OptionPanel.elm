@@ -4,7 +4,7 @@ module M3e.OptionPanel exposing
     , ScrollStrategy, scrollStrategy, State, state
     , anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
     , loading, noData, child
-    , withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
+    , withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withLoading, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
     )
 
 {-| The `m3e-option-panel` component — strict per-component surface.
@@ -16,7 +16,7 @@ Presents a list of options on a temporary surface.
 @docs ScrollStrategy, scrollStrategy, State, state
 @docs anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
 @docs loading, noData, child
-@docs withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
+@docs withAnchorOffset, withChild, withClass, withFitAnchorWidth, withId, withLoading, withNoData, withOnBeforetoggle, withOnToggle, withScrollStrategy, withSlot, withState, withStyle
 
 -}
 
@@ -292,6 +292,13 @@ withOnToggle value_ =
 withNoData : Element childAccepts admittedBy msg -> Builder attrCaps { s | noData : Available } msg -> Builder attrCaps { s | noData : Used } msg
 withNoData element =
     B.withChild (El.toNode (noData element))
+
+
+{-| Pipe form of the `loading` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withLoading : Element LoadingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withLoading element =
+    B.withChild (El.toNode (loading element))
 
 
 {-| Pipe form of a default-slot child (repeatable).

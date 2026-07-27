@@ -4,7 +4,7 @@ module M3e.Stepper exposing
     , HeaderPosition, headerPosition, LabelPosition, labelPosition, Orientation, orientation
     , linear, onChange, onBeforeinput, onInput
     , panel, step
-    , withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
+    , withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withPanel, withSlot, withStep, withStyle
     )
 
 {-| The `m3e-stepper` component — strict per-component surface.
@@ -16,7 +16,7 @@ Provides a wizard-like workflow by dividing content into logical steps.
 @docs HeaderPosition, headerPosition, LabelPosition, labelPosition, Orientation, orientation
 @docs linear, onChange, onBeforeinput, onInput
 @docs panel, step
-@docs withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withSlot, withStyle
+@docs withClass, withHeaderPosition, withId, withLabelPosition, withLinear, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withPanel, withSlot, withStep, withStyle
 
 -}
 
@@ -293,3 +293,17 @@ withOnBeforeinput value_ =
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg -> Builder { a | onInput : Used } slotCaps msg
 withOnInput value_ =
     B.withAttribute (Ev.onInput value_)
+
+
+{-| Pipe form of the `panel` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withPanel : Element PanelSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withPanel element =
+    B.withChild (El.toNode (panel element))
+
+
+{-| Pipe form of the `step` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withStep : Element StepSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withStep element =
+    B.withChild (El.toNode (step element))

@@ -4,7 +4,7 @@ module M3e.AppBar exposing
     , Size, size
     , centered, for
     , leading, leadingIcon, subtitle, title, trailing, trailingIcon
-    , withCentered, withClass, withFor, withId, withLeading, withLeadingIcon, withSize, withSlot, withStyle, withSubtitle, withTitle, withTrailingIcon
+    , withCentered, withClass, withFor, withId, withLeading, withLeadingIcon, withSize, withSlot, withStyle, withSubtitle, withTitle, withTrailing, withTrailingIcon
     )
 
 {-| The `m3e-app-bar` component — strict per-component surface.
@@ -16,7 +16,7 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 @docs Size, size
 @docs centered, for
 @docs leading, leadingIcon, subtitle, title, trailing, trailingIcon
-@docs withCentered, withClass, withFor, withId, withLeading, withLeadingIcon, withSize, withSlot, withStyle, withSubtitle, withTitle, withTrailingIcon
+@docs withCentered, withClass, withFor, withId, withLeading, withLeadingIcon, withSize, withSlot, withStyle, withSubtitle, withTitle, withTrailing, withTrailingIcon
 
 -}
 
@@ -307,3 +307,10 @@ withTitle element =
 withTrailingIcon : Element childAccepts admittedBy msg -> Builder attrCaps { s | trailingIcon : Available } msg -> Builder attrCaps { s | trailingIcon : Used } msg
 withTrailingIcon element =
     B.withChild (El.toNode (trailingIcon element))
+
+
+{-| Pipe form of the `trailing` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withTrailing : Element TrailingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withTrailing element =
+    B.withChild (El.toNode (trailing element))

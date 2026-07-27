@@ -3,7 +3,7 @@ module M3e.SearchBar exposing
     , Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , clearLabel, clearable, onClear
     , clearIcon, input, leading, trailing
-    , withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
+    , withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withLeading, withOnClear, withSlot, withStyle, withTrailing
     )
 
 {-| The `m3e-search-bar` component — strict per-component surface.
@@ -14,7 +14,7 @@ A bar that provides a prominent entry point for search.
 @docs Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs clearLabel, clearable, onClear
 @docs clearIcon, input, leading, trailing
-@docs withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withOnClear, withSlot, withStyle
+@docs withClass, withClearIcon, withClearLabel, withClearable, withId, withInput, withLeading, withOnClear, withSlot, withStyle, withTrailing
 
 -}
 
@@ -256,3 +256,17 @@ withClearIcon element =
 withInput : Element childAccepts admittedBy msg -> Builder attrCaps { s | input : Available } msg -> Builder attrCaps { s | input : Used } msg
 withInput element =
     B.withChild (El.toNode (input element))
+
+
+{-| Pipe form of the `leading` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withLeading : Element LeadingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withLeading element =
+    B.withChild (El.toNode (leading element))
+
+
+{-| Pipe form of the `trailing` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withTrailing : Element TrailingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withTrailing element =
+    B.withChild (El.toNode (trailing element))
