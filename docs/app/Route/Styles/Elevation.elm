@@ -111,7 +111,7 @@ view _ _ =
                     , Layout.div "max-w-2xl"
                         [ Kit.paragraph Value.large
                             [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu at level 2) and raise it on interaction." ]
+                            [ Kit.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
                         ]
                     ]
                 , Layout.section "space-y-3"
