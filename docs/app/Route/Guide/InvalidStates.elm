@@ -124,7 +124,7 @@ valid =
 validCode : String
 validCode =
     """M3e.button [ M3e.Attributes.variant Value.filled ]
-    [ M3e.slotIcon (M3e.icon [ TA.name "save" ] [])
+    [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
     , Kit.text "Save"
     ]"""
 
@@ -137,22 +137,22 @@ broken =
 brokenCode : String
 brokenCode =
     """M3e.button [ M3e.Attributes.variant Value.filled ]
-    [ M3e.slotIcon (M3e.chip [] [ Kit.text "not an icon" ])
+    [ M3e.Button.icon (M3e.chip [] [ Kit.text "not an icon" ])
     , Kit.text "Save"
     ]"""
 
 
 errorText : String
 errorText =
-    """The 1st argument to `slotIcon` is not what I expect:
+    """The 1st argument to `icon` is not what I expect:
 
-9|     [ M3e.slotIcon (M3e.chip [] [ Kit.text "not an icon" ])
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+9|     [ M3e.Button.icon (M3e.chip [] [ Kit.text "not an icon" ])
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This `chip` call produces:
 
     Element { a | chip : M3e.Kind.Brand, icon : M3e.Kind.Brand, ... } adm_ msg
 
-But `slotIcon` needs the 1st argument to be:
+But `icon` needs the 1st argument to be:
 
     Element { icon : M3e.Kind.Brand, loadingIndicator : M3e.Kind.Brand } adm_ msg
 

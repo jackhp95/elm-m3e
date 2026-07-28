@@ -173,11 +173,11 @@ focusCode =
     """-- Elm owns the open STATE; @m3e/web owns the focus trap + Escape + return-focus.
 M3e.dialog
     [ M3e.Attributes.open model.dialogOpen
-    , Dialog.onClose (PagesMsg.fromMsg CloseDialog)
+    , M3e.Dialog.onClosed (PagesMsg.fromMsg CloseDialog)
     ]
-    [ M3e.dialogSlotHeadline (Kit.text "Delete file?")
-    , M3e.dialogSlotContent (Kit.text "This cannot be undone.")
-    , M3e.dialogSlotActions confirmButtons
+    [ M3e.Dialog.header (Kit.text "Delete file?")
+    , Kit.text "This cannot be undone."
+    , M3e.Dialog.actions confirmButtons
     ]"""
 
 

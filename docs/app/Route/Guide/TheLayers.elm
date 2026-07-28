@@ -1,11 +1,11 @@
 module Route.Guide.TheLayers exposing (ActionData, Data, Model, Msg, route)
 
-{-| Guide (`/guide/the-layers`): the orienting map. The same
-component is offered as a the layers — safest and easiest at the top,
-rawest at the bottom — and you descend one louder, named step only to escape.
-The running example doesn't change; the same Save button is shown at the top
-(live) and its descent is shown as code, with the "same string twice means you
-dropped a layer" tell.
+{-| Guide (`/guide/the-layers`): the orienting map. A component is not a
+stack of layers you descend; it is one typed value you can write through a
+handful of interchangeable **surfaces** (barrel, `view`, `el`, `build`), plus a
+few loud **escapes** for leaving the typed tree. The running example doesn't
+change; the same Save button is shown live once and its surfaces are shown as
+code, with the "hand-writing raw HTML the library already ships" tell.
 -}
 
 import BackendTask
@@ -59,16 +59,16 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "The same component is a the layers — safe and easy at the top, raw at the bottom. You descend a named, louder step only to escape."
+        , description = "A component is one typed value written through interchangeable surfaces — barrel, view, el, build. You leave the typed tree only through a few loud, named escapes."
         , locale = Nothing
-        , title = "The layer map · elm-m3e"
+        , title = "The surface map · elm-m3e"
         }
         |> Seo.website
 
 
-{-| The running Save button, expressed at the top layer — the one you use by
-default. The chapter shows the lower layers as code (they return raw HTML, not a
-slottable value), so the live demo is the top layer: this is the one you want.
+{-| The running Save button, written through the barrel surface — the one you
+reach for by default. The chapter shows the other surfaces as code; they all
+produce this same slottable value, so one live demo covers them all.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
@@ -77,13 +77,13 @@ saveButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "The layer map · elm-m3e"
+    { title = "The surface map · elm-m3e"
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
                 [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
-                        [ Doc.pageHeading "The layer map"
+                        [ Doc.pageHeading "The surface map"
                         , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
                     , Layout.section "space-y-4"
@@ -107,50 +107,61 @@ view _ _ =
 
 intro : String
 intro =
-    """One thesis organizes this whole library: **the correct way and the easy way are the same way — the top. You descend, loudly and on purpose, only to escape.** This chapter is the map that makes that concrete."""
+    """One thesis organizes this whole library: **a component is a single typed value, and the correct way is also the easy way.** There is no ladder of safety to climb down. What looks like "levels" is really two independent choices — *which surface* you write the value through, and *whether* you step outside the typed tree at all. This chapter is the map of both."""
 
 
 layers : String
 layers =
-    """The same component is offered at several **forms**, stacked like layers on a layers. The top layer is the safest and the least typing; each layer down hands you more raw control and asks for more by hand. You spend almost all your time on the top layer. You step down only when you need to do something the top can't express — and it's always a *named, visible* step, never an accident."""
+    """Every component ships a handful of interchangeable **surfaces** — different call *shapes* for the same value. They are **peers, not a ranking**: pick whichever reads best at a given call site, and they all produce the identical, slottable element. Reach *past* the components only to **escape** the typed tree, and escapes are always a loud, named step — never an accident."""
 
 
 layersDiagram : String
 layersDiagram =
-    """M3e.*         the top layer — the one you use — typed, slot-safe, composes into other components
-  ↓ (drop a layer to escape)
-M3e.Html.*    the Html layer — typed attributes, plain Html children
-  ↓
-M3e.Raw.*     the raw layer — bare tags and attributes; no checking
-  ↓
-elm/html      plain Html — opaque"""
+    """SURFACES — same typed value, different call shape (a horizontal choice)
+  M3e.button …                     barrel: one import, every component's `view`
+  M3e.Button.view …                the standard/list form
+  M3e.Button.el { … } …            required-record form (the 29 with a required record)
+  M3e.Button.build { … } |> …      builder pipe, closed by M3e.Button.toElement
+
+LOOSENESS — opt out of the strict phantom rows, still in the IR
+  M3e.Html.button …                the loose producer (open rows, no slot checking)
+
+ESCAPES — leave the typed tree (loud, greppable, lint-flagged)
+  M3e.Coerce.asButton …            config-blessed kind crossing
+  M3e.Unsafe.fromHtml …            wrap raw elm/html; free rows, checks nothing"""
 
 
 sameButton : String
 sameButton =
-    """Here is the running Save button at the top — the layer you'll use for essentially everything. It's a value that composes into a card, a list, anywhere a button belongs. The layers below it return plain HTML instead, so they can't drop into those slots; that loss of composability is exactly the cost of descending."""
+    """Here is the running Save button, written through the barrel — the surface you'll reach for by default. It's a value that composes into a card, a list, anywhere a button belongs. Every surface below produces this *same* value with the same guarantees; they differ only in ergonomics (how much you may leave out, how you set one-only options). The escapes at the bottom are the only calls that give up the typed value — that's the whole reason they're loud."""
 
 
 descentCode : String
 descentCode =
-    """-- top: typed, slot-safe, composes anywhere a button fits
+    """-- barrel: one import, the standard form — the default
 M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
--- one step down: attributes still typed, children raw, returns plain HTML
--- (reach for this only when you're already outside the typed tree)
+-- component module: same output, component-scoped tighter types
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ Kit.text "Save" ]
 
--- the raw layer: a bare custom element with hand-written strings
--- (only when you need zero ceremony — and you own every string)"""
+-- required-record form: the compiler demands the parts a button can't omit
+M3e.Button.el { content = Kit.text "Save", action = M3e.Action.onClick Save } [] []
+
+-- builder pipe: a one-only setter is unwritable twice; order-free
+M3e.Button.build { content = Kit.text "Save", action = M3e.Action.onClick Save }
+    |> M3e.Button.withVariant Value.filled
+    |> M3e.Button.toElement"""
 
 
 tell : String
 tell =
-    """There's a simple tell that you dropped a layer you didn't need to: **if you write the same string twice, on two different layers, to mean the same thing, you did it wrong.** Each layer reuses the one below it, so a name like `"variant"` is written exactly once, at the bottom, and travels upward for free. Seeing it spelled out by hand up top means you reached past the layer that already had it."""
+    """There's a simple tell that you escaped when you didn't need to: **if you're hand-writing raw HTML (`M3e.Unsafe.fromHtml`, a bare `Native.node`) for something the library already ships as a component, you reached too far.** The typed component already carries the tag, the slots, and the tokens — spelling them out by hand throws that away. Escapes exist for what the library genuinely can't express; reaching for one otherwise is the mistake."""
 
 
 recap : String
 recap =
-    """- The same component is a **the layers**: safe and easy at the top, raw at the bottom.
-- You live on the top layer and descend — loudly, by name — only to escape; descending trades composability and safety for raw control.
-- The tell that you over-descended: **the same string written twice on two layers.**
-- **Next: [Your own seam](/guide/seams) →** when you *do* need to step off the layers, do it through the one sanctioned door."""
+    """- A component is **one typed value**, written through interchangeable **surfaces** (barrel `view`, `el`, `build`) — **peers, not a ranking**.
+- `M3e.Html.*` is the **loose** producer: opt out of strict phantom rows while staying in the IR (it is *not* plain HTML).
+- You leave the typed tree only through loud, named **escapes** (`M3e.Coerce`, `M3e.Unsafe`) — greppable and lint-flagged.
+- The tell that you over-escaped: **hand-writing raw HTML the library already ships as a component.**
+- **Next: [Your own seam](/guide/seams) →** when you *do* need to step outside, do it through the one sanctioned door."""

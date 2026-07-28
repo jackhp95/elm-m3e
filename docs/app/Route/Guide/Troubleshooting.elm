@@ -131,7 +131,7 @@ looseEnum : String
 looseEnum =
     """### An enum token type-checks but is rejected
 
-**Cause:** at a looser layer, a token was accepted by the types but isn't valid for *this specific component*. **Symptom:** it compiles, but the linter flags it. **Fix:** use one of the component's real tokens. (At the top layer this can't happen — only the real tokens exist as names, e.g. `M3e.Attributes.variant Value.filled`.)"""
+**Cause:** the shared `M3e.Attributes.*` vocabulary closes over the library-wide *union* of enum values, so a token that's real for *some* component type-checks even on one that doesn't support it. **Symptom:** it compiles, but the linter flags it. **Fix:** use one of the component's real tokens — or reach for the per-component setter (`M3e.Button.variant`), where only that component's tokens exist as names and the mistake can't compile in the first place."""
 
 
 looseEnumNote : String

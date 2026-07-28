@@ -1,8 +1,8 @@
 module Route.Guide.CheatSheet exposing (ActionData, Data, Model, Msg, route)
 
 {-| Guide · Cheat sheet (`/guide/cheat-sheet`): the return-worthy tables in one
-place — the layers, the three forms, the strictness dial, and where a
-seam is allowed to live. Scannable reference, not narrative; the chapters teach
+place — the surfaces, the strictness dial, loose vs. tight vocabulary, and where
+a seam is allowed to live. Scannable reference, not narrative; the chapters teach
 these, this is where you come back to look them up.
 -}
 
@@ -55,7 +55,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "The Guide cheat sheet: the layers, the three forms, the strictness dial, and the seam allow-list — the return-worthy tables in one place."
+        , description = "The Guide cheat sheet: the surfaces, the strictness dial, loose vs. tight vocabulary, and the seam allow-list — the return-worthy tables in one place."
         , locale = Nothing
         , title = "Cheat sheet · elm-m3e"
         }
@@ -80,7 +80,7 @@ view _ _ =
                         , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         , Doc.userlandNote
                         ]
-                    , card "The the layers" [ Doc.markdown layers ]
+                    , card "The surfaces" [ Doc.markdown layers ]
                     , card "Barrel vs component module" [ Doc.markdown barrelVsSpecific, Doc.code_ Doc.Elm barrelVsSpecificCode ]
                     , card "The three forms" [ Doc.markdown shapes, Doc.code_ Doc.Elm shapesCode ]
                     , card "The strictness dial" [ Doc.markdown dial ]
@@ -99,33 +99,34 @@ intro =
 
 layers : String
 layers =
-    """From [the layer map](/guide/the-layers). You live on the top layer; descend, by name, only to escape.
+    """From [the surface map](/guide/the-layers). A component is one typed value; the surfaces are peer call-shapes, and `M3e.Html.*` / the escapes are how you loosen or leave the typed tree.
 
-| Layer | What it is | You reach for it |
+| Surface | What it is | You reach for it |
 | --- | --- | --- |
-| **the top** | Typed, slot-safe, composes into other components. | Almost always — the default. |
-| **typed attributes, raw children** | Attributes still checked; children are plain; returns raw HTML. | You're already outside the typed tree and want typed attrs. |
-| **raw elm/html** | Bare tags and attributes; no checking. This is where the strings live. | A bare tag with zero ceremony — through a seam. |
-| **the raw layer** | Opaque HTML. | Never directly; it's what the layers above stand on. |"""
+| **barrel / `view`** | The standard form — typed, slot-safe, composes into other components. | Almost always — the default. |
+| **`el` (required record)** | Same value; the compiler demands the required parts. | The 29 components with a required record, when you must not forget it. |
+| **`build` + `toElement`** | Same value via a pipe; one-only setters unwritable twice. | Conditional or order-free construction. |
+| **`M3e.Html.*` (loose)** | The open-rowed producer — no slot/attr checking, still in the IR. Not plain HTML. | Opting out of the strict rows on purpose. |
+| **`M3e.Coerce` / `M3e.Unsafe`** | Escapes: kind crossing / raw `Html`. Loud, greppable, lint-flagged. | Leaving the typed tree when nothing else fits. |"""
 
 
 barrelVsSpecific : String
 barrelVsSpecific =
-    """A third axis, orthogonal to the layers and the forms: *which import you reach through*. Same output either way; the [reference](/reference) documents both.
+    """A second axis, orthogonal to the surfaces: *which import you reach through*. Same output either way; the [reference](/reference) documents both.
 
 | Import | Statement | You get |
 | --- | --- | --- |
-| **barrel** | `import M3e` | One import for everything; the generic `variant*` / `slot*` / `attr*` vocabulary. The form the [Guide](/guide/the-layers) teaches. |
-| **component module** | `import M3e.Button` | Component-scoped types — a token or slot child wrong for *this* component won't compile. |"""
+| **barrel** | `import M3e` | One import for every component's `view` form, plus `text` and `toHtml`. Pair it with the shared `M3e.Attributes` / `M3e.Values` / `M3e.Events` vocabulary (library-wide unions, lint-checked). |
+| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `el` / `build` live. |"""
 
 
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
-    """-- barrel — one import, generic vocabulary
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.slotIcon (M3e.icon [ TA.name "save" ] []), Kit.text "Save" ]
+    """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), Kit.text "Save" ]
 
--- component module — component-scoped, tighter types
-M3e.Button.view [ M3e.Button.variant M3e.Values.filled ] [ Kit.text "Save" ]"""
+-- component module — component-scoped setters, compile-tight tokens
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ Kit.text "Save" ]"""
 
 
 shapes : String
@@ -138,12 +139,11 @@ shapesCode =
     """-- the standard form — everything optional; the tersest
 M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
 
--- required record — the compiler demands the parts it can't do without
-M3e.Record.Button.view { content = …, action = … } [] []
+-- required-record form — the compiler demands the parts it can't do without
+M3e.Button.el { content = …, action = … } [] []
 
--- pipeline — a one-only setter is unwritable twice; order-free
--- import M3e.Build.Button as Button
-Button.button { content = …, action = … } |> Button.build"""
+-- builder pipe — a one-only setter is unwritable twice; order-free
+M3e.Button.build { content = …, action = … } |> M3e.Button.toElement"""
 
 
 dial : String
@@ -165,7 +165,7 @@ seams =
 | --- | --- |
 | **Layout** | Layout wrappers over raw HTML (rows, grids, spacing). |
 | **Kit** | Your design-system vocabulary (typography, color roles, `text`). |
-| **Native** | Typed native HTML elements (`input`, `label`, `select`, …). |
+| **Native** | Raw-HTML escape hatches — `node` / `custom` (dynamic or custom-element tags), `attribute` / `onClick` / `style` (raw injection). For plain typed tags (`input`, `label`, …) use `TypedHtml.*`. |
 | **Doc / Shared** | App shell and doc-rendering crossings. |
 
 Anywhere else, a raw escape is flagged — and the linter offers to lift it into one of these for you."""

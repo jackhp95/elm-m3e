@@ -69,15 +69,17 @@ type alias ActionData =
     {}
 
 
-{-| The form we headline: `M3e.Button.view` — the typed top layer the guide
-teaches first. Its per-form aggregate is the one we render into the report.
+{-| The surface we headline: `M3e.Button.view` — the standard form the guide
+teaches first. Its per-surface aggregate is the one we render into the report.
+(The `perSurface` JSON keys this aggregate `"top"` — a data-file key, not a
+"layer"; the vocabulary is [the surface map](/guide/the-layers).)
 -}
 headlineSurface : String
 headlineSurface =
     "top"
 
 
-{-| Decode one layer/form's aggregate from `perSurface` into the four honest
+{-| Decode one surface's aggregate from `perSurface` into the four honest
 buckets. `clean identity` = strict matches; `allowed alias` = functional matches
 that were not strict matches (cosmetic-only); `functional drift` = functional
 deviations.
@@ -226,10 +228,10 @@ honest d =
         driftClause : String
         driftClause =
             if d.functionalDrift == 0 then
-                "On this run the top layer reproduced every convertible example with **zero unexpected drift** — every difference was a counted, cosmetic alias."
+                "On this run the standard surface reproduced every convertible example with **zero unexpected drift** — every difference was a counted, cosmetic alias."
 
             else
-                "On this run the top layer has **"
+                "On this run the standard surface has **"
                     ++ String.fromInt d.functionalDrift
                     ++ " example(s) of unexpected drift** — real functional mismatches, shown in red at the top of the [round-trip report](/roundtrip). We don't paper over them; we rank them first."
     in
@@ -244,12 +246,12 @@ recap d =
         driftLine : String
         driftLine =
             if d.functionalDrift == 0 then
-                "**0 unexpected drift** on the top layer"
+                "**0 unexpected drift** on the standard surface"
 
             else
                 "**"
                     ++ String.fromInt d.functionalDrift
-                    ++ " unexpected drift** on the top layer — tracked, ranked first, never hidden"
+                    ++ " unexpected drift** on the standard surface — tracked, ranked first, never hidden"
     in
     """- Every example is converted across forms, **rendered back to HTML, and diffed** against the original.
 - Drift and escapes are **measured and tracked**, not hidden — this run: """

@@ -52,7 +52,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "The Guide glossary: the thirteen kept terms — layer, form, facet, barrel, component module, generic/component setters, kind, slot, token, seam, component facts, manifest — each defined in plain words."
+        , description = "The Guide glossary: the kept terms — surface, loose producer, escape, barrel, component module, shared/per-component vocabulary, kind, slot, token, seam, component facts, manifest — each defined in plain words."
         , locale = Nothing
         , title = "Glossary · elm-m3e"
         }
@@ -88,12 +88,12 @@ terms : String
 terms =
     """| Term | What it means |
 | --- | --- |
-| **layer** | How raw you're willing to go. Three of them, one component: the **top layer** (`M3e.*` — typed, slot-safe, the default), the **Html layer** (`M3e.Html.*` — typed attributes, plain `Html` children), and the **raw layer** (`M3e.Raw.*` — plain elm/html). You drop a layer only to escape, and it's always a visible, named step. |
-| **form** | How strict one call site is. The **standard** form (`M3e.button [ attrs ] [ content ]` — everything optional), the **Record** form (`M3e.Record.*` — required parts in a record the compiler demands), and the **Build** form (`M3e.Build.*` — a pipeline where a one-only setter can't be written twice). |
-| **facet** | One of the five addressable points of the generated API — a distinct way to write the call. The five split along the **layer** and **form** axes: the raw and Html layers, plus the top layer's three forms (standard, Record, Build). |
-| **barrel** | The one-import API of the top layer: `import M3e`, every component and setter in one place. |
-| **component module** | The per-component import (`import M3e.Button`) — same components, tighter types. |
-| **generic / component setters** | Two barrel dialects: `M3e.slotIcon` works on any component that has the slot; `M3e.buttonIcon`-style **component setters** are kind-precise. The linter can upgrade the former to the latter for you. |
+| **surface** | One of a component's interchangeable call-shapes for the *same* typed value — **peers, not a ranking**: the **standard** form `view` (`M3e.button …` or `M3e.Button.view …`, everything optional), the **required-record** form `el` (`M3e.Button.el { content = …, action = … } …`, the compiler demands the required parts), and the **builder** `build` / `toElement` (a pipe where a one-only setter can't be written twice). |
+| **loose producer** | `M3e.Html.*` — one open-rowed constructor per component (no slot/attribute checking), which each strict `M3e.<Component>` surface tightens. Reach for it to opt out of the strict phantom rows while staying in the IR. **Not plain HTML** — it exposes the `m3e-*` elements, not `div`/`span`. |
+| **escape** | A call that leaves the typed tree, always loud and greppable: `M3e.Coerce` (a config-blessed kind crossing, e.g. `asButton`) and `M3e.Unsafe` (`fromHtml` / `coerce` — raw `Html` with free phantom rows). |
+| **barrel** | The one-import API: `import M3e`, every component's `view` in one place, plus `text` and `toHtml`. |
+| **component module** | The per-component import (`import M3e.Button`) — same components, tighter types, and where `el` / `build` and the compile-tight setters live. |
+| **shared / per-component vocabulary** | `M3e.Attributes.*` and `M3e.Values.*` close over the library-wide **union** of values (cross-component misuse is caught by elm-review); the per-component `M3e.<Component>.<attr>` setters are **compile-tight**. |
 | **kind** | The category a piece of content is — icon, text, button. |
 | **slot** | A labeled place a component puts content; each slot declares the kinds it accepts. |
 | **token** | An enum value that exists as a name (`M3e.Values.filled`) — invalid tokens aren't names at all. |

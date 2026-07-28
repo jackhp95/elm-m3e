@@ -111,7 +111,7 @@ linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
     M3e.navMenu []
         [ M3e.NavMenuItem.el { label = Kit.link "/guide/seams" [ Kit.text "Seams" ] } [] []
-        , M3e.NavMenuItem.el { label = Kit.link "/guide/the-layers" [ Kit.text "The layers" ] } [] []
+        , M3e.NavMenuItem.el { label = Kit.link "/guide/the-layers" [ Kit.text "The surfaces" ] } [] []
         ]
 
 
@@ -178,12 +178,12 @@ slotSeam =
 linkNavCode : String
 linkNavCode =
     """-- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so the
--- `link` seam fills it directly — a nav item that IS an anchor. The record
--- form (M3e.Record.NavMenuItem) enforces the required `label` at the type level.
+-- `link` seam fills it directly — a nav item that IS an anchor. The required-record
+-- form (`M3e.NavMenuItem.el`) enforces the required `label` at the type level.
 linkNav =
     M3e.navMenu []
-        [ NavMenuItem.view { label = Kit.link "/guide/seams" [ Kit.text "Seams" ] } [] []
-        , NavMenuItem.view { label = Kit.link "/guide/the-layers" [ Kit.text "The layers" ] } [] []
+        [ M3e.NavMenuItem.el { label = Kit.link "/guide/seams" [ Kit.text "Seams" ] } [] []
+        , M3e.NavMenuItem.el { label = Kit.link "/guide/the-layers" [ Kit.text "The surfaces" ] } [] []
         ]"""
 
 

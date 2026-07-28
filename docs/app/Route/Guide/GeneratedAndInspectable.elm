@@ -138,4 +138,4 @@ recap =
     """- The Elm API is **generated from the components' published manifest + a hand-authored `config/slots.json`** — you regenerate on each upstream release; anything the config doesn't cover yet surfaces as loose `any` slots.
 - A component is **inspectable data** the library reads, then turns into HTML **once, at the root** (`HtmlIr.Element.toNode`).
 - That's why the library can catch mistakes the browser never sees.
-- **Next: [The layer map](/guide/the-layers) →** the same button, shown as a the layers — safe at the top, raw at the bottom."""
+- **Next: [The surface map](/guide/the-layers) →** the same button, shown through each of its interchangeable surfaces — and the loud escapes for leaving the typed tree."""
