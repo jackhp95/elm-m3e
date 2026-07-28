@@ -374,9 +374,13 @@ view sharedData page model toMsg pageView =
         if String.startsWith "/examples/" absolutePath then
             -- Individual example routes take the full viewport; they include their
             -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
+            -- `h-dvh overflow-y-auto` makes each example its OWN bounded scroll
+            -- region: the document (html/body) is fixed + non-scrolling for the
+            -- stable mobile URL bar, so a full-viewport example must scroll itself
+            -- rather than the document, or tall demos would clip.
             [ themed
                 [ Surface.view Surface.surface
-                    [ Seam.asAttribute (class "min-h-screen")
+                    [ Seam.asAttribute (class "h-dvh overflow-y-auto")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     (List.map Seam.asElement pageView.body)
@@ -386,7 +390,12 @@ view sharedData page model toMsg pageView =
         else
             [ themed
                 [ Surface.view Surface.surface
-                    [ Seam.asAttribute (class "grid h-screen grid-rows-[auto_1fr]")
+                    -- Fixed-height, non-scrolling shell: `h-dvh` fits the stable
+                    -- visible viewport (see style.css app-shell note) and the
+                    -- `auto_1fr` rows pin the app bar while the 1fr content row
+                    -- (the drawer + its <main>) is the ONE scroll region — keeps
+                    -- the mobile URL bar from collapsing on scroll.
+                    [ Seam.asAttribute (class "grid h-dvh grid-rows-[auto_1fr] overflow-hidden")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ Seam.fromHtml skipLink

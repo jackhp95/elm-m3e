@@ -13,6 +13,52 @@ type ElmPagesInit = {
   flags: unknown;
 };
 
+/**
+ * Dev-only feedback widget (mirrors kinfolk's embed). The vendored feedback-fab
+ * build is hosted-only — the GitHub-link fallback was removed — so a submit
+ * needs a reachable backend on this origin, which only exists while running
+ * `elm-pages dev` locally. The whole call site is guarded by
+ * `import.meta.env.DEV`, so Vite dead-code-eliminates it from the production
+ * Netlify build and public visitors never see a dead button.
+ *
+ * The widget is a self-contained custom element (its own shadow DOM + M3
+ * tokens), so it does NOT need to live inside the app's `<m3e-theme>`. It mounts
+ * under `<html>`, NOT `<body>`: elm-pages runs a Browser.application whose vdom
+ * owns `<body>` and would wipe a body-level sibling on hydration/morph.
+ */
+function mountFeedbackFab(): void {
+  // Idempotent across dev hot-reloads.
+  if (document.querySelector("feedback-fab")) return;
+
+  const fab = document.createElement("feedback-fab");
+  fab.setAttribute("repo", "jackhp95/elm-m3e");
+  fab.setAttribute("labels", "feedback,needs-triage");
+  fab.setAttribute("title-prefix", "[feedback] ");
+  // Hosted-mode endpoint = the real browser origin, so submit stays same-origin
+  // even behind a cloudflared / `tailscale serve` proxy where the server sees a
+  // different Host (e.g. localhost).
+  fab.setAttribute("endpoint", location.origin);
+  document.documentElement.appendChild(fab);
+
+  // The widget bundles its OWN Elm program. Elm's `_Platform_export` refuses to
+  // load a second program onto a page that already exposes `window.Elm` (this
+  // docs app), throwing elm/core hints/6 BEFORE the widget can register its
+  // custom element (verified: the `<feedback-fab>` stayed `:not(:defined)`).
+  // Free `window.Elm` for the duration of the widget bundle's own export, then
+  // restore this app's object on load so nothing else regresses. Elm's running
+  // app reads window.Elm only at export time, so a temporary swap is safe.
+  const w = window as unknown as { Elm?: unknown };
+  const savedElm = w.Elm;
+  w.Elm = undefined;
+
+  const script = document.createElement("script");
+  script.src = "/feedback-fab.js";
+  script.addEventListener("load", () => {
+    w.Elm = savedElm;
+  });
+  document.head.appendChild(script);
+}
+
 const config: ElmPagesInit = {
   load: async function (elmLoaded) {
     const app = (await elmLoaded) as { ports?: Record<string, { subscribe: (cb: (v: string) => void) => void }> };
@@ -33,6 +79,10 @@ const config: ElmPagesInit = {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
     });
+
+    if (import.meta.env.DEV) {
+      mountFeedbackFab();
+    }
   },
   flags: function () {
     // `width` picks the initial drawer mode (side vs over) before

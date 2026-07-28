@@ -234,12 +234,23 @@
    outside that subtree needs the surface + type scale too, or the viewport
    background and overscroll bleed white. (visual-gap.md P0.) */
 @layer base {
+  /* App-shell viewport (matches kinfolk/flightdeck + the matraic/m3e docs shell).
+     The root document never scrolls — scrolling lives in ONE bounded inner region
+     (the drawer-container's content / the <main> in Shared.elm's shell grid). A
+     non-scrolling document keeps the mobile URL bar from collapsing on scroll, so
+     the visual viewport stays stable and bottom-anchored fixed UI (snackbars, the
+     feedback-fab sheet) can't hide behind the URL bar. */
   html {
     color-scheme: light dark;
+    overflow: hidden;
   }
 
   body {
-    min-height: 100vh;
+    /* dvh, not vh: `vh` is the LARGE (URL-bar-retracted) viewport, so a `100vh`
+       shell extends its bottom edge behind the shown URL bar and clips. `100dvh`
+       is the STABLE visible height in this fixed, non-scrolling shell. */
+    height: 100dvh;
+    overflow: hidden;
     background-color: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     font-family: Roboto, "Helvetica Neue", system-ui, -apple-system, sans-serif;
