@@ -564,7 +564,7 @@ facts =
       , slotUpgrades = []
       , groupConstructors = []
       , facets = [ Standard, Record, Build ]
-      , requiredAttrs = [ "aria-label" ]
+      , requiredAttrs = []
       , actionMap = [ ( "onClick", "onClick" ), ( "href", "link" ) ]
       , usesAction = True
       }

@@ -155,7 +155,6 @@ view =
 -}
 el :
     { content : Element Content (ChildAdmittedBy childAdm) msg
-    , ariaLabel : String
     , action : Ac.Action ActionCaps msg
     }
     -> List (Attr Attrs msg)
@@ -167,7 +166,7 @@ el required_ attrs children =
             Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))
     in
     view
-        (Ir.attribute "aria-label" required_.ariaLabel :: Ac.toAttrs required_.action ++ attrs)
+        (Ac.toAttrs required_.action ++ attrs)
         (actioned :: children)
 
 
@@ -338,12 +337,11 @@ type alias SlotCaps =
 -}
 build :
     { content : Element Content (ChildAdmittedBy childAdm) msg
-    , ariaLabel : String
     , action : Ac.Action ActionCaps msg
     }
     -> Builder AttrCaps SlotCaps msg
 build required_ =
-    B.init "m3e-fab" (Ir.attribute "aria-label" required_.ariaLabel :: Ac.toAttrs required_.action) [ Ac.wrapContent required_.action (El.toNode required_.content) ]
+    B.init "m3e-fab" (Ac.toAttrs required_.action) [ Ac.wrapContent required_.action (El.toNode required_.content) ]
 
 
 {-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
