@@ -4,12 +4,12 @@
   "perSurface": {
     "top": {
       "total": 331,
-      "converted": 324,
-      "clean": 324,
+      "converted": 325,
+      "clean": 325,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 282,
+      "roundtripMatched": 283,
       "roundtripDeviated": 42,
-      "roundtripFunctionalMatched": 292,
+      "roundtripFunctionalMatched": 293,
       "roundtripFunctionalDeviated": 32
     },
     "mid": {
@@ -34,32 +34,32 @@
     },
     "record": {
       "total": 331,
-      "converted": 164,
-      "clean": 164,
+      "converted": 165,
+      "clean": 165,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 137,
+      "roundtripMatched": 138,
       "roundtripDeviated": 27,
-      "roundtripFunctionalMatched": 142,
+      "roundtripFunctionalMatched": 143,
       "roundtripFunctionalDeviated": 22
     },
     "build": {
       "total": 331,
-      "converted": 302,
-      "clean": 302,
+      "converted": 303,
+      "clean": 303,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 261,
+      "roundtripMatched": 262,
       "roundtripDeviated": 41,
-      "roundtripFunctionalMatched": 271,
+      "roundtripFunctionalMatched": 272,
       "roundtripFunctionalDeviated": 31
     },
     "barrel": {
       "total": 331,
-      "converted": 324,
-      "clean": 324,
+      "converted": 325,
+      "clean": 325,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 282,
+      "roundtripMatched": 283,
       "roundtripDeviated": 42,
-      "roundtripFunctionalMatched": 292,
+      "roundtripFunctionalMatched": 293,
       "roundtripFunctionalDeviated": 32
     }
   },
@@ -35580,20 +35580,24 @@
       "index": 2,
       "surface": "top",
       "title": "Option groups",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
           "charsInside": 0
         },
         "native": {
-          "count": 0,
+          "count": 1,
           "charsInside": 0
         },
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Select/2/mid",
@@ -35643,20 +35647,24 @@
       "index": 2,
       "surface": "record",
       "title": "Option groups",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
           "charsInside": 0
         },
         "native": {
-          "count": 0,
+          "count": 1,
           "charsInside": 0
         },
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Select/2/build",
@@ -35664,20 +35672,24 @@
       "index": 2,
       "surface": "build",
       "title": "Option groups",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
           "charsInside": 0
         },
         "native": {
-          "count": 0,
+          "count": 1,
           "charsInside": 0
         },
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Select/2/barrel",
@@ -35685,20 +35697,24 @@
       "index": 2,
       "surface": "barrel",
       "title": "Option groups",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
           "charsInside": 0
         },
         "native": {
-          "count": 0,
+          "count": 1,
           "charsInside": 0
         },
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Select/3/top",
