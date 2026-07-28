@@ -1231,6 +1231,10 @@
         "code": "M3e.FormField.view [] [ M3e.FormField.label (TypedHtml.label [ Native.attribute \"for\" \"select2\" ] [ Kit.text \"Favorite fruit\" ]), M3e.Select.view [ M3e.Attributes.id \"select2\" ] [ M3e.Option.view [ M3e.Option.value \"\" ] [ Kit.text \"None\" ], M3e.Option.view [] [ Kit.text \"Apples\" ], M3e.Option.view [] [ Kit.text \"Oranges\" ], M3e.Option.view [] [ Kit.text \"Bananas\" ], M3e.Option.view [] [ Kit.text \"Grapes\" ] ] ]"
       },
       {
+        "title": "Option groups",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label (TypedHtml.label [ Native.attribute \"for\" \"select3\" ] [ Kit.text \"Pokemon\" ]), M3e.Select.view [ M3e.Attributes.id \"select3\" ] [ M3e.Optgroup.view [] [ M3e.Optgroup.label (Kit.text \"Grass\"), M3e.Option.view [] [ Kit.text \"Bulbasaur\" ], M3e.Option.view [] [ Kit.text \"Oddish\" ], M3e.Option.view [] [ Kit.text \"Bellsprout\" ] ], M3e.Optgroup.view [] [ M3e.Optgroup.label (Kit.text \"Water\"), M3e.Option.view [] [ Kit.text \"Squirtle\" ], M3e.Option.view [] [ Kit.text \"Psyduck\" ], M3e.Option.view [] [ Kit.text \"Horsea\" ] ], M3e.Optgroup.view [] [ M3e.Optgroup.label (Kit.text \"Fire\"), M3e.Option.view [] [ Kit.text \"Charmander\" ], M3e.Option.view [] [ Kit.text \"Vulpix\" ], M3e.Option.view [] [ Kit.text \"Flareon\" ] ] ] ]"
+      },
+      {
         "title": "Selection",
         "code": "M3e.FormField.view [] [ M3e.FormField.label (TypedHtml.label [ Native.attribute \"for\" \"select4\" ] [ Kit.text \"Toppings\" ]), M3e.Select.view [ M3e.Attributes.id \"select4\", M3e.Select.multi True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text \"Extra cheese\" ], M3e.Option.view [ M3e.Option.selected True ] [ Kit.text \"Mushroom\" ], M3e.Option.view [] [ Kit.text \"Onion\" ], M3e.Option.view [] [ Kit.text \"Pepperoni\" ], M3e.Option.view [] [ Kit.text \"Sausage\" ], M3e.Option.view [] [ Kit.text \"Tomato\" ] ] ]"
       },

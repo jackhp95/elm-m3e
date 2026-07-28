@@ -21,5 +21,4 @@ NavMenu :: Personal folders :: degraded: top: The 2nd argument to `view` is not 
 Paginator :: Native module support :: filtered: registration-only (script/link)
 Select :: Native module support (2) :: filtered: registration-only (script/link)
 Select :: Native module support :: filtered: registration-only (script/link)
-Select :: Option groups :: degraded: top: The 2nd argument to `view` is not what I expect:
 Tree :: Native module support :: filtered: registration-only (script/link)

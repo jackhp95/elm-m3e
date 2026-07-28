@@ -1884,7 +1884,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "option"
+          "option",
+          "optgroup"
         ],
         "multi": true,
         "required": true

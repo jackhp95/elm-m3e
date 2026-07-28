@@ -61,7 +61,9 @@ type alias Attrs =
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { option : Brand }
+    { optgroup : Brand
+    , option : Brand
+    }
 
 
 {-| The kinds the `arrow` slot admits.

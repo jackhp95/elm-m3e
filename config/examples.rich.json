@@ -1322,7 +1322,7 @@
     {
       "title": "Option groups",
       "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select3\">Pokemon</label>\n  <m3e-select id=\"select3\">\n    <m3e-optgroup>\n      <span slot=\"label\">Grass</span>\n      <m3e-option>Bulbasaur</m3e-option>\n      <m3e-option>Oddish</m3e-option>\n      <m3e-option>Bellsprout</m3e-option>\n    </m3e-optgroup>\n    <m3e-optgroup>\n      <span slot=\"label\">Water</span>\n      <m3e-option>Squirtle</m3e-option>\n      <m3e-option>Psyduck</m3e-option>\n      <m3e-option>Horsea</m3e-option>\n    </m3e-optgroup>\n    <m3e-optgroup>\n      <span slot=\"label\">Fire</span>\n      <m3e-option>Charmander</m3e-option>\n      <m3e-option>Vulpix</m3e-option>\n      <m3e-option>Flareon</m3e-option>\n    </m3e-optgroup>\n  </m3e-select>\n</m3e-form-field>",
-      "top": null
+      "top": "M3e.FormField.view [] [ M3e.FormField.label (TypedHtml.label [ Native.attribute \"for\" \"select3\" ] [ Kit.text \"Pokemon\" ]), M3e.Select.view [ M3e.Attributes.id \"select3\" ] [ M3e.Optgroup.view [] [ M3e.Optgroup.label (Kit.text \"Grass\"), M3e.Option.view [] [ Kit.text \"Bulbasaur\" ], M3e.Option.view [] [ Kit.text \"Oddish\" ], M3e.Option.view [] [ Kit.text \"Bellsprout\" ] ], M3e.Optgroup.view [] [ M3e.Optgroup.label (Kit.text \"Water\"), M3e.Option.view [] [ Kit.text \"Squirtle\" ], M3e.Option.view [] [ Kit.text \"Psyduck\" ], M3e.Option.view [] [ Kit.text \"Horsea\" ] ], M3e.Optgroup.view [] [ M3e.Optgroup.label (Kit.text \"Fire\"), M3e.Option.view [] [ Kit.text \"Charmander\" ], M3e.Option.view [] [ Kit.text \"Vulpix\" ], M3e.Option.view [] [ Kit.text \"Flareon\" ] ] ] ]"
     },
     {
       "title": "Selection",
