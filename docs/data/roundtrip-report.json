@@ -34,12 +34,12 @@
     },
     "record": {
       "total": 339,
-      "converted": 165,
-      "clean": 165,
+      "converted": 174,
+      "clean": 174,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 138,
+      "roundtripMatched": 147,
       "roundtripDeviated": 27,
-      "roundtripFunctionalMatched": 143,
+      "roundtripFunctionalMatched": 152,
       "roundtripFunctionalDeviated": 22
     },
     "build": {
@@ -17991,7 +17991,7 @@
       "index": 0,
       "surface": "record",
       "title": "Variants",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18004,7 +18004,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/0/build",
@@ -18129,7 +18133,7 @@
       "index": 1,
       "surface": "record",
       "title": "Lowering",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18142,7 +18146,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/1/build",
@@ -18267,7 +18275,7 @@
       "index": 2,
       "surface": "record",
       "title": "Sizes",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18280,7 +18288,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/2/build",
@@ -18405,7 +18417,7 @@
       "index": 3,
       "surface": "record",
       "title": "Disabling",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18418,7 +18430,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/3/build",
@@ -18543,7 +18559,7 @@
       "index": 4,
       "surface": "record",
       "title": "Extended FABs",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18556,7 +18572,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/4/build",
@@ -18681,7 +18701,7 @@
       "index": 5,
       "surface": "record",
       "title": "Links",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18694,7 +18714,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/5/build",
@@ -18819,7 +18843,7 @@
       "index": 6,
       "surface": "record",
       "title": "Density",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18832,7 +18856,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/6/build",
@@ -18957,7 +18985,7 @@
       "index": 7,
       "surface": "record",
       "title": "Density (2)",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -18970,7 +18998,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "Fab/7/build",
@@ -30622,7 +30654,7 @@
       "index": 0,
       "surface": "record",
       "title": "Modes",
-      "converted": false,
+      "converted": true,
       "escapeHatch": {
         "seam": {
           "count": 0,
@@ -30635,7 +30667,11 @@
         "charsInside": 0,
         "benign": true
       },
-      "roundtrip": null
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
     },
     {
       "id": "NavRail/0/build",
