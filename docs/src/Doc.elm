@@ -244,7 +244,7 @@ One definition, so the framing can't drift between pages.
 userlandNote : Element { s | html : M3e.Kind.Brand } admittedBy msg
 userlandNote =
     callout "You write these"
-        """`Kit`, `Native`, `Layout`, and `Seam` in these examples are **your own modules**, not part of the `elm-m3e` package — they won't resolve from a fresh install. The library ships the typed components (`M3e.*`); *you* supply the userland vocabulary that fills the gaps: `Kit.text` and typography, `Native` HTML producers, `Layout` wrappers, and the `Seam` escape hatch. Copy the paste-able starters from [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) and adapt them, or write your own — see [Your own seam](/guide/seams)."""
+        """`Kit`, `Native`, `Layout`, and `Seam` in these examples are **your own modules**, not part of the `elm-m3e` package — they won't resolve from a fresh install. The library provides the typed components (`M3e.*`, ejected into your tree); *you* supply the userland vocabulary that fills the gaps: `Kit.text` and typography, `Native` HTML producers, `Layout` wrappers, and the `Seam` escape hatch. Copy the paste-able starters from [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) and adapt them, or write your own — see [Your own seam](/guide/seams)."""
 
 
 {-| A syntax-highlighted Elm type signature (for API member rows). Rendered as an
