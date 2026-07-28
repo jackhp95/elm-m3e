@@ -1,18 +1,18 @@
 module M3e.ListItemButton exposing
     ( view, build, toElement
-    , Is, Attrs, Content, LeadingSlot, LeadingIconSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, TrailingIconSlot, TrailingSupportingTextSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , disabled, download, href, rel, target, onClick
-    , leading, leadingIcon, overline, supportingText, trailing, trailingIcon, trailingSupportingText, child
-    , withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withLeadingIcon, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing, withTrailingIcon, withTrailingSupportingText
+    , leading, overline, supportingText, trailing, child
+    , withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing
     )
 
 {-| The `m3e-list-item-button` component — strict per-component surface.
 
 @docs view, build, toElement
-@docs Is, Attrs, Content, LeadingSlot, LeadingIconSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, TrailingIconSlot, TrailingSupportingTextSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs disabled, download, href, rel, target, onClick
-@docs leading, leadingIcon, overline, supportingText, trailing, trailingIcon, trailingSupportingText, child
-@docs withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withLeadingIcon, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing, withTrailingIcon, withTrailingSupportingText
+@docs leading, overline, supportingText, trailing, child
+@docs withChild, withClass, withDisabled, withDownload, withHref, withId, withLeading, withOnClick, withOverline, withRel, withSlot, withStyle, withSupportingText, withTarget, withTrailing
 
 -}
 
@@ -67,12 +67,6 @@ type alias LeadingSlot =
     }
 
 
-{-| The kinds the `leading-icon` slot admits.
--}
-type alias LeadingIconSlot =
-    { sharedIcon : Shared }
-
-
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
@@ -99,20 +93,6 @@ type alias TrailingSlot =
     , sharedIcon : Shared
     , sharedText : Shared
     , switch : Brand
-    }
-
-
-{-| The kinds the `trailing-icon` slot admits.
--}
-type alias TrailingIconSlot =
-    { sharedIcon : Shared }
-
-
-{-| The kinds the `trailing-supporting-text` slot admits.
--}
-type alias TrailingSupportingTextSlot =
-    { html : Brand
-    , sharedText : Shared
     }
 
 
@@ -182,14 +162,6 @@ leading element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading") (El.toNode element))
 
 
-{-| Place an element into the named `leading-icon` slot (input constrained to the
-slot's kinds; output row free so it composes into the child list).
--}
-leadingIcon : Element LeadingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
-leadingIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading-icon") (El.toNode element))
-
-
 {-| Place an element into the named `overline` slot (input constrained to the
 slot's kinds; output row free so it composes into the child list).
 -}
@@ -212,22 +184,6 @@ slot's kinds; output row free so it composes into the child list).
 trailing : Element TrailingSlot admittedBy msg -> Element free freeAdmittedBy msg
 trailing element =
     Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing") (El.toNode element))
-
-
-{-| Place an element into the named `trailing-icon` slot (input constrained to the
-slot's kinds; output row free so it composes into the child list).
--}
-trailingIcon : Element TrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
-trailingIcon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-icon") (El.toNode element))
-
-
-{-| Place an element into the named `trailing-supporting-text` slot (input constrained to the
-slot's kinds; output row free so it composes into the child list).
--}
-trailingSupportingText : Element TrailingSupportingTextSlot admittedBy msg -> Element free freeAdmittedBy msg
-trailingSupportingText element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-supporting-text") (El.toNode element))
 
 
 {-| Place a pre-built element into the default (unnamed) slot (input
@@ -267,12 +223,9 @@ type alias AttrCaps =
 -}
 type alias SlotCaps =
     { leading : Available
-    , leadingIcon : Available
     , overline : Available
     , supportingText : Available
     , trailing : Available
-    , trailingIcon : Available
-    , trailingSupportingText : Available
     }
 
 
@@ -367,13 +320,6 @@ withLeading element =
     B.withChild (El.toNode (leading element))
 
 
-{-| Pipe form of the `leading-icon` slot — consumes its capability (write-once).
--}
-withLeadingIcon : Element LeadingIconSlot admittedBy msg -> Builder attrCaps { s | leadingIcon : Available } msg -> Builder attrCaps { s | leadingIcon : Used } msg
-withLeadingIcon element =
-    B.withChild (El.toNode (leadingIcon element))
-
-
 {-| Pipe form of the `overline` slot — consumes its capability (write-once).
 -}
 withOverline : Element OverlineSlot admittedBy msg -> Builder attrCaps { s | overline : Available } msg -> Builder attrCaps { s | overline : Used } msg
@@ -393,20 +339,6 @@ withSupportingText element =
 withTrailing : Element TrailingSlot admittedBy msg -> Builder attrCaps { s | trailing : Available } msg -> Builder attrCaps { s | trailing : Used } msg
 withTrailing element =
     B.withChild (El.toNode (trailing element))
-
-
-{-| Pipe form of the `trailing-icon` slot — consumes its capability (write-once).
--}
-withTrailingIcon : Element TrailingIconSlot admittedBy msg -> Builder attrCaps { s | trailingIcon : Available } msg -> Builder attrCaps { s | trailingIcon : Used } msg
-withTrailingIcon element =
-    B.withChild (El.toNode (trailingIcon element))
-
-
-{-| Pipe form of the `trailing-supporting-text` slot — consumes its capability (write-once).
--}
-withTrailingSupportingText : Element TrailingSupportingTextSlot admittedBy msg -> Builder attrCaps { s | trailingSupportingText : Available } msg -> Builder attrCaps { s | trailingSupportingText : Used } msg
-withTrailingSupportingText element =
-    B.withChild (El.toNode (trailingSupportingText element))
 
 
 {-| Pipe form of a default-slot child (repeatable).

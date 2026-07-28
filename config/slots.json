@@ -13,8 +13,12 @@
     "TimepickerInputElementBase"
   ],
   "_renames": {
-    "TimepickerDial": { "attr:view": "viewAttr" },
-    "TimepickerInput": { "attr:view": "viewAttr" }
+    "TimepickerDial": {
+      "attr:view": "viewAttr"
+    },
+    "TimepickerInput": {
+      "attr:view": "viewAttr"
+    }
   },
   "_actions": {
     "forWrappers": [
@@ -476,13 +480,6 @@
       ]
     ],
     "admits": {
-      "icon": {
-        "kinds": [
-          "shared:icon"
-        ],
-        "multi": false,
-        "required": false
-      },
       "unnamed": {
         "kinds": [
           "shared:text",
@@ -1283,28 +1280,6 @@
         ],
         "multi": false,
         "required": false
-      },
-      "leading-icon": {
-        "kinds": [
-          "shared:icon"
-        ],
-        "multi": false,
-        "required": false
-      },
-      "trailing-icon": {
-        "kinds": [
-          "shared:icon"
-        ],
-        "multi": false,
-        "required": false
-      },
-      "trailing-supporting-text": {
-        "kinds": [
-          "shared:text",
-          "html"
-        ],
-        "multi": false,
-        "required": false
       }
     }
   },
@@ -1378,28 +1353,6 @@
           "switch",
           "radio",
           "checkbox"
-        ],
-        "multi": false,
-        "required": false
-      },
-      "leading-icon": {
-        "kinds": [
-          "shared:icon"
-        ],
-        "multi": false,
-        "required": false
-      },
-      "trailing-icon": {
-        "kinds": [
-          "shared:icon"
-        ],
-        "multi": false,
-        "required": false
-      },
-      "trailing-supporting-text": {
-        "kinds": [
-          "shared:text",
-          "html"
         ],
         "multi": false,
         "required": false

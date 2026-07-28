@@ -1,20 +1,20 @@
 module M3e.BreadcrumbItemButton exposing
     ( view, build, toElement
-    , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Current, current
     , disabled, download, href, rel, target, onClick
-    , icon, child
-    , withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
+    , child
+    , withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withId, withOnClick, withRel, withSlot, withStyle, withTarget
     )
 
 {-| The `m3e-breadcrumb-item-button` component — strict per-component surface.
 
 @docs view, build, toElement
-@docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Current, current
 @docs disabled, download, href, rel, target, onClick
-@docs icon, child
-@docs withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withIcon, withId, withOnClick, withRel, withSlot, withStyle, withTarget
+@docs child
+@docs withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withId, withOnClick, withRel, withSlot, withStyle, withTarget
 
 -}
 
@@ -59,12 +59,6 @@ type alias Content =
     { sharedIcon : Shared
     , sharedText : Shared
     }
-
-
-{-| The kinds the `icon` slot admits.
--}
-type alias IconSlot =
-    { sharedIcon : Shared }
 
 
 {-| The context demand this container injects into each child's admittedBy row.
@@ -144,14 +138,6 @@ onClick =
     Ev.onClick
 
 
-{-| Place an element into the named `icon` slot (input constrained to the
-slot's kinds; output row free so it composes into the child list).
--}
-icon : Element IconSlot admittedBy msg -> Element free freeAdmittedBy msg
-icon element =
-    Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "icon") (El.toNode element))
-
-
 {-| Place a pre-built element into the default (unnamed) slot (input
 constrained to the slot's kinds; output row free so it composes into the
 child list). The list-form sibling of the builder's `withChild`.
@@ -189,8 +175,7 @@ type alias AttrCaps =
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    }
+    {}
 
 
 {-| Seed the pipe-builder.
@@ -282,13 +267,6 @@ withTarget value_ =
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg -> Builder { a | onClick : Used } slotCaps msg
 withOnClick value_ =
     B.withAttribute (Ev.onClick value_)
-
-
-{-| Pipe form of the `icon` slot — consumes its capability (write-once).
--}
-withIcon : Element IconSlot admittedBy msg -> Builder attrCaps { s | icon : Available } msg -> Builder attrCaps { s | icon : Used } msg
-withIcon element =
-    B.withChild (El.toNode (icon element))
 
 
 {-| Pipe form of a default-slot child (repeatable).
