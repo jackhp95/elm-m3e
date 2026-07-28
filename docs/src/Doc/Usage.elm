@@ -1,5 +1,5 @@
 module Doc.Usage exposing
-    ( Layer
+    ( Surface
     , Model
     , Msg
     , UsageExample
@@ -39,7 +39,7 @@ that surface to enforce). Only a composite with no single-component `top` form
 drops them entirely.
 
 -}
-type Layer
+type Surface
     = Top
     | Record
     | Build
@@ -52,21 +52,21 @@ its default surface — so the model starts empty and only records deviations,
 and each example's tabs move independently of every other's.
 -}
 type alias Model =
-    { layers : Dict Int Layer }
+    { surfaces : Dict Int Surface }
 
 
 type Msg
-    = SelectLayer Int Layer
+    = SelectSurface Int Surface
 
 
 init : Model
 init =
-    { layers = Dict.empty }
+    { surfaces = Dict.empty }
 
 
 update : Msg -> Model -> Model
-update (SelectLayer index layer) model =
-    { model | layers = Dict.insert index layer model.layers }
+update (SelectSurface index surface) model =
+    { model | surfaces = Dict.insert index surface model.surfaces }
 
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
@@ -153,40 +153,40 @@ sectionBlock model ( sec, examples ) =
 {-| A live preview paired with a per-example tab strip that switches its code
 between the API surfaces (optionally `M3e`, then the `el` / `build` surfaces, and
 always `HTML`). The selection lives in
-`model.layers` keyed by this example's index, defaulting to the first available
-surface (`defaultLayerFor`). Grouped as one
+`model.surfaces` keyed by this example's index, defaulting to the first available
+surface (`defaultSurfaceFor`). Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
 exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg
 exampleBlock model ( index, ex ) =
     let
-        layer : Layer
-        layer =
-            Dict.get index model.layers |> Maybe.withDefault (defaultLayerFor ex)
+        surface : Surface
+        surface =
+            Dict.get index model.surfaces |> Maybe.withDefault (defaultSurfaceFor ex)
     in
     Layout.div "space-y-3"
         [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
-        , layerTabs index layer ex
+        , surfaceTabs index surface ex
         , Doc.Slider.slidingPanels
-            (activeIndexFor layer ex)
-            (List.map (\( _, l ) -> codeFor l ex) (layersFor ex))
+            (activeIndexFor surface ex)
+            (List.map (\( _, l ) -> codeFor l ex) (surfacesFor ex))
         ]
 
 
-{-| The 0-based position of the selected `layer` within `layersFor ex` — the panel
-`slidingPanels` translates into view. Every panel in `layersFor ex` is mounted (one
+{-| The 0-based position of the selected `surface` within `surfacesFor ex` — the panel
+`slidingPanels` translates into view. Every panel in `surfacesFor ex` is mounted (one
 `codeFor` surface each) so the prior panel can slide out as the new one slides in;
-this index just drives the track offset. Clamps to 0 if the layer isn't offered
-(unreachable — the selection comes from `defaultLayerFor`/a tab click, both drawn
-from `layersFor`).
+this index just drives the track offset. Clamps to 0 if the surface isn't offered
+(unreachable — the selection comes from `defaultSurfaceFor`/a tab click, both drawn
+from `surfacesFor`).
 -}
-activeIndexFor : Layer -> UsageExample -> Int
-activeIndexFor layer ex =
-    layersFor ex
+activeIndexFor : Surface -> UsageExample -> Int
+activeIndexFor surface ex =
+    surfacesFor ex
         |> List.map Tuple.second
         |> List.indexedMap Tuple.pair
-        |> List.filter (\( _, l ) -> l == layer)
+        |> List.filter (\( _, l ) -> l == surface)
         |> List.head
         |> Maybe.map Tuple.first
         |> Maybe.withDefault 0
@@ -197,14 +197,14 @@ activeIndexFor layer ex =
 (its field is non-null); `HTML` is the one universal surface and is always offered
 last. Order: M3e, el, build, HTML.
 -}
-layersFor : UsageExample -> List ( String, Layer )
-layersFor ex =
+surfacesFor : UsageExample -> List ( String, Surface )
+surfacesFor ex =
     let
-        optional : Maybe String -> String -> Layer -> List ( String, Layer )
-        optional field label layer =
+        optional : Maybe String -> String -> Surface -> List ( String, Surface )
+        optional field label surface =
             case field of
                 Just _ ->
-                    [ ( label, layer ) ]
+                    [ ( label, surface ) ]
 
                 Nothing ->
                     []
@@ -214,14 +214,14 @@ layersFor ex =
         -- show an identical-by-design rationale (see `codeFor`) instead of being
         -- silently hidden. Only a null `top` (a composite with no single-component
         -- form) drops them entirely.
-        recordBuild : Maybe String -> String -> Layer -> List ( String, Layer )
-        recordBuild field label layer =
+        recordBuild : Maybe String -> String -> Surface -> List ( String, Surface )
+        recordBuild field label surface =
             case ( field, ex.top ) of
                 ( Nothing, Nothing ) ->
                     []
 
                 _ ->
-                    [ ( label, layer ) ]
+                    [ ( label, surface ) ]
     in
     optional ex.top "M3e" Top
         ++ recordBuild ex.record "el" Record
@@ -229,49 +229,49 @@ layersFor ex =
         ++ [ ( "HTML", Raw ) ]
 
 
-{-| The layer an example opens on when the user hasn't chosen one: the first
-surface `layersFor` offers (its strictest available Elm surface, or `HTML` when
+{-| The surface an example opens on when the user hasn't chosen one: the first
+surface `surfacesFor` offers (its strictest available Elm surface, or `HTML` when
 no Elm surface compiled). `HTML` is always present, so the fallback is total.
 -}
-defaultLayerFor : UsageExample -> Layer
-defaultLayerFor ex =
-    layersFor ex |> List.head |> Maybe.map Tuple.second |> Maybe.withDefault Raw
+defaultSurfaceFor : UsageExample -> Surface
+defaultSurfaceFor ex =
+    surfacesFor ex |> List.head |> Maybe.map Tuple.second |> Maybe.withDefault Raw
 
 
 {-| The per-example surface selector: a single-select `Tabs` bar whose selected
-tab is this example's current layer and whose clicks record a `SelectLayer` for
+tab is this example's current surface and whose clicks record a `SelectSurface` for
 this example's index only. The tabs are dynamic per example (four to six); `Tabs`
 paginates/scrolls them horizontally on narrow viewports natively, so there's no
 `overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
-trips a spurious vertical scrollbar on the control's state-layer bleed.
+trips a spurious vertical scrollbar on the control's state-surface bleed.
 -}
-layerTabs : Int -> Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg
-layerTabs index current ex =
+surfaceTabs : Int -> Surface -> UsageExample -> Element { s | html : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg
+surfaceTabs index current ex =
     M3e.tabs []
         (List.map
-            (\( lbl, layer ) ->
+            (\( lbl, surface ) ->
                 M3e.tab
-                    [ M3e.Attributes.selected (layer == current)
-                    , Native.onClick (SelectLayer index layer)
+                    [ M3e.Attributes.selected (surface == current)
+                    , Native.onClick (SelectSurface index surface)
                     ]
                     [ M3e.text lbl ]
             )
-            (layersFor ex)
+            (surfacesFor ex)
         )
 
 
 {-| The code block for the selected surface. The Elm surfaces highlight as Elm;
 the raw `<m3e-*>` HTML surface highlights as plain markup.
 
-`Top` is only offered by `layersFor` when its field is present, so its `Nothing`
+`Top` is only offered by `surfacesFor` when its field is present, so its `Nothing`
 branch is defensive (falls back to HTML). `Record` and `Build` ARE offered with a
 null field — when this example's content had nothing for that surface to lift, the
 surface is identical to `M3e` by design, so we show a short rationale instead of a
 hollow duplicate.
 
 -}
-codeFor : Layer -> UsageExample -> Element { s | html : M3e.Kind.Brand } admittedBy msg
-codeFor layer ex =
+codeFor : Surface -> UsageExample -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+codeFor surface ex =
     let
         elmOrHtml : Maybe String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
         elmOrHtml field =
@@ -283,15 +283,15 @@ codeFor layer ex =
                     Doc.code_ Doc.Xml ex.html
 
         recordBuildCode : Maybe String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
-        recordBuildCode field surface =
+        recordBuildCode field surfaceName =
             case field of
                 Just code ->
                     Doc.code_ Doc.Elm code
 
                 Nothing ->
-                    identicalSurfaceNote surface
+                    identicalSurfaceNote surfaceName
     in
-    case layer of
+    case surface of
         Top ->
             elmOrHtml ex.top
 
