@@ -82,26 +82,26 @@ view _ _ =
                     [ pageHeading
                     , Kit.paragraph Value.large
                         [ Kit.onSurfaceVariant ]
-                        [ Kit.text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned. Follow the four steps below and you will have a themed button rendering in the browser." ]
-                    , message "Prerequisites: Elm 0.19.1, Node 18+, and a bundler that can serve ES modules (Vite, esbuild, Parcel, or Webpack). The steps below assume Vite, but any bundler that runs npm packages and lets you inject a <script> tag will work."
+                        [ Kit.text "elm-m3e ships in two parts. The brand primitives — the shared vocabulary and escape hatches (M3e.Attributes, M3e.Values, M3e.Events, M3e.Html, and friends) — publish to the Elm package registry as jackhp95/elm-m3e. The 128 typed components (M3e.Button, M3e.Card, M3e.Theme, … and the M3e barrel) are NOT published; you generate them into your project with elm-cem's eject command. Follow the four steps below and you will have a themed button rendering in the browser." ]
+                    , message "Prerequisites: Elm 0.19.1, Node 18+ (eject runs via npx/pnpm dlx), and a bundler that can serve ES modules (Vite, esbuild, Parcel, or Webpack). The steps below assume Vite, but any bundler that runs npm packages and lets you inject a <script> tag will work."
                     ]
                 , Layout.section "space-y-3"
-                    [ stepHeading "1. Vendor the Elm source"
+                    [ stepHeading "1. Install the primitives and eject the components"
                     , Kit.paragraph Value.large
                         [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Clone this repository and copy its src/ (the M3e.* and supporting M3e.Html.* modules) into a vendor folder in your project:" ]
+                        [ Kit.text "Install the published primitives from the Elm registry. This gives you the primitive modules — M3e.Attributes, M3e.Values, M3e.Events, the escape hatches, and M3e.Html (the loose, open-rowed component producers):" ]
                     , code_ Shell """
-git clone https://github.com/jackhp95/elm-m3e.git
-cp -R elm-m3e/src your-project/vendor/elm-m3e
+elm install jackhp95/elm-m3e
 """
                     , Kit.paragraph Value.large
                         [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Then add that folder to source-directories in your elm.json:" ]
-                    , code_ Json """
-{
-  "source-directories": [ "src", "vendor/elm-m3e" ]
-}
+                        [ Kit.text "To get the full typed component surface (M3e.Button, M3e.Card, M3e.Theme, … and the M3e barrel), run elm-cem's eject command. It pulls the pre-generated M3e.* modules into a vendor folder, adds that folder to source-directories in your elm.json, and promotes the dependencies the generated code imports. eject also removes the jackhp95/elm-m3e registry dependency — the vendored superset already contains those primitive modules, so there is no collision:" ]
+                    , code_ Shell """
+npx elm-cem eject m3e --elm-json=elm.json --write
 """
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "eject defaults to a dry run that prints its plan and writes nothing; pass --write to apply it. The vendored M3e.* modules are a build artifact — re-run eject to update them rather than editing them by hand. Add --with-review to also wire up the elm-review-cem lint rules." ]
                     ]
                 , Layout.section "space-y-3"
                     [ stepHeading "2. Register the web components"
