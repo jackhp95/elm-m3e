@@ -3,17 +3,17 @@
   "layer2": true,
   "perSurface": {
     "top": {
-      "total": 331,
-      "converted": 325,
-      "clean": 325,
+      "total": 339,
+      "converted": 333,
+      "clean": 333,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 283,
+      "roundtripMatched": 291,
       "roundtripDeviated": 42,
-      "roundtripFunctionalMatched": 293,
+      "roundtripFunctionalMatched": 301,
       "roundtripFunctionalDeviated": 32
     },
     "mid": {
-      "total": 331,
+      "total": 339,
       "converted": 0,
       "clean": 0,
       "usedEscapeHatch": 0,
@@ -23,7 +23,7 @@
       "roundtripFunctionalDeviated": 0
     },
     "bottom": {
-      "total": 331,
+      "total": 339,
       "converted": 0,
       "clean": 0,
       "usedEscapeHatch": 0,
@@ -33,7 +33,7 @@
       "roundtripFunctionalDeviated": 0
     },
     "record": {
-      "total": 331,
+      "total": 339,
       "converted": 165,
       "clean": 165,
       "usedEscapeHatch": 0,
@@ -43,23 +43,23 @@
       "roundtripFunctionalDeviated": 22
     },
     "build": {
-      "total": 331,
-      "converted": 303,
-      "clean": 303,
+      "total": 339,
+      "converted": 311,
+      "clean": 311,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 262,
+      "roundtripMatched": 270,
       "roundtripDeviated": 41,
-      "roundtripFunctionalMatched": 272,
+      "roundtripFunctionalMatched": 280,
       "roundtripFunctionalDeviated": 31
     },
     "barrel": {
-      "total": 331,
-      "converted": 325,
-      "clean": 325,
+      "total": 339,
+      "converted": 333,
+      "clean": 333,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 283,
+      "roundtripMatched": 291,
       "roundtripDeviated": 42,
-      "roundtripFunctionalMatched": 293,
+      "roundtripFunctionalMatched": 301,
       "roundtripFunctionalDeviated": 32
     }
   },
@@ -23418,17 +23418,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "variant",
-            "value": "outlined",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -23514,17 +23506,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "variant",
-            "value": "outlined",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -23547,17 +23531,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "variant",
-            "value": "outlined",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -28299,9 +28275,17 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
+        "matches": false,
+        "functionalMatches": false,
+        "deviations": [
+          {
+            "kind": "removed-attr",
+            "path": "/#roots[2]",
+            "attr": "mode",
+            "value": "extended",
+            "cosmetic": false
+          }
+        ]
       }
     },
     {
@@ -28387,9 +28371,17 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
+        "matches": false,
+        "functionalMatches": false,
+        "deviations": [
+          {
+            "kind": "removed-attr",
+            "path": "/#roots[2]",
+            "attr": "mode",
+            "value": "extended",
+            "cosmetic": false
+          }
+        ]
       }
     },
     {
@@ -28412,9 +28404,17 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
+        "matches": false,
+        "functionalMatches": false,
+        "deviations": [
+          {
+            "kind": "removed-attr",
+            "path": "/#roots[2]",
+            "attr": "mode",
+            "value": "extended",
+            "cosmetic": false
+          }
+        ]
       }
     },
     {
@@ -33299,140 +33299,6 @@
         },
         "native": {
           "count": 4,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
-      }
-    },
-    {
-      "id": "ScrollContainer/0/top",
-      "module": "ScrollContainer",
-      "index": 0,
-      "surface": "top",
-      "title": "Scroll effects",
-      "converted": true,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
-      }
-    },
-    {
-      "id": "ScrollContainer/0/mid",
-      "module": "ScrollContainer",
-      "index": 0,
-      "surface": "mid",
-      "title": "Scroll effects",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "ScrollContainer/0/bottom",
-      "module": "ScrollContainer",
-      "index": 0,
-      "surface": "bottom",
-      "title": "Scroll effects",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "ScrollContainer/0/record",
-      "module": "ScrollContainer",
-      "index": 0,
-      "surface": "record",
-      "title": "Scroll effects",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "ScrollContainer/0/build",
-      "module": "ScrollContainer",
-      "index": 0,
-      "surface": "build",
-      "title": "Scroll effects",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "ScrollContainer/0/barrel",
-      "module": "ScrollContainer",
-      "index": 0,
-      "surface": "barrel",
-      "title": "Scroll effects",
-      "converted": true,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
           "charsInside": 0
         },
         "charsInside": 0,
@@ -45829,144 +45695,6 @@
       }
     },
     {
-      "id": "TextHighlight/0/top",
-      "module": "TextHighlight",
-      "index": 0,
-      "surface": "top",
-      "title": "Highlight a term",
-      "converted": true,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
-      }
-    },
-    {
-      "id": "TextHighlight/0/mid",
-      "module": "TextHighlight",
-      "index": 0,
-      "surface": "mid",
-      "title": "Highlight a term",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "TextHighlight/0/bottom",
-      "module": "TextHighlight",
-      "index": 0,
-      "surface": "bottom",
-      "title": "Highlight a term",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "TextHighlight/0/record",
-      "module": "TextHighlight",
-      "index": 0,
-      "surface": "record",
-      "title": "Highlight a term",
-      "converted": false,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": null
-    },
-    {
-      "id": "TextHighlight/0/build",
-      "module": "TextHighlight",
-      "index": 0,
-      "surface": "build",
-      "title": "Highlight a term",
-      "converted": true,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
-      }
-    },
-    {
-      "id": "TextHighlight/0/barrel",
-      "module": "TextHighlight",
-      "index": 0,
-      "surface": "barrel",
-      "title": "Highlight a term",
-      "converted": true,
-      "escapeHatch": {
-        "seam": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "native": {
-          "count": 0,
-          "charsInside": 0
-        },
-        "charsInside": 0,
-        "benign": true
-      },
-      "roundtrip": {
-        "matches": true,
-        "functionalMatches": true,
-        "deviations": []
-      }
-    },
-    {
       "id": "TextareaAutosize/0/top",
       "module": "TextareaAutosize",
       "index": 0,
@@ -47231,6 +46959,1382 @@
         },
         "native": {
           "count": 2,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/0/top",
+      "module": "Timepicker",
+      "index": 0,
+      "surface": "top",
+      "title": "Basic usage",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/0/mid",
+      "module": "Timepicker",
+      "index": 0,
+      "surface": "mid",
+      "title": "Basic usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/0/bottom",
+      "module": "Timepicker",
+      "index": 0,
+      "surface": "bottom",
+      "title": "Basic usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/0/record",
+      "module": "Timepicker",
+      "index": 0,
+      "surface": "record",
+      "title": "Basic usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/0/build",
+      "module": "Timepicker",
+      "index": 0,
+      "surface": "build",
+      "title": "Basic usage",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/0/barrel",
+      "module": "Timepicker",
+      "index": 0,
+      "surface": "barrel",
+      "title": "Basic usage",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/1/top",
+      "module": "Timepicker",
+      "index": 1,
+      "surface": "top",
+      "title": "Variants",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/1/mid",
+      "module": "Timepicker",
+      "index": 1,
+      "surface": "mid",
+      "title": "Variants",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/1/bottom",
+      "module": "Timepicker",
+      "index": 1,
+      "surface": "bottom",
+      "title": "Variants",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/1/record",
+      "module": "Timepicker",
+      "index": 1,
+      "surface": "record",
+      "title": "Variants",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/1/build",
+      "module": "Timepicker",
+      "index": 1,
+      "surface": "build",
+      "title": "Variants",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/1/barrel",
+      "module": "Timepicker",
+      "index": 1,
+      "surface": "barrel",
+      "title": "Variants",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/2/top",
+      "module": "Timepicker",
+      "index": 2,
+      "surface": "top",
+      "title": "Orientation",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/2/mid",
+      "module": "Timepicker",
+      "index": 2,
+      "surface": "mid",
+      "title": "Orientation",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/2/bottom",
+      "module": "Timepicker",
+      "index": 2,
+      "surface": "bottom",
+      "title": "Orientation",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/2/record",
+      "module": "Timepicker",
+      "index": 2,
+      "surface": "record",
+      "title": "Orientation",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/2/build",
+      "module": "Timepicker",
+      "index": 2,
+      "surface": "build",
+      "title": "Orientation",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/2/barrel",
+      "module": "Timepicker",
+      "index": 2,
+      "surface": "barrel",
+      "title": "Orientation",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/3/top",
+      "module": "Timepicker",
+      "index": 3,
+      "surface": "top",
+      "title": "Modes",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/3/mid",
+      "module": "Timepicker",
+      "index": 3,
+      "surface": "mid",
+      "title": "Modes",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/3/bottom",
+      "module": "Timepicker",
+      "index": 3,
+      "surface": "bottom",
+      "title": "Modes",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/3/record",
+      "module": "Timepicker",
+      "index": 3,
+      "surface": "record",
+      "title": "Modes",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/3/build",
+      "module": "Timepicker",
+      "index": 3,
+      "surface": "build",
+      "title": "Modes",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/3/barrel",
+      "module": "Timepicker",
+      "index": 3,
+      "surface": "barrel",
+      "title": "Modes",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/4/top",
+      "module": "Timepicker",
+      "index": 4,
+      "surface": "top",
+      "title": "Time selection",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/4/mid",
+      "module": "Timepicker",
+      "index": 4,
+      "surface": "mid",
+      "title": "Time selection",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/4/bottom",
+      "module": "Timepicker",
+      "index": 4,
+      "surface": "bottom",
+      "title": "Time selection",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/4/record",
+      "module": "Timepicker",
+      "index": 4,
+      "surface": "record",
+      "title": "Time selection",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/4/build",
+      "module": "Timepicker",
+      "index": 4,
+      "surface": "build",
+      "title": "Time selection",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/4/barrel",
+      "module": "Timepicker",
+      "index": 4,
+      "surface": "barrel",
+      "title": "Time selection",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/5/top",
+      "module": "Timepicker",
+      "index": 5,
+      "surface": "top",
+      "title": "Hour format",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/5/mid",
+      "module": "Timepicker",
+      "index": 5,
+      "surface": "mid",
+      "title": "Hour format",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/5/bottom",
+      "module": "Timepicker",
+      "index": 5,
+      "surface": "bottom",
+      "title": "Hour format",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/5/record",
+      "module": "Timepicker",
+      "index": 5,
+      "surface": "record",
+      "title": "Hour format",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/5/build",
+      "module": "Timepicker",
+      "index": 5,
+      "surface": "build",
+      "title": "Hour format",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/5/barrel",
+      "module": "Timepicker",
+      "index": 5,
+      "surface": "barrel",
+      "title": "Hour format",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/6/top",
+      "module": "Timepicker",
+      "index": 6,
+      "surface": "top",
+      "title": "Min and max times",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/6/mid",
+      "module": "Timepicker",
+      "index": 6,
+      "surface": "mid",
+      "title": "Min and max times",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/6/bottom",
+      "module": "Timepicker",
+      "index": 6,
+      "surface": "bottom",
+      "title": "Min and max times",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/6/record",
+      "module": "Timepicker",
+      "index": 6,
+      "surface": "record",
+      "title": "Min and max times",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/6/build",
+      "module": "Timepicker",
+      "index": 6,
+      "surface": "build",
+      "title": "Min and max times",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/6/barrel",
+      "module": "Timepicker",
+      "index": 6,
+      "surface": "barrel",
+      "title": "Min and max times",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/7/top",
+      "module": "Timepicker",
+      "index": 7,
+      "surface": "top",
+      "title": "Blackout times",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/7/mid",
+      "module": "Timepicker",
+      "index": 7,
+      "surface": "mid",
+      "title": "Blackout times",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/7/bottom",
+      "module": "Timepicker",
+      "index": 7,
+      "surface": "bottom",
+      "title": "Blackout times",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/7/record",
+      "module": "Timepicker",
+      "index": 7,
+      "surface": "record",
+      "title": "Blackout times",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/7/build",
+      "module": "Timepicker",
+      "index": 7,
+      "surface": "build",
+      "title": "Blackout times",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/7/barrel",
+      "module": "Timepicker",
+      "index": 7,
+      "surface": "barrel",
+      "title": "Blackout times",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/8/top",
+      "module": "Timepicker",
+      "index": 8,
+      "surface": "top",
+      "title": "Seconds",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/8/mid",
+      "module": "Timepicker",
+      "index": 8,
+      "surface": "mid",
+      "title": "Seconds",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/8/bottom",
+      "module": "Timepicker",
+      "index": 8,
+      "surface": "bottom",
+      "title": "Seconds",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/8/record",
+      "module": "Timepicker",
+      "index": 8,
+      "surface": "record",
+      "title": "Seconds",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/8/build",
+      "module": "Timepicker",
+      "index": 8,
+      "surface": "build",
+      "title": "Seconds",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/8/barrel",
+      "module": "Timepicker",
+      "index": 8,
+      "surface": "barrel",
+      "title": "Seconds",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 3,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/9/top",
+      "module": "Timepicker",
+      "index": 9,
+      "surface": "top",
+      "title": "À-la-carte usage",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 1,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": {
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
+      }
+    },
+    {
+      "id": "Timepicker/9/mid",
+      "module": "Timepicker",
+      "index": 9,
+      "surface": "mid",
+      "title": "À-la-carte usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/9/bottom",
+      "module": "Timepicker",
+      "index": 9,
+      "surface": "bottom",
+      "title": "À-la-carte usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/9/record",
+      "module": "Timepicker",
+      "index": 9,
+      "surface": "record",
+      "title": "À-la-carte usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/9/build",
+      "module": "Timepicker",
+      "index": 9,
+      "surface": "build",
+      "title": "À-la-carte usage",
+      "converted": false,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "charsInside": 0,
+        "benign": true
+      },
+      "roundtrip": null
+    },
+    {
+      "id": "Timepicker/9/barrel",
+      "module": "Timepicker",
+      "index": 9,
+      "surface": "barrel",
+      "title": "À-la-carte usage",
+      "converted": true,
+      "escapeHatch": {
+        "seam": {
+          "count": 0,
+          "charsInside": 0
+        },
+        "native": {
+          "count": 1,
           "charsInside": 0
         },
         "charsInside": 0,
