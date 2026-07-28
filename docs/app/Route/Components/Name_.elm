@@ -142,9 +142,8 @@ view app _ model =
 
 {-| The page header, mirroring the matraic component pages: the component name as
 a display heading (with its category chip alongside), the cleaned one-line CEM
-summary, and a barrel-first install card. The verbose Component Info / Events /
-Slots prose that used to trail the summary is dropped — the colocated API section
-below now documents the same events and slots, so repeating them here was clutter.
+summary, and a barrel-first install card. Events and slots are documented by the
+colocated API section below, not repeated here.
 -}
 header : Component -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, suggestionChip : M3e.Kind.Brand } adm_ msg
 header component =

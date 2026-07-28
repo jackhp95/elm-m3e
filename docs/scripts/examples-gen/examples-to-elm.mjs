@@ -86,8 +86,7 @@ function nodeToHtml(node) {
 
 /**
  * Convert one mined example's raw HTML to the Standard `M3e.*` (top) surface,
- * handling multi-root galleries. (The retired mid/bottom layers are no longer
- * generated, so this converts the top surface only.)
+ * handling multi-root galleries.
  * @returns {{ code: string } | { skip: string }}
  */
 function convertExample(html, oracle) {
@@ -240,9 +239,8 @@ function main() {
   };
 
   // Top surface: code lives directly on the example (null ⇒ converter skip).
-  // The retired mid (`M3e.Html.*`) and bottom (`M3e.Raw.*`) layers no longer
-  // exist in the phantom substrate and are no longer generated. The Record/Build
-  // surfaces are produced downstream by gen-record-build.mjs (elm-review-driven).
+  // The Record/Build surfaces are produced downstream by gen-record-build.mjs
+  // (elm-review-driven).
   const topFail = verifyLayer((ex) => ex.code, "top");
 
   // Split the built data into two outputs (stable, alphabetized keys):

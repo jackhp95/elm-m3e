@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildOracle } from "./oracle.mjs";
-import { toElm, toElmCem } from "./to-elm.mjs";
+import { toElm } from "./to-elm.mjs";
 
 const oracle = buildOracle();
 const conv = (h) => toElm(h, oracle);
@@ -157,8 +157,8 @@ test("non-typed attr is preserved via the Native.attribute Seam", () => {
   assert.match(r.code, /Native\.attribute "wibble" "y"/);
 });
 
-// Universal id/class/style on an m3e element now emit M3e.Attributes setters
-// (no longer dropped), alongside the component's own typed setters.
+// Universal id/class/style on an m3e element emit M3e.Attributes setters,
+// alongside the component's own typed setters.
 test("m3e element with id/class emits universal M3e.Attributes setters", () => {
   const r = conv(`<m3e-button variant="filled" id="x" class="y">Go</m3e-button>`);
   assert.deepEqual(r, {
@@ -184,8 +184,7 @@ test("nav-menu-item required label sourced from slot=label child", () => {
     `<m3e-nav-menu-item selected><m3e-icon slot="icon" name="home"></m3e-icon><a slot="label" href="/">Home</a></m3e-nav-menu-item>`,
   );
   // Children are emitted in DOM order: the `slot="icon"` child precedes the
-  // `slot="label"` child in the source, so `icon` precedes `label` here (the
-  // required `label` slot is no longer hoisted ahead of the rest).
+  // `slot="label"` child in the source, so `icon` precedes `label` here.
   assert.deepEqual(r, {
     code: `M3e.NavMenuItem.view [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []), M3e.NavMenuItem.label (Kit.link "/" [ Kit.text "Home" ]) ]`,
   });
@@ -339,33 +338,10 @@ test("anchor-wrapped card -> Kit.link", () => {
   assert.ok(r.code && /Kit\.link "\/x"/.test(r.code) && /M3e\.Card\.view/.test(r.code));
 });
 
-// --- Phase A1: middle (M3e.Html.*) + bottom (M3e.Raw.*) layers ---------
-// NOTE (phantom substrate migration): M3e.Html.* and M3e.Raw.* were retired.
-// toElmCem now unconditionally returns { skip: "... retired ..." } for both
-// layers so every example gracefully degrades to null on those surfaces.
-// The tests below verify the skip contract (not specific code strings).
-
-const mid = (h) => toElmCem(h, oracle, "middle");
-const bot = (h) => toElmCem(h, oracle, "bottom");
-
-test("middle layer returns skip (M3e.Html.* retired)", () => {
-  const r = mid(`<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`);
-  assert.ok(r.skip, "expected a skip result");
-  assert.match(r.skip, /M3e\.Html/);
-});
-
-test("bottom layer returns skip (M3e.Raw.* retired)", () => {
-  const r = bot(`<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`);
-  assert.ok(r.skip, "expected a skip result");
-  assert.match(r.skip, /M3e\.Raw/);
-});
-
-test("numeric attribute -> Float literal (no quotes) at top layer", () => {
+test("numeric attribute -> Float literal (no quotes)", () => {
   assert.deepEqual(conv(`<m3e-icon name="star" optical-size="24"></m3e-icon>`), {
     code: `M3e.Icon.view [ M3e.Icon.name "star", M3e.Icon.opticalSize 24 ] []`,
   });
-  // bottom layer is retired; skip is expected
-  assert.ok(bot(`<m3e-icon name="star" optical-size="24"></m3e-icon>`).skip);
 });
 
 test("void elements (<hr>/<br>) -> TypedHtml 2-arg producer with empty lists", () => {

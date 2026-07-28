@@ -5,17 +5,15 @@
 // bare `<m3e-icon>`, so assistive tech announces nothing — the exact nameless
 // pattern the Guide says you cannot ship (#186). This walks the committed
 // example corpus and adds an accessible name derived from the button's own icon
-// glyph, on every surface, using each surface's established aria convention
+// glyph, on every surface, using each surface's aria convention
 // (mirrored from the AppBar examples that already ship labels):
 //   html    -> aria-label="Back"
-//   top     -> M3e.ariaLabel "Back"
-//   mid     -> M3e.Aria.label "Back"
-//   bottom  -> M3e.Raw.Aria.label "Back"
-//   record  -> M3e.Aria.label "Back"    (prepended to the trailing attr list)
-//   build   -> |> M3e.Build.IconButton.attr (M3e.Aria.label "Back")
+//   top     -> TypedHtml.Aria.label "Back"   (head of the attr list)
+//   record  -> TypedHtml.Aria.label "Back"   (prepended to the trailing attr list)
+//   build   -> TypedHtml.Aria.label "Back"   (head of the attr list)
 //
 // SOURCES it edits, kept in lock-step:
-//   - config/examples.rich.json    (committed corpus source: html + top/mid/bottom)
+//   - config/examples.rich.json    (committed corpus source: html + top)
 //   - docs/data/examples.json       (what `npm run build:ci` renders verbatim)
 //
 // Idempotent: a button that already has an accessible name is skipped. Only the
@@ -95,15 +93,15 @@ function labelHtml(html) {
 
 /** The accessible name from an Elm content list: its first icon `name "..."`. */
 function labelForElmContent(content) {
-  // `M3e.attrName "check"` / `M3e.Html.Icon.name "check"` / `M3e.Icon.name "x"`.
-  const m = content.match(/\b(?:attrName|name)\s+"([^"]+)"/);
+  // e.g. `M3e.Icon.name "check"` / `M3e.Icon.withName "x"`.
+  const m = content.match(/\b(?:attrName|name|withName)\s+"([^"]+)"/);
   return m ? humanize(m[1]) : null;
 }
 
 /**
  * Surfaces where the icon-button is `<ctor> [ <attrs> ] [ <content> ]` and the
- * accessible name goes at the head of the attr list (top / mid / bottom).
- * `ariaExpr` is the surface's aria setter (e.g. `M3e.ariaLabel`).
+ * accessible name goes at the head of the attr list (top / build).
+ * `ariaExpr` is the surface's aria setter (`TypedHtml.Aria.label`).
  */
 function labelAttrListSurface(code, ctor, ariaExpr) {
   if (!code || !code.includes(ctor)) return code;
@@ -147,12 +145,12 @@ function labelAttrListSurface(code, ctor, ariaExpr) {
 }
 
 /**
- * `M3e.Record.IconButton.view { content = …, action = … } [ <attrs> ] [ … ]`.
+ * `M3e.IconButton.el { content = …, action = … } [ <attrs> ] [ … ]`.
  * The name is drawn from the record's `content` glyph and prepended to the
  * attr list that trails the record.
  */
 function labelRecordSurface(code) {
-  const ctor = "M3e.Record.IconButton.view";
+  const ctor = "M3e.IconButton.el";
   if (!code || !code.includes(ctor)) return code;
   let out = "";
   let i = 0;
@@ -186,7 +184,7 @@ function labelRecordSurface(code) {
       continue;
     }
     const inner = code.slice(attrOpen + 1, attrClose).trim();
-    const labelExpr = `M3e.Aria.label "${elmEscape(label)}"`;
+    const labelExpr = `TypedHtml.Aria.label "${elmEscape(label)}"`;
     const newAttrs =
       inner === "" ? `[ ${labelExpr} ]` : `[ ${labelExpr}, ${inner} ]`;
     out += code.slice(at, attrOpen) + newAttrs;
@@ -195,71 +193,18 @@ function labelRecordSurface(code) {
   return out;
 }
 
-/**
- * `M3e.Build.IconButton.iconButton { content = …, action = … } |> … |> …build`.
- * Insert `|> M3e.Build.IconButton.attr (M3e.Aria.label "Name")` as the first
- * pipeline step after the record, drawing the name from the record's glyph.
- */
-function labelBuildSurface(code) {
-  const ctor = "M3e.Build.IconButton.iconButton";
-  if (!code || !code.includes(ctor)) return code;
-  let out = "";
-  let i = 0;
-  while (i < code.length) {
-    const at = code.indexOf(ctor, i);
-    if (at < 0) {
-      out += code.slice(i);
-      break;
-    }
-    out += code.slice(i, at);
-    const recOpen = code.indexOf("{", at + ctor.length);
-    const recClose = recOpen >= 0 ? matchDelim(code, recOpen) : -1;
-    if (recClose < 0) {
-      out += ctor;
-      i = at + ctor.length;
-      continue;
-    }
-    const record = code.slice(recOpen, recClose + 1);
-    // The pipeline for THIS button runs until its `|> …build` step; scope the
-    // idempotency check to that span so a later button's attr doesn't count.
-    const buildAt = code.indexOf("|> M3e.Build.IconButton.build", recClose);
-    const span = buildAt >= 0 ? code.slice(recClose, buildAt) : "";
-    const label = labelForElmContent(record);
-    if (/Aria\.label|IconButton\.attr/.test(span) || !label) {
-      out += code.slice(at, recClose + 1);
-      i = recClose + 1;
-      continue;
-    }
-    // Match the existing indentation of the record's own pipeline steps.
-    const after = code.slice(recClose + 1);
-    const indentMatch = after.match(/^\n([ \t]*)\|>/);
-    const indent = indentMatch ? indentMatch[1] : "    ";
-    const step = `\n${indent}|> M3e.Build.IconButton.attr (M3e.Aria.label "${elmEscape(label)}")`;
-    out += code.slice(at, recClose + 1) + step;
-    i = recClose + 1;
-  }
-  return out;
-}
-
 function transformExample(ex) {
   const next = { ...ex };
+  const aria = "TypedHtml.Aria.label";
+  const labelView = (code) =>
+    labelAttrListSurface(code, "M3e.IconButton.view", aria);
   if (typeof ex.html === "string") next.html = labelHtml(ex.html);
-  if (typeof ex.top === "string")
-    next.top = labelAttrListSurface(ex.top, "M3e.iconButton", "M3e.ariaLabel");
-  if (typeof ex.mid === "string")
-    next.mid = labelAttrListSurface(
-      ex.mid,
-      "M3e.Html.IconButton.iconButton",
-      "M3e.Aria.label",
-    );
-  if (typeof ex.bottom === "string")
-    next.bottom = labelAttrListSurface(
-      ex.bottom,
-      "M3e.Raw.IconButton.iconButton",
-      "M3e.Raw.Aria.label",
-    );
-  if (typeof ex.record === "string") next.record = labelRecordSurface(ex.record);
-  if (typeof ex.build === "string") next.build = labelBuildSurface(ex.build);
+  if (typeof ex.top === "string") next.top = labelView(ex.top);
+  // Record surface may render icon-button either as the required-record `el`
+  // form or as a plain `view`; label whichever is present.
+  if (typeof ex.record === "string")
+    next.record = labelView(labelRecordSurface(ex.record));
+  if (typeof ex.build === "string") next.build = labelView(ex.build);
   return next;
 }
 

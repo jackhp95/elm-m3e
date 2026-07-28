@@ -6,7 +6,7 @@
 //   - required-record view form (3-arg): named required fields (e.g.
 //     ariaLabel <- aria-label) AND a required single-value default slot folded
 //     into the record as a bare `content` field (IconButton/Heading/Chip).
-//   - plain (non-m3e) HTML: TypedHtml.<tag> (the phantom-substrate producer) for
+//   - plain (non-m3e) HTML: TypedHtml.<tag> for
 //     any tag TypedHtml models, `Native.node "<tag>"` (String tag name) for a
 //     tag it doesn't, and <a href> -> Kit.link. v1 drops non-structural
 //     attributes (class/id/for) rather than skipping the example.
@@ -34,10 +34,9 @@ const isWhitespaceText = (node) =>
   node.nodeType === 3 && node.textContent.trim() === "";
 
 // Universal accessibility attributes: settable on ANY component via
-// `TypedHtml.Aria` (open-row `Attr`). The phantom substrate moved these
-// off the retired `M3e.Aria` module onto `TypedHtml.Aria`, which exposes
-// `label`, `labelledby`, and `describedby`. `aria-hidden` has no typed setter
-// in `TypedHtml.Aria`; it falls through to the `Native.attribute` Seam path.
+// `TypedHtml.Aria` (open-row `Attr`), which exposes `label`, `labelledby`, and
+// `describedby`. `aria-hidden` has no typed setter in `TypedHtml.Aria`; it
+// falls through to the `Native.attribute` Seam path.
 const ARIA_SETTER = {
   "aria-label": "label",
   "aria-labelledby": "labelledby",
@@ -46,20 +45,18 @@ const ARIA_SETTER = {
 };
 
 // Universal HTML attributes: like Aria, these are settable on ANY component
-// (independent of the phantom rows) via the `Attributes` modules. Top/middle
-// layers use `M3e.Attributes` (open-row `Attr capability msg`); the bottom layer
-// uses `M3e.Raw.Attributes` (`Html.Attribute msg`). The setter name equals
-// the HTML attr name for all four. Only emitted when a component exposes NO
-// typed setter for the name (the typed lookup runs first), so a component that
-// DOES map e.g. `for` (m3e-app-bar) keeps its own typed setter.
+// (independent of the phantom rows) via `M3e.Attributes` (open-row
+// `Attr capability msg`). The setter name equals the HTML attr name. Only
+// emitted when a component exposes NO typed setter for the name (the typed
+// lookup runs first), so a component that DOES map e.g. `for` (m3e-app-bar)
+// keeps its own typed setter.
 const UNIVERSAL_ATTR = new Set(["id", "for", "class", "style"]);
 
-/** Emit a universal HTML-attribute setter (id/for/class/style) qualified by the
- * layer's `Attributes` module. Mirrors the `ARIA_SETTER` universal path.
- * `style` takes the RAW attribute string: the generated `M3e.Attributes.style`
- * is `String -> Attr` (the whole `style="…"` value verbatim), NOT a
- * `List (String, String)` — the old tuple-list form targeted a signature the
- * generator no longer emits and nulled every styled example. */
+/** Emit a universal HTML-attribute setter (id/for/class/style) qualified by an
+ * `Attributes` module. Mirrors the `ARIA_SETTER` universal path.
+ * `style` takes the RAW attribute string: `M3e.Attributes.style` is
+ * `String -> Attr` (the whole `style="…"` value verbatim), NOT a
+ * `List (String, String)`. */
 function universalAttrExpr(mod, name, value) {
   return `${mod}.${name} "${escapeElmString(value)}"`;
 }
@@ -97,10 +94,10 @@ function recordInvalidEnum(tag, name, value, attr) {
   console.error(`to-elm: dropped ${reason}`);
 }
 
-// Void (empty) elements: `br`/`hr`. On the phantom substrate these are ordinary
+// Void (empty) elements: `br`/`hr`. These are ordinary
 // `TypedHtml.<tag> : List Attr -> List Element -> Element` producers (the elm/html
 // call shape), NOT 0-arg values — so they are emitted `TypedHtml.br [] []`. They
-// carry no children and (as before) drop their rare non-structural attributes.
+// carry no children and drop their rare non-structural attributes.
 const VOID_TYPED_TAGS = new Set(["br", "hr"]);
 
 // HTML phrasing / text-level content tags whose `TypedHtml.<tag>` content row
@@ -110,7 +107,7 @@ const VOID_TYPED_TAGS = new Set(["br", "hr"]);
 // compiling `TypedHtml.<tag> [] [ M3e.Checkbox.view [] [], Kit.text "x" ]` for
 // every TypedHtml tag and recording which REJECT the component child (flow
 // containers such as div/section/form/fieldset/figure/details accept it and are
-// intentionally absent). Regenerate that probe if the phantom substrate changes.
+// intentionally absent). Regenerate that probe if TypedHtml changes.
 const PHRASING_CONTENT_TAGS = new Set(
   (
     "abbr b bdi bdo button cite code data dd dfn dl dt em figcaption h1 h2 h3 " +
@@ -119,19 +116,15 @@ const PHRASING_CONTENT_TAGS = new Set(
   ).split(" "),
 );
 
-// Plain HTML tags with a dedicated `TypedHtml.<tag>` producer on the phantom
-// substrate. This is the FULL set of HTML tag names TypedHtml exposes (verified
-// against docs/vendor/elm-foundation/TypedHtml.elm's exposing list), using real
-// HTML tag names — `main` is exposed as the reserved-name-escaped `main_`, mapped
-// by `typedHtmlProducer` below. `a`/`img`/`br`/`hr` also live here but are
+// Plain HTML tags with a dedicated `TypedHtml.<tag>` producer. This is the FULL
+// set of HTML tag names TypedHtml exposes (verified against
+// docs/vendor/elm-foundation/TypedHtml.elm's exposing list), using real HTML tag
+// names — `main` is exposed as the reserved-name-escaped `main_`, mapped by
+// `typedHtmlProducer` below. `a`/`img`/`br`/`hr` also live here but are
 // intercepted earlier in plainElementToElm (Kit.link / childless forms).
 //
 // Any tag TypedHtml does NOT model falls through to the sanctioned `Native.node
-// "<tag>"` escape (a STRING tag name, per docs/kit/Native.elm). We deliberately do
-// NOT use the old `Native.node Html.<tag>` form: `Native.node` now takes a String,
-// so passing the `Html.<tag>` FUNCTION is a type error that nulled every example
-// hitting the fallback (label ×107, input ×56, form, …) — including all the
-// form-field label examples this migration is meant to restore.
+// "<tag>"` escape (a STRING tag name, per docs/kit/Native.elm).
 const TYPED_HTML_TAGS = new Set(
   (
     "a abbr address area article aside audio b base bdi bdo blockquote body br " +
@@ -243,8 +236,7 @@ function textLinkSlotChild(node, tag, field, oracle) {
 // text/link (shared or bare) or `html`. Such a slot's helper takes an
 // `Element { …sharedText/html… }` whose admission record is BARE, so a plain
 // `TypedHtml.<tag>` wrapper — whose `is` is a TAGGED row (`SpanIs {…}`) — never
-// unifies (migration a8f169a9 made plain tags emit `TypedHtml.*`, which broke
-// exactly these content-slot children). The admissible producers are the Kit
+// unifies. The admissible producers are the Kit
 // content builders (`Kit.text`, `Kit.link`, Kit typescales), so a text-only
 // `<span>`/`<div>` wrapper (or an `<a href>`) must be UNWRAPPED to `Kit.text` /
 // `Kit.link`. Element-admitting slots (iconButton/button/icon/…) are excluded
@@ -398,7 +390,7 @@ function plainElementToElm(node, oracle) {
     return `Native.node "${escapeElmString(tag)}" ${attrList} ${list}`;
   }
 
-  // Prefer the phantom-substrate `TypedHtml.<producer>` for any tag TypedHtml
+  // Prefer `TypedHtml.<producer>` for any tag TypedHtml
   // models (div/span/label/input/form/…). It gives a closed, element-natural attr
   // row and unifies on the shared HtmlIr substrate with the m3e producers and the
   // `Native.attribute` escape carried above.
@@ -704,244 +696,6 @@ function elementToElm(node, oracle) {
   const recordArg = hasRecord ? `{ ${recordFields.join(", ")} } ` : "";
 
   return `M3e.${mod}.${ctor} ${recordArg}${attrsList} ${contentList}`;
-}
-
-// ---------------------------------------------------------------------------
-// Phase A1: middle (`M3e.Html.*`) and bottom (`M3e.Raw.*`) layer emitters.
-//
-// These layers are strictly MORE permissive supersets of the strict top layer:
-// each upper layer only ADDS constraints (required records, typed Content slots,
-// enum Value tokens). So any composition that compiles at top is representable
-// here by construction. The surface differs though — there are no required
-// records and no Content slot helpers; children are raw `Html`, and a field
-// that is a required record at top (e.g. `ariaLabel`) is just an untyped
-// attribute here. The emitter is therefore a uniform HTML->elm/html transpile:
-//   - typed setter where the oracle knows one (enum -> Value token at middle /
-//     raw string at bottom; bool -> True; string -> "..."),
-//   - the raw-attribute escape otherwise (`M3e.Html.Attr.attribute` at middle,
-//     `Html.Attributes.attribute` at bottom) — lower layers express anything,
-//   - non-structural id/class/style/data-* dropped (as top does),
-//   - a slotted child carries its slot via `M3e.Html.Attr.slot` (middle) or
-//     `Html.Attributes.attribute "slot"` (bottom).
-// ---------------------------------------------------------------------------
-
-const CEM_PREFIX = { middle: "M3e.Html", bottom: "M3e.Raw" };
-
-// Plain tags that map to a bare `Html.<tag>`; anything else -> `Html.node "tag"`.
-const HTML_TAGS = new Set([
-  ...TYPED_HTML_TAGS,
-  "a",
-  "label",
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "table",
-  "thead",
-  "tbody",
-  "tr",
-  "td",
-  "th",
-  "figure",
-  "figcaption",
-  "code",
-  "pre",
-  "b",
-  "i",
-  "u",
-]);
-
-/** A component's mid/bottom constructor = its module name, decapitalized
- * (`Button` -> `button`, `IconButton` -> `iconButton`). This is NOT `camel`,
- * which folds an already-PascalCase name to all-lowercase. */
-const decapitalize = (s) => s.charAt(0).toLowerCase() + s.slice(1);
-
-/** The slot attribute for a slotted child, per layer. */
-function cemSlotAttr(layer, slotName) {
-  const s = escapeElmString(slotName);
-  return layer === "middle"
-    ? `M3e.Html.Attr.slot "${s}"`
-    : `Html.Attributes.attribute "slot" "${s}"`;
-}
-
-/** An untyped (raw) attribute name/value, per layer. */
-function cemRawAttr(layer, name, value) {
-  const n = escapeElmString(name);
-  const v = escapeElmString(value);
-  // Middle (M3e.Html.*) layer: escape via the sanctioned `Native.attribute`
-  // (= `Seam.asAttribute (Html.Attributes.attribute n v)`), an open-capability-row
-  // `Attr` that composes into any M3e.Html attr list — same Seam the top layer
-  // uses. Bottom (M3e.Raw.*) returns `Html msg`, so a raw `Html.Attribute` fits
-  // directly.
-  return layer === "middle"
-    ? `Native.attribute "${n}" "${v}"`
-    : `Html.Attributes.attribute "${n}" "${v}"`;
-}
-
-/** A typed m3e setter for `name=value`, or null if the oracle has no setter. */
-function cemTypedAttr(entry, layer, name, value) {
-  const attr = entry.attributes.find((a) => a.htmlName === name);
-  if (!attr) return null;
-  const setterRef = `${CEM_PREFIX[layer]}.${entry.module}.${attr.setter}`;
-  if (attr.kind === "enum") {
-    return layer === "middle"
-      ? `${setterRef} M3e.Values.${camel(value)}`
-      : `${setterRef} "${escapeElmString(value)}"`;
-  }
-  if (attr.kind === "bool") {
-    return `${setterRef} True`;
-  }
-  if (attr.kind === "number") {
-    // Numeric setter takes a Float at every layer -> bare number literal.
-    return `${setterRef} ${numberLiteral(value, entry.module, name)}`;
-  }
-  if (attr.kind === "string") {
-    return `${setterRef} "${escapeElmString(value)}"`;
-  }
-  skip(`unknown attr kind ${attr.kind} for ${name} on ${entry.module}`);
-}
-
-/** The `[ ... ]` list literal for a set of expressions ([] when empty). */
-const elmList = (exprs) => (exprs.length === 0 ? "[]" : `[ ${exprs.join(", ")} ]`);
-
-/** Render one node to a raw-`Html` Elm expr at the given layer. `slotName` (or
- * null) is injected as the element's slot attribute. */
-function cemNodeToElm(node, oracle, layer, slotName) {
-  if (node.nodeType === 3) {
-    return `Html.text "${escapeElmString(node.textContent.trim())}"`;
-  }
-  if (node.nodeType !== 1) {
-    skip(`unsupported node type ${node.nodeType}`);
-  }
-
-  const tag = node.tagName.toLowerCase();
-  const attrExprs = [];
-
-  if (!tag.startsWith("m3e-")) {
-    // Plain HTML element: its attr list is `List (Html.Attribute msg)`, so a
-    // slot is ALWAYS a raw Html attribute — even at the middle layer (where
-    // `M3e.Html.Attr.slot` only fits an m3e element's typed attr list).
-    if (slotName) {
-      attrExprs.push(
-        `Html.Attributes.attribute "slot" "${escapeElmString(slotName)}"`,
-      );
-    }
-    // <a href> keeps its href via the typed helper; carry ALL other raw HTML
-    // attributes (`value`/`placeholder`/`type`/`src`/class/id/…) as
-    // `Html.Attributes.attribute`, so a plain `<input value="…">` round-trips
-    // instead of dropping its functional attributes. `slot` (handled above) and
-    // the already-emitted `href` are skipped.
-    const isAnchor = tag === "a";
-    if (isAnchor) {
-      const href = node.getAttribute("href");
-      if (href != null) {
-        attrExprs.push(`Html.Attributes.href "${escapeElmString(href)}"`);
-      }
-    }
-    for (const attr of node.attributes) {
-      const name = attr.name;
-      if (name === "slot") continue;
-      if (isAnchor && name === "href") continue;
-      attrExprs.push(
-        `Html.Attributes.attribute "${escapeElmString(name)}" "${escapeElmString(attr.value)}"`,
-      );
-    }
-    const children = cemChildren(node, oracle, layer);
-    const fn = HTML_TAGS.has(tag) ? `Html.${tag}` : `Html.node "${tag}"`;
-    return `${fn} ${elmList(attrExprs)} ${elmList(children)}`;
-  }
-
-  // m3e element: the slot goes in its typed attr list (M3e.Html.Attr.slot at
-  // middle, raw Html attribute at bottom).
-  if (slotName) attrExprs.push(cemSlotAttr(layer, slotName));
-
-  const entry = oracle[tag];
-  if (!entry) skip(`unknown m3e tag ${tag}`);
-
-  for (const [name, value] of [...node.attributes].map((a) => [a.name, a.value])) {
-    if (name === "slot") continue; // carried via slotName on this element
-    // Universal aria-* setters (M3e.Aria at middle, M3e.Raw.Aria at bottom).
-    if (ARIA_SETTER[name]) {
-      const ariaMod = layer === "bottom" ? "M3e.Raw.Aria" : "M3e.Aria";
-      attrExprs.push(`${ariaMod}.${ARIA_SETTER[name]} "${escapeElmString(value)}"`);
-      continue;
-    }
-    // Array/function/object-typed attrs have no setter at any layer -> drop.
-    const known = entry.attributes.find((a) => a.htmlName === name);
-    if (known && known.kind === "skip") {
-      droppedAttrs.push({ tag, name, value });
-      continue;
-    }
-    // Invalid enum value: drop consistently with the top layer (the middle
-    // layer's `M3e.Token.<x>` token would not exist; the bottom layer would
-    // emit a semantically-wrong raw string). Degrade the attribute, not the
-    // surface.
-    if (known && known.kind === "enum" && !isValidEnumValue(known, value)) {
-      recordInvalidEnum(tag, name, value, known);
-      continue;
-    }
-    const typed = cemTypedAttr(entry, layer, name, value);
-    if (typed != null) {
-      attrExprs.push(typed);
-      continue;
-    }
-    // Universal HTML-attribute setters (id/for/class/style): `M3e.Attributes` at
-    // the middle layer (open-row `Attr`), `M3e.Raw.Attributes` at the bottom
-    // (raw `Html.Attribute`). Mirrors the Aria universal path; reached only when
-    // the component has no typed setter for the name.
-    if (UNIVERSAL_ATTR.has(name)) {
-      const attrMod =
-        layer === "bottom" ? "M3e.Raw.Attributes" : "M3e.Attributes";
-      attrExprs.push(universalAttrExpr(attrMod, name, value));
-      continue;
-    }
-    // Non-typed attribute (hidden/autofocus/data-*/toc marker/any global): NEVER
-    // drop. Fall through to the raw-attribute escape below — the bottom layer
-    // expresses any attribute directly, the middle layer via `Attr.attribute`.
-    // (Mirrors the top layer's `Native.attribute` Seam.)
-    attrExprs.push(cemRawAttr(layer, name, value));
-  }
-
-  const children = cemChildren(node, oracle, layer);
-  return `${CEM_PREFIX[layer]}.${entry.module}.${decapitalize(
-    entry.module,
-  )} ${elmList(attrExprs)} ${elmList(children)}`;
-}
-
-/** Non-whitespace child nodes -> raw-`Html` exprs (each carrying its own slot). */
-function cemChildren(node, oracle, layer) {
-  const out = [];
-  for (const child of node.childNodes) {
-    if (isWhitespaceText(child)) continue;
-    if (child.nodeType === 1 || child.nodeType === 3) {
-      const slotName =
-        child.nodeType === 1 ? child.getAttribute("slot") || null : null;
-      out.push(cemNodeToElm(child, oracle, layer, slotName));
-    }
-  }
-  return out;
-}
-
-/**
- * Convert an HTML string to the middle (`M3e.Html.*`) or bottom
- * (`M3e.Raw.*`) Elm layer.
- *
- * NOTE (phantom substrate migration): The M3e.Html.* and M3e.Raw.* layers do
- * not exist in the phantom substrate. Both layers are unconditionally skipped
- * so their examples gracefully degrade to null in the rich output (the UI
- * simply hides those tabs). The internal implementation is retained so the
- * oracle/CEM mapping stays exercisable once a replacement layer is added.
- *
- * @param {"middle"|"bottom"} layer
- * @returns {{ code: string } | { skip: string }}
- */
-export function toElmCem(htmlString, oracle, layer) {
-  // phantom-migration: M3e.Html.* / M3e.Raw.* layers retired; gracefully
-  // degrade every example on these surfaces to null.
-  const prefix = layer === "middle" ? "M3e.Html" : "M3e.Raw";
-  return { skip: `${prefix}.* layer retired in phantom substrate` };
 }
 
 /**

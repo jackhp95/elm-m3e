@@ -1,7 +1,7 @@
 // Join the pipeline's per-surface config JSONs into a flat cell matrix.
 // rich/surfaces/barrel are keyed by PascalCase module -> parallel arrays.
 
-export const SURFACES = ["top", "mid", "bottom", "record", "build", "barrel"];
+export const SURFACES = ["top", "record", "build", "barrel"];
 
 /** @returns {Array<{module,index,surface,title,raw,elm,converted}>} */
 export function buildMatrix({ rich, surfaces, barrel }) {
@@ -13,8 +13,6 @@ export function buildMatrix({ rich, surfaces, barrel }) {
     examples.forEach((ex, index) => {
       const surfaceCode = {
         top: ex.top ?? null,
-        mid: ex.mid ?? null,
-        bottom: ex.bottom ?? null,
         record: (surf[index] && surf[index].record) ?? null,
         build: (surf[index] && surf[index].build) ?? null,
         barrel: barr[index] ?? null,

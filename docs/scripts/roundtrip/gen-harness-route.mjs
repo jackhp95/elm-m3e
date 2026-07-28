@@ -5,8 +5,8 @@
 // The docs app's View type is `{ title : String, body : List (HtmlIr.Node.Node msg) }`
 // — body must be a list of Nodes, NOT Html. HtmlIr.Node is opaque (no public
 // Html -> Node), so every cell is turned into an Element and then Element.toNode'd:
-//   - top/record/build/barrel surfaces already return Element  -> use the raw expr.
-//   - mid/bottom surfaces return `Html msg`                    -> lift via Seam.fromHtml.
+// every surface (top/record/build/barrel) already returns an Element, so the raw
+// expression is used directly.
 // The data-rt wrapper is a TypedHtml.div carrying a Native.attribute attribute, so it
 // stays an Element the whole way. Per-cell bindings are un-annotated: each surface's
 // Element carries a different phantom capability row, so no single concrete
@@ -23,10 +23,6 @@ const REPO = resolve(HERE, "..", "..", "..");
 const ROUTE = resolve(REPO, "docs", "app", "Route", "RoundtripHarness.elm");
 
 const STDLIB = new Set(["Html", "Json", "VirtualDom", "Basics", "Dict", "Set", "List", "Maybe", "Result", "String", "Char", "Tuple", "Array"]);
-
-// Surfaces whose cell expression is already an `Element` need no lifting; the
-// rest return `Html msg` and are lifted into an Element via Seam.fromHtml.
-const ELEMENT_SURFACES = new Set(["top", "record", "build", "barrel"]);
 
 // Modules imported under an alias / exposing — never emit them as plain imports
 // (a duplicate import is a compile error), and never let the forced-import scan
@@ -46,7 +42,7 @@ export function generateHarness(cells, resolves) {
 
   // Plain imports: the harness's own fixed deps plus every resolvable module the
   // cell expressions reference. Aliased/exposing modules are handled separately.
-  const imports = new Set(["Html", "Html.Attributes", "Native", "Seam", "TypedHtml"]);
+  const imports = new Set(["Html", "Html.Attributes", "Native", "TypedHtml"]);
   for (const c of converted) {
     for (const mod of referencedModules(c.elm)) {
       if (STDLIB.has(mod.split(".")[0])) continue;
@@ -90,13 +86,10 @@ export function generateHarness(cells, resolves) {
   // evaluates to a `List Element` (the wrapper div's children) so that both
   // single-root cells and multi-root cells (whose converted source is a bare
   // `[ a, b, … ]` list of siblings) are handled uniformly:
-  //   - element surface, single root : [ (expr) ]
-  //   - element surface, list root   : (expr)                       -- already List Element
-  //   - mid/bottom, single root       : [ Seam.fromHtml (expr) ]
-  //   - mid/bottom, list root         : List.map Seam.fromHtml (expr)
+  //   - single root : [ (expr) ]
+  //   - list root   : (expr)                       -- already List Element
   for (const c of converted) {
     const name = bindingName(c.module, c.index, c.surface);
-    const lift = !ELEMENT_SURFACES.has(c.surface); // mid/bottom -> Seam.fromHtml
     // Heuristic: a bare leading `[` means the converter emitted a multi-root
     // sibling fragment (List). This assumes the converter only ever emits
     // either a single expression or a bare `[...]` list body — verified 0
@@ -109,9 +102,7 @@ export function generateHarness(cells, resolves) {
     const inner = multiline ? "\n" + body + "\n        " : c.elm;
     const paren = `(${inner})`;
     L.push(`${name} =`);
-    if (lift && isList) L.push(`    List.map Seam.fromHtml ${paren}`);
-    else if (lift) L.push(`    [ Seam.fromHtml ${paren} ]`);
-    else if (isList) L.push(`    ${paren}`);
+    if (isList) L.push(`    ${paren}`);
     else L.push(`    [ ${paren} ]`);
     L.push("");
   }

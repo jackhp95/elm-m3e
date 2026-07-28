@@ -7,7 +7,7 @@ module Layout exposing
 
 {-| Named tag helpers over raw HTML for the docs app's layout seam.
 
-Migrated to the phantom substrate: `Markup.*` → `HtmlIr.*`.
+Built on `HtmlIr.*`.
 
 
 ## Named layout wrappers

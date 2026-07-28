@@ -141,7 +141,7 @@ cellDecoder =
 -}
 surfaceOrder : List String
 surfaceOrder =
-    [ "top", "mid", "bottom", "record", "build", "barrel" ]
+    [ "top", "record", "build", "barrel" ]
 
 
 orderSurfaces : List ( String, SurfaceAgg ) -> List ( String, SurfaceAgg )
@@ -274,12 +274,9 @@ view app _ =
     }
 
 
-{-| Legend mapping this page's row names (top/mid/bottom/record/build/barrel) to
-the Guide's current vocabulary, so the form names aren't undefined jargon. The
-names are the harness's original column keys (the JSON is keyed by them, so they
-stay); `top`/`record`/`build`/`barrel` are four of the interchangeable
-[surfaces](/guide/the-layers), while `mid`/`bottom` are legacy columns from the
-retired 5-layer corpus and carry no examples now.
+{-| Legend mapping this page's row names (top/record/build/barrel) to the Guide's
+vocabulary, so the form names aren't undefined jargon. `top`/`record`/`build`/`barrel`
+are the four interchangeable [surfaces](/guide/the-layers).
 -}
 surfaceLegend : Element { s | html : M3e.Kind.Brand } admittedBy msg
 surfaceLegend =
@@ -297,13 +294,11 @@ surfaceLegendText =
 | Row | What it is | Surface map |
 | --- | --- | --- |
 | **top** | `M3e.Button.view` — the standard form: typed, slot-safe, composes anywhere. | the standard `view` surface ([surface map](/guide/the-layers)) |
-| **mid** | *Retired.* The old per-component `M3e.Html.*` mid-layer; no examples populate it now, so it reports 0 converted. | gone in the phantom-substrate migration |
-| **bottom** | *Retired.* The old `M3e.Raw.*` bare-tag bottom layer; likewise empty now. | gone in the phantom-substrate migration |
 | **record** | `M3e.Button.el { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the `el` surface ([surface map](/guide/the-layers)) |
 | **build** | `M3e.Button.build { … }` piped through `M3e.Button.toElement` — one-only setters unwritable twice, order-free. | the `build` surface ([surface map](/guide/the-layers)) |
 | **barrel** | `M3e.button` — one import that re-exports every component's `view`, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/reference)) |
 
-These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value. `mid` and `bottom` are legacy columns kept so old reports still parse; the 5-layer "descent" they came from was retired."""
+These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value."""
 
 
 summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } admittedBy msg

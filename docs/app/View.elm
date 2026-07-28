@@ -2,7 +2,7 @@ module View exposing (Freezable, View, freeze, freezableToHtml, htmlToFreezable,
 
 {-| View module for elm-pages with frozen view support.
 
-Migrated to the phantom substrate: `Markup.Node` → `HtmlIr.Node`.
+The view body is a list of `HtmlIr.Node` values.
 
 @docs Freezable, View, freeze, freezableToHtml, htmlToFreezable, map
 

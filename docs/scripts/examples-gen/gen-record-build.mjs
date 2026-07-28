@@ -1,5 +1,5 @@
-// Generate the ④ Record (`M3e.Record.*`) and ⑤ Build (`M3e.Build.*`) surface
-// code for every Usage example, BY RUNNING the existing surface elm-review translator
+// Generate the Record (`M3e.<Comp>.el { … }`) and Build (`M3e.<Comp>.build |> …`)
+// surface code for every Usage example, BY RUNNING the surface elm-review translator
 // rules (`TranslateToRecord` / `TranslateToBuild`) over each example's `top`
 // (Standard `M3e.*`) code. NO new HTML->Elm converter is written here — this is a
 // thin harness around the real rules, built on lib/scratch-harness.mjs.
@@ -21,10 +21,10 @@
 //      un-converted node as its original Standard source.
 //
 //      Why not `--fix-all-without-prompt`: for a node the rule can't cleanly
-//      convert it emits a whole-node `Seam.fromHtml (M3e.Raw.* ...)` escape
-//      — an Html-surface call the SAME rule re-triggers on, wrapping it again on
-//      every fixpoint iteration → unbounded growth → node stack overflow. A
-//      single report-driven pass sidesteps the fixpoint entirely.
+//      convert it emits a whole-node `Seam.fromHtml (...)` escape — a call the
+//      SAME rule re-triggers on, wrapping it again on every fixpoint iteration
+//      → unbounded growth → node stack overflow. A single report-driven pass
+//      sidesteps the fixpoint entirely.
 //   4. Recover each binding's rewritten code, compile-verify the whole set, and
 //      keep an output only if it COMPILES and actually reaches the target surface
 //      (the rewrite CHANGED the code — record → `M3e.<Comp>.el { … }`, build →
@@ -33,11 +33,10 @@
 //      that doesn't type-check) is left null so build-examples-data.mjs produces a
 //      null field and the UI shows the "identical by design" rationale tab.
 //
-// Substrate note: the rules `Cem.translateToRecord` / `Cem.translateToBuild`
-// (elm-review-cem) target the CURRENT per-component `el` (required-record) and
-// `build` (builder-pipe) forms — NOT the retired `M3e.Record.*` / `M3e.Build.*`
-// module layers. translateToRecord only fires on the 29 components that have an
-// `el` required record; translateToBuild fires on all components; both are
+// Surface note: the rules `Cem.translateToRecord` / `Cem.translateToBuild`
+// (elm-review-cem) target the per-component `el` (required-record) and `build`
+// (builder-pipe) forms. translateToRecord only fires on the 29 components that
+// have an `el` required record; translateToBuild fires on all components; both are
 // conservative no-ops on non-statically-resolvable calls (so not every example
 // yields a record/build surface — that's expected).
 //

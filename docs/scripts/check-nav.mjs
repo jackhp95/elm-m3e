@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 // Guards the docs drawer against dead links and silent nav gaps. The drawer's
-// component list is now DERIVED (not hand-maintained): every reference.json
+// component list is DERIVED (not hand-maintained): every reference.json
 // entry that `config/categories.json` gives a category is a nav component. This
 // script re-derives that same set and checks (a) every nav slug resolves to a
 // pre-rendered page, and (b) warns about example-bearing pages the drawer never
-// links to — the drift the old hand-list once suffered can no longer happen,
-// but a category typo or a missing page still would.
+// links to — a category typo or a missing page is what would break nav.
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";

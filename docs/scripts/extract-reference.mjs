@@ -166,8 +166,8 @@ function setupScratch() {
   fs.rmSync(path.join(SCRATCH, "src"), { recursive: true, force: true });
   fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
   fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
-  // The phantom substrate (HtmlIr.* and TypedHtml.*) lives in UNPUBLISHED sibling
-  // repos, so its source is vendored into docs/vendor/elm-foundation (a committed
+  // HtmlIr.* and TypedHtml.* live in UNPUBLISHED sibling
+  // repos, so their source is vendored into docs/vendor/elm-foundation (a committed
   // source-directory; see vendor/elm-foundation/VENDORED_FROM.txt and
   // `pnpm run build:vendor`). Symlink those vendored trees into the scratch src so
   // `elm make --docs` finds them — packages have no source-directories field, so
@@ -188,9 +188,6 @@ function setupScratch() {
   // the generator sometimes omits on a re-exported value (see barrelSource);
   // never mutating the real library source (#187).
   fs.writeFileSync(path.join(SCRATCH, "src/M3e.elm"), barrelSource());
-  // The middle/bottom layers live under `M3e.Html.*` / `M3e.Raw.*`, i.e.
-  // inside the `M3e` symlink already — they stay in source-dirs but out of
-  // `exposed-modules` (escape-hatch, not the component API).
 
   const exposed = [
     // The one-import barrel first — it is the taught surface (#187).

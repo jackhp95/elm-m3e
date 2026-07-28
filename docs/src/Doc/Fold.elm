@@ -15,10 +15,10 @@ result is identical across every surface tab):
 
   - **Indentation chevron folds** (Phase 1): a line whose next non-blank line is
     more deeply indented is a fold _header_; its body spans following lines until
-    indentation returns to `<=` the header indent. Regions nest. Every fold now
-    renders **open** by default; `defaultCollapseThreshold` is retained only as
-    part of the fold-tree data model exercised by `serialize`/`FoldTest.elm` and
-    no longer drives the rendered `open` state.
+    indentation returns to `<=` the header indent. Regions nest. Every fold
+    renders **open** by default; `defaultCollapseThreshold` is part of the
+    fold-tree data model exercised by `serialize`/`FoldTest.elm` and does not
+    drive the rendered `open` state.
 
   - **Repeated-sibling `…` folds** (Phase 2): a run of `>= 3` consecutive
     single-line siblings at equal indent whose leading construct is identical

@@ -36,8 +36,7 @@ offered. The `record` / `build` surfaces are offered whenever `top` is — when
 their own field is non-null they show a real translation, and when it's null they
 show an _identical-by-design_ rationale (the example's content carried nothing for
 that surface to enforce). Only a composite with no single-component `top` form
-drops them entirely. (The retired mid `M3e.Html.*` / bottom `M3e.Raw.*` layers no
-longer exist in the phantom substrate.)
+drops them entirely.
 
 -}
 type Layer

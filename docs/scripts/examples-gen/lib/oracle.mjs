@@ -131,7 +131,6 @@ export function buildOracle() {
   // with a constructor per variant (e.g. Progress.group = { linear:
   // "m3e-linear-progress-indicator", ... } -> `M3e.Progress.linear`). Build a
   // tag -> { module, variant } map so the TOP mapper targets the group module.
-  // (Middle/bottom layers keep the per-tag modules, which exist as-is.)
   // Fold a `group` ONLY when its target module is ACTUALLY generated into the
   // library (src/M3e/<Module>.elm). The generator ignores `group` and emits a
   // per-tag module for every element, so a group whose unified module was never
@@ -318,11 +317,11 @@ export function buildOracle() {
           rawName === ""
             ? (slotConfig["unnamed"] ?? slotConfig["default"] ?? {})
             : (slotConfig[rawName] ?? {});
-        // `kinds` was loosened in slots.json: it is now EITHER a list of accepted
-        // element rows (`["text","link"]`) OR a scalar string (`"arbitrary"` /
-        // `"any"`) for slots that take anything. Normalize to a list so callers
-        // can always `.length`/`.every` without a string leaking through (a bare
-        // `"arbitrary"[0]` used to silently become the char `"a"`).
+        // `kinds` in slots.json is EITHER a list of accepted element rows
+        // (`["text","link"]`) OR a scalar string (`"arbitrary"` / `"any"`) for
+        // slots that take anything. Normalize to a list so callers can always
+        // `.length`/`.every` without a string leaking through (a bare
+        // `"arbitrary"[0]` would otherwise index to the char `"a"`).
         const kinds = Array.isArray(cfg.kinds)
           ? cfg.kinds
           : cfg.kinds != null

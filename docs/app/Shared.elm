@@ -8,9 +8,8 @@ and the live theme controls in an `end`-slot settings drawer — cloning
 matraic's shell. Every icon goes through `M3e.Icon`; every action through
 `M3e.IconButton`; every theme control through `M3e.SegmentedButton`.
 
-Migrated to the M3e API: the old hand `Theme.Scheme`/`Theme.Contrast`
-unions are now local (the new `M3e.Theme` is token-driven), and every constructor
-is `Module.view [attrs] [content]`.
+The `Scheme`/`Contrast` unions are local; `M3e.Theme` is token-driven, and every
+constructor is `Module.view [attrs] [content]`.
 
 -}
 

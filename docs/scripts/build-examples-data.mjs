@@ -9,9 +9,7 @@
 // slugs and the /components/:slug route). `html` is always present; every Elm
 // surface (top/record/build) is nullable — a null means that surface didn't
 // compile (or didn't translate) for this example, and the UI hides its tab.
-// `formatElm`/`surfaceOrNull` pass null straight through. (The retired mid
-// `M3e.Html.*` / bottom `M3e.Raw.*` layers no longer exist in the phantom
-// substrate and are no longer generated or surfaced.)
+// `formatElm`/`surfaceOrNull` pass null straight through.
 //
 // The rich file is keyed by PascalCase module (e.g. "Button", "IconButton").
 // A module's slug is its lowercased name. A handful of corpus family-names
@@ -114,7 +112,7 @@ function surfaceOrNull(code) {
 // Derive `data/example-usage.json` — a map `componentSlug -> [{ title, route }]`
 // of the five Examples routes (Dashboard/Mail/Shop/Travel/Settings) that
 // instantiate each component. The example apps reference components three ways:
-// aliased/qualified component-module imports (`import M3e.Record.Fab as Fab`),
+// aliased/qualified component-module imports (`import M3e.Fab as Fab`),
 // fully-qualified refs (caught by `referencedModules`), and barrel functions
 // (`M3e.appBar`, `M3e.cardSlotContent`). A barrel token `M3e.<tok>` is attributed
 // to the component whose camelCase name is the LONGEST prefix of `<tok>` with the
@@ -126,8 +124,7 @@ function buildExampleUsage(reference) {
   const camelBases = []; // { base, slug }, longest-first
   for (const c of reference) {
     const bare = c.module.replace(/^M3e\./, "");
-    // Only the top `M3e.*` module namespace survives the phantom substrate; the
-    // retired `M3e.Record.*` / `M3e.Build.*` component namespaces no longer exist.
+    // Components live under the `M3e.*` module namespace (e.g. `M3e.Button`).
     moduleToSlug.set(`M3e.${bare}`, c.slug);
     camelBases.push({ base: lowerFirst(c.name), slug: c.slug });
   }
@@ -143,8 +140,6 @@ function buildExampleUsage(reference) {
     }
     return null;
   };
-  const normalize = (mod) => mod.replace(/^M3e\.(Record|Build)\./, "M3e.");
-
   const files = fs
     .readdirSync(EXAMPLES_DIR)
     .filter((f) => f.endsWith(".elm"))
@@ -158,14 +153,11 @@ function buildExampleUsage(reference) {
 
     // 1. explicit component-module imports (aliased or qualified)
     for (const m of src.matchAll(/^import\s+(M3e(?:\.[A-Za-z0-9]+)*)/gm)) {
-      const norm = normalize(m[1]);
-      if (moduleToSlug.has(norm)) slugs.add(moduleToSlug.get(norm));
-      else if (moduleToSlug.has(m[1])) slugs.add(moduleToSlug.get(m[1]));
+      if (moduleToSlug.has(m[1])) slugs.add(moduleToSlug.get(m[1]));
     }
-    // 2. fully-qualified references (e.g. `M3e.Record.Button.view`)
+    // 2. fully-qualified references (e.g. `M3e.Button.view`)
     for (const mod of referencedModules(src)) {
-      const norm = normalize(mod);
-      if (moduleToSlug.has(norm)) slugs.add(moduleToSlug.get(norm));
+      if (moduleToSlug.has(mod)) slugs.add(moduleToSlug.get(mod));
     }
     // 3. barrel functions (`M3e.appBar`, `M3e.cardSlotContent`, …)
     for (const m of src.matchAll(/\bM3e\.([a-z][A-Za-z0-9]*)/g)) {
