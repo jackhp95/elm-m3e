@@ -203,6 +203,10 @@
     "category": "Navigation",
     "label": "TOC"
   },
+  "timepicker": {
+    "category": "Text inputs",
+    "label": "Time Picker"
+  },
   "toolbar": {
     "category": "Containment",
     "label": "Toolbar"

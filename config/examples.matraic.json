@@ -371,7 +371,7 @@
     {
       "title": "Standard",
       "description": "Standard button groups can contain mixed button types and supports narrow and wide icon button widths.",
-      "code": "<m3e-button-group>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
+      "code": "<m3e-button-group>\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
       "source": "matraic: docs/components/button-group.html",
       "brevitySource": "<m3e-button-group>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>"
     },
@@ -385,7 +385,7 @@
     {
       "title": "Standard (3)",
       "description": "Standard button groups can contain mixed button types and supports narrow and wide icon button widths.",
-      "code": "<m3e-button-group>\n  <m3e-icon-button variant=\"filled\" width=\"wide\">\n    <m3e-icon name=\"fast_rewind\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-button variant=\"filled\"><m3e-icon slot=\"icon\" name=\"play_arrow\"></m3e-icon>Play </m3e-button>\n  <m3e-icon-button variant=\"filled\" width=\"wide\">\n    <m3e-icon name=\"fast_forward\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
+      "code": "<m3e-button-group>\n  <m3e-icon-button aria-label=\"Rewind\" variant=\"filled\" width=\"wide\">\n    <m3e-icon name=\"fast_rewind\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-button variant=\"filled\"><m3e-icon slot=\"icon\" name=\"play_arrow\"></m3e-icon>Play </m3e-button>\n  <m3e-icon-button aria-label=\"Fast forward\" variant=\"filled\" width=\"wide\">\n    <m3e-icon name=\"fast_forward\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
       "source": "matraic: docs/components/button-group.html",
       "brevitySource": "<m3e-button-group>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>"
     },
@@ -399,7 +399,7 @@
     {
       "title": "Sizes",
       "description": "Connected button groups always have the same spacing between buttons, regardless of size.",
-      "code": "<m3e-button-group size=\"large\">\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
+      "code": "<m3e-button-group size=\"large\">\n  <m3e-icon-button aria-label=\"Back\" size=\"large\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\" size=\"large\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" size=\"large\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\" size=\"large\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\" size=\"large\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
       "source": "matraic: docs/components/button-group.html",
       "brevitySource": "<m3e-button-group size=\"large\">\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button size=\"large\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>"
     },
@@ -413,7 +413,7 @@
     {
       "title": "Selection",
       "description": "Button groups containing toggle buttons support both single-select and multi-select modes. Use the multi attribute to allow multiple toggle buttons to be selected simultaneously.",
-      "code": "<m3e-button-group multi=\"\">\n  <m3e-icon-button variant=\"tonal\" toggle=\"\">\n    <m3e-icon name=\"format_bold\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button variant=\"tonal\" toggle=\"\">\n    <m3e-icon name=\"format_italic\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button variant=\"tonal\" toggle=\"\">\n    <m3e-icon name=\"format_underlined\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
+      "code": "<m3e-button-group multi=\"\">\n  <m3e-icon-button aria-label=\"Bold\" variant=\"tonal\" toggle=\"\">\n    <m3e-icon name=\"format_bold\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Italic\" variant=\"tonal\" toggle=\"\">\n    <m3e-icon name=\"format_italic\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Underline\" variant=\"tonal\" toggle=\"\">\n    <m3e-icon name=\"format_underlined\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>",
       "source": "matraic: docs/components/button-group.html",
       "brevitySource": "<m3e-button-group multi>\n  <m3e-icon-button variant=\"tonal\" toggle>\n    <m3e-icon name=\"format_bold\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button variant=\"tonal\" toggle>\n    <m3e-icon name=\"format_italic\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button variant=\"tonal\" toggle>\n    <m3e-icon name=\"format_underlined\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-button-group>"
     },
@@ -788,7 +788,7 @@
     {
       "title": "Basic usage",
       "description": "Use the m3e-datepicker-toggle to open a m3e-datepicker. This component should be nested inside a clickable element and be associated with a picker by setting the for attribute to the id of the picker to open.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld1\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld1\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"datepicker\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"datepicker\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld1\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld1\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"datepicker\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"datepicker\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"field\">Date Field</label>\n  <input autocomplete=\"off\" id=\"field\" />\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"datepicker\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker id=\"datepicker\"></m3e-datepicker>"
     },
@@ -801,49 +801,49 @@
     {
       "title": "Date selection",
       "description": "Use the date attribute to set the currently selected date, and listen for the change event to react when the user selects a new one. You can also enable the clearable attribute to display a button that clears the current selection.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld8\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld8\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker5\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"picker5\" date=\"2026-01-01\" clearable=\"\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld8\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld8\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker5\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"picker5\" date=\"2026-01-01\" clearable=\"\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "<!-- Form field omitted for brevity -->\n<m3e-datepicker id=\"datepicker\" date=\"2026-01-01\" clearable></m3e-datepicker>"
     },
     {
       "title": "Start date",
       "description": "By default, a datepicker opens to the selected date, or to today if no date is set. You can override this by using the start-at attribute to specify the date that m3e-datepicker should initially display.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld7\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld7\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker4\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"picker4\" start-at=\"2026-01-01\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld7\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld7\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker4\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"picker4\" start-at=\"2026-01-01\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "<!-- Form field omitted for brevity -->\n<m3e-datepicker id=\"datepicker\" start-at=\"2026-01-01\"></m3e-datepicker>"
     },
     {
       "title": "Start view",
       "description": "The start-view attribute can be used to set the view that will show up when the calendar first opens. It can be set to month, year, or multi-year; by default it will open to month view.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld6\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld6\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker3\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"picker3\" start-view=\"multi-year\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld6\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld6\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker3\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"picker3\" start-view=\"multi-year\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "<!-- Form field omitted for brevity -->\n<m3e-datepicker id=\"datepicker\" start-view=\"multi-year\"></m3e-datepicker>"
     },
     {
       "title": "Date ranges",
       "description": "To select a range of dates instead of a single date, use the range, or range-start and range-end attributes. Setting range or range-start puts the calendar into range-selection mode.",
-      "code": "<m3e-form-field id=\"range-field\" variant=\"outlined\">\n  <label slot=\"label\" for=\"fld5\">Date Range Field</label>\n  <input autocomplete=\"off\" id=\"fld5\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"date-range\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY - MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker id=\"date-range\" range-start=\"2026-01-01\" range-end=\"2026-01-09\" start-at=\"2026-01-01\"></m3e-datepicker>",
+      "code": "<m3e-form-field id=\"range-field\" variant=\"outlined\">\n  <label slot=\"label\" for=\"fld5\">Date Range Field</label>\n  <input autocomplete=\"off\" id=\"fld5\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"date-range\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY - MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker id=\"date-range\" range-start=\"2026-01-01\" range-end=\"2026-01-09\" start-at=\"2026-01-01\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"field\">Date Range Field</label>\n  <input autocomplete=\"off\" id=\"field\" />\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"range-picker\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY - MM/DD/YYYY</span>\n</m3e-form-field>\n\n<m3e-datepicker\n  id=\"range-picker\"\n  range-start=\"2026-01-01\"\n  range-end=\"2026-01-09\"\n  start-at=\"2026-01-01\"\n></m3e-datepicker>"
     },
     {
       "title": "Min and max dates",
       "description": "Use the min-date and max-date to disable all dates on the calendar before or after the respective values and prevent the user from advancing the calendar past the month or year (depending on current view) containing the minimum or maximum date.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld4\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld4\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker1\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker id=\"picker1\" start-at=\"2026-04-01\" min-date=\"2026-01-01\" max-date=\"2026-04-30\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld4\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld4\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"picker1\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker id=\"picker1\" start-at=\"2026-04-01\" min-date=\"2026-01-01\" max-date=\"2026-04-30\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "<!-- Form field omitted for brevity -->\n<m3e-datepicker\n  id=\"picker1\"\n  start-at=\"2026-04-01\"\n  min-date=\"2026-01-01\"\n  max-date=\"2026-04-30\"\n></m3e-datepicker>"
     },
     {
       "title": "Blackout dates",
       "description": "Use the blackoutDates property to specify a function used to determine whether a date is disabled and cannot be selected by the user.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld3\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld3\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"blackout-dates\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"blackout-dates\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld3\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld3\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"blackout-dates\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"blackout-dates\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "document.querySelector(\"#blackout-dates\").blackoutDates = (date) => isWeekend(date);"
     },
     {
       "title": "Special dates",
       "description": "Use the specialDates property to specify a function used to determine whether a date has a highlighted look and feel. You can use the --m3e-calendar-item-special-container-color, --m3e-calendar-item-special-color, --m3e-calendar-item-special-ripple-color, --m3e-calendar-item-special-hover-color, and --m3e-calendar-item-special-focus-color CSS properties to style special dates.",
-      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld2\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld2\">\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"special-dates\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"special-dates\" start-at=\"2026-04-01\"></m3e-datepicker>",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld2\">Date Field</label>\n  <input autocomplete=\"off\" id=\"fld2\">\n  <m3e-icon-button aria-label=\"Open calendar\" slot=\"suffix\">\n    <m3e-icon name=\"calendar_today\"></m3e-icon>\n    <m3e-datepicker-toggle for=\"special-dates\"></m3e-datepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">MM/DD/YYYY</span>\n</m3e-form-field>\n<m3e-datepicker variant=\"auto\" id=\"special-dates\" start-at=\"2026-04-01\"></m3e-datepicker>",
       "source": "matraic: docs/components/datepicker.html",
       "brevitySource": "document.querySelector(\"#special-dates\").specialDates = (date) => isHoliday(date);"
     }
@@ -1130,7 +1130,7 @@
     {
       "title": "Prefix and suffix",
       "description": "Use the prefix and suffix slots for icons and buttons. For textual content, use the prefix-text and suffix-text slots.",
-      "code": "<m3e-form-field>\n  <label slot=\"label\" for=\"fld8\">Amount</label>\n  <span slot=\"prefix-text\">$</span>\n  <input id=\"fld8\" type=\"number\" placeholder=\"0\">\n  <span slot=\"suffix-text\">.00</span>\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"clear\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-form-field>",
+      "code": "<m3e-form-field>\n  <label slot=\"label\" for=\"fld8\">Amount</label>\n  <span slot=\"prefix-text\">$</span>\n  <input id=\"fld8\" type=\"number\" placeholder=\"0\">\n  <span slot=\"suffix-text\">.00</span>\n  <m3e-icon-button aria-label=\"Clear\" slot=\"suffix\">\n    <m3e-icon name=\"clear\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-form-field>",
       "source": "matraic: docs/components/form-field.html",
       "brevitySource": "<m3e-form-field>\n  <label slot=\"label\" for=\"fld\">Amount</label>\n  <span slot=\"prefix-text\">$</span>\n  <input id=\"fld\" type=\"number\" placeholder=\"0\" />\n  <span slot=\"suffix-text\">.00</span>\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"clear\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-form-field>"
     },
@@ -1200,77 +1200,77 @@
     {
       "title": "Variants",
       "description": "There are four icon button appearance variants: filled, tonal, outlined, and standard (default). Use the variant attribute to change the appearance.",
-      "code": "<m3e-icon-button variant=\"filled\"><m3e-icon name=\"check\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"outlined\"><m3e-icon name=\"search\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"standard\"><m3e-icon name=\"settings\"></m3e-icon></m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" variant=\"filled\"><m3e-icon name=\"check\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Search\" variant=\"outlined\"><m3e-icon name=\"search\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Settings\" variant=\"standard\"><m3e-icon name=\"settings\"></m3e-icon></m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"filled\">\n    <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional variants omitted for brevity -->"
     },
     {
       "title": "Shapes",
       "description": "Icon buttons can come in two shapes: rounded (default) or square. Use the shape attribute to control the shape of a button.",
-      "code": "<m3e-icon-button variant=\"filled\" shape=\"square\"><m3e-icon name=\"check\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" shape=\"square\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"outlined\" shape=\"square\"><m3e-icon name=\"search\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"standard\" shape=\"square\"><m3e-icon name=\"settings\"></m3e-icon></m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" variant=\"filled\" shape=\"square\"><m3e-icon name=\"check\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" shape=\"square\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Search\" variant=\"outlined\" shape=\"square\"><m3e-icon name=\"search\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Settings\" variant=\"standard\" shape=\"square\"><m3e-icon name=\"settings\"></m3e-icon></m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"filled\" shape=\"square\">\n    <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional variants omitted for brevity -->"
     },
     {
       "title": "Sizes",
       "description": "There are five size variants which can be used to add or remove emphasis: extra-small, small (default), medium, large, and extra-large. Use the size attribute to control an icon button's size.",
-      "code": "<m3e-icon-button variant=\"tonal\" size=\"extra-small\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" size=\"small\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" size=\"medium\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" size=\"large\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" size=\"extra-large\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" size=\"extra-small\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" size=\"small\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" size=\"medium\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" size=\"large\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" size=\"extra-large\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"tonal\" size=\"extra-small\">\n    <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional sizes omitted for brevity -->"
     },
     {
       "title": "Widths",
       "description": "There are three width variants which can be used to add or remove emphasis: default (default), narrow, and wide. Use the width attribute to control an icon button's width.",
-      "code": "<m3e-icon-button variant=\"tonal\" width=\"narrow\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" width=\"wide\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" width=\"narrow\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" width=\"wide\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"tonal\" width=\"narrow\">\n  <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" width=\"wide\">\n  <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>"
     },
     {
       "title": "Toggle",
       "description": "When selected, icon buttons change shape. Rounded buttons become square and square buttons become rounded. The following illustrates the selected states for both rounded and square icon buttons.",
-      "code": "<m3e-icon-button variant=\"filled\" toggle=\"\"><m3e-icon name=\"check\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" toggle=\"\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"outlined\" toggle=\"\"><m3e-icon name=\"search\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button variant=\"standard\" toggle=\"\"><m3e-icon name=\"settings\"></m3e-icon></m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" variant=\"filled\" toggle=\"\"><m3e-icon name=\"check\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" toggle=\"\"><m3e-icon name=\"add\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Search\" variant=\"outlined\" toggle=\"\"><m3e-icon name=\"search\"></m3e-icon></m3e-icon-button>\n<m3e-icon-button aria-label=\"Settings\" variant=\"standard\" toggle=\"\"><m3e-icon name=\"settings\"></m3e-icon></m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"filled\" toggle>\n    <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional variants omitted for brevity -->"
     },
     {
       "title": "Toggle (2)",
       "description": "When selected, icon buttons change shape. Rounded buttons become square and square buttons become rounded. The following illustrates the selected states for both rounded and square icon buttons.",
-      "code": "<m3e-icon-button variant=\"tonal\" toggle=\"\">\n  <m3e-icon name=\"close\"></m3e-icon>\n  <m3e-icon slot=\"selected\" name=\"check\"></m3e-icon>\n</m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Close\" variant=\"tonal\" toggle=\"\">\n  <m3e-icon name=\"close\"></m3e-icon>\n  <m3e-icon slot=\"selected\" name=\"check\"></m3e-icon>\n</m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"filled\" toggle>\n    <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional variants omitted for brevity -->"
     },
     {
       "title": "Toggle (3)",
       "description": "When selected, icon buttons change shape. Rounded buttons become square and square buttons become rounded. The following illustrates the selected states for both rounded and square icon buttons.",
-      "code": "<m3e-icon-button variant=\"filled\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"outlined\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"search\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"standard\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<br><br>\n<m3e-icon-button variant=\"filled\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"tonal\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"outlined\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"search\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"standard\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" variant=\"filled\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Search\" variant=\"outlined\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"search\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Settings\" variant=\"standard\" shape=\"rounded\" toggle=\"\" selected>\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<br><br>\n<m3e-icon-button aria-label=\"Check\" variant=\"filled\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Add\" variant=\"tonal\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"add\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Search\" variant=\"outlined\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"search\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Settings\" variant=\"standard\" shape=\"square\" toggle=\"\" selected>\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"filled\" toggle>\n    <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional variants omitted for brevity -->"
     },
     {
       "title": "Disabling",
       "description": "Use the disabled attribute to disable an icon button. By default, disabled icon buttons are not focusable with the keyboard. You can use the disabled-interactive attribute to support focusability of disabled controls to increase their discoverability.",
-      "code": "<m3e-icon-button variant=\"filled\" disabled>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"filled\" disabled-interactive=\"\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" variant=\"filled\" disabled>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" variant=\"filled\" disabled-interactive=\"\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"filled\" disabled>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button variant=\"filled\" disabled-interactive>\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>"
     },
     {
       "title": "Links",
       "description": "Icon buttons can also behave like links by specifying a URL using the href attribute. You can also specify target, rel and download similar to native anchor tags.",
-      "code": "<m3e-icon-button variant=\"tonal\" href=\"https://www.google.com\" target=\"_blank\">\n  <m3e-icon name=\"open_in_new_window\"></m3e-icon>\n</m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Open in new window\" variant=\"tonal\" href=\"https://www.google.com\" target=\"_blank\">\n  <m3e-icon name=\"open_in_new_window\"></m3e-icon>\n</m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button variant=\"tonal\" href=\"https://www.google.com\" target=\"_blank\">\n  <m3e-icon name=\"open_in_new_window\"></m3e-icon>\n</m3e-icon-button>"
     },
     {
       "title": "Density",
       "description": "The following illustrates applying density to the extra-small and small sized icon buttons.",
-      "code": "<m3e-icon-button class=\"density-3\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button class=\"density-2\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button class=\"density-1\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button class=\"density-0\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" class=\"density-3\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" class=\"density-2\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" class=\"density-1\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" class=\"density-0\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button class=\"density-3\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional buttons omitted for brevity -->"
     },
     {
       "title": "Density (2)",
       "description": "The following illustrates applying density to the extra-small and small sized icon buttons.",
-      "code": "<m3e-icon-button class=\"density-3\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button class=\"density-2\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button class=\"density-1\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button class=\"density-0\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>",
+      "code": "<m3e-icon-button aria-label=\"Check\" class=\"density-3\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" class=\"density-2\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" class=\"density-1\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<m3e-icon-button aria-label=\"Check\" class=\"density-0\" variant=\"filled\" size=\"small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>",
       "source": "matraic: docs/components/icon-button.html",
       "brevitySource": "<m3e-icon-button class=\"density-3\" variant=\"filled\" size=\"extra-small\">\n  <m3e-icon name=\"check\"></m3e-icon>\n</m3e-icon-button>\n<!-- Additional buttons omitted for brevity -->"
     }
@@ -1286,7 +1286,7 @@
     {
       "title": "Variants",
       "description": "There are two appearance variants standard (default) and segmented. Use the variant attribute to control a list's appearance.",
-      "code": "<m3e-list variant=\"outlined\">\n  <m3e-list-item>Item 1</m3e-list-item>\n  <m3e-list-item>Item 2</m3e-list-item>\n  <m3e-list-item>Item 3</m3e-list-item>\n</m3e-list>",
+      "code": "<m3e-list>\n  <m3e-list-item>Item 1</m3e-list-item>\n  <m3e-list-item>Item 2</m3e-list-item>\n  <m3e-list-item>Item 3</m3e-list-item>\n</m3e-list>",
       "source": "matraic: docs/components/list.html",
       "brevitySource": "<m3e-list>\n  <m3e-list-item>Item 1</m3e-list-item>\n  <!-- Additional items omitted for brevity -->\n</m3e-list>"
     },
@@ -1530,9 +1530,9 @@
     {
       "title": "Modes",
       "description": "The following example illustrates both compact and extended modes.",
-      "code": "<m3e-nav-bar mode=\"compact\">\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-bar>\n<br>\n<m3e-nav-bar mode=\"expanded\">\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-bar>",
+      "code": "<m3e-nav-bar mode=\"compact\">\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-bar>\n<br>\n<m3e-nav-bar mode=\"extended\">\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-bar>",
       "source": "matraic: docs/components/nav-bar.html",
-      "brevitySource": "<m3e-nav-bar mode=\"compact\">\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-bar>\n<br />\n<m3e-nav-bar mode=\"expanded\">\n  <!-- Items omitted for brevity -->\n</m3e-nav-bar>"
+      "brevitySource": "<m3e-nav-bar mode=\"compact\">\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-bar>\n<br />\n<m3e-nav-bar mode=\"extended\">\n  <!-- Items omitted for brevity -->\n</m3e-nav-bar>"
     },
     {
       "title": "Items",
@@ -1606,7 +1606,7 @@
     {
       "title": "Modes",
       "description": "The following example illustrates a common layout.",
-      "code": "<m3e-nav-rail id=\"nav-rail\">\n  <m3e-icon-button toggle=\"\">\n    <m3e-icon name=\"menu\"></m3e-icon>\n    <m3e-icon slot=\"selected\" name=\"menu_open\"></m3e-icon>\n    <m3e-nav-rail-toggle for=\"nav-rail\"></m3e-nav-rail-toggle>\n  </m3e-icon-button>\n  <m3e-fab size=\"small\">\n    <m3e-icon name=\"edit\"></m3e-icon>\n    <span slot=\"label\">Extended</span>\n  </m3e-fab>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-rail>",
+      "code": "<m3e-nav-rail id=\"nav-rail\">\n  <m3e-icon-button aria-label=\"Toggle navigation\" toggle=\"\">\n    <m3e-icon name=\"menu\"></m3e-icon>\n    <m3e-icon slot=\"selected\" name=\"menu_open\"></m3e-icon>\n    <m3e-nav-rail-toggle for=\"nav-rail\"></m3e-nav-rail-toggle>\n  </m3e-icon-button>\n  <m3e-fab size=\"small\">\n    <m3e-icon name=\"edit\"></m3e-icon>\n    <span slot=\"label\">Extended</span>\n  </m3e-fab>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-rail>",
       "source": "matraic: docs/components/nav-rail.html",
       "brevitySource": "<m3e-nav-rail id=\"nav-rail\">\n  <m3e-icon-button toggle>\n    <m3e-icon name=\"menu\"></m3e-icon>\n    <m3e-icon slot=\"selected\" name=\"menu_open\"></m3e-icon>\n    <m3e-nav-rail-toggle for=\"nav-rail\"></m3e-nav-rail-toggle>\n  </m3e-icon-button>\n  <m3e-fab size=\"small\">\n    <m3e-icon name=\"edit\"></m3e-icon>\n    <span slot=\"label\">Extended</span>\n  </m3e-fab>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"news\"></m3e-icon>News</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"globe\"></m3e-icon>Global</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"star\"></m3e-icon>For you</m3e-nav-item>\n  <m3e-nav-item><m3e-icon slot=\"icon\" name=\"newsstand\"></m3e-icon>Trending</m3e-nav-item>\n</m3e-nav-rail>"
     },
@@ -2071,28 +2071,28 @@
     {
       "title": "Anatomy",
       "description": "The following example illustrates use of the m3e-button for the leading button, m3e-icon-button for the trailing button, and m3e-menu for presenting a menu of secondary options.",
-      "code": "<m3e-split-button>\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
+      "code": "<m3e-split-button>\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
       "source": "matraic: docs/components/split-button.html",
       "brevitySource": "<m3e-split-button>\n  <m3e-button slot=\"leading-button\">\n    <m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit\n  </m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>"
     },
     {
       "title": "Variants",
       "description": "There are four split button appearance variants: filled (default), tonal, outlined, and elevated. Use the variant attribute to change the appearance.",
-      "code": "<m3e-split-button variant=\"filled\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button variant=\"tonal\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button variant=\"outlined\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button variant=\"elevated\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu1\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
+      "code": "<m3e-split-button variant=\"filled\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button variant=\"tonal\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button variant=\"outlined\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button variant=\"elevated\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu1\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu1\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
       "source": "matraic: docs/components/split-button.html",
       "brevitySource": "<m3e-split-button variant=\"filled\">\n  <m3e-button slot=\"leading-button\">\n    <m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit\n  </m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<!-- Additional variants omitted for brevity -->\n<!-- Menu omitted for brevity -->"
     },
     {
       "title": "Sizes",
       "description": "There are five size variants which can be used to add or remove emphasis: extra-small, small (default), medium, large, and extra-large. Use the size attribute to control the split button's size.",
-      "code": "<m3e-split-button size=\"extra-small\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"small\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"medium\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"large\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"extra-large\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu2\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
+      "code": "<m3e-split-button size=\"extra-small\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"small\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"medium\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"large\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-split-button size=\"extra-large\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu2\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu2\" position-x=\"before\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
       "source": "matraic: docs/components/split-button.html",
       "brevitySource": "<m3e-split-button size=\"extra-small\">\n  <m3e-button slot=\"leading-button\">\n    <m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit\n  </m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<!-- Additional sizes omitted for brevity -->\n<!-- Menu omitted for brevity -->"
     },
     {
       "title": "Density",
       "description": "The following illustrates applying -3 density to the buttons and menu of a split button.",
-      "code": "<m3e-split-button size=\"extra-small\" class=\"density-3\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu3\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu3\" position-x=\"before\" class=\"density-3\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
+      "code": "<m3e-split-button size=\"extra-small\" class=\"density-3\">\n  <m3e-button slot=\"leading-button\"><m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit</m3e-button>\n  <m3e-icon-button aria-label=\"More options\" slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu3\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n<m3e-menu id=\"menu3\" position-x=\"before\" class=\"density-3\">\n  <m3e-menu-item>Rename</m3e-menu-item>\n  <m3e-menu-item>Copy</m3e-menu-item>\n  <m3e-menu-item>Delete</m3e-menu-item>\n</m3e-menu>",
       "source": "matraic: docs/components/split-button.html",
       "brevitySource": "<m3e-split-button size=\"extra-small\" class=\"density-3\">\n  <m3e-button slot=\"leading-button\">\n    <m3e-icon slot=\"icon\" name=\"edit\"></m3e-icon>Edit\n  </m3e-button>\n  <m3e-icon-button slot=\"trailing-button\">\n    <m3e-icon name=\"keyboard_arrow_down\"></m3e-icon>\n    <m3e-menu-trigger for=\"menu\"></m3e-menu-trigger>\n  </m3e-icon-button>\n</m3e-split-button>\n\n<m3e-menu id=\"menu\" position-x=\"before\" class=\"density-3\">\n  <!-- Menu items omitted for brevity -->\n</m3e-menu>"
     }
@@ -2344,6 +2344,77 @@
       "brevitySource": "<m3e-theme motion=\"standard\">\n  <!-- Switch omitted for brevity -->\n</m3e-theme>\n<m3e-theme motion=\"expressive\">\n  <!-- Switch omitted for brevity -->\n</m3e-theme>"
     }
   ],
+  "timepicker": [
+    {
+      "title": "Basic usage",
+      "description": "Use the m3e-timepicker-toggle to open a m3e-timepicker. This component should be nested inside a clickable element and be associated with a picker by setting the for attribute to the id of the picker to open.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld1\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld1\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker\" variant=\"auto\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"field\">Time Field</label>\n  <input autocomplete=\"off\" id=\"field\" />\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker\" variant=\"auto\"></m3e-timepicker>"
+    },
+    {
+      "title": "Variants",
+      "description": "All examples in this page use variant=\"auto\".",
+      "code": "<m3e-timepicker variant=\"auto\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html"
+    },
+    {
+      "title": "Orientation",
+      "description": "Typically, orientation=\"auto\" should be pared with variant=\"auto\" so that the picker will swap between orientation and variant depending on viewport constraints.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld2\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld2\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker2\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker2\" variant=\"auto\" orientation=\"horizontal\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-timepicker variant=\"auto\" orientation=\"horizontal\"></m3e-timepicker>"
+    },
+    {
+      "title": "Modes",
+      "description": "The following example illustrates the use of mode=\"input\" and hide-mode-toggle to force the timepicker to open in keyboard entry mode while preventing the user from switching back to the dial.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld3\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld3\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker3\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker3\" variant=\"auto\" mode=\"input\" hide-mode-toggle=\"\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-timepicker mode=\"input\" hide-mode-toggle></m3e-timepicker>"
+    },
+    {
+      "title": "Time selection",
+      "description": "Clicking Cancel dismisses the picker without committing any value. The current date and time remain unchanged, and no change event is emitted. Cancel is always a non-committing action, regardless of whether the selection was complete, valid, or modified.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld6\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld6\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker6\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker6\" variant=\"auto\" date=\"2026-07-13T23:30:00Z\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<!-- Form field omitted for brevity -->\n<m3e-timepicker id=\"timepicker\" date=\"2026-07-13T23:30:00Z\"></m3e-datepicker>"
+    },
+    {
+      "title": "Hour format",
+      "description": "The following example illustrates a 24-hour clock without a meridiem.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld4\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld4\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker4\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker4\" variant=\"auto\" format=\"24\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-timepicker format=\"24\"></m3e-timepicker>"
+    },
+    {
+      "title": "Min and max times",
+      "description": "Use the min-time and max-time attributes to disable all times in the picker before or after the respective values.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld5\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld5\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker5\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker5\" variant=\"auto\" min-time=\"8:15 AM\" max-time=\"5:30 PM\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-timepicker min-time=\"8:15 AM\"  max-time=\"5:30 PM\"></m3e-timepicker>"
+    },
+    {
+      "title": "Blackout times",
+      "description": "In addition to min-time and max-time constraints, the blackoutTimes property lets you provide a function that determines whether a given time is disabled and cannot be selected. The function receives a TimeParts object containing the hour and minute values for the time being evaluated.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld7\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld7\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"blackout-times\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM</span>\n</m3e-form-field>\n<m3e-timepicker id=\"blackout-times\" variant=\"auto\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "document.querySelector(\"#blackout-times\").blackoutTimes = (t) => t.hour < 8 || t.hour > 18;"
+    },
+    {
+      "title": "Seconds",
+      "description": "Use the show-seconds attribute to display the seconds segment in the timepicker.",
+      "code": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld8\">Time Field</label>\n  <input autocomplete=\"off\" id=\"fld8\">\n  <m3e-icon-button aria-label=\"Open time picker\" slot=\"suffix\">\n    <m3e-icon name=\"schedule\"></m3e-icon>\n    <m3e-timepicker-toggle for=\"timepicker8\"></m3e-timepicker-toggle>\n  </m3e-icon-button>\n  <span slot=\"hint\">HH:MM:SS</span>\n</m3e-form-field>\n<m3e-timepicker id=\"timepicker8\" variant=\"auto\" show-seconds=\"\"></m3e-timepicker>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-timepicker show-seconds></m3e-timepicker>"
+    },
+    {
+      "title": "À-la-carte usage",
+      "description": "The for attribute can be used on m3e-timepicker-input to reference a m3e-timepicker-dial by ID. When present, the input automatically synchronizes its properties to the referenced dial, keeping both components in sync without requiring manual event wiring.",
+      "code": "<m3e-timepicker-input id=\"input\" for=\"dial\"></m3e-timepicker-input>\n<m3e-timepicker-dial id=\"dial\"></m3e-timepicker-dial>\n<span id=\"inputValue\">hour = , minute = </span>",
+      "source": "matraic: docs/components/timepicker.html",
+      "brevitySource": "<m3e-timepicker-input id=\"input\" for=\"dial\"></m3e-timepicker-input>\n<m3e-timepicker-dial id=\"dial\"></m3e-timepicker-dial>\n<span id=\"inputValue\"></span>"
+    }
+  ],
   "toc": [
     {
       "title": "Heading",
@@ -2356,35 +2427,35 @@
     {
       "title": "Variants",
       "description": "There are two toolbar appearance variants: standard (default) and vibrant. Use the variant attribute to change the appearance.",
-      "code": "<m3e-toolbar variant=\"standard\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>\n<m3e-toolbar variant=\"vibrant\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
+      "code": "<m3e-toolbar variant=\"standard\">\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>\n<m3e-toolbar variant=\"vibrant\">\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
       "source": "matraic: docs/components/toolbar.html",
       "brevitySource": "<m3e-toolbar variant=\"standard\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>\n<m3e-toolbar variant=\"vibrant\">\n  <!-- Content omitted for brevity -->\n</m3e-toolbar>"
     },
     {
       "title": "Shapes",
       "description": "There are two shape variants: square (default) and rounded. Use the shape attribute to change the appearance.",
-      "code": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
+      "code": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\">\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
       "source": "matraic: docs/components/toolbar.html",
       "brevitySource": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\">\n  <!-- Content omitted for brevity -->\n</m3e-toolbar>"
     },
     {
       "title": "Elevation",
       "description": "Use the elevated attribute to elevate a toolbar to a visually prominent surface, distinguishing it from the surrounding layout and signaling its importance or active context.",
-      "code": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\" elevated=\"\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
+      "code": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\" elevated=\"\">\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
       "source": "matraic: docs/components/toolbar.html",
       "brevitySource": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\" elevated>\n  <!-- Content omitted for brevity -->\n</m3e-toolbar>"
     },
     {
       "title": "Orientation",
       "description": "By default, toolbar are oriented horizontally. Use the vertical attribute to orient the toolbar vertically, stacking its interactive elements from top to bottom rather than left to right. This is useful for side panels, compact layouts, or contexts where vertical alignment enhances clarity or accessibility.",
-      "code": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\" vertical=\"\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
+      "code": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\" vertical=\"\">\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
       "source": "matraic: docs/components/toolbar.html",
       "brevitySource": "<m3e-toolbar variant=\"vibrant\" shape=\"rounded\" vertical>\n  <!-- Content omitted for brevity -->\n</m3e-toolbar>"
     },
     {
       "title": "Density",
       "description": "The following illustrates applying -3 density to a toolbar.",
-      "code": "<m3e-toolbar class=\"density-3\">\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button>\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
+      "code": "<m3e-toolbar class=\"density-3\">\n  <m3e-icon-button aria-label=\"Back\">\n    <m3e-icon name=\"arrow_back\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Forward\">\n    <m3e-icon name=\"arrow_forward\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Add\" width=\"wide\" variant=\"filled\">\n    <m3e-icon name=\"add\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"Picture in picture\">\n    <m3e-icon name=\"picture_in_picture\"></m3e-icon>\n  </m3e-icon-button>\n  <m3e-icon-button aria-label=\"More options\">\n    <m3e-icon name=\"more_vert\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-toolbar>",
       "source": "matraic: docs/components/toolbar.html",
       "brevitySource": "<m3e-toolbar class=\"density-3\">\n  <!-- Content omitted for brevity -->\n</m3e-toolbar>"
     }
@@ -2393,7 +2464,7 @@
     {
       "title": "Plain tooltip",
       "description": "Use the m3e-tooltip component to define a plain tooltip, and apply the for attribute to associate it with a specific UI element.",
-      "code": "<m3e-icon-button id=\"button\">\n  <m3e-icon name=\"arrow_back\"></m3e-icon>\n</m3e-icon-button>\n<m3e-tooltip for=\"button\">Go Back</m3e-tooltip>",
+      "code": "<m3e-icon-button aria-label=\"Go back\" id=\"button\">\n  <m3e-icon name=\"arrow_back\"></m3e-icon>\n</m3e-icon-button>\n<m3e-tooltip for=\"button\">Go Back</m3e-tooltip>",
       "source": "matraic: docs/components/tooltip.html",
       "brevitySource": "<m3e-icon-button id=\"button\">\n  <m3e-icon name=\"arrow_back\"></m3e-icon>\n</m3e-icon-button>\n<m3e-tooltip for=\"button\">Go Back</m3e-tooltip>"
     },
@@ -2412,14 +2483,14 @@
     {
       "title": "Rich tooltip",
       "description": "Use the m3e-rich-tooltip component to define a rich tooltip, and apply the for attribute to associate it with a specific UI element. The subhead slot specifies the subhead content and the default slot specifies supplementary text.",
-      "code": "<m3e-icon-button id=\"button2\">\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<m3e-rich-tooltip for=\"button2\">\n  <span slot=\"subhead\">New settings available</span>\n  Now you can adjust the uploaded image quality, and upgrade your available storage space.\n</m3e-rich-tooltip>",
+      "code": "<m3e-icon-button aria-label=\"Settings\" id=\"button2\">\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<m3e-rich-tooltip for=\"button2\">\n  <span slot=\"subhead\">New settings available</span>\n  Now you can adjust the uploaded image quality, and upgrade your available storage space.\n</m3e-rich-tooltip>",
       "source": "matraic: docs/components/tooltip.html",
       "brevitySource": "<m3e-icon-button id=\"button\">\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<m3e-rich-tooltip for=\"button\">\n  <span slot=\"subhead\">New settings available</span>\n  Now you can adjust the uploaded image quality, and upgrade your available storage space.\n</m3e-rich-tooltip>"
     },
     {
       "title": "Actions",
       "description": "You can include actions in a rich tooltip using the actions slot. In addition, use the m3e-rich-tooltip-action component, nested in a clickable element, to dismiss the tooltip. By default, focus is returned to the trigger. Use the disable-restore-focus attribute of a m3e-rich-tooltip-action to disable this behavior.",
-      "code": "<m3e-icon-button id=\"button3\">\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<m3e-rich-tooltip for=\"button3\">\n  <span slot=\"subhead\">New settings available</span>\n  Now you can adjust the uploaded image quality, and upgrade your available storage space.\n  <div slot=\"actions\">\n    <m3e-button>\n      <m3e-rich-tooltip-action>Learn more</m3e-rich-tooltip-action>\n    </m3e-button>\n  </div>\n</m3e-rich-tooltip>",
+      "code": "<m3e-icon-button aria-label=\"Settings\" id=\"button3\">\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<m3e-rich-tooltip for=\"button3\">\n  <span slot=\"subhead\">New settings available</span>\n  Now you can adjust the uploaded image quality, and upgrade your available storage space.\n  <div slot=\"actions\">\n    <m3e-button>\n      <m3e-rich-tooltip-action>Learn more</m3e-rich-tooltip-action>\n    </m3e-button>\n  </div>\n</m3e-rich-tooltip>",
       "source": "matraic: docs/components/tooltip.html",
       "brevitySource": "<m3e-icon-button id=\"button\">\n  <m3e-icon name=\"settings\"></m3e-icon>\n</m3e-icon-button>\n<m3e-rich-tooltip for=\"button\">\n  <span slot=\"subhead\">New settings available</span>\n  Now you can adjust the uploaded image quality, and upgrade your available storage space.\n  <div slot=\"actions\">\n    <m3e-button>\n      <m3e-rich-tooltip-action>Learn more</m3e-rich-tooltip-action>\n    </m3e-button>\n  </div>\n</m3e-rich-tooltip>"
     }
@@ -2479,20 +2550,6 @@
       "description": "For production builds, use the minified files to ensure optimal load performance.",
       "code": "<script type=\"module\" src=\"/node_modules/@m3e/web/dist/tree.js\"></script>",
       "source": "matraic: docs/components/tree.html"
-    }
-  ],
-  "scroll-container": [
-    {
-      "title": "Scroll effects",
-      "description": "A vertically oriented content container which presents dividers above and below content when the region is scrolled. Give it a constrained height so the content overflows and scrolls.",
-      "code": "<m3e-scroll-container style=\"display: block; height: 160px\">\n  <p>Scroll down to reveal the divider above.</p>\n  <p>Line 1 of a long list of trail notes.</p>\n  <p>Line 2 of a long list of trail notes.</p>\n  <p>Line 3 of a long list of trail notes.</p>\n  <p>Line 4 of a long list of trail notes.</p>\n  <p>Line 5 of a long list of trail notes.</p>\n  <p>Line 6 of a long list of trail notes.</p>\n  <p>Line 7 of a long list of trail notes.</p>\n  <p>Keep scrolling to reveal the divider below.</p>\n</m3e-scroll-container>"
-    }
-  ],
-  "text-highlight": [
-    {
-      "title": "Highlight a term",
-      "description": "Highlights the parts of its text content that match the given search term.",
-      "code": "<m3e-text-highlight term=\"trail\">Discover the top ten hiking trails. Every trail on the list has a difficulty rating and each trail entry links to a map.</m3e-text-highlight>"
     }
   ]
 }
