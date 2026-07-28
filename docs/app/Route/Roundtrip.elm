@@ -275,10 +275,11 @@ view app _ =
 
 
 {-| Legend mapping this page's row names (top/mid/bottom/record/build/barrel) to
-the Guide's vocabulary, so the form names aren't undefined jargon. The first
-three are layers on the [the layers](/guide/the-layers); record/build are two of
-the three [call-shapes](/guide/strictness); barrel is the one-import API the
-Guide teaches (see the [reference](/reference)).
+the Guide's current vocabulary, so the form names aren't undefined jargon. The
+names are the harness's original column keys (the JSON is keyed by them, so they
+stay); `top`/`record`/`build`/`barrel` are four of the interchangeable
+[surfaces](/guide/the-layers), while `mid`/`bottom` are legacy columns from the
+retired 5-layer corpus and carry no examples now.
 -}
 surfaceLegend : Element { s | html : M3e.Kind.Brand } admittedBy msg
 surfaceLegend =
@@ -291,18 +292,18 @@ surfaceLegend =
 
 surfaceLegendText : String
 surfaceLegendText =
-    """Each row is one API **form**. The names come from two Guide axes plus the import axis:
+    """Each row is one API **surface** — a call *shape* for the same typed value, not a rank. The names are the harness's original column keys; the [surface map](/guide/the-layers) is the current vocabulary.
 
-| Row | What it is | Guide vocabulary |
+| Row | What it is | Surface map |
 | --- | --- | --- |
-| **top** | `M3e.Button.view` — typed, slot-safe, composes anywhere. | the top layer of the [the layers](/guide/the-layers) |
-| **mid** | `M3e.Html.*` — typed attributes, raw children. | the middle layer ([the layers](/guide/the-layers)) |
-| **bottom** | `M3e.Raw.*` — bare tags and attributes. | the bottom layer ([the layers](/guide/the-layers)) |
-| **record** | `M3e.Record.Button.view { … }` — required parts can't be forgotten. | the required-record [call-shape](/guide/strictness) |
-| **build** | `M3e.Build.Button.button { … }` piped into `build` — one-only setters unwritable twice. | the pipeline [call-shape](/guide/strictness) |
-| **barrel** | `M3e.button` — one import; the generic `M3e.Attributes.variant Value.filled` / `M3e.slotIcon` vocabulary. | the one-import API the Guide teaches ([reference](/reference)) |
+| **top** | `M3e.Button.view` — the standard form: typed, slot-safe, composes anywhere. | the standard `view` surface ([surface map](/guide/the-layers)) |
+| **mid** | *Retired.* The old per-component `M3e.Html.*` mid-layer; no examples populate it now, so it reports 0 converted. | gone in the phantom-substrate migration |
+| **bottom** | *Retired.* The old `M3e.Raw.*` bare-tag bottom layer; likewise empty now. | gone in the phantom-substrate migration |
+| **record** | `M3e.Button.el { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the `el` surface ([surface map](/guide/the-layers)) |
+| **build** | `M3e.Button.build { … }` piped through `M3e.Button.toElement` — one-only setters unwritable twice, order-free. | the `build` surface ([surface map](/guide/the-layers)) |
+| **barrel** | `M3e.button` — one import that re-exports every component's `view`, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/reference)) |
 
-The three layers and the two call-shapes are *different axes*: a layer is how much the types check; a call-shape is what you're forced to supply. The barrel vs a specific `M3e.Button` module is a *third* axis — only which import you reach through."""
+These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value. `mid` and `bottom` are legacy columns kept so old reports still parse; the 5-layer "descent" they came from was retired."""
 
 
 summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } admittedBy msg

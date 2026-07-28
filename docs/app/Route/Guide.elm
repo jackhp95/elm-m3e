@@ -87,7 +87,7 @@ view _ _ =
                             , chapterLink "/guide/theming" "Theming with tokens"
                             , chapterLink "/guide/motion" "Motion"
                             , chapterLink "/guide/generated-and-inspectable" "Generated & inspectable"
-                            , chapterLink "/guide/the-layers" "The layer map"
+                            , chapterLink "/guide/the-layers" "The surface map"
                             , chapterLink "/guide/seams" "Your own seam"
                             , chapterLink "/guide/tooling-refactors" "The tooling refactors for you"
                             , chapterLink "/guide/troubleshooting" "Troubleshooting"
@@ -110,7 +110,7 @@ intro : String
 intro =
     """Build a real Material 3 UI in Elm where invalid states don't compile — and know exactly what to do when you need to break the rules. This guide gets you there a small step at a time, building one account settings panel and teaching the idea behind each step.
 
-The whole thing in one line: **the correct way and the easy way are the same way — the top. You reach lower, loudly and on purpose, only to escape.** A few checks stay loose there by default so the tax doesn't land on every call site; [the strictness dial](/guide/strictness) is how you turn those back up when you want them."""
+The whole thing in one line: **the correct way and the easy way are the same way. You step outside the typed tree, loudly and on purpose, only to escape.** A few checks stay loose by default so the tax doesn't land on every call site; [the strictness dial](/guide/strictness) is how you turn those back up when you want them."""
 
 
 chaptersLead : String
@@ -122,4 +122,4 @@ Each chapter is one win, and each builds on the last. Start at the top."""
 
 chaptersNote : String
 chaptersNote =
-    """Eleven chapters, build-first: put a component on screen, feel invalid states refuse to compile, turn the strictness dial, keep accessibility, compose real things, then step back for the map of *why* it works — generated and inspectable, the layers, your own seams, the tooling that refactors for you, and how it all stays honest. Work them top to bottom."""
+    """Eleven chapters, build-first: put a component on screen, feel invalid states refuse to compile, turn the strictness dial, keep accessibility, compose real things, then step back for the map of *why* it works — generated and inspectable, the surface map, your own seams, the tooling that refactors for you, and how it all stays honest. Work them top to bottom."""

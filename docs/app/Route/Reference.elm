@@ -121,7 +121,7 @@ pageHeading =
 
 {-| The one-import barrel module (`module M3e`) is split out of the alphabetical
 component list and pinned to the top: it is the form the Guide teaches
-(`M3e.button`, `M3e.Attributes.variant Value.filled`, `M3e.slotIcon`, `TA.name`), so it earns
+(`M3e.button`, `M3e.icon`, the shared `M3e.Attributes.variant Value.filled` vocabulary), so it earns
 its own role-grouped section rather than sorting in among the components.
 -}
 splitBarrel : List Component -> ( Maybe Component, List Component )
@@ -183,10 +183,10 @@ twoFormsText : String
 twoFormsText =
     """Every component is reachable two ways — same output, different import and different strictness:
 
-- The **barrel** (`import M3e`) — one import for everything. `M3e.button`, the shared `M3e.Attributes.variant Value.filled` / `M3e.slotIcon` / `TA.name` vocabulary. This is the form the [Guide](/guide/the-layers) teaches; it's the generic, easy form.
-- The **component module** (`import M3e.Button`) — `M3e.Button.view` and its component-scoped `M3e.Button.variant` / slot setters. More precise: the compiler rejects a token or slot child that isn't valid for *that* component.
+- The **barrel** (`import M3e`) — one import for everything. `M3e.button`, `M3e.icon`, and the shared `M3e.Attributes.variant Value.filled` vocabulary. This is the form the [Guide](/guide/the-layers) teaches; it's the generic, easy form.
+- The **component module** (`import M3e.Button`) — `M3e.Button.view` and its component-scoped `M3e.Button.variant` / slot setters (`M3e.Button.icon`). More precise: the compiler rejects a token or slot child that isn't valid for *that* component.
 
-Neither is a layer on the [the layers](/guide/the-layers) and neither is one of the three [call-shapes](/guide/strictness) — those are separate axes. This is only *which import you reach through*. Start on the barrel; drop to a component module when you want the tighter types."""
+Barrel-vs-module isn't a [surface](/guide/the-layers) choice and it isn't an escape hatch — it's a separate axis, only *which import you reach through*. Start on the barrel; reach for a component module when you want the tighter, component-scoped types."""
 
 
 indexGrid : List Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg

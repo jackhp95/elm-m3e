@@ -24,15 +24,15 @@ import M3e.Values as Value
 import Native
 
 
-{-| Which API surface a Usage example is shown in, by module name:
+{-| Which API surface a Usage example is shown in:
 
-  - `Top` — `M3e` (the strict Standard surface, always present)
-  - `Record` — `M3e.<Comp>.el { … }` (the ④ record-of-slots surface; per-example)
-  - `Build` — `M3e.<Comp>.build |> … |> toElement` (the ⑤ pipeline surface; per-example)
+  - `Top` — the barrel `M3e.*` form (the Standard surface, always present)
+  - `Record` — `M3e.<Comp>.el { … }` (the required-record surface; per-example)
+  - `Build` — `M3e.<Comp>.build |> … |> toElement` (the builder-pipe surface; per-example)
   - `Raw` — the raw `<m3e-*>` HTML (always present)
 
 `M3e` and `HTML` are verified for every example, so those two tabs are always
-offered. `M3e.Record` / `M3e.Build` are offered whenever `M3e` (`top`) is — when
+offered. The `record` / `build` surfaces are offered whenever `top` is — when
 their own field is non-null they show a real translation, and when it's null they
 show an _identical-by-design_ rationale (the example's content carried nothing for
 that surface to enforce). Only a composite with no single-component `top` form
@@ -47,9 +47,9 @@ type Layer
     | Raw
 
 
-{-| Per-example layer selection, keyed by each example's global index on the page
+{-| Per-example surface selection, keyed by each example's global index on the page
 (assigned before section grouping). A missing key means the example is still on
-its default top layer — so the model starts empty and only records deviations,
+its default surface — so the model starts empty and only records deviations,
 and each example's tabs move independently of every other's.
 -}
 type alias Model =
@@ -152,8 +152,8 @@ sectionBlock model ( sec, examples ) =
 
 
 {-| A live preview paired with a per-example tab strip that switches its code
-between the API surfaces by module name (optionally `M3e`, `M3e.Record` /
-`M3e.Build`, `M3e.Html`, `M3e.Raw`, and always `HTML`). The selection lives in
+between the API surfaces (optionally `M3e`, then the `el` / `build` surfaces, and
+always `HTML`). The selection lives in
 `model.layers` keyed by this example's index, defaulting to the first available
 surface (`defaultLayerFor`). Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
@@ -194,9 +194,9 @@ activeIndexFor layer ex =
 
 
 {-| The surfaces offered for one example, in fixed order. Each Elm surface
-(`M3e`, `M3e.Record`, `M3e.Build`) appears only when it compiled for this example
+(`M3e`, `el`, `build`) appears only when it compiled for this example
 (its field is non-null); `HTML` is the one universal surface and is always offered
-last. Order: M3e, M3e.Record, M3e.Build, HTML.
+last. Order: M3e, el, build, HTML.
 -}
 layersFor : UsageExample -> List ( String, Layer )
 layersFor ex =
@@ -225,8 +225,8 @@ layersFor ex =
                     [ ( label, layer ) ]
     in
     optional ex.top "M3e" Top
-        ++ recordBuild ex.record "M3e.Record" Record
-        ++ recordBuild ex.build "M3e.Build" Build
+        ++ recordBuild ex.record "el" Record
+        ++ recordBuild ex.build "build" Build
         ++ [ ( "HTML", Raw ) ]
 
 
@@ -297,10 +297,10 @@ codeFor layer ex =
             elmOrHtml ex.top
 
         Record ->
-            recordBuildCode ex.record "M3e.Record"
+            recordBuildCode ex.record "el"
 
         Build ->
-            recordBuildCode ex.build "M3e.Build"
+            recordBuildCode ex.build "build"
 
         Raw ->
             Doc.code_ Doc.Xml ex.html
