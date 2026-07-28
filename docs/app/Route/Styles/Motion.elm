@@ -110,7 +110,7 @@ view _ _ =
                             []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
-                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Theme.MotionStandard" ]
+                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Value.motionStandard" ]
                                 , Kit.text " — functional, restrained transitions."
                                 ]
                             ]
@@ -118,7 +118,7 @@ view _ _ =
                             []
                             [ Kit.body Value.large
                                 [ Kit.onSurfaceVariant ]
-                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Theme.MotionExpressive" ]
+                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Value.motionExpressive" ]
                                 , Kit.text " — emphasized, spring-driven motion for M3 Expressive surfaces."
                                 ]
                             ]
