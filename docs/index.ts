@@ -34,10 +34,15 @@ function mountFeedbackFab(): void {
   fab.setAttribute("repo", "jackhp95/elm-m3e");
   fab.setAttribute("labels", "feedback,needs-triage");
   fab.setAttribute("title-prefix", "[feedback] ");
-  // Hosted-mode endpoint = the real browser origin, so submit stays same-origin
-  // even behind a cloudflared / `tailscale serve` proxy where the server sees a
-  // different Host (e.g. localhost).
-  fab.setAttribute("endpoint", location.origin);
+  // Hosted-mode endpoint: prefer VITE_FEEDBACK_ENDPOINT (injected at build/dev
+  // time for flightdeck or other custom backends), otherwise fall back to the
+  // real browser origin so submit stays same-origin even behind a cloudflared /
+  // `tailscale serve` proxy where the server sees a different Host.
+  const endpoint = import.meta.env.VITE_FEEDBACK_ENDPOINT ?? location.origin;
+  fab.setAttribute("endpoint", endpoint);
+  // Optional: point the widget's dashboard at a flightdeck instance.
+  const fd = import.meta.env.VITE_FLIGHTDECK_URL;
+  if (fd) fab.setAttribute("flightdeck-url", fd);
   document.documentElement.appendChild(fab);
 
   // The widget bundles its OWN Elm program. Elm's `_Platform_export` refuses to
