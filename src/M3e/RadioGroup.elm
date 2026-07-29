@@ -1,9 +1,9 @@
 module M3e.RadioGroup exposing
     ( view, el, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
+    , ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
     , child
-    , withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
+    , withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle, withValidationmessages
     )
 
 {-| The `m3e-radio-group` component — strict per-component surface.
@@ -12,9 +12,9 @@ A container for a set of radio buttons.
 
 @docs view, el, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
+@docs ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
 @docs child
-@docs withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle
+@docs withAriaInvalid, withChild, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle, withValidationmessages
 
 -}
 
@@ -51,6 +51,7 @@ type alias Attrs =
     , required : Supported
     , slot : Supported
     , style : Supported
+    , validationmessages : Supported
     }
 
 
@@ -112,6 +113,13 @@ required =
     A.required
 
 
+{-| See `M3e.Attributes.validationmessages`.
+-}
+validationmessages : String -> Attr { c | validationmessages : Supported } msg
+validationmessages =
+    A.validationmessages
+
+
 {-| See `M3e.Events.onBeforeinput`.
 -}
 onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
@@ -164,6 +172,7 @@ type alias AttrCaps =
     , required : Available
     , slot : Available
     , style : Available
+    , validationmessages : Available
     }
 
 
@@ -243,6 +252,13 @@ withName value_ =
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
 withRequired value_ =
     B.withAttribute (A.required value_)
+
+
+{-| Pipe form of `validationmessages` — consumes its capability (write-once).
+-}
+withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg -> Builder { a | validationmessages : Used } slotCaps msg
+withValidationmessages value_ =
+    B.withAttribute (A.validationmessages value_)
 
 
 {-| Pipe form of `onBeforeinput` — consumes its capability (write-once).

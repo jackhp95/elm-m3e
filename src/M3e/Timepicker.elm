@@ -2,8 +2,8 @@ module M3e.Timepicker exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Format, format, Mode, mode, Orientation, orientation, Variant, variant
-    , blackouttimes, confirmLabel, date, dialLabel, dismissLabel, hideModeToggle, hourLabel, inputLabel, maxTime, minTime, minuteLabel, modeToggleLabel, periodToggleLabel, secondLabel, showSeconds, onChange, onBeforetoggle, onToggle
-    , withBlackouttimes, withClass, withConfirmLabel, withDate, withDialLabel, withDismissLabel, withFormat, withHideModeToggle, withHourLabel, withId, withInputLabel, withMaxTime, withMinTime, withMinuteLabel, withMode, withModeToggleLabel, withOnBeforetoggle, withOnChange, withOnToggle, withOrientation, withPeriodToggleLabel, withSecondLabel, withShowSeconds, withSlot, withStyle, withVariant
+    , confirmLabel, date, dialLabel, dismissLabel, for, hideModeToggle, hourLabel, inputLabel, maxTime, minTime, minuteLabel, modeToggleLabel, periodToggleLabel, secondLabel, showSeconds, onChange, onBeforetoggle, onToggle
+    , withClass, withConfirmLabel, withDate, withDialLabel, withDismissLabel, withFor, withFormat, withHideModeToggle, withHourLabel, withId, withInputLabel, withMaxTime, withMinTime, withMinuteLabel, withMode, withModeToggleLabel, withOnBeforetoggle, withOnChange, withOnToggle, withOrientation, withPeriodToggleLabel, withSecondLabel, withShowSeconds, withSlot, withStyle, withVariant
     )
 
 {-| The `m3e-timepicker` component — strict per-component surface.
@@ -13,8 +13,8 @@ Presents a time picker on a temporary surface.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Format, format, Mode, mode, Orientation, orientation, Variant, variant
-@docs blackouttimes, confirmLabel, date, dialLabel, dismissLabel, hideModeToggle, hourLabel, inputLabel, maxTime, minTime, minuteLabel, modeToggleLabel, periodToggleLabel, secondLabel, showSeconds, onChange, onBeforetoggle, onToggle
-@docs withBlackouttimes, withClass, withConfirmLabel, withDate, withDialLabel, withDismissLabel, withFormat, withHideModeToggle, withHourLabel, withId, withInputLabel, withMaxTime, withMinTime, withMinuteLabel, withMode, withModeToggleLabel, withOnBeforetoggle, withOnChange, withOnToggle, withOrientation, withPeriodToggleLabel, withSecondLabel, withShowSeconds, withSlot, withStyle, withVariant
+@docs confirmLabel, date, dialLabel, dismissLabel, for, hideModeToggle, hourLabel, inputLabel, maxTime, minTime, minuteLabel, modeToggleLabel, periodToggleLabel, secondLabel, showSeconds, onChange, onBeforetoggle, onToggle
+@docs withClass, withConfirmLabel, withDate, withDialLabel, withDismissLabel, withFor, withFormat, withHideModeToggle, withHourLabel, withId, withInputLabel, withMaxTime, withMinTime, withMinuteLabel, withMode, withModeToggleLabel, withOnBeforetoggle, withOnChange, withOnToggle, withOrientation, withPeriodToggleLabel, withSecondLabel, withShowSeconds, withSlot, withStyle, withVariant
 
 -}
 
@@ -39,12 +39,12 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { blackouttimes : Supported
-    , class : Supported
+    { class : Supported
     , confirmLabel : Supported
     , date : Supported
     , dialLabel : Supported
     , dismissLabel : Supported
+    , for : Supported
     , format : Supported
     , hideModeToggle : Supported
     , hourLabel : Supported
@@ -147,13 +147,6 @@ variant value_ =
     Ir.attribute "variant" (Val.toString value_)
 
 
-{-| See `M3e.Attributes.blackouttimes`.
--}
-blackouttimes : String -> Attr { c | blackouttimes : Supported } msg
-blackouttimes =
-    A.blackouttimes
-
-
 {-| See `M3e.Attributes.confirmLabel`.
 -}
 confirmLabel : String -> Attr { c | confirmLabel : Supported } msg
@@ -180,6 +173,13 @@ dialLabel =
 dismissLabel : String -> Attr { c | dismissLabel : Supported } msg
 dismissLabel =
     A.dismissLabel
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for
 
 
 {-| See `M3e.Attributes.hideModeToggle`.
@@ -284,12 +284,12 @@ type alias Builder attrCaps slotCaps msg =
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { blackouttimes : Available
-    , class : Available
+    { class : Available
     , confirmLabel : Available
     , date : Available
     , dialLabel : Available
     , dismissLabel : Available
+    , for : Available
     , format : Available
     , hideModeToggle : Available
     , hourLabel : Available
@@ -361,13 +361,6 @@ withStyle value_ =
     B.withAttribute (A.style value_)
 
 
-{-| Pipe form of `blackouttimes` — consumes its capability (write-once).
--}
-withBlackouttimes : String -> Builder { a | blackouttimes : Available } slotCaps msg -> Builder { a | blackouttimes : Used } slotCaps msg
-withBlackouttimes value_ =
-    B.withAttribute (A.blackouttimes value_)
-
-
 {-| Pipe form of `confirmLabel` — consumes its capability (write-once).
 -}
 withConfirmLabel : String -> Builder { a | confirmLabel : Available } slotCaps msg -> Builder { a | confirmLabel : Used } slotCaps msg
@@ -394,6 +387,13 @@ withDialLabel value_ =
 withDismissLabel : String -> Builder { a | dismissLabel : Available } slotCaps msg -> Builder { a | dismissLabel : Used } slotCaps msg
 withDismissLabel value_ =
     B.withAttribute (A.dismissLabel value_)
+
+
+{-| Pipe form of `for` — consumes its capability (write-once).
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
 {-| Pipe form of `format` — consumes its capability (write-once).

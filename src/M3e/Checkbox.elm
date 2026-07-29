@@ -1,8 +1,8 @@
 module M3e.Checkbox exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled, indeterminate, name, required, value, onBeforeinput, onInput, onChange, onInvalid, onClick
-    , withChecked, withClass, withDisabled, withId, withIndeterminate, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnInvalid, withRequired, withSlot, withStyle, withValue
+    , checked, disabled, indeterminate, name, required, validationmessages, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+    , withChecked, withClass, withDisabled, withId, withIndeterminate, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnInvalid, withRequired, withSlot, withStyle, withValidationmessages, withValue
     )
 
 {-| The `m3e-checkbox` component — strict per-component surface.
@@ -11,8 +11,8 @@ A checkbox that allows a user to select one or more options from a limited numbe
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled, indeterminate, name, required, value, onBeforeinput, onInput, onChange, onInvalid, onClick
-@docs withChecked, withClass, withDisabled, withId, withIndeterminate, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnInvalid, withRequired, withSlot, withStyle, withValue
+@docs checked, disabled, indeterminate, name, required, validationmessages, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+@docs withChecked, withClass, withDisabled, withId, withIndeterminate, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnInvalid, withRequired, withSlot, withStyle, withValidationmessages, withValue
 
 -}
 
@@ -52,6 +52,7 @@ type alias Attrs =
     , required : Supported
     , slot : Supported
     , style : Supported
+    , validationmessages : Supported
     , value : Supported
     }
 
@@ -105,6 +106,13 @@ name value_ =
 required : Bool -> Attr { c | required : Supported } msg
 required =
     A.required
+
+
+{-| See `M3e.Attributes.validationmessages`.
+-}
+validationmessages : String -> Attr { c | validationmessages : Supported } msg
+validationmessages =
+    A.validationmessages
 
 
 {-| See `M3e.Attributes.value`.
@@ -174,6 +182,7 @@ type alias AttrCaps =
     , required : Available
     , slot : Available
     , style : Available
+    , validationmessages : Available
     , value : Available
     }
 
@@ -259,6 +268,13 @@ withName value_ =
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
 withRequired value_ =
     B.withAttribute (A.required value_)
+
+
+{-| Pipe form of `validationmessages` — consumes its capability (write-once).
+-}
+withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg -> Builder { a | validationmessages : Used } slotCaps msg
+withValidationmessages value_ =
+    B.withAttribute (A.validationmessages value_)
 
 
 {-| Pipe form of `value` — consumes its capability (write-once).

@@ -7,40 +7,40 @@
       "converted": 333,
       "clean": 333,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 294,
-      "roundtripDeviated": 39,
-      "roundtripFunctionalMatched": 304,
-      "roundtripFunctionalDeviated": 29
+      "roundtripMatched": 303,
+      "roundtripDeviated": 30,
+      "roundtripFunctionalMatched": 313,
+      "roundtripFunctionalDeviated": 20
     },
     "record": {
       "total": 339,
       "converted": 174,
       "clean": 174,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 147,
-      "roundtripDeviated": 27,
-      "roundtripFunctionalMatched": 152,
-      "roundtripFunctionalDeviated": 22
+      "roundtripMatched": 151,
+      "roundtripDeviated": 23,
+      "roundtripFunctionalMatched": 156,
+      "roundtripFunctionalDeviated": 18
     },
     "build": {
       "total": 339,
       "converted": 311,
       "clean": 311,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 270,
-      "roundtripDeviated": 41,
-      "roundtripFunctionalMatched": 280,
-      "roundtripFunctionalDeviated": 31
+      "roundtripMatched": 278,
+      "roundtripDeviated": 33,
+      "roundtripFunctionalMatched": 288,
+      "roundtripFunctionalDeviated": 23
     },
     "barrel": {
       "total": 339,
       "converted": 333,
       "clean": 333,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 291,
-      "roundtripDeviated": 42,
-      "roundtripFunctionalMatched": 301,
-      "roundtripFunctionalDeviated": 32
+      "roundtripMatched": 300,
+      "roundtripDeviated": 33,
+      "roundtripFunctionalMatched": 310,
+      "roundtripFunctionalDeviated": 23
     }
   },
   "cells": [
@@ -2228,17 +2228,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2261,17 +2253,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2294,17 +2278,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2327,17 +2303,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2360,17 +2328,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]/m3e-button[0]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2393,17 +2353,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]/m3e-button[0]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2426,17 +2378,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]/m3e-button[0]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -2459,17 +2403,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]/m3e-button[0]",
-            "attr": "detent",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21640,17 +21576,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21694,17 +21622,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21727,17 +21647,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21760,17 +21672,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21814,17 +21718,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21847,17 +21743,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21880,17 +21768,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21934,17 +21814,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21967,17 +21839,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -22000,17 +21864,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -22075,17 +21931,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "length",
-            "value": "100",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -22594,23 +22442,9 @@
           },
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "buffer-value",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[2]",
             "attr": "value",
             "value": "10",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "buffer-value",
-            "value": "25",
             "cosmetic": false
           }
         ]
@@ -22669,23 +22503,9 @@
           },
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "buffer-value",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[2]",
             "attr": "value",
             "value": "10",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "buffer-value",
-            "value": "25",
             "cosmetic": false
           }
         ]
@@ -22723,23 +22543,9 @@
           },
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "buffer-value",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[2]",
             "attr": "value",
             "value": "10",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "buffer-value",
-            "value": "25",
             "cosmetic": false
           }
         ]
@@ -26618,27 +26424,6 @@
         "deviations": [
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "5",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "0.5",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
             "attr": "value",
             "value": "1.5",
@@ -26670,27 +26455,6 @@
         "matches": false,
         "functionalMatches": false,
         "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "5",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "0.5",
-            "cosmetic": false
-          },
           {
             "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
@@ -26726,27 +26490,6 @@
         "deviations": [
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "5",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "0.5",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
             "attr": "value",
             "value": "1.5",
@@ -26778,27 +26521,6 @@
         "matches": false,
         "functionalMatches": false,
         "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "5",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "0.5",
-            "cosmetic": false
-          },
           {
             "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
@@ -26994,13 +26716,6 @@
         "deviations": [
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "-50",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
             "attr": "value",
             "value": "-20",
@@ -27032,13 +26747,6 @@
         "matches": false,
         "functionalMatches": false,
         "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "-50",
-            "cosmetic": false
-          },
           {
             "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
@@ -27074,13 +26782,6 @@
         "deviations": [
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "-50",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
             "attr": "value",
             "value": "-20",
@@ -27112,13 +26813,6 @@
         "matches": false,
         "functionalMatches": false,
         "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "-50",
-            "cosmetic": false
-          },
           {
             "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
@@ -27530,13 +27224,6 @@
         "deviations": [
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
             "attr": "value",
             "value": "20",
@@ -27568,13 +27255,6 @@
         "matches": false,
         "functionalMatches": false,
         "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
-            "cosmetic": false
-          },
           {
             "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
@@ -27610,13 +27290,6 @@
         "deviations": [
           {
             "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
             "attr": "value",
             "value": "20",
@@ -27648,13 +27321,6 @@
         "matches": false,
         "functionalMatches": false,
         "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
-            "cosmetic": false
-          },
           {
             "kind": "removed-attr",
             "path": "/#roots[0]/m3e-slider[0]",
@@ -28938,20 +28604,6 @@
             "attr": "value",
             "value": "50",
             "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "75",
-            "cosmetic": false
           }
         ]
       }
@@ -28984,20 +28636,6 @@
             "path": "/#roots[0]",
             "attr": "value",
             "value": "50",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "75",
             "cosmetic": false
           }
         ]
@@ -29032,20 +28670,6 @@
             "attr": "value",
             "value": "50",
             "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "75",
-            "cosmetic": false
           }
         ]
       }
@@ -29078,20 +28702,6 @@
             "path": "/#roots[0]",
             "attr": "value",
             "value": "50",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "min",
-            "value": "25",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "max",
-            "value": "75",
             "cosmetic": false
           }
         ]
@@ -29126,13 +28736,6 @@
             "attr": "value",
             "value": "50",
             "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
-            "cosmetic": false
           }
         ]
       }
@@ -29165,13 +28768,6 @@
             "path": "/#roots[0]",
             "attr": "value",
             "value": "50",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
             "cosmetic": false
           }
         ]
@@ -29206,13 +28802,6 @@
             "attr": "value",
             "value": "50",
             "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
-            "cosmetic": false
           }
         ]
       }
@@ -29245,13 +28834,6 @@
             "path": "/#roots[0]",
             "attr": "value",
             "value": "50",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "step",
-            "value": "10",
             "cosmetic": false
           }
         ]
@@ -32867,17 +32449,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "max-rows",
-            "value": "5",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -32921,17 +32495,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "max-rows",
-            "value": "5",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -32954,17 +32520,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "max-rows",
-            "value": "5",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -33371,45 +32929,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "density",
-            "value": "-3",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "density",
-            "value": "-2",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "density",
-            "value": "-1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[3]",
-            "attr": "density",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[4]",
-            "attr": "density",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -33432,45 +32954,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "density",
-            "value": "-3",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "density",
-            "value": "-2",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "density",
-            "value": "-1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[3]",
-            "attr": "density",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[4]",
-            "attr": "density",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -33493,45 +32979,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "density",
-            "value": "-3",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "density",
-            "value": "-2",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "density",
-            "value": "-1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[3]",
-            "attr": "density",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[4]",
-            "attr": "density",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -33554,45 +33004,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[0]",
-            "attr": "density",
-            "value": "-3",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "density",
-            "value": "-2",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[2]",
-            "attr": "density",
-            "value": "-1",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[3]",
-            "attr": "density",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[4]",
-            "attr": "density",
-            "value": "1",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -35343,24 +34757,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "show-delay",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "hide-delay",
-            "value": "200",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -35383,24 +34782,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "show-delay",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "hide-delay",
-            "value": "200",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -35423,24 +34807,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "show-delay",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "hide-delay",
-            "value": "200",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -35463,24 +34832,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "show-delay",
-            "value": "0",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-attr",
-            "path": "/#roots[1]",
-            "attr": "hide-delay",
-            "value": "200",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {

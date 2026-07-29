@@ -27,11 +27,36 @@ type alias AddressIs s =
 {-| `address`'s closed attribute-capability row.
 -}
 type alias AddressAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -60,11 +85,36 @@ type alias ArticleIs s =
 {-| `article`'s closed attribute-capability row.
 -}
 type alias ArticleAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -93,11 +143,36 @@ type alias AsideIs s =
 {-| `aside`'s closed attribute-capability row.
 -}
 type alias AsideAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -126,11 +201,36 @@ type alias BodyIs s =
 {-| `body`'s closed attribute-capability row.
 -}
 type alias BodyAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -159,11 +259,36 @@ type alias FooterIs s =
 {-| `footer`'s closed attribute-capability row.
 -}
 type alias FooterAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -192,11 +317,36 @@ type alias H1Is s =
 {-| `h1`'s closed attribute-capability row.
 -}
 type alias H1Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -286,11 +436,36 @@ type alias H2Is s =
 {-| `h2`'s closed attribute-capability row.
 -}
 type alias H2Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -380,11 +555,36 @@ type alias H3Is s =
 {-| `h3`'s closed attribute-capability row.
 -}
 type alias H3Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -474,11 +674,36 @@ type alias H4Is s =
 {-| `h4`'s closed attribute-capability row.
 -}
 type alias H4Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -568,11 +793,36 @@ type alias H5Is s =
 {-| `h5`'s closed attribute-capability row.
 -}
 type alias H5Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -662,11 +912,36 @@ type alias H6Is s =
 {-| `h6`'s closed attribute-capability row.
 -}
 type alias H6Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -756,11 +1031,36 @@ type alias HeaderIs s =
 {-| `header`'s closed attribute-capability row.
 -}
 type alias HeaderAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -789,11 +1089,36 @@ type alias HgroupIs s =
 {-| `hgroup`'s closed attribute-capability row.
 -}
 type alias HgroupAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -822,11 +1147,36 @@ type alias MainIs s =
 {-| `main`'s closed attribute-capability row.
 -}
 type alias MainAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -855,11 +1205,36 @@ type alias NavIs s =
 {-| `nav`'s closed attribute-capability row.
 -}
 type alias NavAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : NavRoles
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -900,11 +1275,36 @@ type alias SearchIs s =
 {-| `search`'s closed attribute-capability row.
 -}
 type alias SearchAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -933,11 +1333,36 @@ type alias SectionIs s =
 {-| `section`'s closed attribute-capability row.
 -}
 type alias SectionAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : SectionRoles
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 

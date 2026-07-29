@@ -2,8 +2,8 @@ module M3e.Datepicker exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , StartView, startView, Variant, variant
-    , clearLabel, clearable, confirmLabel, date, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
-    , withClass, withClearLabel, withClearable, withConfirmLabel, withDate, withDismissLabel, withId, withLabel, withMaxDate, withMinDate, withNextMonthLabel, withNextMultiYearLabel, withNextYearLabel, withOnBeforetoggle, withOnChange, withOnToggle, withPreviousMonthLabel, withPreviousMultiYearLabel, withPreviousYearLabel, withRange, withRangeEnd, withRangeStart, withSlot, withStartAt, withStartView, withStyle, withVariant
+    , clearLabel, clearable, confirmLabel, date, dismissLabel, for, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
+    , withClass, withClearLabel, withClearable, withConfirmLabel, withDate, withDismissLabel, withFor, withId, withLabel, withMaxDate, withMinDate, withNextMonthLabel, withNextMultiYearLabel, withNextYearLabel, withOnBeforetoggle, withOnChange, withOnToggle, withPreviousMonthLabel, withPreviousMultiYearLabel, withPreviousYearLabel, withRange, withRangeEnd, withRangeStart, withSlot, withStartAt, withStartView, withStyle, withVariant
     )
 
 {-| The `m3e-datepicker` component — strict per-component surface.
@@ -13,8 +13,8 @@ Presents a date picker on a temporary surface.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs StartView, startView, Variant, variant
-@docs clearLabel, clearable, confirmLabel, date, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
-@docs withClass, withClearLabel, withClearable, withConfirmLabel, withDate, withDismissLabel, withId, withLabel, withMaxDate, withMinDate, withNextMonthLabel, withNextMultiYearLabel, withNextYearLabel, withOnBeforetoggle, withOnChange, withOnToggle, withPreviousMonthLabel, withPreviousMultiYearLabel, withPreviousYearLabel, withRange, withRangeEnd, withRangeStart, withSlot, withStartAt, withStartView, withStyle, withVariant
+@docs clearLabel, clearable, confirmLabel, date, dismissLabel, for, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
+@docs withClass, withClearLabel, withClearable, withConfirmLabel, withDate, withDismissLabel, withFor, withId, withLabel, withMaxDate, withMinDate, withNextMonthLabel, withNextMultiYearLabel, withNextYearLabel, withOnBeforetoggle, withOnChange, withOnToggle, withPreviousMonthLabel, withPreviousMultiYearLabel, withPreviousYearLabel, withRange, withRangeEnd, withRangeStart, withSlot, withStartAt, withStartView, withStyle, withVariant
 
 -}
 
@@ -46,6 +46,7 @@ type alias Attrs =
     , confirmLabel : Supported
     , date : Supported
     , dismissLabel : Supported
+    , for : Supported
     , id : Supported
     , label : Supported
     , maxDate : Supported
@@ -151,6 +152,13 @@ date =
 dismissLabel : String -> Attr { c | dismissLabel : Supported } msg
 dismissLabel =
     A.dismissLabel
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for
 
 
 {-| See `M3e.Attributes.label`.
@@ -282,6 +290,7 @@ type alias AttrCaps =
     , confirmLabel : Available
     , date : Available
     , dismissLabel : Available
+    , for : Available
     , id : Available
     , label : Available
     , maxDate : Available
@@ -387,6 +396,13 @@ withDate value_ =
 withDismissLabel : String -> Builder { a | dismissLabel : Available } slotCaps msg -> Builder { a | dismissLabel : Used } slotCaps msg
 withDismissLabel value_ =
     B.withAttribute (A.dismissLabel value_)
+
+
+{-| Pipe form of `for` — consumes its capability (write-once).
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
 {-| Pipe form of `label` — consumes its capability (write-once).

@@ -30,20 +30,45 @@ type alias AreaIs s =
 {-| `area`'s closed attribute-capability row.
 -}
 type alias AreaAttrs =
-    { alt : Supported
+    { accesskey : Supported
+    , alt : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , class : Supported
+    , contenteditable : Supported
     , coords : Supported
+    , dir : Supported
     , download : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , href : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
     , ping : Supported
+    , popover : Supported
     , referrerpolicy : Supported
     , rel : Supported
     , role : Supported
     , shape : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
     , target : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -66,13 +91,38 @@ area attrs children =
 {-| `canvas`'s closed attribute-capability row.
 -}
 type alias CanvasAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -102,14 +152,39 @@ type alias EmbedIs s =
 {-| `embed`'s closed attribute-capability row.
 -}
 type alias EmbedAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -138,21 +213,46 @@ type alias IframeIs s =
 {-| `iframe`'s closed attribute-capability row.
 -}
 type alias IframeAttrs =
-    { allow : Supported
+    { accesskey : Supported
+    , allow : Supported
     , allowfullscreen : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , loading : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , referrerpolicy : Supported
     , role : Supported
     , sandbox : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , srcdoc : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -175,12 +275,37 @@ iframe attrs children =
 {-| `map`'s closed attribute-capability row.
 -}
 type alias MapAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -210,16 +335,41 @@ map attrs children =
 {-| `object`'s closed attribute-capability row.
 -}
 type alias ObjectAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
     , data : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , form : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -303,7 +453,7 @@ href =
     TypedHtml.Attributes.href
 
 
-{-| The `loading` attribute (this component's type differs from the shared canonical).
+{-| Used when determining loading deferral
 -}
 loading : String -> Attr { c | loading : Supported } msg
 loading value_ =
@@ -324,7 +474,7 @@ ping =
     TypedHtml.Attributes.ping
 
 
-{-| The `referrerpolicy` attribute (this component's type differs from the shared canonical).
+{-| Referrer policy for fetches initiated by the element
 -}
 referrerpolicy : String -> Attr { c | referrerpolicy : Supported } msg
 referrerpolicy value_ =
@@ -338,14 +488,14 @@ rel =
     TypedHtml.Attributes.rel
 
 
-{-| The `sandbox` attribute (this component's type differs from the shared canonical).
+{-| Security rules for nested content
 -}
 sandbox : String -> Attr { c | sandbox : Supported } msg
 sandbox value_ =
     Ir.attribute "sandbox" value_
 
 
-{-| The `shape` attribute (this component's type differs from the shared canonical).
+{-| The kind of shape to be created in an image map
 -}
 shape : String -> Attr { c | shape : Supported } msg
 shape value_ =

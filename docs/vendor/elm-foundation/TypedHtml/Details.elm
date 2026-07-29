@@ -30,14 +30,39 @@ type alias DetailsIs s =
 {-| `details`'s closed attribute-capability row.
 -}
 type alias DetailsAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
     , onClick : Supported
     , open : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -66,11 +91,36 @@ type alias SummaryIs s =
 {-| `summary`'s closed attribute-capability row.
 -}
 type alias SummaryAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 

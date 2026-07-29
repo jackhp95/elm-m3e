@@ -30,11 +30,36 @@ type alias DatalistIs s =
 {-| `datalist`'s closed attribute-capability row.
 -}
 type alias DatalistAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -71,13 +96,38 @@ type alias OptgroupIs s =
 {-| `optgroup`'s closed attribute-capability row.
 -}
 type alias OptgroupAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
     , label : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -118,15 +168,40 @@ type alias OptionIs s =
 {-| `option`'s closed attribute-capability row.
 -}
 type alias OptionAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
     , label : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , selected : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , value : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -223,20 +298,47 @@ type alias SelectIs s =
 {-| `select`'s closed attribute-capability row.
 -}
 type alias SelectAttrs =
-    { autocomplete : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocomplete : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , form : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , multiple : Supported
     , name : Supported
+    , nonce : Supported
+    , onChange : Supported
     , onClick : Supported
+    , onInput : Supported
+    , popover : Supported
     , readonly : Supported
     , required : Supported
     , role : Supported
     , size : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 

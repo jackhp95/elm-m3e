@@ -1,7 +1,7 @@
 module TypedHtml.Input exposing
     ( input
     , Is, Attrs, ChildAdmittedBy
-    , accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, value, width
+    , accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, type_, value, width
     )
 
 {-| The `Input` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs input
 @docs Is, Attrs, ChildAdmittedBy
-@docs accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, value, width
+@docs accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, type_, value, width
 
 -}
 
@@ -31,14 +31,22 @@ type alias Is s =
 -}
 type alias Attrs =
     { accept : Supported
+    , accesskey : Supported
     , alpha : Supported
     , alt : Supported
+    , autocapitalize : Supported
     , autocomplete : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , checked : Supported
     , class : Supported
     , colorspace : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , dirname : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , form : Supported
     , formaction : Supported
     , formenctype : Supported
@@ -46,7 +54,17 @@ type alias Attrs =
     , formnovalidate : Supported
     , formtarget : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , list : Supported
     , max : Supported
     , maxlength : Supported
@@ -54,9 +72,13 @@ type alias Attrs =
     , minlength : Supported
     , multiple : Supported
     , name : Supported
+    , nonce : Supported
+    , onCheck : Supported
     , onClick : Supported
+    , onInput : Supported
     , pattern : Supported
     , placeholder : Supported
+    , popover : Supported
     , popovertarget : Supported
     , popovertargetaction : Supported
     , readonly : Supported
@@ -64,11 +86,17 @@ type alias Attrs =
     , role : Supported
     , size : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , step : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , type_ : Supported
     , value : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -123,7 +151,7 @@ checked =
     TypedHtml.Attributes.checked
 
 
-{-| The `colorspace` attribute (this component's type differs from the shared canonical).
+{-| The color space of the serialized color
 -}
 colorspace : String -> Attr { c | colorspace : Supported } msg
 colorspace value_ =
@@ -158,14 +186,14 @@ formaction =
     TypedHtml.Attributes.formaction
 
 
-{-| The `formenctype` attribute (this component's type differs from the shared canonical).
+{-| Entry list encoding type to use for form submission
 -}
 formenctype : String -> Attr { c | formenctype : Supported } msg
 formenctype value_ =
     Ir.attribute "formenctype" value_
 
 
-{-| The `formmethod` attribute (this component's type differs from the shared canonical).
+{-| Variant to use for form submission
 -}
 formmethod : String -> Attr { c | formmethod : Supported } msg
 formmethod value_ =
@@ -263,7 +291,7 @@ popovertarget =
     TypedHtml.Attributes.popovertarget
 
 
-{-| The `popovertargetaction` attribute (this component's type differs from the shared canonical).
+{-| Indicates whether a targeted popover element is to be toggled, shown, or hidden
 -}
 popovertargetaction : String -> Attr { c | popovertargetaction : Supported } msg
 popovertargetaction value_ =
@@ -303,6 +331,13 @@ src =
 step : Float -> Attr { c | step : Supported } msg
 step =
     TypedHtml.Attributes.step
+
+
+{-| See `TypedHtml.Attributes.type_`.
+-}
+type_ : String -> Attr { c | type_ : Supported } msg
+type_ =
+    TypedHtml.Attributes.type_
 
 
 {-| See `TypedHtml.Attributes.value`.

@@ -1,7 +1,7 @@
 module TypedHtml.Button exposing
     ( button
     , Is, Attrs, Content, ChildAdmittedBy, Roles
-    , commandfor, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, value
+    , commandfor, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, type_, value
     )
 
 {-| The `Button` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs button
 @docs Is, Attrs, Content, ChildAdmittedBy, Roles
-@docs commandfor, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, value
+@docs commandfor, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, type_, value
 
 -}
 
@@ -30,25 +30,51 @@ type alias Is s =
 {-| `button`'s closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
     , commandfor : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , form : Supported
     , formaction : Supported
     , formenctype : Supported
     , formmethod : Supported
     , formnovalidate : Supported
     , formtarget : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
     , onClick : Supported
+    , popover : Supported
     , popovertarget : Supported
     , popovertargetaction : Supported
     , readonly : Supported
     , role : Roles
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , type_ : Supported
     , value : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -175,14 +201,14 @@ formaction =
     TypedHtml.Attributes.formaction
 
 
-{-| The `formenctype` attribute (this component's type differs from the shared canonical).
+{-| Entry list encoding type to use for form submission
 -}
 formenctype : String -> Attr { c | formenctype : Supported } msg
 formenctype value_ =
     Ir.attribute "formenctype" value_
 
 
-{-| The `formmethod` attribute (this component's type differs from the shared canonical).
+{-| Variant to use for form submission
 -}
 formmethod : String -> Attr { c | formmethod : Supported } msg
 formmethod value_ =
@@ -217,7 +243,7 @@ popovertarget =
     TypedHtml.Attributes.popovertarget
 
 
-{-| The `popovertargetaction` attribute (this component's type differs from the shared canonical).
+{-| Indicates whether a targeted popover element is to be toggled, shown, or hidden
 -}
 popovertargetaction : String -> Attr { c | popovertargetaction : Supported } msg
 popovertargetaction value_ =
@@ -229,6 +255,13 @@ popovertargetaction value_ =
 readonly : Bool -> Attr { c | readonly : Supported } msg
 readonly =
     TypedHtml.Attributes.readonly
+
+
+{-| See `TypedHtml.Attributes.type_`.
+-}
+type_ : String -> Attr { c | type_ : Supported } msg
+type_ =
+    TypedHtml.Attributes.type_
 
 
 {-| See `TypedHtml.Attributes.value`.

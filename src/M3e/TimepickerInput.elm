@@ -2,8 +2,8 @@ module M3e.TimepickerInput exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Format, format, Period, period, ViewAttr, viewAttr
-    , blackouttimes, for, hideLabels, hour, hourLabel, maxTime, minTime, minute, minuteLabel, orientation, periodToggleLabel, second, secondLabel, showSeconds, onViewChange, onChange
-    , withBlackouttimes, withClass, withFor, withFormat, withHideLabels, withHour, withHourLabel, withId, withMaxTime, withMinTime, withMinute, withMinuteLabel, withOnChange, withOnViewChange, withOrientation, withPeriod, withPeriodToggleLabel, withSecond, withSecondLabel, withShowSeconds, withSlot, withStyle, withViewAttr
+    , for, hideLabels, hour, hourLabel, maxTime, minTime, minute, minuteLabel, orientation, periodToggleLabel, second, secondLabel, showSeconds, onViewChange, onChange
+    , withClass, withFor, withFormat, withHideLabels, withHour, withHourLabel, withId, withMaxTime, withMinTime, withMinute, withMinuteLabel, withOnChange, withOnViewChange, withOrientation, withPeriod, withPeriodToggleLabel, withSecond, withSecondLabel, withShowSeconds, withSlot, withStyle, withViewAttr
     )
 
 {-| The `m3e-timepicker-input` component — strict per-component surface.
@@ -13,8 +13,8 @@ A keyboard‑based time surface for choosing hours and minutes.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Format, format, Period, period, ViewAttr, viewAttr
-@docs blackouttimes, for, hideLabels, hour, hourLabel, maxTime, minTime, minute, minuteLabel, orientation, periodToggleLabel, second, secondLabel, showSeconds, onViewChange, onChange
-@docs withBlackouttimes, withClass, withFor, withFormat, withHideLabels, withHour, withHourLabel, withId, withMaxTime, withMinTime, withMinute, withMinuteLabel, withOnChange, withOnViewChange, withOrientation, withPeriod, withPeriodToggleLabel, withSecond, withSecondLabel, withShowSeconds, withSlot, withStyle, withViewAttr
+@docs for, hideLabels, hour, hourLabel, maxTime, minTime, minute, minuteLabel, orientation, periodToggleLabel, second, secondLabel, showSeconds, onViewChange, onChange
+@docs withClass, withFor, withFormat, withHideLabels, withHour, withHourLabel, withId, withMaxTime, withMinTime, withMinute, withMinuteLabel, withOnChange, withOnViewChange, withOrientation, withPeriod, withPeriodToggleLabel, withSecond, withSecondLabel, withShowSeconds, withSlot, withStyle, withViewAttr
 
 -}
 
@@ -41,8 +41,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { blackouttimes : Supported
-    , class : Supported
+    { class : Supported
     , for : Supported
     , format : Supported
     , hideLabels : Supported
@@ -128,13 +127,6 @@ period value_ =
 viewAttr : Value ViewAttr -> Attr { c | viewAttr : Supported } msg
 viewAttr value_ =
     Ir.attribute "view" (Val.toString value_)
-
-
-{-| See `M3e.Attributes.blackouttimes`.
--}
-blackouttimes : String -> Attr { c | blackouttimes : Supported } msg
-blackouttimes =
-    A.blackouttimes
 
 
 {-| See `M3e.Attributes.for`.
@@ -253,8 +245,7 @@ type alias Builder attrCaps slotCaps msg =
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { blackouttimes : Available
-    , class : Available
+    { class : Available
     , for : Available
     , format : Available
     , hideLabels : Available
@@ -325,13 +316,6 @@ withSlot value_ =
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
 withStyle value_ =
     B.withAttribute (A.style value_)
-
-
-{-| Pipe form of `blackouttimes` — consumes its capability (write-once).
--}
-withBlackouttimes : String -> Builder { a | blackouttimes : Available } slotCaps msg -> Builder { a | blackouttimes : Used } slotCaps msg
-withBlackouttimes value_ =
-    B.withAttribute (A.blackouttimes value_)
 
 
 {-| Pipe form of `for` — consumes its capability (write-once).

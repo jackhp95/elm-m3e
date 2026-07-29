@@ -2,9 +2,9 @@ module M3e.SplitPane exposing
     ( view, el, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation
-    , detents, disabled, label, max, min, name, overshootLimit, step, value, valueformatter, wrapDetents, onChange, onBeforeinput, onInput
+    , detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, onChange, onBeforeinput, onInput
     , end, start
-    , withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
+    , withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withWrapDetents
     )
 
 {-| The `m3e-split-pane` component — strict per-component surface.
@@ -14,9 +14,9 @@ A dual-view layout that separates content with a movable drag handle.
 @docs view, el, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation
-@docs detents, disabled, label, max, min, name, overshootLimit, step, value, valueformatter, wrapDetents, onChange, onBeforeinput, onInput
+@docs detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, onChange, onBeforeinput, onInput
 @docs end, start
-@docs withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withValueformatter, withWrapDetents
+@docs withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withWrapDetents
 
 -}
 
@@ -60,7 +60,6 @@ type alias Attrs =
     , step : Supported
     , style : Supported
     , value : Supported
-    , valueformatter : Supported
     , wrapDetents : Supported
     }
 
@@ -173,13 +172,6 @@ value value_ =
     Ir.property "value" (Json.Encode.float value_)
 
 
-{-| See `M3e.Attributes.valueformatter`.
--}
-valueformatter : String -> Attr { c | valueformatter : Supported } msg
-valueformatter =
-    A.valueformatter
-
-
 {-| See `M3e.Attributes.wrapDetents`.
 -}
 wrapDetents : Bool -> Attr { c | wrapDetents : Supported } msg
@@ -252,7 +244,6 @@ type alias AttrCaps =
     , step : Available
     , style : Available
     , value : Available
-    , valueformatter : Available
     , wrapDetents : Available
     }
 
@@ -379,13 +370,6 @@ withStep value_ =
 withValue : Float -> Builder { a | value : Available } slotCaps msg -> Builder { a | value : Used } slotCaps msg
 withValue value_ =
     B.withAttribute (Ir.property "value" (Json.Encode.float value_))
-
-
-{-| Pipe form of `valueformatter` — consumes its capability (write-once).
--}
-withValueformatter : String -> Builder { a | valueformatter : Available } slotCaps msg -> Builder { a | valueformatter : Used } slotCaps msg
-withValueformatter value_ =
-    B.withAttribute (A.valueformatter value_)
 
 
 {-| Pipe form of `wrapDetents` — consumes its capability (write-once).

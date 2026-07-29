@@ -2,8 +2,8 @@ module M3e.TimepickerDial exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Format, format, Period, period, ViewAttr, viewAttr
-    , blackouttimes, hour, maxTime, minTime, minute, second, showSeconds, onInput, onChange, onViewChange
-    , withBlackouttimes, withClass, withFormat, withHour, withId, withMaxTime, withMinTime, withMinute, withOnChange, withOnInput, withOnViewChange, withPeriod, withSecond, withShowSeconds, withSlot, withStyle, withViewAttr
+    , hour, maxTime, minTime, minute, second, showSeconds, onInput, onChange, onViewChange
+    , withClass, withFormat, withHour, withId, withMaxTime, withMinTime, withMinute, withOnChange, withOnInput, withOnViewChange, withPeriod, withSecond, withShowSeconds, withSlot, withStyle, withViewAttr
     )
 
 {-| The `m3e-timepicker-dial` component — strict per-component surface.
@@ -13,8 +13,8 @@ A clock‑face surface for selecting hours and minutes using a movable hand.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Format, format, Period, period, ViewAttr, viewAttr
-@docs blackouttimes, hour, maxTime, minTime, minute, second, showSeconds, onInput, onChange, onViewChange
-@docs withBlackouttimes, withClass, withFormat, withHour, withId, withMaxTime, withMinTime, withMinute, withOnChange, withOnInput, withOnViewChange, withPeriod, withSecond, withShowSeconds, withSlot, withStyle, withViewAttr
+@docs hour, maxTime, minTime, minute, second, showSeconds, onInput, onChange, onViewChange
+@docs withClass, withFormat, withHour, withId, withMaxTime, withMinTime, withMinute, withOnChange, withOnInput, withOnViewChange, withPeriod, withSecond, withShowSeconds, withSlot, withStyle, withViewAttr
 
 -}
 
@@ -39,8 +39,7 @@ type alias Is s =
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { blackouttimes : Supported
-    , class : Supported
+    { class : Supported
     , format : Supported
     , hour : Supported
     , id : Supported
@@ -122,13 +121,6 @@ viewAttr value_ =
     Ir.attribute "view" (Val.toString value_)
 
 
-{-| See `M3e.Attributes.blackouttimes`.
--}
-blackouttimes : String -> Attr { c | blackouttimes : Supported } msg
-blackouttimes =
-    A.blackouttimes
-
-
 {-| See `M3e.Attributes.hour`.
 -}
 hour : Float -> Attr { c | hour : Supported } msg
@@ -203,8 +195,7 @@ type alias Builder attrCaps slotCaps msg =
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { blackouttimes : Available
-    , class : Available
+    { class : Available
     , format : Available
     , hour : Available
     , id : Available
@@ -269,13 +260,6 @@ withSlot value_ =
 withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
 withStyle value_ =
     B.withAttribute (A.style value_)
-
-
-{-| Pipe form of `blackouttimes` — consumes its capability (write-once).
--}
-withBlackouttimes : String -> Builder { a | blackouttimes : Available } slotCaps msg -> Builder { a | blackouttimes : Used } slotCaps msg
-withBlackouttimes value_ =
-    B.withAttribute (A.blackouttimes value_)
 
 
 {-| Pipe form of `format` — consumes its capability (write-once).

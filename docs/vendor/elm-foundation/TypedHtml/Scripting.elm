@@ -1,7 +1,7 @@
 module TypedHtml.Scripting exposing
     ( noscript, script, slot, template
     , NoscriptIs, NoscriptAttrs, NoscriptContent, NoscriptChildAdmittedBy, ScriptIs, ScriptAttrs, ScriptContent, ScriptChildAdmittedBy, SlotAttrs, SlotChildAdmittedBy, TemplateIs, TemplateAttrs, TemplateChildAdmittedBy
-    , async, blocking, crossorigin, defer, fetchpriority, integrity, name, nomodule, referrerpolicy, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootmode, shadowrootserializable, shadowrootslotassignment, src
+    , async, blocking, crossorigin, defer, fetchpriority, integrity, name, nomodule, referrerpolicy, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootmode, shadowrootserializable, shadowrootslotassignment, src, type_
     )
 
 {-| The `Scripting` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs noscript, script, slot, template
 @docs NoscriptIs, NoscriptAttrs, NoscriptContent, NoscriptChildAdmittedBy, ScriptIs, ScriptAttrs, ScriptContent, ScriptChildAdmittedBy, SlotAttrs, SlotChildAdmittedBy, TemplateIs, TemplateAttrs, TemplateChildAdmittedBy
-@docs async, blocking, crossorigin, defer, fetchpriority, integrity, name, nomodule, referrerpolicy, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootmode, shadowrootserializable, shadowrootslotassignment, src
+@docs async, blocking, crossorigin, defer, fetchpriority, integrity, name, nomodule, referrerpolicy, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootmode, shadowrootserializable, shadowrootslotassignment, src, type_
 
 -}
 
@@ -30,11 +30,36 @@ type alias NoscriptIs s =
 {-| `noscript`'s closed attribute-capability row.
 -}
 type alias NoscriptAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -155,20 +180,46 @@ type alias ScriptIs s =
 {-| `script`'s closed attribute-capability row.
 -}
 type alias ScriptAttrs =
-    { async : Supported
+    { accesskey : Supported
+    , async : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , blocking : Supported
     , class : Supported
+    , contenteditable : Supported
     , crossorigin : Supported
     , defer : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , fetchpriority : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
     , integrity : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , nomodule : Supported
+    , nonce : Supported
+    , popover : Supported
     , referrerpolicy : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , type_ : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -197,12 +248,37 @@ script attrs children =
 {-| `slot`'s closed attribute-capability row.
 -}
 type alias SlotAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -232,8 +308,28 @@ type alias TemplateIs s =
 {-| `template`'s closed attribute-capability row.
 -}
 type alias TemplateAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , shadowrootclonable : Supported
     , shadowrootcustomelementregistry : Supported
@@ -242,7 +338,12 @@ type alias TemplateAttrs =
     , shadowrootserializable : Supported
     , shadowrootslotassignment : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -269,14 +370,14 @@ async =
     TypedHtml.Attributes.async
 
 
-{-| The `blocking` attribute (this component's type differs from the shared canonical).
+{-| Whether the element is potentially render-blocking
 -}
 blocking : String -> Attr { c | blocking : Supported } msg
 blocking value_ =
     Ir.attribute "blocking" value_
 
 
-{-| The `crossorigin` attribute (this component's type differs from the shared canonical).
+{-| How the element handles crossorigin requests
 -}
 crossorigin : String -> Attr { c | crossorigin : Supported } msg
 crossorigin value_ =
@@ -290,7 +391,7 @@ defer =
     TypedHtml.Attributes.defer
 
 
-{-| The `fetchpriority` attribute (this component's type differs from the shared canonical).
+{-| Sets the priority for fetches initiated by the element
 -}
 fetchpriority : String -> Attr { c | fetchpriority : Supported } msg
 fetchpriority value_ =
@@ -318,7 +419,7 @@ nomodule =
     TypedHtml.Attributes.nomodule
 
 
-{-| The `referrerpolicy` attribute (this component's type differs from the shared canonical).
+{-| Referrer policy for fetches initiated by the element
 -}
 referrerpolicy : String -> Attr { c | referrerpolicy : Supported } msg
 referrerpolicy value_ =
@@ -346,7 +447,7 @@ shadowrootdelegatesfocus =
     TypedHtml.Attributes.shadowrootdelegatesfocus
 
 
-{-| The `shadowrootmode` attribute (this component's type differs from the shared canonical).
+{-| Enables streaming declarative shadow roots
 -}
 shadowrootmode : String -> Attr { c | shadowrootmode : Supported } msg
 shadowrootmode value_ =
@@ -360,7 +461,7 @@ shadowrootserializable =
     TypedHtml.Attributes.shadowrootserializable
 
 
-{-| The `shadowrootslotassignment` attribute (this component's type differs from the shared canonical).
+{-| Sets slot assignment on a declarative shadow root
 -}
 shadowrootslotassignment : String -> Attr { c | shadowrootslotassignment : Supported } msg
 shadowrootslotassignment value_ =
@@ -372,3 +473,10 @@ shadowrootslotassignment value_ =
 src : String -> Attr { c | src : Supported } msg
 src =
     TypedHtml.Attributes.src
+
+
+{-| See `TypedHtml.Attributes.type_`.
+-}
+type_ : String -> Attr { c | type_ : Supported } msg
+type_ =
+    TypedHtml.Attributes.type_

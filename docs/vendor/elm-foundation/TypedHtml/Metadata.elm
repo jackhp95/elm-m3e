@@ -30,13 +30,38 @@ type alias BaseIs s =
 {-| `base`'s closed attribute-capability row.
 -}
 type alias BaseAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , href : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
     , target : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -65,11 +90,36 @@ type alias HeadIs s =
 {-| `head`'s closed attribute-capability row.
 -}
 type alias HeadAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -98,25 +148,50 @@ type alias LinkIs s =
 {-| `link`'s closed attribute-capability row.
 -}
 type alias LinkAttrs =
-    { blocking : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , blocking : Supported
     , class : Supported
     , color : Supported
+    , contenteditable : Supported
     , crossorigin : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , fetchpriority : Supported
+    , hidden : Supported
     , href : Supported
     , hreflang : Supported
     , id : Supported
     , imagesizes : Supported
     , imagesrcset : Supported
+    , inert : Supported
+    , inputmode : Supported
     , integrity : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , media : Supported
+    , nonce : Supported
+    , popover : Supported
     , referrerpolicy : Supported
     , rel : Supported
     , role : Supported
     , sizes : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -145,16 +220,41 @@ type alias MetaIs s =
 {-| `meta`'s closed attribute-capability row.
 -}
 type alias MetaAttrs =
-    { charset : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , charset : Supported
     , class : Supported
     , content : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , httpEquiv : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , media : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -183,13 +283,38 @@ type alias StyleIs s =
 {-| `style`'s closed attribute-capability row.
 -}
 type alias StyleAttrs =
-    { blocking : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , blocking : Supported
     , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , media : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -224,11 +349,36 @@ type alias TitleIs s =
 {-| `title`'s closed attribute-capability row.
 -}
 type alias TitleAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -254,14 +404,14 @@ title attrs children =
     Ir.fromNode (Ir.node "title" attrs (List.map HtmlIr.Element.toNode children))
 
 
-{-| The `blocking` attribute (this component's type differs from the shared canonical).
+{-| Whether the element is potentially render-blocking
 -}
 blocking : String -> Attr { c | blocking : Supported } msg
 blocking value_ =
     Ir.attribute "blocking" value_
 
 
-{-| The `charset` attribute (this component's type differs from the shared canonical).
+{-| Character encoding declaration
 -}
 charset : String -> Attr { c | charset : Supported } msg
 charset value_ =
@@ -282,7 +432,7 @@ content =
     TypedHtml.Attributes.content
 
 
-{-| The `crossorigin` attribute (this component's type differs from the shared canonical).
+{-| How the element handles crossorigin requests
 -}
 crossorigin : String -> Attr { c | crossorigin : Supported } msg
 crossorigin value_ =
@@ -296,7 +446,7 @@ disabled =
     TypedHtml.Attributes.disabled
 
 
-{-| The `fetchpriority` attribute (this component's type differs from the shared canonical).
+{-| Sets the priority for fetches initiated by the element
 -}
 fetchpriority : String -> Attr { c | fetchpriority : Supported } msg
 fetchpriority value_ =
@@ -317,7 +467,7 @@ hreflang =
     TypedHtml.Attributes.hreflang
 
 
-{-| The `httpEquiv` attribute (this component's type differs from the shared canonical).
+{-| Pragma directive
 -}
 httpEquiv : String -> Attr { c | httpEquiv : Supported } msg
 httpEquiv value_ =
@@ -359,7 +509,7 @@ name =
     TypedHtml.Attributes.name
 
 
-{-| The `referrerpolicy` attribute (this component's type differs from the shared canonical).
+{-| Referrer policy for fetches initiated by the element
 -}
 referrerpolicy : String -> Attr { c | referrerpolicy : Supported } msg
 referrerpolicy value_ =

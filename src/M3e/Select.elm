@@ -1,9 +1,9 @@
 module M3e.Select exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
+    , disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
     , arrow, value, child
-    , withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
+    , withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValidationmessages, withValue
     )
 
 {-| The `m3e-select` component — strict per-component surface.
@@ -12,9 +12,9 @@ A form control that allows users to select a value from a set of predefined opti
 
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
+@docs disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value, child
-@docs withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValue
+@docs withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValidationmessages, withValue
 
 -}
 
@@ -55,6 +55,7 @@ type alias Attrs =
     , required : Supported
     , slot : Supported
     , style : Supported
+    , validationmessages : Supported
     }
 
 
@@ -141,6 +142,13 @@ required =
     A.required
 
 
+{-| See `M3e.Attributes.validationmessages`.
+-}
+validationmessages : String -> Attr { c | validationmessages : Supported } msg
+validationmessages =
+    A.validationmessages
+
+
 {-| See `M3e.Events.onChange`.
 -}
 onChange : msg -> Attr { c | onChange : Supported } msg
@@ -219,6 +227,7 @@ type alias AttrCaps =
     , required : Available
     , slot : Available
     , style : Available
+    , validationmessages : Available
     }
 
 
@@ -314,6 +323,13 @@ withPanelClass value_ =
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
 withRequired value_ =
     B.withAttribute (A.required value_)
+
+
+{-| Pipe form of `validationmessages` — consumes its capability (write-once).
+-}
+withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg -> Builder { a | validationmessages : Used } slotCaps msg
+withValidationmessages value_ =
+    B.withAttribute (A.validationmessages value_)
 
 
 {-| Pipe form of `onChange` — consumes its capability (write-once).

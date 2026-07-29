@@ -30,25 +30,52 @@ type alias Is s =
 {-| `textarea`'s closed attribute-capability row.
 -}
 type alias Attrs =
-    { autocomplete : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocomplete : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , class : Supported
     , cols : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , dirname : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , form : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , maxlength : Supported
     , minlength : Supported
     , name : Supported
+    , nonce : Supported
+    , onChange : Supported
     , onClick : Supported
+    , onInput : Supported
     , placeholder : Supported
+    , popover : Supported
     , readonly : Supported
     , required : Supported
     , role : Supported
     , rows : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , wrap : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -158,7 +185,7 @@ rows =
     TypedHtml.Attributes.rows
 
 
-{-| The `wrap` attribute (this component's type differs from the shared canonical).
+{-| How the value of the form control is to be wrapped for form submission
 -}
 wrap : String -> Attr { c | wrap : Supported } msg
 wrap value_ =

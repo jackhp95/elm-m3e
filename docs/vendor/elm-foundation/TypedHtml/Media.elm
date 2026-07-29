@@ -30,20 +30,45 @@ type alias AudioIs s =
 {-| `audio`'s closed attribute-capability row.
 -}
 type alias AudioAttrs =
-    { autoplay : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , autoplay : Supported
     , class : Supported
+    , contenteditable : Supported
     , controls : Supported
     , crossorigin : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , loading : Supported
     , loop : Supported
     , muted : Supported
+    , nonce : Supported
     , onClick : Supported
+    , popover : Supported
     , preload : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -81,11 +106,36 @@ type alias PictureIs s =
 {-| `picture`'s closed attribute-capability row.
 -}
 type alias PictureAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -122,16 +172,41 @@ type alias PictureSourceIs s =
 {-| `source`'s closed attribute-capability row.
 -}
 type alias PictureSourceAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , media : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , sizes : Supported
     , slot : Supported
+    , spellcheck : Supported
     , srcset : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -166,15 +241,40 @@ type alias SourceIs s =
 {-| `source`'s closed attribute-capability row.
 -}
 type alias SourceAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , media : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , sizes : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , srcset : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -209,16 +309,41 @@ type alias TrackIs s =
 {-| `track`'s closed attribute-capability row.
 -}
 type alias TrackAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
     , default : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
     , kind : Supported
     , label : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , srclang : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -253,23 +378,48 @@ type alias VideoIs s =
 {-| `video`'s closed attribute-capability row.
 -}
 type alias VideoAttrs =
-    { autoplay : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , autoplay : Supported
     , class : Supported
+    , contenteditable : Supported
     , crossorigin : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , loading : Supported
     , loop : Supported
     , muted : Supported
+    , nonce : Supported
     , onClick : Supported
     , playsinline : Supported
+    , popover : Supported
     , poster : Supported
     , preload : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -312,7 +462,7 @@ controls =
     TypedHtml.Attributes.controls
 
 
-{-| The `crossorigin` attribute (this component's type differs from the shared canonical).
+{-| How the element handles crossorigin requests
 -}
 crossorigin : String -> Attr { c | crossorigin : Supported } msg
 crossorigin value_ =
@@ -333,7 +483,7 @@ height =
     TypedHtml.Attributes.height
 
 
-{-| The `kind` attribute (this component's type differs from the shared canonical).
+{-| The type of text track
 -}
 kind : String -> Attr { c | kind : Supported } msg
 kind value_ =
@@ -347,7 +497,7 @@ label =
     TypedHtml.Attributes.label
 
 
-{-| The `loading` attribute (this component's type differs from the shared canonical).
+{-| Used when determining loading deferral
 -}
 loading : String -> Attr { c | loading : Supported } msg
 loading value_ =
@@ -389,7 +539,7 @@ poster =
     TypedHtml.Attributes.poster
 
 
-{-| The `preload` attribute (this component's type differs from the shared canonical).
+{-| Hints how much buffering the media resource will likely need
 -}
 preload : String -> Attr { c | preload : Supported } msg
 preload value_ =

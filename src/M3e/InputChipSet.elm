@@ -1,9 +1,9 @@
 module M3e.InputChipSet exposing
     ( view, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, name, required, vertical, onChange
+    , disabled, name, required, validationmessages, vertical, onChange
     , input, child
-    , withChild, withClass, withDisabled, withId, withInput, withName, withOnChange, withRequired, withSlot, withStyle, withVertical
+    , withChild, withClass, withDisabled, withId, withInput, withName, withOnChange, withRequired, withSlot, withStyle, withValidationmessages, withVertical
     )
 
 {-| The `m3e-input-chip-set` component — strict per-component surface.
@@ -12,9 +12,9 @@ A container that transforms user input into a cohesive set of interactive chips,
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, name, required, vertical, onChange
+@docs disabled, name, required, validationmessages, vertical, onChange
 @docs input, child
-@docs withChild, withClass, withDisabled, withId, withInput, withName, withOnChange, withRequired, withSlot, withStyle, withVertical
+@docs withChild, withClass, withDisabled, withId, withInput, withName, withOnChange, withRequired, withSlot, withStyle, withValidationmessages, withVertical
 
 -}
 
@@ -48,6 +48,7 @@ type alias Attrs =
     , required : Supported
     , slot : Supported
     , style : Supported
+    , validationmessages : Supported
     , vertical : Supported
     }
 
@@ -93,6 +94,13 @@ name value_ =
 required : Bool -> Attr { c | required : Supported } msg
 required =
     A.required
+
+
+{-| See `M3e.Attributes.validationmessages`.
+-}
+validationmessages : String -> Attr { c | validationmessages : Supported } msg
+validationmessages =
+    A.validationmessages
 
 
 {-| See `M3e.Attributes.vertical`.
@@ -145,6 +153,7 @@ type alias AttrCaps =
     , required : Available
     , slot : Available
     , style : Available
+    , validationmessages : Available
     , vertical : Available
     }
 
@@ -217,6 +226,13 @@ withName value_ =
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg -> Builder { a | required : Used } slotCaps msg
 withRequired value_ =
     B.withAttribute (A.required value_)
+
+
+{-| Pipe form of `validationmessages` — consumes its capability (write-once).
+-}
+withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg -> Builder { a | validationmessages : Used } slotCaps msg
+withValidationmessages value_ =
+    B.withAttribute (A.validationmessages value_)
 
 
 {-| Pipe form of `vertical` — consumes its capability (write-once).

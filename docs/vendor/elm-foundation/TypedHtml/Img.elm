@@ -30,24 +30,49 @@ type alias Is s =
 {-| `img`'s closed attribute-capability row.
 -}
 type alias Attrs =
-    { alt : Supported
+    { accesskey : Supported
+    , alt : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , class : Supported
+    , contenteditable : Supported
     , crossorigin : Supported
     , decoding : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , fetchpriority : Supported
     , height : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
     , ismap : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , loading : Supported
+    , nonce : Supported
+    , popover : Supported
     , referrerpolicy : Supported
     , role : Supported
     , sizes : Supported
     , slot : Supported
+    , spellcheck : Supported
     , src : Supported
     , srcset : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
     , usemap : Supported
     , width : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -74,21 +99,21 @@ alt =
     TypedHtml.Attributes.alt
 
 
-{-| The `crossorigin` attribute (this component's type differs from the shared canonical).
+{-| How the element handles crossorigin requests
 -}
 crossorigin : String -> Attr { c | crossorigin : Supported } msg
 crossorigin value_ =
     Ir.attribute "crossorigin" value_
 
 
-{-| The `decoding` attribute (this component's type differs from the shared canonical).
+{-| Decoding hint to use when processing this image for presentation
 -}
 decoding : String -> Attr { c | decoding : Supported } msg
 decoding value_ =
     Ir.attribute "decoding" value_
 
 
-{-| The `fetchpriority` attribute (this component's type differs from the shared canonical).
+{-| Sets the priority for fetches initiated by the element
 -}
 fetchpriority : String -> Attr { c | fetchpriority : Supported } msg
 fetchpriority value_ =
@@ -109,14 +134,14 @@ ismap =
     TypedHtml.Attributes.ismap
 
 
-{-| The `loading` attribute (this component's type differs from the shared canonical).
+{-| Used when determining loading deferral
 -}
 loading : String -> Attr { c | loading : Supported } msg
 loading value_ =
     Ir.attribute "loading" value_
 
 
-{-| The `referrerpolicy` attribute (this component's type differs from the shared canonical).
+{-| Referrer policy for fetches initiated by the element
 -}
 referrerpolicy : String -> Attr { c | referrerpolicy : Supported } msg
 referrerpolicy value_ =

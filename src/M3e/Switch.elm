@@ -2,8 +2,8 @@ module M3e.Switch exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Icons, icons
-    , checked, disabled, name, value, onBeforeinput, onInput, onChange, onClick
-    , withChecked, withClass, withDisabled, withIcons, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValue
+    , checked, disabled, name, validationmessages, value, onBeforeinput, onInput, onChange, onClick
+    , withChecked, withClass, withDisabled, withIcons, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValidationmessages, withValue
     )
 
 {-| The `m3e-switch` component — strict per-component surface.
@@ -13,8 +13,8 @@ An on/off control that can be toggled by clicking.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Icons, icons
-@docs checked, disabled, name, value, onBeforeinput, onInput, onChange, onClick
-@docs withChecked, withClass, withDisabled, withIcons, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValue
+@docs checked, disabled, name, validationmessages, value, onBeforeinput, onInput, onChange, onClick
+@docs withChecked, withClass, withDisabled, withIcons, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValidationmessages, withValue
 
 -}
 
@@ -53,6 +53,7 @@ type alias Attrs =
     , onInput : Supported
     , slot : Supported
     , style : Supported
+    , validationmessages : Supported
     , value : Supported
     }
 
@@ -108,6 +109,13 @@ disabled =
 name : String -> Attr { c | name : Supported } msg
 name value_ =
     Ir.attribute "name" value_
+
+
+{-| See `M3e.Attributes.validationmessages`.
+-}
+validationmessages : String -> Attr { c | validationmessages : Supported } msg
+validationmessages =
+    A.validationmessages
 
 
 {-| See `M3e.Attributes.value`.
@@ -168,6 +176,7 @@ type alias AttrCaps =
     , onInput : Available
     , slot : Available
     , style : Available
+    , validationmessages : Available
     , value : Available
     }
 
@@ -246,6 +255,13 @@ withIcons value_ =
 withName : String -> Builder { a | name : Available } slotCaps msg -> Builder { a | name : Used } slotCaps msg
 withName value_ =
     B.withAttribute (Ir.attribute "name" value_)
+
+
+{-| Pipe form of `validationmessages` — consumes its capability (write-once).
+-}
+withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg -> Builder { a | validationmessages : Used } slotCaps msg
+withValidationmessages value_ =
+    B.withAttribute (A.validationmessages value_)
 
 
 {-| Pipe form of `value` — consumes its capability (write-once).

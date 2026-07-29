@@ -24,19 +24,44 @@ import TypedHtml.Kind exposing (Ctx, Role)
 {-| `a`'s closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , download : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , href : Supported
     , hreflang : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
     , onClick : Supported
     , ping : Supported
+    , popover : Supported
     , referrerpolicy : Supported
     , rel : Supported
     , role : Roles
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
     , target : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -104,7 +129,7 @@ ping =
     TypedHtml.Attributes.ping
 
 
-{-| The `referrerpolicy` attribute (this component's type differs from the shared canonical).
+{-| Referrer policy for fetches initiated by the element
 -}
 referrerpolicy : String -> Attr { c | referrerpolicy : Supported } msg
 referrerpolicy value_ =

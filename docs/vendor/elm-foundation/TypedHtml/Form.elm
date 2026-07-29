@@ -30,15 +30,40 @@ type alias FieldsetIs s =
 {-| `fieldset`'s closed attribute-capability row.
 -}
 type alias FieldsetAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , form : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , readonly : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -68,18 +93,43 @@ type alias FormIs s =
 -}
 type alias FormAttrs =
     { acceptCharset : Supported
+    , accesskey : Supported
     , action : Supported
+    , autocapitalize : Supported
     , autocomplete : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
     , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
     , enctype : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , method : Supported
     , name : Supported
+    , nonce : Supported
     , novalidate : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
     , target : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -108,13 +158,38 @@ type alias LabelIs s =
 {-| `label`'s closed attribute-capability row.
 -}
 type alias LabelAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , for : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
     , onClick : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -204,11 +279,36 @@ type alias LegendIs s =
 {-| `legend`'s closed attribute-capability row.
 -}
 type alias LegendAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
+    , nonce : Supported
+    , popover : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -304,16 +404,41 @@ type alias OutputIs s =
 {-| `output`'s closed attribute-capability row.
 -}
 type alias OutputAttrs =
-    { class : Supported
+    { accesskey : Supported
+    , autocapitalize : Supported
+    , autocorrect : Supported
+    , autofocus : Supported
+    , class : Supported
+    , contenteditable : Supported
+    , dir : Supported
     , disabled : Supported
+    , draggable : Supported
+    , enterkeyhint : Supported
     , for : Supported
     , form : Supported
+    , hidden : Supported
     , id : Supported
+    , inert : Supported
+    , inputmode : Supported
+    , is : Supported
+    , itemid : Supported
+    , itemprop : Supported
+    , itemref : Supported
+    , itemscope : Supported
+    , itemtype : Supported
+    , lang : Supported
     , name : Supported
+    , nonce : Supported
+    , popover : Supported
     , readonly : Supported
     , role : Supported
     , slot : Supported
+    , spellcheck : Supported
     , style : Supported
+    , tabindex : Supported
+    , title : Supported
+    , translate : Supported
+    , writingsuggestions : Supported
     }
 
 
@@ -422,7 +547,7 @@ disabled =
     TypedHtml.Attributes.disabled
 
 
-{-| The `enctype` attribute (this component's type differs from the shared canonical).
+{-| Entry list encoding type to use for form submission
 -}
 enctype : String -> Attr { c | enctype : Supported } msg
 enctype value_ =
@@ -436,7 +561,7 @@ for =
     TypedHtml.Attributes.for
 
 
-{-| The `method` attribute (this component's type differs from the shared canonical).
+{-| Variant to use for form submission
 -}
 method : String -> Attr { c | method : Supported } msg
 method value_ =
