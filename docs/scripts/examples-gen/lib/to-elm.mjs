@@ -272,7 +272,13 @@ function contentSlotChildOrNull(node, oracle) {
     return plainElementToElm(node, oracle);
   }
   const nonWs = [...node.childNodes].filter((c) => !isWhitespaceText(c));
-  if (nonWs.length > 0 && nonWs.every((c) => c.nodeType === 3)) {
+  // A text-only GENERIC wrapper (e.g. `<span slot="label">Inbox</span>`) folds to
+  // Kit.text. A custom element (`<m3e-heading>Mail</m3e-heading>`, `<m3e-avatar>`)
+  // is NOT a wrapper — it is a meaningful component the slot admits as an element
+  // kind, so it must NOT fold to text (that dropped the element and misaligned the
+  // round-trip DOM-diff for every following sibling). Defer it to nodeToElm, which
+  // maps it to `M3e.<Comp>.view` for the slot's admitted element kind.
+  if (nonWs.length > 0 && nonWs.every((c) => c.nodeType === 3) && !childTag.startsWith("m3e-")) {
     const text = nonWs.map((c) => c.textContent.trim()).join(" ");
     return `Kit.text "${escapeElmString(text)}"`;
   }

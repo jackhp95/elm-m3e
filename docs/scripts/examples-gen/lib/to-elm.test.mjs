@@ -53,6 +53,26 @@ test("checkbox aria-label -> TypedHtml.Aria.label setter", () => {
   });
 });
 
+// A custom element (m3e-*) in a text-admitting slot is a component the slot admits
+// as an ELEMENT kind — it must NOT fold to `Kit.text` (that dropped the element and
+// misaligned the round-trip DOM-diff for every following sibling). Only generic
+// wrappers fold. Regression for the NavMenu label + List avatar cases.
+test("custom element in a text-admitting slot is preserved, not folded to text", () => {
+  const r = conv(
+    `<m3e-nav-menu-item-group><m3e-heading m3e-toc-ignore slot="label" variant="label" size="large">Mail</m3e-heading></m3e-nav-menu-item-group>`,
+  );
+  assert.match(r.code, /NavMenuItemGroup\.label \(M3e\.Heading\.view /);
+  assert.doesNotMatch(r.code, /NavMenuItemGroup\.label \(Kit\.text "Mail"\)/);
+});
+
+// A generic text-only wrapper still folds to Kit.text (the intended behavior).
+test("generic text-only wrapper in a text slot still folds to Kit.text", () => {
+  const r = conv(
+    `<m3e-nav-menu-item><span slot="label">Inbox</span></m3e-nav-menu-item>`,
+  );
+  assert.match(r.code, /NavMenuItem\.label \(Kit\.text "Inbox"\)/);
+});
+
 // Universal HTML attributes (id/for/class/style) are settable on ANY component
 // via M3e.Attributes (open-row Attr), mirroring the universal aria path. `style`
 // passes the raw `style="…"` value verbatim as a String — the generated

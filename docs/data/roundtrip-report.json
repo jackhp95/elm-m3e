@@ -7,10 +7,10 @@
       "converted": 333,
       "clean": 333,
       "usedEscapeHatch": 0,
-      "roundtripMatched": 291,
-      "roundtripDeviated": 42,
-      "roundtripFunctionalMatched": 301,
-      "roundtripFunctionalDeviated": 32
+      "roundtripMatched": 294,
+      "roundtripDeviated": 39,
+      "roundtripFunctionalMatched": 304,
+      "roundtripFunctionalDeviated": 29
     },
     "record": {
       "total": 339,
@@ -16800,52 +16800,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-list[0]/m3e-list-item[1]",
-            "from": "m3e-avatar",
-            "to": "m3e-icon",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-list[0]/m3e-list-item[2]",
-            "from": "m3e-icon",
-            "to": "span",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-list[1]/m3e-list-item[1]",
-            "from": "m3e-avatar",
-            "to": "m3e-icon",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-list[1]/m3e-list-item[2]",
-            "from": "m3e-icon",
-            "to": "span",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-list[2]/m3e-list-item[1]",
-            "from": "m3e-avatar",
-            "to": "m3e-icon",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-list[2]/m3e-list-item[2]",
-            "from": "m3e-icon",
-            "to": "span",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -20449,104 +20406,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[0]",
-            "from": "m3e-heading",
-            "to": "m3e-nav-menu-item",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[0]",
-            "attr": "name",
-            "from": "mail",
-            "to": "send",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[1]",
-            "attr": "slot",
-            "from": "badge",
-            "to": "label",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[1]/span[0]",
-            "from": "24",
-            "to": "Outbox",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-element",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[2]",
-            "tag": "span",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[2]/m3e-nav-menu-item[0]",
-            "attr": "name",
-            "from": "send",
-            "to": "favorite",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[2]/m3e-nav-menu-item[1]/span[0]",
-            "from": "Outbox",
-            "to": "Favorites",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[3]/m3e-nav-menu-item[0]",
-            "attr": "name",
-            "from": "favorite",
-            "to": "delete",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[3]/m3e-nav-menu-item[1]/span[0]",
-            "from": "Favorites",
-            "to": "Trash",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[4]",
-            "from": "m3e-nav-menu-item",
-            "to": "span",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[2]/m3e-nav-menu-item-group[0]",
-            "from": "m3e-heading",
-            "to": "m3e-nav-menu-item",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[2]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[1]/span[0]",
-            "from": "Family",
-            "to": "Wedding",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[2]/m3e-nav-menu-item-group[2]",
-            "from": "m3e-nav-menu-item",
-            "to": "span",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
@@ -21113,104 +20975,9 @@
         "benign": true
       },
       "roundtrip": {
-        "matches": false,
-        "functionalMatches": false,
-        "deviations": [
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[0]",
-            "from": "m3e-heading",
-            "to": "m3e-nav-menu-item",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[0]",
-            "attr": "name",
-            "from": "mail",
-            "to": "send",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[1]",
-            "attr": "slot",
-            "from": "badge",
-            "to": "label",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[1]/span[0]",
-            "from": "24",
-            "to": "Outbox",
-            "cosmetic": false
-          },
-          {
-            "kind": "removed-element",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[2]",
-            "tag": "span",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[2]/m3e-nav-menu-item[0]",
-            "attr": "name",
-            "from": "send",
-            "to": "favorite",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[2]/m3e-nav-menu-item[1]/span[0]",
-            "from": "Outbox",
-            "to": "Favorites",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-attr",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[3]/m3e-nav-menu-item[0]",
-            "attr": "name",
-            "from": "favorite",
-            "to": "delete",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[3]/m3e-nav-menu-item[1]/span[0]",
-            "from": "Favorites",
-            "to": "Trash",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[1]/m3e-nav-menu-item-group[4]",
-            "from": "m3e-nav-menu-item",
-            "to": "span",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[2]/m3e-nav-menu-item-group[0]",
-            "from": "m3e-heading",
-            "to": "m3e-nav-menu-item",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-text",
-            "path": "/#roots[0]/m3e-nav-menu[2]/m3e-nav-menu-item-group[1]/m3e-nav-menu-item[1]/span[0]",
-            "from": "Family",
-            "to": "Wedding",
-            "cosmetic": false
-          },
-          {
-            "kind": "changed-element",
-            "path": "/#roots[0]/m3e-nav-menu[2]/m3e-nav-menu-item-group[2]",
-            "from": "m3e-nav-menu-item",
-            "to": "span",
-            "cosmetic": false
-          }
-        ]
+        "matches": true,
+        "functionalMatches": true,
+        "deviations": []
       }
     },
     {
