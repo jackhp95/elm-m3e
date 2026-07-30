@@ -159,13 +159,11 @@ dial =
 
 seams : String
 seams =
-    """From [your own seam](/guide/seams). A seam — a crossing to raw HTML — is only allowed in a few blessed userland modules, so every escape is in a known, greppable place:
+    """From [your own seam](/guide/seams). Everything is a typed `Element` from `M3e.*` / `TypedHtml.*`, composed directly — you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). To bring in something *foreign*, there are exactly two loud, greppable, lint-fenced escape surfaces:
 
-| Module | What it holds |
+| Escape | What it gives you |
 | --- | --- |
-| **Layout** | Layout wrappers over raw HTML (rows, grids, spacing). |
-| **Kit** | Your design-system vocabulary (typography, color roles, `text`). |
-| **Native** | Raw-HTML escape hatches — `node` / `custom` (dynamic or custom-element tags), `attribute` / `onClick` / `style` (raw injection). For plain typed tags (`input`, `label`, …) use `TypedHtml.*`. |
-| **Doc / Shared** | App shell and doc-rendering crossings. |
+| **`<Brand>.Unsafe`** / **`.Unsafe.Attributes`** | `fromHtml` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAttr` re-kind to free rows so anything drops into any slot. Fenced by `NoUnsafeImportOutsideAllowed`. |
+| **`HtmlIr.Internal`** (the forge) | `element` (a custom-element tag as a slot-ready `Element`), `node` / `attribute` / `property` / `on` (define your own tags, attrs, events), `lazy`..`lazy8` (memoise). Fenced by `NoInternalImportOutsideAllowed`. |
 
-Anywhere else, a raw escape is flagged — and the linter offers to lift it into one of these for you."""
+A "seam" isn't a library feature — it's the *practice* of corralling those escapes into one greppable place (this docs app keeps its own in `Kit` / `Native` / `Seam`). Anywhere else a raw escape is flagged, and the linter offers to lift it into an escape for you."""
