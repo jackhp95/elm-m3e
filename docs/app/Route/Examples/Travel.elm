@@ -40,6 +40,7 @@ import Seam.Media as Media
 import Seam.Shape as Shape
 import Seam.Surface as Surface exposing (Surface)
 import Shared
+import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
@@ -368,7 +369,7 @@ searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } ad
 searchBar =
     M3e.searchBar
         []
-        [ M3e.SearchBar.input (Seam.node "input" [] [])
+        [ M3e.SearchBar.input (TypedHtml.input [] [])
         , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
         , M3e.SearchBar.trailing (M3e.icon [ TA.name "tune" ] [])
         ]

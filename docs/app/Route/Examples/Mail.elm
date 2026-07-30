@@ -42,6 +42,7 @@ import Seam
 import Seam.Avatar as Avatar
 import Seam.Surface as Surface exposing (Surface)
 import Shared
+import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
@@ -299,9 +300,9 @@ searchBar =
     M3e.searchBar
         []
         [ M3e.SearchBar.input
-            (Seam.node "input"
-                [ Seam.attribute "placeholder" "Search mail"
-                , Seam.attribute "type" "search"
+            (TypedHtml.input
+                [ TA.placeholder "Search mail"
+                , TA.type_ "search"
                 ]
                 []
             )

@@ -24,6 +24,8 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes
 import UrlPath
 import View exposing (View)
 
@@ -78,13 +80,16 @@ saveButton =
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Seam.node "label" [ Seam.attribute "for" "email-field" ] [ Seam.text "Email address" ]
-        , Seam.node "input"
-            [ Seam.attribute "id" "email-field"
-            , Seam.attribute "type" "email"
-            , Seam.attribute "name" "email"
-            ]
-            []
+        [ M3e.FormField.label
+            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ Seam.text "Email address" ])
+        , M3e.FormField.child
+            (TypedHtml.input
+                [ TypedHtml.Attributes.id "email-field"
+                , TypedHtml.Attributes.type_ "email"
+                , TypedHtml.Attributes.name "email"
+                ]
+                []
+            )
         ]
 
 

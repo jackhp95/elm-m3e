@@ -42,7 +42,9 @@ import Route exposing (Route)
 import Seam
 import Seam.Surface as Surface
 import SharedTemplate exposing (SharedTemplate)
+import TypedHtml
 import TypedHtml.Aria as Aria
+import TypedHtml.Attributes
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -622,16 +624,19 @@ swatch. `onInput` crosses via the one sanctioned `Seam.asAttribute`.
 seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Seam.node "label" [ Seam.attribute "for" "seed-color" ] [ Seam.text "Source color" ]
+        [ M3e.FormField.label
+            (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ Seam.text "Source color" ])
         , M3e.FormField.hint
             (Seam.code Value.small [ Seam.onSurfaceVariant ] [ Seam.text model.seed ])
-        , Seam.node "input"
-            [ Seam.attribute "id" "seed-color"
-            , Seam.attribute "type" "color"
-            , Seam.attribute "value" model.seed
-            , Seam.asAttribute (Html.Events.onInput SetSeed)
-            ]
-            []
+        , M3e.FormField.child
+            (TypedHtml.input
+                [ TypedHtml.Attributes.id "seed-color"
+                , TypedHtml.Attributes.type_ "color"
+                , TypedHtml.Attributes.value model.seed
+                , Seam.asAttribute (Html.Events.onInput SetSeed)
+                ]
+                []
+            )
         ]
 
 
