@@ -15,7 +15,7 @@ don't hide).
 
 Navigation switches the usual way: `M3e.NavRail` on desktop, `M3e.NavBar` on mobile,
 one destination list. Tailwind is layout only; every visual token comes through the
-`Kit` / `Seam.Surface` / `Seam.Shape` seam.
+`Seam` / `Seam.Surface` / `Seam.Shape` seam.
 
 -}
 

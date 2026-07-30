@@ -12,7 +12,7 @@ Material Crane. A self-contained, full-viewport app screen with its own nav chro
     and a price.
 
 Local state drives the active nav destination and the active category tab. All
-color / typography / shape come from the kit (`Kit`, `Surface`, `Shape`); Tailwind
+color / typography / shape come from the kit (`Seam`, `Surface`, `Shape`); Tailwind
 is used only for layout (flex / grid / gap / padding / responsive visibility).
 
 -}

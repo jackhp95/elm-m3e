@@ -58,7 +58,7 @@ head _ =
         |> Seo.website
 
 
-{-| The 15 M3 type-scale roles, each a live exhibit (the matching `Kit`
+{-| The 15 M3 type-scale roles, each a live exhibit (the matching `Seam`
 primitive), the Tailwind class it maps to, and the role's concrete
 font-size / line-height / weight from `--md-sys-typescale-*` (see
 `sys/typescale.css`). The demo dogfoods the primitives: the exhibit _is_

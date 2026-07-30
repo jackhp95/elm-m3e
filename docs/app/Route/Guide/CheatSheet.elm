@@ -165,4 +165,4 @@ seams =
 | **`<Brand>.Unsafe`** / **`.Unsafe.Attributes`** | `fromHtml` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAttr` re-kind to free rows so anything drops into any slot. Fenced by `NoUnsafeImportOutsideAllowed`. |
 | **`HtmlIr.Internal`** (the forge) | `element` (a custom-element tag as a slot-ready `Element`), `node` / `attribute` / `property` / `on` (define your own tags, attrs, events), `lazy`..`lazy8` (memoise). Fenced by `NoInternalImportOutsideAllowed`. |
 
-A "seam" isn't a library feature — it's the *practice* of corralling those escapes into one greppable place (this docs app keeps its own in `Kit` / `Native` / `Seam`). Anywhere else a raw escape is flagged, and the linter offers to lift it into an escape for you."""
+A "seam" isn't a library feature — it's the *practice* of corralling those escapes into one greppable place (this docs app keeps its own in `Seam`). Anywhere else a raw escape is flagged, and the linter offers to lift it into an escape for you."""

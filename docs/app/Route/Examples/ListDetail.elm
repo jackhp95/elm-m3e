@@ -15,7 +15,7 @@ Navigation switches the same way every example does: an `M3e.NavRail` on desktop
 producer so the two copies never drift.
 
 Tailwind is layout only (flex/grid/gap/padding/positioning/responsive visibility);
-every visual token — color, typography, surface, shape — comes through the `Kit` /
+every visual token — color, typography, surface, shape — comes through the `Seam` /
 `Seam.Surface` / `Seam.Shape` seam.
 
 -}

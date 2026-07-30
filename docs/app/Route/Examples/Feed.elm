@@ -12,7 +12,7 @@ feed by category; selecting one is real state (`SelectFilter`). Navigation switc
 usual way: `M3e.NavRail` on desktop, `M3e.NavBar` on mobile, one destination list.
 
 Tailwind is layout only (grid/gap/padding/responsive columns); every visual token —
-color, typography, surface, shape — comes through the `Kit` / `Seam.Surface` /
+color, typography, surface, shape — comes through the `Seam` / `Seam.Surface` /
 `Seam.Shape` seam.
 
 -}

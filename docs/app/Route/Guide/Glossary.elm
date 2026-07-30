@@ -97,6 +97,6 @@ terms =
 | **kind** | The category a piece of content is — icon, text, button. |
 | **slot** | A labeled place a component puts content; each slot declares the kinds it accepts. |
 | **token** | An enum value that exists as a name (`M3e.Values.filled`) — invalid tokens aren't names at all. |
-| **seam** | Not a library feature — the *practice* of corralling escapes into one greppable, lint-fenced place. The mechanism is a brand `Unsafe` module: `M3e.Unsafe.recast` re-kinds an element to fit any slot ("the design system is wrong here"). This docs app keeps its own crossings in `Kit` / `Native` / `Seam`. |
+| **seam** | Not a library feature — the *practice* of corralling escapes into one greppable, lint-fenced place. The mechanism is a brand `Unsafe` module: `M3e.Unsafe.recast` re-kinds an element to fit any slot ("the design system is wrong here"). This docs app keeps its own crossings in `Seam`. |
 | **component facts** | The generated per-component list (required slots, valid tokens, required attributes) that the linter reads — the same list the API was generated from. |
 | **manifest** | The components' machine-readable self-description that everything above is generated from. |"""

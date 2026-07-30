@@ -3,7 +3,7 @@ module Route.Examples.Mail exposing (ActionData, Data, Model, Msg, route)
 {-| **Mail** — a full-viewport, responsive Material 3 email client screen built
 almost entirely from `M3e.*` components. Tailwind is used only for layout
 (flex/grid/gap/padding/positioning/responsive visibility); every visual token —
-color, typography, surface, shape — comes through the `Kit` / `Seam.Surface` /
+color, typography, surface, shape — comes through the `Seam` / `Seam.Surface` /
 `Seam.Shape` seam.
 
 Layout at a glance:
@@ -393,7 +393,7 @@ messageRow selected index message =
 
 
 {-| The reading pane for the selected message: subject heading, sender row with
-avatar and timestamp, label chips, and the body paragraphs via `Kit`.
+avatar and timestamp, label chips, and the body paragraphs via `Seam`.
 -}
 readingPane : Message -> Element { s | html : M3e.Kind.Brand } adm_ msg
 readingPane message =

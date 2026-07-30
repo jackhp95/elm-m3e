@@ -545,7 +545,7 @@ settingsButton =
 
 {-| The theme controls, rendered into the drawer-container's `end` slot. Built
 from library components in the Element world: each control is a
-[`Seam.labelText`](Kit#labelText) label + a control (segmented buttons, or a
+[`Seam.labelText`](Seam#labelText) label + a control (segmented buttons, or a
 [`FormField`](M3e-FormField) for the seed color). The container keeps its
 `#settings-drawer` id (matraic's flex-column/gap/padding styling lives in
 `style.css`) and the `role="complementary"` landmark, both crossed through the

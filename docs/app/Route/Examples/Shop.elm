@@ -2,7 +2,7 @@ module Route.Examples.Shop exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Shop** example — a full-viewport Material 3 e-commerce storefront screen,
 authored on the M3e API with the m3e component set carrying almost all of the
-structure and the kit (`Kit`, `Seam.Surface`, `Seam.Shape`) owning every visual
+structure and the kit (`Seam`, `Seam.Surface`, `Seam.Shape`) owning every visual
 choice. Tailwind is used only for layout (flex/grid/gap/spacing/positioning and
 responsive visibility).
 

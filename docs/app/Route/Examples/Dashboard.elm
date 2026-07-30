@@ -1,14 +1,14 @@
 module Route.Examples.Dashboard exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Aperture Analytics** — a full-viewport Material 3 analytics dashboard screen,
-authored on the M3e API and the userland `Kit`. It carries its own nav chrome:
+authored on the M3e API and the userland `Seam`. It carries its own nav chrome:
 an `AppBar` header, a `NavRail` on desktop and a bottom `NavBar` on mobile (same
 five destinations), a KPI stat-card row, an Accounts card grid, a Budgets card
 whose rows pair a category with a `Progress.linear` meter, a Recent-activity data
 table built from `ListItem` rows separated by `Divider`, and a `Fab` primary
 action.
 
-Everything visual (color, type scale, surface, shape) goes through `Kit` /
+Everything visual (color, type scale, surface, shape) goes through `Seam` /
 `Seam.Surface` / `Seam.Shape`; Tailwind is used only for layout and responsive
 visibility. Static screen (no local state).
 

@@ -142,7 +142,7 @@ rootNote =
 
 rolesBody : String
 rolesBody =
-    """Inside a themed subtree, never paint with a hex value. Reach for the **role** the element plays. A primary action is `primary`; text on a surface is `onSurface`; de-emphasized text is `onSurfaceVariant`. The role keeps its contrast correct against whatever surface it sits on — automatically, and in both light and dark — because both sides of the pair (`surface`/`onSurface`) are derived together from the same seed. In the docs Kit these are helpers:"""
+    """Inside a themed subtree, never paint with a hex value. Reach for the **role** the element plays. A primary action is `primary`; text on a surface is `onSurface`; de-emphasized text is `onSurfaceVariant`. The role keeps its contrast correct against whatever surface it sits on — automatically, and in both light and dark — because both sides of the pair (`surface`/`onSurface`) are derived together from the same seed. In the docs' `Seam` module these are helpers:"""
 
 
 rolesCode : String
@@ -158,7 +158,7 @@ Seam.div "bg-[#4285F4] text-white" children"""
 
 tokenFamilies : String
 tokenFamilies =
-    """**The `--md-sys-*` families.** A seed derives, per scheme, families like: `--md-sys-color-*` (the role palette — `primary`, `on-primary`, `primary-container`, the `surface`/`surface-container-*` ramp, `outline`, `error`, `scrim`, `surface-tint`), `--md-sys-typescale-*` (the type scale — display/headline/title/body/label at large/medium/small), `--md-sys-shape-corner-*` (the corner scale), `--md-sys-elevation-*`, `--md-sys-motion-*`, and `--md-sys-state-*`. You almost never write these names by hand — the Kit color/typography/shape helpers and the component variants resolve to them — but knowing the families is how you read a computed style and recognize what a component is honoring."""
+    """**The `--md-sys-*` families.** A seed derives, per scheme, families like: `--md-sys-color-*` (the role palette — `primary`, `on-primary`, `primary-container`, the `surface`/`surface-container-*` ramp, `outline`, `error`, `scrim`, `surface-tint`), `--md-sys-typescale-*` (the type scale — display/headline/title/body/label at large/medium/small), `--md-sys-shape-corner-*` (the corner scale), `--md-sys-elevation-*`, `--md-sys-motion-*`, and `--md-sys-state-*`. You almost never write these names by hand — the `Seam` color/typography/shape helpers and the component variants resolve to them — but knowing the families is how you read a computed style and recognize what a component is honoring."""
 
 
 darkBody : String
@@ -198,7 +198,7 @@ Theme.view
     , Theme.contrast M3e.Values.medium -- a touch more contrast for the new palette
     , Theme.density -1                -- slightly more compact
     ]
-    [ appBody ]                        -- shapes: set the corner default in the Kit,
+    [ appBody ]                        -- shapes: set the corner default in the Seam module,
                                        -- e.g. Seam.Shape.corner Shape.large per surface"""
 
 
@@ -214,7 +214,7 @@ bridgeBody =
 
 bridgeCode : String
 bridgeCode =
-    """-- GOOD: layout via utility classes; surface + shape + color via Kit/components.
+    """-- GOOD: layout via utility classes; surface + shape + color via Seam/components.
 Surface.view Surface.surfaceContainer
     [ Shape.corner Shape.large, Seam.class "overflow-hidden flex flex-col" ]
     rows

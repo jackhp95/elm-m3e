@@ -158,7 +158,7 @@ snackbarBody =
 snackbarCode : String
 snackbarCode =
     """-- Elm owns WHEN the snackbar exists; the element owns the slide-in animation.
--- Render the <avt-snackbar> element (via the Native `node` producer) only while
+-- Render the <avt-snackbar> element (via `Seam.node`) only while
 -- shown — mounting it is what triggers the toast:
 snackbar : Toast -> Element { s | html : M3e.Kind.Brand } adm_ msg
 snackbar t =
