@@ -462,8 +462,8 @@ appShellBar =
                         [ brandMark, menuButton ]
                     )
                 )
-            , M3e.AppBar.trailing (Seam.recast githubLink)
-            , M3e.AppBar.trailing (Seam.recast settingsButton)
+            , M3e.AppBar.trailing githubLink
+            , M3e.AppBar.trailing settingsButton
             ]
             |> toHtml
         ]
@@ -505,7 +505,7 @@ glyph was a stand-in. The SVG rides in via the docs' `raw-html` custom element
 (same seam as `Doc.rawPreview`); parsed inside a `<template>` it lands in the SVG
 namespace and renders as a real vector.
 -}
-githubLink : Element { iconButton : M3e.Kind.Brand } admittedBy Msg
+githubLink : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 githubLink =
     M3e.iconButton
         [ Aria.label "GitHub repository"
@@ -533,7 +533,7 @@ githubMarkSvg =
 {-| The app-bar settings control: a plain icon button that flips `settingsOpen`,
 which drives the end drawer's `open` state. (Was a Card popover trigger.)
 -}
-settingsButton : Element { iconButton : M3e.Kind.Brand } admittedBy Msg
+settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
         [ Aria.label "Settings", Seam.onClick ToggleSettings ]
@@ -831,7 +831,7 @@ componentsGroup components currentPath =
             []
         )
         (M3e.NavMenuItem.label (M3e.text "Components")
-            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name "widgets" ] [] |> Seam.recast)
+            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name "widgets" ] [])
             :: navLeaf currentPath ( "/components/all", "All components" )
             :: List.map
                 (\c -> navLeaf currentPath ( "/components/" ++ c.slug, c.label ))
@@ -852,7 +852,7 @@ navGroup currentPath glyph grpTitle items =
             []
         )
         (M3e.NavMenuItem.label (M3e.text grpTitle)
-            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name glyph ] [] |> Seam.recast)
+            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name glyph ] [])
             :: List.map (navLeaf currentPath) items
         )
 
@@ -861,7 +861,7 @@ navLeaf : String -> ( String, String ) -> Element { navMenuItem : M3e.Kind.Brand
 navLeaf currentPath ( path, lbl ) =
     M3e.navMenuItem
         [ M3e.Attributes.selected (path == currentPath) ]
-        [ M3e.NavMenuItem.label (Seam.link path [ Seam.text lbl ] |> Seam.recast) ]
+        [ M3e.NavMenuItem.label (Seam.link path [ Seam.text lbl ]) ]
 
 
 {-| The component-nav categories, in display order, each paired with its Material
