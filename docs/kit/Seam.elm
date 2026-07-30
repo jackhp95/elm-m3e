@@ -1,11 +1,10 @@
 module Seam exposing
     ( fromHtml, asElement, asAttribute, recast, recastAttr, slot, field, label
-    , node, custom, attribute, onClick, style
+    , node, attribute, onClick, style
     , text, link, textLink
     , Size, display, headline, title, body, labelText, code, paragraph
     , colored, overline, tint
     , TextColor, onSurface, onSurfaceVariant, primary, secondary, tertiary, error
-    , rowWith, colWith, gridWith
     , div, divWithId, section, span, nav, ul, li
     , button, class
     )
@@ -21,7 +20,7 @@ imports `Seam` (and `TypedHtml` for plain tags) — never a pile of ad-hoc wrapp
 ## Escapes — raw-HTML crossings, built on the fenced surfaces
 
 @docs fromHtml, asElement, asAttribute, recast, recastAttr, slot, field, label
-@docs node, custom, attribute, onClick, style
+@docs node, attribute, onClick, style
 
 
 ## Design-system vocabulary
@@ -34,7 +33,6 @@ imports `Seam` (and `TypedHtml` for plain tags) — never a pile of ad-hoc wrapp
 
 ## Layout helpers
 
-@docs rowWith, colWith, gridWith
 @docs div, divWithId, section, span, nav, ul, li
 @docs button, class
 
@@ -84,19 +82,19 @@ asAttribute a =
 composes into any container's child list.
 -}
 slot : String -> Element any anyAdm msg -> Element other otherAdm msg
-slot name el =
+slot name element =
     if name == "" then
-        Ir.fromNode (HtmlIr.Element.toNode el)
+        Ir.fromNode (HtmlIr.Element.toNode element)
 
     else
-        Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" name) (HtmlIr.Element.toNode el))
+        Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" name) (HtmlIr.Element.toNode element))
 
 
 {-| Coerce an `Element`'s phantom rows from one shape to another. Loud and greppable.
 -}
 recast : Element a aAdm msg -> Element b bAdm msg
-recast el =
-    Ir.fromNode (HtmlIr.Element.toNode el)
+recast element =
+    Ir.fromNode (HtmlIr.Element.toNode element)
 
 
 {-| Coerce an `Attr`'s capability row from one shape to another.
@@ -142,17 +140,6 @@ node :
 node tagName attrs kids =
     Ir.fromNode
         (Ir.node tagName attrs (List.map HtmlIr.Element.toNode kids))
-
-
-{-| Build a named custom element (e.g. `"my-widget"`). A greppable alias over [`node`](#node).
--}
-custom :
-    String
-    -> List (Attr c msg)
-    -> List (Element s admittedBy msg)
-    -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-custom =
-    node
 
 
 {-| A raw HTML attribute as a typed `Attr` carrying a fully-open capability row.
@@ -368,35 +355,23 @@ error =
 
 
 
--- LAYOUT HELPERS — thin `<div class="…">` wrappers over the escape ------------
+-- LAYOUT HELPERS — thin `<tag class="…">` wrappers over the escape ------------
 
 
-{-| A flex row wrapper carrying exact Tailwind classes.
+{-| The one private body every class-carrying tag wrapper shares: a native `tag`
+with the given Tailwind class string verbatim. Each public helper below is just
+`el "<tag>"`, so the escape (`node` + a `class` attribute) lives in exactly one place.
 -}
-rowWith : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-rowWith =
-    div
-
-
-{-| A flex column wrapper carrying exact Tailwind classes.
--}
-colWith : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-colWith =
-    div
-
-
-{-| A CSS grid wrapper carrying exact Tailwind classes.
--}
-gridWith : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-gridWith =
-    div
+el : String -> String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+el tag cls children =
+    node tag [ asAttribute (Html.Attributes.class cls) ] children
 
 
 {-| A `<div>` carrying the given Tailwind class string verbatim.
 -}
 div : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-div cls children =
-    node "div" [ asAttribute (Html.Attributes.class cls) ] children
+div =
+    el "div"
 
 
 {-| A `<div>` carrying the given Tailwind class string verbatim plus an `id`.
@@ -409,36 +384,36 @@ divWithId id cls children =
 {-| A `<section>` carrying the given Tailwind class string verbatim.
 -}
 section : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-section cls children =
-    node "section" [ asAttribute (Html.Attributes.class cls) ] children
+section =
+    el "section"
 
 
 {-| A `<span>` carrying the given Tailwind class string verbatim.
 -}
 span : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-span cls children =
-    node "span" [ asAttribute (Html.Attributes.class cls) ] children
+span =
+    el "span"
 
 
 {-| A `<nav>` carrying the given Tailwind class string verbatim.
 -}
 nav : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-nav cls children =
-    node "nav" [ asAttribute (Html.Attributes.class cls) ] children
+nav =
+    el "nav"
 
 
 {-| A `<ul>` carrying the given Tailwind class string verbatim.
 -}
 ul : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-ul cls children =
-    node "ul" [ asAttribute (Html.Attributes.class cls) ] children
+ul =
+    el "ul"
 
 
 {-| A `<li>` carrying the given Tailwind class string verbatim.
 -}
 li : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-li cls children =
-    node "li" [ asAttribute (Html.Attributes.class cls) ] children
+li =
+    el "li"
 
 
 {-| A native `<button>` carrying the given Tailwind class string verbatim.

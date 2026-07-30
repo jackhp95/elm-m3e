@@ -32,7 +32,7 @@ import M3e.AssistChip
 import M3e.Attributes
 import M3e.Fab
 import M3e.Kind
-import M3e.ListItem
+import M3e.ListAction
 import M3e.NavItem
 import M3e.SearchBar
 import M3e.Values as Value
@@ -210,7 +210,7 @@ screen model =
     Surface.view Surface.surface
         [ Seam.class "relative flex h-screen w-full overflow-hidden" ]
         [ navRail
-        , Seam.colWith "flex flex-1 flex-col min-w-0"
+        , Seam.div "flex flex-1 flex-col min-w-0"
             [ topBar
             , body model
             , exampleFooter
@@ -319,7 +319,7 @@ a filling reading pane; below `md:` they stack (list first, reading pane under).
 -}
 body : Model -> Element { s | html : M3e.Kind.Brand } adm_ Msg
 body model =
-    Seam.colWith "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden"
+    Seam.div "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden"
         [ Seam.section "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant"
             [ messageList model ]
         , Seam.section "flex-1 overflow-y-auto"
@@ -340,9 +340,9 @@ emptyMessage =
     { sender = "", initials = "", subject = "", snippet = "", body = [], time = "", labels = [] }
 
 
-{-| The inbox list: one `ListItem` per message with an avatar, sender, subject,
-snippet (supporting text) and timestamp, separated by dividers. The selected row
-is painted with a `surfaceContainer` background.
+{-| The inbox list: one interactive `M3e.ListAction` per message with an avatar,
+sender, subject, snippet (supporting text) and timestamp, separated by dividers.
+Selecting a row (`onClick`) marks it with a `surfaceContainer` background.
 -}
 messageList : Model -> Element { s | list : M3e.Kind.Brand } adm_ Msg
 messageList model =
@@ -357,7 +357,7 @@ divider =
     M3e.divider [ M3e.Attributes.inset True ] []
 
 
-messageRow : Int -> Int -> Message -> Element { s | listItem : M3e.Kind.Brand } adm_ Msg
+messageRow : Int -> Int -> Message -> Element { s | listAction : M3e.Kind.Brand } adm_ Msg
 messageRow selected index message =
     let
         rowSurface : Surface
@@ -368,22 +368,20 @@ messageRow selected index message =
             else
                 Surface.surface
     in
-    M3e.listItem
+    M3e.listAction
         [ Surface.asAttribute rowSurface
-        , Seam.class "cursor-pointer"
-        , Seam.attribute "role" "button"
-        , Seam.onClick (SelectMessage index)
+        , M3e.ListAction.onClick (SelectMessage index)
         ]
-        [ M3e.ListItem.leading (Avatar.initials message.initials)
+        [ M3e.ListAction.leading (Avatar.initials message.initials)
         , Seam.text message.sender
-        , M3e.ListItem.supportingText
+        , M3e.ListAction.supportingText
             (Seam.span "block"
                 [ Seam.body Value.medium [ Seam.onSurface ] [ Seam.text message.subject ]
                 , Seam.span "block"
                     [ Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text message.snippet ] ]
                 ]
             )
-        , M3e.ListItem.trailing
+        , M3e.ListAction.trailing
             (Seam.labelText Value.small [ Seam.onSurfaceVariant ] [ Seam.text message.time ])
         ]
 
@@ -397,18 +395,18 @@ avatar and timestamp, label chips, and the body paragraphs via `Seam`.
 -}
 readingPane : Message -> Element { s | html : M3e.Kind.Brand } adm_ msg
 readingPane message =
-    Seam.colWith "flex flex-col gap-6 p-6"
+    Seam.div "flex flex-col gap-6 p-6"
         [ Seam.headline Value.small [ Seam.onSurface ] [ Seam.text message.subject ]
-        , Seam.rowWith "flex items-center gap-3"
+        , Seam.div "flex items-center gap-3"
             [ Avatar.initials message.initials
-            , Seam.colWith "flex flex-col"
+            , Seam.div "flex flex-col"
                 [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text message.sender ]
                 , Seam.labelText Value.small [ Seam.onSurfaceVariant ] [ Seam.text ("to me · " ++ message.time) ]
                 ]
             ]
-        , Seam.rowWith "flex flex-wrap gap-2"
+        , M3e.chipSet [ Aria.label "Labels" ]
             (List.map labelChip message.labels)
-        , Seam.colWith "flex flex-col gap-4"
+        , Seam.div "flex flex-col gap-4"
             (List.map (\p -> Seam.paragraph Value.medium [ Seam.onSurfaceVariant ] [ Seam.text p ]) message.body)
         ]
 

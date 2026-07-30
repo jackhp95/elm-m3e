@@ -26,9 +26,9 @@ import M3e.Attributes
 import M3e.Card
 import M3e.Fab
 import M3e.Kind
+import M3e.LinearProgressIndicator
 import M3e.ListItem
 import M3e.NavItem
-import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -407,7 +407,7 @@ budgetRow b =
             , Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text b.amount ]
             ]
         , M3e.linearProgressIndicator
-            [ M3e.SliderThumb.value b.used, M3e.Attributes.max b.max ]
+            [ M3e.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
             []
         ]
 
@@ -419,7 +419,7 @@ budgetRow b =
 activitySection : Element { s | card : M3e.Kind.Brand } adm_ msg
 activitySection =
     sectionCard "Recent activity"
-        (Seam.div "flex flex-col"
+        (M3e.list []
             (List.intersperse (M3e.divider [] [])
                 (List.map activityRow activity)
             )

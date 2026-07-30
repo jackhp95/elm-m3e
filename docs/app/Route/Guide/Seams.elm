@@ -16,6 +16,7 @@ import HtmlIr.Element as Element exposing (Element)
 import M3e
 import M3e.Button
 import M3e.FormField
+import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Values as Value
@@ -72,7 +73,7 @@ head _ =
 saveButton : Element { s | button : M3e.Kind.Brand } admittedBy msg
 saveButton =
     M3e.button [ M3e.Button.variant Value.filled ]
-        [ M3e.Button.icon (M3e.icon [ Seam.attribute "name" "save" ] [])
+        [ M3e.Button.icon (M3e.icon [ M3e.Icon.name "save" ] [])
         , Seam.text "Save"
         ]
 
@@ -93,14 +94,14 @@ emailField =
         ]
 
 
-{-| A userland layout producer: a two-column grid at wide widths. `Seam.gridWith`
+{-| A userland layout producer: a two-column grid at wide widths. `Seam.div`
 is a one-line wrapper over a typed `div` + a class attribute, kept in the app's
 one `Seam` module, so feature code names the layout instead of sprinkling raw
 class strings around.
 -}
 twoColumn : Element { s | html : M3e.Kind.Brand } admittedBy msg
 twoColumn =
-    Seam.gridWith "grid grid-cols-1 gap-4 md:grid-cols-2"
+    Seam.div "grid grid-cols-1 gap-4 md:grid-cols-2"
         [ emailField, saveButton ]
 
 
@@ -156,7 +157,7 @@ intro =
 
 userland : String
 userland =
-    """The two doors, for when you must leave the typed tree: **`Unsafe`** lifts raw `Html` (`fromHtml`) or re-kinds an element to fit any slot (`recast`), and the raw forge **`HtmlIr.Internal`** forges custom tags and attributes (`element`, `attribute`, `on`). Both are fenced by elm-review, so a use outside a blessed module is a lint finding. Your seam module builds *on top* of them — named producers that contain each escape. Here the settings pieces sit in a two-column layout: `Seam.gridWith` is a one-line userland helper over a typed `div`, so feature code names the layout instead of sprinkling raw class strings."""
+    """The two doors, for when you must leave the typed tree: **`Unsafe`** lifts raw `Html` (`fromHtml`) or re-kinds an element to fit any slot (`recast`), and the raw forge **`HtmlIr.Internal`** forges custom tags and attributes (`element`, `attribute`, `on`). Both are fenced by elm-review, so a use outside a blessed module is a lint finding. Your seam module builds *on top* of them — named producers that contain each escape. Here the settings pieces sit in a two-column layout: `Seam.div` is a one-line userland helper over a typed `div`, so feature code names the layout instead of sprinkling raw class strings."""
 
 
 seamCode : String

@@ -398,8 +398,8 @@ slider) rather than a `ListItem` with the control crammed into a text slot.
 -}
 densityRow : Row adm_ msg
 densityRow =
-    Seam.colWith "flex flex-col gap-3 px-4 py-3"
-        [ Seam.rowWith "flex items-center gap-4"
+    Seam.div "flex flex-col gap-3 px-4 py-3"
+        [ Seam.div "flex items-center gap-4"
             [ M3e.icon [ TA.name "density_medium" ] []
             , Seam.text "Display density"
             ]

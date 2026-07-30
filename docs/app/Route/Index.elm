@@ -21,6 +21,7 @@ import M3e.Attributes
 import M3e.Button
 import M3e.Card
 import M3e.Heading
+import M3e.Icon
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -30,6 +31,8 @@ import Seam
 import Seam.Shape as Shape
 import Seam.Surface as Surface
 import Shared
+import TypedHtml.Aria as Aria
+import TypedHtml.Img
 import UrlPath
 import View exposing (View)
 
@@ -128,7 +131,7 @@ hero =
         , Seam.div "space-y-2 pt-4"
             [ Seam.labelText Value.small [ Seam.onSurfaceVariant ] [ Seam.text "Live theme — try the ⚙ settings in the app bar" ]
             , Seam.div "flex items-center gap-3"
-                [ M3e.avatar [ Seam.attribute "aria-label" "Sample avatar" ] [ Seam.node "img" [ Seam.attribute "src" "/avatar-sample.svg" ] [] ]
+                [ M3e.avatar [ Aria.label "Sample avatar" ] [ TypedHtml.Img.img [ TypedHtml.Img.src "/avatar-sample.svg" ] [] ]
                 , Seam.div "flex gap-3"
                     [ Surface.view Surface.primary [ Seam.class "block w-10 h-10", Shape.corner Shape.large ] []
                     , Surface.view Surface.tertiaryContainer [ Seam.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []
@@ -167,7 +170,7 @@ highlightCard iconName cardTitle cardBody =
         , M3e.Card.content
             (Seam.div "flex gap-3"
                 [ Seam.span "shrink-0"
-                    [ Seam.colored [ Seam.primary ] [ M3e.icon [ Seam.attribute "name" iconName ] [] ] ]
+                    [ Seam.colored [ Seam.primary ] [ M3e.icon [ M3e.Icon.name iconName ] [] ] ]
                 , Seam.paragraph Value.large [ Seam.onSurface ] [ Seam.text cardBody ]
                 ]
             )

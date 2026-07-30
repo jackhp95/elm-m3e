@@ -61,13 +61,13 @@ slidingPanels activeIndex panels =
                 track : Element { k | html : M3e.Kind.Brand } trackAdm msg
                 track =
                     Seam.node "div"
-                        [ Seam.attribute "class" "sp-track"
+                        [ Seam.class "sp-track"
                         , Seam.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
                         ]
                         (List.indexedMap (panel idx) panels)
             in
             Seam.node "slide-panels"
-                [ Seam.attribute "class" "sp-viewport"
+                [ Seam.class "sp-viewport"
                 , Seam.attribute "active-index" (String.fromInt idx)
                 ]
                 [ track ]
@@ -84,7 +84,7 @@ panel activeIndex i child =
 
         attrs : List (Attr c msg)
         attrs =
-            Seam.attribute "class" "sp-panel"
+            Seam.class "sp-panel"
                 :: Seam.attribute "aria-hidden"
                     (if inactive then
                         "true"

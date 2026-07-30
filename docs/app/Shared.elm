@@ -31,6 +31,7 @@ import M3e.AppBar
 import M3e.Attributes
 import M3e.DrawerContainer
 import M3e.FormField
+import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Theme
@@ -481,7 +482,7 @@ brandMark =
         -- isn't announced alongside the "elm-m3e" title next to it.
         , Seam.asAttribute (attribute "aria-hidden" "true")
         ]
-        [ M3e.icon [ Seam.attribute "name" "palette" ] [] ]
+        [ M3e.icon [ M3e.Icon.name "palette" ] [] ]
 
 
 {-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
@@ -493,7 +494,7 @@ menuButton =
         [ Seam.asAttribute (class "md:hidden") ]
         [ M3e.iconButton
             [ Aria.label "Toggle navigation", Seam.onClick MenuClicked ]
-            [ M3e.icon [ Seam.attribute "name" "menu" ] [] ]
+            [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
         ]
 
 
@@ -536,7 +537,7 @@ settingsButton : Element { iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
         [ Aria.label "Settings", Seam.onClick ToggleSettings ]
-        [ M3e.icon [ Seam.attribute "name" "settings" ] [] ]
+        [ M3e.icon [ M3e.Icon.name "settings" ] [] ]
 
 
 
@@ -768,7 +769,7 @@ drawerShell toMsg model page components body =
             -- Wrap the nav-menu in a native `<nav>` landmark so AT users can
             -- jump straight to navigation (and skip past it via the skip-link).
             (Seam.node "nav"
-                [ Seam.asAttribute (attribute "aria-label" "Primary") ]
+                [ Aria.label "Primary" ]
                 [ navMenu components currentPath ]
             )
         , M3e.DrawerContainer.end
@@ -830,7 +831,7 @@ componentsGroup components currentPath =
             []
         )
         (M3e.NavMenuItem.label (M3e.text "Components")
-            :: M3e.NavMenuItem.icon (M3e.icon [ Seam.attribute "name" "widgets" ] [] |> Seam.recast)
+            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name "widgets" ] [] |> Seam.recast)
             :: navLeaf currentPath ( "/components/all", "All components" )
             :: List.map
                 (\c -> navLeaf currentPath ( "/components/" ++ c.slug, c.label ))
@@ -851,7 +852,7 @@ navGroup currentPath glyph grpTitle items =
             []
         )
         (M3e.NavMenuItem.label (M3e.text grpTitle)
-            :: M3e.NavMenuItem.icon (M3e.icon [ Seam.attribute "name" glyph ] [] |> Seam.recast)
+            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name glyph ] [] |> Seam.recast)
             :: List.map (navLeaf currentPath) items
         )
 

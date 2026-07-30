@@ -39,6 +39,7 @@ import Seam.Avatar as Avatar
 import Seam.Shape as Shape
 import Seam.Surface as Surface
 import Shared
+import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import View exposing (View)
 
@@ -110,7 +111,7 @@ screen =
     Surface.view Surface.surface
         [ Seam.class "flex h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , Seam.colWith "flex flex-1 flex-col min-w-0 overflow-hidden"
+        , Seam.div "flex flex-1 flex-col min-w-0 overflow-hidden"
             [ appBar
             , Seam.div "flex-1 overflow-y-auto"
                 [ body
@@ -165,7 +166,7 @@ body =
 -}
 primary : Element { s | html : M3e.Kind.Brand } adm_ msg
 primary =
-    Seam.colWith "flex flex-1 flex-col gap-4 min-w-0"
+    Seam.div "flex flex-1 flex-col gap-4 min-w-0"
         [ Seam.headline Value.small [ Seam.onSurface ] [ Seam.text "Project overview" ]
         , Seam.body Value.large
             [ Seam.onSurfaceVariant ]
@@ -191,7 +192,7 @@ summaryCard =
 
 metric : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 metric value label =
-    Seam.colWith "flex flex-col"
+    Seam.div "flex flex-col"
         [ Seam.headline Value.medium [ Seam.primary ] [ Seam.text value ]
         , Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text label ]
         ]
@@ -202,7 +203,7 @@ milestonesCard =
     M3e.card [ M3e.Attributes.variant Value.filled ]
         [ M3e.Card.header (Seam.title Value.large [ Seam.onSurface ] [ Seam.text "Milestones" ])
         , M3e.Card.content
-            (Seam.div "flex flex-col"
+            (M3e.list []
                 (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                     [ milestoneRow "check_circle" "Motion tokens" "Shipped"
                     , milestoneRow "pending" "Adaptive nav" "In progress"
@@ -232,11 +233,11 @@ supporting =
         [ Surface.view Surface.surfaceContainer
             [ Shape.corner Shape.large, Seam.class "flex flex-col gap-4 p-4" ]
             [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text "Recent activity" ]
-            , Seam.colWith "flex flex-col gap-3"
+            , Seam.div "flex flex-col gap-3"
                 (List.map activityRow activity)
             , M3e.divider [] []
             , Seam.title Value.medium [ Seam.onSurface ] [ Seam.text "Tags" ]
-            , Seam.div "flex flex-wrap gap-2"
+            , M3e.chipSet [ Aria.label "Tags" ]
                 (List.map tag [ "design", "motion", "a11y", "beta" ])
             ]
         ]
@@ -256,9 +257,9 @@ activity =
 
 activityRow : Activity -> Element { s | html : M3e.Kind.Brand } adm_ msg
 activityRow a =
-    Seam.rowWith "flex items-start gap-3"
+    Seam.div "flex items-start gap-3"
         [ Avatar.initials a.initials
-        , Seam.colWith "flex flex-col"
+        , Seam.div "flex flex-col"
             [ Seam.body Value.medium [ Seam.onSurface ] [ Seam.text a.who ]
             , Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text a.what ]
             ]

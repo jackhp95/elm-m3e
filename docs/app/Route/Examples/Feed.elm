@@ -164,7 +164,7 @@ screen model =
     Surface.view Surface.surface
         [ Seam.class "flex h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , Seam.colWith "flex flex-1 flex-col min-w-0 overflow-hidden"
+        , Seam.div "flex flex-1 flex-col min-w-0 overflow-hidden"
             [ appBar
             , Seam.div "flex-1 overflow-y-auto"
                 [ Seam.div "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6"
@@ -254,7 +254,7 @@ postCard post =
                 [ M3e.icon [ TA.name post.icon, Seam.class "text-4xl" ] [] ]
             )
         , M3e.Card.content
-            (Seam.colWith "flex flex-col gap-2 pt-1"
+            (Seam.div "flex flex-col gap-2 pt-1"
                 [ Seam.labelText Value.small [ Seam.primary ] [ Seam.text (String.toUpper post.category) ]
                 , Seam.title Value.medium [ Seam.onSurface ] [ Seam.text post.title ]
                 , Seam.body Value.medium [ Seam.onSurfaceVariant ] [ Seam.text post.excerpt ]

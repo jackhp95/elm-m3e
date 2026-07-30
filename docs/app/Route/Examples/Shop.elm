@@ -323,7 +323,7 @@ filterBar : String -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 filterBar current =
     Seam.div "flex items-center gap-2"
         [ Seam.div "min-w-0 flex-1 overflow-x-auto"
-            [ M3e.filterChipSet [ Seam.class "flex gap-2" ]
+            [ M3e.filterChipSet []
                 (List.map (categoryChip current) categories)
             ]
         , iconAction "sort"

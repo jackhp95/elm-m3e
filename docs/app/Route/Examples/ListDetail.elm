@@ -30,6 +30,7 @@ import M3e
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Kind
+import M3e.ListAction
 import M3e.ListItem
 import M3e.NavItem
 import M3e.Values as Value
@@ -162,7 +163,7 @@ screen model =
     Surface.view Surface.surface
         [ Seam.class "flex h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , Seam.colWith "flex flex-1 flex-col min-w-0 overflow-hidden"
+        , Seam.div "flex flex-1 flex-col min-w-0 overflow-hidden"
             [ appBar
             , body model
             , exampleFooter
@@ -223,13 +224,13 @@ listPane selected =
         ]
 
 
-{-| One row. The selected row swaps to a `surfaceContainer` role (a Surface-role
-token swap, not a background class) so the active item reads against the base
-surface. `ListItem` is a passive display component, so the click affordance is
-added the userland way: a `role="button"` and a `Seam.onClick` (see the Mail
-example — the `@m3e/web` list item does not carry an interactive/onClick fact).
+{-| One row, an interactive `M3e.ListAction` — the `m3e-list-action` element
+carries the click/onClick fact, so the row is a real actionable list item with no
+userland `role="button"` bolt-on. The selected row swaps to a `surfaceContainer`
+role (a Surface-role token swap, not a background class) so the active item reads
+against the base surface.
 -}
-contactRow : Int -> Int -> Contact -> Element { s | listItem : M3e.Kind.Brand } adm_ Msg
+contactRow : Int -> Int -> Contact -> Element { s | listAction : M3e.Kind.Brand } adm_ Msg
 contactRow selected index contact =
     let
         rowSurface : Surface
@@ -240,15 +241,13 @@ contactRow selected index contact =
             else
                 Surface.surface
     in
-    M3e.listItem
+    M3e.listAction
         [ Surface.asAttribute rowSurface
-        , Seam.class "cursor-pointer"
-        , Seam.attribute "role" "button"
-        , Seam.onClick (SelectContact index)
+        , M3e.ListAction.onClick (SelectContact index)
         ]
-        [ M3e.ListItem.leading (Avatar.initials contact.initials)
+        [ M3e.ListAction.leading (Avatar.initials contact.initials)
         , Seam.text contact.name
-        , M3e.ListItem.supportingText (Seam.text contact.role)
+        , M3e.ListAction.supportingText (Seam.text contact.role)
         ]
 
 
@@ -266,7 +265,7 @@ detailPane contact =
 
 header : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 header contact =
-    Seam.colWith "flex flex-col items-center gap-3 pt-2"
+    Seam.div "flex flex-col items-center gap-3 pt-2"
         [ Avatar.initials contact.initials
         , Seam.headline Value.small [ Seam.onSurface ] [ Seam.text contact.name ]
         , Seam.body Value.large [ Seam.onSurfaceVariant ] [ Seam.text contact.role ]
@@ -275,10 +274,13 @@ header contact =
 
 {-| The contact's fields, as a surface-container card of divided rows.
 -}
-detailCard : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
+detailCard : Contact -> Element { s | list : M3e.Kind.Brand } adm_ msg
 detailCard contact =
-    Surface.view Surface.surfaceContainer
-        [ Shape.corner Shape.large, Seam.class "overflow-hidden flex flex-col" ]
+    M3e.list
+        [ Surface.asAttribute Surface.surfaceContainer
+        , Shape.corner Shape.large
+        , Seam.class "overflow-hidden"
+        ]
         (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
             [ fieldRow "mail" "Email" contact.email
             , fieldRow "call" "Phone" contact.phone
