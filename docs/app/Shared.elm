@@ -821,7 +821,8 @@ navMenu components currentPath =
         )
 
 
-{-| The single top-level **Components** nav group.
+{-| The single top-level **Components** nav group — every component listed
+alphabetically (by label), with no category sub-groups.
 -}
 componentsGroup : List NavComponent -> String -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 componentsGroup components currentPath =
@@ -836,16 +837,8 @@ componentsGroup components currentPath =
             :: M3e.NavMenuItem.icon (M3e.icon [ Native.attribute "name" "widgets" ] [] |> Seam.recast)
             :: navLeaf currentPath ( "/components/all", "All components" )
             :: List.map
-                (\( category, glyph ) ->
-                    navGroup currentPath
-                        glyph
-                        category
-                        (components
-                            |> List.filter (\c -> c.category == category)
-                            |> List.map (\c -> ( "/components/" ++ c.slug, c.label ))
-                        )
-                )
-                componentCategories
+                (\c -> navLeaf currentPath ( "/components/" ++ c.slug, c.label ))
+                (List.sortBy (\c -> String.toLower c.label) components)
         )
 
 
