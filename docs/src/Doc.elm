@@ -18,8 +18,6 @@ import Doc.Fold as Fold
 import Html exposing (Html, a, code, div, node, p, pre, text)
 import Html.Attributes exposing (attribute, class, href)
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
@@ -192,9 +190,9 @@ tinted container.
 -}
 recapBox : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 recapBox md =
-    Layout.div "rounded-md-corner-medium bg-surface-container p-4 space-y-2"
-        [ Kit.overline [ Kit.primary ] [ Kit.text "Recap" ]
-        , Layout.div "text-on-surface-variant" [ markdown md ]
+    Seam.div "rounded-md-corner-medium bg-surface-container p-4 space-y-2"
+        [ Seam.overline [ Seam.primary ] [ Seam.text "Recap" ]
+        , Seam.div "text-on-surface-variant" [ markdown md ]
         ]
 
 
@@ -235,16 +233,17 @@ callout label body =
         )
 
 
-{-| The shared "these are userland modules you write" callout, used everywhere an
-example first leans on `Kit` / `Native` / `Layout` / `Seam`. These names are NOT in
-the package's `exposed-modules`: they live in `docs/kit/` as copyable starters, so a
-reader who pastes `Kit.text` into a fresh project must know to bring the module along.
-One definition, so the framing can't drift between pages.
+{-| The shared "these helpers are our examples, not the library" callout, used
+everywhere an example first leans on `Seam`. That is this docs app's own thin
+wrapper over the library's mechanisms — NOT in the package's `exposed-modules`
+(it lives in `docs/kit/` as a copyable starter). A reader who pastes `Seam.text`
+into a fresh project must bring the module along, or use the underlying mechanism
+directly. One definition, so the framing can't drift.
 -}
 userlandNote : Element { s | html : M3e.Kind.Brand } admittedBy msg
 userlandNote =
-    callout "You write these"
-        """`Kit`, `Native`, `Layout`, and `Seam` in these examples are **your own modules**, not part of the `elm-m3e` package — they won't resolve from a fresh install. The library provides the typed components (`M3e.*`, ejected into your tree); *you* supply the userland vocabulary that fills the gaps: `Kit.text` and typography, `Native` HTML producers, `Layout` wrappers, and the `Seam` escape hatch. Copy the paste-able starters from [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) and adapt them, or write your own — see [Your own seam](/guide/seams)."""
+    callout "These helpers are our examples, not the library"
+        """`Seam` in these examples is **this docs app's own module** — a thin wrapper we wrote over the library's mechanisms, not part of `elm-m3e` (it won't resolve from a fresh install), and you don't need it. The library gives you typed components (`M3e.*`) plus `TypedHtml` for standard HTML, and you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). When you must bring in something *foreign*, reach for a mechanism: `M3e.Unsafe` (`fromHtml` lifts raw `Html`, `recast` re-kinds an element to fit any slot) or the raw forge `HtmlIr.Internal` (`element` for a custom tag, `attribute` / `property` / `on` to define your own, `lazy` to memoise). `Seam.text` is just an example of a producer written on top of those — copy the [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) starters, or roll your own. See [Your own seam](/guide/seams)."""
 
 
 {-| A syntax-highlighted Elm type signature (for API member rows). Rendered as an

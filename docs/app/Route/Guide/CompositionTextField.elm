@@ -13,17 +13,17 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.FormField
 import M3e.Kind
 import M3e.Values as Value
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes
 import UrlPath
 import View exposing (View)
 
@@ -74,15 +74,18 @@ the one shared id "email-field". This is the value shown live and printed below.
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Native.node "label" [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ]
-        , M3e.FormField.hint (Kit.text "We'll never share it.")
-        , Native.node "input"
-            [ Native.attribute "id" "email-field"
-            , Native.attribute "type" "email"
-            , Native.attribute "placeholder" "you@example.com"
-            , Native.attribute "name" "email"
-            ]
-            []
+        [ M3e.FormField.label
+            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ Seam.text "Email address" ])
+        , M3e.FormField.hint (Seam.text "We'll never share it.")
+        , M3e.FormField.child
+            (TypedHtml.input
+                [ TypedHtml.Attributes.id "email-field"
+                , TypedHtml.Attributes.type_ "email"
+                , TypedHtml.Attributes.placeholder "you@example.com"
+                , TypedHtml.Attributes.name "email"
+                ]
+                []
+            )
         ]
 
 
@@ -92,17 +95,17 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Composition, not injection"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown composed
                         , Doc.showcase emailField
                         , Doc.code_ Doc.Elm emailCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown native ]
                     , Doc.recapBox recap
                     ]
@@ -125,23 +128,24 @@ composed =
 emailCode : String
 emailCode =
     """emailField =
-    M3e.formField [ M3e.Attributes.variant Value.outlined ]
-        [ M3e.formFieldSlotLabel "email-field"
-            (M3e.Native.label [] [ Kit.text "Email address" ])
-        , M3e.formFieldSlotHint (Kit.text "We'll never share it.")
-        , M3e.formFieldSlotDefault "email-field"
-            (M3e.Native.input
-                [ M3e.Native.type_ "email"
-                , M3e.Native.placeholder "you@example.com"
-                , M3e.Native.name "email"
+    M3e.formField [ M3e.FormField.variant Value.outlined ]
+        [ M3e.FormField.label
+            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ Seam.text "Email address" ])
+        , M3e.FormField.hint (Seam.text "We'll never share it.")
+        , M3e.FormField.child
+            (TypedHtml.input
+                [ TypedHtml.Attributes.type_ "email"
+                , TypedHtml.Attributes.placeholder "you@example.com"
+                , TypedHtml.Attributes.name "email"
                 ]
+                []
             )
         ]"""
 
 
 native : String
 native =
-    """Two things make this safe. First, **native HTML is first-class and typed.** `M3e.Native.input` is a real `<input>`, but its attributes are closed to the ones an input actually permits — `type_`, `placeholder`, `name`, `value`, `checked`… An input has no `href`, so `M3e.Native.input [ M3e.Native.href "/x" ]` is a **compile error**, not a raw-HTML escape hatch. You get the exact tag you asked for, with the exact attributes it's allowed.
+    """Two things make this safe. First, **native HTML is first-class and typed.** `TypedHtml.input` is a real `<input>`, but its attributes are closed to the ones an input actually permits — `type_`, `placeholder`, `name`, `value`, `checked`… An input has no `href`, so `TypedHtml.input [ TypedHtml.Attributes.href "/x" ]` is a **compile error**, not a raw-HTML escape hatch. You get the exact tag you asked for, with the exact attributes it's allowed.
 
 Second, **the library never injects.** It assembles the pieces you wrote — it doesn't secretly wrap, reorder, or add structure around your content. What you write is what renders. A search field is the same move with a different input `type_`; once you can compose one field, you can compose any of them."""
 

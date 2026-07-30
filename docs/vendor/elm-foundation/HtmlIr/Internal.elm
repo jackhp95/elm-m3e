@@ -1,10 +1,11 @@
 module HtmlIr.Internal exposing
     ( Element, Node, Attr, Value
-    , fromNode
+    , fromNode, element
     , attribute, property, on, fromHtmlAttribute
     , token
     , fromHtml
     , node, keyedNode, text, addAttribute, toHtml
+    , lazy, lazy2, lazy3, lazy4, lazy5, lazy6, lazy7, lazy8
     , toNode, mapElement, mapNode, mapAttribute, toHtmlAttribute, toString
     )
 
@@ -58,7 +59,7 @@ Curation rules for this module (frozen at 1.0):
 
 # Element forge
 
-@docs fromNode
+@docs fromNode, element
 
 
 # Attribute forge
@@ -82,6 +83,7 @@ These are re-exported by the public modules; they live here only because the
 opaque representations do. None of them mint a row.
 
 @docs node, keyedNode, text, addAttribute, toHtml
+@docs lazy, lazy2, lazy3, lazy4, lazy5, lazy6, lazy7, lazy8
 @docs toNode, mapElement, mapNode, mapAttribute, toHtmlAttribute, toString
 
 -}
@@ -167,6 +169,20 @@ closed row derived from config), and the brand-level escapes built on it
 fromNode : Node msg -> Element accepts admittedBy msg
 fromNode =
     Element
+
+
+{-| Forge an `Element` straight from a tag name — [`node`](#node) fused with
+[`fromNode`](#fromNode), so a custom element is a slot-ready `Element` in one call
+instead of two. Like `fromNode` it **invents both phantom rows**, so the result
+drops into any slot. Children are `Node`s (row-erased, hence freely mixable) — lift
+an `Element` child with [`toNode`](#toNode).
+
+For genuine web components / custom tags that have no generated brand constructor.
+
+-}
+element : String -> List (Attr capability msg) -> List (Node msg) -> Element accepts admittedBy msg
+element tag attrs children =
+    fromNode (node tag attrs children)
 
 
 
@@ -271,6 +287,69 @@ keyedNode tag attrs children =
 text : String -> Node msg
 text =
     Text
+
+
+{-| Memoise a subtree: skip re-rendering while its inputs are referentially
+unchanged (`VirtualDom.lazy`). The body returns raw `Html`, not an `Element` —
+a typed subtree is `\model -> HtmlIr.Element.toHtml (myView model)` — because
+memoisation compares the function and each argument by **reference**; any
+per-render wrapper (an inline lambda, a packed tuple/record) allocates fresh and
+silently never memoises. So the body **must be a stable top-level function** and
+each argument a stable reference — exactly what `elm/html`'s `lazy` requires.
+Lift the result into a slot with [`fromNode`](#fromNode). Safe: mints no row.
+-}
+lazy : (a -> Html msg) -> a -> Node msg
+lazy f a =
+    Raw (VirtualDom.lazy f a)
+
+
+{-| [`lazy`](#lazy) for a two-argument view.
+-}
+lazy2 : (a -> b -> Html msg) -> a -> b -> Node msg
+lazy2 f a b =
+    Raw (VirtualDom.lazy2 f a b)
+
+
+{-| [`lazy`](#lazy) for a three-argument view.
+-}
+lazy3 : (a -> b -> c -> Html msg) -> a -> b -> c -> Node msg
+lazy3 f a b c =
+    Raw (VirtualDom.lazy3 f a b c)
+
+
+{-| [`lazy`](#lazy) for a four-argument view.
+-}
+lazy4 : (a -> b -> c -> d -> Html msg) -> a -> b -> c -> d -> Node msg
+lazy4 f a b c d =
+    Raw (VirtualDom.lazy4 f a b c d)
+
+
+{-| [`lazy`](#lazy) for a five-argument view.
+-}
+lazy5 : (a -> b -> c -> d -> e -> Html msg) -> a -> b -> c -> d -> e -> Node msg
+lazy5 f a b c d e =
+    Raw (VirtualDom.lazy5 f a b c d e)
+
+
+{-| [`lazy`](#lazy) for a six-argument view.
+-}
+lazy6 : (a -> b -> c -> d -> e -> g -> Html msg) -> a -> b -> c -> d -> e -> g -> Node msg
+lazy6 f a b c d e g =
+    Raw (VirtualDom.lazy6 f a b c d e g)
+
+
+{-| [`lazy`](#lazy) for a seven-argument view.
+-}
+lazy7 : (a -> b -> c -> d -> e -> g -> h -> Html msg) -> a -> b -> c -> d -> e -> g -> h -> Node msg
+lazy7 f a b c d e g h =
+    Raw (VirtualDom.lazy7 f a b c d e g h)
+
+
+{-| [`lazy`](#lazy) for an eight-argument view.
+-}
+lazy8 : (a -> b -> c -> d -> e -> g -> h -> i -> Html msg) -> a -> b -> c -> d -> e -> g -> h -> i -> Node msg
+lazy8 f a b c d e g h i =
+    Raw (VirtualDom.lazy8 f a b c d e g h i)
 
 
 {-| Prepend one attribute to a node. A `Text` or `Raw` leaf cannot carry an

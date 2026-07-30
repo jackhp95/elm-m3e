@@ -11,13 +11,12 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -64,8 +63,8 @@ head _ =
 
 card : String -> List (Element { s | html : M3e.Kind.Brand } adm_ msg) -> Element { r | html : M3e.Kind.Brand } adm_ msg
 card title items =
-    Layout.section "space-y-3"
-        (Kit.title Value.medium [ Kit.onSurface ] [ Kit.text title ] :: items)
+    Seam.section "space-y-3"
+        (Seam.title Value.medium [ Seam.onSurface ] [ Seam.text title ] :: items)
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -74,10 +73,10 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-10"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-10"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Cheat sheet"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         , Doc.userlandNote
                         ]
                     , card "The surfaces" [ Doc.markdown layers ]
@@ -123,10 +122,10 @@ barrelVsSpecific =
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), Seam.text "Save" ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ Kit.text "Save" ]"""
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ Seam.text "Save" ]"""
 
 
 shapes : String
@@ -137,7 +136,7 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form — everything optional; the tersest
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
 M3e.Button.el { content = …, action = … } [] []
@@ -159,13 +158,11 @@ dial =
 
 seams : String
 seams =
-    """From [your own seam](/guide/seams). A seam — a crossing to raw HTML — is only allowed in a few blessed userland modules, so every escape is in a known, greppable place:
+    """From [your own seam](/guide/seams). Everything is a typed `Element` from `M3e.*` / `TypedHtml.*`, composed directly — you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). To bring in something *foreign*, there are exactly two loud, greppable, lint-fenced escape surfaces:
 
-| Module | What it holds |
+| Escape | What it gives you |
 | --- | --- |
-| **Layout** | Layout wrappers over raw HTML (rows, grids, spacing). |
-| **Kit** | Your design-system vocabulary (typography, color roles, `text`). |
-| **Native** | Raw-HTML escape hatches — `node` / `custom` (dynamic or custom-element tags), `attribute` / `onClick` / `style` (raw injection). For plain typed tags (`input`, `label`, …) use `TypedHtml.*`. |
-| **Doc / Shared** | App shell and doc-rendering crossings. |
+| **`<Brand>.Unsafe`** / **`.Unsafe.Attributes`** | `fromHtml` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAttr` re-kind to free rows so anything drops into any slot. Fenced by `NoUnsafeImportOutsideAllowed`. |
+| **`HtmlIr.Internal`** (the forge) | `element` (a custom-element tag as a slot-ready `Element`), `node` / `attribute` / `property` / `on` (define your own tags, attrs, events), `lazy`..`lazy8` (memoise). Fenced by `NoInternalImportOutsideAllowed`. |
 
-Anywhere else, a raw escape is flagged — and the linter offers to lift it into one of these for you."""
+A "seam" isn't a library feature — it's the *practice* of corralling those escapes into one greppable place (this docs app keeps its own in `Seam`). Anywhere else a raw escape is flagged, and the linter offers to lift it into an escape for you."""

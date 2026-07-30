@@ -16,22 +16,23 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
-import Kit
-import Kit.Shape as Shape
-import Kit.Surface as Surface
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Button
 import M3e.Card
 import M3e.Heading
+import M3e.Icon
 import M3e.Kind
 import M3e.Values as Value
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
+import Seam.Shape as Shape
+import Seam.Surface as Surface
 import Shared
+import TypedHtml.Aria as Aria
+import TypedHtml.Img
 import UrlPath
 import View exposing (View)
 
@@ -108,33 +109,33 @@ view app _ =
 
 hero : Element { s | html : M3e.Kind.Brand } admittedBy msg
 hero =
-    Layout.section "space-y-5"
+    Seam.section "space-y-5"
         [ M3e.heading
             [ M3e.Heading.variant Value.display
             , M3e.Heading.size Value.small
             , M3e.Attributes.level 1
             ]
             [ M3e.text "Type-safe Material 3 Expressive for Elm" ]
-        , Layout.div "max-w-2xl"
-            [ Kit.paragraph Value.large
-                [ Kit.onSurfaceVariant ]
-                [ Kit.text "Material 3 Expressive for Elm, over matraic's "
-                , Native.node "code" [] [ Kit.text "@m3e/web" ]
-                , Kit.text " web components — where invalid UIs don't compile. Typed slots, enforced accessible names, and docs whose every example is machine-proven against the real components."
+        , Seam.div "max-w-2xl"
+            [ Seam.paragraph Value.large
+                [ Seam.onSurfaceVariant ]
+                [ Seam.text "Material 3 Expressive for Elm, over matraic's "
+                , Seam.node "code" [] [ Seam.text "@m3e/web" ]
+                , Seam.text " web components — where invalid UIs don't compile. Typed slots, enforced accessible names, and docs whose every example is machine-proven against the real components."
                 ]
             ]
-        , Layout.div "flex flex-wrap items-center gap-3 pt-2"
-            [ M3e.button [ M3e.Button.variant Value.filled, M3e.Button.href "/getting-started/installation" ] [ Kit.text "Get started" ]
-            , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/reference" ] [ Kit.text "Browse the API reference" ]
+        , Seam.div "flex flex-wrap items-center gap-3 pt-2"
+            [ M3e.button [ M3e.Button.variant Value.filled, M3e.Button.href "/getting-started/installation" ] [ Seam.text "Get started" ]
+            , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/reference" ] [ Seam.text "Browse the API reference" ]
             ]
-        , Layout.div "space-y-2 pt-4"
-            [ Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text "Live theme — try the ⚙ settings in the app bar" ]
-            , Layout.div "flex items-center gap-3"
-                [ M3e.avatar [ Native.attribute "aria-label" "Sample avatar" ] [ Native.node "img" [ Native.attribute "src" "/avatar-sample.svg" ] [] ]
-                , Layout.div "flex gap-3"
-                    [ Surface.view Surface.primary [ Layout.class "block w-10 h-10", Shape.corner Shape.large ] []
-                    , Surface.view Surface.tertiaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []
-                    , Surface.view Surface.secondaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.full ] []
+        , Seam.div "space-y-2 pt-4"
+            [ Seam.labelText Value.small [ Seam.onSurfaceVariant ] [ Seam.text "Live theme — try the ⚙ settings in the app bar" ]
+            , Seam.div "flex items-center gap-3"
+                [ M3e.avatar [ Aria.label "Sample avatar" ] [ TypedHtml.Img.img [ TypedHtml.Img.src "/avatar-sample.svg" ] [] ]
+                , Seam.div "flex gap-3"
+                    [ Surface.view Surface.primary [ Seam.class "block w-10 h-10", Shape.corner Shape.large ] []
+                    , Surface.view Surface.tertiaryContainer [ Seam.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []
+                    , Surface.view Surface.secondaryContainer [ Seam.class "block w-10 h-10", Shape.corner Shape.full ] []
                     ]
                 ]
             ]
@@ -145,9 +146,9 @@ hero =
 -}
 highlights : Int -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 highlights componentCount =
-    Layout.section "space-y-6"
+    Seam.section "space-y-6"
         [ Doc.sectionHeading "Why elm-m3e"
-        , Layout.div "grid gap-4 sm:grid-cols-3"
+        , Seam.div "grid gap-4 sm:grid-cols-3"
             [ highlightCard "verified"
                 "Type-safe slots"
                 "Containers take typed children — an icon slot can only hold a M3e.Icon. Invalid compositions are compile errors — the wrong UI is never a value you can build."
@@ -167,10 +168,10 @@ highlightCard iconName cardTitle cardBody =
         [ M3e.Card.variant Value.elevated ]
         [ M3e.Card.header (M3e.heading [ M3e.Heading.variant Value.title ] [ M3e.text cardTitle ])
         , M3e.Card.content
-            (Layout.div "flex gap-3"
-                [ Layout.span "shrink-0"
-                    [ Kit.colored [ Kit.primary ] [ M3e.icon [ Native.attribute "name" iconName ] [] ] ]
-                , Kit.paragraph Value.large [ Kit.onSurface ] [ Kit.text cardBody ]
+            (Seam.div "flex gap-3"
+                [ Seam.span "shrink-0"
+                    [ Seam.colored [ Seam.primary ] [ M3e.icon [ M3e.Icon.name iconName ] [] ] ]
+                , Seam.paragraph Value.large [ Seam.onSurface ] [ Seam.text cardBody ]
                 ]
             )
         ]
@@ -178,14 +179,14 @@ highlightCard iconName cardTitle cardBody =
 
 statusGrid : Element { s | html : M3e.Kind.Brand } admittedBy msg
 statusGrid =
-    Layout.section "space-y-3"
+    Seam.section "space-y-3"
         [ Doc.sectionHeading "Status"
-        , Layout.div "max-w-2xl"
-            [ Kit.paragraph Value.large
-                [ Kit.onSurfaceVariant ]
-                [ Kit.text "Prerelease — breaking changes are embraced while the API settles. Every example in these docs is round-tripped against the real components; the "
-                , Kit.textLink "/roundtrip" [ Kit.primary ] [ Kit.text "report" ]
-                , Kit.text " shows the current score."
+        , Seam.div "max-w-2xl"
+            [ Seam.paragraph Value.large
+                [ Seam.onSurfaceVariant ]
+                [ Seam.text "Prerelease — breaking changes are embraced while the API settles. Every example in these docs is round-tripped against the real components; the "
+                , Seam.textLink "/roundtrip" [ Seam.primary ] [ Seam.text "report" ]
+                , Seam.text " shows the current score."
                 ]
             ]
         ]

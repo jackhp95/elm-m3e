@@ -5,10 +5,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Kit.Shape as Shape
-import Kit.Surface as Surface exposing (Surface)
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
@@ -17,6 +13,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
+import Seam.Shape as Shape
+import Seam.Surface as Surface exposing (Surface)
 import Shared
 import UrlPath
 import View exposing (View)
@@ -100,7 +99,7 @@ surfaces =
 -}
 accentRow : Accent -> Element { s | html : M3e.Kind.Brand } adm_ msg
 accentRow accent =
-    Layout.div "grid grid-cols-2 gap-3"
+    Seam.div "grid grid-cols-2 gap-3"
         [ swatch ( accent.name, accent.baseBg, accent.base )
         , swatch ( accent.name ++ " Container", accent.containerBg, accent.container )
         ]
@@ -109,12 +108,12 @@ accentRow accent =
 swatch : ( String, String, Surface ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 swatch ( label, bg, role ) =
     Surface.view role
-        [ Layout.class "flex flex-col justify-between p-4 min-h-24"
+        [ Seam.class "flex flex-col justify-between p-4 min-h-24"
         , Shape.corner Shape.medium
         , Surface.outlined
         ]
-        [ Kit.labelText Value.large [] [ Kit.text label ]
-        , Kit.code Value.small [] [ Kit.text bg ]
+        [ Seam.labelText Value.large [] [ Seam.text label ]
+        , Seam.code Value.small [] [ Seam.text bg ]
         ]
 
 
@@ -131,47 +130,47 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.section "space-y-3"
+                [ Seam.section "space-y-3"
                     [ pageHeading
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Container pairings"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Each accent comes as a bold role and a lower-emphasis container, and every role carries a paired on-* color for legible content. The swatch text is painted with that on-color, so if the label is readable the pairing is correct." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Each accent comes as a bold role and a lower-emphasis container, and every role carries a paired on-* color for legible content. The swatch text is painted with that on-color, so if the label is readable the pairing is correct." ]
                         ]
                     , Doc.showcase
-                        (Layout.div "grid grid-cols-1 gap-3 lg:grid-cols-2"
+                        (Seam.div "grid grid-cols-1 gap-3 lg:grid-cols-2"
                             (List.map accentRow accents)
                         )
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Surface roles"
                     , Doc.showcase
-                        (Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
+                        (Seam.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
                             (List.map swatch surfaces)
                         )
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Dynamic color"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Forced colors"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
                         ]
                     , forcedColorsCard
                     ]
@@ -187,5 +186,5 @@ forcedColorsCard =
         [ M3e.Attributes.variant Value.outlined ]
         [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Test it" ])
         , M3e.Card.content
-            (Kit.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
+            (Seam.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
         ]

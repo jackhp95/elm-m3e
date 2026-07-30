@@ -10,11 +10,11 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
-import Layout
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -70,14 +70,14 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "The Guide"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown chaptersLead
-                        , Layout.div "flex flex-wrap gap-3"
+                        , Seam.div "flex flex-wrap gap-3"
                             [ chapterLink "/guide/first-component" "Your first component"
                             , chapterLink "/guide/invalid-states" "Invalid states don't compile"
                             , chapterLink "/guide/strictness" "The strictness dial"
@@ -93,8 +93,8 @@ view _ _ =
                             , chapterLink "/guide/troubleshooting" "Troubleshooting"
                             , chapterLink "/guide/how-we-prove-it" "How we prove it"
                             ]
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown chaptersNote ]
-                        , Layout.div "flex flex-wrap gap-3"
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown chaptersNote ]
+                        , Seam.div "flex flex-wrap gap-3"
                             [ chapterLink "/guide/cheat-sheet" "Cheat sheet"
                             , chapterLink "/guide/glossary" "Glossary"
                             ]

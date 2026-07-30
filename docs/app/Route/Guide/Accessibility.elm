@@ -15,12 +15,12 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Layout
 import M3e
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
@@ -82,37 +82,37 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Accessibility reference"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Accessible name: named slot vs ARIA label"
                         , Doc.markdown nameBody
                         , Doc.showcase labeledBack
                         , Doc.code_ Doc.Elm nameCode
                         , Doc.markdown nameLayers
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Focus: dialogs, menus, sheets"
                         , Doc.markdown focusBody
                         , Doc.code_ Doc.Elm focusCode
                         , Doc.markdown focusNote
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Keyboard interaction by component family"
                         , Doc.markdown keyboardBody
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "What ships vs what you wire"
                         , Doc.markdown divisionBody
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Read the review errors as a11y guidance"
                         , Doc.markdown reviewBody
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Testing with the a11y-tree harness"
                         , Doc.markdown testingBody
                         , Doc.code_ Doc.NoLang testingCode
@@ -147,7 +147,7 @@ The shipped, correct icon-only control (this one renders and announces as "Back"
 nameCode : String
 nameCode =
     """-- Visible text: the slot content is the name. Nothing extra.
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
 
 -- Icon-only: the name is REQUIRED — supply it explicitly.
 M3e.iconButton [ Aria.label "Back" ]
@@ -175,8 +175,8 @@ M3e.dialog
     [ M3e.Attributes.open model.dialogOpen
     , M3e.Dialog.onClosed (PagesMsg.fromMsg CloseDialog)
     ]
-    [ M3e.Dialog.header (Kit.text "Delete file?")
-    , Kit.text "This cannot be undone."
+    [ M3e.Dialog.header (Seam.text "Delete file?")
+    , Seam.text "This cannot be undone."
     , M3e.Dialog.actions confirmButtons
     ]"""
 

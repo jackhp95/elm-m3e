@@ -15,7 +15,7 @@ don't hide).
 
 Navigation switches the usual way: `M3e.NavRail` on desktop, `M3e.NavBar` on mobile,
 one destination list. Tailwind is layout only; every visual token comes through the
-`Kit` / `Kit.Surface` / `Kit.Shape` seam.
+`Seam` / `Seam.Surface` / `Seam.Shape` seam.
 
 -}
 
@@ -24,11 +24,6 @@ import ExampleNav
 import Head
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind
-import Kit
-import Kit.Avatar as Avatar
-import Kit.Shape as Shape
-import Kit.Surface as Surface
-import Layout
 import M3e
 import M3e.AppBar
 import M3e.Attributes
@@ -39,7 +34,12 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
+import Seam.Avatar as Avatar
+import Seam.Shape as Shape
+import Seam.Surface as Surface
 import Shared
+import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import View exposing (View)
 
@@ -109,11 +109,11 @@ primary/supporting body, with a mobile bottom bar.
 screen : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 screen =
     Surface.view Surface.surface
-        [ Layout.class "flex h-screen w-full overflow-hidden" ]
+        [ Seam.class "flex h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , Layout.colWith "flex flex-1 flex-col min-w-0 overflow-hidden"
+        , Seam.div "flex flex-1 flex-col min-w-0 overflow-hidden"
             [ appBar
-            , Layout.div "flex-1 overflow-y-auto"
+            , Seam.div "flex-1 overflow-y-auto"
                 [ body
                 , exampleFooter
                 ]
@@ -142,7 +142,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.AppBar.title (Kit.text "Rally redesign") ]
+        [ M3e.AppBar.title (Seam.text "Rally redesign") ]
 
 
 
@@ -156,7 +156,7 @@ crowds the primary.
 -}
 body : Element { s | html : M3e.Kind.Brand } adm_ msg
 body =
-    Layout.div "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6 lg:flex-row"
+    Seam.div "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6 lg:flex-row"
         [ primary
         , supporting
         ]
@@ -166,11 +166,11 @@ body =
 -}
 primary : Element { s | html : M3e.Kind.Brand } adm_ msg
 primary =
-    Layout.colWith "flex flex-1 flex-col gap-4 min-w-0"
-        [ Kit.headline Value.small [ Kit.onSurface ] [ Kit.text "Project overview" ]
-        , Kit.body Value.large
-            [ Kit.onSurfaceVariant ]
-            [ Kit.text "The Rally redesign moves the metric cards to the top row and swaps the donut for a stacked bar so the trend reads at a glance. This quarter's focus is the motion pass and the adaptive navigation." ]
+    Seam.div "flex flex-1 flex-col gap-4 min-w-0"
+        [ Seam.headline Value.small [ Seam.onSurface ] [ Seam.text "Project overview" ]
+        , Seam.body Value.large
+            [ Seam.onSurfaceVariant ]
+            [ Seam.text "The Rally redesign moves the metric cards to the top row and swaps the donut for a stacked bar so the trend reads at a glance. This quarter's focus is the motion pass and the adaptive navigation." ]
         , summaryCard
         , milestonesCard
         ]
@@ -179,9 +179,9 @@ primary =
 summaryCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 summaryCard =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
-        [ M3e.Card.header (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "This sprint" ])
+        [ M3e.Card.header (Seam.title Value.large [ Seam.onSurface ] [ Seam.text "This sprint" ])
         , M3e.Card.content
-            (Layout.div "flex flex-wrap gap-6 pt-1"
+            (Seam.div "flex flex-wrap gap-6 pt-1"
                 [ metric "12" "Tasks done"
                 , metric "3" "In review"
                 , metric "88%" "On track"
@@ -192,18 +192,18 @@ summaryCard =
 
 metric : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 metric value label =
-    Layout.colWith "flex flex-col"
-        [ Kit.headline Value.medium [ Kit.primary ] [ Kit.text value ]
-        , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text label ]
+    Seam.div "flex flex-col"
+        [ Seam.headline Value.medium [ Seam.primary ] [ Seam.text value ]
+        , Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text label ]
         ]
 
 
 milestonesCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 milestonesCard =
     M3e.card [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Card.header (Kit.title Value.large [ Kit.onSurface ] [ Kit.text "Milestones" ])
+        [ M3e.Card.header (Seam.title Value.large [ Seam.onSurface ] [ Seam.text "Milestones" ])
         , M3e.Card.content
-            (Layout.div "flex flex-col"
+            (M3e.list []
                 (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                     [ milestoneRow "check_circle" "Motion tokens" "Shipped"
                     , milestoneRow "pending" "Adaptive nav" "In progress"
@@ -218,9 +218,9 @@ milestoneRow : String -> String -> String -> Element { s | listItem : M3e.Kind.B
 milestoneRow iconName label status =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
-        , Kit.text label
+        , Seam.text label
         , M3e.ListItem.trailing
-            (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text status ])
+            (Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text status ])
         ]
 
 
@@ -229,15 +229,15 @@ primary on `lg:`, reflowed beneath it on compact.
 -}
 supporting : Element { s | html : M3e.Kind.Brand } adm_ msg
 supporting =
-    Layout.div "shrink-0 lg:w-80"
+    Seam.div "shrink-0 lg:w-80"
         [ Surface.view Surface.surfaceContainer
-            [ Shape.corner Shape.large, Layout.class "flex flex-col gap-4 p-4" ]
-            [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text "Recent activity" ]
-            , Layout.colWith "flex flex-col gap-3"
+            [ Shape.corner Shape.large, Seam.class "flex flex-col gap-4 p-4" ]
+            [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text "Recent activity" ]
+            , Seam.div "flex flex-col gap-3"
                 (List.map activityRow activity)
             , M3e.divider [] []
-            , Kit.title Value.medium [ Kit.onSurface ] [ Kit.text "Tags" ]
-            , Layout.div "flex flex-wrap gap-2"
+            , Seam.title Value.medium [ Seam.onSurface ] [ Seam.text "Tags" ]
+            , M3e.chipSet [ Aria.label "Tags" ]
                 (List.map tag [ "design", "motion", "a11y", "beta" ])
             ]
         ]
@@ -257,18 +257,18 @@ activity =
 
 activityRow : Activity -> Element { s | html : M3e.Kind.Brand } adm_ msg
 activityRow a =
-    Layout.rowWith "flex items-start gap-3"
+    Seam.div "flex items-start gap-3"
         [ Avatar.initials a.initials
-        , Layout.colWith "flex flex-col"
-            [ Kit.body Value.medium [ Kit.onSurface ] [ Kit.text a.who ]
-            , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text a.what ]
+        , Seam.div "flex flex-col"
+            [ Seam.body Value.medium [ Seam.onSurface ] [ Seam.text a.who ]
+            , Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text a.what ]
             ]
         ]
 
 
 tag : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 tag label =
-    M3e.assistChip [] [ Kit.text label ]
+    M3e.assistChip [] [ Seam.text label ]
 
 
 
@@ -277,13 +277,13 @@ tag label =
 
 desktopRail : Element { s | navRail : M3e.Kind.Brand } adm_ msg
 desktopRail =
-    M3e.navRail [ Layout.class "hidden md:flex shrink-0" ]
+    M3e.navRail [ Seam.class "hidden md:flex shrink-0" ]
         (List.map navItem destinations)
 
 
 mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
-    M3e.navBar [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
+    M3e.navBar [ Seam.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map navItem destinations)
 
 
@@ -292,5 +292,5 @@ navItem d =
     M3e.navItem
         [ M3e.Attributes.selected (d.label == "Overview") ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
-        , Kit.text d.label
+        , Seam.text d.label
         ]

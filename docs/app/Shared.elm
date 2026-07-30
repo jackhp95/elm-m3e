@@ -26,25 +26,26 @@ import HtmlIr.Element as Element exposing (Element)
 import HtmlIr.Kind
 import HtmlIr.Node as Node
 import Json.Decode as Decode
-import Kit
-import Kit.Surface as Surface
 import M3e
 import M3e.AppBar
 import M3e.Attributes
 import M3e.DrawerContainer
 import M3e.FormField
+import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Theme
 import M3e.Values as Value
-import Native
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Ports
 import Route exposing (Route)
 import Seam
+import Seam.Surface as Surface
 import SharedTemplate exposing (SharedTemplate)
+import TypedHtml
 import TypedHtml.Aria as Aria
+import TypedHtml.Attributes
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -452,11 +453,11 @@ appShellBar =
             [ M3e.AppBar.size Value.small
             , M3e.Attributes.id "docs-app-bar"
             ]
-            [ M3e.AppBar.title (Kit.text "elm-m3e")
-            , M3e.AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
+            [ M3e.AppBar.title (Seam.text "elm-m3e")
+            , M3e.AppBar.subtitle (Seam.text "Material 3 Expressive for Elm")
             , M3e.AppBar.leading
                 (Seam.recast
-                    (Native.node "span"
+                    (Seam.node "span"
                         [ Seam.asAttribute (class "flex items-center") ]
                         [ brandMark, menuButton ]
                     )
@@ -474,14 +475,14 @@ rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
 -}
 brandMark : Element { html : M3e.Kind.Brand } admittedBy Msg
 brandMark =
-    Native.node "span"
+    Seam.node "span"
         [ Seam.asAttribute (class "ms-2 me-1 hidden md:inline-flex")
 
         -- Purely decorative brand glyph — hide it from assistive tech so it
         -- isn't announced alongside the "elm-m3e" title next to it.
         , Seam.asAttribute (attribute "aria-hidden" "true")
         ]
-        [ M3e.icon [ Native.attribute "name" "palette" ] [] ]
+        [ M3e.icon [ M3e.Icon.name "palette" ] [] ]
 
 
 {-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
@@ -489,11 +490,11 @@ viewports (the side drawer is always visible there).
 -}
 menuButton : Element { html : M3e.Kind.Brand } admittedBy Msg
 menuButton =
-    Native.node "span"
+    Seam.node "span"
         [ Seam.asAttribute (class "md:hidden") ]
         [ M3e.iconButton
-            [ Aria.label "Toggle navigation", Native.onClick MenuClicked ]
-            [ M3e.icon [ Native.attribute "name" "menu" ] [] ]
+            [ Aria.label "Toggle navigation", Seam.onClick MenuClicked ]
+            [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
         ]
 
 
@@ -535,8 +536,8 @@ which drives the end drawer's `open` state. (Was a Card popover trigger.)
 settingsButton : Element { iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
-        [ Aria.label "Settings", Native.onClick ToggleSettings ]
-        [ M3e.icon [ Native.attribute "name" "settings" ] [] ]
+        [ Aria.label "Settings", Seam.onClick ToggleSettings ]
+        [ M3e.icon [ M3e.Icon.name "settings" ] [] ]
 
 
 
@@ -545,7 +546,7 @@ settingsButton =
 
 {-| The theme controls, rendered into the drawer-container's `end` slot. Built
 from library components in the Element world: each control is a
-[`Kit.labelText`](Kit#labelText) label + a control (segmented buttons, or a
+[`Seam.labelText`](Seam#labelText) label + a control (segmented buttons, or a
 [`FormField`](M3e-FormField) for the seed color). The container keeps its
 `#settings-drawer` id (matraic's flex-column/gap/padding styling lives in
 `style.css`) and the `role="complementary"` landmark, both crossed through the
@@ -559,7 +560,7 @@ drawer.
 -}
 settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
 settingsDrawerContent model =
-    Native.node "div"
+    Seam.node "div"
         [ Seam.asAttribute (Attr.id "settings-drawer")
         , Seam.asAttribute (attribute "role" "complementary")
         ]
@@ -577,7 +578,7 @@ settingsDrawerContent model =
 
 controlLabel : String -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
 controlLabel lbl =
-    Kit.labelText Value.large [ Kit.onSurface ] [ Kit.text lbl ]
+    Seam.labelText Value.large [ Seam.onSurface ] [ Seam.text lbl ]
 
 
 {-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
@@ -589,7 +590,7 @@ segmented segments =
         (List.map
             (\( lbl, isChecked, msg ) ->
                 M3e.buttonSegment
-                    [ M3e.Attributes.checked isChecked, Native.onClick msg ]
+                    [ M3e.Attributes.checked isChecked, Seam.onClick msg ]
                     [ M3e.text lbl ]
             )
             segments
@@ -624,16 +625,19 @@ swatch. `onInput` crosses via the one sanctioned `Seam.asAttribute`.
 seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Native.node "label" [ Native.attribute "for" "seed-color" ] [ Kit.text "Source color" ]
+        [ M3e.FormField.label
+            (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ Seam.text "Source color" ])
         , M3e.FormField.hint
-            (Kit.code Value.small [ Kit.onSurfaceVariant ] [ Kit.text model.seed ])
-        , Native.node "input"
-            [ Native.attribute "id" "seed-color"
-            , Native.attribute "type" "color"
-            , Native.attribute "value" model.seed
-            , Seam.asAttribute (Html.Events.onInput SetSeed)
-            ]
-            []
+            (Seam.code Value.small [ Seam.onSurfaceVariant ] [ Seam.text model.seed ])
+        , M3e.FormField.child
+            (TypedHtml.input
+                [ TypedHtml.Attributes.id "seed-color"
+                , TypedHtml.Attributes.type_ "color"
+                , TypedHtml.Attributes.value model.seed
+                , Seam.asAttribute (Html.Events.onInput SetSeed)
+                ]
+                []
+            )
         ]
 
 
@@ -708,13 +712,6 @@ navSections =
             , ( "/guide/how-we-prove-it", "How we prove it" )
             ]
       }
-    , { title = "Guide reference"
-      , icon = "bookmark"
-      , items =
-            [ ( "/guide/cheat-sheet", "Cheat sheet" )
-            , ( "/guide/glossary", "Glossary" )
-            ]
-      }
     , { title = "Styles"
       , icon = "palette"
       , items =
@@ -771,8 +768,8 @@ drawerShell toMsg model page components body =
         [ M3e.DrawerContainer.start
             -- Wrap the nav-menu in a native `<nav>` landmark so AT users can
             -- jump straight to navigation (and skip past it via the skip-link).
-            (Native.node "nav"
-                [ Seam.asAttribute (attribute "aria-label" "Primary") ]
+            (Seam.node "nav"
+                [ Aria.label "Primary" ]
                 [ navMenu components currentPath ]
             )
         , M3e.DrawerContainer.end
@@ -816,12 +813,13 @@ navMenu components currentPath =
     M3e.navMenu []
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
             ++ [ componentsGroup components currentPath
-               , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
+               , navGroup currentPath "menu_book" "Reference" [ ( "/guide/cheat-sheet", "Cheat sheet" ), ( "/guide/glossary", "Glossary" ), ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
                ]
         )
 
 
-{-| The single top-level **Components** nav group.
+{-| The single top-level **Components** nav group — every component listed
+alphabetically (by label), with no category sub-groups.
 -}
 componentsGroup : List NavComponent -> String -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 componentsGroup components currentPath =
@@ -833,19 +831,11 @@ componentsGroup components currentPath =
             []
         )
         (M3e.NavMenuItem.label (M3e.text "Components")
-            :: M3e.NavMenuItem.icon (M3e.icon [ Native.attribute "name" "widgets" ] [] |> Seam.recast)
+            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name "widgets" ] [] |> Seam.recast)
             :: navLeaf currentPath ( "/components/all", "All components" )
             :: List.map
-                (\( category, glyph ) ->
-                    navGroup currentPath
-                        glyph
-                        category
-                        (components
-                            |> List.filter (\c -> c.category == category)
-                            |> List.map (\c -> ( "/components/" ++ c.slug, c.label ))
-                        )
-                )
-                componentCategories
+                (\c -> navLeaf currentPath ( "/components/" ++ c.slug, c.label ))
+                (List.sortBy (\c -> String.toLower c.label) components)
         )
 
 
@@ -862,7 +852,7 @@ navGroup currentPath glyph grpTitle items =
             []
         )
         (M3e.NavMenuItem.label (M3e.text grpTitle)
-            :: M3e.NavMenuItem.icon (M3e.icon [ Native.attribute "name" glyph ] [] |> Seam.recast)
+            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name glyph ] [] |> Seam.recast)
             :: List.map (navLeaf currentPath) items
         )
 
@@ -871,7 +861,7 @@ navLeaf : String -> ( String, String ) -> Element { navMenuItem : M3e.Kind.Brand
 navLeaf currentPath ( path, lbl ) =
     M3e.navMenuItem
         [ M3e.Attributes.selected (path == currentPath) ]
-        [ M3e.NavMenuItem.label (Kit.link path [ Kit.text lbl ] |> Seam.recast) ]
+        [ M3e.NavMenuItem.label (Seam.link path [ Seam.text lbl ] |> Seam.recast) ]
 
 
 {-| The component-nav categories, in display order, each paired with its Material

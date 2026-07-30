@@ -1,12 +1,12 @@
-module Kit.Shape exposing
+module Seam.Shape exposing
     ( Corner, corner
     , extraSmall, small, medium, large, extraLarge, full, none
     )
 
 {-| M3 **corner-shape** tokens — the visual seam for `rounded-*` classes.
 
-`corner` yields an attribute you compose onto any element (a `Kit.Surface.view`,
-a `Native.*` box, …), so route code names the shape (`Kit.Shape.large`) instead
+`corner` yields an attribute you compose onto any element (a `Seam.Surface.view`,
+a `Seam.*` box, …), so route code names the shape (`Seam.Shape.large`) instead
 of writing `rounded-md-corner-large` through the seam.
 
 @docs Corner, corner

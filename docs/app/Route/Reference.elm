@@ -14,18 +14,16 @@ import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
 import Json.Decode as Decode
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
 import M3e.Heading
 import M3e.Kind
 import M3e.Values as Value
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -142,12 +140,12 @@ view app _ =
         [ Element.toNode
             (Doc.pane
                 [ pageHeading
-                , Layout.div "mt-2 max-w-2xl"
-                    [ Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Every "
-                        , Native.node "code" [] [ Kit.text "M3e.*" ]
-                        , Kit.text " module, its overview, and every exposed value — extracted from the library source at build time."
+                , Seam.div "mt-2 max-w-2xl"
+                    [ Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "Every "
+                        , Seam.node "code" [] [ Seam.text "M3e.*" ]
+                        , Seam.text " module, its overview, and every exposed value — extracted from the library source at build time."
                         ]
                     ]
                 , twoForms
@@ -156,9 +154,9 @@ view app _ =
                         barrelBlock b
 
                     Nothing ->
-                        Kit.text ""
+                        Seam.text ""
                 , indexGrid componentModules
-                , Layout.div "mt-12 space-y-12"
+                , Seam.div "mt-12 space-y-12"
                     (List.map componentBlock componentModules)
                 ]
             )
@@ -173,9 +171,9 @@ Keeps the reference's terminology aligned with `/guide/the-layers` and
 -}
 twoForms : Element { s | html : M3e.Kind.Brand } admittedBy msg
 twoForms =
-    Layout.div "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2"
-        [ Kit.overline [ Kit.primary ] [ Kit.text "Two forms" ]
-        , Layout.div "text-on-surface-variant" [ Doc.markdown twoFormsText ]
+    Seam.div "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2"
+        [ Seam.overline [ Seam.primary ] [ Seam.text "Two forms" ]
+        , Seam.div "text-on-surface-variant" [ Doc.markdown twoFormsText ]
         ]
 
 
@@ -191,7 +189,7 @@ Barrel-vs-module isn't a [surface](/guide/the-layers) choice and it isn't an esc
 
 indexGrid : List Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 indexGrid components =
-    Layout.div "mt-8 flex flex-wrap gap-2"
+    Seam.div "mt-8 flex flex-wrap gap-2"
         (List.map
             (\c ->
                 Doc.anchorPill { href = "#" ++ c.slug, label = c.name }
@@ -207,15 +205,15 @@ JSON `role` — is what makes the ~650-member barrel navigable.
 -}
 barrelBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 barrelBlock c =
-    Native.node "section"
-        [ Native.attribute "id" c.slug, Layout.class "mt-12 scroll-mt-6 space-y-6" ]
+    Seam.node "section"
+        [ Seam.attribute "id" c.slug, Seam.class "mt-12 scroll-mt-6 space-y-6" ]
         [ M3e.divider [] []
-        , Native.node "h2"
+        , Seam.node "h2"
             []
-            [ Kit.headline Value.small
+            [ Seam.headline Value.small
                 []
-                [ Native.node "code" [ Kit.tint [ Kit.primary ] ] [ Kit.text c.moduleName ]
-                , Kit.text "  · the barrel"
+                [ Seam.node "code" [ Seam.tint [ Seam.primary ] ] [ Seam.text c.moduleName ]
+                , Seam.text "  · the barrel"
                 ]
             ]
         , prose "max-w-2xl" Value.large c.overview
@@ -253,31 +251,31 @@ barrelGroup : String -> (Member -> Bool) -> List Member -> Element { s | html : 
 barrelGroup label pred members =
     case List.filter pred members of
         [] ->
-            Layout.div "" []
+            Seam.div "" []
 
         ms ->
-            Native.node "section"
-                [ Layout.class "space-y-3" ]
-                [ Native.node "h3"
+            Seam.node "section"
+                [ Seam.class "space-y-3" ]
+                [ Seam.node "h3"
                     []
-                    [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") ] ]
-                , Layout.div "space-y-3" (List.map memberRow ms)
+                    [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") ] ]
+                , Seam.div "space-y-3" (List.map memberRow ms)
                 ]
 
 
 componentBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 componentBlock c =
-    Native.node "section"
-        [ Native.attribute "id" c.slug, Layout.class "scroll-mt-6 space-y-4" ]
+    Seam.node "section"
+        [ Seam.attribute "id" c.slug, Seam.class "scroll-mt-6 space-y-4" ]
         [ M3e.divider [] []
-        , Native.node "h2"
+        , Seam.node "h2"
             []
-            [ Kit.headline Value.small
+            [ Seam.headline Value.small
                 []
-                [ Native.node "code" [ Kit.tint [ Kit.primary ] ] [ Kit.text c.moduleName ] ]
+                [ Seam.node "code" [ Seam.tint [ Seam.primary ] ] [ Seam.text c.moduleName ] ]
             ]
         , prose "max-w-2xl" Value.large c.overview
-        , Layout.div "space-y-3"
+        , Seam.div "space-y-3"
             (List.map memberRow c.members)
         ]
 
@@ -299,11 +297,11 @@ memberRow m =
     M3e.card
         [ M3e.Card.variant Value.outlined ]
         [ M3e.Card.content
-            (Native.node "div"
+            (Seam.node "div"
                 []
                 [ Doc.preBlock sig
                 , if m.doc == "" then
-                    Kit.text ""
+                    Seam.text ""
 
                   else
                     prose "mt-2" Value.medium m.doc
@@ -314,16 +312,16 @@ memberRow m =
 
 {-| Render \\n\\n-separated text as body paragraphs at the given type-scale size.
 -}
-prose : String -> Kit.Size -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+prose : String -> Seam.Size -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 prose layoutCls size s =
-    Layout.div layoutCls
+    Seam.div layoutCls
         (s
             |> String.split "\n\n"
             |> List.filter (\para -> String.trim para /= "")
             |> List.map
                 (\para ->
-                    Native.node "p"
-                        [ Layout.class "mt-2 first:mt-0 whitespace-pre-line" ]
-                        [ Kit.body size [ Kit.onSurfaceVariant ] [ Kit.text para ] ]
+                    Seam.node "p"
+                        [ Seam.class "mt-2 first:mt-0 whitespace-pre-line" ]
+                        [ Seam.body size [ Seam.onSurfaceVariant ] [ Seam.text para ] ]
                 )
         )

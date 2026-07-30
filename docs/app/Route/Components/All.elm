@@ -23,8 +23,6 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Kind
@@ -32,6 +30,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam
 import Shared
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -143,7 +142,7 @@ view app _ model =
         [ HtmlIr.Element.toNode
             (HtmlIr.Element.map PagesMsg.fromMsg
                 (Doc.pane
-                    [ Layout.div "space-y-12" (heading :: content) ]
+                    [ Seam.div "space-y-12" (heading :: content) ]
                 )
             )
         ]
@@ -197,19 +196,19 @@ overview d =
                 ++ String.fromInt (List.length Shared.componentCategories)
                 ++ " categories"
     in
-    Layout.div "max-w-2xl space-y-6"
-        [ Kit.paragraph Value.large
-            [ Kit.onSurfaceVariant ]
-            [ Kit.text "This page stacks every component's live Usage examples on a single page. Loading them all at once upgrades hundreds of interactive custom elements, so it can take a moment to become fully interactive." ]
-        , Kit.paragraph Value.medium
-            [ Kit.onSurface ]
-            [ Kit.text summary ]
-        , Kit.paragraph Value.medium
-            [ Kit.onSurfaceVariant ]
-            [ Kit.text (Shared.componentCategories |> List.map Tuple.first |> String.join " · ") ]
-        , Layout.button Reveal
+    Seam.div "max-w-2xl space-y-6"
+        [ Seam.paragraph Value.large
+            [ Seam.onSurfaceVariant ]
+            [ Seam.text "This page stacks every component's live Usage examples on a single page. Loading them all at once upgrades hundreds of interactive custom elements, so it can take a moment to become fully interactive." ]
+        , Seam.paragraph Value.medium
+            [ Seam.onSurface ]
+            [ Seam.text summary ]
+        , Seam.paragraph Value.medium
+            [ Seam.onSurfaceVariant ]
+            [ Seam.text (Shared.componentCategories |> List.map Tuple.first |> String.join " · ") ]
+        , Seam.button Reveal
             "inline-flex items-center rounded-full bg-primary px-6 py-3 text-label-lg text-on-primary hover:opacity-90 cursor-pointer"
-            [ Kit.text "Show all components" ]
+            [ Seam.text "Show all components" ]
         ]
 
 
@@ -239,7 +238,7 @@ stackedBlocks model d =
                         []
 
                     else
-                        [ Layout.divWithId component.slug
+                        [ Seam.divWithId component.slug
                             "cv-auto space-y-6 scroll-mt-24"
                             (M3e.heading
                                 [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]

@@ -12,11 +12,11 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Layout
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -63,7 +63,7 @@ head _ =
 
 entry : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 entry prose code =
-    Layout.section "space-y-3"
+    Seam.section "space-y-3"
         [ Doc.markdown prose
         , Doc.code_ Doc.NoLang code
         ]
@@ -75,16 +75,16 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Troubleshooting"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
                     , entry kindMismatch kindMismatchError
                     , entry deadClass deadClassNote
                     , entry looseEnum looseEnumNote
                     , entry missingName missingNameError
-                    , Layout.section "space-y-4" [ Doc.markdown greenLint ]
+                    , Seam.section "space-y-4" [ Doc.markdown greenLint ]
                     , Doc.recapBox recap
                     ]
                 ]

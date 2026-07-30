@@ -1,7 +1,7 @@
 module Doc.Usage exposing
-    ( Surface
-    , Model
+    ( Model
     , Msg
+    , Surface
     , UsageExample
     , init
     , update
@@ -14,14 +14,12 @@ import Doc
 import Doc.Slider
 import HtmlIr.Element exposing (Element)
 import Json.Decode as Decode
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Heading
 import M3e.Kind
 import M3e.Values as Value
-import Native
+import Seam
 
 
 {-| Which API surface a Usage example is shown in:
@@ -113,7 +111,7 @@ usageBlocks offset model examples =
             []
 
         _ ->
-            [ Layout.div "space-y-6"
+            [ Seam.div "space-y-6"
                 (M3e.heading
                     [ M3e.Heading.variant Value.headline
                     , M3e.Heading.size Value.small
@@ -164,8 +162,8 @@ exampleBlock model ( index, ex ) =
         surface =
             Dict.get index model.surfaces |> Maybe.withDefault (defaultSurfaceFor ex)
     in
-    Layout.div "space-y-3"
-        [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
+    Seam.div "space-y-3"
+        [ Seam.paragraph Value.medium [ Seam.onSurfaceVariant ] [ Seam.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
         , surfaceTabs index surface ex
         , Doc.Slider.slidingPanels
@@ -252,7 +250,7 @@ surfaceTabs index current ex =
             (\( lbl, surface ) ->
                 M3e.tab
                     [ M3e.Attributes.selected (surface == current)
-                    , Native.onClick (SelectSurface index surface)
+                    , Seam.onClick (SelectSurface index surface)
                     ]
                     [ M3e.text lbl ]
             )

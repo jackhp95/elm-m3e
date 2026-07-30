@@ -14,18 +14,16 @@ import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
 import Json.Decode as Decode
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
 import M3e.Heading
 import M3e.Kind
 import M3e.Values as Value
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -260,10 +258,10 @@ view app _ =
         [ Element.toNode
             (Doc.pane
                 [ pageHeading
-                , Layout.div "mt-2 max-w-2xl"
-                    [ Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
+                , Seam.div "mt-2 max-w-2xl"
+                    [ Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
                     ]
                 , surfaceLegend
                 , summarySection app.data.perSurface
@@ -280,10 +278,10 @@ are the four interchangeable [surfaces](/guide/the-layers).
 -}
 surfaceLegend : Element { s | html : M3e.Kind.Brand } admittedBy msg
 surfaceLegend =
-    Native.node "section"
-        [ Layout.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
-        [ Kit.overline [ Kit.primary ] [ Kit.text "What the form names mean" ]
-        , Layout.div "text-on-surface-variant" [ Doc.markdown surfaceLegendText ]
+    Seam.node "section"
+        [ Seam.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
+        [ Seam.overline [ Seam.primary ] [ Seam.text "What the form names mean" ]
+        , Seam.div "text-on-surface-variant" [ Doc.markdown surfaceLegendText ]
         ]
 
 
@@ -303,12 +301,12 @@ These are **peers, not a ranking** — interchangeable call shapes that all prod
 
 summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 summarySection perSurface =
-    Native.node "section"
-        [ Layout.class "mt-12 space-y-4" ]
-        [ Native.node "h2"
+    Seam.node "section"
+        [ Seam.class "mt-12 space-y-4" ]
+        [ Seam.node "h2"
             []
-            [ Kit.headline Value.small [] [ Kit.text "Per-form summary" ] ]
-        , Layout.div "space-y-3"
+            [ Seam.headline Value.small [] [ Seam.text "Per-form summary" ] ]
+        , Seam.div "space-y-3"
             (List.map surfaceRow perSurface)
         ]
 
@@ -318,14 +316,14 @@ surfaceRow ( name, agg ) =
     M3e.card
         [ M3e.Card.variant Value.outlined ]
         [ M3e.Card.content
-            (Native.node "div"
-                [ Layout.class "space-y-1" ]
-                [ Native.node "div"
+            (Seam.node "div"
+                [ Seam.class "space-y-1" ]
+                [ Seam.node "div"
                     []
-                    [ Kit.title Value.medium [ Kit.primary ] [ Kit.text name ] ]
-                , Kit.body Value.medium
-                    [ Kit.onSurfaceVariant ]
-                    [ Kit.text
+                    [ Seam.title Value.medium [ Seam.primary ] [ Seam.text name ] ]
+                , Seam.body Value.medium
+                    [ Seam.onSurfaceVariant ]
+                    [ Seam.text
                         (String.fromInt agg.converted
                             ++ " / "
                             ++ String.fromInt agg.total
@@ -336,18 +334,18 @@ surfaceRow ( name, agg ) =
                             ++ " used escape hatch"
                         )
                     ]
-                , Kit.body Value.medium
+                , Seam.body Value.medium
                     []
-                    [ Kit.text
+                    [ Seam.text
                         (String.fromInt agg.roundtripFunctionalMatched
                             ++ " functional clean · "
                             ++ String.fromInt agg.roundtripFunctionalDeviated
                             ++ " functional deviated"
                         )
                     ]
-                , Kit.body Value.small
-                    [ Kit.onSurfaceVariant ]
-                    [ Kit.text
+                , Seam.body Value.small
+                    [ Seam.onSurfaceVariant ]
+                    [ Seam.text
                         ("(strict: "
                             ++ String.fromInt agg.roundtripMatched
                             ++ " matched · "
@@ -362,13 +360,13 @@ surfaceRow ( name, agg ) =
 
 cellsSection : List Cell -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 cellsSection cells =
-    Native.node "section"
-        [ Layout.class "mt-12 space-y-4" ]
+    Seam.node "section"
+        [ Seam.class "mt-12 space-y-4" ]
         [ M3e.divider [] []
-        , Native.node "h2"
+        , Seam.node "h2"
             []
-            [ Kit.headline Value.small [] [ Kit.text "Cells (deviations first)" ] ]
-        , Layout.div "space-y-3"
+            [ Seam.headline Value.small [] [ Seam.text "Cells (deviations first)" ] ]
+        , Seam.div "space-y-3"
             (List.map cellRow (rankedCells cells))
         ]
 
@@ -400,27 +398,27 @@ cellRow c =
         escapeText =
             "seam " ++ String.fromInt c.seam ++ " · native " ++ String.fromInt c.native ++ " · chars " ++ String.fromInt c.charsInside
 
-        deviationColor : List Kit.TextColor
+        deviationColor : List Seam.TextColor
         deviationColor =
             if c.functionalMatches == Just False then
-                [ Kit.error ]
+                [ Seam.error ]
 
             else
-                [ Kit.onSurfaceVariant ]
+                [ Seam.onSurfaceVariant ]
     in
     M3e.card
         [ M3e.Card.variant Value.outlined ]
         [ M3e.Card.content
-            (Native.node "div"
-                [ Layout.class "space-y-1" ]
-                [ Native.node "div"
+            (Seam.node "div"
+                [ Seam.class "space-y-1" ]
+                [ Seam.node "div"
                     []
-                    [ Kit.title Value.medium
+                    [ Seam.title Value.medium
                         []
-                        [ Native.node "code" [] [ Kit.text c.id ] ]
+                        [ Seam.node "code" [] [ Seam.text c.id ] ]
                     ]
-                , Kit.body Value.medium deviationColor [ Kit.text deviationText ]
-                , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text escapeText ]
+                , Seam.body Value.medium deviationColor [ Seam.text deviationText ]
+                , Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text escapeText ]
                 ]
             )
         ]
