@@ -708,13 +708,6 @@ navSections =
             , ( "/guide/how-we-prove-it", "How we prove it" )
             ]
       }
-    , { title = "Guide reference"
-      , icon = "bookmark"
-      , items =
-            [ ( "/guide/cheat-sheet", "Cheat sheet" )
-            , ( "/guide/glossary", "Glossary" )
-            ]
-      }
     , { title = "Styles"
       , icon = "palette"
       , items =
@@ -816,7 +809,7 @@ navMenu components currentPath =
     M3e.navMenu []
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
             ++ [ componentsGroup components currentPath
-               , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
+               , navGroup currentPath "menu_book" "Reference" [ ( "/guide/cheat-sheet", "Cheat sheet" ), ( "/guide/glossary", "Glossary" ), ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
                ]
         )
 
