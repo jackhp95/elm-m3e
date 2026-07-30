@@ -15,10 +15,10 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element
-import Layout
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -69,31 +69,31 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Motion: what ships, what you wire"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Inside the components (you don't animate this)"
                         , Doc.markdown shippedBody
                         , Doc.code_ Doc.Elm shippedCode
                         , Doc.markdown shippedNote
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "The motion between components (you wire this)"
                         , Doc.markdown authorBody
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "The AVT snackbar"
                         , Doc.markdown snackbarBody
                         , Doc.code_ Doc.Elm snackbarCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "View transitions"
                         , Doc.markdown viewTransBody
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Reduced motion is not optional"
                         , Doc.markdown reducedBody
                         ]
@@ -162,10 +162,10 @@ snackbarCode =
 -- shown — mounting it is what triggers the toast:
 snackbar : Toast -> Element { s | html : M3e.Kind.Brand } adm_ msg
 snackbar t =
-    Native.node (Html.node "avt-snackbar")
-        [ Native.attribute "message" t.message
-        , Native.attribute "action" "Undo"
-        , Native.attribute "dismissible" ""
+    Seam.node (Html.node "avt-snackbar")
+        [ Seam.attribute "message" t.message
+        , Seam.attribute "action" "Undo"
+        , Seam.attribute "dismissible" ""
         ]
         []
 

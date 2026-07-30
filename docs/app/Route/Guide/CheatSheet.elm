@@ -11,13 +11,12 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -64,8 +63,8 @@ head _ =
 
 card : String -> List (Element { s | html : M3e.Kind.Brand } adm_ msg) -> Element { r | html : M3e.Kind.Brand } adm_ msg
 card title items =
-    Layout.section "space-y-3"
-        (Kit.title Value.medium [ Kit.onSurface ] [ Kit.text title ] :: items)
+    Seam.section "space-y-3"
+        (Seam.title Value.medium [ Seam.onSurface ] [ Seam.text title ] :: items)
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -74,10 +73,10 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-10"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-10"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Cheat sheet"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         , Doc.userlandNote
                         ]
                     , card "The surfaces" [ Doc.markdown layers ]
@@ -123,10 +122,10 @@ barrelVsSpecific =
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), Seam.text "Save" ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ Kit.text "Save" ]"""
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ Seam.text "Save" ]"""
 
 
 shapes : String
@@ -137,7 +136,7 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form — everything optional; the tersest
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
 M3e.Button.el { content = …, action = … } [] []

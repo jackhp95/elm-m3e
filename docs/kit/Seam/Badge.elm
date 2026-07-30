@@ -1,4 +1,4 @@
-module Kit.Badge exposing (on)
+module Seam.Badge exposing (on)
 
 {-| **Badge on an anchor** — the notification/cart-count affordance.
 

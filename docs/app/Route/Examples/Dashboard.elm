@@ -9,7 +9,7 @@ table built from `ListItem` rows separated by `Divider`, and a `Fab` primary
 action.
 
 Everything visual (color, type scale, surface, shape) goes through `Kit` /
-`Kit.Surface` / `Kit.Shape`; Tailwind is used only for layout and responsive
+`Seam.Surface` / `Seam.Shape`; Tailwind is used only for layout and responsive
 visibility. Static screen (no local state).
 
 -}
@@ -20,10 +20,6 @@ import ExampleNav
 import Head
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind
-import Kit exposing (TextColor)
-import Kit.Shape as Shape
-import Kit.Surface as Surface
-import Layout
 import M3e
 import M3e.AppBar
 import M3e.Attributes
@@ -36,6 +32,9 @@ import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam exposing (TextColor)
+import Seam.Shape as Shape
+import Seam.Surface as Surface
 import Shared
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
@@ -182,9 +181,9 @@ view _ _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Surface.view Surface.surface
-                [ Layout.class "flex flex-col min-h-screen w-full" ]
+                [ Seam.class "flex flex-col min-h-screen w-full" ]
                 [ appBar
-                , Layout.div "flex flex-1"
+                , Seam.div "flex flex-1"
                     [ desktopRail
                     , mainContent
                     ]
@@ -227,9 +226,9 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.Attributes.size Value.small ]
         [ M3e.AppBar.leading (M3e.icon [ TA.name "analytics" ] [])
-        , M3e.AppBar.title (Kit.title Value.large [] [ Kit.text "Aperture Analytics" ])
+        , M3e.AppBar.title (Seam.title Value.large [] [ Seam.text "Aperture Analytics" ])
         , M3e.AppBar.trailing
-            (Layout.div "flex items-center gap-1"
+            (Seam.div "flex items-center gap-1"
                 [ iconAction "search"
                 , iconAction "notifications"
                 , iconAction "account_circle"
@@ -249,7 +248,7 @@ iconAction name =
 -}
 desktopRail : Element { s | html : M3e.Kind.Brand } adm_ msg
 desktopRail =
-    Layout.div "hidden md:flex sticky top-0 self-start"
+    Seam.div "hidden md:flex sticky top-0 self-start"
         [ M3e.navRail []
             (List.map railItem destinations)
         ]
@@ -260,7 +259,7 @@ railItem d =
     M3e.navItem
         [ M3e.Attributes.href "#", M3e.Attributes.selected d.selected ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
-        , Kit.text d.name
+        , Seam.text d.name
         ]
 
 
@@ -268,7 +267,7 @@ railItem d =
 -}
 mobileBar : Element { s | html : M3e.Kind.Brand } adm_ msg
 mobileBar =
-    Layout.div "md:hidden sticky bottom-0 z-10"
+    Seam.div "md:hidden sticky bottom-0 z-10"
         [ M3e.navBar []
             (List.map barItem destinations)
         ]
@@ -279,17 +278,17 @@ barItem d =
     M3e.navItem
         [ M3e.Attributes.href "#", M3e.Attributes.selected d.selected ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
-        , Kit.text d.name
+        , Seam.text d.name
         ]
 
 
 fab : Element { s | html : M3e.Kind.Brand } adm_ msg
 fab =
-    Layout.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
+    Seam.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
         [ M3e.fab
             [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
             [ M3e.icon [ TA.name "add" ] []
-            , M3e.Fab.label (Kit.text "New report")
+            , M3e.Fab.label (Seam.text "New report")
             ]
         ]
 
@@ -300,11 +299,11 @@ fab =
 
 mainContent : Element { s | html : M3e.Kind.Brand } adm_ msg
 mainContent =
-    Layout.section "flex-1 min-w-0 flex flex-col gap-6 p-4 md:p-6 pb-28 md:pb-6"
+    Seam.section "flex-1 min-w-0 flex flex-col gap-6 p-4 md:p-6 pb-28 md:pb-6"
         [ pageHeader
         , kpiRow
-        , Layout.div "grid grid-cols-1 gap-6 lg:grid-cols-3"
-            [ Layout.div "lg:col-span-2 flex flex-col gap-6"
+        , Seam.div "grid grid-cols-1 gap-6 lg:grid-cols-3"
+            [ Seam.div "lg:col-span-2 flex flex-col gap-6"
                 [ accountsSection
                 , activitySection
                 ]
@@ -315,10 +314,10 @@ mainContent =
 
 pageHeader : Element { s | html : M3e.Kind.Brand } adm_ msg
 pageHeader =
-    Layout.div "flex flex-col gap-1"
-        [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text "Overview" ]
-        , Kit.display Value.small [] [ Kit.text "Good morning, Jack" ]
-        , Kit.body Value.medium [ Kit.onSurfaceVariant ] [ Kit.text "Here is how your business is doing today." ]
+    Seam.div "flex flex-col gap-1"
+        [ Seam.overline [ Seam.onSurfaceVariant ] [ Seam.text "Overview" ]
+        , Seam.display Value.small [] [ Seam.text "Good morning, Jack" ]
+        , Seam.body Value.medium [ Seam.onSurfaceVariant ] [ Seam.text "Here is how your business is doing today." ]
         ]
 
 
@@ -328,7 +327,7 @@ pageHeader =
 
 kpiRow : Element { s | html : M3e.Kind.Brand } adm_ msg
 kpiRow =
-    Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+    Seam.div "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
         (List.map kpiCard kpis)
 
 
@@ -336,9 +335,9 @@ kpiCard : Kpi -> Element { s | card : M3e.Kind.Brand } adm_ msg
 kpiCard k =
     M3e.card [ M3e.Attributes.variant Value.filled ]
         [ M3e.Card.content
-            (Layout.div "flex flex-col gap-2 p-4"
-                [ Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text k.label ]
-                , Kit.display Value.small [] [ Kit.text k.value ]
+            (Seam.div "flex flex-col gap-2 p-4"
+                [ Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text k.label ]
+                , Seam.display Value.small [] [ Seam.text k.value ]
                 , trendDelta k.trend k.delta
                 ]
             )
@@ -351,14 +350,14 @@ trendDelta trend delta =
         ( iconName, role ) =
             case trend of
                 Up ->
-                    ( "trending_up", Kit.primary )
+                    ( "trending_up", Seam.primary )
 
                 Down ->
-                    ( "trending_down", Kit.error )
+                    ( "trending_down", Seam.error )
     in
-    Layout.div "flex items-center gap-1"
-        [ Kit.colored [ role ] [ M3e.icon [ TA.name iconName ] [] ]
-        , Kit.labelText Value.large [ role ] [ Kit.text delta ]
+    Seam.div "flex items-center gap-1"
+        [ Seam.colored [ role ] [ M3e.icon [ TA.name iconName ] [] ]
+        , Seam.labelText Value.large [ role ] [ Seam.text delta ]
         ]
 
 
@@ -369,7 +368,7 @@ trendDelta trend delta =
 accountsSection : Element { s | card : M3e.Kind.Brand } adm_ msg
 accountsSection =
     sectionCard "Accounts"
-        (Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2"
+        (Seam.div "grid grid-cols-1 gap-3 sm:grid-cols-2"
             (List.map accountRow accounts)
         )
 
@@ -377,13 +376,13 @@ accountsSection =
 accountRow : Account -> Element { s | html : M3e.Kind.Brand } adm_ msg
 accountRow a =
     Surface.view Surface.surfaceContainerHigh
-        [ Shape.corner Shape.large, Layout.class "flex items-center gap-3 p-3" ]
+        [ Shape.corner Shape.large, Seam.class "flex items-center gap-3 p-3" ]
         [ Surface.view Surface.secondaryContainer
-            [ Shape.corner Shape.full, Layout.class "flex items-center justify-center p-2" ]
+            [ Shape.corner Shape.full, Seam.class "flex items-center justify-center p-2" ]
             [ M3e.icon [ TA.name a.icon ] [] ]
-        , Layout.div "flex flex-col min-w-0"
-            [ Kit.body Value.medium [] [ Kit.text a.name ]
-            , Kit.title Value.medium [] [ Kit.text a.balance ]
+        , Seam.div "flex flex-col min-w-0"
+            [ Seam.body Value.medium [] [ Seam.text a.name ]
+            , Seam.title Value.medium [] [ Seam.text a.balance ]
             ]
         ]
 
@@ -395,17 +394,17 @@ accountRow a =
 budgetsSection : Element { s | card : M3e.Kind.Brand } adm_ msg
 budgetsSection =
     sectionCard "Budgets"
-        (Layout.div "flex flex-col gap-5"
+        (Seam.div "flex flex-col gap-5"
             (List.map budgetRow budgets)
         )
 
 
 budgetRow : Budget -> Element { s | html : M3e.Kind.Brand } adm_ msg
 budgetRow b =
-    Layout.div "flex flex-col gap-2"
-        [ Layout.div "flex items-center justify-between gap-2"
-            [ Kit.body Value.medium [] [ Kit.text b.category ]
-            , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text b.amount ]
+    Seam.div "flex flex-col gap-2"
+        [ Seam.div "flex items-center justify-between gap-2"
+            [ Seam.body Value.medium [] [ Seam.text b.category ]
+            , Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text b.amount ]
             ]
         , M3e.linearProgressIndicator
             [ M3e.SliderThumb.value b.used, M3e.Attributes.max b.max ]
@@ -420,7 +419,7 @@ budgetRow b =
 activitySection : Element { s | card : M3e.Kind.Brand } adm_ msg
 activitySection =
     sectionCard "Recent activity"
-        (Layout.div "flex flex-col"
+        (Seam.div "flex flex-col"
             (List.intersperse (M3e.divider [] [])
                 (List.map activityRow activity)
             )
@@ -433,17 +432,17 @@ activityRow a =
         role : TextColor
         role =
             if a.incoming then
-                Kit.primary
+                Seam.primary
 
             else
-                Kit.onSurface
+                Seam.onSurface
     in
     M3e.listItem []
         [ M3e.ListItem.leading
-            (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text a.date ])
-        , Kit.text a.description
+            (Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text a.date ])
+        , Seam.text a.description
         , M3e.ListItem.trailing
-            (Kit.title Value.medium [ role ] [ Kit.text a.amount ])
+            (Seam.title Value.medium [ role ] [ Seam.text a.amount ])
         ]
 
 
@@ -455,6 +454,6 @@ sectionCard : String -> Element any adm_ msg -> Element { r | card : M3e.Kind.Br
 sectionCard heading content =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
         [ M3e.Card.header
-            (Kit.title Value.large [] [ Kit.text heading ])
+            (Seam.title Value.large [] [ Seam.text heading ])
         , M3e.Card.content content
         ]

@@ -1,9 +1,9 @@
-module Kit.Avatar exposing (initials)
+module Seam.Avatar exposing (initials)
 
 {-| A default **avatar** paint — the classic "initials on a colored disc".
 
 `M3e.Avatar` is a bare semantic slot with no visual of its own, so painting the
-familiar circular avatar means composing a `Kit.Surface` role, a `Kit.Shape`
+familiar circular avatar means composing a `Seam.Surface` role, a `Seam.Shape`
 corner, and a centered layout. `initials` bundles that scaffold (and the inline
 `flex` fix an `Avatar` needs to render inside a `ListItem.leading` slot) so route
 code names the avatar instead of re-deriving the disc.
@@ -14,13 +14,12 @@ code names the avatar instead of re-deriving the disc.
 
 import Html.Attributes
 import HtmlIr.Element exposing (Element)
-import Kit
-import Kit.Shape as Shape
-import Kit.Surface as Surface
 import M3e
 import M3e.Kind
 import M3e.Values as Value
 import Seam
+import Seam.Shape as Shape
+import Seam.Surface as Surface
 
 
 {-| A circular avatar: `initials` centered on a fixed `h-10 w-10`
@@ -34,5 +33,5 @@ initials text =
             [ Shape.corner Shape.full
             , Seam.asAttribute (Html.Attributes.class "flex h-10 w-10 items-center justify-center")
             ]
-            [ Kit.labelText Value.medium [] [ Kit.text text ] ]
+            [ Seam.labelText Value.medium [] [ Seam.text text ] ]
         ]

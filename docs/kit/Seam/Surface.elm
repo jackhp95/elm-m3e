@@ -1,4 +1,4 @@
-module Kit.Surface exposing
+module Seam.Surface exposing
     ( Surface, view, asAttribute, outlined
     , surface, surfaceContainer, surfaceContainerHigh, inverseSurface
     , primary, primaryContainer, secondary, secondaryContainer
@@ -8,7 +8,7 @@ module Kit.Surface exposing
 {-| M3 **surface roles** — the visual seam for background + paired on-color.
 
 A `Surface` bundles a `bg-*` role with its matching `text-on-*` color, so route
-code paints an M3 surface by naming the role (`Kit.Surface.primary`) instead of
+code paints an M3 surface by naming the role (`Seam.Surface.primary`) instead of
 writing `bg-primary text-on-primary` through the seam. This is the sanctioned
 home for those classes (see `Kit`).
 
@@ -23,7 +23,6 @@ import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import Native
 import Seam
 
 
@@ -38,7 +37,7 @@ type Surface
 -}
 view : Surface -> List (Attr c msg) -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 view (Surface roles) attrs kids =
-    Native.node "div"
+    Seam.node "div"
         (Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on)) :: attrs)
         kids
 

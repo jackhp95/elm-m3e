@@ -12,10 +12,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Kit.Shape as Shape
-import Kit.Surface as Surface
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Kind
@@ -23,6 +19,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
+import Seam.Shape as Shape
+import Seam.Surface as Surface
 import Shared
 import UrlPath
 import View exposing (View)
@@ -83,13 +82,13 @@ levels =
 
 swatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 swatch ( shadow, label, token ) =
-    Layout.div "flex flex-col gap-2"
+    Seam.div "flex flex-col gap-2"
         [ Surface.view Surface.surfaceContainerHigh
-            [ Layout.class (shadow ++ " flex min-h-24 items-center justify-center p-4")
+            [ Seam.class (shadow ++ " flex min-h-24 items-center justify-center p-4")
             , Shape.corner Shape.large
             ]
-            [ Kit.labelText Value.large [ Kit.onSurface ] [ Kit.text label ] ]
-        , Kit.code Value.small [ Kit.onSurfaceVariant ] [ Kit.text token ]
+            [ Seam.labelText Value.large [ Seam.onSurface ] [ Seam.text label ] ]
+        , Seam.code Value.small [ Seam.onSurfaceVariant ] [ Seam.text token ]
         ]
 
 
@@ -106,32 +105,32 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.section "space-y-3"
+                [ Seam.section "space-y-3"
                     [ pageHeading
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "The six levels, live"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
                         ]
                     , Doc.showcase
-                        (Layout.div "grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3"
+                        (Seam.div "grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3"
                             (List.map swatch levels)
                         )
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Tinting the shadow"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]
                         ]
                     ]
                 ]

@@ -12,8 +12,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Button
@@ -22,6 +20,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import TypedHtml.Attributes as TA
 import UrlPath
@@ -75,7 +74,7 @@ savedButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 savedButton =
     M3e.button [ M3e.Attributes.variant Value.filled ]
         [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
-        , Kit.text "Save"
+        , Seam.text "Save"
         ]
 
 
@@ -85,17 +84,17 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Invalid states don't compile"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown valid
                         , Doc.showcase savedButton
                         , Doc.code_ Doc.Elm validCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown broken
                         , Doc.code_ Doc.Elm brokenCode
                         , Doc.code_ Doc.NoLang errorText
@@ -125,7 +124,7 @@ validCode : String
 validCode =
     """M3e.button [ M3e.Attributes.variant Value.filled ]
     [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
-    , Kit.text "Save"
+    , Seam.text "Save"
     ]"""
 
 
@@ -137,8 +136,8 @@ broken =
 brokenCode : String
 brokenCode =
     """M3e.button [ M3e.Attributes.variant Value.filled ]
-    [ M3e.Button.icon (M3e.chip [] [ Kit.text "not an icon" ])
-    , Kit.text "Save"
+    [ M3e.Button.icon (M3e.chip [] [ Seam.text "not an icon" ])
+    , Seam.text "Save"
     ]"""
 
 
@@ -146,7 +145,7 @@ errorText : String
 errorText =
     """The 1st argument to `icon` is not what I expect:
 
-9|     [ M3e.Button.icon (M3e.chip [] [ Kit.text "not an icon" ])
+9|     [ M3e.Button.icon (M3e.chip [] [ Seam.text "not an icon" ])
                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This `chip` call produces:
 

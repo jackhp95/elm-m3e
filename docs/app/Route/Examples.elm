@@ -10,8 +10,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Button
@@ -22,6 +20,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -99,11 +98,11 @@ exampleCard ( slug, cardTitle, cardBody ) =
     M3e.card
         [ M3e.Card.variant Value.elevated ]
         [ M3e.Card.header (M3e.heading [ M3e.Heading.variant Value.title ] [ M3e.text cardTitle ])
-        , M3e.Card.content (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text cardBody ])
+        , M3e.Card.content (Seam.paragraph Value.large [ Seam.onSurfaceVariant ] [ Seam.text cardBody ])
         , M3e.Card.actions
             (M3e.button
                 [ M3e.Button.variant Value.filled, M3e.Button.href exampleHref ]
-                [ Kit.text ("Open " ++ cardTitle) ]
+                [ Seam.text ("Open " ++ cardTitle) ]
             )
         ]
 
@@ -114,15 +113,15 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Layout.section "space-y-3"
+                [ Seam.section "space-y-3"
                     [ pageHeading
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
                         ]
                     ]
-                , Layout.section "grid gap-4 sm:grid-cols-2"
+                , Seam.section "grid gap-4 sm:grid-cols-2"
                     (List.map exampleCard examples)
                 ]
             )

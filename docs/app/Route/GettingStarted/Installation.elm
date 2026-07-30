@@ -5,8 +5,6 @@ import Doc exposing (Lang(..), code_, message)
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Kind
@@ -14,6 +12,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -78,36 +77,36 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.section "space-y-3"
+                [ Seam.section "space-y-3"
                     [ pageHeading
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "elm-m3e ships in two parts. The brand primitives — the shared vocabulary and escape hatches (M3e.Attributes, M3e.Values, M3e.Events, M3e.Html, and friends) — publish to the Elm package registry as jackhp95/elm-m3e. The 128 typed components (M3e.Button, M3e.Card, M3e.Theme, … and the M3e barrel) are NOT published; you generate them into your project with elm-cem's eject command. Follow the four steps below and you will have a themed button rendering in the browser." ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "elm-m3e ships in two parts. The brand primitives — the shared vocabulary and escape hatches (M3e.Attributes, M3e.Values, M3e.Events, M3e.Html, and friends) — publish to the Elm package registry as jackhp95/elm-m3e. The 128 typed components (M3e.Button, M3e.Card, M3e.Theme, … and the M3e barrel) are NOT published; you generate them into your project with elm-cem's eject command. Follow the four steps below and you will have a themed button rendering in the browser." ]
                     , message "Prerequisites: Elm 0.19.1, Node 18+ (eject runs via npx/pnpm dlx), and a bundler that can serve ES modules (Vite, esbuild, Parcel, or Webpack). The steps below assume Vite, but any bundler that runs npm packages and lets you inject a <script> tag will work."
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ stepHeading "1. Install the primitives and eject the components"
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Install the published primitives from the Elm registry. This gives you the primitive modules — M3e.Attributes, M3e.Values, M3e.Events, the escape hatches, and M3e.Html (the loose, open-rowed component producers):" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "Install the published primitives from the Elm registry. This gives you the primitive modules — M3e.Attributes, M3e.Values, M3e.Events, the escape hatches, and M3e.Html (the loose, open-rowed component producers):" ]
                     , code_ Shell """
 elm install jackhp95/elm-m3e
 """
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "To get the full typed component surface (M3e.Button, M3e.Card, M3e.Theme, … and the M3e barrel), run elm-cem's eject command. It pulls the pre-generated M3e.* modules into a vendor folder, adds that folder to source-directories in your elm.json, and promotes the dependencies the generated code imports. eject also removes the jackhp95/elm-m3e registry dependency — the vendored superset already contains those primitive modules, so there is no collision:" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "To get the full typed component surface (M3e.Button, M3e.Card, M3e.Theme, … and the M3e barrel), run elm-cem's eject command. It pulls the pre-generated M3e.* modules into a vendor folder, adds that folder to source-directories in your elm.json, and promotes the dependencies the generated code imports. eject also removes the jackhp95/elm-m3e registry dependency — the vendored superset already contains those primitive modules, so there is no collision:" ]
                     , code_ Shell """
 npx elm-cem eject m3e --elm-json=elm.json --write
 """
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "eject defaults to a dry run that prints its plan and writes nothing; pass --write to apply it. The vendored M3e.* modules are a build artifact — re-run eject to update them rather than editing them by hand. Add --with-review to also wire up the elm-review-cem lint rules." ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "eject defaults to a dry run that prints its plan and writes nothing; pass --write to apply it. The vendored M3e.* modules are a build artifact — re-run eject to update them rather than editing them by hand. Add --with-review to also wire up the elm-review-cem lint rules." ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ stepHeading "2. Register the web components"
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "The Elm modules emit <m3e-*> custom elements; they only render once the @m3e/web element definitions are registered. Install the package and import it once, before your Elm app boots:" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "The Elm modules emit <m3e-*> custom elements; they only render once the @m3e/web element definitions are registered. Install the package and import it once, before your Elm app boots:" ]
                     , code_ Shell """
 npm i @m3e/web
 """
@@ -116,14 +115,14 @@ npm i @m3e/web
 import "@m3e/web/all";
 """
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ stepHeading "3. Add the token + utility CSS bridge"
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "tailwind-m3e-web maps the M3 design tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …). It is NOT published to npm — it is a private repository, vendored here as CSS only. There is no @import from a package name; you must vendor the CSS files into your project first." ]
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "If you have access to the private repo, clone it and copy its CSS into your project; otherwise copy the vendored copy from this repo (docs/vendor/tailwind-m3e-web):" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "tailwind-m3e-web maps the M3 design tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …). It is NOT published to npm — it is a private repository, vendored here as CSS only. There is no @import from a package name; you must vendor the CSS files into your project first." ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "If you have access to the private repo, clone it and copy its CSS into your project; otherwise copy the vendored copy from this repo (docs/vendor/tailwind-m3e-web):" ]
                     , code_ Shell """
 # Option A — from the private source repo (requires access)
 git clone https://github.com/jackhp95/tailwind-m3e-web.git
@@ -133,9 +132,9 @@ cp -R tailwind-m3e-web/generated  your-project/vendor/tailwind-m3e-web/generated
 # Option B — from the copy vendored inside this repo
 cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
 """
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Then reference the vendored files by relative path from your stylesheet:" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "Then reference the vendored files by relative path from your stylesheet:" ]
                     , code_ NoLang """
 /* style.css — paths are relative to your vendored copy */
 @import "tailwindcss";
@@ -143,11 +142,11 @@ cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
 @import "./vendor/tailwind-m3e-web/generated/utilities.css";
 """
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ stepHeading "4. Wrap your app in a theme and render"
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "M3e.Theme is an attribute-style element (not a builder): M3e.Theme.view takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "M3e.Theme is an attribute-style element (not a builder): M3e.Theme.view takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
                     , code_ Elm """
 module Main exposing (main)
 
@@ -157,7 +156,6 @@ import M3e
 import HtmlIr.Element
 import M3e.Theme as Theme
 import M3e.Values as Value
-import Kit
 
 
 main : Program () () ()
@@ -174,13 +172,13 @@ view _ =
             ]
             [ Button.view
                 [ Button.variant Value.filled ]
-                [ Kit.text "It works" ]
+                [ Seam.text "It works" ]
             ]
         )
 """
-                    , Kit.paragraph Value.large
-                        [ Kit.onSurfaceVariant ]
-                        [ Kit.text "HtmlIr.Element.toNode turns an M3e Element into elm/html, so Browser.sandbox can render it (add `import Html` alongside the imports above). Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
+                    , Seam.paragraph Value.large
+                        [ Seam.onSurfaceVariant ]
+                        [ Seam.text "HtmlIr.Element.toNode turns an M3e Element into elm/html, so Browser.sandbox can render it (add `import Html` alongside the imports above). Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
                     , code_ Xml """
 <!doctype html>
 <html lang="en">

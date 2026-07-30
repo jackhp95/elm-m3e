@@ -23,11 +23,10 @@ annotates.
 
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind
-import Kit
-import Kit.Surface as Surface
-import Layout
 import M3e.Kind
 import M3e.Values as Value
+import Seam
+import Seam.Surface as Surface
 
 
 {-| Render the footer for one example page.
@@ -48,7 +47,7 @@ footer :
     -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 footer { builtFrom, prev, next } =
     Surface.view Surface.surfaceContainer
-        [ Layout.class "w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
+        [ Seam.class "w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
         [ backRow
         , builtFromRow builtFrom
         , prevNextRow prev next
@@ -61,25 +60,25 @@ here — this is the explicit in-page affordance for it.
 -}
 backRow : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 backRow =
-    Layout.div "flex"
-        [ Kit.textLink "/examples" [ Kit.onSurfaceVariant ] [ Kit.text "← Back to examples" ] ]
+    Seam.div "flex"
+        [ Seam.textLink "/examples" [ Seam.onSurfaceVariant ] [ Seam.text "← Back to examples" ] ]
 
 
 builtFromRow : List ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 builtFromRow builtFrom =
-    Layout.div "flex flex-wrap items-baseline gap-x-2 gap-y-1"
-        (Kit.labelText Value.large
-            [ Kit.onSurfaceVariant ]
-            [ Kit.text "Built from" ]
+    Seam.div "flex flex-wrap items-baseline gap-x-2 gap-y-1"
+        (Seam.labelText Value.large
+            [ Seam.onSurfaceVariant ]
+            [ Seam.text "Built from" ]
             :: List.map componentLink builtFrom
         )
 
 
 componentLink : ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 componentLink ( slug, label ) =
-    Kit.body Value.medium
+    Seam.body Value.medium
         []
-        [ Kit.textLink ("/components/" ++ slug) [ Kit.primary ] [ Kit.text label ] ]
+        [ Seam.textLink ("/components/" ++ slug) [ Seam.primary ] [ Seam.text label ] ]
 
 
 prevNextRow :
@@ -87,7 +86,7 @@ prevNextRow :
     -> Maybe ( String, String )
     -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 prevNextRow prev next =
-    Layout.div "flex items-center justify-between gap-4"
+    Seam.div "flex items-center justify-between gap-4"
         [ pagerSlot "← " prev
         , pagerSlot "" next
         ]
@@ -101,7 +100,7 @@ pagerSlot leadingArrow slot =
     case slot of
         Nothing ->
             -- Keep the flex row balanced when one side is absent.
-            Layout.span "" []
+            Seam.span "" []
 
         Just ( href, label ) ->
             let
@@ -113,6 +112,6 @@ pagerSlot leadingArrow slot =
                     else
                         leadingArrow ++ label
             in
-            Kit.body Value.medium
+            Seam.body Value.medium
                 []
-                [ Kit.textLink href [ Kit.onSurfaceVariant ] [ Kit.text shownLabel ] ]
+                [ Seam.textLink href [ Seam.onSurfaceVariant ] [ Seam.text shownLabel ] ]

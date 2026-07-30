@@ -13,16 +13,14 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element as Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.FormField
 import M3e.Kind
 import M3e.Values as Value
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -74,13 +72,13 @@ the one shared id "email-field". This is the value shown live and printed below.
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ Native.node "label" [ Native.attribute "for" "email-field" ] [ Kit.text "Email address" ]
-        , M3e.FormField.hint (Kit.text "We'll never share it.")
-        , Native.node "input"
-            [ Native.attribute "id" "email-field"
-            , Native.attribute "type" "email"
-            , Native.attribute "placeholder" "you@example.com"
-            , Native.attribute "name" "email"
+        [ Seam.node "label" [ Seam.attribute "for" "email-field" ] [ Seam.text "Email address" ]
+        , M3e.FormField.hint (Seam.text "We'll never share it.")
+        , Seam.node "input"
+            [ Seam.attribute "id" "email-field"
+            , Seam.attribute "type" "email"
+            , Seam.attribute "placeholder" "you@example.com"
+            , Seam.attribute "name" "email"
             ]
             []
         ]
@@ -92,17 +90,17 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Composition, not injection"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown composed
                         , Doc.showcase emailField
                         , Doc.code_ Doc.Elm emailCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown native ]
                     , Doc.recapBox recap
                     ]
@@ -127,8 +125,8 @@ emailCode =
     """emailField =
     M3e.formField [ M3e.Attributes.variant Value.outlined ]
         [ M3e.formFieldSlotLabel "email-field"
-            (M3e.Native.label [] [ Kit.text "Email address" ])
-        , M3e.formFieldSlotHint (Kit.text "We'll never share it.")
+            (M3e.Native.label [] [ Seam.text "Email address" ])
+        , M3e.formFieldSlotHint (Seam.text "We'll never share it.")
         , M3e.formFieldSlotDefault "email-field"
             (M3e.Native.input
                 [ M3e.Native.type_ "email"

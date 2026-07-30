@@ -24,11 +24,6 @@ import ExampleNav
 import Head
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind
-import Kit
-import Kit.Media as Media
-import Kit.Shape as Shape
-import Kit.Surface as Surface exposing (Surface)
-import Layout
 import M3e
 import M3e.AppBar
 import M3e.AssistChip
@@ -38,9 +33,12 @@ import M3e.Kind
 import M3e.NavItem
 import M3e.SearchBar
 import M3e.Values as Value
-import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam
+import Seam.Media as Media
+import Seam.Shape as Shape
+import Seam.Surface as Surface exposing (Surface)
 import Shared
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
@@ -218,11 +216,11 @@ that only appears on small screens.
 -}
 shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
 shell model =
-    Layout.div "flex h-screen w-full flex-col"
+    Seam.div "flex h-screen w-full flex-col"
         [ appBar
-        , Layout.div "flex min-h-0 flex-1"
+        , Seam.div "flex min-h-0 flex-1"
             [ navRail model.destination
-            , Layout.section "min-w-0 flex-1 overflow-y-auto"
+            , Seam.section "min-w-0 flex-1 overflow-y-auto"
                 [ content model
                 , exampleFooter
                 ]
@@ -255,7 +253,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar =
     M3e.appBar []
         [ M3e.AppBar.leading (M3e.icon [ TA.name "public" ] [])
-        , M3e.AppBar.title (Kit.text "Wander")
+        , M3e.AppBar.title (Seam.text "Wander")
         , M3e.AppBar.trailing
             (M3e.iconButton
                 [ M3e.Attributes.variant Value.standard, Aria.label "Notifications" ]
@@ -272,7 +270,7 @@ appBar =
 -}
 navRail : Dest -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navRail current =
-    Layout.div "hidden md:flex"
+    Seam.div "hidden md:flex"
         [ M3e.navRail []
             (List.map (railItem current) destinations)
         ]
@@ -282,10 +280,10 @@ railItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.
 railItem current ( dest, iconName, label ) =
     M3e.navItem
         [ M3e.Attributes.selected (dest == current)
-        , Native.onClick (PagesMsg.fromMsg (SetDest dest))
+        , Seam.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
-        , Kit.text label
+        , Seam.text label
         ]
 
 
@@ -293,7 +291,7 @@ railItem current ( dest, iconName, label ) =
 -}
 navBar : Dest -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar current =
-    Layout.div "md:hidden"
+    Seam.div "md:hidden"
         [ M3e.navBar []
             (List.map (barItem current) destinations)
         ]
@@ -303,10 +301,10 @@ barItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.B
 barItem current ( dest, iconName, label ) =
     M3e.navItem
         [ M3e.Attributes.selected (dest == current)
-        , Native.onClick (PagesMsg.fromMsg (SetDest dest))
+        , Seam.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
-        , Kit.text label
+        , Seam.text label
         ]
 
 
@@ -316,7 +314,7 @@ barItem current ( dest, iconName, label ) =
 
 content : Model -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 content model =
-    Layout.div "flex flex-col gap-8 p-4 md:p-8"
+    Seam.div "flex flex-col gap-8 p-4 md:p-8"
         [ hero
         , categoryTabs model.category
         , popularRails model.category
@@ -357,11 +355,11 @@ categoryIndex current =
 hero : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 hero =
     Surface.view Surface.surfaceContainer
-        [ Shape.corner Shape.extraLarge, Layout.class "flex flex-col gap-4 p-6 md:p-8" ]
-        [ Kit.headline Value.small [] [ Kit.text "Where to next?" ]
-        , Kit.body Value.medium
-            [ Kit.onSurfaceVariant ]
-            [ Kit.text "Search destinations, dates, and guests." ]
+        [ Shape.corner Shape.extraLarge, Seam.class "flex flex-col gap-4 p-6 md:p-8" ]
+        [ Seam.headline Value.small [] [ Seam.text "Where to next?" ]
+        , Seam.body Value.medium
+            [ Seam.onSurfaceVariant ]
+            [ Seam.text "Search destinations, dates, and guests." ]
         , searchBar
         ]
 
@@ -370,7 +368,7 @@ searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } ad
 searchBar =
     M3e.searchBar
         []
-        [ M3e.SearchBar.input (Native.node "input" [] [])
+        [ M3e.SearchBar.input (Seam.node "input" [] [])
         , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
         , M3e.SearchBar.trailing (M3e.icon [ TA.name "tune" ] [])
         ]
@@ -388,9 +386,9 @@ categoryTab : Category -> ( Category, String ) -> Element { s | tab : M3e.Kind.B
 categoryTab current ( category, label ) =
     M3e.tab
         [ M3e.Attributes.selected (category == current)
-        , Native.onClick (PagesMsg.fromMsg (SetCategory category))
+        , Seam.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
-        [ Kit.text label ]
+        [ Seam.text label ]
 
 
 
@@ -401,9 +399,9 @@ categoryTab current ( category, label ) =
 -}
 rail : String -> List Place -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 rail heading places =
-    Layout.section "flex flex-col gap-4"
-        [ Kit.title Value.large [] [ Kit.text heading ]
-        , Layout.div "flex gap-4 overflow-x-auto pb-2"
+    Seam.section "flex flex-col gap-4"
+        [ Seam.title Value.large [] [ Seam.text heading ]
+        , Seam.div "flex gap-4 overflow-x-auto pb-2"
             (List.map placeCard places)
         ]
 
@@ -413,16 +411,16 @@ rail heading places =
 -}
 placeCard : Place -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 placeCard place =
-    Layout.div "w-56 shrink-0"
+    Seam.div "w-56 shrink-0"
         [ M3e.card [ M3e.Attributes.variant Value.elevated ]
             [ M3e.Card.header (media place)
             , M3e.Card.content
-                (Layout.div "flex flex-col gap-2"
-                    [ Kit.title Value.medium [] [ Kit.text place.name ]
-                    , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text place.region ]
-                    , Layout.div "flex items-center justify-between"
+                (Seam.div "flex flex-col gap-2"
+                    [ Seam.title Value.medium [] [ Seam.text place.name ]
+                    , Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text place.region ]
+                    , Seam.div "flex items-center justify-between"
                         [ ratingChip place.rating
-                        , Kit.labelText Value.large [ Kit.primary ] [ Kit.text place.price ]
+                        , Seam.labelText Value.large [ Seam.primary ] [ Seam.text place.price ]
                         ]
                     ]
                 )
@@ -437,7 +435,7 @@ media : Place -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media place =
     Media.view place.tint
         Shape.large
-        [ Layout.class "flex h-28 w-full items-end p-3" ]
+        [ Seam.class "flex h-28 w-full items-end p-3" ]
         [ M3e.icon [ TA.name "image" ] [] ]
 
 

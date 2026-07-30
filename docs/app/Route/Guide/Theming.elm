@@ -15,10 +15,10 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element
-import Layout
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -69,35 +69,35 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Theming with tokens"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "One theme at the root"
                         , Doc.markdown rootBody
                         , Doc.code_ Doc.Elm rootCode
                         , Doc.markdown rootNote
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Paint with roles, not hex"
                         , Doc.markdown rolesBody
                         , Doc.code_ Doc.Elm rolesCode
                         , Doc.markdown tokenFamilies
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "Dark and dynamic color are swaps"
                         , Doc.markdown darkBody
                         , Doc.code_ Doc.Elm darkCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "A brand re-skin, end to end"
                         , Doc.markdown reskinBody
                         , Doc.code_ Doc.Elm reskinCode
                         , Doc.markdown reskinNote
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.sectionHeading "The Tailwind bridge: layout only"
                         , Doc.markdown bridgeBody
                         , Doc.code_ Doc.Elm bridgeCode
@@ -149,11 +149,11 @@ rolesCode : String
 rolesCode =
     """-- A selected row is a surface-ROLE swap, not a background class:
 Surface.view Surface.surfaceContainer [ … ] rows   -- container role, correct tint + elevation
-Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text "Secondary text" ]
-Kit.textLink href [ Kit.primary ] [ Kit.text "Primary action" ]
+Seam.body Value.large [ Seam.onSurfaceVariant ] [ Seam.text "Secondary text" ]
+Seam.textLink href [ Seam.primary ] [ Seam.text "Primary action" ]
 
 -- WRONG — a raw color, decoupled from the scheme, wrong in dark mode:
-Layout.div "bg-[#4285F4] text-white" children"""
+Seam.div "bg-[#4285F4] text-white" children"""
 
 
 tokenFamilies : String
@@ -199,28 +199,28 @@ Theme.view
     , Theme.density -1                -- slightly more compact
     ]
     [ appBody ]                        -- shapes: set the corner default in the Kit,
-                                       -- e.g. Kit.Shape.corner Shape.large per surface"""
+                                       -- e.g. Seam.Shape.corner Shape.large per surface"""
 
 
 reskinNote : String
 reskinNote =
-    """That is the entire re-skin. Because every view named a role (`primary`, `onSurface`, `surfaceContainer`) and every corner came through `Kit.Shape`, the new seed and density reach every screen at once. There is nothing to find-and-replace, and no screen can drift from the brand because no screen ever hard-coded a brand value."""
+    """That is the entire re-skin. Because every view named a role (`primary`, `onSurface`, `surfaceContainer`) and every corner came through `Seam.Shape`, the new seed and density reach every screen at once. There is nothing to find-and-replace, and no screen can drift from the brand because no screen ever hard-coded a brand value."""
 
 
 bridgeBody : String
 bridgeBody =
-    """Utility CSS (Tailwind, in the docs app) is legitimate — for **layout only**: flex, grid, gap, padding, positioning, responsive visibility. It must never set a visual token. If you find yourself writing a class to change a color, a corner, or an elevation, the right move is a token: a color role, `Kit.Shape.corner`, or a `Theme` input. This boundary is enforced mechanically — the repo-local `NoProprietaryDsClasses` rule flags design-system class tokens in a `class` literal — and it is the same rule that keeps [layouts](/guide/composition-text-field) honest."""
+    """Utility CSS (Tailwind, in the docs app) is legitimate — for **layout only**: flex, grid, gap, padding, positioning, responsive visibility. It must never set a visual token. If you find yourself writing a class to change a color, a corner, or an elevation, the right move is a token: a color role, `Seam.Shape.corner`, or a `Theme` input. This boundary is enforced mechanically — the repo-local `NoProprietaryDsClasses` rule flags design-system class tokens in a `class` literal — and it is the same rule that keeps [layouts](/guide/composition-text-field) honest."""
 
 
 bridgeCode : String
 bridgeCode =
     """-- GOOD: layout via utility classes; surface + shape + color via Kit/components.
 Surface.view Surface.surfaceContainer
-    [ Shape.corner Shape.large, Layout.class "overflow-hidden flex flex-col" ]
+    [ Shape.corner Shape.large, Seam.class "overflow-hidden flex flex-col" ]
     rows
 
 -- WRONG: a class doing a visual (color/shape) job — flagged, and wrong in dark.
-Native.div "rounded-3xl bg-primary-container p-4" rows"""
+Seam.div "rounded-3xl bg-primary-container p-4" rows"""
 
 
 recap : String

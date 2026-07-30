@@ -17,8 +17,6 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
@@ -27,6 +25,7 @@ import M3e.ListItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam
 import Shared
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -127,7 +126,7 @@ view app _ model =
                 (Doc.pane
                     [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
                       -- section — header, Usage, API — so their spacing is uniform.
-                      Layout.div "space-y-10"
+                      Seam.div "space-y-10"
                         (header component
                             :: Usage.usageBlocks 0 model app.data.usage
                             ++ [ apiSection component.members ]
@@ -147,8 +146,8 @@ colocated API section below, not repeated here.
 -}
 header : Component -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, suggestionChip : M3e.Kind.Brand } adm_ msg
 header component =
-    Layout.div "space-y-4"
-        (Layout.div "flex flex-wrap items-center gap-3"
+    Seam.div "space-y-4"
+        (Seam.div "flex flex-wrap items-center gap-3"
             (M3e.heading
                 [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
                 [ M3e.text component.name ]
@@ -169,9 +168,9 @@ exampleAppsSection usages =
         []
 
     else
-        [ Layout.div "space-y-4"
+        [ Seam.div "space-y-4"
             [ Doc.sectionHeading "In the example apps"
-            , Layout.div "flex flex-wrap gap-2"
+            , Seam.div "flex flex-wrap gap-2"
                 (List.map
                     (\u -> Doc.anchorPill { href = u.route, label = u.title })
                     usages
@@ -189,7 +188,7 @@ categoryChip cat =
         []
 
     else
-        [ M3e.suggestionChip [] [ Kit.text cat ] ]
+        [ M3e.suggestionChip [] [ Seam.text cat ] ]
 
 
 {-| The one-line summary paragraph, constrained to a comfortable reading measure.
@@ -201,8 +200,8 @@ summaryBlock summary =
         []
 
     else
-        [ Layout.div "max-w-2xl"
-            [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text summary ] ]
+        [ Seam.div "max-w-2xl"
+            [ Seam.paragraph Value.large [ Seam.onSurfaceVariant ] [ Seam.text summary ] ]
         ]
 
 
@@ -224,7 +223,7 @@ keep their `@docs` order within a group. Empty groups drop out.
 -}
 apiSection : List Doc.Data.Member -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, listItem : M3e.Kind.Brand } adm_ msg
 apiSection members =
-    Layout.div "space-y-6"
+    Seam.div "space-y-6"
         (M3e.heading
             [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
             [ M3e.text "API" ]
@@ -258,8 +257,8 @@ apiGroup members ( label, roles ) =
 
         group ->
             Just
-                (Layout.div "space-y-3"
-                    [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text label ]
+                (Seam.div "space-y-3"
+                    [ Seam.overline [ Seam.onSurfaceVariant ] [ Seam.text label ]
                     , M3e.card [ M3e.Attributes.variant Value.outlined ]
                         [ M3e.Card.content (M3e.list [] (List.map memberRow group)) ]
                     ]

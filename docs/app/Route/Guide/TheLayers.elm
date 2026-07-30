@@ -13,8 +13,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Kind
@@ -22,6 +20,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -72,7 +71,7 @@ produce this same slottable value, so one live demo covers them all.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
+    M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -81,21 +80,21 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "The surface map"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown layers
                         , Doc.code_ Doc.NoLang layersDiagram
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown sameButton
                         , Doc.showcase saveButton
                         , Doc.code_ Doc.Elm descentCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown tell ]
                     , Doc.recapBox recap
                     ]
@@ -141,29 +140,29 @@ sameButton =
 descentCode : String
 descentCode =
     """-- barrel: one import, the standard form — the default
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
 
 -- component module: same output, component-scoped tighter types
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ Kit.text "Save" ]
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ Seam.text "Save" ]
 
 -- required-record form: the compiler demands the parts a button can't omit
-M3e.Button.el { content = Kit.text "Save", action = M3e.Action.onClick Save } [] []
+M3e.Button.el { content = Seam.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe: a one-only setter is unwritable twice; order-free
-M3e.Button.build { content = Kit.text "Save", action = M3e.Action.onClick Save }
+M3e.Button.build { content = Seam.text "Save", action = M3e.Action.onClick Save }
     |> M3e.Button.withVariant Value.filled
     |> M3e.Button.toElement"""
 
 
 tell : String
 tell =
-    """There's a simple tell that you escaped when you didn't need to: **if you're hand-writing raw HTML (`M3e.Unsafe.fromHtml`, a bare `Native.node`) for something the library already ships as a component, you reached too far.** The typed component already carries the tag, the slots, and the tokens — spelling them out by hand throws that away. Escapes exist for what the library genuinely can't express; reaching for one otherwise is the mistake."""
+    """There's a simple tell that you escaped when you didn't need to: **if you're hand-writing raw HTML (`M3e.Unsafe.fromHtml`, a bare `Seam.node`) for something the library already ships as a component, you reached too far.** The typed component already carries the tag, the slots, and the tokens — spelling them out by hand throws that away. Escapes exist for what the library genuinely can't express; reaching for one otherwise is the mistake."""
 
 
 recap : String
 recap =
     """- A component is **one typed value**, written through interchangeable **surfaces** (barrel `view`, `el`, `build`) — **peers, not a ranking**.
 - `M3e.Html.*` is the **loose** producer: opt out of strict phantom rows while staying in the IR (it is *not* plain HTML).
-- You leave the typed tree only through loud, named **escapes** (`M3e.Coerce`, `M3e.Unsafe`, or the raw forge `HtmlIr.Internal`) — greppable and lint-fenced.
+- You leave the typed tree only through loud, named **escapes**: two lint-fenced doors — `M3e.Unsafe` (`fromHtml`/`recast`) and the raw forge `HtmlIr.Internal` — plus `M3e.Coerce` for the config-blessed kind crossings a brand declares.
 - The tell that you over-escaped: **hand-writing raw HTML the library already ships as a component.**
 - **Next: [Your own seam](/guide/seams) →** when you *do* need to step outside, do it through one of the sanctioned escapes."""

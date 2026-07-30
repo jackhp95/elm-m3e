@@ -11,10 +11,10 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element
-import Layout
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -65,12 +65,12 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-8"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-8"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Glossary"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown terms ]
                     ]
                 ]

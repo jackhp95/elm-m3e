@@ -26,7 +26,7 @@ so every tab UI in the docs can reuse the one implementation.
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
-import Native
+import Seam
 
 
 {-| Mount `panels` in a sliding track, showing the one at `activeIndex`.
@@ -40,13 +40,13 @@ slidingPanels : Int -> List (Element { s | html : M3e.Kind.Brand } admittedBy ms
 slidingPanels activeIndex panels =
     case panels of
         [] ->
-            Native.node "div" [] []
+            Seam.node "div" [] []
 
         [ only ] ->
             -- Plain passthrough (a bare wrapper, no viewport/track): a single panel
             -- has nothing to slide against. The wrapper re-opens the phantom row so
             -- the one panel drops into any context the slider itself would.
-            Native.node "div" [] [ only ]
+            Seam.node "div" [] [ only ]
 
         _ ->
             let
@@ -60,15 +60,15 @@ slidingPanels activeIndex panels =
 
                 track : Element { k | html : M3e.Kind.Brand } trackAdm msg
                 track =
-                    Native.node "div"
-                        [ Native.attribute "class" "sp-track"
-                        , Native.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
+                    Seam.node "div"
+                        [ Seam.attribute "class" "sp-track"
+                        , Seam.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
                         ]
                         (List.indexedMap (panel idx) panels)
             in
-            Native.node "slide-panels"
-                [ Native.attribute "class" "sp-viewport"
-                , Native.attribute "active-index" (String.fromInt idx)
+            Seam.node "slide-panels"
+                [ Seam.attribute "class" "sp-viewport"
+                , Seam.attribute "active-index" (String.fromInt idx)
                 ]
                 [ track ]
 
@@ -84,8 +84,8 @@ panel activeIndex i child =
 
         attrs : List (Attr c msg)
         attrs =
-            Native.attribute "class" "sp-panel"
-                :: Native.attribute "aria-hidden"
+            Seam.attribute "class" "sp-panel"
+                :: Seam.attribute "aria-hidden"
                     (if inactive then
                         "true"
 
@@ -93,10 +93,10 @@ panel activeIndex i child =
                         "false"
                     )
                 :: (if inactive then
-                        [ Native.attribute "inert" "" ]
+                        [ Seam.attribute "inert" "" ]
 
                     else
                         []
                    )
     in
-    Native.node "div" attrs [ child ]
+    Seam.node "div" attrs [ child ]

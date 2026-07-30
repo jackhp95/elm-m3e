@@ -15,8 +15,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Button
@@ -25,6 +23,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import TypedHtml.Attributes as TA
 import UrlPath
@@ -78,7 +77,7 @@ saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
     M3e.button [ M3e.Attributes.variant Value.filled ]
         [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
-        , Kit.text "Save"
+        , Seam.text "Save"
         ]
 
 
@@ -88,19 +87,19 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "The strictness dial"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown linter ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown shapes
                         , Doc.showcase saveButton
                         , Doc.code_ Doc.Elm shapesCode
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown recordAha
                         , Doc.code_ Doc.NoLang recordError
                         ]
@@ -132,17 +131,17 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form (`view`) — everything optional; the tersest, easiest form
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
 
 -- required-record form (`el`) — the compiler now DEMANDS the parts a button can't do without
 M3e.Button.el
-    { content = Kit.text "Save", action = M3e.Action.onClick SaveClicked }
+    { content = Seam.text "Save", action = M3e.Action.onClick SaveClicked }
     []
     []
 
 -- builder pipe (`build`/`toElement`) — a one-only setter becomes UNWRITABLE twice; order-free
 M3e.Button.build
-    { content = Kit.text "Save", action = M3e.Action.onClick SaveClicked }
+    { content = Seam.text "Save", action = M3e.Action.onClick SaveClicked }
     |> M3e.Button.toElement"""
 
 
@@ -155,7 +154,7 @@ recordError : String
 recordError =
     """The 1st argument to `el` is not what I expect:
 
-4| M3e.Button.el { content = Kit.text "Save" } [] []
+4| M3e.Button.el { content = Seam.text "Save" } [] []
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This argument is a record of type:
 

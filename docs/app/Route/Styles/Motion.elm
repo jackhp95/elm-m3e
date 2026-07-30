@@ -5,17 +5,15 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
 import M3e.Values as Value
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -75,7 +73,7 @@ tokenTable rows =
     M3e.card
         [ M3e.Attributes.variant Value.outlined ]
         [ M3e.Card.content
-            (Layout.div "flex flex-col px-2"
+            (Seam.div "flex flex-col px-2"
                 (List.intersperse (M3e.divider [] []) (List.map tokenRow rows))
             )
         ]
@@ -83,9 +81,9 @@ tokenTable rows =
 
 tokenRow : ( String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 tokenRow ( token, value ) =
-    Layout.div "flex flex-wrap items-baseline justify-between gap-2 py-2.5"
-        [ Kit.code Value.medium [ Kit.onSurface ] [ Kit.text token ]
-        , Kit.code Value.medium [ Kit.onSurfaceVariant ] [ Kit.text value ]
+    Seam.div "flex flex-wrap items-baseline justify-between gap-2 py-2.5"
+        [ Seam.code Value.medium [ Seam.onSurface ] [ Seam.text token ]
+        , Seam.code Value.medium [ Seam.onSurfaceVariant ] [ Seam.text value ]
         ]
 
 
@@ -95,41 +93,41 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.section "space-y-3"
+                [ Seam.section "space-y-3"
                     [ pageHeading
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in M3e.Theme as Theme.withMotion." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in M3e.Theme as Theme.withMotion." ]
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Schemes"
-                    , Layout.ul "list-disc space-y-1.5 pl-5"
-                        [ Native.node "li"
+                    , Seam.ul "list-disc space-y-1.5 pl-5"
+                        [ Seam.node "li"
                             []
-                            [ Kit.body Value.large
-                                [ Kit.onSurfaceVariant ]
-                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Value.motionStandard" ]
-                                , Kit.text " — functional, restrained transitions."
+                            [ Seam.body Value.large
+                                [ Seam.onSurfaceVariant ]
+                                [ Seam.code Value.large [ Seam.onSurface ] [ Seam.text "Value.motionStandard" ]
+                                , Seam.text " — functional, restrained transitions."
                                 ]
                             ]
-                        , Native.node "li"
+                        , Seam.node "li"
                             []
-                            [ Kit.body Value.large
-                                [ Kit.onSurfaceVariant ]
-                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Value.motionExpressive" ]
-                                , Kit.text " — emphasized, spring-driven motion for M3 Expressive surfaces."
+                            [ Seam.body Value.large
+                                [ Seam.onSurfaceVariant ]
+                                [ Seam.code Value.large [ Seam.onSurface ] [ Seam.text "Value.motionExpressive" ]
+                                , Seam.text " — emphasized, spring-driven motion for M3 Expressive surfaces."
                                 ]
                             ]
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Easing curves"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Six --md-sys-motion-easing-* cubic-beziers. The emphasized set drives prominent transitions; the standard set drives small, utility-focused ones. Each has an accelerate (entering) and decelerate (exiting) variant." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Six --md-sys-motion-easing-* cubic-beziers. The emphasized set drives prominent transitions; the standard set drives small, utility-focused ones. Each has an accelerate (entering) and decelerate (exiting) variant." ]
                         ]
                     , tokenTable
                         [ ( "--md-sys-motion-easing-emphasized", "cubic-bezier(0.2, 0, 0, 1)" )
@@ -140,12 +138,12 @@ view _ _ =
                         , ( "--md-sys-motion-easing-standard-accelerate", "cubic-bezier(0.3, 0, 1, 1)" )
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Durations"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Sixteen --md-sys-motion-duration-* steps in four bands. Short for small utility transitions, medium for traversing part of the screen, long for expressive moves, extra-long for ambient motion." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "Sixteen --md-sys-motion-duration-* steps in four bands. Short for small utility transitions, medium for traversing part of the screen, long for expressive moves, extra-long for ambient motion." ]
                         ]
                     , tokenTable
                         [ ( "--md-sys-motion-duration-short-1", "50ms" )
@@ -166,12 +164,12 @@ view _ _ =
                         , ( "--md-sys-motion-duration-extra-long-4", "1000ms" )
                         ]
                     ]
-                , Layout.section "space-y-3"
+                , Seam.section "space-y-3"
                     [ Doc.sectionHeading "Springs"
-                    , Layout.div "max-w-2xl"
-                        [ Kit.paragraph Value.large
-                            [ Kit.onSurfaceVariant ]
-                            [ Kit.text "M3 Expressive replaces some easings with springs: a duration paired with an overshooting curve. Spatial springs move layout and position; effects springs animate visual properties like color and opacity." ]
+                    , Seam.div "max-w-2xl"
+                        [ Seam.paragraph Value.large
+                            [ Seam.onSurfaceVariant ]
+                            [ Seam.text "M3 Expressive replaces some easings with springs: a duration paired with an overshooting curve. Spatial springs move layout and position; effects springs animate visual properties like color and opacity." ]
                         ]
                     , tokenTable
                         [ ( "--md-sys-motion-spring-fast-spatial", "350ms cubic-bezier(0.27, 1.06, 0.18, 1)" )

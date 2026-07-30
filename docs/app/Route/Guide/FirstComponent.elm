@@ -12,8 +12,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
-import Kit
-import Layout
 import M3e
 import M3e.Attributes
 import M3e.Card
@@ -22,6 +20,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -75,9 +74,9 @@ settingsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.Card.header
-            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Kit.text "Account settings" ])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Seam.text "Account settings" ])
         , M3e.Card.content
-            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ])
+            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ])
         ]
 
 
@@ -87,12 +86,12 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "Your first component"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown body
                         , settingsCard
                         , Doc.code_ Doc.Elm source
@@ -122,16 +121,16 @@ Look at the shape. Attributes like `M3e.Attributes.variant Value.filled` go in t
 
 source : String
 source =
-    """import Kit
+    """import Seam
 import M3e
 
 
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.slotHeader
-            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Kit.text "Account settings" ])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Seam.text "Account settings" ])
         , M3e.slotContent
-            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Kit.text "Save" ])
+            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ])
         ]"""
 
 

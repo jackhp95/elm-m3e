@@ -1,4 +1,4 @@
-module Kit.Media exposing (view)
+module Seam.Media exposing (view)
 
 {-| M3 **card media** — a shape-clipped surface region for a card's media.
 
@@ -9,7 +9,7 @@ corner-clipped, which means an inner surface carrying a corner shape plus
 clips to the rounded corner. `view` bakes that convention into one call, so
 route code names "card media" instead of re-deriving the clip each time.
 
-Compose it with the shape and surface primitives (`Kit.Surface`, `Kit.Shape`);
+Compose it with the shape and surface primitives (`Seam.Surface`, `Seam.Shape`);
 this is a card-media convenience over them, not a new seam.
 
 @docs view
@@ -19,16 +19,16 @@ this is a card-media convenience over them, not a new seam.
 import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
-import Kit.Shape as Shape exposing (Corner)
-import Kit.Surface as Surface exposing (Surface)
 import M3e.Kind
 import Seam
+import Seam.Shape as Shape exposing (Corner)
+import Seam.Surface as Surface exposing (Surface)
 
 
 {-| A shape-clipped media region: a `Surface` role, corner-clipped to the given
 `Corner` with `overflow-hidden` so content clips to the corner. Extra `attrs`
 (layout sizing, alignment, …) and `kids` (an `<img>`, an icon placeholder, …)
-compose on as with `Kit.Surface.view`.
+compose on as with `Seam.Surface.view`.
 -}
 view : Surface -> Corner -> List (Attr c msg) -> List (Element s adm_ msg) -> Element { k | html : M3e.Kind.Brand } adm_ msg
 view role corner attrs kids =

@@ -23,10 +23,10 @@ import Head
 import Head.Seo as Seo
 import HtmlIr.Element
 import Json.Decode as Decode
-import Layout
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -135,19 +135,19 @@ view app _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Layout.div "space-y-12"
-                    [ Layout.section "space-y-4"
+                [ Seam.div "space-y-12"
+                    [ Seam.section "space-y-4"
                         [ Doc.pageHeading "How we prove it"
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown loop
                         , Doc.code_ Doc.NoLang (report app.data)
-                        , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown reportNote ]
+                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown reportNote ]
                         ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown alias ]
-                    , Layout.section "space-y-4"
+                    , Seam.section "space-y-4"
                         [ Doc.markdown (honest app.data) ]
                     , Doc.recapBox (recap app.data)
                     ]
