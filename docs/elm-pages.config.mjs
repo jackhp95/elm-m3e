@@ -10,8 +10,8 @@ export default {
       tailwindcss(),
     ],
     server: {
-      // Needed for cloudflared trycloudflare.com tunnels during local preview.
-      allowedHosts: [".trycloudflare.com"],
+      // Allow any Host header — safe on a trusted tailnet (tailscale-serve access).
+      allowedHosts: true,
     },
   }),
   adapter,
