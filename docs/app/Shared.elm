@@ -473,29 +473,27 @@ appShellBar =
 rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
 (the drawer takes over there), shown from `md` up.
 -}
-brandMark : Element { html : M3e.Kind.Brand } admittedBy Msg
+brandMark : Element (M3e.Icon.Is s) admittedBy Msg
 brandMark =
-    Seam.node "span"
-        [ Seam.class "ms-2 me-1 hidden md:inline-flex"
-
-        -- Purely decorative brand glyph — hide it from assistive tech so it
-        -- isn't announced alongside the "elm-m3e" title next to it.
+    -- Purely decorative brand glyph — hidden from assistive tech (aria-hidden)
+    -- so it isn't announced alongside the adjacent "elm-m3e" title. Visibility
+    -- and spacing ride on the icon itself; no wrapper needed.
+    M3e.icon
+        [ M3e.Icon.name "palette"
+        , Seam.class "ms-2 me-1 hidden md:inline-flex"
         , Seam.asAttribute (attribute "aria-hidden" "true")
         ]
-        [ M3e.icon [ M3e.Icon.name "palette" ] [] ]
+        []
 
 
-{-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
-viewports (the side drawer is always visible there).
+{-| The mobile hamburger. `md:hidden` rides on the icon button itself (the side
+drawer is always visible on wider viewports), so no wrapper span is needed.
 -}
-menuButton : Element { html : M3e.Kind.Brand } admittedBy Msg
+menuButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 menuButton =
-    Seam.node "span"
-        [ Seam.class "md:hidden" ]
-        [ M3e.iconButton
-            [ Aria.label "Toggle navigation", Seam.onClick MenuClicked ]
-            [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
-        ]
+    M3e.iconButton
+        [ Aria.label "Toggle navigation", Seam.class "md:hidden", Seam.onClick MenuClicked ]
+        [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
 
 
 {-| The GitHub link. The GitHub mark is an inline `<svg fill="currentColor">`
