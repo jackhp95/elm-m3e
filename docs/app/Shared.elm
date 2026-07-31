@@ -361,7 +361,7 @@ view sharedData page model toMsg pageView =
                 -- CSS custom property directly — `style` uses `node.style[key]=…` which
                 -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
                 -- so it goes through a Tailwind arbitrary-property CLASS instead.
-                , Seam.asAttribute (class (densityClass model.density))
+                , Seam.class (densityClass model.density)
                 ]
                 children
                 |> toHtml
@@ -381,7 +381,7 @@ view sharedData page model toMsg pageView =
             -- rather than the document, or tall demos would clip.
             [ themed
                 [ Surface.view Surface.surface
-                    [ Seam.asAttribute (class "h-dvh overflow-y-auto")
+                    [ Seam.class "h-dvh overflow-y-auto"
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     (List.map Seam.asElement pageView.body)
@@ -396,7 +396,7 @@ view sharedData page model toMsg pageView =
                     -- `auto_1fr` rows pin the app bar while the 1fr content row
                     -- (the drawer + its <main>) is the ONE scroll region — keeps
                     -- the mobile URL bar from collapsing on scroll.
-                    [ Seam.asAttribute (class "grid h-dvh grid-rows-[auto_1fr] overflow-hidden")
+                    [ Seam.class "grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ Seam.fromHtml skipLink
@@ -458,7 +458,7 @@ appShellBar =
             , M3e.AppBar.leading
                 (Seam.recast
                     (Seam.node "span"
-                        [ Seam.asAttribute (class "flex items-center") ]
+                        [ Seam.class "flex items-center" ]
                         [ brandMark, menuButton ]
                     )
                 )
@@ -476,7 +476,7 @@ rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
 brandMark : Element { html : M3e.Kind.Brand } admittedBy Msg
 brandMark =
     Seam.node "span"
-        [ Seam.asAttribute (class "ms-2 me-1 hidden md:inline-flex")
+        [ Seam.class "ms-2 me-1 hidden md:inline-flex"
 
         -- Purely decorative brand glyph — hide it from assistive tech so it
         -- isn't announced alongside the "elm-m3e" title next to it.
@@ -491,7 +491,7 @@ viewports (the side drawer is always visible there).
 menuButton : Element { html : M3e.Kind.Brand } admittedBy Msg
 menuButton =
     Seam.node "span"
-        [ Seam.asAttribute (class "md:hidden") ]
+        [ Seam.class "md:hidden" ]
         [ M3e.iconButton
             [ Aria.label "Toggle navigation", Seam.onClick MenuClicked ]
             [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
@@ -549,9 +549,9 @@ from library components in the Element world: each control is a
 [`Seam.labelText`](Seam#labelText) label + a control (segmented buttons, or a
 [`FormField`](M3e-FormField) for the seed color). The container keeps its
 `#settings-drawer` id (matraic's flex-column/gap/padding styling lives in
-`style.css`) and the `role="complementary"` landmark, both crossed through the
-one sanctioned `Seam.asAttribute`. It returns `Element`, so it enters the
-drawer's `end` slot directly (no `Seam.fromHtml`).
+`style.css`, crossed through the one sanctioned `Seam.asAttribute`) and the
+typed `role="complementary"` landmark via `Aria.role`. It returns `Element`, so
+it enters the drawer's `end` slot directly (no `Seam.fromHtml`).
 
 All our richer controls are kept (scheme, contrast, seed color, density,
 direction); only their LOCATION moved from the old Card popover into this end
@@ -562,7 +562,7 @@ settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } admittedB
 settingsDrawerContent model =
     Seam.node "div"
         [ Seam.asAttribute (Attr.id "settings-drawer")
-        , Seam.asAttribute (attribute "role" "complementary")
+        , Aria.role Aria.complementary
         ]
         [ seedColorInput model
         , controlLabel "Color scheme"

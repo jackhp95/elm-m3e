@@ -43,7 +43,7 @@ example's escaping menu/tooltip is free to overflow the card.
 showcase : Element { s | html : M3e.Kind.Brand } admittedBy msg -> Element { r | card : M3e.Kind.Brand } freeAdm msg
 showcase content =
     M3e.card
-        [ M3e.Card.variant Value.outlined, Seam.asAttribute (class "max-w-full") ]
+        [ M3e.Card.variant Value.outlined, Seam.class "max-w-full" ]
         [ M3e.Card.content content ]
 
 
