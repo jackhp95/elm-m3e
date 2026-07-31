@@ -1,11 +1,11 @@
 module Seam exposing
-    ( fromHtml, asElement, asAttribute, recast, recastAttr, slot, field, label
+    ( fromHtml, asElement, asAttribute, recast
     , node, attribute, onClick, style
     , text, link, textLink
     , Size, display, headline, title, body, labelText, code, paragraph
     , colored, overline, tint
     , TextColor, onSurface, onSurfaceVariant, primary, secondary, tertiary, error
-    , div, divWithId, section, span, nav, ul, li
+    , div, divWithId, section, span, nav, ul
     , button, class
     )
 
@@ -19,7 +19,7 @@ imports `Seam` (and `TypedHtml` for plain tags) — never a pile of ad-hoc wrapp
 
 ## Escapes — raw-HTML crossings, built on the fenced surfaces
 
-@docs fromHtml, asElement, asAttribute, recast, recastAttr, slot, field, label
+@docs fromHtml, asElement, asAttribute, recast
 @docs node, attribute, onClick, style
 
 
@@ -33,7 +33,7 @@ imports `Seam` (and `TypedHtml` for plain tags) — never a pile of ad-hoc wrapp
 
 ## Layout helpers
 
-@docs div, divWithId, section, span, nav, ul, li
+@docs div, divWithId, section, span, nav, ul
 @docs button, class
 
 -}
@@ -78,50 +78,11 @@ asAttribute a =
     Ir.fromHtmlAttribute a
 
 
-{-| Stamp a slot name onto an `Element`, re-forging a FREE phantom row so it
-composes into any container's child list.
--}
-slot : String -> Element any anyAdm msg -> Element other otherAdm msg
-slot name element =
-    if name == "" then
-        Ir.fromNode (HtmlIr.Element.toNode element)
-
-    else
-        Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" name) (HtmlIr.Element.toNode element))
-
-
 {-| Coerce an `Element`'s phantom rows from one shape to another. Loud and greppable.
 -}
 recast : Element a aAdm msg -> Element b bAdm msg
 recast element =
     Ir.fromNode (HtmlIr.Element.toNode element)
-
-
-{-| Coerce an `Attr`'s capability row from one shape to another.
--}
-recastAttr : Attr a msg -> Attr b msg
-recastAttr a =
-    Ir.fromHtmlAttribute (HtmlIr.Attribute.toHtmlAttribute a)
-
-
-{-| The `label` seam: a native `<label>` wrapping children, carrying the `sharedLabel` kind.
--}
-label : List (Element s admittedBy msg) -> Element { k | sharedLabel : Shared } labelAdm msg
-label kids =
-    recast (TypedHtml.label [] (List.map recast kids))
-
-
-{-| The canonical form-field structural-association pattern: a native
-`<label for=id>` in `m3e-form-field`'s `label` slot plus a control with `id=id`.
--}
-field :
-    String
-    -> { labelContent : List (Element s admittedBy msg), control : Element { k | html : r } admittedBy msg }
-    -> List (Element { k | html : r } admittedBy msg)
-field id_ { labelContent, control } =
-    [ recast (slot "label" (TypedHtml.label [ TypedHtml.Attributes.for id_ ] (List.map recast labelContent)))
-    , control
-    ]
 
 
 
@@ -407,13 +368,6 @@ nav =
 ul : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
 ul =
     el "ul"
-
-
-{-| A `<li>` carrying the given Tailwind class string verbatim.
--}
-li : String -> List (Element s admittedBy msg) -> Element { k | html : M3e.Kind.Brand } freeAdm msg
-li =
-    el "li"
 
 
 {-| A native `<button>` carrying the given Tailwind class string verbatim.
