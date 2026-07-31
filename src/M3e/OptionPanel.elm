@@ -67,6 +67,7 @@ type alias Content =
 -}
 type alias LoadingSlot =
     { circularProgressIndicator : Brand
+    , heading : Brand
     , loadingIndicator : Brand
     , sharedText : Shared
     }

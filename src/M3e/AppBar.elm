@@ -62,7 +62,8 @@ type alias LeadingSlot =
 {-| The kinds the `subtitle` slot admits.
 -}
 type alias SubtitleSlot =
-    { html : Brand
+    { heading : Brand
+    , html : Brand
     , sharedText : Shared
     }
 
@@ -70,7 +71,8 @@ type alias SubtitleSlot =
 {-| The kinds the `title` slot admits.
 -}
 type alias TitleSlot =
-    { html : Brand
+    { heading : Brand
+    , html : Brand
     , sharedText : Shared
     }
 

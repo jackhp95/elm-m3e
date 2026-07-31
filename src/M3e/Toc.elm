@@ -49,13 +49,17 @@ type alias Attrs =
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The kinds the `title` slot admits.
 -}
 type alias TitleSlot =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The context demand this container injects into each child's admittedBy row.

@@ -52,7 +52,8 @@ type alias Attrs =
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { html : Brand
+    { heading : Brand
+    , html : Brand
     , sharedText : Shared
     }
 
@@ -61,6 +62,7 @@ type alias Content =
 -}
 type alias LeadingSlot =
     { avatar : Brand
+    , heading : Brand
     , html : Brand
     , sharedIcon : Shared
     , sharedText : Shared
@@ -70,7 +72,8 @@ type alias LeadingSlot =
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
-    { html : Brand
+    { heading : Brand
+    , html : Brand
     , sharedText : Shared
     }
 
@@ -78,7 +81,8 @@ type alias OverlineSlot =
 {-| The kinds the `supporting-text` slot admits.
 -}
 type alias SupportingTextSlot =
-    { html : Brand
+    { heading : Brand
+    , html : Brand
     , sharedText : Shared
     }
 
@@ -88,6 +92,7 @@ type alias SupportingTextSlot =
 type alias TrailingSlot =
     { avatar : Brand
     , checkbox : Brand
+    , heading : Brand
     , html : Brand
     , radio : Brand
     , sharedIcon : Shared

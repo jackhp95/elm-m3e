@@ -80,7 +80,9 @@ type alias CloseIconSlot =
 {-| The kinds the `label` slot admits.
 -}
 type alias LabelSlot =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The context demand this container injects into each child's admittedBy row.

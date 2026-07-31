@@ -61,6 +61,7 @@ type alias Content =
     , dialogTrigger : Brand
     , drawerToggle : Brand
     , fabMenuTrigger : Brand
+    , heading : Brand
     , menuTrigger : Brand
     , navRailToggle : Brand
     , richTooltipAction : Brand

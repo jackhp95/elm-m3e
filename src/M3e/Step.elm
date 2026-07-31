@@ -59,7 +59,9 @@ type alias Attrs =
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The kinds the `done-icon` slot admits.
@@ -77,7 +79,9 @@ type alias EditIconSlot =
 {-| The kinds the `error` slot admits.
 -}
 type alias ErrorSlot =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The kinds the `error-icon` slot admits.
@@ -89,7 +93,9 @@ type alias ErrorIconSlot =
 {-| The kinds the `hint` slot admits.
 -}
 type alias HintSlot =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The kinds the `icon` slot admits.

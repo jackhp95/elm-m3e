@@ -69,7 +69,8 @@ type alias IconSlot =
 {-| The kinds the `label` slot admits.
 -}
 type alias LabelSlot =
-    { sharedLink : Shared
+    { heading : Brand
+    , sharedLink : Shared
     , sharedText : Shared
     }
 

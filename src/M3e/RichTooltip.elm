@@ -59,13 +59,17 @@ type alias Attrs =
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The kinds the `subhead` slot admits.
 -}
 type alias SubheadSlot =
-    { sharedText : Shared }
+    { heading : Brand
+    , sharedText : Shared
+    }
 
 
 {-| The context demand this container injects into each child's admittedBy row.

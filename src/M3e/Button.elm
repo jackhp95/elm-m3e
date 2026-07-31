@@ -79,6 +79,7 @@ type alias Content =
     , dialogTrigger : Brand
     , drawerToggle : Brand
     , fabMenuTrigger : Brand
+    , heading : Brand
     , menuTrigger : Brand
     , navRailToggle : Brand
     , richTooltipAction : Brand
@@ -102,7 +103,8 @@ type alias IconSlot =
 {-| The kinds the `selected` slot admits.
 -}
 type alias SelectedSlot =
-    { sharedIcon : Shared
+    { heading : Brand
+    , sharedIcon : Shared
     , sharedText : Shared
     }
 

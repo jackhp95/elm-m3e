@@ -162,7 +162,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -205,6 +206,7 @@
       "title": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -213,6 +215,7 @@
       "subtitle": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -248,7 +251,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -266,7 +270,8 @@
       },
       "label": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -295,7 +300,8 @@
         "kinds": [
           "circularProgressIndicator",
           "loadingIndicator",
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": true,
         "required": false
@@ -403,7 +409,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -414,7 +421,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -443,7 +451,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -483,6 +492,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "shared:icon"
         ],
         "multi": false,
@@ -505,6 +515,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "shared:icon"
         ],
         "multi": false,
@@ -537,6 +548,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "shared:icon",
           "menuTrigger",
           "dialogTrigger",
@@ -567,6 +579,7 @@
       "selected": {
         "kinds": [
           "shared:text",
+          "heading",
           "shared:icon"
         ],
         "multi": false,
@@ -652,7 +665,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -663,14 +677,16 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
       },
       "subhead": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -688,7 +704,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -768,7 +785,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -803,7 +821,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -845,7 +864,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -890,7 +910,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -956,7 +977,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -1003,7 +1025,8 @@
       },
       "header": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -1070,7 +1093,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -1140,7 +1164,8 @@
       },
       "label": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -1169,6 +1194,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "dialogTrigger",
           "dialogAction",
           "menuTrigger",
@@ -1225,7 +1251,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -1237,6 +1264,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1247,6 +1275,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1255,6 +1284,7 @@
       "overline": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1263,6 +1293,7 @@
       "supporting-text": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1273,6 +1304,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html",
           "switch",
           "radio",
@@ -1313,6 +1345,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1323,6 +1356,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1331,6 +1365,7 @@
       "overline": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1339,6 +1374,7 @@
       "supporting-text": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1349,6 +1385,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html",
           "switch",
           "radio",
@@ -1374,6 +1411,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "dialogTrigger",
           "dialogAction",
           "menuTrigger",
@@ -1397,6 +1435,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1405,6 +1444,7 @@
       "overline": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1413,6 +1453,7 @@
       "supporting-text": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1423,6 +1464,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html",
           "switch",
           "radio",
@@ -1438,6 +1480,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1448,6 +1491,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1456,6 +1500,7 @@
       "overline": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1464,6 +1509,7 @@
       "supporting-text": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1509,6 +1555,7 @@
       "unnamed": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1519,6 +1566,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1527,6 +1575,7 @@
       "overline": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1535,6 +1584,7 @@
       "supporting-text": {
         "kinds": [
           "shared:text",
+          "heading",
           "html"
         ],
         "multi": false,
@@ -1545,6 +1595,7 @@
           "shared:icon",
           "avatar",
           "shared:text",
+          "heading",
           "html",
           "switch",
           "radio",
@@ -1612,7 +1663,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -1656,7 +1708,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -1702,7 +1755,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -1741,6 +1795,7 @@
       "label": {
         "kinds": [
           "shared:text",
+          "heading",
           "shared:link"
         ],
         "multi": false,
@@ -1756,6 +1811,7 @@
       "badge": {
         "kinds": [
           "shared:text",
+          "heading",
           "badge"
         ],
         "multi": false,
@@ -2031,7 +2087,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -2118,7 +2175,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -2214,7 +2272,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -2249,14 +2308,16 @@
       },
       "hint": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
       },
       "error": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -2295,7 +2356,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -2380,7 +2442,8 @@
     "admits": {
       "unnamed": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": true
@@ -2398,14 +2461,16 @@
       },
       "overline": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
       },
       "title": {
         "kinds": [
-          "shared:text"
+          "shared:text",
+          "heading"
         ],
         "multi": false,
         "required": false
@@ -2441,6 +2506,7 @@
       "label": {
         "kinds": [
           "shared:text",
+          "heading",
           "shared:link"
         ],
         "multi": false,

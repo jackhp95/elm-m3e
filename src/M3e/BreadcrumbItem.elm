@@ -59,7 +59,8 @@ type alias Attrs =
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { sharedIcon : Shared
+    { heading : Brand
+    , sharedIcon : Shared
     , sharedText : Shared
     }
 
