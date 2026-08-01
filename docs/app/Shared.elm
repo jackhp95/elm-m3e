@@ -631,15 +631,13 @@ seedColorInput model =
             (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ M3e.text "Source color" ])
         , M3e.FormField.hint
             (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TypedHtml.Attributes.class "text-on-surface-variant" ] [ M3e.text model.seed ])
-        , M3e.FormField.child
-            (TypedHtml.input
-                [ TypedHtml.Attributes.id "seed-color"
-                , TypedHtml.Attributes.type_ "color"
-                , TypedHtml.Attributes.value model.seed
-                , TypedHtml.Events.onInput SetSeed
-                ]
-                []
-            )
+        , TypedHtml.input
+            [ TypedHtml.Attributes.id "seed-color"
+            , TypedHtml.Attributes.type_ "color"
+            , TypedHtml.Attributes.value model.seed
+            , TypedHtml.Events.onInput SetSeed
+            ]
+            []
         ]
 
 

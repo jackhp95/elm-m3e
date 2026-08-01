@@ -85,14 +85,12 @@ emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
         [ M3e.FormField.label
             (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ M3e.text "Email address" ])
-        , M3e.FormField.child
-            (TypedHtml.input
-                [ TypedHtml.Attributes.id "email-field"
-                , TypedHtml.Attributes.type_ "email"
-                , TypedHtml.Attributes.name "email"
-                ]
-                []
-            )
+        , TypedHtml.input
+            [ TypedHtml.Attributes.id "email-field"
+            , TypedHtml.Attributes.type_ "email"
+            , TypedHtml.Attributes.name "email"
+            ]
+            []
         ]
 
 

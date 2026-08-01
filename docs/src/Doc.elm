@@ -83,7 +83,6 @@ rawPreview html =
 -}
 type Lang
     = Elm
-    | Json
     | Shell
     | Xml
     | NoLang
@@ -122,9 +121,6 @@ highlightLine lang line =
             (case lang of
                 Elm ->
                     SyntaxHighlight.elm line
-
-                Json ->
-                    SyntaxHighlight.json line
 
                 Shell ->
                     SyntaxHighlight.noLang line

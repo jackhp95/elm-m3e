@@ -76,15 +76,13 @@ emailField =
         [ M3e.FormField.label
             (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ M3e.text "Email address" ])
         , M3e.FormField.hint (M3e.text "We'll never share it.")
-        , M3e.FormField.child
-            (TypedHtml.input
-                [ TypedHtml.Attributes.id "email-field"
-                , TypedHtml.Attributes.type_ "email"
-                , TypedHtml.Attributes.placeholder "you@example.com"
-                , TypedHtml.Attributes.name "email"
-                ]
-                []
-            )
+        , TypedHtml.input
+            [ TypedHtml.Attributes.id "email-field"
+            , TypedHtml.Attributes.type_ "email"
+            , TypedHtml.Attributes.placeholder "you@example.com"
+            , TypedHtml.Attributes.name "email"
+            ]
+            []
         ]
 
 
