@@ -124,7 +124,7 @@ validCode : String
 validCode =
     """M3e.button [ M3e.Attributes.variant Value.filled ]
     [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
-    , Seam.text "Save"
+    , M3e.text "Save"
     ]"""
 
 

@@ -123,10 +123,10 @@ barrelVsSpecific =
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), Seam.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), M3e.text "Save" ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ Seam.text "Save" ]"""
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ M3e.text "Save" ]"""
 
 
 shapes : String
@@ -137,7 +137,7 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form — everything optional; the tersest
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
 M3e.Button.el { content = …, action = … } [] []

@@ -141,16 +141,16 @@ sameButton =
 descentCode : String
 descentCode =
     """-- barrel: one import, the standard form — the default
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- component module: same output, component-scoped tighter types
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ Seam.text "Save" ]
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form: the compiler demands the parts a button can't omit
-M3e.Button.el { content = Seam.text "Save", action = M3e.Action.onClick Save } [] []
+M3e.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe: a one-only setter is unwritable twice; order-free
-M3e.Button.build { content = Seam.text "Save", action = M3e.Action.onClick Save }
+M3e.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
     |> M3e.Button.withVariant Value.filled
     |> M3e.Button.toElement"""
 

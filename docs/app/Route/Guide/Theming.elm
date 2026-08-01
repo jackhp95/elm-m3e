@@ -143,23 +143,23 @@ rootNote =
 
 rolesBody : String
 rolesBody =
-    """Inside a themed subtree, never paint with a hex value. Reach for the **role** the element plays. A primary action is `primary`; text on a surface is `onSurface`; de-emphasized text is `onSurfaceVariant`. The role keeps its contrast correct against whatever surface it sits on — automatically, and in both light and dark — because both sides of the pair (`surface`/`onSurface`) are derived together from the same seed. In the docs' `Seam` module these are helpers:"""
+    """Inside a themed subtree, never paint with a hex value. Reach for the **role** the element plays. A primary action is `primary`; text on a surface is `onSurface`; de-emphasized text is `onSurfaceVariant`. The role keeps its contrast correct against whatever surface it sits on — automatically, and in both light and dark — because both sides of the pair (`surface`/`onSurface`) are derived together from the same seed. In the docs app these are class tokens:"""
 
 
 rolesCode : String
 rolesCode =
     """-- A selected row is a surface-ROLE swap, not a background class:
 Surface.view Surface.surfaceContainer [ … ] rows   -- container role, correct tint + elevation
-Seam.body Value.large [ Seam.onSurfaceVariant ] [ Seam.text "Secondary text" ]
-Seam.textLink href [ Seam.primary ] [ Seam.text "Primary action" ]
+TypedHtml.span [ TypedHtml.Attributes.class "text-body-lg text-on-surface-variant" ] [ M3e.text "Secondary text" ]
+TypedHtml.a [ TypedHtml.Attributes.href href, TypedHtml.Attributes.class "text-primary" ] [ M3e.text "Primary action" ]
 
 -- WRONG — a raw color, decoupled from the scheme, wrong in dark mode:
-Seam.div "bg-[#4285F4] text-white" children"""
+TypedHtml.div [ TypedHtml.Attributes.class "bg-[#4285F4] text-white" ] children"""
 
 
 tokenFamilies : String
 tokenFamilies =
-    """**The `--md-sys-*` families.** A seed derives, per scheme, families like: `--md-sys-color-*` (the role palette — `primary`, `on-primary`, `primary-container`, the `surface`/`surface-container-*` ramp, `outline`, `error`, `scrim`, `surface-tint`), `--md-sys-typescale-*` (the type scale — display/headline/title/body/label at large/medium/small), `--md-sys-shape-corner-*` (the corner scale), `--md-sys-elevation-*`, `--md-sys-motion-*`, and `--md-sys-state-*`. You almost never write these names by hand — the `Seam` color/typography/shape helpers and the component variants resolve to them — but knowing the families is how you read a computed style and recognize what a component is honoring."""
+    """**The `--md-sys-*` families.** A seed derives, per scheme, families like: `--md-sys-color-*` (the role palette — `primary`, `on-primary`, `primary-container`, the `surface`/`surface-container-*` ramp, `outline`, `error`, `scrim`, `surface-tint`), `--md-sys-typescale-*` (the type scale — display/headline/title/body/label at large/medium/small), `--md-sys-shape-corner-*` (the corner scale), `--md-sys-elevation-*`, `--md-sys-motion-*`, and `--md-sys-state-*`. You almost never write these names by hand — the color/typography/shape helpers and the component variants resolve to them — but knowing the families is how you read a computed style and recognize what a component is honoring."""
 
 
 darkBody : String
@@ -215,13 +215,13 @@ bridgeBody =
 
 bridgeCode : String
 bridgeCode =
-    """-- GOOD: layout via utility classes; surface + shape + color via Seam/components.
+    """-- GOOD: layout via utility classes; surface + shape + color via tokens/components.
 Surface.view Surface.surfaceContainer
-    [ Shape.corner Shape.large, Seam.class "overflow-hidden flex flex-col" ]
+    [ Shape.corner Shape.large, TypedHtml.Attributes.class "overflow-hidden flex flex-col" ]
     rows
 
 -- WRONG: a class doing a visual (color/shape) job — flagged, and wrong in dark.
-Seam.div "rounded-3xl bg-primary-container p-4" rows"""
+TypedHtml.div [ TypedHtml.Attributes.class "rounded-3xl bg-primary-container p-4" ] rows"""
 
 
 recap : String

@@ -147,7 +147,7 @@ The shipped, correct icon-only control (this one renders and announces as "Back"
 nameCode : String
 nameCode =
     """-- Visible text: the slot content is the name. Nothing extra.
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- Icon-only: the name is REQUIRED — supply it explicitly.
 M3e.iconButton [ Aria.label "Back" ]
@@ -175,8 +175,8 @@ M3e.dialog
     [ M3e.Attributes.open model.dialogOpen
     , M3e.Dialog.onClosed (PagesMsg.fromMsg CloseDialog)
     ]
-    [ M3e.Dialog.header (Seam.text "Delete file?")
-    , Seam.text "This cannot be undone."
+    [ M3e.Dialog.header (M3e.text "Delete file?")
+    , M3e.text "This cannot be undone."
     , M3e.Dialog.actions confirmButtons
     ]"""
 

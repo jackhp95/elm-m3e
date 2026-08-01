@@ -116,7 +116,7 @@ That does mean the API isn't *fully* automatic: when a new version of the compon
 
 inspectable : String
 inspectable =
-    """**A component isn't opaque HTML — it's inspectable data.** `M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]` doesn't produce HTML on the spot. It builds a small value the library can *read*: it knows this is a button, that it's filled, that its content is the text "Save". Your whole page stays as this readable data right up until one conversion — `HtmlIr.Element.toNode` — at your app's root, which turns the entire tree into HTML exactly once.
+    """**A component isn't opaque HTML — it's inspectable data.** `M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]` doesn't produce HTML on the spot. It builds a small value the library can *read*: it knows this is a button, that it's filled, that its content is the text "Save". Your whole page stays as this readable data right up until one conversion — `HtmlIr.Element.toNode` — at your app's root, which turns the entire tree into HTML exactly once.
 
 Because the library can inspect what you built *before* it becomes HTML, it can enforce rules a plain HTML wrapper never could — the next chapters are all cashing in on this one fact."""
 
@@ -125,7 +125,7 @@ rootCode : String
 rootCode =
     """-- your page stays inspectable data all the way up…
 saveButton =
-    M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
+    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 
 -- …and becomes HTML exactly once, at the root:

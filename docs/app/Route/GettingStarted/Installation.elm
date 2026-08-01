@@ -164,7 +164,7 @@ view _ =
             ]
             [ Button.view
                 [ Button.variant Value.filled ]
-                [ Seam.text "It works" ]
+                [ M3e.text "It works" ]
             ]
         )
 """

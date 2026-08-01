@@ -122,11 +122,10 @@ modelViewer =
         []
 
 
-{-| The `link` seam filling a _typed slot_. A nav-menu item's `label` slot
-accepts the `text` and `link` kinds, so `Seam.link` (the feature-facing re-export
-of the `link` seam) drops straight in as an `<a href>` label — no raw HTML, no
-break-glass `recast`. The slot's phantom row admits exactly the kinds the design
-system declared for it, and the seam produces one of them.
+{-| A typed anchor filling a _typed slot_. A nav-menu item's `label` slot accepts
+the `text` and `link` kinds, so `TypedHtml.a` drops straight in as an `<a href>`
+label — no raw HTML, no seam, no break-glass `recast`. The slot's phantom row
+admits exactly the kinds the design system declared for it.
 -}
 linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
@@ -209,18 +208,18 @@ modelViewer =
 
 slotSeam : String
 slotSeam =
-    """Most "custom" content needs no escape at all — it fills the *typed slots* a component declares. A nav-menu item's `label` slot accepts the `text` **and** `link` kinds, so a nav item can be an ordinary `<a href>` with no raw HTML at the call site. `Seam.link` is just a userland producer of the `link` kind; it drops into the slot because the slot's phantom row admits exactly that kind — no door, no `recast`."""
+    """Most "custom" content needs no escape at all — it fills the *typed slots* a component declares. A nav-menu item's `label` slot accepts the `text` **and** `link` kinds, so a nav item can be an ordinary `<a href>` with no raw HTML at the call site: `TypedHtml.a` produces the `link` kind, so it drops into the slot directly — no seam, no door, no break-glass `recast`. The slot's phantom row admits exactly the kinds the design system declared for it."""
 
 
 linkNavCode : String
 linkNavCode =
-    """-- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so the
--- `link` seam fills it directly — a nav item that IS an anchor. The required-record
--- form (`M3e.NavMenuItem.el`) enforces the required `label` at the type level.
+    """-- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so a
+-- typed `TypedHtml.a` fills it directly — a nav item that IS an anchor. The
+-- required-record form (`M3e.NavMenuItem.el`) enforces the required `label`.
 linkNav =
     M3e.navMenu []
-        [ M3e.NavMenuItem.el { label = Seam.link "/guide/seams" [ M3e.text "Seams" ] } [] []
-        , M3e.NavMenuItem.el { label = Seam.link "/guide/the-layers" [ M3e.text "The surfaces" ] } [] []
+        [ M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
+        , M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
         ]"""
 
 

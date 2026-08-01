@@ -235,16 +235,15 @@ callout label body =
 
 
 {-| The shared "these helpers are our examples, not the library" callout, used
-everywhere an example first leans on `Seam`. That is this docs app's own thin
-wrapper over the library's mechanisms — NOT in the package's `exposed-modules`
-(it lives in `docs/kit/` as a copyable starter). A reader who pastes `Seam.text`
-into a fresh project must bring the module along, or use the underlying mechanism
-directly. One definition, so the framing can't drift.
+everywhere an example leans on `Seam`. `Seam` is this docs app's own module —
+NOT in the package's `exposed-modules` (it lives in `docs/kit/` as a copyable
+starter) — and now holds only genuine escapes. One definition, so the framing
+can't drift.
 -}
 userlandNote : Element { s | html : M3e.Kind.Brand } admittedBy msg
 userlandNote =
     callout "These helpers are our examples, not the library"
-        """`Seam` in these examples is **this docs app's own module** — a thin wrapper we wrote over the library's mechanisms, not part of `elm-m3e` (it won't resolve from a fresh install), and you don't need it. The library gives you typed components (`M3e.*`) plus `TypedHtml` for standard HTML, and you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). When you must bring in something *foreign*, reach for a mechanism: `M3e.Unsafe` (`fromHtml` lifts raw `Html`, `recast` re-kinds an element to fit any slot) or the raw forge `HtmlIr.Internal` (`element` for a custom tag, `attribute` / `property` / `on` to define your own, `lazy` to memoise). `Seam.text` is just an example of a producer written on top of those — copy the [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) starters, or roll your own. See [Your own seam](/guide/seams)."""
+        """`Seam` in these examples is **this docs app's own module** — not part of `elm-m3e` (it won't resolve from a fresh install), and you rarely need it. The library gives you typed components (`M3e.*`) plus `TypedHtml` for standard HTML, and you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). Build layout, text, and links directly from those. `Seam` holds only the genuine *escapes* — a custom element the types can't express (via `HtmlIr.Internal`'s `element` / `attribute`), or raw `Html` via `M3e.Unsafe` (`fromHtml`, and `recast` to re-kind an element) — corralled into one greppable, lint-fenced place. Copy the [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) starters, or roll your own. See [Your own seam](/guide/seams)."""
 
 
 {-| A syntax-highlighted Elm type signature (for API member rows). Rendered as an

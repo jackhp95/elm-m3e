@@ -131,17 +131,17 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- the standard form (`view`) — everything optional; the tersest, easiest form
-M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form (`el`) — the compiler now DEMANDS the parts a button can't do without
 M3e.Button.el
-    { content = Seam.text "Save", action = M3e.Action.onClick SaveClicked }
+    { content = M3e.text "Save", action = M3e.Action.onClick SaveClicked }
     []
     []
 
 -- builder pipe (`build`/`toElement`) — a one-only setter becomes UNWRITABLE twice; order-free
 M3e.Button.build
-    { content = Seam.text "Save", action = M3e.Action.onClick SaveClicked }
+    { content = M3e.text "Save", action = M3e.Action.onClick SaveClicked }
     |> M3e.Button.toElement"""
 
 

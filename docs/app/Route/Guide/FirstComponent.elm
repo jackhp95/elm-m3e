@@ -122,16 +122,15 @@ Look at the shape. Attributes like `M3e.Attributes.variant Value.filled` go in t
 
 source : String
 source =
-    """import Seam
-import M3e
+    """import M3e
 
 
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.slotHeader
-            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Seam.text "Account settings" ])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ M3e.text "Account settings" ])
         , M3e.slotContent
-            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ])
+            (M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ])
         ]"""
 
 
