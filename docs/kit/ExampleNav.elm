@@ -23,10 +23,13 @@ annotates.
 
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind
+import M3e
+import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
-import Seam
 import Seam.Surface as Surface
+import TypedHtml
+import TypedHtml.Attributes as TA
 
 
 {-| Render the footer for one example page.
@@ -47,7 +50,7 @@ footer :
     -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 footer { builtFrom, prev, next } =
     Surface.view Surface.surfaceContainer
-        [ Seam.class "w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
+        [ TA.class "w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
         [ backRow
         , builtFromRow builtFrom
         , prevNextRow prev next
@@ -58,35 +61,27 @@ footer { builtFrom, prev, next } =
 gallery cards no longer target `_blank`), so the browser Back button already returns
 here — this is the explicit in-page affordance for it.
 -}
-backRow : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 backRow =
-    Seam.div "flex"
-        [ Seam.textLink "/examples" [ Seam.onSurfaceVariant ] [ Seam.text "← Back to examples" ] ]
+    TypedHtml.div [ TA.class "flex" ]
+        [ TypedHtml.a [ TA.href "/examples", TA.class "hover:underline text-on-surface-variant" ] [ M3e.text "← Back to examples" ] ]
 
 
-builtFromRow : List ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 builtFromRow builtFrom =
-    Seam.div "flex flex-wrap items-baseline gap-x-2 gap-y-1"
-        (Seam.labelText Value.large
-            [ Seam.onSurfaceVariant ]
-            [ Seam.text "Built from" ]
+    TypedHtml.div [ TA.class "flex flex-wrap items-baseline gap-x-2 gap-y-1" ]
+        (M3e.heading
+            [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ]
+            [ M3e.text "Built from" ]
             :: List.map componentLink builtFrom
         )
 
 
-componentLink : ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 componentLink ( slug, label ) =
-    Seam.body Value.medium
-        []
-        [ Seam.textLink ("/components/" ++ slug) [ Seam.primary ] [ Seam.text label ] ]
+    TypedHtml.span [ TA.class "text-body-md" ]
+        [ TypedHtml.a [ TA.href ("/components/" ++ slug), TA.class "hover:underline text-primary" ] [ M3e.text label ] ]
 
 
-prevNextRow :
-    Maybe ( String, String )
-    -> Maybe ( String, String )
-    -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 prevNextRow prev next =
-    Seam.div "flex items-center justify-between gap-4"
+    TypedHtml.div [ TA.class "flex items-center justify-between gap-4" ]
         [ pagerSlot "← " prev
         , pagerSlot "" next
         ]
@@ -95,12 +90,11 @@ prevNextRow prev next =
 {-| One side of the prev/next pager. `prefix`/absence of `arrow` keeps the
 "previous" arrow leading and the "next" arrow trailing.
 -}
-pagerSlot : String -> Maybe ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 pagerSlot leadingArrow slot =
     case slot of
         Nothing ->
             -- Keep the flex row balanced when one side is absent.
-            Seam.span "" []
+            TypedHtml.span [] []
 
         Just ( href, label ) ->
             let
@@ -112,6 +106,5 @@ pagerSlot leadingArrow slot =
                     else
                         leadingArrow ++ label
             in
-            Seam.body Value.medium
-                []
-                [ Seam.textLink href [ Seam.onSurfaceVariant ] [ Seam.text shownLabel ] ]
+            TypedHtml.span [ TA.class "text-body-md" ]
+                [ TypedHtml.a [ TA.href href, TA.class "hover:underline text-on-surface-variant" ] [ M3e.text shownLabel ] ]

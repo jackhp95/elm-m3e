@@ -13,8 +13,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -58,17 +59,15 @@ head _ =
         |> Seo.website
 
 
-supportRow : String -> String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 supportRow browser note =
-    Seam.div "flex items-baseline justify-between gap-4 py-2.5"
-        [ Seam.title Value.small [ Seam.onSurface ] [ Seam.text browser ]
-        , Seam.body Value.large [ Seam.onSurfaceVariant ] [ Seam.text note ]
+    TypedHtml.div [ TA.class "flex items-baseline justify-between gap-4 py-2.5" ]
+        [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text browser ]
+        , TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text note ]
         ]
 
 
-featureItem : String -> Element { s | html : M3e.Kind.Brand } adm_ msg
 featureItem note =
-    Seam.node "li" [] [ Seam.body Value.large [ Seam.onSurfaceVariant ] [ Seam.text note ] ]
+    TypedHtml.li [] [ TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text note ] ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
@@ -84,18 +83,17 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.section "space-y-3"
+                [ TypedHtml.section [ TA.class "space-y-3" ]
                     [ pageHeading
-                    , Seam.paragraph Value.large
-                        [ Seam.onSurfaceVariant ]
-                        [ Seam.text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
+                    , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Supported browsers"
                     , M3e.card
                         [ M3e.Attributes.variant Value.outlined ]
                         [ M3e.Card.content
-                            (Seam.div "flex flex-col px-2"
+                            (TypedHtml.div [ TA.class "flex flex-col px-2" ]
                                 (List.intersperse (M3e.divider [] [])
                                     [ supportRow "Chrome / Edge" "Latest 2 versions"
                                     , supportRow "Firefox" "Latest 2 versions"
@@ -106,9 +104,9 @@ view _ _ =
                             )
                         ]
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Platform features used"
-                    , Seam.ul "list-disc space-y-1.5 pl-5"
+                    , TypedHtml.ul [ TA.class "list-disc space-y-1.5 pl-5" ]
                         [ featureItem "Custom Elements v1 and Shadow DOM for the @m3e/web components."
                         , featureItem "ES modules for component registration (no-bundler import-map usage is also supported upstream)."
                         , featureItem "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode."

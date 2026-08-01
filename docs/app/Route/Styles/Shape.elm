@@ -23,9 +23,10 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Seam.Surface as Surface
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -89,15 +90,14 @@ cornerScale =
     ]
 
 
-cornerSwatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 cornerSwatch ( rounded, label, value ) =
-    Seam.div "flex flex-col gap-2"
+    TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ Surface.view Surface.primaryContainer
-            [ Seam.class (rounded ++ " h-20 w-full") ]
+            [ TA.class (rounded ++ " h-20 w-full") ]
             []
-        , Seam.div "flex flex-col"
-            [ Seam.labelText Value.large [ Seam.onSurface ] [ Seam.text label ]
-            , Seam.code Value.small [ Seam.onSurfaceVariant ] [ Seam.text value ]
+        , TypedHtml.div [ TA.class "flex flex-col" ]
+            [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text label ]
+            , TypedHtml.code [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text value ]
             ]
         ]
 
@@ -108,7 +108,6 @@ tokens' open phantom rows unify into one wide record in the list literal, and
 passing the token through (rather than a literal enum) keeps the barrel-flatten
 rule from firing on a per-shape enum value.
 -}
-namedShapes : List (Element { s | html : M3e.Kind.Brand } adm_ msg)
 namedShapes =
     -- The lambda is inlined (no top-level `namedSwatch` signature) on purpose:
     -- `Shape.name` wants a wide closed record, and the tokens' open phantom rows
@@ -116,9 +115,9 @@ namedShapes =
     -- a variable (not a literal enum) also keeps the barrel-flatten rule quiet.
     List.map
         (\( token, label ) ->
-            Seam.div "flex flex-col items-center gap-2"
-                [ Seam.div "contents" [ M3e.shape [ Shape.name token ] [] ]
-                , Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text label ]
+            TypedHtml.div [ TA.class "flex flex-col items-center gap-2" ]
+                [ TypedHtml.div [ TA.class "contents" ] [ M3e.shape [ Shape.name token ] [] ]
+                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text label ]
                 ]
         )
         [ ( Value.circle, "Circle" )
@@ -149,66 +148,56 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.section "space-y-3"
+                [ TypedHtml.section [ TA.class "space-y-3" ]
                     [ pageHeading
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Material 3 has two shape families. The corner-radius scale rounds every rectangular surface (cards, buttons, sheets) via --md-sys-shape-corner-* tokens. The named shapes are M3 Expressive clip paths — circles, flowers, stars — for hero surfaces and emphasis. Shape morphing, one shape springing into another on press or selection, is the signature move of M3 Expressive." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Material 3 has two shape families. The corner-radius scale rounds every rectangular surface (cards, buttons, sheets) via --md-sys-shape-corner-* tokens. The named shapes are M3 Expressive clip paths — circles, flowers, stars — for hero surfaces and emphasis. Shape morphing, one shape springing into another on press or selection, is the signature move of M3 Expressive." ]
                         ]
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Corner-radius scale"
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Nine canonical sizes from none through extra-extra-large, plus full (a pill). Each swatch is a primary-container surface clipped with the matching rounded-md-corner-* utility; the caption is the token's rem value." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Nine canonical sizes from none through extra-extra-large, plus full (a pill). Each swatch is a primary-container surface clipped with the matching rounded-md-corner-* utility; the caption is the token's rem value." ]
                         ]
                     , Doc.showcase
-                        (Seam.div "grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5"
+                        (TypedHtml.div [ TA.class "grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5" ]
                             (List.map cornerSwatch cornerScale)
                         )
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Named shapes"
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "M3e.shape clips a filled tile to a named shape via Shape.name Value tokens — the same clip-path set Material uses for expressive surfaces." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "M3e.shape clips a filled tile to a named shape via Shape.name Value tokens — the same clip-path set Material uses for expressive surfaces." ]
                         ]
                     , Doc.showcase
-                        (Seam.div "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6" namedShapes)
+                        (TypedHtml.div [ TA.class "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6" ] namedShapes)
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Shape morphing"
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "The defining M3 Expressive interaction: a shape animates between two states rather than snapping. Buttons carry a full set of morph tokens for exactly this — a round or square resting shape and a distinct pressed shape it springs to and back from." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "The defining M3 Expressive interaction: a shape animates between two states rather than snapping. Buttons carry a full set of morph tokens for exactly this — a round or square resting shape and a distinct pressed shape it springs to and back from." ]
                         ]
-                    , Seam.ul "list-disc space-y-1.5 pl-5"
-                        [ Seam.node "li"
-                            []
-                            [ Seam.body Value.large
-                                [ Seam.onSurfaceVariant ]
-                                [ Seam.code Value.large [ Seam.onSurface ] [ Seam.text "--md-sys-shape-corner-*" ]
-                                , Seam.text " — the resting corner scale above."
+                    , TypedHtml.ul [ TA.class "list-disc space-y-1.5 pl-5" ]
+                        [ TypedHtml.li []
+                            [ TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ]
+                                [ TypedHtml.code [ TA.class "text-body-lg text-on-surface" ] [ M3e.text "--md-sys-shape-corner-*" ]
+                                , M3e.text " — the resting corner scale above."
                                 ]
                             ]
-                        , Seam.node "li"
-                            []
-                            [ Seam.body Value.large
-                                [ Seam.onSurfaceVariant ]
-                                [ Seam.code Value.large [ Seam.onSurface ] [ Seam.text "--m3e-button-*-shape-round / -shape-square" ]
-                                , Seam.text " — a button's resting shape per size variant."
+                        , TypedHtml.li []
+                            [ TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ]
+                                [ TypedHtml.code [ TA.class "text-body-lg text-on-surface" ] [ M3e.text "--m3e-button-*-shape-round / -shape-square" ]
+                                , M3e.text " — a button's resting shape per size variant."
                                 ]
                             ]
-                        , Seam.node "li"
-                            []
-                            [ Seam.body Value.large
-                                [ Seam.onSurfaceVariant ]
-                                [ Seam.code Value.large [ Seam.onSurface ] [ Seam.text "--m3e-button-*-shape-pressed-morph" ]
-                                , Seam.text " — the pressed shape it morphs to, then springs back on release."
+                        , TypedHtml.li []
+                            [ TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ]
+                                [ TypedHtml.code [ TA.class "text-body-lg text-on-surface" ] [ M3e.text "--m3e-button-*-shape-pressed-morph" ]
+                                , M3e.text " — the pressed shape it morphs to, then springs back on release."
                                 ]
                             ]
                         ]

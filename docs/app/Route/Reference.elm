@@ -25,6 +25,8 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -140,12 +142,11 @@ view app _ =
         [ Element.toNode
             (Doc.pane
                 [ pageHeading
-                , Seam.div "mt-2 max-w-2xl"
-                    [ Seam.paragraph Value.large
-                        [ Seam.onSurfaceVariant ]
-                        [ Seam.text "Every "
-                        , Seam.node "code" [] [ Seam.text "M3e.*" ]
-                        , Seam.text " module, its overview, and every exposed value — extracted from the library source at build time."
+                , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Every "
+                        , TypedHtml.code [] [ M3e.text "M3e.*" ]
+                        , M3e.text " module, its overview, and every exposed value — extracted from the library source at build time."
                         ]
                     ]
                 , twoForms
@@ -154,9 +155,9 @@ view app _ =
                         barrelBlock b
 
                     Nothing ->
-                        Seam.text ""
+                        M3e.text ""
                 , indexGrid componentModules
-                , Seam.div "mt-12 space-y-12"
+                , TypedHtml.div [ TA.class "mt-12 space-y-12" ]
                     (List.map componentBlock componentModules)
                 ]
             )
@@ -169,11 +170,10 @@ generic **barrel** teaching form vs the precise **specific-module** form.
 Keeps the reference's terminology aligned with `/guide/the-layers` and
 `/guide/strictness` so a reader never meets a fifth name for the same idea.
 -}
-twoForms : Element { s | html : M3e.Kind.Brand } admittedBy msg
 twoForms =
-    Seam.div "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2"
-        [ Seam.overline [ Seam.primary ] [ Seam.text "Two forms" ]
-        , Seam.div "text-on-surface-variant" [ Doc.markdown twoFormsText ]
+    TypedHtml.div [ TA.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
+        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "Two forms" ]
+        , TypedHtml.div [ TA.class "text-on-surface-variant" ] [ Doc.markdown twoFormsText ]
         ]
 
 
@@ -187,9 +187,8 @@ twoFormsText =
 Barrel-vs-module isn't a [surface](/guide/the-layers) choice and it isn't an escape hatch — it's a separate axis, only *which import you reach through*. Start on the barrel; reach for a component module when you want the tighter, component-scoped types."""
 
 
-indexGrid : List Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 indexGrid components =
-    Seam.div "mt-8 flex flex-wrap gap-2"
+    TypedHtml.div [ TA.class "mt-8 flex flex-wrap gap-2" ]
         (List.map
             (\c ->
                 Doc.anchorPill { href = "#" ++ c.slug, label = c.name }
@@ -203,20 +202,18 @@ name-keyed groups a reader scans for (constructors, `variant*` tokens, `slot*`
 setters, `attr*`/other setters, `on*` events). Grouping by name prefix — not the
 JSON `role` — is what makes the ~650-member barrel navigable.
 -}
-barrelBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 barrelBlock c =
-    Seam.node "section"
-        [ Seam.attribute "id" c.slug, Seam.class "mt-12 scroll-mt-6 space-y-6" ]
+    TypedHtml.section
+        [ Seam.attribute "id" c.slug, TA.class "mt-12 scroll-mt-6 space-y-6" ]
         [ M3e.divider [] []
-        , Seam.node "h2"
+        , TypedHtml.h2
             []
-            [ Seam.headline Value.small
-                []
-                [ Seam.node "code" [ Seam.tint [ Seam.primary ] ] [ Seam.text c.moduleName ]
-                , Seam.text "  · the barrel"
+            [ TypedHtml.span [ TA.class "text-headline-sm" ]
+                [ TypedHtml.code [ TA.class "text-primary" ] [ M3e.text c.moduleName ]
+                , M3e.text "  · the barrel"
                 ]
             ]
-        , prose "max-w-2xl" Value.large c.overview
+        , prose "max-w-2xl" "text-body-lg" c.overview
         , barrelGroup "Component constructors" isBarrelConstructor c.members
         , barrelGroup "Variants" (isPrefixed "variant") c.members
         , barrelGroup "Slots" (isPrefixed "slot") c.members
@@ -247,35 +244,32 @@ isBarrelConstructor m =
 
 {-| One name-keyed subsection of the barrel; renders nothing when empty.
 -}
-barrelGroup : String -> (Member -> Bool) -> List Member -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 barrelGroup label pred members =
     case List.filter pred members of
         [] ->
-            Seam.div "" []
+            TypedHtml.div [] []
 
         ms ->
-            Seam.node "section"
-                [ Seam.class "space-y-3" ]
-                [ Seam.node "h3"
-                    []
-                    [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") ] ]
-                , Seam.div "space-y-3" (List.map memberRow ms)
+            TypedHtml.section
+                [ TA.class "space-y-3" ]
+                [ M3e.heading
+                    [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, M3e.Attributes.level 3, TA.class "text-on-surface" ]
+                    [ M3e.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") ]
+                , TypedHtml.div [ TA.class "space-y-3" ] (List.map memberRow ms)
                 ]
 
 
-componentBlock : Component -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 componentBlock c =
-    Seam.node "section"
-        [ Seam.attribute "id" c.slug, Seam.class "scroll-mt-6 space-y-4" ]
+    TypedHtml.section
+        [ Seam.attribute "id" c.slug, TA.class "scroll-mt-6 space-y-4" ]
         [ M3e.divider [] []
-        , Seam.node "h2"
+        , TypedHtml.h2
             []
-            [ Seam.headline Value.small
-                []
-                [ Seam.node "code" [ Seam.tint [ Seam.primary ] ] [ Seam.text c.moduleName ] ]
+            [ TypedHtml.span [ TA.class "text-headline-sm" ]
+                [ TypedHtml.code [ TA.class "text-primary" ] [ M3e.text c.moduleName ] ]
             ]
-        , prose "max-w-2xl" Value.large c.overview
-        , Seam.div "space-y-3"
+        , prose "max-w-2xl" "text-body-lg" c.overview
+        , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map memberRow c.members)
         ]
 
@@ -297,14 +291,14 @@ memberRow m =
     M3e.card
         [ M3e.Card.variant Value.outlined ]
         [ M3e.Card.content
-            (Seam.node "div"
+            (TypedHtml.div
                 []
                 [ Doc.preBlock sig
                 , if m.doc == "" then
-                    Seam.text ""
+                    M3e.text ""
 
                   else
-                    prose "mt-2" Value.medium m.doc
+                    prose "mt-2" "text-body-md" m.doc
                 ]
             )
         ]
@@ -312,16 +306,15 @@ memberRow m =
 
 {-| Render \\n\\n-separated text as body paragraphs at the given type-scale size.
 -}
-prose : String -> Seam.Size -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
-prose layoutCls size s =
-    Seam.div layoutCls
+prose layoutCls bodyCls s =
+    TypedHtml.div [ TA.class layoutCls ]
         (s
             |> String.split "\n\n"
             |> List.filter (\para -> String.trim para /= "")
             |> List.map
                 (\para ->
-                    Seam.node "p"
-                        [ Seam.class "mt-2 first:mt-0 whitespace-pre-line" ]
-                        [ Seam.body size [ Seam.onSurfaceVariant ] [ Seam.text para ] ]
+                    TypedHtml.p
+                        [ TA.class "mt-2 first:mt-0 whitespace-pre-line" ]
+                        [ TypedHtml.span [ TA.class (bodyCls ++ " text-on-surface-variant") ] [ M3e.text para ] ]
                 )
         )

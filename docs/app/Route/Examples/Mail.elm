@@ -38,7 +38,6 @@ import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Seam.Avatar as Avatar
 import Seam.Surface as Surface exposing (Surface)
 import Shared
@@ -208,9 +207,9 @@ bar and the floating compose FAB.
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
     Surface.view Surface.surface
-        [ Seam.class "relative flex h-screen w-full overflow-hidden" ]
+        [ TA.class "relative flex h-screen w-full overflow-hidden" ]
         [ navRail
-        , Seam.div "flex flex-1 flex-col min-w-0"
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0" ]
             [ topBar
             , body model
             , exampleFooter
@@ -246,9 +245,8 @@ exampleFooter =
 
 {-| Desktop navigation rail (hidden below `md:`).
 -}
-navRail : Element { s | html : M3e.Kind.Brand } adm_ Msg
 navRail =
-    Seam.nav "hidden md:flex"
+    TypedHtml.nav [ TA.class "hidden md:flex" ]
         [ M3e.navRail [ M3e.Attributes.mode Value.expanded ]
             (List.indexedMap railItem destinations)
         ]
@@ -259,15 +257,14 @@ railItem index d =
     M3e.navItem
         [ M3e.Attributes.selected (index == 0) ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
-        , Seam.text d.label
+        , M3e.text d.label
         ]
 
 
 {-| Mobile bottom navigation bar (hidden at `md:` and up).
 -}
-bottomBar : Element { s | html : M3e.Kind.Brand } adm_ Msg
 bottomBar =
-    Seam.nav "md:hidden fixed inset-x-0 bottom-0"
+    TypedHtml.nav [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
         [ M3e.navBar []
             (List.indexedMap barItem destinations)
         ]
@@ -278,7 +275,7 @@ barItem index d =
     M3e.navItem
         [ M3e.Attributes.selected (index == 0) ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
-        , Seam.text d.label
+        , M3e.text d.label
         ]
 
 
@@ -290,7 +287,7 @@ topBar : Element { s | appBar : M3e.Kind.Brand } adm_ Msg
 topBar =
     M3e.appBar [ M3e.Attributes.size Value.medium ]
         [ M3e.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
-        , M3e.AppBar.title (Seam.text "Mail")
+        , M3e.AppBar.title (M3e.text "Mail")
         , M3e.AppBar.trailing searchBar
         ]
 
@@ -317,12 +314,11 @@ searchBar =
 {-| The reflowing two-pane body. On `md:` the list is a fixed-width column beside
 a filling reading pane; below `md:` they stack (list first, reading pane under).
 -}
-body : Model -> Element { s | html : M3e.Kind.Brand } adm_ Msg
 body model =
-    Seam.div "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden"
-        [ Seam.section "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant"
+    TypedHtml.div [ TA.class "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden" ]
+        [ TypedHtml.section [ TA.class "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
             [ messageList model ]
-        , Seam.section "flex-1 overflow-y-auto"
+        , TypedHtml.section [ TA.class "flex-1 overflow-y-auto" ]
             [ readingPane (selectedMessage model) ]
         ]
 
@@ -373,16 +369,11 @@ messageRow selected index message =
         , M3e.ListAction.onClick (SelectMessage index)
         ]
         [ M3e.ListAction.leading (Avatar.initials message.initials)
-        , Seam.text message.sender
-        , M3e.ListAction.supportingText
-            (Seam.span "block"
-                [ Seam.body Value.medium [ Seam.onSurface ] [ Seam.text message.subject ]
-                , Seam.span "block"
-                    [ Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text message.snippet ] ]
-                ]
-            )
+        , M3e.ListAction.overline (M3e.text message.sender)
+        , M3e.text message.subject
+        , M3e.ListAction.supportingText (M3e.text message.snippet)
         , M3e.ListAction.trailing
-            (Seam.labelText Value.small [ Seam.onSurfaceVariant ] [ Seam.text message.time ])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text message.time ])
         ]
 
 
@@ -393,21 +384,20 @@ messageRow selected index message =
 {-| The reading pane for the selected message: subject heading, sender row with
 avatar and timestamp, label chips, and the body paragraphs via `Seam`.
 -}
-readingPane : Message -> Element { s | html : M3e.Kind.Brand } adm_ msg
 readingPane message =
-    Seam.div "flex flex-col gap-6 p-6"
-        [ Seam.headline Value.small [ Seam.onSurface ] [ Seam.text message.subject ]
-        , Seam.div "flex items-center gap-3"
+    TypedHtml.div [ TA.class "flex flex-col gap-6 p-6" ]
+        [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
+        , TypedHtml.div [ TA.class "flex items-center gap-3" ]
             [ Avatar.initials message.initials
-            , Seam.div "flex flex-col"
-                [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text message.sender ]
-                , Seam.labelText Value.small [ Seam.onSurfaceVariant ] [ Seam.text ("to me · " ++ message.time) ]
+            , TypedHtml.div [ TA.class "flex flex-col" ]
+                [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text message.sender ]
+                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text ("to me · " ++ message.time) ]
                 ]
             ]
         , M3e.chipSet [ Aria.label "Labels" ]
             (List.map labelChip message.labels)
-        , Seam.div "flex flex-col gap-4"
-            (List.map (\p -> Seam.paragraph Value.medium [ Seam.onSurfaceVariant ] [ Seam.text p ]) message.body)
+        , TypedHtml.div [ TA.class "flex flex-col gap-4" ]
+            (List.map (\p -> TypedHtml.p [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text p ]) message.body)
         ]
 
 
@@ -426,15 +416,14 @@ labelChip name =
 
 {-| Floating compose action, anchored bottom-right (kept above the mobile bar).
 -}
-composeFab : Element { s | html : M3e.Kind.Brand } adm_ msg
 composeFab =
-    Seam.div "absolute bottom-20 right-6 md:bottom-6"
+    TypedHtml.div [ TA.class "absolute bottom-20 right-6 md:bottom-6" ]
         [ M3e.fab
             [ M3e.Attributes.variant Value.primaryContainer
             , M3e.Attributes.extended True
             , Aria.label "Compose"
             ]
             [ M3e.icon [ TA.name "edit" ] []
-            , M3e.Fab.label (Seam.text "Compose")
+            , M3e.Fab.label (M3e.text "Compose")
             ]
         ]

@@ -19,10 +19,11 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Seam.Shape as Shape
 import Seam.Surface as Surface
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -80,15 +81,14 @@ levels =
     ]
 
 
-swatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 swatch ( shadow, label, token ) =
-    Seam.div "flex flex-col gap-2"
+    TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ Surface.view Surface.surfaceContainerHigh
-            [ Seam.class (shadow ++ " flex min-h-24 items-center justify-center p-4")
+            [ TA.class (shadow ++ " flex min-h-24 items-center justify-center p-4")
             , Shape.corner Shape.large
             ]
-            [ Seam.labelText Value.large [ Seam.onSurface ] [ Seam.text label ] ]
-        , Seam.code Value.small [ Seam.onSurfaceVariant ] [ Seam.text token ]
+            [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text label ] ]
+        , TypedHtml.code [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text token ]
         ]
 
 
@@ -105,32 +105,29 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.section "space-y-3"
+                [ TypedHtml.section [ TA.class "space-y-3" ]
                     [ pageHeading
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
                         ]
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "The six levels, live"
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
                         ]
                     , Doc.showcase
-                        (Seam.div "grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3"
+                        (TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3" ]
                             (List.map swatch levels)
                         )
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Tinting the shadow"
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]
                         ]
                     ]
                 ]

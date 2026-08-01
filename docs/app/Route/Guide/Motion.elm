@@ -18,8 +18,9 @@ import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -69,31 +70,31 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "Motion: what ships, what you wire"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Inside the components (you don't animate this)"
                         , Doc.markdown shippedBody
                         , Doc.code_ Doc.Elm shippedCode
                         , Doc.markdown shippedNote
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "The motion between components (you wire this)"
                         , Doc.markdown authorBody
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "The AVT snackbar"
                         , Doc.markdown snackbarBody
                         , Doc.code_ Doc.Elm snackbarCode
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "View transitions"
                         , Doc.markdown viewTransBody
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Reduced motion is not optional"
                         , Doc.markdown reducedBody
                         ]

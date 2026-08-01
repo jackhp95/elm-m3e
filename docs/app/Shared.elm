@@ -30,6 +30,7 @@ import M3e
 import M3e.AppBar
 import M3e.Attributes
 import M3e.DrawerContainer
+import M3e.Events
 import M3e.FormField
 import M3e.Icon
 import M3e.Kind
@@ -46,6 +47,7 @@ import SharedTemplate exposing (SharedTemplate)
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
+import TypedHtml.Events
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -361,7 +363,7 @@ view sharedData page model toMsg pageView =
                 -- CSS custom property directly — `style` uses `node.style[key]=…` which
                 -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
                 -- so it goes through a Tailwind arbitrary-property CLASS instead.
-                , Seam.class (densityClass model.density)
+                , TypedHtml.Attributes.class (densityClass model.density)
                 ]
                 children
                 |> toHtml
@@ -381,7 +383,7 @@ view sharedData page model toMsg pageView =
             -- rather than the document, or tall demos would clip.
             [ themed
                 [ Surface.view Surface.surface
-                    [ Seam.class "h-dvh overflow-y-auto"
+                    [ TypedHtml.Attributes.class "h-dvh overflow-y-auto"
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     (List.map Seam.asElement pageView.body)
@@ -396,7 +398,7 @@ view sharedData page model toMsg pageView =
                     -- `auto_1fr` rows pin the app bar while the 1fr content row
                     -- (the drawer + its <main>) is the ONE scroll region — keeps
                     -- the mobile URL bar from collapsing on scroll.
-                    [ Seam.class "grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
+                    [ TypedHtml.Attributes.class "grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ Seam.fromHtml skipLink
@@ -453,15 +455,10 @@ appShellBar =
             [ M3e.AppBar.size Value.small
             , M3e.Attributes.id "docs-app-bar"
             ]
-            [ M3e.AppBar.title (Seam.text "elm-m3e")
-            , M3e.AppBar.subtitle (Seam.text "Material 3 Expressive for Elm")
-            , M3e.AppBar.leading
-                (Seam.recast
-                    (Seam.node "span"
-                        [ Seam.class "flex items-center" ]
-                        [ brandMark, menuButton ]
-                    )
-                )
+            [ M3e.AppBar.title (M3e.text "elm-m3e")
+            , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
+            , M3e.AppBar.leading brandMark
+            , M3e.AppBar.leading menuButton
             , M3e.AppBar.trailing githubLink
             , M3e.AppBar.trailing settingsButton
             ]
@@ -480,7 +477,7 @@ brandMark =
     -- and spacing ride on the icon itself; no wrapper needed.
     M3e.icon
         [ M3e.Icon.name "palette"
-        , Seam.class "ms-2 me-1 hidden md:inline-flex"
+        , TypedHtml.Attributes.class "ms-2 me-1 hidden md:inline-flex"
         , Seam.asAttribute (attribute "aria-hidden" "true")
         ]
         []
@@ -492,7 +489,7 @@ drawer is always visible on wider viewports), so no wrapper span is needed.
 menuButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 menuButton =
     M3e.iconButton
-        [ Aria.label "Toggle navigation", Seam.class "md:hidden", Seam.onClick MenuClicked ]
+        [ Aria.label "Toggle navigation", TypedHtml.Attributes.class "md:hidden", M3e.Events.onClick MenuClicked ]
         [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
 
 
@@ -534,7 +531,7 @@ which drives the end drawer's `open` state. (Was a Card popover trigger.)
 settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
-        [ Aria.label "Settings", Seam.onClick ToggleSettings ]
+        [ Aria.label "Settings", M3e.Events.onClick ToggleSettings ]
         [ M3e.icon [ M3e.Icon.name "settings" ] [] ]
 
 
@@ -559,7 +556,7 @@ drawer.
 settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
 settingsDrawerContent model =
     Seam.node "div"
-        [ Seam.asAttribute (Attr.id "settings-drawer")
+        [ TypedHtml.Attributes.id "settings-drawer"
         , Aria.role Aria.complementary
         ]
         [ seedColorInput model
@@ -574,9 +571,11 @@ settingsDrawerContent model =
         ]
 
 
-controlLabel : String -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
+controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy Msg
 controlLabel lbl =
-    Seam.labelText Value.large [ Seam.onSurface ] [ Seam.text lbl ]
+    M3e.heading
+        [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ]
+        [ M3e.text lbl ]
 
 
 {-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
@@ -588,7 +587,7 @@ segmented segments =
         (List.map
             (\( lbl, isChecked, msg ) ->
                 M3e.buttonSegment
-                    [ M3e.Attributes.checked isChecked, Seam.onClick msg ]
+                    [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
                     [ M3e.text lbl ]
             )
             segments
@@ -618,21 +617,21 @@ contrastSegmented model =
 native `<input type=color>` are wired into one accessible control by a single
 shared id (`"seed-color"`), with the live hex shown as the field hint. The
 `#settings-drawer input[type="color"]` rule in `style.css` still rounds the
-swatch. `onInput` crosses via the one sanctioned `Seam.asAttribute`.
+swatch. `onInput` is the typed `TypedHtml.Events.onInput`.
 -}
 seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
         [ M3e.FormField.label
-            (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ Seam.text "Source color" ])
+            (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ M3e.text "Source color" ])
         , M3e.FormField.hint
-            (Seam.code Value.small [ Seam.onSurfaceVariant ] [ Seam.text model.seed ])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TypedHtml.Attributes.class "text-on-surface-variant" ] [ M3e.text model.seed ])
         , M3e.FormField.child
             (TypedHtml.input
                 [ TypedHtml.Attributes.id "seed-color"
                 , TypedHtml.Attributes.type_ "color"
                 , TypedHtml.Attributes.value model.seed
-                , Seam.asAttribute (Html.Events.onInput SetSeed)
+                , TypedHtml.Events.onInput SetSeed
                 ]
                 []
             )
@@ -859,7 +858,7 @@ navLeaf : String -> ( String, String ) -> Element { navMenuItem : M3e.Kind.Brand
 navLeaf currentPath ( path, lbl ) =
     M3e.navMenuItem
         [ M3e.Attributes.selected (path == currentPath) ]
-        [ M3e.NavMenuItem.label (Seam.link path [ Seam.text lbl ]) ]
+        [ M3e.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) ]
 
 
 {-| The component-nav categories, in display order, each paired with its Material

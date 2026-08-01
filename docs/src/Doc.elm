@@ -29,6 +29,8 @@ import Markdown.Parser
 import Markdown.Renderer
 import Seam
 import SyntaxHighlight
+import TypedHtml
+import TypedHtml.Attributes as TA
 
 
 {-| A matraic-style "showcase" card: live demo content in an outlined card.
@@ -43,7 +45,7 @@ example's escaping menu/tooltip is free to overflow the card.
 showcase : Element { s | html : M3e.Kind.Brand } admittedBy msg -> Element { r | card : M3e.Kind.Brand } freeAdm msg
 showcase content =
     M3e.card
-        [ M3e.Card.variant Value.outlined, Seam.class "max-w-full" ]
+        [ M3e.Card.variant Value.outlined, TA.class "max-w-full" ]
         [ M3e.Card.content content ]
 
 
@@ -185,14 +187,13 @@ sectionHeading s =
         [ M3e.text s ]
 
 
-{-| The chapter recap box: an "Recap" overline over rendered markdown, in a
+{-| The chapter recap box: a "Recap" overline over rendered markdown, in a
 tinted container.
 -}
-recapBox : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 recapBox md =
-    Seam.div "rounded-md-corner-medium bg-surface-container p-4 space-y-2"
-        [ Seam.overline [ Seam.primary ] [ Seam.text "Recap" ]
-        , Seam.div "text-on-surface-variant" [ markdown md ]
+    TypedHtml.div [ TA.class "rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
+        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "Recap" ]
+        , TypedHtml.div [ TA.class "text-on-surface-variant" ] [ markdown md ]
         ]
 
 

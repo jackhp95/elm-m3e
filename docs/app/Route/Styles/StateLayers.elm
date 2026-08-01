@@ -19,8 +19,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -74,24 +75,22 @@ states =
     ]
 
 
-stateRow : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 stateRow ( token, value, trigger ) =
-    Seam.div "flex flex-col gap-1 py-2.5"
-        [ Seam.div "flex flex-wrap items-baseline justify-between gap-2"
-            [ Seam.code Value.medium [ Seam.onSurface ] [ Seam.text token ]
-            , Seam.code Value.medium [ Seam.onSurfaceVariant ] [ Seam.text value ]
+    TypedHtml.div [ TA.class "flex flex-col gap-1 py-2.5" ]
+        [ TypedHtml.div [ TA.class "flex flex-wrap items-baseline justify-between gap-2" ]
+            [ TypedHtml.code [ TA.class "text-body-md text-on-surface" ] [ M3e.text token ]
+            , TypedHtml.code [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text value ]
             ]
-        , Seam.body Value.medium [ Seam.onSurfaceVariant ] [ Seam.text trigger ]
+        , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text trigger ]
         ]
 
 
-demoButtons : Element { s | html : M3e.Kind.Brand } adm_ msg
 demoButtons =
-    Seam.div "flex flex-wrap gap-3 p-2"
-        [ M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Filled" ]
-        , M3e.button [ M3e.Attributes.variant Value.tonal ] [ Seam.text "Tonal" ]
-        , M3e.button [ M3e.Attributes.variant Value.outlined ] [ Seam.text "Outlined" ]
-        , M3e.button [ M3e.Attributes.variant Value.text ] [ Seam.text "Text" ]
+    TypedHtml.div [ TA.class "flex flex-wrap gap-3 p-2" ]
+        [ M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Filled" ]
+        , M3e.button [ M3e.Attributes.variant Value.tonal ] [ M3e.text "Tonal" ]
+        , M3e.button [ M3e.Attributes.variant Value.outlined ] [ M3e.text "Outlined" ]
+        , M3e.button [ M3e.Attributes.variant Value.text ] [ M3e.text "Text" ]
         ]
 
 
@@ -108,30 +107,28 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.section "space-y-3"
+                [ TypedHtml.section [ TA.class "space-y-3" ]
                     [ pageHeading
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Every interactive M3 surface paints a translucent state layer over itself to signal interaction. The layer takes the element's on-color and one of three opacities — hover, focus, or pressed — from the --md-sys-state-* tokens. It is additive: a focused-and-hovered element stacks both. m3e components render this for you; the tokens are here so you can match it in custom surfaces." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Every interactive M3 surface paints a translucent state layer over itself to signal interaction. The layer takes the element's on-color and one of three opacities — hover, focus, or pressed — from the --md-sys-state-* tokens. It is additive: a focused-and-hovered element stacks both. m3e components render this for you; the tokens are here so you can match it in custom surfaces." ]
                         ]
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "The three opacities"
                     , M3e.card
                         [ M3e.Attributes.variant Value.outlined ]
                         [ M3e.Card.content
-                            (Seam.div "flex flex-col px-2"
+                            (TypedHtml.div [ TA.class "flex flex-col px-2" ]
                                 (List.intersperse (M3e.divider [] []) (List.map stateRow states))
                             )
                         ]
                     ]
-                , Seam.section "space-y-3"
+                , TypedHtml.section [ TA.class "space-y-3" ]
                     [ Doc.sectionHeading "Live"
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]
                         ]
                     , M3e.card [ M3e.Attributes.variant Value.outlined ] [ M3e.Card.content demoButtons ]
                     ]

@@ -12,14 +12,14 @@ code names the avatar instead of re-deriving the disc.
 
 -}
 
-import Html.Attributes
 import HtmlIr.Element exposing (Element)
 import M3e
+import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
-import Seam
 import Seam.Shape as Shape
 import Seam.Surface as Surface
+import TypedHtml.Attributes as TA
 
 
 {-| A circular avatar: `initials` centered on a fixed `h-10 w-10`
@@ -28,10 +28,10 @@ import Seam.Surface as Surface
 -}
 initials : String -> Element { s | avatar : M3e.Kind.Brand } adm_ msg
 initials text =
-    M3e.avatar [ Seam.asAttribute (Html.Attributes.class "flex") ]
+    M3e.avatar [ TA.class "flex" ]
         [ Surface.view Surface.secondaryContainer
             [ Shape.corner Shape.full
-            , Seam.asAttribute (Html.Attributes.class "flex h-10 w-10 items-center justify-center")
+            , TA.class "flex h-10 w-10 items-center justify-center"
             ]
-            [ Seam.labelText Value.medium [] [ Seam.text text ] ]
+            [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.medium ] [ M3e.text text ] ]
         ]

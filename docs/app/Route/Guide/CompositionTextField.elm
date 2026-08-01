@@ -20,7 +20,6 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes
@@ -75,8 +74,8 @@ emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
         [ M3e.FormField.label
-            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ Seam.text "Email address" ])
-        , M3e.FormField.hint (Seam.text "We'll never share it.")
+            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ M3e.text "Email address" ])
+        , M3e.FormField.hint (M3e.text "We'll never share it.")
         , M3e.FormField.child
             (TypedHtml.input
                 [ TypedHtml.Attributes.id "email-field"
@@ -95,17 +94,17 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
+                    [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                         [ Doc.pageHeading "Composition, not injection"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TypedHtml.Attributes.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                         [ Doc.markdown composed
                         , Doc.showcase emailField
                         , Doc.code_ Doc.Elm emailCode
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                         [ Doc.markdown native ]
                     , Doc.recapBox recap
                     ]

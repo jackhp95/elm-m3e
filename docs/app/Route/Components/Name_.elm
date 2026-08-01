@@ -25,8 +25,9 @@ import M3e.ListItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -126,7 +127,7 @@ view app _ model =
                 (Doc.pane
                     [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
                       -- section — header, Usage, API — so their spacing is uniform.
-                      Seam.div "space-y-10"
+                      TypedHtml.div [ TA.class "space-y-10" ]
                         (header component
                             :: Usage.usageBlocks 0 model app.data.usage
                             ++ [ apiSection component.members ]
@@ -144,10 +145,9 @@ a display heading (with its category chip alongside), the cleaned one-line CEM
 summary, and a barrel-first install card. Events and slots are documented by the
 colocated API section below, not repeated here.
 -}
-header : Component -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, suggestionChip : M3e.Kind.Brand } adm_ msg
 header component =
-    Seam.div "space-y-4"
-        (Seam.div "flex flex-wrap items-center gap-3"
+    TypedHtml.div [ TA.class "space-y-4" ]
+        (TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3" ]
             (M3e.heading
                 [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
                 [ M3e.text component.name ]
@@ -162,15 +162,14 @@ header component =
 component, from `data/example-usage.json`. Rendered only when non-empty, so a
 component absent from every example app shows no section at all.
 -}
-exampleAppsSection : List ExampleUsage -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } adm_ msg)
 exampleAppsSection usages =
     if List.isEmpty usages then
         []
 
     else
-        [ Seam.div "space-y-4"
+        [ TypedHtml.div [ TA.class "space-y-4" ]
             [ Doc.sectionHeading "In the example apps"
-            , Seam.div "flex flex-wrap gap-2"
+            , TypedHtml.div [ TA.class "flex flex-wrap gap-2" ]
                 (List.map
                     (\u -> Doc.anchorPill { href = u.route, label = u.title })
                     usages
@@ -188,20 +187,19 @@ categoryChip cat =
         []
 
     else
-        [ M3e.suggestionChip [] [ Seam.text cat ] ]
+        [ M3e.suggestionChip [] [ M3e.text cat ] ]
 
 
 {-| The one-line summary paragraph, constrained to a comfortable reading measure.
 Empty ⇒ nothing.
 -}
-summaryBlock : String -> List (Element { s | html : M3e.Kind.Brand } adm_ msg)
 summaryBlock summary =
     if summary == "" then
         []
 
     else
-        [ Seam.div "max-w-2xl"
-            [ Seam.paragraph Value.large [ Seam.onSurfaceVariant ] [ Seam.text summary ] ]
+        [ TypedHtml.div [ TA.class "max-w-2xl" ]
+            [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text summary ] ]
         ]
 
 
@@ -221,9 +219,8 @@ grouped by role (constructor + its colocated type aliases, then attribute setter
 slot setters, and events), each group an overline-labelled outlined card. Members
 keep their `@docs` order within a group. Empty groups drop out.
 -}
-apiSection : List Doc.Data.Member -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, listItem : M3e.Kind.Brand } adm_ msg
 apiSection members =
-    Seam.div "space-y-6"
+    TypedHtml.div [ TA.class "space-y-6" ]
         (M3e.heading
             [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
             [ M3e.text "API" ]
@@ -249,7 +246,6 @@ apiGroups =
 {-| One API group: an overline label over an outlined card listing its members.
 `Nothing` when the group has no members, so it drops out of the section rhythm.
 -}
-apiGroup : List Doc.Data.Member -> ( String, List String ) -> Maybe (Element { s | html : M3e.Kind.Brand, card : M3e.Kind.Brand, listItem : M3e.Kind.Brand } adm_ msg)
 apiGroup members ( label, roles ) =
     case List.filter (\m -> List.member m.role roles) members of
         [] ->
@@ -257,8 +253,8 @@ apiGroup members ( label, roles ) =
 
         group ->
             Just
-                (Seam.div "space-y-3"
-                    [ Seam.overline [ Seam.onSurfaceVariant ] [ Seam.text label ]
+                (TypedHtml.div [ TA.class "space-y-3" ]
+                    [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text label ]
                     , M3e.card [ M3e.Attributes.variant Value.outlined ]
                         [ M3e.Card.content (M3e.list [] (List.map memberRow group)) ]
                     ]

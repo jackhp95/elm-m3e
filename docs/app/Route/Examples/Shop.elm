@@ -28,6 +28,7 @@ import M3e
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Card
+import M3e.Events
 import M3e.Fab
 import M3e.Kind
 import M3e.NavItem
@@ -39,6 +40,7 @@ import Seam.Badge
 import Seam.Shape as Shape
 import Seam.Surface as Surface exposing (Surface)
 import Shared
+import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
@@ -158,12 +160,12 @@ view _ _ model =
     , body =
         [ HtmlIr.Element.toNode
             (Surface.view Surface.surface
-                [ Seam.class "flex min-h-screen w-full" ]
+                [ TA.class "flex min-h-screen w-full" ]
                 [ navRail model
-                , Seam.div "flex min-w-0 flex-1 flex-col"
+                , TypedHtml.div [ TA.class "flex min-w-0 flex-1 flex-col" ]
                     [ appBar model
-                    , Seam.section "relative flex-1 overflow-y-auto"
-                        [ Seam.div "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6"
+                    , TypedHtml.section [ TA.class "relative flex-1 overflow-y-auto" ]
+                        [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6" ]
                             [ hero
                             , filterBar model.category
                             , productGrid shown
@@ -203,25 +205,18 @@ exampleFooter =
 -- CHROME ----------------------------------------------------------------------
 
 
-{-| Top app bar: store name in the title slot, a search + cart action trailing.
-The cart button wears a Badge showing the live item count.
+{-| Top app bar: brand icon in the leading slot, store name in the title slot,
+a search + cart action trailing. The cart button wears a Badge showing the live
+item count.
 -}
 appBar : Model -> Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar model =
     M3e.appBar
-        [ Seam.class "px-2" ]
-        [ M3e.AppBar.title
-            (Seam.div "flex items-center gap-2"
-                [ Seam.colored [ Seam.primary ] [ M3e.icon [ TA.name "storefront", M3e.Attributes.filled True ] [] ]
-                , Seam.title Value.large [ Seam.onSurface ] [ Seam.text "Maru Market" ]
-                ]
-            )
-        , M3e.AppBar.trailing
-            (Seam.div "flex items-center gap-1"
-                [ iconAction "search"
-                , cartAction model.cart
-                ]
-            )
+        [ TA.class "px-2" ]
+        [ M3e.AppBar.leading (M3e.icon [ TA.name "storefront", M3e.Attributes.filled True, TA.class "text-primary" ] [])
+        , M3e.AppBar.title (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Maru Market" ])
+        , M3e.AppBar.trailing (iconAction "search")
+        , M3e.AppBar.trailing (cartAction model.cart)
         ]
 
 
@@ -235,7 +230,7 @@ cartAction count =
                 [ M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
                 [ M3e.icon [ TA.name "shopping_bag" ] [] ]
         , badge =
-            M3e.badge [] [ Seam.text (String.fromInt count) ]
+            M3e.badge [] [ M3e.text (String.fromInt count) ]
         }
 
 
@@ -244,7 +239,7 @@ cartAction count =
 navRail : Model -> Element { s | navRail : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navRail model =
     M3e.navRail
-        [ Seam.class "hidden shrink-0 md:flex" ]
+        [ TA.class "hidden shrink-0 md:flex" ]
         (List.map (railItem model.category) destinations)
 
 
@@ -253,7 +248,7 @@ navRail model =
 navBar : Model -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar model =
     M3e.navBar
-        [ Seam.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+        [ TA.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
         (List.map (barItem model.category) destinations)
 
 
@@ -288,7 +283,7 @@ navDestination current dest =
             case dest.category of
                 Just cat ->
                     [ M3e.Attributes.selected (cat == current)
-                    , Seam.onClick (PagesMsg.fromMsg (SetCategory cat))
+                    , M3e.Events.onClick (PagesMsg.fromMsg (SetCategory cat))
                     ]
 
                 Nothing ->
@@ -296,7 +291,7 @@ navDestination current dest =
     in
     M3e.navItem attrs
         [ M3e.NavItem.icon (M3e.icon [ TA.name dest.icon ] [])
-        , Seam.text dest.label
+        , M3e.text dest.label
         ]
 
 
@@ -309,20 +304,19 @@ navDestination current dest =
 hero : Element { s | html : M3e.Kind.Brand } adm_ msg
 hero =
     Surface.view Surface.primaryContainer
-        [ Shape.corner Shape.extraLarge, Seam.class "flex flex-col gap-1 p-6" ]
-        [ Seam.overline [] [ Seam.text "New season" ]
-        , Seam.headline Value.small [] [ Seam.text "Everyday goods, thoughtfully made" ]
-        , Seam.body Value.medium [] [ Seam.text "Free shipping on orders over $75." ]
+        [ Shape.corner Shape.extraLarge, TA.class "flex flex-col gap-1 p-6" ]
+        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide" ] [ M3e.text "New season" ]
+        , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Everyday goods, thoughtfully made" ]
+        , TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text "Free shipping on orders over $75." ]
         ]
 
 
 {-| Category filter toolbar: a single-select FilterChipSet that scrolls
 horizontally on narrow screens, plus a sort action.
 -}
-filterBar : String -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 filterBar current =
-    Seam.div "flex items-center gap-2"
-        [ Seam.div "min-w-0 flex-1 overflow-x-auto"
+    TypedHtml.div [ TA.class "flex items-center gap-2" ]
+        [ TypedHtml.div [ TA.class "min-w-0 flex-1 overflow-x-auto" ]
             [ M3e.filterChipSet []
                 (List.map (categoryChip current) categories)
             ]
@@ -334,16 +328,15 @@ categoryChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } a
 categoryChip current cat =
     M3e.filterChip
         [ M3e.Attributes.selected (cat == current)
-        , Seam.onClick (PagesMsg.fromMsg (SetCategory cat))
+        , M3e.Events.onClick (PagesMsg.fromMsg (SetCategory cat))
         ]
         [ M3e.text cat ]
 
 
 {-| Responsive product grid: 1 col on mobile, 2 on small, 3/4 on larger screens.
 -}
-productGrid : List Product -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 productGrid shown =
-    Seam.div "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    TypedHtml.div [ TA.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" ]
         (List.map productCard shown)
 
 
@@ -354,16 +347,16 @@ productCard product =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
         [ M3e.Card.header (media product)
         , M3e.Card.content
-            (Seam.div "flex flex-col gap-0.5 px-1"
-                [ Seam.title Value.medium [ Seam.onSurface ] [ Seam.text product.name ]
-                , Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text product.category ]
+            (TypedHtml.div [ TA.class "flex flex-col gap-0.5 px-1" ]
+                [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text product.name ]
+                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text product.category ]
                 ]
             )
         , M3e.Card.actions
-            (Seam.div "flex w-full items-center justify-between px-1"
-                [ Seam.title Value.large [ Seam.primary ] [ Seam.text product.price ]
+            (TypedHtml.div [ TA.class "flex w-full items-center justify-between px-1" ]
+                [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-primary" ] [ M3e.text product.price ]
                 , M3e.iconButton
-                    [ M3e.Attributes.variant Value.tonal, Aria.label "Add to cart", Seam.onClick (PagesMsg.fromMsg AddToCart) ]
+                    [ M3e.Attributes.variant Value.tonal, Aria.label "Add to cart", M3e.Events.onClick (PagesMsg.fromMsg AddToCart) ]
                     [ M3e.icon [ TA.name "add_shopping_cart" ] [] ]
                 ]
             )
@@ -375,20 +368,19 @@ productCard product =
 media : Product -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media product =
     Surface.view product.media
-        [ Shape.corner Shape.large, Seam.class "flex aspect-square items-center justify-center" ]
+        [ Shape.corner Shape.large, TA.class "flex aspect-square items-center justify-center" ]
         [ M3e.icon [ TA.name product.icon, M3e.Attributes.opticalSize 48 ] [] ]
 
 
 {-| A floating checkout action over the content.
 -}
-checkoutFab : Element { s | html : M3e.Kind.Brand } adm_ msg
 checkoutFab =
-    Seam.div "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6"
-        [ Seam.span "pointer-events-auto"
+    TypedHtml.div [ TA.class "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6" ]
+        [ TypedHtml.div [ TA.class "pointer-events-auto" ]
             [ M3e.fab
                 [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Checkout" ]
                 [ M3e.icon [ TA.name "shopping_cart_checkout" ] []
-                , M3e.Fab.label (Seam.text "Checkout")
+                , M3e.Fab.label (M3e.text "Checkout")
                 ]
             ]
         ]

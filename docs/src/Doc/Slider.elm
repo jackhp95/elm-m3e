@@ -27,6 +27,7 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import M3e.Kind
 import Seam
+import TypedHtml.Attributes as TA
 
 
 {-| Mount `panels` in a sliding track, showing the one at `activeIndex`.
@@ -61,13 +62,13 @@ slidingPanels activeIndex panels =
                 track : Element { k | html : M3e.Kind.Brand } trackAdm msg
                 track =
                     Seam.node "div"
-                        [ Seam.class "sp-track"
+                        [ TA.class "sp-track"
                         , Seam.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
                         ]
                         (List.indexedMap (panel idx) panels)
             in
             Seam.node "slide-panels"
-                [ Seam.class "sp-viewport"
+                [ TA.class "sp-viewport"
                 , Seam.attribute "active-index" (String.fromInt idx)
                 ]
                 [ track ]
@@ -82,9 +83,8 @@ panel activeIndex i child =
         inactive =
             i /= activeIndex
 
-        attrs : List (Attr c msg)
         attrs =
-            Seam.class "sp-panel"
+            TA.class "sp-panel"
                 :: Seam.attribute "aria-hidden"
                     (if inactive then
                         "true"

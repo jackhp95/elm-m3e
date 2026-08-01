@@ -20,8 +20,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -74,9 +75,9 @@ settingsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.Card.header
-            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ Seam.text "Account settings" ])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ M3e.text "Account settings" ])
         , M3e.Card.content
-            (M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Save" ])
+            (M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ])
         ]
 
 
@@ -86,12 +87,12 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "Your first component"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown body
                         , settingsCard
                         , Doc.code_ Doc.Elm source

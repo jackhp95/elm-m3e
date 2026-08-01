@@ -26,8 +26,9 @@ import Json.Decode as Decode
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -135,19 +136,19 @@ view app _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "How we prove it"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown loop
                         , Doc.code_ Doc.NoLang (report app.data)
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown reportNote ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown reportNote ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown alias ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown (honest app.data) ]
                     , Doc.recapBox (recap app.data)
                     ]

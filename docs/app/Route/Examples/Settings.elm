@@ -22,6 +22,7 @@ import HtmlIr.Kind
 import M3e
 import M3e.AppBar
 import M3e.Attributes
+import M3e.Events
 import M3e.Kind
 import M3e.ListItem
 import M3e.NavItem
@@ -34,8 +35,10 @@ import Seam.Avatar as Avatar
 import Seam.Shape as Shape
 import Seam.Surface as Surface
 import Shared
+import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
+import TypedHtml.Kind
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -184,12 +187,12 @@ content column scrolls.
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
 screen model =
     Surface.view Surface.surface
-        [ Seam.class "flex h-screen w-full overflow-hidden" ]
+        [ TA.class "flex h-screen w-full overflow-hidden" ]
         [ desktopRail model.section
-        , Seam.div "flex flex-1 flex-col overflow-hidden"
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col overflow-hidden" ]
             [ appBar
-            , Seam.div "flex-1 overflow-y-auto"
-                [ Seam.div "mx-auto w-full max-w-2xl flex flex-col gap-6 px-4 py-6 pb-24 md:pb-6"
+            , TypedHtml.div [ TA.class "flex-1 overflow-y-auto" ]
+                [ TypedHtml.div [ TA.class "mx-auto w-full max-w-2xl flex flex-col gap-6 px-4 py-6 pb-24 md:pb-6" ]
                     (content model)
                 , exampleFooter
                 ]
@@ -223,7 +226,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.Attributes.size Value.medium ]
         [ M3e.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
-        , M3e.AppBar.title (Seam.text "Settings")
+        , M3e.AppBar.title (M3e.text "Settings")
         ]
 
 
@@ -245,7 +248,7 @@ sections =
 -}
 desktopRail : String -> Element { s | navRail : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 desktopRail current =
-    M3e.navRail [ Seam.class "hidden md:flex shrink-0" ]
+    M3e.navRail [ TA.class "hidden md:flex shrink-0" ]
         (List.map (navItem current) sections)
 
 
@@ -254,7 +257,7 @@ bottom so it stays put while the content scrolls.
 -}
 mobileBar : String -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 mobileBar current =
-    M3e.navBar [ Seam.class "md:hidden fixed inset-x-0 bottom-0" ]
+    M3e.navBar [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map (navItem current) sections)
 
 
@@ -262,10 +265,10 @@ navItem : String -> ( String, String, String ) -> Element { s | navItem : M3e.Ki
 navItem current ( section, name, iconName ) =
     M3e.navItem
         [ M3e.Attributes.selected (section == current)
-        , Seam.onClick (PagesMsg.fromMsg (SelectSection section))
+        , M3e.Events.onClick (PagesMsg.fromMsg (SelectSection section))
         ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
-        , Seam.text name
+        , M3e.text name
         ]
 
 
@@ -280,10 +283,9 @@ every field any row needs. Each producing function's `view` returns an open row,
 which widens to fill this closed record.
 -}
 type alias Row adm_ msg =
-    Element { html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
+    Element { div : TypedHtml.Kind.Brand, html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
 
 
-content : Model -> List (Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg))
 content model =
     [ accountCard
     , sectionCard "Notifications"
@@ -313,12 +315,11 @@ content model =
 {-| A settings section: an overline heading above a rounded surface-container card
 whose `ListItem` rows are separated by `Divider`s.
 -}
-sectionCard : String -> List (Row adm_ (PagesMsg Msg)) -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 sectionCard heading rows =
-    Seam.div "flex flex-col gap-2"
-        [ Seam.overline [ Seam.onSurfaceVariant ] [ Seam.text heading ]
+    TypedHtml.div [ TA.class "flex flex-col gap-2" ]
+        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text heading ]
         , Surface.view Surface.surfaceContainer
-            [ Shape.corner Shape.large, Seam.class "overflow-hidden flex flex-col" ]
+            [ Shape.corner Shape.large, TA.class "overflow-hidden flex flex-col" ]
             (dividize rows)
         ]
 
@@ -333,17 +334,16 @@ dividize rows =
 {-| The account header: a profile card (avatar + name + email) followed by a
 drill-in row for managing the account.
 -}
-accountCard : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 accountCard =
-    Seam.div "flex flex-col gap-2"
-        [ Seam.overline [ Seam.onSurfaceVariant ] [ Seam.text "Account" ]
+    TypedHtml.div [ TA.class "flex flex-col gap-2" ]
+        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Account" ]
         , Surface.view Surface.surfaceContainer
-            [ Shape.corner Shape.large, Seam.class "overflow-hidden flex flex-col" ]
+            [ Shape.corner Shape.large, TA.class "overflow-hidden flex flex-col" ]
             (dividize
                 [ M3e.listItem []
                     [ M3e.ListItem.leading (Avatar.initials "JD")
-                    , Seam.text "Jane Doe"
-                    , M3e.ListItem.supportingText (Seam.text "jane@example.com")
+                    , M3e.text "Jane Doe"
+                    , M3e.ListItem.supportingText (M3e.text "jane@example.com")
                     , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
                     ]
                 , linkRow "manage_accounts" "Manage account" "Password, 2FA, connected apps"
@@ -359,13 +359,13 @@ switchRow : String -> String -> String -> Bool -> Msg -> Row adm_ (PagesMsg Msg)
 switchRow iconName label supporting on toggle =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
-        , M3e.ListItem.supportingText (Seam.text supporting)
+        , M3e.text label
+        , M3e.ListItem.supportingText (M3e.text supporting)
         , M3e.ListItem.trailing
             (M3e.switch
                 [ Aria.label label
                 , M3e.Attributes.checked on
-                , Seam.onClick (PagesMsg.fromMsg toggle)
+                , M3e.Events.onClick (PagesMsg.fromMsg toggle)
                 ]
                 []
             )
@@ -378,14 +378,14 @@ themeRow : String -> String -> String -> String -> Row adm_ (PagesMsg Msg)
 themeRow theme label iconName current =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
+        , M3e.text label
         , M3e.ListItem.trailing
             (M3e.radio
                 [ Aria.label label
                 , TA.name "theme"
                 , M3e.Attributes.value theme
                 , M3e.Attributes.checked (theme == current)
-                , Seam.onClick (PagesMsg.fromMsg (SetTheme theme))
+                , M3e.Events.onClick (PagesMsg.fromMsg (SetTheme theme))
                 ]
                 []
             )
@@ -396,12 +396,11 @@ themeRow theme label iconName current =
 supporting-text, so this row is a plain layout (leading icon + label above the
 slider) rather than a `ListItem` with the control crammed into a text slot.
 -}
-densityRow : Row adm_ msg
 densityRow =
-    Seam.div "flex flex-col gap-3 px-4 py-3"
-        [ Seam.div "flex items-center gap-4"
+    TypedHtml.div [ TA.class "flex flex-col gap-3 px-4 py-3" ]
+        [ TypedHtml.div [ TA.class "flex items-center gap-4" ]
             [ M3e.icon [ TA.name "density_medium" ] []
-            , Seam.text "Display density"
+            , M3e.text "Display density"
             ]
         , M3e.slider
             [ M3e.Attributes.min 0
@@ -410,7 +409,7 @@ densityRow =
             , M3e.Attributes.discrete True
             , M3e.Attributes.labelled True
             , Aria.label "Display density"
-            , Seam.class "w-full"
+            , TA.class "w-full"
             ]
             [ M3e.sliderThumb [ M3e.SliderThumb.value 2 ] [] ]
         ]
@@ -422,8 +421,8 @@ linkRow : String -> String -> String -> Row adm_ msg
 linkRow iconName label supporting =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
-        , M3e.ListItem.supportingText (Seam.text supporting)
+        , M3e.text label
+        , M3e.ListItem.supportingText (M3e.text supporting)
         , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
         ]
 
@@ -434,7 +433,7 @@ infoRow : String -> String -> String -> Row adm_ msg
 infoRow iconName label value =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
+        , M3e.text label
         , M3e.ListItem.trailing
-            (Seam.labelText Value.large [ Seam.onSurfaceVariant ] [ Seam.text value ])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text value ])
         ]

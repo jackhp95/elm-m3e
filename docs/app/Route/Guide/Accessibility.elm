@@ -20,8 +20,8 @@ import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import UrlPath
@@ -82,37 +82,37 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "Accessibility reference"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Accessible name: named slot vs ARIA label"
                         , Doc.markdown nameBody
                         , Doc.showcase labeledBack
                         , Doc.code_ Doc.Elm nameCode
                         , Doc.markdown nameLayers
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Focus: dialogs, menus, sheets"
                         , Doc.markdown focusBody
                         , Doc.code_ Doc.Elm focusCode
                         , Doc.markdown focusNote
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Keyboard interaction by component family"
                         , Doc.markdown keyboardBody
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "What ships vs what you wire"
                         , Doc.markdown divisionBody
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Read the review errors as a11y guidance"
                         , Doc.markdown reviewBody
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Testing with the a11y-tree harness"
                         , Doc.markdown testingBody
                         , Doc.code_ Doc.NoLang testingCode

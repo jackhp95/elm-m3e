@@ -1,11 +1,12 @@
 module Route.Guide.Seams exposing (ActionData, Data, Model, Msg, route)
 
-{-| Guide (`/guide/seams`): a **seam** is the _practice_ of keeping everything you
-build on top of the library — your vocabulary, layout helpers, and raw-HTML
-escapes — in one greppable userland module, instead of scattering it through
-feature code. This docs app's own `Seam` module is the running example: standard
-HTML stays typed (`TypedHtml`), and the genuine escapes go through the library's
-two lint-fenced doors. The two-column layout is live; the producers are shown as code.
+{-| Guide (`/guide/seams`): a **seam** is the _practice_ of keeping the few places
+you genuinely step outside the type system in one greppable userland module,
+instead of scattering escapes through feature code. This docs app's own `Seam`
+module is the running example: standard HTML stays typed (`TypedHtml`), most
+"custom" content just fills a typed slot, and only the true escapes — a
+third-party custom element, raw `Html` — go through the library's lint-fenced
+doors. The two-column layout is live; the producers are shown as code.
 -}
 
 import BackendTask
@@ -63,7 +64,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "A seam is the practice of corralling your userland — vocabulary, layout, and raw-HTML escapes — into one greppable module. Escape through the library's two lint-fenced doors and keep the guarantees."
+        , description = "A seam is the practice of corralling the few real escapes — raw Html, a custom element the types can't express — into one greppable module. Everything else stays typed."
         , locale = Nothing
         , title = "Your own seam · elm-m3e"
         }
@@ -74,7 +75,7 @@ saveButton : Element { s | button : M3e.Kind.Brand } admittedBy msg
 saveButton =
     M3e.button [ M3e.Button.variant Value.filled ]
         [ M3e.Button.icon (M3e.icon [ M3e.Icon.name "save" ] [])
-        , Seam.text "Save"
+        , M3e.text "Save"
         ]
 
 
@@ -82,7 +83,7 @@ emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
         [ M3e.FormField.label
-            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ Seam.text "Email address" ])
+            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ M3e.text "Email address" ])
         , M3e.FormField.child
             (TypedHtml.input
                 [ TypedHtml.Attributes.id "email-field"
@@ -94,15 +95,31 @@ emailField =
         ]
 
 
-{-| A userland layout producer: a two-column grid at wide widths. `Seam.div`
-is a one-line wrapper over a typed `div` + a class attribute, kept in the app's
-one `Seam` module, so feature code names the layout instead of sprinkling raw
-class strings around.
+{-| Userland layout — **not** a seam. Standard HTML is already typed, so a
+two-column grid is a plain `TypedHtml.div` with a class attribute; the class
+string is contained in one named producer instead of sprinkled at every call
+site. No escape, no door.
 -}
-twoColumn : Element { s | html : M3e.Kind.Brand } admittedBy msg
 twoColumn =
-    Seam.div "grid grid-cols-1 gap-4 md:grid-cols-2"
+    TypedHtml.div [ TypedHtml.Attributes.class "grid grid-cols-1 gap-4 md:grid-cols-2" ]
         [ emailField, saveButton ]
+
+
+{-| A **genuine seam.** `<model-viewer>` is a third-party web component the typed
+tree has no producer for, so building it means stepping outside: `Seam.node`
+forges the custom tag and `Seam.attribute` sets its bespoke attributes. That
+escape is exactly what a seam is _for_ — and it lives in one named userland
+producer, contained and greppable, not scattered through feature code.
+-}
+modelViewer : Element { k | html : M3e.Kind.Brand } freeAdm msg
+modelViewer =
+    Seam.node "model-viewer"
+        [ Seam.attribute "src" "/models/chair.glb"
+        , Seam.attribute "camera-controls" ""
+        , Seam.attribute "auto-rotate" ""
+        , TypedHtml.Attributes.class "block h-48 w-full rounded-lg bg-surface-container"
+        ]
+        []
 
 
 {-| The `link` seam filling a _typed slot_. A nav-menu item's `label` slot
@@ -114,8 +131,8 @@ system declared for it, and the seam produces one of them.
 linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
     M3e.navMenu []
-        [ M3e.NavMenuItem.el { label = Seam.link "/guide/seams" [ Seam.text "Seams" ] } [] []
-        , M3e.NavMenuItem.el { label = Seam.link "/guide/the-layers" [ Seam.text "The surfaces" ] } [] []
+        [ M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
+        , M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
         ]
 
 
@@ -125,22 +142,27 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
-                        [ Doc.pageHeading "Your own seam — one place for your userland"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
+                    [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                        [ Doc.pageHeading "Your own seam — one place for your escapes"
+                        , TypedHtml.div [ TypedHtml.Attributes.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                         [ Doc.markdown userland
                         , Doc.showcase twoColumn
                         , Doc.code_ Doc.Elm seamCode
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                        [ Doc.markdown realSeam
+                        , Doc.showcase modelViewer
+                        , Doc.code_ Doc.Elm realSeamCode
+                        ]
+                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                         [ Doc.markdown slotSeam
                         , Doc.showcase linkNav
                         , Doc.code_ Doc.Elm linkNavCode
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                         [ Doc.markdown payoff ]
                     , Doc.recapBox recap
                     ]
@@ -152,25 +174,37 @@ view _ _ =
 
 intro : String
 intro =
-    """Everything you've written on top of the library is **userland** — your own code. Standard HTML is already typed for you (`TypedHtml.div`, `TypedHtml.label`, …), and when you genuinely must step outside the type system the library gives you two loud, lint-fenced doors. A **seam** isn't a library feature — it's the *practice* of keeping all that userland (your vocabulary, your layout helpers, your escapes) in **one greppable module**, so an escape is never scattered through feature code. This docs app does exactly that: everything below lives in one `Seam` module you can audit at a glance."""
+    """Everything you write on top of the library is **userland** — your own code. Most of it needs no escape at all: standard HTML is already typed (`TypedHtml.div`, `TypedHtml.label`, …), and "custom" content usually just fills a component's *typed slot*. A **seam** isn't a library feature — it's the *practice* of keeping the handful of places you genuinely _do_ step outside the type system in **one greppable module**, so an escape is never scattered through feature code. This docs app does exactly that: everything below lives in one `Seam` module you can audit at a glance."""
 
 
 userland : String
 userland =
-    """The two doors, for when you must leave the typed tree: **`Unsafe`** lifts raw `Html` (`fromHtml`) or re-kinds an element to fit any slot (`recast`), and the raw forge **`HtmlIr.Internal`** forges custom tags and attributes (`element`, `attribute`, `on`). Both are fenced by elm-review, so a use outside a blessed module is a lint finding. Your seam module builds *on top* of them — named producers that contain each escape. Here the settings pieces sit in a two-column layout: `Seam.div` is a one-line userland helper over a typed `div`, so feature code names the layout instead of sprinkling raw class strings."""
+    """Start with what is **not** a seam. A two-column layout is standard HTML, and standard HTML is typed — a `TypedHtml.div` with a class attribute. Naming it in one userland producer keeps the class string in one place, but there is no escape here and nothing for the linter to fence. Reaching for a `Seam.*` layout wrapper would be the mistake: it drags plain typed markup through the seam for no reason."""
 
 
 seamCode : String
 seamCode =
-    """-- a userland layout producer: the class string contained in one named place
-gridWith classes children =
-    TypedHtml.div [ TypedHtml.Attributes.class classes ] children
+    """-- NOT a seam: standard HTML is already typed, so layout is a plain div.
+twoColumn =
+    TypedHtml.div [ TypedHtml.Attributes.class "grid grid-cols-1 md:grid-cols-2" ]
+        [ emailField, saveButton ]"""
 
--- a userland text producer: one body, every call site upgrades untouched
-text : String -> Element { s | text : M3e.Kind.Brand } adm_ msg
-text raw =
-    -- swap this one body (e.g. run it through i18n) and every
-    -- `Seam.text "…"` call site changes with it — no edits at the sites."""
+
+realSeam : String
+realSeam =
+    """Now a **real** seam. `<model-viewer>` is a third-party web component — the typed tree has no producer for it, so building it means genuinely stepping outside: `Seam.node` forges the custom tag and `Seam.attribute` sets its bespoke attributes. This is what the seam is *for*. Because it lives in one named userland producer, the escape is contained, greppable, and lint-fenced — you stepped outside on purpose, in one auditable place, instead of sprinkling `node`/`attribute` calls through feature code."""
+
+
+realSeamCode : String
+realSeamCode =
+    """-- a real seam: a custom element the types can't express, contained once.
+modelViewer =
+    Seam.node "model-viewer"
+        [ Seam.attribute "src" "/models/chair.glb"
+        , Seam.attribute "camera-controls" ""
+        , TypedHtml.Attributes.class "block h-48 w-full rounded-lg"
+        ]
+        []"""
 
 
 slotSeam : String
@@ -185,19 +219,19 @@ linkNavCode =
 -- form (`M3e.NavMenuItem.el`) enforces the required `label` at the type level.
 linkNav =
     M3e.navMenu []
-        [ M3e.NavMenuItem.el { label = Seam.link "/guide/seams" [ Seam.text "Seams" ] } [] []
-        , M3e.NavMenuItem.el { label = Seam.link "/guide/the-layers" [ Seam.text "The surfaces" ] } [] []
+        [ M3e.NavMenuItem.el { label = Seam.link "/guide/seams" [ M3e.text "Seams" ] } [] []
+        , M3e.NavMenuItem.el { label = Seam.link "/guide/the-layers" [ M3e.text "The surfaces" ] } [] []
         ]"""
 
 
 payoff : String
 payoff =
-    """That containment is the point. Change the one body of your `Seam.text` producer — pipe it through translation, say — and every call site upgrades without a single edit. And when the design system is *genuinely wrong* for a case, `Seam.recast` is the break-glass: a loud, lint-flagged signal that says "I'm stepping outside on purpose," not a quiet hole. You escaped the types and **kept** the guarantees, because every escape is named, fenced, and in one place."""
+    """That is the whole discipline: **type everything you can, seam only what you must, and keep the seams in one place.** Layout and text are typed producers. Slots take typed kinds. The genuine escapes — a custom element, raw `Html` via `fromHtml`, or the break-glass `recast` when the design system is truly wrong for a case — are named, lint-fenced, and corralled into your one `Seam` module. You escaped the types where you had to and **kept** the guarantees everywhere else, because every real escape is loud, contained, and greppable."""
 
 
 recap : String
 recap =
-    """- A **seam** isn't a library feature — it's the *practice* of keeping your userland (vocabulary, layout, escapes) in **one greppable module**.
-- Standard HTML stays typed (`TypedHtml`); the only real escapes are the library's **two lint-fenced doors** — `Unsafe` (`fromHtml`/`recast`) and the `HtmlIr.Internal` forge.
-- One producer body ⇒ **every call site upgrades untouched** (e.g. wire `Seam.text` through i18n once).
+    """- A **seam** isn't a library feature — it's the *practice* of keeping the few real escapes (a custom element, raw `Html`, a `recast`) in **one greppable module**.
+- Most userland is **not** a seam: standard HTML is typed (`TypedHtml`), and custom content usually fills a **typed slot** — no escape needed.
+- The genuine escapes go through the library's lint-fenced doors — `Unsafe` (`fromHtml`/`recast`) and the `HtmlIr.Internal` forge (`node`/`attribute`) — and are named once so every use is auditable.
 - **Next: [The tooling refactors for you](/guide/tooling-refactors) →** the linter doesn't just flag escapes — it extracts and rewrites them *for* you."""

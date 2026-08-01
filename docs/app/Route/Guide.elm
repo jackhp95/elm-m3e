@@ -14,8 +14,9 @@ import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -70,14 +71,14 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "The Guide"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown chaptersLead
-                        , Seam.div "flex flex-wrap gap-3"
+                        , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
                             [ chapterLink "/guide/first-component" "Your first component"
                             , chapterLink "/guide/invalid-states" "Invalid states don't compile"
                             , chapterLink "/guide/strictness" "The strictness dial"
@@ -93,8 +94,8 @@ view _ _ =
                             , chapterLink "/guide/troubleshooting" "Troubleshooting"
                             , chapterLink "/guide/how-we-prove-it" "How we prove it"
                             ]
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown chaptersNote ]
-                        , Seam.div "flex flex-wrap gap-3"
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown chaptersNote ]
+                        , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
                             [ chapterLink "/guide/cheat-sheet" "Cheat sheet"
                             , chapterLink "/guide/glossary" "Glossary"
                             ]

@@ -13,8 +13,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -78,18 +79,16 @@ densityScaleClass n =
         "[--md-sys-density-scale:0]"
 
 
-demoBar : Int -> Element { s | html : M3e.Kind.Brand } adm_ msg
 demoBar scaleValue =
-    Seam.div "space-y-2"
-        [ Seam.labelText Value.large
-            [ Seam.onSurfaceVariant ]
-            [ Seam.text ("density scale " ++ String.fromInt scaleValue) ]
-        , Seam.node "div"
-            [ Seam.class (densityScaleClass scaleValue ++ " flex flex-wrap gap-2") ]
+    TypedHtml.div [ TA.class "space-y-2" ]
+        [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ]
+            [ M3e.text ("density scale " ++ String.fromInt scaleValue) ]
+        , TypedHtml.div
+            [ TA.class (densityScaleClass scaleValue ++ " flex flex-wrap gap-2") ]
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        M3e.button [ M3e.Attributes.variant Value.filled ] [ Seam.text "Action" ]
+                        M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Action" ]
                     )
             )
         ]
@@ -108,19 +107,18 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.section "space-y-3"
+                [ TypedHtml.section [ TA.class "space-y-3" ]
                     [ pageHeading
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree. The scales below run 0 to -3." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree. The scales below run 0 to -3." ]
                         ]
                     ]
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
                     [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
                     , M3e.Card.content
-                        (Seam.div "space-y-6"
+                        (TypedHtml.div [ TA.class "space-y-6" ]
                             [ demoBar 0
                             , demoBar -1
                             , demoBar -2

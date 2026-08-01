@@ -23,8 +23,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -75,7 +76,6 @@ type alias Data =
 
 type alias ActionData =
     {}
-
 
 
 -- DECODERS
@@ -175,7 +175,6 @@ dataDecoder =
         (Decode.field "cells" (Decode.list cellDecoder))
 
 
-
 -- ROUTE
 
 
@@ -209,7 +208,6 @@ head _ =
         |> Seo.website
 
 
-
 -- RANKING
 
 
@@ -237,7 +235,6 @@ rankedCells cells =
     List.sortBy (\c -> ( rank c, negate c.charsInside )) cells
 
 
-
 -- VIEW
 
 
@@ -258,10 +255,9 @@ view app _ =
         [ Element.toNode
             (Doc.pane
                 [ pageHeading
-                , Seam.div "mt-2 max-w-2xl"
-                    [ Seam.paragraph Value.large
-                        [ Seam.onSurfaceVariant ]
-                        [ Seam.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
+                , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
                     ]
                 , surfaceLegend
                 , summarySection app.data.perSurface
@@ -276,12 +272,11 @@ view app _ =
 vocabulary, so the form names aren't undefined jargon. `top`/`record`/`build`/`barrel`
 are the four interchangeable [surfaces](/guide/the-layers).
 -}
-surfaceLegend : Element { s | html : M3e.Kind.Brand } admittedBy msg
 surfaceLegend =
-    Seam.node "section"
-        [ Seam.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
-        [ Seam.overline [ Seam.primary ] [ Seam.text "What the form names mean" ]
-        , Seam.div "text-on-surface-variant" [ Doc.markdown surfaceLegendText ]
+    TypedHtml.section
+        [ TA.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
+        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "What the form names mean" ]
+        , TypedHtml.div [ TA.class "text-on-surface-variant" ] [ Doc.markdown surfaceLegendText ]
         ]
 
 
@@ -299,14 +294,13 @@ surfaceLegendText =
 These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value."""
 
 
-summarySection : List ( String, SurfaceAgg ) -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 summarySection perSurface =
-    Seam.node "section"
-        [ Seam.class "mt-12 space-y-4" ]
-        [ Seam.node "h2"
-            []
-            [ Seam.headline Value.small [] [ Seam.text "Per-form summary" ] ]
-        , Seam.div "space-y-3"
+    TypedHtml.section
+        [ TA.class "mt-12 space-y-4" ]
+        [ M3e.heading
+            [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+            [ M3e.text "Per-form summary" ]
+        , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map surfaceRow perSurface)
         ]
 
@@ -316,14 +310,13 @@ surfaceRow ( name, agg ) =
     M3e.card
         [ M3e.Card.variant Value.outlined ]
         [ M3e.Card.content
-            (Seam.node "div"
-                [ Seam.class "space-y-1" ]
-                [ Seam.node "div"
+            (TypedHtml.div
+                [ TA.class "space-y-1" ]
+                [ TypedHtml.div
                     []
-                    [ Seam.title Value.medium [ Seam.primary ] [ Seam.text name ] ]
-                , Seam.body Value.medium
-                    [ Seam.onSurfaceVariant ]
-                    [ Seam.text
+                    [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-primary" ] [ M3e.text name ] ]
+                , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ]
+                    [ M3e.text
                         (String.fromInt agg.converted
                             ++ " / "
                             ++ String.fromInt agg.total
@@ -334,18 +327,16 @@ surfaceRow ( name, agg ) =
                             ++ " used escape hatch"
                         )
                     ]
-                , Seam.body Value.medium
-                    []
-                    [ Seam.text
+                , TypedHtml.span [ TA.class "text-body-md" ]
+                    [ M3e.text
                         (String.fromInt agg.roundtripFunctionalMatched
                             ++ " functional clean · "
                             ++ String.fromInt agg.roundtripFunctionalDeviated
                             ++ " functional deviated"
                         )
                     ]
-                , Seam.body Value.small
-                    [ Seam.onSurfaceVariant ]
-                    [ Seam.text
+                , TypedHtml.span [ TA.class "text-body-sm text-on-surface-variant" ]
+                    [ M3e.text
                         ("(strict: "
                             ++ String.fromInt agg.roundtripMatched
                             ++ " matched · "
@@ -358,15 +349,14 @@ surfaceRow ( name, agg ) =
         ]
 
 
-cellsSection : List Cell -> Element { s | html : M3e.Kind.Brand } admittedBy msg
 cellsSection cells =
-    Seam.node "section"
-        [ Seam.class "mt-12 space-y-4" ]
+    TypedHtml.section
+        [ TA.class "mt-12 space-y-4" ]
         [ M3e.divider [] []
-        , Seam.node "h2"
-            []
-            [ Seam.headline Value.small [] [ Seam.text "Cells (deviations first)" ] ]
-        , Seam.div "space-y-3"
+        , M3e.heading
+            [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+            [ M3e.text "Cells (deviations first)" ]
+        , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map cellRow (rankedCells cells))
         ]
 
@@ -398,27 +388,26 @@ cellRow c =
         escapeText =
             "seam " ++ String.fromInt c.seam ++ " · native " ++ String.fromInt c.native ++ " · chars " ++ String.fromInt c.charsInside
 
-        deviationColor : List Seam.TextColor
+        deviationColor : String
         deviationColor =
             if c.functionalMatches == Just False then
-                [ Seam.error ]
+                "text-error"
 
             else
-                [ Seam.onSurfaceVariant ]
+                "text-on-surface-variant"
     in
     M3e.card
         [ M3e.Card.variant Value.outlined ]
         [ M3e.Card.content
-            (Seam.node "div"
-                [ Seam.class "space-y-1" ]
-                [ Seam.node "div"
+            (TypedHtml.div
+                [ TA.class "space-y-1" ]
+                [ TypedHtml.div
                     []
-                    [ Seam.title Value.medium
-                        []
-                        [ Seam.node "code" [] [ Seam.text c.id ] ]
+                    [ TypedHtml.span [ TA.class "text-title-md" ]
+                        [ TypedHtml.code [] [ M3e.text c.id ] ]
                     ]
-                , Seam.body Value.medium deviationColor [ Seam.text deviationText ]
-                , Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text escapeText ]
+                , TypedHtml.span [ TA.class ("text-body-md " ++ deviationColor) ] [ M3e.text deviationText ]
+                , TypedHtml.span [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text escapeText ]
                 ]
             )
         ]

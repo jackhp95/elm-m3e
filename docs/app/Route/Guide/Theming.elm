@@ -18,8 +18,9 @@ import HtmlIr.Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -69,35 +70,35 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "Theming with tokens"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "One theme at the root"
                         , Doc.markdown rootBody
                         , Doc.code_ Doc.Elm rootCode
                         , Doc.markdown rootNote
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Paint with roles, not hex"
                         , Doc.markdown rolesBody
                         , Doc.code_ Doc.Elm rolesCode
                         , Doc.markdown tokenFamilies
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "Dark and dynamic color are swaps"
                         , Doc.markdown darkBody
                         , Doc.code_ Doc.Elm darkCode
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "A brand re-skin, end to end"
                         , Doc.markdown reskinBody
                         , Doc.code_ Doc.Elm reskinCode
                         , Doc.markdown reskinNote
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.sectionHeading "The Tailwind bridge: layout only"
                         , Doc.markdown bridgeBody
                         , Doc.code_ Doc.Elm bridgeCode

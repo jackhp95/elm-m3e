@@ -20,8 +20,8 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
 import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
@@ -74,7 +74,7 @@ savedButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 savedButton =
     M3e.button [ M3e.Attributes.variant Value.filled ]
         [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
-        , Seam.text "Save"
+        , M3e.text "Save"
         ]
 
 
@@ -84,17 +84,17 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-12"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-12" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "Invalid states don't compile"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown valid
                         , Doc.showcase savedButton
                         , Doc.code_ Doc.Elm validCode
                         ]
-                    , Seam.section "space-y-4"
+                    , TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.markdown broken
                         , Doc.code_ Doc.Elm brokenCode
                         , Doc.code_ Doc.NoLang errorText

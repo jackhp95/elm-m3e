@@ -25,13 +25,15 @@ import Head.Seo as Seo
 import HtmlIr.Element exposing (Element)
 import M3e
 import M3e.Attributes
+import M3e.Events
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -128,7 +130,6 @@ view app _ model =
                 [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
                 [ M3e.text "All components" ]
 
-        content : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Msg)
         content =
             if model.revealed then
                 stackedBlocks model.usage app.data
@@ -142,7 +143,7 @@ view app _ model =
         [ HtmlIr.Element.toNode
             (HtmlIr.Element.map PagesMsg.fromMsg
                 (Doc.pane
-                    [ Seam.div "space-y-12" (heading :: content) ]
+                    [ TypedHtml.div [ TA.class "space-y-12" ] (heading :: content) ]
                 )
             )
         ]
@@ -157,7 +158,6 @@ a summary line, the category names, and a **Show all components** button that
 flips `revealed` on click.
 
 -}
-overview : Data -> Element { s | html : M3e.Kind.Brand, card : M3e.Kind.Brand } adm_ Msg
 overview d =
     let
         withExamples : List Component
@@ -196,19 +196,18 @@ overview d =
                 ++ String.fromInt (List.length Shared.componentCategories)
                 ++ " categories"
     in
-    Seam.div "max-w-2xl space-y-6"
-        [ Seam.paragraph Value.large
-            [ Seam.onSurfaceVariant ]
-            [ Seam.text "This page stacks every component's live Usage examples on a single page. Loading them all at once upgrades hundreds of interactive custom elements, so it can take a moment to become fully interactive." ]
-        , Seam.paragraph Value.medium
-            [ Seam.onSurface ]
-            [ Seam.text summary ]
-        , Seam.paragraph Value.medium
-            [ Seam.onSurfaceVariant ]
-            [ Seam.text (Shared.componentCategories |> List.map Tuple.first |> String.join " · ") ]
-        , Seam.button Reveal
-            "inline-flex items-center rounded-full bg-primary px-6 py-3 text-label-lg text-on-primary hover:opacity-90 cursor-pointer"
-            [ Seam.text "Show all components" ]
+    TypedHtml.div [ TA.class "max-w-2xl space-y-6" ]
+        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+            [ M3e.text "This page stacks every component's live Usage examples on a single page. Loading them all at once upgrades hundreds of interactive custom elements, so it can take a moment to become fully interactive." ]
+        , TypedHtml.p [ TA.class "text-body-md text-on-surface" ]
+            [ M3e.text summary ]
+        , TypedHtml.p [ TA.class "text-body-md text-on-surface-variant" ]
+            [ M3e.text (Shared.componentCategories |> List.map Tuple.first |> String.join " · ") ]
+        , TypedHtml.button
+            [ M3e.Events.onClick Reveal
+            , TA.class "inline-flex items-center rounded-full bg-primary px-6 py-3 text-label-lg text-on-primary hover:opacity-90 cursor-pointer"
+            ]
+            [ M3e.text "Show all components" ]
         ]
 
 
@@ -217,7 +216,6 @@ wrapped in an `id`-anchored `.cv-auto` block. A running offset (the count of
 examples already placed) is threaded through `Usage.usageBlocks` so each
 component's tab strips occupy a disjoint index range in the shared model.
 -}
-stackedBlocks : Usage.Model -> Data -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg)
 stackedBlocks model d =
     let
         orderedComponents : List Component
@@ -225,21 +223,21 @@ stackedBlocks model d =
             Shared.componentCategories
                 |> List.concatMap (\( category, _ ) -> List.filter (\c -> c.category == category) d.components)
 
-        step : Component -> ( Int, List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg) ) -> ( Int, List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg) )
         step component ( offset, acc ) =
             let
                 examples : List UsageExample
                 examples =
                     Dict.get component.slug d.usage |> Maybe.withDefault []
 
-                block : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } adm_ Usage.Msg)
                 block =
                     if List.isEmpty examples then
                         []
 
                     else
-                        [ Seam.divWithId component.slug
-                            "cv-auto space-y-6 scroll-mt-24"
+                        [ TypedHtml.div
+                            [ TA.id component.slug
+                            , TA.class "cv-auto space-y-6 scroll-mt-24"
+                            ]
                             (M3e.heading
                                 [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]
                                 [ M3e.text component.name ]

@@ -36,11 +36,11 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Seam.Avatar as Avatar
 import Seam.Shape as Shape
 import Seam.Surface as Surface exposing (Surface)
 import Shared
+import TypedHtml
 import TypedHtml.Attributes as TA
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -161,9 +161,9 @@ only the panes scroll.
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
     Surface.view Surface.surface
-        [ Seam.class "flex h-screen w-full overflow-hidden" ]
+        [ TA.class "flex h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , Seam.div "flex flex-1 flex-col min-w-0 overflow-hidden"
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
             [ appBar
             , body model
             , exampleFooter
@@ -192,7 +192,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.AppBar.title (Seam.text "Contacts") ]
+        [ M3e.AppBar.title (M3e.text "Contacts") ]
 
 
 
@@ -204,9 +204,8 @@ adaptivity: a single column on compact (list, then detail beneath), two panes on
 `md:` and up (a fixed `md:w-80` list beside a filling detail). Both panes scroll
 independently.
 -}
-body : Model -> Element { s | html : M3e.Kind.Brand } adm_ Msg
 body model =
-    Seam.div "flex flex-1 flex-col overflow-hidden md:flex-row"
+    TypedHtml.div [ TA.class "flex flex-1 flex-col overflow-hidden md:flex-row" ]
         [ listPane model.selected
         , detailPane (selectedContact model.selected)
         ]
@@ -214,9 +213,8 @@ body model =
 
 {-| The master list — full-width on compact, a fixed rail on `md:`.
 -}
-listPane : Int -> Element { s | html : M3e.Kind.Brand, list : M3e.Kind.Brand } adm_ Msg
 listPane selected =
-    Seam.div "shrink-0 overflow-y-auto border-outline-variant/40 md:w-80 md:border-r"
+    TypedHtml.div [ TA.class "shrink-0 overflow-y-auto border-outline-variant/40 md:w-80 md:border-r" ]
         [ M3e.list []
             (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                 (List.indexedMap (contactRow selected) contacts)
@@ -246,29 +244,27 @@ contactRow selected index contact =
         , M3e.ListAction.onClick (SelectContact index)
         ]
         [ M3e.ListAction.leading (Avatar.initials contact.initials)
-        , Seam.text contact.name
-        , M3e.ListAction.supportingText (Seam.text contact.role)
+        , M3e.text contact.name
+        , M3e.ListAction.supportingText (M3e.text contact.role)
         ]
 
 
 {-| The detail pane — fills the rest on `md:`, stacks beneath the list on compact.
 -}
-detailPane : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 detailPane contact =
-    Seam.div "flex-1 overflow-y-auto p-4 md:p-8"
-        [ Seam.div "mx-auto flex w-full max-w-xl flex-col gap-6"
+    TypedHtml.div [ TA.class "flex-1 overflow-y-auto p-4 md:p-8" ]
+        [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-xl flex-col gap-6" ]
             [ header contact
             , detailCard contact
             ]
         ]
 
 
-header : Contact -> Element { s | html : M3e.Kind.Brand } adm_ msg
 header contact =
-    Seam.div "flex flex-col items-center gap-3 pt-2"
+    TypedHtml.div [ TA.class "flex flex-col items-center gap-3 pt-2" ]
         [ Avatar.initials contact.initials
-        , Seam.headline Value.small [ Seam.onSurface ] [ Seam.text contact.name ]
-        , Seam.body Value.large [ Seam.onSurfaceVariant ] [ Seam.text contact.role ]
+        , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text contact.name ]
+        , TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text contact.role ]
         ]
 
 
@@ -279,7 +275,7 @@ detailCard contact =
     M3e.list
         [ Surface.asAttribute Surface.surfaceContainer
         , Shape.corner Shape.large
-        , Seam.class "overflow-hidden"
+        , TA.class "overflow-hidden"
         ]
         (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
             [ fieldRow "mail" "Email" contact.email
@@ -293,8 +289,8 @@ fieldRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand
 fieldRow iconName label value =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
-        , M3e.ListItem.supportingText (Seam.text value)
+        , M3e.text label
+        , M3e.ListItem.supportingText (M3e.text value)
         ]
 
 
@@ -317,13 +313,13 @@ fallbackContact =
 
 desktopRail : Element { s | navRail : M3e.Kind.Brand } adm_ msg
 desktopRail =
-    M3e.navRail [ Seam.class "hidden md:flex shrink-0" ]
+    M3e.navRail [ TA.class "hidden md:flex shrink-0" ]
         (List.map navItem destinations)
 
 
 mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
-    M3e.navBar [ Seam.class "md:hidden fixed inset-x-0 bottom-0" ]
+    M3e.navBar [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
         (List.map navItem destinations)
 
 
@@ -332,5 +328,5 @@ navItem d =
     M3e.navItem
         [ M3e.Attributes.selected (d.label == "Contacts") ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
-        , Seam.text d.label
+        , M3e.text d.label
         ]

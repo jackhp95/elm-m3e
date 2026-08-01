@@ -29,6 +29,7 @@ import M3e.AppBar
 import M3e.AssistChip
 import M3e.Attributes
 import M3e.Card
+import M3e.Events
 import M3e.Kind
 import M3e.NavItem
 import M3e.SearchBar
@@ -215,13 +216,12 @@ view _ _ model =
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
 that only appears on small screens.
 -}
-shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
 shell model =
-    Seam.div "flex h-screen w-full flex-col"
+    TypedHtml.div [ TA.class "flex h-screen w-full flex-col" ]
         [ appBar
-        , Seam.div "flex min-h-0 flex-1"
+        , TypedHtml.div [ TA.class "flex min-h-0 flex-1" ]
             [ navRail model.destination
-            , Seam.section "min-w-0 flex-1 overflow-y-auto"
+            , TypedHtml.section [ TA.class "min-w-0 flex-1 overflow-y-auto" ]
                 [ content model
                 , exampleFooter
                 ]
@@ -254,7 +254,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar =
     M3e.appBar []
         [ M3e.AppBar.leading (M3e.icon [ TA.name "public" ] [])
-        , M3e.AppBar.title (Seam.text "Wander")
+        , M3e.AppBar.title (M3e.text "Wander")
         , M3e.AppBar.trailing
             (M3e.iconButton
                 [ M3e.Attributes.variant Value.standard, Aria.label "Notifications" ]
@@ -269,9 +269,8 @@ appBar =
 
 {-| The desktop navigation rail, hidden below the `md` breakpoint.
 -}
-navRail : Dest -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navRail current =
-    Seam.div "hidden md:flex"
+    TypedHtml.div [ TA.class "hidden md:flex" ]
         [ M3e.navRail []
             (List.map (railItem current) destinations)
         ]
@@ -281,18 +280,17 @@ railItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.
 railItem current ( dest, iconName, label ) =
     M3e.navItem
         [ M3e.Attributes.selected (dest == current)
-        , Seam.onClick (PagesMsg.fromMsg (SetDest dest))
+        , M3e.Events.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
+        , M3e.text label
         ]
 
 
 {-| The mobile bottom navigation bar, hidden at and above the `md` breakpoint.
 -}
-navBar : Dest -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar current =
-    Seam.div "md:hidden"
+    TypedHtml.div [ TA.class "md:hidden" ]
         [ M3e.navBar []
             (List.map (barItem current) destinations)
         ]
@@ -302,10 +300,10 @@ barItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.B
 barItem current ( dest, iconName, label ) =
     M3e.navItem
         [ M3e.Attributes.selected (dest == current)
-        , Seam.onClick (PagesMsg.fromMsg (SetDest dest))
+        , M3e.Events.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
-        , Seam.text label
+        , M3e.text label
         ]
 
 
@@ -313,9 +311,8 @@ barItem current ( dest, iconName, label ) =
 -- CONTENT
 
 
-content : Model -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 content model =
-    Seam.div "flex flex-col gap-8 p-4 md:p-8"
+    TypedHtml.div [ TA.class "flex flex-col gap-8 p-4 md:p-8" ]
         [ hero
         , categoryTabs model.category
         , popularRails model.category
@@ -356,11 +353,9 @@ categoryIndex current =
 hero : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 hero =
     Surface.view Surface.surfaceContainer
-        [ Shape.corner Shape.extraLarge, Seam.class "flex flex-col gap-4 p-6 md:p-8" ]
-        [ Seam.headline Value.small [] [ Seam.text "Where to next?" ]
-        , Seam.body Value.medium
-            [ Seam.onSurfaceVariant ]
-            [ Seam.text "Search destinations, dates, and guests." ]
+        [ Shape.corner Shape.extraLarge, TA.class "flex flex-col gap-4 p-6 md:p-8" ]
+        [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Where to next?" ]
+        , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Search destinations, dates, and guests." ]
         , searchBar
         ]
 
@@ -387,9 +382,9 @@ categoryTab : Category -> ( Category, String ) -> Element { s | tab : M3e.Kind.B
 categoryTab current ( category, label ) =
     M3e.tab
         [ M3e.Attributes.selected (category == current)
-        , Seam.onClick (PagesMsg.fromMsg (SetCategory category))
+        , M3e.Events.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
-        [ Seam.text label ]
+        [ M3e.text label ]
 
 
 
@@ -398,11 +393,10 @@ categoryTab current ( category, label ) =
 
 {-| A titled, horizontally-scrolling strip of destination cards.
 -}
-rail : String -> List Place -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 rail heading places =
-    Seam.section "flex flex-col gap-4"
-        [ Seam.title Value.large [] [ Seam.text heading ]
-        , Seam.div "flex gap-4 overflow-x-auto pb-2"
+    TypedHtml.section [ TA.class "flex flex-col gap-4" ]
+        [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text heading ]
+        , TypedHtml.div [ TA.class "flex gap-4 overflow-x-auto pb-2" ]
             (List.map placeCard places)
         ]
 
@@ -410,18 +404,17 @@ rail heading places =
 {-| One destination card: shape-clipped tinted media, name + region, a rating
 `AssistChip` with a star, and a price. Fixed width so cards line up in the rail.
 -}
-placeCard : Place -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 placeCard place =
-    Seam.div "w-56 shrink-0"
+    TypedHtml.div [ TA.class "w-56 shrink-0" ]
         [ M3e.card [ M3e.Attributes.variant Value.elevated ]
             [ M3e.Card.header (media place)
             , M3e.Card.content
-                (Seam.div "flex flex-col gap-2"
-                    [ Seam.title Value.medium [] [ Seam.text place.name ]
-                    , Seam.body Value.small [ Seam.onSurfaceVariant ] [ Seam.text place.region ]
-                    , Seam.div "flex items-center justify-between"
+                (TypedHtml.div [ TA.class "flex flex-col gap-2" ]
+                    [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] [ M3e.text place.name ]
+                    , TypedHtml.span [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text place.region ]
+                    , TypedHtml.div [ TA.class "flex items-center justify-between" ]
                         [ ratingChip place.rating
-                        , Seam.labelText Value.large [ Seam.primary ] [ Seam.text place.price ]
+                        , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-primary" ] [ M3e.text place.price ]
                         ]
                     ]
                 )
@@ -436,7 +429,7 @@ media : Place -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media place =
     Media.view place.tint
         Shape.large
-        [ Seam.class "flex h-28 w-full items-end p-3" ]
+        [ TA.class "flex h-28 w-full items-end p-3" ]
         [ M3e.icon [ TA.name "image" ] [] ]
 
 

@@ -10,14 +10,16 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e.Kind
+import HtmlIr.Element
+import M3e
+import M3e.Attributes
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -61,10 +63,9 @@ head _ =
         |> Seo.website
 
 
-card : String -> List (Element { s | html : M3e.Kind.Brand } adm_ msg) -> Element { r | html : M3e.Kind.Brand } adm_ msg
 card title items =
-    Seam.section "space-y-3"
-        (Seam.title Value.medium [ Seam.onSurface ] [ Seam.text title ] :: items)
+    TypedHtml.section [ TA.class "space-y-3" ]
+        (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text title ] :: items)
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -73,10 +74,10 @@ view _ _ =
     , body =
         [ HtmlIr.Element.toNode
             (Doc.pane
-                [ Seam.div "space-y-10"
-                    [ Seam.section "space-y-4"
+                [ TypedHtml.div [ TA.class "space-y-10" ]
+                    [ TypedHtml.section [ TA.class "space-y-4" ]
                         [ Doc.pageHeading "Cheat sheet"
-                        , Seam.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
+                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                         , Doc.userlandNote
                         ]
                     , card "The surfaces" [ Doc.markdown layers ]

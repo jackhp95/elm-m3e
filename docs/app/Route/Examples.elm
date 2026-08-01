@@ -20,8 +20,9 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
+import TypedHtml
+import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
 
@@ -98,11 +99,11 @@ exampleCard ( slug, cardTitle, cardBody ) =
     M3e.card
         [ M3e.Card.variant Value.elevated ]
         [ M3e.Card.header (M3e.heading [ M3e.Heading.variant Value.title ] [ M3e.text cardTitle ])
-        , M3e.Card.content (Seam.paragraph Value.large [ Seam.onSurfaceVariant ] [ Seam.text cardBody ])
+        , M3e.Card.content (TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text cardBody ])
         , M3e.Card.actions
             (M3e.button
                 [ M3e.Button.variant Value.filled, M3e.Button.href exampleHref ]
-                [ Seam.text ("Open " ++ cardTitle) ]
+                [ M3e.text ("Open " ++ cardTitle) ]
             )
         ]
 
@@ -113,15 +114,14 @@ view _ _ =
     , body =
         [ Element.toNode
             (Doc.pane
-                [ Seam.section "space-y-3"
+                [ TypedHtml.section [ TA.class "space-y-3" ]
                     [ pageHeading
-                    , Seam.div "max-w-2xl"
-                        [ Seam.paragraph Value.large
-                            [ Seam.onSurfaceVariant ]
-                            [ Seam.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
+                    , TypedHtml.div [ TA.class "max-w-2xl" ]
+                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                            [ M3e.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
                         ]
                     ]
-                , Seam.section "grid gap-4 sm:grid-cols-2"
+                , TypedHtml.section [ TA.class "grid gap-4 sm:grid-cols-2" ]
                     (List.map exampleCard examples)
                 ]
             )

@@ -16,10 +16,12 @@ import HtmlIr.Element exposing (Element)
 import Json.Decode as Decode
 import M3e
 import M3e.Attributes
+import M3e.Events
 import M3e.Heading
 import M3e.Kind
 import M3e.Values as Value
-import Seam
+import TypedHtml
+import TypedHtml.Attributes as TA
 
 
 {-| Which API surface a Usage example is shown in:
@@ -104,14 +106,13 @@ drops cleanly out of the top-level `space-y-10` rhythm).
 one page get disjoint tab-state ranges in a shared `Model`.
 
 -}
-usageBlocks : Int -> Model -> List UsageExample -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 usageBlocks offset model examples =
     case examples of
         [] ->
             []
 
         _ ->
-            [ Seam.div "space-y-6"
+            [ TypedHtml.div [ TA.class "space-y-6" ]
                 (M3e.heading
                     [ M3e.Heading.variant Value.headline
                     , M3e.Heading.size Value.small
@@ -128,7 +129,6 @@ usageBlocks offset model examples =
 followed by each example's live preview paired with its per-example code tabs.
 Examples carry their page-global index so each tab strip stays independent.
 -}
-sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 sectionBlock model ( sec, examples ) =
     let
         headingEl : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
@@ -155,15 +155,14 @@ always `HTML`). The selection lives in
 surface (`defaultSurfaceFor`). Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
-exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg
 exampleBlock model ( index, ex ) =
     let
         surface : Surface
         surface =
             Dict.get index model.surfaces |> Maybe.withDefault (defaultSurfaceFor ex)
     in
-    Seam.div "space-y-3"
-        [ Seam.paragraph Value.medium [ Seam.onSurfaceVariant ] [ Seam.text ex.title ]
+    TypedHtml.div [ TA.class "space-y-3" ]
+        [ TypedHtml.p [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
         , surfaceTabs index surface ex
         , Doc.Slider.slidingPanels
@@ -250,7 +249,7 @@ surfaceTabs index current ex =
             (\( lbl, surface ) ->
                 M3e.tab
                     [ M3e.Attributes.selected (surface == current)
-                    , Seam.onClick (SelectSurface index surface)
+                    , M3e.Events.onClick (SelectSurface index surface)
                     ]
                     [ M3e.text lbl ]
             )
