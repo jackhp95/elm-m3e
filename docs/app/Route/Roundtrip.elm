@@ -26,6 +26,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Sectioning
 import UrlPath
 import View exposing (View)
 
@@ -272,6 +273,7 @@ view app _ =
 vocabulary, so the form names aren't undefined jargon. `top`/`record`/`build`/`barrel`
 are the four interchangeable [surfaces](/guide/the-layers).
 -}
+surfaceLegend : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 surfaceLegend =
     TypedHtml.section
         [ TA.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
@@ -294,6 +296,7 @@ surfaceLegendText =
 These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value."""
 
 
+summarySection : List ( String, SurfaceAgg ) -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 summarySection perSurface =
     TypedHtml.section
         [ TA.class "mt-12 space-y-4" ]
@@ -349,6 +352,7 @@ surfaceRow ( name, agg ) =
         ]
 
 
+cellsSection : List Cell -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 cellsSection cells =
     TypedHtml.section
         [ TA.class "mt-12 space-y-4" ]

@@ -36,7 +36,6 @@ import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Seam.Media as Media
 import Seam.Shape as Shape
 import Seam.Surface as Surface exposing (Surface)
@@ -44,9 +43,10 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
+import TypedHtml.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL
@@ -128,7 +128,6 @@ head _ =
     []
 
 
-
 -- DATA
 
 
@@ -201,7 +200,6 @@ destinations =
     ]
 
 
-
 -- VIEW
 
 
@@ -216,6 +214,7 @@ view _ _ model =
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
 that only appears on small screens.
 -}
+shell : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 shell model =
     TypedHtml.div [ TA.class "flex h-screen w-full flex-col" ]
         [ appBar
@@ -263,12 +262,12 @@ appBar =
         ]
 
 
-
 -- NAVIGATION
 
 
 {-| The desktop navigation rail, hidden below the `md` breakpoint.
 -}
+navRail : Dest -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 navRail current =
     TypedHtml.div [ TA.class "hidden md:flex" ]
         [ M3e.navRail []
@@ -289,6 +288,7 @@ railItem current ( dest, iconName, label ) =
 
 {-| The mobile bottom navigation bar, hidden at and above the `md` breakpoint.
 -}
+navBar : Dest -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 navBar current =
     TypedHtml.div [ TA.class "md:hidden" ]
         [ M3e.navBar []
@@ -307,10 +307,10 @@ barItem current ( dest, iconName, label ) =
         ]
 
 
-
 -- CONTENT
 
 
+content : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 content model =
     TypedHtml.div [ TA.class "flex flex-col gap-8 p-4 md:p-8" ]
         [ hero
@@ -387,12 +387,12 @@ categoryTab current ( category, label ) =
         [ M3e.text label ]
 
 
-
 -- RAILS
 
 
 {-| A titled, horizontally-scrolling strip of destination cards.
 -}
+rail : String -> List Place -> Element (TypedHtml.Sectioning.SectionIs s) adm_ (PagesMsg Msg)
 rail heading places =
     TypedHtml.section [ TA.class "flex flex-col gap-4" ]
         [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text heading ]
@@ -404,6 +404,7 @@ rail heading places =
 {-| One destination card: shape-clipped tinted media, name + region, a rating
 `AssistChip` with a star, and a price. Fixed width so cards line up in the rail.
 -}
+placeCard : Place -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 placeCard place =
     TypedHtml.div [ TA.class "w-56 shrink-0" ]
         [ M3e.card [ M3e.Attributes.variant Value.elevated ]

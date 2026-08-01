@@ -457,8 +457,13 @@ appShellBar =
             ]
             [ M3e.AppBar.title (M3e.text "elm-m3e")
             , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
-            , M3e.AppBar.leading brandMark
-            , M3e.AppBar.leading menuButton
+            , M3e.AppBar.leading
+                (Seam.recast
+                    (Seam.node "span"
+                        [ TypedHtml.Attributes.class "flex items-center" ]
+                        [ brandMark, menuButton ]
+                    )
+                )
             , M3e.AppBar.trailing githubLink
             , M3e.AppBar.trailing settingsButton
             ]

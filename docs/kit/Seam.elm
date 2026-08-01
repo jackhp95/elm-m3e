@@ -1,5 +1,5 @@
 module Seam exposing
-    ( fromHtml, asElement, asAttribute
+    ( fromHtml, asElement, asAttribute, recast
     , node, attribute, style
     )
 
@@ -17,7 +17,7 @@ and the custom-element forge (`<model-viewer>`, `<slide-panels>`, `<avt-snackbar
 
 ## Raw-HTML / Node crossings
 
-@docs fromHtml, asElement, asAttribute
+@docs fromHtml, asElement, asAttribute, recast
 
 
 ## The forge — custom tags and attributes `TypedHtml.*` cannot express
@@ -59,6 +59,16 @@ asElement =
 asAttribute : Html.Attribute msg -> Attr capability msg
 asAttribute a =
     Ir.fromHtmlAttribute a
+
+
+{-| Coerce an `Element`'s phantom rows from one shape to another — the break-glass
+re-kind, loud and greppable, for the rare case where a slot's declared kinds are
+genuinely wrong for what you must place (e.g. two mutually-exclusive icons that must
+share one singular slot).
+-}
+recast : Element a aAdm msg -> Element b bAdm msg
+recast element =
+    Ir.fromNode (HtmlIr.Element.toNode element)
 
 
 

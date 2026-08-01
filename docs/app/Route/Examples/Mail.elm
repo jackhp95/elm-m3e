@@ -44,6 +44,8 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
+import TypedHtml.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -245,6 +247,7 @@ exampleFooter =
 
 {-| Desktop navigation rail (hidden below `md:`).
 -}
+navRail : Element (TypedHtml.Sectioning.NavIs s) adm_ Msg
 navRail =
     TypedHtml.nav [ TA.class "hidden md:flex" ]
         [ M3e.navRail [ M3e.Attributes.mode Value.expanded ]
@@ -263,6 +266,7 @@ railItem index d =
 
 {-| Mobile bottom navigation bar (hidden at `md:` and up).
 -}
+bottomBar : Element (TypedHtml.Sectioning.NavIs s) adm_ Msg
 bottomBar =
     TypedHtml.nav [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
         [ M3e.navBar []
@@ -314,6 +318,7 @@ searchBar =
 {-| The reflowing two-pane body. On `md:` the list is a fixed-width column beside
 a filling reading pane; below `md:` they stack (list first, reading pane under).
 -}
+body : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 body model =
     TypedHtml.div [ TA.class "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden" ]
         [ TypedHtml.section [ TA.class "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
@@ -384,6 +389,7 @@ messageRow selected index message =
 {-| The reading pane for the selected message: subject heading, sender row with
 avatar and timestamp, label chips, and the body paragraphs via `Seam`.
 -}
+readingPane : Message -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 readingPane message =
     TypedHtml.div [ TA.class "flex flex-col gap-6 p-6" ]
         [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
@@ -416,6 +422,7 @@ labelChip name =
 
 {-| Floating compose action, anchored bottom-right (kept above the mobile bar).
 -}
+composeFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 composeFab =
     TypedHtml.div [ TA.class "absolute bottom-20 right-6 md:bottom-6" ]
         [ M3e.fab

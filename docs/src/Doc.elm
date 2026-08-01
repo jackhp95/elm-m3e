@@ -31,6 +31,7 @@ import Seam
 import SyntaxHighlight
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 
 
 {-| A matraic-style "showcase" card: live demo content in an outlined card.
@@ -190,6 +191,7 @@ sectionHeading s =
 {-| The chapter recap box: a "Recap" overline over rendered markdown, in a
 tinted container.
 -}
+recapBox : String -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 recapBox md =
     TypedHtml.div [ TA.class "rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "Recap" ]

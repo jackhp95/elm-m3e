@@ -38,6 +38,8 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
+import TypedHtml.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -242,6 +244,7 @@ iconAction name =
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
 -}
+desktopRail : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 desktopRail =
     TypedHtml.div [ TA.class "hidden md:flex sticky top-0 self-start" ]
         [ M3e.navRail []
@@ -260,6 +263,7 @@ railItem d =
 
 {-| The mobile bottom bar. Hidden on desktop via `md:hidden`.
 -}
+mobileBar : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 mobileBar =
     TypedHtml.div [ TA.class "md:hidden sticky bottom-0 z-10" ]
         [ M3e.navBar []
@@ -276,6 +280,7 @@ barItem d =
         ]
 
 
+fab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 fab =
     TypedHtml.div [ TA.class "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20" ]
         [ M3e.fab
@@ -290,6 +295,7 @@ fab =
 -- MAIN CONTENT ----------------------------------------------------------------
 
 
+mainContent : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 mainContent =
     TypedHtml.section [ TA.class "flex-1 min-w-0 flex flex-col gap-6 p-4 md:p-6 pb-28 md:pb-6" ]
         [ pageHeader
@@ -304,6 +310,7 @@ mainContent =
         ]
 
 
+pageHeader : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 pageHeader =
     TypedHtml.div [ TA.class "flex flex-col gap-1" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Overview" ]
@@ -316,6 +323,7 @@ pageHeader =
 -- KPI ROW ---------------------------------------------------------------------
 
 
+kpiRow : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 kpiRow =
     TypedHtml.div [ TA.class "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" ]
         (List.map kpiCard kpis)
@@ -334,6 +342,7 @@ kpiCard k =
         ]
 
 
+trendDelta : Trend -> String -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 trendDelta trend delta =
     let
         ( iconName, role ) =
@@ -388,6 +397,7 @@ budgetsSection =
         )
 
 
+budgetRow : Budget -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 budgetRow b =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.div [ TA.class "flex items-center justify-between gap-2" ]

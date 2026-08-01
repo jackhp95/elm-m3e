@@ -24,6 +24,7 @@ import Seam.Surface as Surface
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -81,6 +82,7 @@ levels =
     ]
 
 
+swatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 swatch ( shadow, label, token ) =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ Surface.view Surface.surfaceContainerHigh

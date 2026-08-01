@@ -28,6 +28,7 @@ import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes
+import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -100,6 +101,7 @@ two-column grid is a plain `TypedHtml.div` with a class attribute; the class
 string is contained in one named producer instead of sprinkled at every call
 site. No escape, no door.
 -}
+twoColumn : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 twoColumn =
     TypedHtml.div [ TypedHtml.Attributes.class "grid grid-cols-1 gap-4 md:grid-cols-2" ]
         [ emailField, saveButton ]

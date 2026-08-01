@@ -34,6 +34,7 @@ import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import TypedHtml.Img
+import TypedHtml.Sectioning
 import UrlPath
 import View exposing (View)
 
@@ -108,6 +109,7 @@ view app _ =
     }
 
 
+hero : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 hero =
     TypedHtml.section [ TA.class "space-y-5" ]
         [ M3e.heading
@@ -143,6 +145,7 @@ hero =
 
 {-| The "Why elm-m3e" highlight cards.
 -}
+highlights : Int -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 highlights componentCount =
     TypedHtml.section [ TA.class "space-y-6" ]
         [ Doc.sectionHeading "Why elm-m3e"
@@ -175,6 +178,7 @@ highlightCard iconName cardTitle cardBody =
         ]
 
 
+statusGrid : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 statusGrid =
     TypedHtml.section [ TA.class "space-y-3" ]
         [ Doc.sectionHeading "Status"

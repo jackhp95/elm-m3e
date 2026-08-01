@@ -13,6 +13,7 @@ import Head.Seo as Seo
 import HtmlIr.Element
 import M3e
 import M3e.Attributes
+import M3e.Heading
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -20,6 +21,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Sectioning
 import UrlPath
 import View exposing (View)
 
@@ -63,6 +65,7 @@ head _ =
         |> Seo.website
 
 
+card : String -> List (HtmlIr.Element.Element (M3e.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> HtmlIr.Element.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
 card title items =
     TypedHtml.section [ TA.class "space-y-3" ]
         (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text title ] :: items)

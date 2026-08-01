@@ -30,7 +30,6 @@ import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Seam.Avatar as Avatar
 import Seam.Shape as Shape
 import Seam.Surface as Surface
@@ -38,10 +37,10 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import TypedHtml.Kind
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -79,7 +78,6 @@ type Msg
     = SelectSection String
     | Flip Toggle
     | SetTheme String
-
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -168,7 +166,6 @@ head _ =
     []
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -230,7 +227,6 @@ appBar =
         ]
 
 
-
 -- NAVIGATION ------------------------------------------------------------------
 
 
@@ -272,7 +268,6 @@ navItem current ( section, name, iconName ) =
         ]
 
 
-
 -- CONTENT ---------------------------------------------------------------------
 
 
@@ -286,6 +281,7 @@ type alias Row adm_ msg =
     Element { div : TypedHtml.Kind.Brand, html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
 
 
+content : Model -> List (Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg))
 content model =
     [ accountCard
     , sectionCard "Notifications"
@@ -315,6 +311,7 @@ content model =
 {-| A settings section: an overline heading above a rounded surface-container card
 whose `ListItem` rows are separated by `Divider`s.
 -}
+sectionCard : String -> List (Row adm_ msg) -> Element (TypedHtml.Grouping.DivIs s) admOut_ msg
 sectionCard heading rows =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text heading ]
@@ -334,6 +331,7 @@ dividize rows =
 {-| The account header: a profile card (avatar + name + email) followed by a
 drill-in row for managing the account.
 -}
+accountCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 accountCard =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Account" ]
@@ -396,6 +394,7 @@ themeRow theme label iconName current =
 supporting-text, so this row is a plain layout (leading icon + label above the
 slider) rather than a `ListItem` with the control crammed into a text slot.
 -}
+densityRow : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 densityRow =
     TypedHtml.div [ TA.class "flex flex-col gap-3 px-4 py-3" ]
         [ TypedHtml.div [ TA.class "flex items-center gap-4" ]

@@ -25,6 +25,7 @@ so every tab UI in the docs can reuse the one implementation.
 
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
+import HtmlIr.Kind
 import M3e.Kind
 import Seam
 import TypedHtml.Attributes as TA
@@ -83,6 +84,7 @@ panel activeIndex i child =
         inactive =
             i /= activeIndex
 
+        attrs : List (Attr { c | class : HtmlIr.Kind.Supported } msg)
         attrs =
             TA.class "sp-panel"
                 :: Seam.attribute "aria-hidden"

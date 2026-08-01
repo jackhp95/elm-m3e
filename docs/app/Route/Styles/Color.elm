@@ -18,6 +18,7 @@ import Seam.Surface as Surface exposing (Surface)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -98,6 +99,7 @@ surfaces =
 {-| A container/on-container pairing row: the bold role beside its container, so the
 "on" color is read directly off each layer/form.
 -}
+accentRow : Accent -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 accentRow accent =
     TypedHtml.div [ TA.class "grid grid-cols-2 gap-3" ]
         [ swatch ( accent.name, accent.baseBg, accent.base )

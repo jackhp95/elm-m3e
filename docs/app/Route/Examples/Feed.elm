@@ -38,6 +38,7 @@ import Seam.Surface as Surface exposing (Surface)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -231,9 +232,7 @@ shownPosts filter =
         List.filter (\p -> p.category == filter) posts
 
 
-{-| The adaptive grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`. One line does
-the whole responsive column count; the cards reflow to fill.
--}
+cardGrid : List Post -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 cardGrid shown =
     TypedHtml.div [ TA.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
         (List.map postCard shown)

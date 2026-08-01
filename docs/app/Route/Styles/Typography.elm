@@ -8,6 +8,7 @@ import HtmlIr.Element exposing (Element)
 import M3e
 import M3e.Attributes
 import M3e.Card
+import M3e.Heading
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -16,6 +17,8 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
+import TypedHtml.Kind
 import UrlPath
 import View exposing (View)
 
@@ -65,6 +68,7 @@ font-size / line-height / weight from `--md-sys-typescale-*` (see
 `sys/typescale.css`). The demo dogfoods the producers: the exhibit _is_
 `M3e.heading` (display/headline/title/label) / `TypedHtml.span` (body).
 -}
+scale : List ( Element (M3e.Heading.Is { a | span : TypedHtml.Kind.Brand }) admittedBy msg, String, String )
 scale =
     [ ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Display Large" ], "text-display-lg", "3.5625rem / 4rem · 400" )
     , ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Display Medium" ], "text-display-md", "2.8125rem / 3.25rem · 400" )
@@ -84,6 +88,7 @@ scale =
     ]
 
 
+row : ( Element (TypedHtml.Grouping.DivIs { a | heading : M3e.Kind.Brand, span : TypedHtml.Kind.Brand }) (TypedHtml.Grouping.DivChildAdmittedBy childAdm) msg, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 row ( exhibit, cls, metrics ) =
     TypedHtml.div [ TA.class "flex flex-wrap items-baseline justify-between gap-2 py-3" ]
         [ exhibit

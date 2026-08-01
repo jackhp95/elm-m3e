@@ -42,6 +42,7 @@ import Seam.Surface as Surface exposing (Surface)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -204,6 +205,7 @@ adaptivity: a single column on compact (list, then detail beneath), two panes on
 `md:` and up (a fixed `md:w-80` list beside a filling detail). Both panes scroll
 independently.
 -}
+body : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 body model =
     TypedHtml.div [ TA.class "flex flex-1 flex-col overflow-hidden md:flex-row" ]
         [ listPane model.selected
@@ -213,6 +215,7 @@ body model =
 
 {-| The master list — full-width on compact, a fixed rail on `md:`.
 -}
+listPane : Int -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 listPane selected =
     TypedHtml.div [ TA.class "shrink-0 overflow-y-auto border-outline-variant/40 md:w-80 md:border-r" ]
         [ M3e.list []
@@ -251,6 +254,7 @@ contactRow selected index contact =
 
 {-| The detail pane — fills the rest on `md:`, stacks beneath the list on compact.
 -}
+detailPane : Contact -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 detailPane contact =
     TypedHtml.div [ TA.class "flex-1 overflow-y-auto p-4 md:p-8" ]
         [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-xl flex-col gap-6" ]
@@ -260,6 +264,7 @@ detailPane contact =
         ]
 
 
+header : Contact -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 header contact =
     TypedHtml.div [ TA.class "flex flex-col items-center gap-3 pt-2" ]
         [ Avatar.initials contact.initials

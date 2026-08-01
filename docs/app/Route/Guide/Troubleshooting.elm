@@ -18,6 +18,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Sectioning
 import UrlPath
 import View exposing (View)
 
@@ -61,6 +62,7 @@ head _ =
         |> Seo.website
 
 
+entry : String -> String -> HtmlIr.Element.Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 entry prose code =
     TypedHtml.section [ TA.class "space-y-3" ]
         [ Doc.markdown prose

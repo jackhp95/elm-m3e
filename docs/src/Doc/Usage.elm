@@ -22,6 +22,8 @@ import M3e.Kind
 import M3e.Values as Value
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
+import TypedHtml.Kind
 
 
 {-| Which API surface a Usage example is shown in:
@@ -106,6 +108,7 @@ drops cleanly out of the top-level `space-y-10` rhythm).
 one page get disjoint tab-state ranges in a shared `Model`.
 
 -}
+usageBlocks : Int -> Model -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
 usageBlocks offset model examples =
     case examples of
         [] ->
@@ -129,6 +132,7 @@ usageBlocks offset model examples =
 followed by each example's live preview paired with its per-example code tabs.
 Examples carry their page-global index so each tab strip stays independent.
 -}
+sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { a | card : M3e.Kind.Brand, div : TypedHtml.Kind.Brand, heading : M3e.Kind.Brand, html : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 sectionBlock model ( sec, examples ) =
     let
         headingEl : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
@@ -155,6 +159,7 @@ always `HTML`). The selection lives in
 surface (`defaultSurfaceFor`). Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
+exampleBlock : Model -> ( Int, UsageExample ) -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 exampleBlock model ( index, ex ) =
     let
         surface : Surface

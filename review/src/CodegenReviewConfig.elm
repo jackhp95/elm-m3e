@@ -21,10 +21,13 @@ config =
       -- adapters (`Native`, `Layout`, `Kit`) and `Seam` itself, plus the docs
       -- app's own adapters — `Doc` (doc-rendering) and `Shared` (the app-shell
       -- root, already the sole holder of the `Node.toHtml` render exit). Prefixes,
-      -- so `Kit` covers `Kit.Surface`/`Kit.Shape`. Feature routes are NOT listed.
+      -- so `Kit` covers `Kit.Surface`/`Kit.Shape`. Feature routes are NOT listed —
+      -- except `Route.Guide.Seams`, whose teaching subject IS a genuine seam (a
+      -- `<model-viewer>` custom element shown inline). Pedagogical exception, same
+      -- spirit as the Guide barrel/setter exemptions in ReviewConfig.
       NoSeamOutsideAllowedModules.rule
             { seamModules = [ "Seam", "M3e.Seam.Internal" ]
-            , allowedModules = [ "Native", "Layout", "Kit", "Seam", "Doc", "Shared" ]
+            , allowedModules = [ "Native", "Layout", "Kit", "Seam", "Doc", "Shared", "Route.Guide.Seams" ]
             }
 
     -- The opaque-IR `*.Internal` boundary (docs/DESIGN.md §4): only generated `M3e.*`

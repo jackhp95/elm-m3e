@@ -35,7 +35,6 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Seam.Badge
 import Seam.Shape as Shape
 import Seam.Surface as Surface exposing (Surface)
@@ -43,9 +42,9 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL / MSG -----------------------------------------------------------------
@@ -110,7 +109,6 @@ head _ =
     []
 
 
-
 -- CATALOG ---------------------------------------------------------------------
 
 
@@ -139,7 +137,6 @@ products =
 categories : List String
 categories =
     [ "All", "Apparel", "Home", "Beauty" ]
-
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -199,7 +196,6 @@ exampleFooter =
         , prev = Just ( "/examples/dashboard", "Dashboard" )
         , next = Just ( "/examples/mail", "Mail" )
         }
-
 
 
 -- CHROME ----------------------------------------------------------------------
@@ -295,7 +291,6 @@ navDestination current dest =
         ]
 
 
-
 -- CONTENT ---------------------------------------------------------------------
 
 
@@ -314,6 +309,7 @@ hero =
 {-| Category filter toolbar: a single-select FilterChipSet that scrolls
 horizontally on narrow screens, plus a sort action.
 -}
+filterBar : String -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 filterBar current =
     TypedHtml.div [ TA.class "flex items-center gap-2" ]
         [ TypedHtml.div [ TA.class "min-w-0 flex-1 overflow-x-auto" ]
@@ -335,6 +331,7 @@ categoryChip current cat =
 
 {-| Responsive product grid: 1 col on mobile, 2 on small, 3/4 on larger screens.
 -}
+productGrid : List Product -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 productGrid shown =
     TypedHtml.div [ TA.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" ]
         (List.map productCard shown)
@@ -374,6 +371,7 @@ media product =
 
 {-| A floating checkout action over the content.
 -}
+checkoutFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 checkoutFab =
     TypedHtml.div [ TA.class "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6" ]
         [ TypedHtml.div [ TA.class "pointer-events-auto" ]
