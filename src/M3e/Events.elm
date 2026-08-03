@@ -307,4 +307,4 @@ onViewChangeWith =
 -}
 delegate : Attr capability msg -> Attr anyCapability msg
 delegate attr =
-    Ir.fromHtmlAttribute (HtmlIr.Attribute.toHtmlAttribute attr)
+    Ir.recast attr

@@ -30,7 +30,7 @@ fromHtmlAttribute =
 -}
 recastAttr : Attr aCapability msg -> Attr bCapability msg
 recastAttr attr =
-    Ir.fromHtmlAttribute (HtmlIr.Attribute.toHtmlAttribute attr)
+    Ir.recast attr
 
 
 {-| `recastAttr` mapped over a list of attributes.

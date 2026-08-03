@@ -168,9 +168,9 @@ withSlot value_ =
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
-withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ =
-    B.withAttribute (A.style value_)
+withStyle : String -> String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
 {-| Pipe form of `wrap` — consumes its capability (write-once).

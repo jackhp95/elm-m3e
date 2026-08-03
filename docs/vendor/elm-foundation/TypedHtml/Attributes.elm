@@ -1,5 +1,5 @@
 module TypedHtml.Attributes exposing
-    ( accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, is, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, styleList
+    ( accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, is, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
     , abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formaction, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, width
     , blocking, charset, closedby, colorspace, crossorigin, decoding, enctype, fetchpriority, formenctype, formmethod, httpEquiv, kind, loading, method, popovertargetaction, preload, referrerpolicy, sandbox, scope, shadowrootmode, shadowrootslotassignment, shape, wrap
     )
@@ -10,13 +10,12 @@ decides admittance. Enum setters here close over the library-wide UNION of
 values — cross-component misuse is caught by elm-review; reach for the
 per-component setters (`TypedHtml.<Component>.<attr>`) for compile-tight narrowing.
 
-@docs accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, is, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, styleList
+@docs accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, is, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
 @docs abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formaction, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, width
 @docs blocking, charset, closedby, colorspace, crossorigin, decoding, enctype, fetchpriority, formenctype, formmethod, httpEquiv, kind, loading, method, popovertargetaction, preload, referrerpolicy, sandbox, scope, shadowrootmode, shadowrootslotassignment, shape, wrap
 
 -}
 
-import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
@@ -53,11 +52,18 @@ autofocus =
     Ir.attribute "autofocus"
 
 
-{-| The global `class` attribute.
+{-| The global `class` attribute. Repeats ACCUMULATE: `[ class "a", class "b" ]` renders `class="a b"`.
 -}
 class : String -> Attr { c | class : Supported } msg
 class =
     Ir.attribute "class"
+
+
+{-| The classes whose flag is `True`, space-joined. Accumulates with every other `class` / `classList` on the element.
+-}
+classList : List ( String, Bool ) -> Attr { c | class : Supported } msg
+classList pairs =
+    Ir.attribute "class" (String.join " " (List.map Tuple.first (List.filter Tuple.second pairs)))
 
 
 {-| The global `contenteditable` attribute.
@@ -193,18 +199,18 @@ spellcheck =
     Ir.attribute "spellcheck"
 
 
-{-| The global `style` attribute (the full inline-style string).
+{-| One inline-style declaration (the `elm/html` 0.19 shape). Declarations MERGE across every `style` / `styleList` on the element, last-wins per property.
 -}
-style : String -> Attr { c | style : Supported } msg
-style =
-    Ir.attribute "style"
+style : String -> String -> Attr { c | style : Supported } msg
+style property value_ =
+    Ir.styles [ ( property, value_ ) ]
 
 
-{-| The global `style` attribute as a typed `( property, value )` list.
+{-| Inline-style declarations as a `( property, value )` list (the `elm/html` 0.18 shape). Merges exactly as `style` does.
 -}
 styleList : List ( String, String ) -> Attr { c | style : Supported } msg
-styleList pairs =
-    Ir.attribute "style" (String.join ";" (List.map (\( k, v ) -> k ++ ":" ++ v) pairs))
+styleList =
+    Ir.styles
 
 
 {-| The global `tabindex` attribute.
@@ -278,7 +284,7 @@ allowfullscreen value_ =
         Ir.attribute "allowfullscreen" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Allow the color's alpha component to be set
@@ -289,7 +295,7 @@ alpha value_ =
         Ir.attribute "alpha" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Replacement text for use when images are not available
@@ -307,7 +313,7 @@ async value_ =
         Ir.attribute "async" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Hint for form autofill feature
@@ -325,7 +331,7 @@ autoplay value_ =
         Ir.attribute "autoplay" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the control is checked
@@ -385,7 +391,7 @@ controls value_ =
         Ir.attribute "controls" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Coordinates for the shape to be created in an image map
@@ -417,7 +423,7 @@ default value_ =
         Ir.attribute "default" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Defer script execution
@@ -428,7 +434,7 @@ defer value_ =
         Ir.attribute "defer" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Name of form control to use for sending the element's directionality in form submission
@@ -446,7 +452,7 @@ disabled value_ =
         Ir.attribute "disabled" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to download the resource instead of navigating to it, and its filename if so
@@ -485,7 +491,7 @@ formnovalidate value_ =
         Ir.attribute "formnovalidate" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Navigable for form submission
@@ -559,7 +565,7 @@ ismap value_ =
         Ir.attribute "ismap" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| User-visible label
@@ -584,7 +590,7 @@ loop value_ =
         Ir.attribute "loop" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| High limit of low range
@@ -637,7 +643,7 @@ multiple value_ =
         Ir.attribute "multiple" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to mute the media resource by default
@@ -648,7 +654,7 @@ muted value_ =
         Ir.attribute "muted" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Name of the element to use for form submission and in the form.elements API
@@ -666,7 +672,7 @@ nomodule value_ =
         Ir.attribute "nomodule" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Bypass form control validation for form submission
@@ -677,7 +683,7 @@ novalidate value_ =
         Ir.attribute "novalidate" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the dialog box is showing
@@ -688,7 +694,7 @@ open value_ =
         Ir.attribute "open" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Optimum value in gauge
@@ -727,7 +733,7 @@ playsinline value_ =
         Ir.attribute "playsinline" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Targets a popover element to toggle, show, or hide
@@ -752,7 +758,7 @@ readonly value_ =
         Ir.attribute "readonly" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Relationship between the document containing the hyperlink and the destination resource
@@ -770,7 +776,7 @@ required value_ =
         Ir.attribute "required" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Number the list backwards
@@ -781,7 +787,7 @@ reversed value_ =
         Ir.attribute "reversed" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Number of lines to show
@@ -813,7 +819,7 @@ shadowrootclonable value_ =
         Ir.attribute "shadowrootclonable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Enables declarative shadow roots to indicate they will use a custom element registry
@@ -824,7 +830,7 @@ shadowrootcustomelementregistry value_ =
         Ir.attribute "shadowrootcustomelementregistry" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Sets delegates focus on a declarative shadow root
@@ -835,7 +841,7 @@ shadowrootdelegatesfocus value_ =
         Ir.attribute "shadowrootdelegatesfocus" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Sets serializable on a declarative shadow root
@@ -846,7 +852,7 @@ shadowrootserializable value_ =
         Ir.attribute "shadowrootserializable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Size of the control

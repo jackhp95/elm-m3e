@@ -13,7 +13,6 @@ co-located re-exports of the shared attributes its elements admit.
 
 -}
 
-import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir

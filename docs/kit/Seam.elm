@@ -96,7 +96,17 @@ attribute name value =
 
 
 {-| A raw inline CSS declaration as a typed `Attr`.
+
+Now `Ir.styles`, not `Html.Attributes.style`. The kernel path compiled to
+`node.style[key] = value`, which silently ignores CSS custom properties
+(`--x` needs `setProperty`) and drops `!important`; it also could not merge, so
+a second declaration on the same element clobbered the first. `Ir.styles`
+handles all three.
+
+This is no longer a genuine escape — `TypedHtml.Attributes.style` is now
+identical. Kept only so existing call sites keep working.
+
 -}
 style : String -> String -> Attr c msg
 style key value =
-    Ir.fromHtmlAttribute (Html.Attributes.style key value)
+    Ir.styles [ ( key, value ) ]

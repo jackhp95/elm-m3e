@@ -1,5 +1,5 @@
 module M3e.Attributes exposing
-    ( class, id, slot, style, styleList
+    ( class, id, slot, style, classList, styleList
     , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
     , animation, contrast, current, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
     )
@@ -10,13 +10,12 @@ decides admittance. Enum setters here close over the library-wide UNION of
 values — cross-component misuse is caught by elm-review; reach for the
 per-component setters (`M3e.<Component>.<attr>`) for compile-tight narrowing.
 
-@docs class, id, slot, style, styleList
+@docs class, id, slot, style, classList, styleList
 @docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
 @docs animation, contrast, current, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
 
 -}
 
-import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
@@ -25,11 +24,18 @@ import Json.Encode
 import M3e.Values
 
 
-{-| The global `class` attribute.
+{-| The global `class` attribute. Repeats ACCUMULATE: `[ class "a", class "b" ]` renders `class="a b"`.
 -}
 class : String -> Attr { c | class : Supported } msg
 class =
     Ir.attribute "class"
+
+
+{-| The classes whose flag is `True`, space-joined. Accumulates with every other `class` / `classList` on the element.
+-}
+classList : List ( String, Bool ) -> Attr { c | class : Supported } msg
+classList pairs =
+    Ir.attribute "class" (String.join " " (List.map Tuple.first (List.filter Tuple.second pairs)))
 
 
 {-| The global `id` attribute.
@@ -46,18 +52,18 @@ slot =
     Ir.attribute "slot"
 
 
-{-| The global `style` attribute (the full inline-style string).
+{-| One inline-style declaration (the `elm/html` 0.19 shape). Declarations MERGE across every `style` / `styleList` on the element, last-wins per property.
 -}
-style : String -> Attr { c | style : Supported } msg
-style =
-    Ir.attribute "style"
+style : String -> String -> Attr { c | style : Supported } msg
+style property value_ =
+    Ir.styles [ ( property, value_ ) ]
 
 
-{-| The global `style` attribute as a typed `( property, value )` list.
+{-| Inline-style declarations as a `( property, value )` list (the `elm/html` 0.18 shape). Merges exactly as `style` does.
 -}
 styleList : List ( String, String ) -> Attr { c | style : Supported } msg
-styleList pairs =
-    Ir.attribute "style" (String.join ";" (List.map (\( k, v ) -> k ++ ":" ++ v) pairs))
+styleList =
+    Ir.styles
 
 
 {-| The label of the snackbar's action. (default: `""`)
@@ -75,7 +81,7 @@ actionable value_ =
         Ir.attribute "actionable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the view is active. (default: `false`)
@@ -86,7 +92,7 @@ active value_ =
         Ir.attribute "active" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The active date. (default: `new Date()`)
@@ -104,7 +110,7 @@ alert value_ =
         Ir.attribute "alert" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The logical margin, in pixels, between the panel and its anchor. (default: `0`)
@@ -129,7 +135,7 @@ autoActivate value_ =
         Ir.attribute "auto-activate" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A fractional value, between 0 and `max`, indicating buffer progress. (default: `0`)
@@ -147,7 +153,7 @@ cascade value_ =
         Ir.attribute "cascade" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether matching is case sensitive. (default: `false`)
@@ -158,7 +164,7 @@ caseSensitive value_ =
         Ir.attribute "case-sensitive" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the ripple always originates from the center of the element's bounds, rather
@@ -170,7 +176,7 @@ centered value_ =
         Ir.attribute "centered" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the element is checked. (default: `false`)
@@ -195,7 +201,7 @@ clearable value_ =
         Ir.attribute "clearable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`)
@@ -220,7 +226,7 @@ completed value_ =
         Ir.attribute "completed" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Label given to the button used apply the selected date and close the picker. (default: `"OK"`)
@@ -238,7 +244,7 @@ contained value_ =
         Ir.attribute "contained" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The selected date. (default: `null`)
@@ -291,7 +297,7 @@ disableClose value_ =
         Ir.attribute "disable-close" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether text highlighting is disabled. (default: `false`)
@@ -302,7 +308,7 @@ disableHighlight value_ =
         Ir.attribute "disable-highlight" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether hover events will not trigger the state layer. State layers can still
@@ -314,7 +320,7 @@ disableHover value_ =
         Ir.attribute "disable-hover" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether scroll buttons are disabled.
@@ -332,7 +338,7 @@ disableRestoreFocus value_ =
         Ir.attribute "disable-restore-focus" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the element is disabled. (default: `false`)
@@ -343,7 +349,7 @@ disabled value_ =
         Ir.attribute "disabled" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A value indicating whether the element is disabled and interactive. (default: `false`)
@@ -354,7 +360,7 @@ disabledInteractive value_ =
         Ir.attribute "disabled-interactive" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to show tick marks. (default: `false`)
@@ -365,7 +371,7 @@ discrete value_ =
         Ir.attribute "discrete" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Label given to the button used discard the selected date and close the picker. (default: `"Cancel"`)
@@ -383,7 +389,7 @@ dismissible value_ =
         Ir.attribute "dismissible" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
@@ -408,7 +414,7 @@ editable value_ =
         Ir.attribute "editable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the toolbar is elevated. (default: `false`)
@@ -419,7 +425,7 @@ elevated value_ =
         Ir.attribute "elevated" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the heading uses an emphasized typescale. (default: `false`)
@@ -430,7 +436,7 @@ emphasized value_ =
         Ir.attribute "emphasized" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the end drawer is open. (default: `false`)
@@ -441,7 +447,7 @@ end value_ =
         Ir.attribute "end" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to show a divider between the end drawer and content for `side` mode. (default: `false`)
@@ -452,7 +458,7 @@ endDivider value_ =
         Ir.attribute "end-divider" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the button is extended to show the label. (default: `false`)
@@ -463,7 +469,7 @@ extended value_ =
         Ir.attribute "extended" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the icon is filled. (default: `false`)
@@ -474,7 +480,7 @@ filled value_ =
         Ir.attribute "filled" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the button used to move to the first page. (default: `"First page"`)
@@ -492,7 +498,7 @@ fitAnchorWidth value_ =
         Ir.attribute "fit-anchor-width" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`)
@@ -511,7 +517,7 @@ handle value_ =
         Ir.attribute "handle" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the drag handle. (default: `"Drag handle"`)
@@ -543,7 +549,7 @@ hideLabels value_ =
         Ir.attribute "hide-labels" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide the menu when loading options. (default: `false`)
@@ -554,7 +560,7 @@ hideLoading value_ =
         Ir.attribute "hide-loading" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide the mode toggle button. (default: `false`)
@@ -565,7 +571,7 @@ hideModeToggle value_ =
         Ir.attribute "hide-mode-toggle" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide the menu when there are no options to show. (default: `false`)
@@ -576,7 +582,7 @@ hideNoData value_ =
         Ir.attribute "hide-no-data" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide page size selection. (default: `false`)
@@ -587,7 +593,7 @@ hidePageSize value_ =
         Ir.attribute "hide-page-size" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the required marker should be hidden. (default: `false`)
@@ -598,7 +604,7 @@ hideRequiredMarker value_ =
         Ir.attribute "hide-required-marker" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide the search icon. (default: `false`)
@@ -609,7 +615,7 @@ hideSearchIcon value_ =
         Ir.attribute "hide-search-icon" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide the selection indicator. (default: `false`)
@@ -620,7 +626,7 @@ hideSelectionIndicator value_ =
         Ir.attribute "hide-selection-indicator" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to hide the expansion toggle. (default: `false`)
@@ -631,7 +637,7 @@ hideToggle value_ =
         Ir.attribute "hide-toggle" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the bottom sheet can hide when its swiped down. (default: `false`)
@@ -642,7 +648,7 @@ hideable value_ =
         Ir.attribute "hideable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The hour, in 24-hour time, from 0..23. (default: `null`)
@@ -674,7 +680,7 @@ indeterminate value_ =
         Ir.attribute "indeterminate" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to present the card inline with surrounding content. (default: `false`)
@@ -685,7 +691,7 @@ inline value_ =
         Ir.attribute "inline" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Label given to the the picker when in input mode. (default: `"Edit time"`)
@@ -703,7 +709,7 @@ inset value_ =
         Ir.attribute "inset" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the divider is indented with padding on the trailing side. (default: `false`)
@@ -714,7 +720,7 @@ insetEnd value_ =
         Ir.attribute "inset-end" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the divider is indented with padding on the leading side. (default: `false`)
@@ -725,7 +731,7 @@ insetStart value_ =
         Ir.attribute "inset-start" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the step has an error. (default: `false`)
@@ -736,7 +742,7 @@ invalid value_ =
         Ir.attribute "invalid" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the focus ring animates inward instead of outward. (default: `false`)
@@ -747,7 +753,7 @@ inward value_ =
         Ir.attribute "inward" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the item's internal button. (default: `""`)
@@ -779,7 +785,7 @@ labelled value_ =
         Ir.attribute "labelled" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the button used to move to the last page. (default: `"Last page"`)
@@ -811,7 +817,7 @@ linear value_ =
         Ir.attribute "linear" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the content of the skeleton has been loaded. (default: `false`)
@@ -822,7 +828,7 @@ loaded value_ =
         Ir.attribute "loaded" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether options are being loaded. (default: `false`)
@@ -833,7 +839,7 @@ loading value_ =
         Ir.attribute "loading" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The text announced and presented when loading options. (default: `"Loading..."`)
@@ -851,7 +857,7 @@ lowered value_ =
         Ir.attribute "lowered" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`)
@@ -939,7 +945,7 @@ modal value_ =
         Ir.attribute "modal" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the mode toggle button. (default: `"Toggle input picker"`)
@@ -964,7 +970,7 @@ multi value_ =
         Ir.attribute "multi" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the button used to move to the next month. (default: `"Next month"`)
@@ -1003,7 +1009,7 @@ noAnimate value_ =
         Ir.attribute "no-animate" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The text announced and presented when no options are available for the current term. (default: `"No options"`)
@@ -1021,7 +1027,7 @@ noFocusTrap value_ =
         Ir.attribute "no-focus-trap" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the item is expanded. (default: `false`)
@@ -1032,7 +1038,7 @@ open value_ =
         Ir.attribute "open" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`)
@@ -1050,7 +1056,7 @@ optional value_ =
         Ir.attribute "optional" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`)
@@ -1145,7 +1151,7 @@ range value_ =
         Ir.attribute "range" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| End of a date range. (default: `null`)
@@ -1170,7 +1176,7 @@ readonly value_ =
         Ir.attribute "readonly" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`)
@@ -1188,7 +1194,7 @@ removable value_ =
         Ir.attribute "removable" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the button used to remove the chip. (default: `"Remove"`)
@@ -1206,7 +1212,7 @@ required value_ =
         Ir.attribute "required" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The text announced when available options change for the current term. (default: `(count) =>`${count} options\`\`)
@@ -1245,7 +1251,7 @@ secondary value_ =
         Ir.attribute "secondary" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the item is selected. (default: `false`)
@@ -1277,7 +1283,7 @@ showFirstLastButtons value_ =
         Ir.attribute "show-first-last-buttons" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to show seconds. (default: `false`)
@@ -1288,7 +1294,7 @@ showSeconds value_ =
         Ir.attribute "show-seconds" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the start drawer is open. (default: `false`)
@@ -1299,7 +1305,7 @@ start value_ =
         Ir.attribute "start" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A date specifying the period (month or year) to start the calendar in. (default: `null`)
@@ -1317,7 +1323,7 @@ startDivider value_ =
         Ir.attribute "start-divider" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`)
@@ -1335,7 +1341,7 @@ stretch value_ =
         Ir.attribute "stretch" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether to enable strong focus indicators. (default: `false`)
@@ -1346,7 +1352,7 @@ strongFocus value_ =
         Ir.attribute "strong-focus" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A value indicating whether the menu is a submenu. (default: `false`)
@@ -1357,7 +1363,7 @@ submenu value_ =
         Ir.attribute "submenu" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The target of the link button. (default: `""`)
@@ -1382,7 +1388,7 @@ thin value_ =
         Ir.attribute "thin" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`)
@@ -1400,7 +1406,7 @@ tocIgnore value_ =
         Ir.attribute "m3e-toc-ignore" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Today's date. (default: `new Date()`)
@@ -1418,7 +1424,7 @@ toggle value_ =
         Ir.attribute "toggle" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether the ripple is visible outside the element's bounds. (default: `false`)
@@ -1429,7 +1435,7 @@ unbounded value_ =
         Ir.attribute "unbounded" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Validation messages mapped to individual error types.
@@ -1454,7 +1460,7 @@ vertical value_ =
         Ir.attribute "vertical" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`)
@@ -1472,7 +1478,7 @@ wrap value_ =
         Ir.attribute "wrap" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| Whether cycling through detents will wrap. (default: `false`)
@@ -1483,7 +1489,7 @@ wrapDetents value_ =
         Ir.attribute "wrap-detents" ""
 
     else
-        Ir.fromHtmlAttribute (Html.Attributes.style "" "")
+        Ir.none
 
 
 {-| The accessible label given to the year segment. (default: `"Year"`)

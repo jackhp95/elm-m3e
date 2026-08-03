@@ -16,7 +16,6 @@ A radio button that allows a user to select one option from a set of options.
 
 -}
 
-import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
@@ -203,9 +202,9 @@ withSlot value_ =
 
 {-| Pipe form of `style` — consumes its capability (write-once).
 -}
-withStyle : String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
-withStyle value_ =
-    B.withAttribute (A.style value_)
+withStyle : String -> String -> Builder { a | style : Available } slotCaps msg -> Builder { a | style : Used } slotCaps msg
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
 {-| Pipe form of `checked` — consumes its capability (write-once).

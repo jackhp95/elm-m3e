@@ -1,11 +1,11 @@
 module HtmlIr.Attribute exposing
     ( Attr
-    , map, toHtmlAttribute
+    , map, toHtmlAttributes
     )
 
 {-| The phantom-typed attribute shared by every library on this substrate. An
-`Attr capability msg` is an `Html.Attribute` carrying a phantom row of the
-element capabilities that admit it; producers keep the row open
+`Attr capability msg` is a list of DOM-facing facts carrying a phantom row of
+the element capabilities that admit it; producers keep the row open
 (`{ c | href : Supported }`) and each element constructor closes it, so the
 compiler rejects an attribute on an element that does not admit it — including
 events (`onClick` on a non-interactive element is a type error).
@@ -15,7 +15,7 @@ happens only in brand setters or the fenced forge in
 [`HtmlIr.Internal`](HtmlIr-Internal).
 
 @docs Attr
-@docs map, toHtmlAttribute
+@docs map, toHtmlAttributes
 
 -}
 
@@ -36,8 +36,13 @@ map =
     I.mapAttribute
 
 
-{-| Unwrap to the underlying `Html.Attribute` — the safe out-bound direction.
+{-| Unwrap to the underlying `Html.Attribute`s — the safe out-bound direction.
+
+A list, because an `Attr` carries a list of facts: an absent attribute unwraps
+to `[]`, and one setter may stand in for several attributes. `class` / `style`
+facts within the `Attr` are merged, exactly as they would be on a node.
+
 -}
-toHtmlAttribute : Attr capability msg -> Html.Attribute msg
-toHtmlAttribute =
-    I.toHtmlAttribute
+toHtmlAttributes : Attr capability msg -> List (Html.Attribute msg)
+toHtmlAttributes =
+    I.toHtmlAttributes
