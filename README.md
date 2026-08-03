@@ -288,11 +288,16 @@ facts compile-time guarantees. Coverage now lives in four layers:
   [`jackhp95/elm-review-cem`](https://package.elm-lang.org/packages/jackhp95/elm-review-cem/latest/)
   package (a normal `elm-review` dependency — see
   [`review/README.md`](review/README.md)). Run with `elm-review --config review`.
-- **`Test.Html.Query` runtime suite** — targeted regression tests for the hand-written
-  IR core under [`tests/`](tests/): `NodeSlotTest.elm` (named-slot survives on
-  `Raw`/mapped nodes, #79) and `IrCoreTest.elm` (`addChild` leaf no-op, `map`→`Raw`
-  collapse, `slotWithAttr` for/id wiring, Text/Raw→`<span>` attr promotion). Run with
-  `npm test` (wraps `elm-test --compiler node_modules/.bin/elm` from `tests/`).
+- **`Test.Html.Query` runtime suite** — [`tests/`](tests/) holds `DomOutputTest.elm`,
+  which renders representative top-layer `M3e.*` compositions through the single eager
+  exit and pins the _public_ contract: the right `<m3e-*>` tag, slot stamping,
+  attribute/token emission, and authored child order. Run with `npm test` (wraps
+  `elm-test --compiler node_modules/.bin/elm` from `tests/`). The IR-core reduction
+  tests that used to sit beside it (`IrCoreTest`, `NodeSlotTest` — leaf→`<span>`
+  attribute promotion and the #79 named-slot regression) tested the IR substrate, not
+  this library, so they now live in
+  [`elm-html-intermediate-representation/tests/`](https://github.com/jackhp95/elm-html-intermediate-representation)
+  next to the code they pin.
 - **Playwright** — [`docs/tests-browser/`](docs/tests-browser/), for the runtime contract
   (shadow DOM, DOM properties, the a11y tree) that only a real browser shows.
 

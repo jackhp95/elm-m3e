@@ -96,10 +96,12 @@ jobs:
       # `elm make --docs`. The single-package docs-size gate is a pending
       # decision (see release audit NB4).
 
-      # IR-core + slot unit tests live in the self-contained tests/ project
-      # (its elm.json points at ../src, ../docs/kit, and the IR + typed-html
-      # siblings). Run from there so elm-test picks up tests/elm.json.
-      - name: elm-test (IR-core + slot unit tests)
+      # DOM-output shape tests live in the self-contained tests/ project (its
+      # elm.json points at ../src, ../docs/kit, and the IR + typed-html
+      # siblings). Run from there so elm-test picks up tests/elm.json. The
+      # IR-core reduction suites that used to live here moved to the IR package
+      # (elm-html-intermediate-representation/tests/), which gates them itself.
+      - name: elm-test (DOM-output shape tests)
         run: npm test
 
       # Release gates (elm-cem #49). Materialize the @m3e/web CEM first (docs
@@ -109,6 +111,11 @@ jobs:
       #                   behind).
       #   gate:registry — the publishable package compiles registry-faithfully,
       #                   resolving imports only from its declared deps (NB1/B2).
+      # `npm run gate` also re-runs format:check and npm test (they are part of
+      # the gate script so a local `npm run gate` cannot miss them — that hole is
+      # how the tests/ suite went red unnoticed). The two dedicated steps above
+      # stay for failure attribution: a formatting or test break names itself
+      # instead of surfacing as "release gates failed".
       - name: regen-drift + registry-faithful gates
         run: |
           cd docs && pnpm install --frozen-lockfile && cd ..

@@ -79,6 +79,7 @@ type alias ActionData =
     {}
 
 
+
 -- DECODERS
 
 
@@ -176,6 +177,7 @@ dataDecoder =
         (Decode.field "cells" (Decode.list cellDecoder))
 
 
+
 -- ROUTE
 
 
@@ -209,6 +211,7 @@ head _ =
         |> Seo.website
 
 
+
 -- RANKING
 
 
@@ -234,6 +237,7 @@ rankedCells cells =
                 3
     in
     List.sortBy (\c -> ( rank c, negate c.charsInside )) cells
+
 
 
 -- VIEW

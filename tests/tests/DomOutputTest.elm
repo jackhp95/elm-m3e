@@ -2,25 +2,28 @@ module DomOutputTest exposing (suite)
 
 {-| DOM-output shape tests (plan §3.2): render representative top-layer `M3e.*`
 compositions through the single eager exit (`HtmlIr.Element.toNode` then
-`HtmlIr.Node.toHtml`) and assert the shape of the emitted `Html`. Where
-`IrCoreTest`/`NodeSlotTest` probe the hand-written IR-core reductions in
-isolation, this suite pins the _public_ contract a screen author sees: the right
-`<m3e-*>` custom-element tag, slot stamping on slotted children,
-attribute/token emission, and — the class of bug a dom-diff ordering regression
-would introduce — that children keep their authored order with no reordering,
-dropping, or deduplication (IR faithfulness).
+`HtmlIr.Node.toHtml`) and assert the shape of the emitted `Html`. Where the IR
+package's own runtime suites (`MergeTest`, `IrCoreTest`, `NodeSlotTest` — they
+live in `elm-html-intermediate-representation/tests/`, next to the code they pin)
+probe the hand-written IR-core reductions in isolation, this suite pins the
+_public_ contract a screen author sees: the right `<m3e-*>` custom-element tag,
+slot stamping on slotted children, attribute/token emission, and — the class of
+bug a dom-diff ordering regression would introduce — that children keep their
+authored order with no reordering, dropping, or deduplication (IR faithfulness).
 
 These assertions run against the barrel API exactly as the examples and the
-`building-m3e-uis` skill teach it (`Kit.text` for slotted text, since text is a
-userland seam, not a library value), so a regen that quietly changed a tag name,
-dropped a slot stamp, or reordered children would fail here rather than only in
-the Playwright runtime harness.
+`building-m3e-uis` skill teach it (`M3e.text` for slotted text), so a regen that
+quietly changed a tag name, dropped a slot stamp, or reordered children would fail
+here rather than only in the Playwright runtime harness.
 
 Ported to the phantom substrate: the retired `M3e.Element`/`M3e.Node` render
 path is now `HtmlIr.Element.toNode |> HtmlIr.Node.toHtml`; attribute setters moved
 to `M3e.Values` (variant tokens) and the per-component modules
 (`M3e.Icon.name`, `M3e.Button.icon`, `M3e.ListItem.leading`); `aria-label` has no
-typed setter, so it crosses the userland `Seam.asAttribute` boundary.
+typed setter, so it crosses the userland `Seam.asAttribute` boundary. Slotted text
+was the userland `Kit.text` seam when this suite was written; the unseam migration
+made it a library value (`M3e.text`, same signature) and deleted `docs/kit/Kit.elm`,
+so the calls below moved onto the barrel.
 
 -}
 
@@ -28,7 +31,6 @@ import Expect
 import Html.Attributes as HtmlAttr
 import HtmlIr.Element as Element
 import HtmlIr.Node as Node
-import Kit
 import M3e
 import M3e.Action as Action
 import M3e.Button
@@ -58,7 +60,7 @@ suite =
         [ describe "custom-element tag emission"
             [ test "M3e.button renders an <m3e-button>" <|
                 \_ ->
-                    M3e.button [] [ Kit.text "Save" ]
+                    M3e.button [] [ M3e.text "Save" ]
                         |> toQuery
                         |> Query.has [ Selector.tag "m3e-button" ]
             , test "M3e.iconButton renders an <m3e-icon-button> wrapping an <m3e-icon>" <|
@@ -74,7 +76,7 @@ suite =
         , describe "attribute and token emission"
             [ test "a variant token becomes a variant= attribute on the host" <|
                 \_ ->
-                    M3e.button [ M3e.Button.variant Value.filled ] [ Kit.text "Go" ]
+                    M3e.button [ M3e.Button.variant Value.filled ] [ M3e.text "Go" ]
                         |> toQuery
                         |> Query.has
                             [ Selector.tag "m3e-button"
@@ -98,7 +100,7 @@ suite =
                 \_ ->
                     M3e.button []
                         [ M3e.Button.icon (M3e.icon [ M3e.Icon.name "add" ] [])
-                        , Kit.text "Add"
+                        , M3e.text "Add"
                         ]
                         |> toQuery
                         |> Query.find [ Selector.tag "m3e-icon" ]
@@ -107,7 +109,7 @@ suite =
                 \_ ->
                     M3e.listItem []
                         [ M3e.ListItem.leading (M3e.icon [ M3e.Icon.name "star" ] [])
-                        , Kit.text "Starred"
+                        , M3e.text "Starred"
                         ]
                         |> toQuery
                         |> Query.find [ Selector.attribute (HtmlAttr.attribute "slot" "leading") ]
@@ -117,9 +119,9 @@ suite =
             [ test "default-slot children keep their authored order" <|
                 \_ ->
                     M3e.list []
-                        [ M3e.listItem [] [ Kit.text "first" ]
-                        , M3e.listItem [] [ Kit.text "second" ]
-                        , M3e.listItem [] [ Kit.text "third" ]
+                        [ M3e.listItem [] [ M3e.text "first" ]
+                        , M3e.listItem [] [ M3e.text "second" ]
+                        , M3e.listItem [] [ M3e.text "third" ]
                         ]
                         |> toQuery
                         |> Query.findAll [ Selector.tag "m3e-list-item" ]
@@ -134,11 +136,11 @@ suite =
                     M3e.list []
                         [ M3e.listItem []
                             [ M3e.ListItem.leading (M3e.icon [ M3e.Icon.name "star" ] [])
-                            , Kit.text "one"
+                            , M3e.text "one"
                             ]
                         , M3e.listItem []
                             [ M3e.ListItem.leading (M3e.icon [ M3e.Icon.name "star" ] [])
-                            , Kit.text "two"
+                            , M3e.text "two"
                             ]
                         ]
                         |> toQuery
@@ -159,7 +161,7 @@ suite =
             [ test "togglesDatepicker emits <m3e-datepicker-toggle for> as a child of the host, wrapping the label" <|
                 \_ ->
                     M3e.Button.el
-                        { content = Kit.text "Pick date"
+                        { content = M3e.text "Pick date"
                         , action = Action.togglesDatepicker "cal1"
                         }
                         []
@@ -181,7 +183,7 @@ suite =
                     -- if `M3e.Button`'s ActionCaps admits `timepickerToggle`, i.e.
                     -- the config mirror landed in the required.action roster too.
                     M3e.Button.el
-                        { content = Kit.text "Pick time"
+                        { content = M3e.text "Pick time"
                         , action = Action.togglesTimepicker "clock1"
                         }
                         []
@@ -198,7 +200,7 @@ suite =
             , test "the toggle is INNER — no clickable host nested inside it (anti-inversion)" <|
                 \_ ->
                     M3e.Button.el
-                        { content = Kit.text "Pick date"
+                        { content = M3e.text "Pick date"
                         , action = Action.togglesDatepicker "cal1"
                         }
                         []
@@ -210,7 +212,7 @@ suite =
             , test "an opens-trigger wrapper (opensMenu) nests the same way — the whole family shares the contract" <|
                 \_ ->
                     M3e.Button.el
-                        { content = Kit.text "Open menu"
+                        { content = M3e.text "Open menu"
                         , action = Action.opensMenu "menu1"
                         }
                         []

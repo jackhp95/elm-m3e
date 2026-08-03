@@ -137,7 +137,8 @@ elm-m3e is a **single Elm package** (repo root), so the whole `M3e.*` surface is
 verified by compiling it against the sibling IR checkout and running the review +
 docs pipelines. From `package.json`:
 
-- `npm test` — the self-contained `tests/` project (IR-core + slot unit tests). Its
+- `npm test` — the self-contained `tests/` project (`DomOutputTest`: the DOM-output
+  shape pins for the public `M3e.*` contract — tags, slot stamping, child order). Its
   `elm.json` source-directories include `../src` and the `elm-html-intermediate-representation`
   / `elm-typed-html` siblings, so it compiles the library against the real IR.
 - `elm-review --config review` (run from `docs/`) — compiles `../src` through

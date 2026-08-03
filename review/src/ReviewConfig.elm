@@ -97,10 +97,10 @@ ignoreElmPages =
 
 
 {-| The `tests/` project holds the library's own tests: `tests/tests/`
-(`IrCoreTest`/`NodeSlotTest` — elm-test unit tests that legitimately import the
-opaque-IR interiors and use `Seam` to construct fixtures). None of it is docs-app
-source, so it is not gated by the docs review — ignore the whole `tests/` tree
-for EVERY rule. Two path forms cover root- vs docs/-relative runs.
+(`DomOutputTest` — an elm-test unit suite that legitimately imports the opaque-IR
+interiors and uses `Seam` to construct fixtures). None of it is docs-app source,
+so it is not gated by the docs review — ignore the whole `tests/` tree for EVERY
+rule. Two path forms cover root- vs docs/-relative runs.
 -}
 ignoreLibraryTests : Rule -> Rule
 ignoreLibraryTests =
