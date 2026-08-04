@@ -1,7 +1,7 @@
 module TypedHtml.Select exposing
     ( datalist, optgroup, option, select
     , DatalistIs, DatalistAttrs, DatalistContent, DatalistChildAdmittedBy, OptgroupIs, OptgroupAttrs, OptgroupContent, OptgroupChildAdmittedBy, OptgroupAdmittedBy, OptionIs, OptionAttrs, OptionContent, OptionChildAdmittedBy, OptionAdmittedBy, SelectIs, SelectAttrs, SelectContent, SelectChildAdmittedBy
-    , autocomplete, disabled, form, label, multiple, name, readonly, required, selected, size, value
+    , autocomplete, disabled, form, label, multiple, name, readonly, required, selected, size, value, defaultSelected, valueAsNumber
     )
 
 {-| The `Select` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs datalist, optgroup, option, select
 @docs DatalistIs, DatalistAttrs, DatalistContent, DatalistChildAdmittedBy, OptgroupIs, OptgroupAttrs, OptgroupContent, OptgroupChildAdmittedBy, OptgroupAdmittedBy, OptionIs, OptionAttrs, OptionContent, OptionChildAdmittedBy, OptionAdmittedBy, SelectIs, SelectAttrs, SelectContent, SelectChildAdmittedBy
-@docs autocomplete, disabled, form, label, multiple, name, readonly, required, selected, size, value
+@docs autocomplete, disabled, form, label, multiple, name, readonly, required, selected, size, value, defaultSelected, valueAsNumber
 
 -}
 
@@ -43,7 +43,6 @@ type alias DatalistAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -110,7 +109,6 @@ type alias OptgroupAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -182,7 +180,6 @@ type alias OptionAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -314,7 +311,6 @@ type alias SelectAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -431,13 +427,30 @@ selected =
 
 {-| See `TypedHtml.Attributes.size`.
 -}
-size : Float -> Attr { c | size : Supported } msg
+size : Int -> Attr { c | size : Supported } msg
 size =
     TypedHtml.Attributes.size
 
 
-{-| See `TypedHtml.Attributes.value`.
+{-| Value to be used for form submission
+
+Writes the `value` CONTENT attribute — correct for every element whose `value` REFLECTS, and the only form that serializes to server-rendered markup. It is NOT the live state on <input>, where the content attribute sets only the element's DEFAULT/initial `value` and stops taking effect once the user has changed it; use `TypedHtml.Input.value` for that.
+
 -}
 value : String -> Attr { c | value : Supported } msg
-value =
-    TypedHtml.Attributes.value
+value value_ =
+    Ir.attribute "value" value_
+
+
+{-| See `TypedHtml.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    TypedHtml.Attributes.defaultSelected
+
+
+{-| Set the `value` attribute from a number. An ergonomic alternative to `value`, which keeps the spec-correct `String` type; this one cannot express every legal value, so reach for `value` when you need one it cannot. Both claim the same capability, mirroring HTML's own `value` / `valueAsNumber` split.
+-}
+valueAsNumber : Float -> Attr { c | value : Supported } msg
+valueAsNumber value_ =
+    Ir.attribute "value" (String.fromFloat value_)

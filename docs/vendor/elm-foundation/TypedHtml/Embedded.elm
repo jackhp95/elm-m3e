@@ -1,7 +1,7 @@
 module TypedHtml.Embedded exposing
     ( area, canvas, embed, iframe, map, object
     , AreaIs, AreaAttrs, AreaChildAdmittedBy, CanvasAttrs, CanvasChildAdmittedBy, EmbedIs, EmbedAttrs, EmbedChildAdmittedBy, IframeIs, IframeAttrs, IframeChildAdmittedBy, MapAttrs, MapContent, MapChildAdmittedBy, ObjectAttrs, ObjectChildAdmittedBy
-    , allow, allowfullscreen, alt, coords, data, download, form, height, href, loading, name, ping, referrerpolicy, rel, sandbox, shape, src, srcdoc, target, width
+    , allow, allowfullscreen, alt, coords, data, download, form, height, href, loading, name, ping, referrerpolicy, rel, sandbox, shape, src, srcdoc, target, width, coordsAsInts
     )
 
 {-| The `Embedded` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs area, canvas, embed, iframe, map, object
 @docs AreaIs, AreaAttrs, AreaChildAdmittedBy, CanvasAttrs, CanvasChildAdmittedBy, EmbedIs, EmbedAttrs, EmbedChildAdmittedBy, IframeIs, IframeAttrs, IframeChildAdmittedBy, MapAttrs, MapContent, MapChildAdmittedBy, ObjectAttrs, ObjectChildAdmittedBy
-@docs allow, allowfullscreen, alt, coords, data, download, form, height, href, loading, name, ping, referrerpolicy, rel, sandbox, shape, src, srcdoc, target, width
+@docs allow, allowfullscreen, alt, coords, data, download, form, height, href, loading, name, ping, referrerpolicy, rel, sandbox, shape, src, srcdoc, target, width, coordsAsInts
 
 -}
 
@@ -47,7 +47,6 @@ type alias AreaAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -105,7 +104,6 @@ type alias CanvasAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -166,7 +164,6 @@ type alias EmbedAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -229,7 +226,6 @@ type alias IframeAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -288,7 +284,6 @@ type alias MapAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -351,7 +346,6 @@ type alias ObjectAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -413,7 +407,7 @@ alt =
 
 {-| See `TypedHtml.Attributes.coords`.
 -}
-coords : Float -> Attr { c | coords : Supported } msg
+coords : String -> Attr { c | coords : Supported } msg
 coords =
     TypedHtml.Attributes.coords
 
@@ -441,7 +435,7 @@ form =
 
 {-| See `TypedHtml.Attributes.height`.
 -}
-height : Float -> Attr { c | height : Supported } msg
+height : Int -> Attr { c | height : Supported } msg
 height =
     TypedHtml.Attributes.height
 
@@ -525,6 +519,13 @@ target =
 
 {-| See `TypedHtml.Attributes.width`.
 -}
-width : Float -> Attr { c | width : Supported } msg
+width : Int -> Attr { c | width : Supported } msg
 width =
     TypedHtml.Attributes.width
+
+
+{-| See `TypedHtml.Attributes.coordsAsInts`.
+-}
+coordsAsInts : List Int -> Attr { c | coords : Supported } msg
+coordsAsInts =
+    TypedHtml.Attributes.coordsAsInts

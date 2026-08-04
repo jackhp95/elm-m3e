@@ -40,7 +40,6 @@ type alias Attrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported

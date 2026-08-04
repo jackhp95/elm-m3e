@@ -1,7 +1,7 @@
 module TypedHtml.Media exposing
     ( audio, picture, pictureSource, source, track, video
     , AudioIs, AudioAttrs, AudioContent, AudioChildAdmittedBy, PictureIs, PictureAttrs, PictureContent, PictureChildAdmittedBy, PictureSourceIs, PictureSourceAttrs, PictureSourceChildAdmittedBy, PictureSourceAdmittedBy, SourceIs, SourceAttrs, SourceChildAdmittedBy, SourceAdmittedBy, TrackIs, TrackAttrs, TrackChildAdmittedBy, TrackAdmittedBy, VideoIs, VideoAttrs, VideoContent, VideoChildAdmittedBy
-    , autoplay, controls, crossorigin, default, height, kind, label, loading, loop, media, muted, playsinline, poster, preload, sizes, src, srclang, srcset, width
+    , autoplay, controls, crossorigin, default, height, kind, label, loading, loop, media, muted, playsinline, poster, preload, sizes, src, srclang, srcset, width, defaultMuted
     )
 
 {-| The `Media` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs audio, picture, pictureSource, source, track, video
 @docs AudioIs, AudioAttrs, AudioContent, AudioChildAdmittedBy, PictureIs, PictureAttrs, PictureContent, PictureChildAdmittedBy, PictureSourceIs, PictureSourceAttrs, PictureSourceChildAdmittedBy, PictureSourceAdmittedBy, SourceIs, SourceAttrs, SourceChildAdmittedBy, SourceAdmittedBy, TrackIs, TrackAttrs, TrackChildAdmittedBy, TrackAdmittedBy, VideoIs, VideoAttrs, VideoContent, VideoChildAdmittedBy
-@docs autoplay, controls, crossorigin, default, height, kind, label, loading, loop, media, muted, playsinline, poster, preload, sizes, src, srclang, srcset, width
+@docs autoplay, controls, crossorigin, default, height, kind, label, loading, loop, media, muted, playsinline, poster, preload, sizes, src, srclang, srcset, width, defaultMuted
 
 -}
 
@@ -46,7 +46,6 @@ type alias AudioAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -119,7 +118,6 @@ type alias PictureAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -186,7 +184,6 @@ type alias PictureSourceAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -254,7 +251,6 @@ type alias SourceAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -323,7 +319,6 @@ type alias TrackAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -394,7 +389,6 @@ type alias VideoAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -478,7 +472,7 @@ default =
 
 {-| See `TypedHtml.Attributes.height`.
 -}
-height : Float -> Attr { c | height : Supported } msg
+height : Int -> Attr { c | height : Supported } msg
 height =
     TypedHtml.Attributes.height
 
@@ -576,6 +570,13 @@ srcset =
 
 {-| See `TypedHtml.Attributes.width`.
 -}
-width : Float -> Attr { c | width : Supported } msg
+width : Int -> Attr { c | width : Supported } msg
 width =
     TypedHtml.Attributes.width
+
+
+{-| See `TypedHtml.Attributes.defaultMuted`.
+-}
+defaultMuted : Bool -> Attr { c | muted : Supported } msg
+defaultMuted =
+    TypedHtml.Attributes.defaultMuted

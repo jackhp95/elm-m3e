@@ -1,7 +1,7 @@
 module TypedHtml.Text exposing
     ( abbr, b, bdi, bdo, br, cite, code, data, del, dfn, em, i, ins, kbd, mark, meter, progress, q, rp, rt, ruby, s, samp, small, span, strong, sub, sup, time, u, var, wbr
     , AbbrIs, AbbrAttrs, AbbrContent, AbbrChildAdmittedBy, BIs, BAttrs, BContent, BChildAdmittedBy, BdiIs, BdiAttrs, BdiContent, BdiChildAdmittedBy, BdoIs, BdoAttrs, BdoContent, BdoChildAdmittedBy, BrIs, BrAttrs, BrChildAdmittedBy, CiteIs, CiteAttrs, CiteContent, CiteChildAdmittedBy, CodeIs, CodeAttrs, CodeContent, CodeChildAdmittedBy, DataIs, DataAttrs, DataContent, DataChildAdmittedBy, DelAttrs, DelChildAdmittedBy, DfnIs, DfnAttrs, DfnContent, DfnChildAdmittedBy, EmIs, EmAttrs, EmContent, EmChildAdmittedBy, IIs, IAttrs, IContent, IChildAdmittedBy, InsAttrs, InsChildAdmittedBy, KbdIs, KbdAttrs, KbdContent, KbdChildAdmittedBy, MarkIs, MarkAttrs, MarkContent, MarkChildAdmittedBy, MeterIs, MeterAttrs, MeterContent, MeterChildAdmittedBy, ProgressIs, ProgressAttrs, ProgressContent, ProgressChildAdmittedBy, QIs, QAttrs, QContent, QChildAdmittedBy, RpIs, RpAttrs, RpContent, RpChildAdmittedBy, RpAdmittedBy, RtIs, RtAttrs, RtContent, RtChildAdmittedBy, RtAdmittedBy, RubyIs, RubyAttrs, RubyContent, RubyChildAdmittedBy, SIs, SAttrs, SContent, SChildAdmittedBy, SampIs, SampAttrs, SampContent, SampChildAdmittedBy, SmallIs, SmallAttrs, SmallContent, SmallChildAdmittedBy, SpanIs, SpanAttrs, SpanContent, SpanChildAdmittedBy, SpanRoles, StrongIs, StrongAttrs, StrongContent, StrongChildAdmittedBy, SubIs, SubAttrs, SubContent, SubChildAdmittedBy, SupIs, SupAttrs, SupContent, SupChildAdmittedBy, TimeIs, TimeAttrs, TimeContent, TimeChildAdmittedBy, UIs, UAttrs, UContent, UChildAdmittedBy, VarIs, VarAttrs, VarContent, VarChildAdmittedBy, WbrIs, WbrAttrs, WbrChildAdmittedBy
-    , datetime, high, low, max, min, optimum, value
+    , datetime, high, low, max, min, optimum, value, valueNumeric, valueAsNumber
     )
 
 {-| The `Text` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs abbr, b, bdi, bdo, br, cite, code, data, del, dfn, em, i, ins, kbd, mark, meter, progress, q, rp, rt, ruby, s, samp, small, span, strong, sub, sup, time, u, var, wbr
 @docs AbbrIs, AbbrAttrs, AbbrContent, AbbrChildAdmittedBy, BIs, BAttrs, BContent, BChildAdmittedBy, BdiIs, BdiAttrs, BdiContent, BdiChildAdmittedBy, BdoIs, BdoAttrs, BdoContent, BdoChildAdmittedBy, BrIs, BrAttrs, BrChildAdmittedBy, CiteIs, CiteAttrs, CiteContent, CiteChildAdmittedBy, CodeIs, CodeAttrs, CodeContent, CodeChildAdmittedBy, DataIs, DataAttrs, DataContent, DataChildAdmittedBy, DelAttrs, DelChildAdmittedBy, DfnIs, DfnAttrs, DfnContent, DfnChildAdmittedBy, EmIs, EmAttrs, EmContent, EmChildAdmittedBy, IIs, IAttrs, IContent, IChildAdmittedBy, InsAttrs, InsChildAdmittedBy, KbdIs, KbdAttrs, KbdContent, KbdChildAdmittedBy, MarkIs, MarkAttrs, MarkContent, MarkChildAdmittedBy, MeterIs, MeterAttrs, MeterContent, MeterChildAdmittedBy, ProgressIs, ProgressAttrs, ProgressContent, ProgressChildAdmittedBy, QIs, QAttrs, QContent, QChildAdmittedBy, RpIs, RpAttrs, RpContent, RpChildAdmittedBy, RpAdmittedBy, RtIs, RtAttrs, RtContent, RtChildAdmittedBy, RtAdmittedBy, RubyIs, RubyAttrs, RubyContent, RubyChildAdmittedBy, SIs, SAttrs, SContent, SChildAdmittedBy, SampIs, SampAttrs, SampContent, SampChildAdmittedBy, SmallIs, SmallAttrs, SmallContent, SmallChildAdmittedBy, SpanIs, SpanAttrs, SpanContent, SpanChildAdmittedBy, SpanRoles, StrongIs, StrongAttrs, StrongContent, StrongChildAdmittedBy, SubIs, SubAttrs, SubContent, SubChildAdmittedBy, SupIs, SupAttrs, SupContent, SupChildAdmittedBy, TimeIs, TimeAttrs, TimeContent, TimeChildAdmittedBy, UIs, UAttrs, UContent, UChildAdmittedBy, VarIs, VarAttrs, VarContent, VarChildAdmittedBy, WbrIs, WbrAttrs, WbrChildAdmittedBy
-@docs datetime, high, low, max, min, optimum, value
+@docs datetime, high, low, max, min, optimum, value, valueNumeric, valueAsNumber
 
 -}
 
@@ -17,7 +17,6 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
-import Json.Encode
 import TypedHtml.Attributes
 import TypedHtml.Kind exposing (Brand, Ctx, Role)
 
@@ -44,7 +43,6 @@ type alias AbbrAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -163,7 +161,6 @@ type alias BAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -282,7 +279,6 @@ type alias BdiAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -401,7 +397,6 @@ type alias BdoAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -520,7 +515,6 @@ type alias BrAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -578,7 +572,6 @@ type alias CiteAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -697,7 +690,6 @@ type alias CodeAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -816,7 +808,6 @@ type alias DataAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -932,7 +923,6 @@ type alias DelAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -991,7 +981,6 @@ type alias DfnAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1110,7 +1099,6 @@ type alias EmAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1229,7 +1217,6 @@ type alias IAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1344,7 +1331,6 @@ type alias InsAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1403,7 +1389,6 @@ type alias KbdAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1522,7 +1507,6 @@ type alias MarkAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1642,7 +1626,6 @@ type alias MeterAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1662,7 +1645,7 @@ type alias MeterAttrs =
     , tabindex : Supported
     , title : Supported
     , translate : Supported
-    , value : Supported
+    , valueNumeric : Supported
     , writingsuggestions : Supported
     }
 
@@ -1766,7 +1749,6 @@ type alias ProgressAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1783,7 +1765,7 @@ type alias ProgressAttrs =
     , tabindex : Supported
     , title : Supported
     , translate : Supported
-    , value : Supported
+    , valueNumeric : Supported
     , writingsuggestions : Supported
     }
 
@@ -1888,7 +1870,6 @@ type alias QAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2007,7 +1988,6 @@ type alias RpAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2077,7 +2057,6 @@ type alias RtAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2202,7 +2181,6 @@ type alias RubyAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2323,7 +2301,6 @@ type alias SAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2442,7 +2419,6 @@ type alias SampAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2561,7 +2537,6 @@ type alias SmallAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2680,7 +2655,6 @@ type alias SpanAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2812,7 +2786,6 @@ type alias StrongAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -2931,7 +2904,6 @@ type alias SubAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -3050,7 +3022,6 @@ type alias SupAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -3170,7 +3141,6 @@ type alias TimeAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -3289,7 +3259,6 @@ type alias UAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -3408,7 +3377,6 @@ type alias VarAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -3527,7 +3495,6 @@ type alias WbrAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -3565,7 +3532,7 @@ wbr attrs children =
 
 {-| See `TypedHtml.Attributes.datetime`.
 -}
-datetime : Float -> Attr { c | datetime : Supported } msg
+datetime : String -> Attr { c | datetime : Supported } msg
 datetime =
     TypedHtml.Attributes.datetime
 
@@ -3605,8 +3572,25 @@ optimum =
     TypedHtml.Attributes.optimum
 
 
-{-| See `TypedHtml.Attributes.value`.
+{-| Machine-readable value
+
+Writes the `value` CONTENT attribute — correct for every element whose `value` REFLECTS, and the only form that serializes to server-rendered markup. It is NOT the live state on <input>, where the content attribute sets only the element's DEFAULT/initial `value` and stops taking effect once the user has changed it; use `TypedHtml.Input.value` for that.
+
 -}
 value : String -> Attr { c | value : Supported } msg
-value =
-    TypedHtml.Attributes.value
+value value_ =
+    Ir.attribute "value" value_
+
+
+{-| See `TypedHtml.Attributes.valueNumeric`.
+-}
+valueNumeric : Float -> Attr { c | valueNumeric : Supported } msg
+valueNumeric =
+    TypedHtml.Attributes.valueNumeric
+
+
+{-| Set the `value` attribute from a number. An ergonomic alternative to `value`, which keeps the spec-correct `String` type; this one cannot express every legal value, so reach for `value` when you need one it cannot. Both claim the same capability, mirroring HTML's own `value` / `valueAsNumber` split.
+-}
+valueAsNumber : Float -> Attr { c | value : Supported } msg
+valueAsNumber value_ =
+    Ir.attribute "value" (String.fromFloat value_)

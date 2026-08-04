@@ -43,7 +43,6 @@ type alias NoscriptAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -199,7 +198,6 @@ type alias ScriptAttrs =
     , inert : Supported
     , inputmode : Supported
     , integrity : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -261,7 +259,6 @@ type alias SlotAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -321,7 +318,6 @@ type alias TemplateAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported

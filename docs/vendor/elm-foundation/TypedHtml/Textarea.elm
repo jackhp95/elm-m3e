@@ -48,7 +48,6 @@ type alias Attrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -110,7 +109,7 @@ autocomplete =
 
 {-| See `TypedHtml.Attributes.cols`.
 -}
-cols : Float -> Attr { c | cols : Supported } msg
+cols : Int -> Attr { c | cols : Supported } msg
 cols =
     TypedHtml.Attributes.cols
 
@@ -138,14 +137,14 @@ form =
 
 {-| See `TypedHtml.Attributes.maxlength`.
 -}
-maxlength : Float -> Attr { c | maxlength : Supported } msg
+maxlength : Int -> Attr { c | maxlength : Supported } msg
 maxlength =
     TypedHtml.Attributes.maxlength
 
 
 {-| See `TypedHtml.Attributes.minlength`.
 -}
-minlength : Float -> Attr { c | minlength : Supported } msg
+minlength : Int -> Attr { c | minlength : Supported } msg
 minlength =
     TypedHtml.Attributes.minlength
 
@@ -180,7 +179,7 @@ required =
 
 {-| See `TypedHtml.Attributes.rows`.
 -}
-rows : Float -> Attr { c | rows : Supported } msg
+rows : Int -> Attr { c | rows : Supported } msg
 rows =
     TypedHtml.Attributes.rows
 

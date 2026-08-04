@@ -48,7 +48,6 @@ type alias Attrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , ismap : Supported
     , itemid : Supported
     , itemprop : Supported
@@ -122,7 +121,7 @@ fetchpriority value_ =
 
 {-| See `TypedHtml.Attributes.height`.
 -}
-height : Float -> Attr { c | height : Supported } msg
+height : Int -> Attr { c | height : Supported } msg
 height =
     TypedHtml.Attributes.height
 
@@ -178,6 +177,6 @@ usemap =
 
 {-| See `TypedHtml.Attributes.width`.
 -}
-width : Float -> Attr { c | width : Supported } msg
+width : Int -> Attr { c | width : Supported } msg
 width =
     TypedHtml.Attributes.width

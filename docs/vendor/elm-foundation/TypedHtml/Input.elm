@@ -1,7 +1,7 @@
 module TypedHtml.Input exposing
     ( input
     , Is, Attrs, ChildAdmittedBy
-    , accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, type_, value, width
+    , accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, type_, value, width, defaultChecked, defaultValue, stepAsNumber, valueAsNumber
     )
 
 {-| The `Input` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs input
 @docs Is, Attrs, ChildAdmittedBy
-@docs accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, type_, value, width
+@docs accept, alpha, alt, autocomplete, checked, colorspace, dirname, disabled, form, formenctype, formmethod, formnovalidate, formtarget, height, list, max, maxlength, min, minlength, multiple, name, pattern, placeholder, popovertarget, popovertargetaction, readonly, required, size, src, step, type_, value, width, defaultChecked, defaultValue, stepAsNumber, valueAsNumber
 
 -}
 
@@ -48,7 +48,6 @@ type alias Attrs =
     , draggable : Supported
     , enterkeyhint : Supported
     , form : Supported
-    , formaction : Supported
     , formenctype : Supported
     , formmethod : Supported
     , formnovalidate : Supported
@@ -58,7 +57,6 @@ type alias Attrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -179,13 +177,6 @@ form =
     TypedHtml.Attributes.form
 
 
-{-| See `TypedHtml.Attributes.formaction`.
--}
-formaction : String -> Attr { c | formaction : Supported } msg
-formaction =
-    TypedHtml.Attributes.formaction
-
-
 {-| Entry list encoding type to use for form submission
 -}
 formenctype : String -> Attr { c | formenctype : Supported } msg
@@ -216,7 +207,7 @@ formtarget =
 
 {-| See `TypedHtml.Attributes.height`.
 -}
-height : Float -> Attr { c | height : Supported } msg
+height : Int -> Attr { c | height : Supported } msg
 height =
     TypedHtml.Attributes.height
 
@@ -237,7 +228,7 @@ max =
 
 {-| See `TypedHtml.Attributes.maxlength`.
 -}
-maxlength : Float -> Attr { c | maxlength : Supported } msg
+maxlength : Int -> Attr { c | maxlength : Supported } msg
 maxlength =
     TypedHtml.Attributes.maxlength
 
@@ -251,7 +242,7 @@ min =
 
 {-| See `TypedHtml.Attributes.minlength`.
 -}
-minlength : Float -> Attr { c | minlength : Supported } msg
+minlength : Int -> Attr { c | minlength : Supported } msg
 minlength =
     TypedHtml.Attributes.minlength
 
@@ -314,7 +305,7 @@ required =
 
 {-| See `TypedHtml.Attributes.size`.
 -}
-size : Float -> Attr { c | size : Supported } msg
+size : Int -> Attr { c | size : Supported } msg
 size =
     TypedHtml.Attributes.size
 
@@ -328,7 +319,7 @@ src =
 
 {-| See `TypedHtml.Attributes.step`.
 -}
-step : Float -> Attr { c | step : Supported } msg
+step : String -> Attr { c | step : Supported } msg
 step =
     TypedHtml.Attributes.step
 
@@ -349,6 +340,34 @@ value =
 
 {-| See `TypedHtml.Attributes.width`.
 -}
-width : Float -> Attr { c | width : Supported } msg
+width : Int -> Attr { c | width : Supported } msg
 width =
     TypedHtml.Attributes.width
+
+
+{-| See `TypedHtml.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    TypedHtml.Attributes.defaultChecked
+
+
+{-| See `TypedHtml.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    TypedHtml.Attributes.defaultValue
+
+
+{-| See `TypedHtml.Attributes.stepAsNumber`.
+-}
+stepAsNumber : Float -> Attr { c | step : Supported } msg
+stepAsNumber =
+    TypedHtml.Attributes.stepAsNumber
+
+
+{-| See `TypedHtml.Attributes.valueAsNumber`.
+-}
+valueAsNumber : Float -> Attr { c | value : Supported } msg
+valueAsNumber =
+    TypedHtml.Attributes.valueAsNumber

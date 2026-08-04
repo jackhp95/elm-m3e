@@ -1,7 +1,7 @@
 module TypedHtml.Grouping exposing
     ( blockquote, dd, dialog, div, dl, dt, figcaption, figure, hr, li, menu, ol, p, pre, ul
     , BlockquoteIs, BlockquoteAttrs, BlockquoteChildAdmittedBy, DdIs, DdAttrs, DdContent, DdChildAdmittedBy, DdAdmittedBy, DialogIs, DialogAttrs, DialogChildAdmittedBy, DivIs, DivAttrs, DivChildAdmittedBy, DivRoles, DlIs, DlAttrs, DlContent, DlChildAdmittedBy, DtIs, DtAttrs, DtContent, DtChildAdmittedBy, DtAdmittedBy, FigcaptionIs, FigcaptionAttrs, FigcaptionContent, FigcaptionChildAdmittedBy, FigcaptionAdmittedBy, FigureIs, FigureAttrs, FigureChildAdmittedBy, HrIs, HrAttrs, HrChildAdmittedBy, LiIs, LiAttrs, LiContent, LiChildAdmittedBy, LiAdmittedBy, MenuIs, MenuAttrs, MenuContent, MenuChildAdmittedBy, OlIs, OlAttrs, OlContent, OlChildAdmittedBy, PIs, PAttrs, PContent, PChildAdmittedBy, PreIs, PreAttrs, PreContent, PreChildAdmittedBy, UlIs, UlAttrs, UlContent, UlChildAdmittedBy
-    , cite, closedby, open, reversed, start, value
+    , cite, closedby, open, reversed, start, valueOrdinal
     )
 
 {-| The `Grouping` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs blockquote, dd, dialog, div, dl, dt, figcaption, figure, hr, li, menu, ol, p, pre, ul
 @docs BlockquoteIs, BlockquoteAttrs, BlockquoteChildAdmittedBy, DdIs, DdAttrs, DdContent, DdChildAdmittedBy, DdAdmittedBy, DialogIs, DialogAttrs, DialogChildAdmittedBy, DivIs, DivAttrs, DivChildAdmittedBy, DivRoles, DlIs, DlAttrs, DlContent, DlChildAdmittedBy, DtIs, DtAttrs, DtContent, DtChildAdmittedBy, DtAdmittedBy, FigcaptionIs, FigcaptionAttrs, FigcaptionContent, FigcaptionChildAdmittedBy, FigcaptionAdmittedBy, FigureIs, FigureAttrs, FigureChildAdmittedBy, HrIs, HrAttrs, HrChildAdmittedBy, LiIs, LiAttrs, LiContent, LiChildAdmittedBy, LiAdmittedBy, MenuIs, MenuAttrs, MenuContent, MenuChildAdmittedBy, OlIs, OlAttrs, OlContent, OlChildAdmittedBy, PIs, PAttrs, PContent, PChildAdmittedBy, PreIs, PreAttrs, PreContent, PreChildAdmittedBy, UlIs, UlAttrs, UlContent, UlChildAdmittedBy
-@docs cite, closedby, open, reversed, start, value
+@docs cite, closedby, open, reversed, start, valueOrdinal
 
 -}
 
@@ -44,7 +44,6 @@ type alias BlockquoteAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -102,7 +101,6 @@ type alias DdAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -259,7 +257,6 @@ type alias DialogAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -318,7 +315,6 @@ type alias DivAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -401,7 +397,6 @@ type alias DlAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -468,7 +463,6 @@ type alias DtAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -624,7 +618,6 @@ type alias FigcaptionAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -780,7 +773,6 @@ type alias FigureAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -838,7 +830,6 @@ type alias HrAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -896,7 +887,6 @@ type alias LiAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -912,7 +902,7 @@ type alias LiAttrs =
     , tabindex : Supported
     , title : Supported
     , translate : Supported
-    , value : Supported
+    , valueOrdinal : Supported
     , writingsuggestions : Supported
     }
 
@@ -1053,7 +1043,6 @@ type alias MenuAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1117,7 +1106,6 @@ type alias OlAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1183,7 +1171,6 @@ type alias PAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1302,7 +1289,6 @@ type alias PreAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1421,7 +1407,6 @@ type alias UlAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -1493,13 +1478,13 @@ reversed =
 
 {-| See `TypedHtml.Attributes.start`.
 -}
-start : Float -> Attr { c | start : Supported } msg
+start : Int -> Attr { c | start : Supported } msg
 start =
     TypedHtml.Attributes.start
 
 
-{-| See `TypedHtml.Attributes.value`.
+{-| See `TypedHtml.Attributes.valueOrdinal`.
 -}
-value : String -> Attr { c | value : Supported } msg
-value =
-    TypedHtml.Attributes.value
+valueOrdinal : Int -> Attr { c | valueOrdinal : Supported } msg
+valueOrdinal =
+    TypedHtml.Attributes.valueOrdinal

@@ -43,7 +43,6 @@ type alias CaptionAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -199,7 +198,6 @@ type alias ColAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -264,7 +262,6 @@ type alias ColgroupAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -335,7 +332,6 @@ type alias TableAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -404,7 +400,6 @@ type alias TbodyAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -476,7 +471,6 @@ type alias TdAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -633,7 +627,6 @@ type alias TfootAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -706,7 +699,6 @@ type alias ThAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -864,7 +856,6 @@ type alias TheadAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -934,7 +925,6 @@ type alias TrAttrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -993,7 +983,7 @@ abbr =
 
 {-| See `TypedHtml.Attributes.colspan`.
 -}
-colspan : Float -> Attr { c | colspan : Supported } msg
+colspan : Int -> Attr { c | colspan : Supported } msg
 colspan =
     TypedHtml.Attributes.colspan
 
@@ -1007,7 +997,7 @@ headers =
 
 {-| See `TypedHtml.Attributes.rowspan`.
 -}
-rowspan : Float -> Attr { c | rowspan : Supported } msg
+rowspan : Int -> Attr { c | rowspan : Supported } msg
 rowspan =
     TypedHtml.Attributes.rowspan
 
@@ -1021,6 +1011,6 @@ scope value_ =
 
 {-| See `TypedHtml.Attributes.span`.
 -}
-span : Float -> Attr { c | span : Supported } msg
+span : Int -> Attr { c | span : Supported } msg
 span =
     TypedHtml.Attributes.span

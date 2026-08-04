@@ -1,7 +1,7 @@
 module TypedHtml.Values exposing
-    ( Blocking, Charset, Closedby, Colorspace, Crossorigin, Decoding, Enctype, Fetchpriority, Formenctype, Formmethod, HttpEquiv, Kind, Loading, Method, Popovertargetaction, Preload, Referrerpolicy, Sandbox, Scope, Shadowrootmode, Shadowrootslotassignment, Shape, Wrap
-    , value, allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols, anonymous, any, applicationXWwwFormUrlencoded, async, auto, captions, chapters, circle, closed, closerequest, col, colgroup, contentSecurityPolicy, contentType, default, defaultStyle, descriptions, dialog, displayP3, eager, get, hard, hide, high, lazy, limitedSrgb, low, manual, metadata, multipartFormData, named, noReferrer, noReferrerWhenDowngrade, none, open, origin, originWhenCrossOrigin, poly, post, rect, refresh, render, row, rowgroup, sameOrigin, show, soft, strictOrigin, strictOriginWhenCrossOrigin, subtitles, sync, textPlain, toggle, unsafeUrl, useCredentials, utf8, xUaCompatible
-    , blockingRender, charsetUtf8, closedbyAny, closedbyCloserequest, closedbyNone, colorspaceDisplayP3, colorspaceLimitedSrgb, crossoriginValue, crossoriginAnonymous, crossoriginUseCredentials, decodingAsync, decodingAuto, decodingSync, enctypeApplicationXWwwFormUrlencoded, enctypeMultipartFormData, enctypeTextPlain, fetchpriorityAuto, fetchpriorityHigh, fetchpriorityLow, formenctypeApplicationXWwwFormUrlencoded, formenctypeMultipartFormData, formenctypeTextPlain, formmethodDialog, formmethodGet, formmethodPost, httpEquivContentSecurityPolicy, httpEquivContentType, httpEquivDefaultStyle, httpEquivRefresh, httpEquivXUaCompatible, kindCaptions, kindChapters, kindDescriptions, kindMetadata, kindSubtitles, loadingEager, loadingLazy, methodDialog, methodGet, methodPost, popovertargetactionHide, popovertargetactionShow, popovertargetactionToggle, preloadValue, preloadAuto, preloadMetadata, preloadNone, referrerpolicyValue, referrerpolicyNoReferrer, referrerpolicyNoReferrerWhenDowngrade, referrerpolicyOrigin, referrerpolicyOriginWhenCrossOrigin, referrerpolicySameOrigin, referrerpolicyStrictOrigin, referrerpolicyStrictOriginWhenCrossOrigin, referrerpolicyUnsafeUrl, sandboxAllowDownloads, sandboxAllowForms, sandboxAllowModals, sandboxAllowOrientationLock, sandboxAllowPointerLock, sandboxAllowPopups, sandboxAllowPopupsToEscapeSandbox, sandboxAllowPresentation, sandboxAllowSameOrigin, sandboxAllowScripts, sandboxAllowTopNavigation, sandboxAllowTopNavigationByUserActivation, sandboxAllowTopNavigationToCustomProtocols, scopeCol, scopeColgroup, scopeRow, scopeRowgroup, shadowrootmodeClosed, shadowrootmodeOpen, shadowrootslotassignmentManual, shadowrootslotassignmentNamed, shapeCircle, shapeDefault, shapePoly, shapeRect, wrapHard, wrapSoft
+    ( Autocapitalize, Autocorrect, Blocking, Charset, Closedby, Colorspace, Contenteditable, Crossorigin, Decoding, Dir, Draggable, Enctype, Enterkeyhint, Fetchpriority, Formenctype, Formmethod, Hidden, HttpEquiv, Inputmode, Kind, Loading, Method, Popover, Popovertargetaction, Preload, Referrerpolicy, Sandbox, Scope, Shadowrootmode, Shadowrootslotassignment, Shape, Spellcheck, Translate, Wrap, Writingsuggestions
+    , value, allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols, anonymous, any, applicationXWwwFormUrlencoded, async, auto, captions, chapters, characters, circle, closed, closerequest, col, colgroup, contentSecurityPolicy, contentType, decimal, default, defaultStyle, descriptions, dialog, displayP3, done, eager, email, enter, false, get, go, hard, hidden, hide, high, hint, lazy, limitedSrgb, low, ltr, manual, metadata, multipartFormData, named, next, no, noReferrer, noReferrerWhenDowngrade, none, numeric, off, on, open, origin, originWhenCrossOrigin, plaintextOnly, poly, post, previous, rect, refresh, render, row, rowgroup, rtl, sameOrigin, search, send, sentences, show, soft, strictOrigin, strictOriginWhenCrossOrigin, subtitles, sync, tel, text, textPlain, toggle, true, unsafeUrl, untilFound, url, useCredentials, utf8, words, xUaCompatible, yes
+    , autocapitalizeCharacters, autocapitalizeNone, autocapitalizeOff, autocapitalizeSentences, autocapitalizeWords, autocorrectOff, autocorrectOn, blockingRender, charsetUtf8, closedbyAny, closedbyCloserequest, closedbyNone, colorspaceDisplayP3, colorspaceLimitedSrgb, contenteditableFalse, contenteditablePlaintextOnly, contenteditableTrue, crossoriginValue, crossoriginAnonymous, crossoriginUseCredentials, decodingAsync, decodingAuto, decodingSync, dirAuto, dirLtr, dirRtl, draggableFalse, draggableTrue, enctypeApplicationXWwwFormUrlencoded, enctypeMultipartFormData, enctypeTextPlain, enterkeyhintDone, enterkeyhintEnter, enterkeyhintGo, enterkeyhintNext, enterkeyhintPrevious, enterkeyhintSearch, enterkeyhintSend, fetchpriorityAuto, fetchpriorityHigh, fetchpriorityLow, formenctypeApplicationXWwwFormUrlencoded, formenctypeMultipartFormData, formenctypeTextPlain, formmethodDialog, formmethodGet, formmethodPost, hiddenHidden, hiddenUntilFound, httpEquivContentSecurityPolicy, httpEquivContentType, httpEquivDefaultStyle, httpEquivRefresh, httpEquivXUaCompatible, inputmodeDecimal, inputmodeEmail, inputmodeNone, inputmodeNumeric, inputmodeSearch, inputmodeTel, inputmodeText, inputmodeUrl, kindCaptions, kindChapters, kindDescriptions, kindMetadata, kindSubtitles, loadingEager, loadingLazy, methodDialog, methodGet, methodPost, popoverAuto, popoverHint, popoverManual, popovertargetactionHide, popovertargetactionShow, popovertargetactionToggle, preloadValue, preloadAuto, preloadMetadata, preloadNone, referrerpolicyValue, referrerpolicyNoReferrer, referrerpolicyNoReferrerWhenDowngrade, referrerpolicyOrigin, referrerpolicyOriginWhenCrossOrigin, referrerpolicySameOrigin, referrerpolicyStrictOrigin, referrerpolicyStrictOriginWhenCrossOrigin, referrerpolicyUnsafeUrl, sandboxAllowDownloads, sandboxAllowForms, sandboxAllowModals, sandboxAllowOrientationLock, sandboxAllowPointerLock, sandboxAllowPopups, sandboxAllowPopupsToEscapeSandbox, sandboxAllowPresentation, sandboxAllowSameOrigin, sandboxAllowScripts, sandboxAllowTopNavigation, sandboxAllowTopNavigationByUserActivation, sandboxAllowTopNavigationToCustomProtocols, scopeCol, scopeColgroup, scopeRow, scopeRowgroup, shadowrootmodeClosed, shadowrootmodeOpen, shadowrootslotassignmentManual, shadowrootslotassignmentNamed, shapeCircle, shapeDefault, shapePoly, shapeRect, spellcheckFalse, spellcheckTrue, translateNo, translateYes, wrapHard, wrapSoft, writingsuggestionsFalse, writingsuggestionsTrue
     )
 
 {-| The enum-value vocabulary: every token minted once (open row), plus the
@@ -10,15 +10,34 @@ portmanteaus (`variantFilled`, `shapeRounded`, …) for IDE discovery.
 General setters close over the union; per-component setters narrow — both
 are fed by these same tokens.
 
-@docs Blocking, Charset, Closedby, Colorspace, Crossorigin, Decoding, Enctype, Fetchpriority, Formenctype, Formmethod, HttpEquiv, Kind, Loading, Method, Popovertargetaction, Preload, Referrerpolicy, Sandbox, Scope, Shadowrootmode, Shadowrootslotassignment, Shape, Wrap
-@docs value, allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols, anonymous, any, applicationXWwwFormUrlencoded, async, auto, captions, chapters, circle, closed, closerequest, col, colgroup, contentSecurityPolicy, contentType, default, defaultStyle, descriptions, dialog, displayP3, eager, get, hard, hide, high, lazy, limitedSrgb, low, manual, metadata, multipartFormData, named, noReferrer, noReferrerWhenDowngrade, none, open, origin, originWhenCrossOrigin, poly, post, rect, refresh, render, row, rowgroup, sameOrigin, show, soft, strictOrigin, strictOriginWhenCrossOrigin, subtitles, sync, textPlain, toggle, unsafeUrl, useCredentials, utf8, xUaCompatible
-@docs blockingRender, charsetUtf8, closedbyAny, closedbyCloserequest, closedbyNone, colorspaceDisplayP3, colorspaceLimitedSrgb, crossoriginValue, crossoriginAnonymous, crossoriginUseCredentials, decodingAsync, decodingAuto, decodingSync, enctypeApplicationXWwwFormUrlencoded, enctypeMultipartFormData, enctypeTextPlain, fetchpriorityAuto, fetchpriorityHigh, fetchpriorityLow, formenctypeApplicationXWwwFormUrlencoded, formenctypeMultipartFormData, formenctypeTextPlain, formmethodDialog, formmethodGet, formmethodPost, httpEquivContentSecurityPolicy, httpEquivContentType, httpEquivDefaultStyle, httpEquivRefresh, httpEquivXUaCompatible, kindCaptions, kindChapters, kindDescriptions, kindMetadata, kindSubtitles, loadingEager, loadingLazy, methodDialog, methodGet, methodPost, popovertargetactionHide, popovertargetactionShow, popovertargetactionToggle, preloadValue, preloadAuto, preloadMetadata, preloadNone, referrerpolicyValue, referrerpolicyNoReferrer, referrerpolicyNoReferrerWhenDowngrade, referrerpolicyOrigin, referrerpolicyOriginWhenCrossOrigin, referrerpolicySameOrigin, referrerpolicyStrictOrigin, referrerpolicyStrictOriginWhenCrossOrigin, referrerpolicyUnsafeUrl, sandboxAllowDownloads, sandboxAllowForms, sandboxAllowModals, sandboxAllowOrientationLock, sandboxAllowPointerLock, sandboxAllowPopups, sandboxAllowPopupsToEscapeSandbox, sandboxAllowPresentation, sandboxAllowSameOrigin, sandboxAllowScripts, sandboxAllowTopNavigation, sandboxAllowTopNavigationByUserActivation, sandboxAllowTopNavigationToCustomProtocols, scopeCol, scopeColgroup, scopeRow, scopeRowgroup, shadowrootmodeClosed, shadowrootmodeOpen, shadowrootslotassignmentManual, shadowrootslotassignmentNamed, shapeCircle, shapeDefault, shapePoly, shapeRect, wrapHard, wrapSoft
+@docs Autocapitalize, Autocorrect, Blocking, Charset, Closedby, Colorspace, Contenteditable, Crossorigin, Decoding, Dir, Draggable, Enctype, Enterkeyhint, Fetchpriority, Formenctype, Formmethod, Hidden, HttpEquiv, Inputmode, Kind, Loading, Method, Popover, Popovertargetaction, Preload, Referrerpolicy, Sandbox, Scope, Shadowrootmode, Shadowrootslotassignment, Shape, Spellcheck, Translate, Wrap, Writingsuggestions
+@docs value, allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols, anonymous, any, applicationXWwwFormUrlencoded, async, auto, captions, chapters, characters, circle, closed, closerequest, col, colgroup, contentSecurityPolicy, contentType, decimal, default, defaultStyle, descriptions, dialog, displayP3, done, eager, email, enter, false, get, go, hard, hidden, hide, high, hint, lazy, limitedSrgb, low, ltr, manual, metadata, multipartFormData, named, next, no, noReferrer, noReferrerWhenDowngrade, none, numeric, off, on, open, origin, originWhenCrossOrigin, plaintextOnly, poly, post, previous, rect, refresh, render, row, rowgroup, rtl, sameOrigin, search, send, sentences, show, soft, strictOrigin, strictOriginWhenCrossOrigin, subtitles, sync, tel, text, textPlain, toggle, true, unsafeUrl, untilFound, url, useCredentials, utf8, words, xUaCompatible, yes
+@docs autocapitalizeCharacters, autocapitalizeNone, autocapitalizeOff, autocapitalizeSentences, autocapitalizeWords, autocorrectOff, autocorrectOn, blockingRender, charsetUtf8, closedbyAny, closedbyCloserequest, closedbyNone, colorspaceDisplayP3, colorspaceLimitedSrgb, contenteditableFalse, contenteditablePlaintextOnly, contenteditableTrue, crossoriginValue, crossoriginAnonymous, crossoriginUseCredentials, decodingAsync, decodingAuto, decodingSync, dirAuto, dirLtr, dirRtl, draggableFalse, draggableTrue, enctypeApplicationXWwwFormUrlencoded, enctypeMultipartFormData, enctypeTextPlain, enterkeyhintDone, enterkeyhintEnter, enterkeyhintGo, enterkeyhintNext, enterkeyhintPrevious, enterkeyhintSearch, enterkeyhintSend, fetchpriorityAuto, fetchpriorityHigh, fetchpriorityLow, formenctypeApplicationXWwwFormUrlencoded, formenctypeMultipartFormData, formenctypeTextPlain, formmethodDialog, formmethodGet, formmethodPost, hiddenHidden, hiddenUntilFound, httpEquivContentSecurityPolicy, httpEquivContentType, httpEquivDefaultStyle, httpEquivRefresh, httpEquivXUaCompatible, inputmodeDecimal, inputmodeEmail, inputmodeNone, inputmodeNumeric, inputmodeSearch, inputmodeTel, inputmodeText, inputmodeUrl, kindCaptions, kindChapters, kindDescriptions, kindMetadata, kindSubtitles, loadingEager, loadingLazy, methodDialog, methodGet, methodPost, popoverAuto, popoverHint, popoverManual, popovertargetactionHide, popovertargetactionShow, popovertargetactionToggle, preloadValue, preloadAuto, preloadMetadata, preloadNone, referrerpolicyValue, referrerpolicyNoReferrer, referrerpolicyNoReferrerWhenDowngrade, referrerpolicyOrigin, referrerpolicyOriginWhenCrossOrigin, referrerpolicySameOrigin, referrerpolicyStrictOrigin, referrerpolicyStrictOriginWhenCrossOrigin, referrerpolicyUnsafeUrl, sandboxAllowDownloads, sandboxAllowForms, sandboxAllowModals, sandboxAllowOrientationLock, sandboxAllowPointerLock, sandboxAllowPopups, sandboxAllowPopupsToEscapeSandbox, sandboxAllowPresentation, sandboxAllowSameOrigin, sandboxAllowScripts, sandboxAllowTopNavigation, sandboxAllowTopNavigationByUserActivation, sandboxAllowTopNavigationToCustomProtocols, scopeCol, scopeColgroup, scopeRow, scopeRowgroup, shadowrootmodeClosed, shadowrootmodeOpen, shadowrootslotassignmentManual, shadowrootslotassignmentNamed, shapeCircle, shapeDefault, shapePoly, shapeRect, spellcheckFalse, spellcheckTrue, translateNo, translateYes, wrapHard, wrapSoft, writingsuggestionsFalse, writingsuggestionsTrue
 
 -}
 
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value exposing (Value)
+
+
+{-| The union row for `autocapitalize`.
+-}
+type alias Autocapitalize =
+    { characters : Supported
+    , none : Supported
+    , off : Supported
+    , sentences : Supported
+    , words : Supported
+    }
+
+
+{-| The union row for `autocorrect`.
+-}
+type alias Autocorrect =
+    { off : Supported
+    , on : Supported
+    }
 
 
 {-| The union row for `blocking`.
@@ -52,6 +71,15 @@ type alias Colorspace =
     }
 
 
+{-| The union row for `contenteditable`.
+-}
+type alias Contenteditable =
+    { false : Supported
+    , plaintextOnly : Supported
+    , true : Supported
+    }
+
+
 {-| The union row for `crossorigin`.
 -}
 type alias Crossorigin =
@@ -70,12 +98,42 @@ type alias Decoding =
     }
 
 
+{-| The union row for `dir`.
+-}
+type alias Dir =
+    { auto : Supported
+    , ltr : Supported
+    , rtl : Supported
+    }
+
+
+{-| The union row for `draggable`.
+-}
+type alias Draggable =
+    { false : Supported
+    , true : Supported
+    }
+
+
 {-| The union row for `enctype`.
 -}
 type alias Enctype =
     { applicationXWwwFormUrlencoded : Supported
     , multipartFormData : Supported
     , textPlain : Supported
+    }
+
+
+{-| The union row for `enterkeyhint`.
+-}
+type alias Enterkeyhint =
+    { done : Supported
+    , enter : Supported
+    , go : Supported
+    , next : Supported
+    , previous : Supported
+    , search : Supported
+    , send : Supported
     }
 
 
@@ -106,6 +164,14 @@ type alias Formmethod =
     }
 
 
+{-| The union row for `hidden`.
+-}
+type alias Hidden =
+    { hidden : Supported
+    , untilFound : Supported
+    }
+
+
 {-| The union row for `httpEquiv`.
 -}
 type alias HttpEquiv =
@@ -114,6 +180,20 @@ type alias HttpEquiv =
     , defaultStyle : Supported
     , refresh : Supported
     , xUaCompatible : Supported
+    }
+
+
+{-| The union row for `inputmode`.
+-}
+type alias Inputmode =
+    { decimal : Supported
+    , email : Supported
+    , none : Supported
+    , numeric : Supported
+    , search : Supported
+    , tel : Supported
+    , text : Supported
+    , url : Supported
     }
 
 
@@ -142,6 +222,15 @@ type alias Method =
     { dialog : Supported
     , get : Supported
     , post : Supported
+    }
+
+
+{-| The union row for `popover`.
+-}
+type alias Popover =
+    { auto : Supported
+    , hint : Supported
+    , manual : Supported
     }
 
 
@@ -234,11 +323,35 @@ type alias Shape =
     }
 
 
+{-| The union row for `spellcheck`.
+-}
+type alias Spellcheck =
+    { false : Supported
+    , true : Supported
+    }
+
+
+{-| The union row for `translate`.
+-}
+type alias Translate =
+    { no : Supported
+    , yes : Supported
+    }
+
+
 {-| The union row for `wrap`.
 -}
 type alias Wrap =
     { hard : Supported
     , soft : Supported
+    }
+
+
+{-| The union row for `writingsuggestions`.
+-}
+type alias Writingsuggestions =
+    { false : Supported
+    , true : Supported
     }
 
 
@@ -389,6 +502,13 @@ chapters =
     Ir.token "chapters"
 
 
+{-| The `characters` token.
+-}
+characters : Value { v | characters : Supported }
+characters =
+    Ir.token "characters"
+
+
 {-| The `circle` token.
 -}
 circle : Value { v | circle : Supported }
@@ -438,6 +558,13 @@ contentType =
     Ir.token "content-type"
 
 
+{-| The `decimal` token.
+-}
+decimal : Value { v | decimal : Supported }
+decimal =
+    Ir.token "decimal"
+
+
 {-| The `default` token.
 -}
 default : Value { v | default : Supported }
@@ -473,11 +600,39 @@ displayP3 =
     Ir.token "display-p3"
 
 
+{-| The `done` token.
+-}
+done : Value { v | done : Supported }
+done =
+    Ir.token "done"
+
+
 {-| The `eager` token.
 -}
 eager : Value { v | eager : Supported }
 eager =
     Ir.token "eager"
+
+
+{-| The `email` token.
+-}
+email : Value { v | email : Supported }
+email =
+    Ir.token "email"
+
+
+{-| The `enter` token.
+-}
+enter : Value { v | enter : Supported }
+enter =
+    Ir.token "enter"
+
+
+{-| The `false` token.
+-}
+false : Value { v | false : Supported }
+false =
+    Ir.token "false"
 
 
 {-| The `get` token.
@@ -487,11 +642,25 @@ get =
     Ir.token "get"
 
 
+{-| The `go` token.
+-}
+go : Value { v | go : Supported }
+go =
+    Ir.token "go"
+
+
 {-| The `hard` token.
 -}
 hard : Value { v | hard : Supported }
 hard =
     Ir.token "hard"
+
+
+{-| The `hidden` token.
+-}
+hidden : Value { v | hidden : Supported }
+hidden =
+    Ir.token "hidden"
 
 
 {-| The `hide` token.
@@ -506,6 +675,13 @@ hide =
 high : Value { v | high : Supported }
 high =
     Ir.token "high"
+
+
+{-| The `hint` token.
+-}
+hint : Value { v | hint : Supported }
+hint =
+    Ir.token "hint"
 
 
 {-| The `lazy` token.
@@ -527,6 +703,13 @@ limitedSrgb =
 low : Value { v | low : Supported }
 low =
     Ir.token "low"
+
+
+{-| The `ltr` token.
+-}
+ltr : Value { v | ltr : Supported }
+ltr =
+    Ir.token "ltr"
 
 
 {-| The `manual` token.
@@ -557,6 +740,20 @@ named =
     Ir.token "named"
 
 
+{-| The `next` token.
+-}
+next : Value { v | next : Supported }
+next =
+    Ir.token "next"
+
+
+{-| The `no` token.
+-}
+no : Value { v | no : Supported }
+no =
+    Ir.token "no"
+
+
 {-| The `no-referrer` token.
 -}
 noReferrer : Value { v | noReferrer : Supported }
@@ -576,6 +773,27 @@ noReferrerWhenDowngrade =
 none : Value { v | none : Supported }
 none =
     Ir.token "none"
+
+
+{-| The `numeric` token.
+-}
+numeric : Value { v | numeric : Supported }
+numeric =
+    Ir.token "numeric"
+
+
+{-| The `off` token.
+-}
+off : Value { v | off : Supported }
+off =
+    Ir.token "off"
+
+
+{-| The `on` token.
+-}
+on : Value { v | on : Supported }
+on =
+    Ir.token "on"
 
 
 {-| The `open` token.
@@ -599,6 +817,13 @@ originWhenCrossOrigin =
     Ir.token "origin-when-cross-origin"
 
 
+{-| The `plaintext-only` token.
+-}
+plaintextOnly : Value { v | plaintextOnly : Supported }
+plaintextOnly =
+    Ir.token "plaintext-only"
+
+
 {-| The `poly` token.
 -}
 poly : Value { v | poly : Supported }
@@ -611,6 +836,13 @@ poly =
 post : Value { v | post : Supported }
 post =
     Ir.token "post"
+
+
+{-| The `previous` token.
+-}
+previous : Value { v | previous : Supported }
+previous =
+    Ir.token "previous"
 
 
 {-| The `rect` token.
@@ -648,11 +880,39 @@ rowgroup =
     Ir.token "rowgroup"
 
 
+{-| The `rtl` token.
+-}
+rtl : Value { v | rtl : Supported }
+rtl =
+    Ir.token "rtl"
+
+
 {-| The `same-origin` token.
 -}
 sameOrigin : Value { v | sameOrigin : Supported }
 sameOrigin =
     Ir.token "same-origin"
+
+
+{-| The `search` token.
+-}
+search : Value { v | search : Supported }
+search =
+    Ir.token "search"
+
+
+{-| The `send` token.
+-}
+send : Value { v | send : Supported }
+send =
+    Ir.token "send"
+
+
+{-| The `sentences` token.
+-}
+sentences : Value { v | sentences : Supported }
+sentences =
+    Ir.token "sentences"
 
 
 {-| The `show` token.
@@ -697,6 +957,20 @@ sync =
     Ir.token "sync"
 
 
+{-| The `tel` token.
+-}
+tel : Value { v | tel : Supported }
+tel =
+    Ir.token "tel"
+
+
+{-| The `text` token.
+-}
+text : Value { v | text : Supported }
+text =
+    Ir.token "text"
+
+
 {-| The `text/plain` token.
 -}
 textPlain : Value { v | textPlain : Supported }
@@ -711,11 +985,32 @@ toggle =
     Ir.token "toggle"
 
 
+{-| The `true` token.
+-}
+true : Value { v | true : Supported }
+true =
+    Ir.token "true"
+
+
 {-| The `unsafe-url` token.
 -}
 unsafeUrl : Value { v | unsafeUrl : Supported }
 unsafeUrl =
     Ir.token "unsafe-url"
+
+
+{-| The `until-found` token.
+-}
+untilFound : Value { v | untilFound : Supported }
+untilFound =
+    Ir.token "until-found"
+
+
+{-| The `url` token.
+-}
+url : Value { v | url : Supported }
+url =
+    Ir.token "url"
 
 
 {-| The `use-credentials` token.
@@ -732,11 +1027,74 @@ utf8 =
     Ir.token "utf-8"
 
 
+{-| The `words` token.
+-}
+words : Value { v | words : Supported }
+words =
+    Ir.token "words"
+
+
 {-| The `x-ua-compatible` token.
 -}
 xUaCompatible : Value { v | xUaCompatible : Supported }
 xUaCompatible =
     Ir.token "x-ua-compatible"
+
+
+{-| The `yes` token.
+-}
+yes : Value { v | yes : Supported }
+yes =
+    Ir.token "yes"
+
+
+{-| The `characters` value of the `autocapitalize` enum — same open row as `characters`, prefixed for discovery.
+-}
+autocapitalizeCharacters : Value { v | characters : Supported }
+autocapitalizeCharacters =
+    Ir.token "characters"
+
+
+{-| The `none` value of the `autocapitalize` enum — same open row as `none`, prefixed for discovery.
+-}
+autocapitalizeNone : Value { v | none : Supported }
+autocapitalizeNone =
+    Ir.token "none"
+
+
+{-| The `off` value of the `autocapitalize` enum — same open row as `off`, prefixed for discovery.
+-}
+autocapitalizeOff : Value { v | off : Supported }
+autocapitalizeOff =
+    Ir.token "off"
+
+
+{-| The `sentences` value of the `autocapitalize` enum — same open row as `sentences`, prefixed for discovery.
+-}
+autocapitalizeSentences : Value { v | sentences : Supported }
+autocapitalizeSentences =
+    Ir.token "sentences"
+
+
+{-| The `words` value of the `autocapitalize` enum — same open row as `words`, prefixed for discovery.
+-}
+autocapitalizeWords : Value { v | words : Supported }
+autocapitalizeWords =
+    Ir.token "words"
+
+
+{-| The `off` value of the `autocorrect` enum — same open row as `off`, prefixed for discovery.
+-}
+autocorrectOff : Value { v | off : Supported }
+autocorrectOff =
+    Ir.token "off"
+
+
+{-| The `on` value of the `autocorrect` enum — same open row as `on`, prefixed for discovery.
+-}
+autocorrectOn : Value { v | on : Supported }
+autocorrectOn =
+    Ir.token "on"
 
 
 {-| The `render` value of the `blocking` enum — same open row as `render`, prefixed for discovery.
@@ -788,6 +1146,27 @@ colorspaceLimitedSrgb =
     Ir.token "limited-srgb"
 
 
+{-| The `false` value of the `contenteditable` enum — same open row as `false`, prefixed for discovery.
+-}
+contenteditableFalse : Value { v | false : Supported }
+contenteditableFalse =
+    Ir.token "false"
+
+
+{-| The `plaintext-only` value of the `contenteditable` enum — same open row as `plaintextOnly`, prefixed for discovery.
+-}
+contenteditablePlaintextOnly : Value { v | plaintextOnly : Supported }
+contenteditablePlaintextOnly =
+    Ir.token "plaintext-only"
+
+
+{-| The `true` value of the `contenteditable` enum — same open row as `true`, prefixed for discovery.
+-}
+contenteditableTrue : Value { v | true : Supported }
+contenteditableTrue =
+    Ir.token "true"
+
+
 {-| The \``value of the`crossorigin`enum — same open row as`value\`, prefixed for discovery.
 -}
 crossoriginValue : Value { v | value : Supported }
@@ -830,6 +1209,41 @@ decodingSync =
     Ir.token "sync"
 
 
+{-| The `auto` value of the `dir` enum — same open row as `auto`, prefixed for discovery.
+-}
+dirAuto : Value { v | auto : Supported }
+dirAuto =
+    Ir.token "auto"
+
+
+{-| The `ltr` value of the `dir` enum — same open row as `ltr`, prefixed for discovery.
+-}
+dirLtr : Value { v | ltr : Supported }
+dirLtr =
+    Ir.token "ltr"
+
+
+{-| The `rtl` value of the `dir` enum — same open row as `rtl`, prefixed for discovery.
+-}
+dirRtl : Value { v | rtl : Supported }
+dirRtl =
+    Ir.token "rtl"
+
+
+{-| The `false` value of the `draggable` enum — same open row as `false`, prefixed for discovery.
+-}
+draggableFalse : Value { v | false : Supported }
+draggableFalse =
+    Ir.token "false"
+
+
+{-| The `true` value of the `draggable` enum — same open row as `true`, prefixed for discovery.
+-}
+draggableTrue : Value { v | true : Supported }
+draggableTrue =
+    Ir.token "true"
+
+
 {-| The `application/x-www-form-urlencoded` value of the `enctype` enum — same open row as `applicationXWwwFormUrlencoded`, prefixed for discovery.
 -}
 enctypeApplicationXWwwFormUrlencoded : Value { v | applicationXWwwFormUrlencoded : Supported }
@@ -849,6 +1263,55 @@ enctypeMultipartFormData =
 enctypeTextPlain : Value { v | textPlain : Supported }
 enctypeTextPlain =
     Ir.token "text/plain"
+
+
+{-| The `done` value of the `enterkeyhint` enum — same open row as `done`, prefixed for discovery.
+-}
+enterkeyhintDone : Value { v | done : Supported }
+enterkeyhintDone =
+    Ir.token "done"
+
+
+{-| The `enter` value of the `enterkeyhint` enum — same open row as `enter`, prefixed for discovery.
+-}
+enterkeyhintEnter : Value { v | enter : Supported }
+enterkeyhintEnter =
+    Ir.token "enter"
+
+
+{-| The `go` value of the `enterkeyhint` enum — same open row as `go`, prefixed for discovery.
+-}
+enterkeyhintGo : Value { v | go : Supported }
+enterkeyhintGo =
+    Ir.token "go"
+
+
+{-| The `next` value of the `enterkeyhint` enum — same open row as `next`, prefixed for discovery.
+-}
+enterkeyhintNext : Value { v | next : Supported }
+enterkeyhintNext =
+    Ir.token "next"
+
+
+{-| The `previous` value of the `enterkeyhint` enum — same open row as `previous`, prefixed for discovery.
+-}
+enterkeyhintPrevious : Value { v | previous : Supported }
+enterkeyhintPrevious =
+    Ir.token "previous"
+
+
+{-| The `search` value of the `enterkeyhint` enum — same open row as `search`, prefixed for discovery.
+-}
+enterkeyhintSearch : Value { v | search : Supported }
+enterkeyhintSearch =
+    Ir.token "search"
+
+
+{-| The `send` value of the `enterkeyhint` enum — same open row as `send`, prefixed for discovery.
+-}
+enterkeyhintSend : Value { v | send : Supported }
+enterkeyhintSend =
+    Ir.token "send"
 
 
 {-| The `auto` value of the `fetchpriority` enum — same open row as `auto`, prefixed for discovery.
@@ -914,6 +1377,20 @@ formmethodPost =
     Ir.token "post"
 
 
+{-| The `hidden` value of the `hidden` enum — same open row as `hidden`, prefixed for discovery.
+-}
+hiddenHidden : Value { v | hidden : Supported }
+hiddenHidden =
+    Ir.token "hidden"
+
+
+{-| The `until-found` value of the `hidden` enum — same open row as `untilFound`, prefixed for discovery.
+-}
+hiddenUntilFound : Value { v | untilFound : Supported }
+hiddenUntilFound =
+    Ir.token "until-found"
+
+
 {-| The `content-security-policy` value of the `httpEquiv` enum — same open row as `contentSecurityPolicy`, prefixed for discovery.
 -}
 httpEquivContentSecurityPolicy : Value { v | contentSecurityPolicy : Supported }
@@ -947,6 +1424,62 @@ httpEquivRefresh =
 httpEquivXUaCompatible : Value { v | xUaCompatible : Supported }
 httpEquivXUaCompatible =
     Ir.token "x-ua-compatible"
+
+
+{-| The `decimal` value of the `inputmode` enum — same open row as `decimal`, prefixed for discovery.
+-}
+inputmodeDecimal : Value { v | decimal : Supported }
+inputmodeDecimal =
+    Ir.token "decimal"
+
+
+{-| The `email` value of the `inputmode` enum — same open row as `email`, prefixed for discovery.
+-}
+inputmodeEmail : Value { v | email : Supported }
+inputmodeEmail =
+    Ir.token "email"
+
+
+{-| The `none` value of the `inputmode` enum — same open row as `none`, prefixed for discovery.
+-}
+inputmodeNone : Value { v | none : Supported }
+inputmodeNone =
+    Ir.token "none"
+
+
+{-| The `numeric` value of the `inputmode` enum — same open row as `numeric`, prefixed for discovery.
+-}
+inputmodeNumeric : Value { v | numeric : Supported }
+inputmodeNumeric =
+    Ir.token "numeric"
+
+
+{-| The `search` value of the `inputmode` enum — same open row as `search`, prefixed for discovery.
+-}
+inputmodeSearch : Value { v | search : Supported }
+inputmodeSearch =
+    Ir.token "search"
+
+
+{-| The `tel` value of the `inputmode` enum — same open row as `tel`, prefixed for discovery.
+-}
+inputmodeTel : Value { v | tel : Supported }
+inputmodeTel =
+    Ir.token "tel"
+
+
+{-| The `text` value of the `inputmode` enum — same open row as `text`, prefixed for discovery.
+-}
+inputmodeText : Value { v | text : Supported }
+inputmodeText =
+    Ir.token "text"
+
+
+{-| The `url` value of the `inputmode` enum — same open row as `url`, prefixed for discovery.
+-}
+inputmodeUrl : Value { v | url : Supported }
+inputmodeUrl =
+    Ir.token "url"
 
 
 {-| The `captions` value of the `kind` enum — same open row as `captions`, prefixed for discovery.
@@ -1017,6 +1550,27 @@ methodGet =
 methodPost : Value { v | post : Supported }
 methodPost =
     Ir.token "post"
+
+
+{-| The `auto` value of the `popover` enum — same open row as `auto`, prefixed for discovery.
+-}
+popoverAuto : Value { v | auto : Supported }
+popoverAuto =
+    Ir.token "auto"
+
+
+{-| The `hint` value of the `popover` enum — same open row as `hint`, prefixed for discovery.
+-}
+popoverHint : Value { v | hint : Supported }
+popoverHint =
+    Ir.token "hint"
+
+
+{-| The `manual` value of the `popover` enum — same open row as `manual`, prefixed for discovery.
+-}
+popoverManual : Value { v | manual : Supported }
+popoverManual =
+    Ir.token "manual"
 
 
 {-| The `hide` value of the `popovertargetaction` enum — same open row as `hide`, prefixed for discovery.
@@ -1306,6 +1860,34 @@ shapeRect =
     Ir.token "rect"
 
 
+{-| The `false` value of the `spellcheck` enum — same open row as `false`, prefixed for discovery.
+-}
+spellcheckFalse : Value { v | false : Supported }
+spellcheckFalse =
+    Ir.token "false"
+
+
+{-| The `true` value of the `spellcheck` enum — same open row as `true`, prefixed for discovery.
+-}
+spellcheckTrue : Value { v | true : Supported }
+spellcheckTrue =
+    Ir.token "true"
+
+
+{-| The `no` value of the `translate` enum — same open row as `no`, prefixed for discovery.
+-}
+translateNo : Value { v | no : Supported }
+translateNo =
+    Ir.token "no"
+
+
+{-| The `yes` value of the `translate` enum — same open row as `yes`, prefixed for discovery.
+-}
+translateYes : Value { v | yes : Supported }
+translateYes =
+    Ir.token "yes"
+
+
 {-| The `hard` value of the `wrap` enum — same open row as `hard`, prefixed for discovery.
 -}
 wrapHard : Value { v | hard : Supported }
@@ -1318,3 +1900,17 @@ wrapHard =
 wrapSoft : Value { v | soft : Supported }
 wrapSoft =
     Ir.token "soft"
+
+
+{-| The `false` value of the `writingsuggestions` enum — same open row as `false`, prefixed for discovery.
+-}
+writingsuggestionsFalse : Value { v | false : Supported }
+writingsuggestionsFalse =
+    Ir.token "false"
+
+
+{-| The `true` value of the `writingsuggestions` enum — same open row as `true`, prefixed for discovery.
+-}
+writingsuggestionsTrue : Value { v | true : Supported }
+writingsuggestionsTrue =
+    Ir.token "true"

@@ -1,7 +1,7 @@
 module TypedHtml.Button exposing
     ( button
     , Is, Attrs, Content, ChildAdmittedBy, Roles
-    , commandfor, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, type_, value
+    , commandfor, disabled, form, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, type_, value, valueAsNumber
     )
 
 {-| The `Button` element home: constructors, per-element rows, and
@@ -9,7 +9,7 @@ co-located re-exports of the shared attributes its elements admit.
 
 @docs button
 @docs Is, Attrs, Content, ChildAdmittedBy, Roles
-@docs commandfor, disabled, form, formaction, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, type_, value
+@docs commandfor, disabled, form, formenctype, formmethod, formnovalidate, formtarget, name, popovertarget, popovertargetaction, readonly, type_, value, valueAsNumber
 
 -}
 
@@ -42,7 +42,6 @@ type alias Attrs =
     , draggable : Supported
     , enterkeyhint : Supported
     , form : Supported
-    , formaction : Supported
     , formenctype : Supported
     , formmethod : Supported
     , formnovalidate : Supported
@@ -51,7 +50,6 @@ type alias Attrs =
     , id : Supported
     , inert : Supported
     , inputmode : Supported
-    , is : Supported
     , itemid : Supported
     , itemprop : Supported
     , itemref : Supported
@@ -194,13 +192,6 @@ form =
     TypedHtml.Attributes.form
 
 
-{-| See `TypedHtml.Attributes.formaction`.
--}
-formaction : String -> Attr { c | formaction : Supported } msg
-formaction =
-    TypedHtml.Attributes.formaction
-
-
 {-| Entry list encoding type to use for form submission
 -}
 formenctype : String -> Attr { c | formenctype : Supported } msg
@@ -264,8 +255,18 @@ type_ =
     TypedHtml.Attributes.type_
 
 
-{-| See `TypedHtml.Attributes.value`.
+{-| Value to be used for form submission
+
+Writes the `value` CONTENT attribute — correct for every element whose `value` REFLECTS, and the only form that serializes to server-rendered markup. It is NOT the live state on <input>, where the content attribute sets only the element's DEFAULT/initial `value` and stops taking effect once the user has changed it; use `TypedHtml.Input.value` for that.
+
 -}
 value : String -> Attr { c | value : Supported } msg
-value =
-    TypedHtml.Attributes.value
+value value_ =
+    Ir.attribute "value" value_
+
+
+{-| Set the `value` attribute from a number. An ergonomic alternative to `value`, which keeps the spec-correct `String` type; this one cannot express every legal value, so reach for `value` when you need one it cannot. Both claim the same capability, mirroring HTML's own `value` / `valueAsNumber` split.
+-}
+valueAsNumber : Float -> Attr { c | value : Supported } msg
+valueAsNumber value_ =
+    Ir.attribute "value" (String.fromFloat value_)

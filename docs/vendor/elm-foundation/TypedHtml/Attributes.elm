@@ -1,6 +1,8 @@
 module TypedHtml.Attributes exposing
-    ( accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, is, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
-    , abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formaction, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, width
+    ( accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
+    , abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, valueNumeric, valueOrdinal, width
+    , defaultChecked, defaultMuted, defaultSelected, defaultValue
+    , coordsAsInts, stepAsNumber, valueAsNumber
     , blocking, charset, closedby, colorspace, crossorigin, decoding, enctype, fetchpriority, formenctype, formmethod, httpEquiv, kind, loading, method, popovertargetaction, preload, referrerpolicy, sandbox, scope, shadowrootmode, shadowrootslotassignment, shape, wrap
     )
 
@@ -10,8 +12,19 @@ decides admittance. Enum setters here close over the library-wide UNION of
 values — cross-component misuse is caught by elm-review; reach for the
 per-component setters (`TypedHtml.<Component>.<attr>`) for compile-tight narrowing.
 
-@docs accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, is, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
-@docs abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formaction, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, width
+**Deliberately absent.** These attributes are declared by the manifest and
+are real HTML, but `elm/virtual-dom` cannot write them, so this library does
+not pretend to: a setter would compile, render, and silently do something
+else. None of them is reachable from Elm at all — reach for a port or a
+custom element instead of restoring a setter here.
+
+  - `formaction` — `_VirtualDom_noOnOrFormAction` rewrites every `VirtualDom.attribute` key matching `/^(on|formAction$)/i` to `data-` ++ key, so this would render as `data-formaction` and never as `formaction`. The property form is closed too — `_VirtualDom_noInnerHtmlOrFormAction` rewrites the exact key `formAction`, and the lowercase key is an inert expando no element observes — so there is no working path from Elm.
+  - `is` — `is` is inert: a customized built-in element must be opted in at creation time via `document.createElement(tag, { is })`, and `_VirtualDom_render` calls `_VirtualDom_doc.createElement(vNode.__tag)` with no options argument, so the element already exists as its plain built-in self before any fact is applied. There is no `is` IDL attribute either, so the property form is an inert expando.
+
+@docs accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
+@docs abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, valueNumeric, valueOrdinal, width
+@docs defaultChecked, defaultMuted, defaultSelected, defaultValue
+@docs coordsAsInts, stepAsNumber, valueAsNumber
 @docs blocking, charset, closedby, colorspace, crossorigin, decoding, enctype, fetchpriority, formenctype, formmethod, httpEquiv, kind, loading, method, popovertargetaction, preload, referrerpolicy, sandbox, scope, shadowrootmode, shadowrootslotassignment, shape, wrap
 
 -}
@@ -33,23 +46,27 @@ accesskey =
 
 {-| The global `autocapitalize` attribute.
 -}
-autocapitalize : String -> Attr { c | autocapitalize : Supported } msg
-autocapitalize =
-    Ir.attribute "autocapitalize"
+autocapitalize : Value TypedHtml.Values.Autocapitalize -> Attr { c | autocapitalize : Supported } msg
+autocapitalize value_ =
+    Ir.attribute "autocapitalize" (HtmlIr.Value.toString value_)
 
 
 {-| The global `autocorrect` attribute.
 -}
-autocorrect : String -> Attr { c | autocorrect : Supported } msg
-autocorrect =
-    Ir.attribute "autocorrect"
+autocorrect : Value TypedHtml.Values.Autocorrect -> Attr { c | autocorrect : Supported } msg
+autocorrect value_ =
+    Ir.attribute "autocorrect" (HtmlIr.Value.toString value_)
 
 
 {-| The global `autofocus` attribute.
 -}
-autofocus : String -> Attr { c | autofocus : Supported } msg
-autofocus =
-    Ir.attribute "autofocus"
+autofocus : Bool -> Attr { c | autofocus : Supported } msg
+autofocus value_ =
+    if value_ then
+        Ir.attribute "autofocus" ""
+
+    else
+        Ir.none
 
 
 {-| The global `class` attribute. Repeats ACCUMULATE: `[ class "a", class "b" ]` renders `class="a b"`.
@@ -68,37 +85,37 @@ classList pairs =
 
 {-| The global `contenteditable` attribute.
 -}
-contenteditable : String -> Attr { c | contenteditable : Supported } msg
-contenteditable =
-    Ir.attribute "contenteditable"
+contenteditable : Value TypedHtml.Values.Contenteditable -> Attr { c | contenteditable : Supported } msg
+contenteditable value_ =
+    Ir.attribute "contenteditable" (HtmlIr.Value.toString value_)
 
 
 {-| The global `dir` attribute.
 -}
-dir : String -> Attr { c | dir : Supported } msg
-dir =
-    Ir.attribute "dir"
+dir : Value TypedHtml.Values.Dir -> Attr { c | dir : Supported } msg
+dir value_ =
+    Ir.attribute "dir" (HtmlIr.Value.toString value_)
 
 
 {-| The global `draggable` attribute.
 -}
-draggable : String -> Attr { c | draggable : Supported } msg
-draggable =
-    Ir.attribute "draggable"
+draggable : Value TypedHtml.Values.Draggable -> Attr { c | draggable : Supported } msg
+draggable value_ =
+    Ir.attribute "draggable" (HtmlIr.Value.toString value_)
 
 
 {-| The global `enterkeyhint` attribute.
 -}
-enterkeyhint : String -> Attr { c | enterkeyhint : Supported } msg
-enterkeyhint =
-    Ir.attribute "enterkeyhint"
+enterkeyhint : Value TypedHtml.Values.Enterkeyhint -> Attr { c | enterkeyhint : Supported } msg
+enterkeyhint value_ =
+    Ir.attribute "enterkeyhint" (HtmlIr.Value.toString value_)
 
 
 {-| The global `hidden` attribute.
 -}
-hidden : String -> Attr { c | hidden : Supported } msg
-hidden =
-    Ir.attribute "hidden"
+hidden : Value TypedHtml.Values.Hidden -> Attr { c | hidden : Supported } msg
+hidden value_ =
+    Ir.attribute "hidden" (HtmlIr.Value.toString value_)
 
 
 {-| The global `id` attribute.
@@ -110,23 +127,20 @@ id =
 
 {-| The global `inert` attribute.
 -}
-inert : String -> Attr { c | inert : Supported } msg
-inert =
-    Ir.attribute "inert"
+inert : Bool -> Attr { c | inert : Supported } msg
+inert value_ =
+    if value_ then
+        Ir.attribute "inert" ""
+
+    else
+        Ir.none
 
 
 {-| The global `inputmode` attribute.
 -}
-inputmode : String -> Attr { c | inputmode : Supported } msg
-inputmode =
-    Ir.attribute "inputmode"
-
-
-{-| The global `is` attribute.
--}
-is : String -> Attr { c | is : Supported } msg
-is =
-    Ir.attribute "is"
+inputmode : Value TypedHtml.Values.Inputmode -> Attr { c | inputmode : Supported } msg
+inputmode value_ =
+    Ir.attribute "inputmode" (HtmlIr.Value.toString value_)
 
 
 {-| The global `itemid` attribute.
@@ -152,9 +166,13 @@ itemref =
 
 {-| The global `itemscope` attribute.
 -}
-itemscope : String -> Attr { c | itemscope : Supported } msg
-itemscope =
-    Ir.attribute "itemscope"
+itemscope : Bool -> Attr { c | itemscope : Supported } msg
+itemscope value_ =
+    if value_ then
+        Ir.attribute "itemscope" ""
+
+    else
+        Ir.none
 
 
 {-| The global `itemtype` attribute.
@@ -180,9 +198,9 @@ nonce =
 
 {-| The global `popover` attribute.
 -}
-popover : String -> Attr { c | popover : Supported } msg
-popover =
-    Ir.attribute "popover"
+popover : Value TypedHtml.Values.Popover -> Attr { c | popover : Supported } msg
+popover value_ =
+    Ir.attribute "popover" (HtmlIr.Value.toString value_)
 
 
 {-| The global `slot` attribute (named-slot placement by hand).
@@ -194,9 +212,9 @@ slot =
 
 {-| The global `spellcheck` attribute.
 -}
-spellcheck : String -> Attr { c | spellcheck : Supported } msg
-spellcheck =
-    Ir.attribute "spellcheck"
+spellcheck : Value TypedHtml.Values.Spellcheck -> Attr { c | spellcheck : Supported } msg
+spellcheck value_ =
+    Ir.attribute "spellcheck" (HtmlIr.Value.toString value_)
 
 
 {-| One inline-style declaration (the `elm/html` 0.19 shape). Declarations MERGE across every `style` / `styleList` on the element, last-wins per property.
@@ -215,9 +233,9 @@ styleList =
 
 {-| The global `tabindex` attribute.
 -}
-tabindex : String -> Attr { c | tabindex : Supported } msg
-tabindex =
-    Ir.attribute "tabindex"
+tabindex : Int -> Attr { c | tabindex : Supported } msg
+tabindex value_ =
+    Ir.attribute "tabindex" (String.fromInt value_)
 
 
 {-| The global `title` attribute.
@@ -229,16 +247,16 @@ title =
 
 {-| The global `translate` attribute.
 -}
-translate : String -> Attr { c | translate : Supported } msg
-translate =
-    Ir.attribute "translate"
+translate : Value TypedHtml.Values.Translate -> Attr { c | translate : Supported } msg
+translate value_ =
+    Ir.attribute "translate" (HtmlIr.Value.toString value_)
 
 
 {-| The global `writingsuggestions` attribute.
 -}
-writingsuggestions : String -> Attr { c | writingsuggestions : Supported } msg
-writingsuggestions =
-    Ir.attribute "writingsuggestions"
+writingsuggestions : Value TypedHtml.Values.Writingsuggestions -> Attr { c | writingsuggestions : Supported } msg
+writingsuggestions value_ =
+    Ir.attribute "writingsuggestions" (HtmlIr.Value.toString value_)
 
 
 {-| Alternative label to use for the header cell when referencing the cell in other contexts
@@ -335,6 +353,9 @@ autoplay value_ =
 
 
 {-| Whether the control is checked
+
+Sets the LIVE DOM property `checked`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultChecked`.
+
 -}
 checked : Bool -> Attr { c | checked : Supported } msg
 checked value_ =
@@ -357,16 +378,16 @@ color =
 
 {-| Maximum number of characters per line
 -}
-cols : Float -> Attr { c | cols : Supported } msg
+cols : Int -> Attr { c | cols : Supported } msg
 cols value_ =
-    Ir.attribute "cols" (String.fromFloat value_)
+    Ir.attribute "cols" (String.fromInt value_)
 
 
 {-| Number of columns that the cell is to span
 -}
-colspan : Float -> Attr { c | colspan : Supported } msg
+colspan : Int -> Attr { c | colspan : Supported } msg
 colspan value_ =
-    Ir.attribute "colspan" (String.fromFloat value_)
+    Ir.attribute "colspan" (String.fromInt value_)
 
 
 {-| Targets another element to be invoked.
@@ -394,11 +415,11 @@ controls value_ =
         Ir.none
 
 
-{-| Coordinates for the shape to be created in an image map
+{-| Coordinates for the shape to be created in an image map. A COMMA-SEPARATED LIST of integers (`0,0,82,126`), so no single number is ever a valid value; `coordsAsInts` builds one from a `List Int`.
 -}
-coords : Float -> Attr { c | coords : Supported } msg
-coords value_ =
-    Ir.attribute "coords" (String.fromFloat value_)
+coords : String -> Attr { c | coords : Supported } msg
+coords =
+    Ir.attribute "coords"
 
 
 {-| Address of the resource
@@ -408,11 +429,11 @@ data =
     Ir.attribute "data"
 
 
-{-| Machine-readable value
+{-| Machine-readable value. A date/time string (a valid date, time, local/global date-and-time, month, week, yearless date, time-zone offset, or duration string), never a bare number.
 -}
-datetime : Float -> Attr { c | datetime : Supported } msg
-datetime value_ =
-    Ir.attribute "datetime" (String.fromFloat value_)
+datetime : String -> Attr { c | datetime : Supported } msg
+datetime =
+    Ir.attribute "datetime"
 
 
 {-| Enable the track if no other text track is more suitable
@@ -476,13 +497,6 @@ form =
     Ir.attribute "form"
 
 
-{-| URL to use for form submission
--}
-formaction : String -> Attr { c | formaction : Supported } msg
-formaction =
-    Ir.attribute "formaction"
-
-
 {-| Bypass form control validation for form submission
 -}
 formnovalidate : Bool -> Attr { c | formnovalidate : Supported } msg
@@ -510,9 +524,9 @@ headers =
 
 {-| Vertical dimension
 -}
-height : Float -> Attr { c | height : Supported } msg
+height : Int -> Attr { c | height : Supported } msg
 height value_ =
-    Ir.attribute "height" (String.fromFloat value_)
+    Ir.attribute "height" (String.fromInt value_)
 
 
 {-| Low limit of high range
@@ -609,9 +623,9 @@ max =
 
 {-| Maximum length of value
 -}
-maxlength : Float -> Attr { c | maxlength : Supported } msg
+maxlength : Int -> Attr { c | maxlength : Supported } msg
 maxlength value_ =
-    Ir.attribute "maxlength" (String.fromFloat value_)
+    Ir.attribute "maxlength" (String.fromInt value_)
 
 
 {-| Applicable media
@@ -630,9 +644,9 @@ min =
 
 {-| Minimum length of value
 -}
-minlength : Float -> Attr { c | minlength : Supported } msg
+minlength : Int -> Attr { c | minlength : Supported } msg
 minlength value_ =
-    Ir.attribute "minlength" (String.fromFloat value_)
+    Ir.attribute "minlength" (String.fromInt value_)
 
 
 {-| Whether to allow multiple values
@@ -647,14 +661,15 @@ multiple value_ =
 
 
 {-| Whether to mute the media resource by default
+
+Sets the LIVE DOM property `muted`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultMuted`.
+
+CAVEAT — this setter cannot RESYNC. `elm/virtual-dom` only re-forces an unchanged controlled property for the names `value` and `checked`; `muted` is compared by identity, so re-rendering the same model value after the user has changed it through the element's own UI will NOT push it back to the DOM. Keep the model in sync with a `volumechange` handler.
+
 -}
 muted : Bool -> Attr { c | muted : Supported } msg
 muted value_ =
-    if value_ then
-        Ir.attribute "muted" ""
-
-    else
-        Ir.none
+    Ir.property "muted" (Json.Encode.bool value_)
 
 
 {-| Name of the element to use for form submission and in the form.elements API
@@ -792,19 +807,24 @@ reversed value_ =
 
 {-| Number of lines to show
 -}
-rows : Float -> Attr { c | rows : Supported } msg
+rows : Int -> Attr { c | rows : Supported } msg
 rows value_ =
-    Ir.attribute "rows" (String.fromFloat value_)
+    Ir.attribute "rows" (String.fromInt value_)
 
 
 {-| Number of rows that the cell is to span
 -}
-rowspan : Float -> Attr { c | rowspan : Supported } msg
+rowspan : Int -> Attr { c | rowspan : Supported } msg
 rowspan value_ =
-    Ir.attribute "rowspan" (String.fromFloat value_)
+    Ir.attribute "rowspan" (String.fromInt value_)
 
 
 {-| Whether the option is selected by default
+
+Sets the LIVE DOM property `selected`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultSelected`.
+
+CAVEAT — this setter cannot RESYNC. `elm/virtual-dom` only re-forces an unchanged controlled property for the names `value` and `checked`; `selected` is compared by identity, so re-rendering the same model value after the user has changed it through the element's own UI will NOT push it back to the DOM. Keep the model in sync with a `change` handler.
+
 -}
 selected : Bool -> Attr { c | selected : Supported } msg
 selected value_ =
@@ -857,9 +877,9 @@ shadowrootserializable value_ =
 
 {-| Size of the control
 -}
-size : Float -> Attr { c | size : Supported } msg
+size : Int -> Attr { c | size : Supported } msg
 size value_ =
-    Ir.attribute "size" (String.fromFloat value_)
+    Ir.attribute "size" (String.fromInt value_)
 
 
 {-| Image sizes for different page layouts
@@ -871,9 +891,9 @@ sizes =
 
 {-| Number of columns spanned by the element
 -}
-span : Float -> Attr { c | span : Supported } msg
+span : Int -> Attr { c | span : Supported } msg
 span value_ =
-    Ir.attribute "span" (String.fromFloat value_)
+    Ir.attribute "span" (String.fromInt value_)
 
 
 {-| Address of the resource
@@ -906,16 +926,16 @@ srcset =
 
 {-| Starting value of the list
 -}
-start : Float -> Attr { c | start : Supported } msg
+start : Int -> Attr { c | start : Supported } msg
 start value_ =
-    Ir.attribute "start" (String.fromFloat value_)
+    Ir.attribute "start" (String.fromInt value_)
 
 
-{-| Granularity to be matched by the form control's value
+{-| Granularity to be matched by the form control's value. A valid floating-point number OR the keyword `any` (which disables step-matching), so this cannot be a `Float`; `stepAsNumber` takes one when the keyword is not wanted.
 -}
-step : Float -> Attr { c | step : Supported } msg
-step value_ =
-    Ir.attribute "step" (String.fromFloat value_)
+step : String -> Attr { c | step : Supported } msg
+step =
+    Ir.attribute "step"
 
 
 {-| Navigable for form submission
@@ -939,18 +959,96 @@ usemap =
     Ir.attribute "usemap"
 
 
-{-| Current value of the element
+{-| Value to be used for form submission
+
+Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
+
 -}
 value : String -> Attr { c | value : Supported } msg
 value value_ =
     Ir.property "value" (Json.Encode.string value_)
 
 
+{-| Current value of the element
+-}
+valueNumeric : Float -> Attr { c | valueNumeric : Supported } msg
+valueNumeric value_ =
+    Ir.attribute "value" (String.fromFloat value_)
+
+
+{-| Ordinal value of the list item
+-}
+valueOrdinal : Int -> Attr { c | valueOrdinal : Supported } msg
+valueOrdinal value_ =
+    Ir.attribute "value" (String.fromInt value_)
+
+
 {-| Horizontal dimension
 -}
-width : Float -> Attr { c | width : Supported } msg
+width : Int -> Attr { c | width : Supported } msg
 width value_ =
-    Ir.attribute "width" (String.fromFloat value_)
+    Ir.attribute "width" (String.fromInt value_)
+
+
+{-| Set the `checked` CONTENT attribute — the element's DEFAULT/initial `checked`, mirroring HTML's own `defaultChecked` IDL attribute. Unlike `checked` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked value_ =
+    if value_ then
+        Ir.attribute "checked" ""
+
+    else
+        Ir.none
+
+
+{-| Set the `muted` CONTENT attribute — the element's DEFAULT/initial `muted`, mirroring HTML's own `defaultMuted` IDL attribute. Unlike `muted` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to. Pair it with `muted` for the live state; see that setter's resync caveat.
+-}
+defaultMuted : Bool -> Attr { c | muted : Supported } msg
+defaultMuted value_ =
+    if value_ then
+        Ir.attribute "muted" ""
+
+    else
+        Ir.none
+
+
+{-| Set the `selected` CONTENT attribute — the element's DEFAULT/initial `selected`, mirroring HTML's own `defaultSelected` IDL attribute. Unlike `selected` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to. Pair it with `selected` for the live state; see that setter's resync caveat.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected value_ =
+    if value_ then
+        Ir.attribute "selected" ""
+
+    else
+        Ir.none
+
+
+{-| Set the `value` CONTENT attribute — the element's DEFAULT/initial `value`, mirroring HTML's own `defaultValue` IDL attribute. Unlike `value` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    Ir.attribute "value"
+
+
+{-| Set the `coords` attribute from a list of integers, joined with `,`. An ergonomic alternative to `coords`, which keeps the spec-correct `String` type; this one cannot express every legal value, so reach for `coords` when you need one it cannot. Both claim the same capability, mirroring HTML's own `value` / `valueAsNumber` split.
+-}
+coordsAsInts : List Int -> Attr { c | coords : Supported } msg
+coordsAsInts value_ =
+    Ir.attribute "coords" (String.join "," (List.map String.fromInt value_))
+
+
+{-| Set the `step` attribute from a number. An ergonomic alternative to `step`, which keeps the spec-correct `String` type; this one cannot express every legal value, so reach for `step` when you need one it cannot. Both claim the same capability, mirroring HTML's own `value` / `valueAsNumber` split.
+-}
+stepAsNumber : Float -> Attr { c | step : Supported } msg
+stepAsNumber value_ =
+    Ir.attribute "step" (String.fromFloat value_)
+
+
+{-| Set the `value` attribute from a number. An ergonomic alternative to `value`, which keeps the spec-correct `String` type; this one cannot express every legal value, so reach for `value` when you need one it cannot. Both claim the same capability, mirroring HTML's own `value` / `valueAsNumber` split.
+-}
+valueAsNumber : Float -> Attr { c | value : Supported } msg
+valueAsNumber value_ =
+    Ir.property "value" (Json.Encode.string (String.fromFloat value_))
 
 
 {-| Whether the element is potentially render-blocking
