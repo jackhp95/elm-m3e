@@ -4,8 +4,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
@@ -60,7 +59,7 @@ head _ =
         |> Seo.website
 
 
-{-| Elm can't set a CSS custom property (`style`/`Seam.style` use
+{-| Elm can't set a CSS custom property (`style`/`TA.style` use
 `node.style[key]=…`, which ignores `--vars`), so scope `--md-sys-density-scale`
 to this subtree via a Tailwind arbitrary-property class. Literal strings per
 scale so Tailwind's scanner emits all four rules.
@@ -105,30 +104,26 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Density · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree. The scales below run 0 to -3." ]
-                        ]
-                    ]
-                , M3e.card
-                    [ M3e.Attributes.variant Value.outlined ]
-                    [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
-                    , M3e.Card.content
-                        (TypedHtml.div [ TA.class "space-y-6" ]
-                            [ demoBar 0
-                            , demoBar -1
-                            , demoBar -2
-                            , demoBar -3
-                            ]
-                        )
+    View.fromElement "Density · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree. The scales below run 0 to -3." ]
                     ]
                 ]
-            )
-        ]
-    }
+            , M3e.card
+                [ M3e.Attributes.variant Value.outlined ]
+                [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
+                , M3e.Card.content
+                    (TypedHtml.div [ TA.class "space-y-6" ]
+                        [ demoBar 0
+                        , demoBar -1
+                        , demoBar -2
+                        , demoBar -3
+                        ]
+                    )
+                ]
+            ]
+        )

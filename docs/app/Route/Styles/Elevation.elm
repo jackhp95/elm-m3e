@@ -11,15 +11,13 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -84,7 +82,7 @@ levels =
 swatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 swatch ( shadow, label, token ) =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
-        [ Seam.node "div"
+        [ TypedHtml.div
             [ TA.class ("bg-surface-container-high text-on-surface rounded-md-corner-large " ++ shadow ++ " flex min-h-24 items-center justify-center p-4")
             ]
             [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text label ] ]
@@ -101,36 +99,32 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Elevation · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "The six levels, live"
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
-                        ]
-                    , Doc.showcase
-                        (TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3" ]
-                            (List.map swatch levels)
-                        )
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Tinting the shadow"
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]
-                        ]
+    View.fromElement "Elevation · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Material 3 expresses depth with six elevation levels, 0 through 5. Each --md-sys-elevation-level* token is a three-layer shadow — a tight umbra, a softer penumbra, and a wide ambient layer — tinted with --md-sys-color-shadow. Higher levels read as closer to the viewer. Components pick their resting level (a card sits at level 1, a menu or dialog at level 3) and raise it on interaction." ]
                     ]
                 ]
-            )
-        ]
-    }
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "The six levels, live"
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
+                    ]
+                , Doc.showcase
+                    (TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 p-2 sm:grid-cols-2 lg:grid-cols-3" ]
+                        (List.map swatch levels)
+                    )
+                ]
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Tinting the shadow"
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]
+                    ]
+                ]
+            ]
+        )

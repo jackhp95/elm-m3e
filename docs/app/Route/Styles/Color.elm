@@ -4,8 +4,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
@@ -13,7 +12,6 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -101,9 +99,9 @@ accentRow accent =
         ]
 
 
-swatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
+swatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 swatch ( label, bg, role ) =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class (role ++ " rounded-md-corner-medium border border-outline-variant flex flex-col justify-between p-4 min-h-24")
         ]
         [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large ] [ M3e.text label ]
@@ -120,54 +118,50 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Color · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Container pairings"
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Each accent comes as a bold role and a lower-emphasis container, and every role carries a paired on-* color for legible content. The swatch text is painted with that on-color, so if the label is readable the pairing is correct." ]
-                        ]
-                    , Doc.showcase
-                        (TypedHtml.div [ TA.class "grid grid-cols-1 gap-3 lg:grid-cols-2" ]
-                            (List.map accentRow accents)
-                        )
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Surface roles"
-                    , Doc.showcase
-                        (TypedHtml.div [ TA.class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" ]
-                            (List.map swatch surfaces)
-                        )
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Dynamic color"
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Forced colors"
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
-                        ]
-                    , forcedColorsCard
+    View.fromElement "Color · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
                     ]
                 ]
-            )
-        ]
-    }
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Container pairings"
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Each accent comes as a bold role and a lower-emphasis container, and every role carries a paired on-* color for legible content. The swatch text is painted with that on-color, so if the label is readable the pairing is correct." ]
+                    ]
+                , Doc.showcase
+                    (TypedHtml.div [ TA.class "grid grid-cols-1 gap-3 lg:grid-cols-2" ]
+                        (List.map accentRow accents)
+                    )
+                ]
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Surface roles"
+                , Doc.showcase
+                    (TypedHtml.div [ TA.class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" ]
+                        (List.map swatch surfaces)
+                    )
+                ]
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Dynamic color"
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                    ]
+                ]
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Forced colors"
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                    ]
+                , forcedColorsCard
+                ]
+            ]
+        )
 
 
 forcedColorsCard : Element { s | card : M3e.Kind.Brand } adm_ msg

@@ -2,7 +2,6 @@
     "type": "application",
     "source-directories": [
         "../src",
-        "../docs/kit",
         "../../elm-html-intermediate-representation/src",
         "../../elm-typed-html/src"
     ],

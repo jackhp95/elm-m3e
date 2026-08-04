@@ -10,7 +10,10 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
+import M3e
+import M3e.Html
+import M3e.Unsafe
+import M3e.Values
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -62,22 +65,18 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Glossary · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-8" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Glossary"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown terms ]
+    View.fromElement "Glossary · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-8" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Glossary"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown terms ]
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -91,13 +90,13 @@ terms =
 | --- | --- |
 | **surface** | One of a component's interchangeable call-shapes for the *same* typed value — **peers, not a ranking**: the **standard** form `view` (`M3e.button …` or `M3e.Button.view …`, everything optional), the **required-record** form `el` (`M3e.Button.el { content = …, action = … } …`, the compiler demands the required parts), and the **builder** `build` / `toElement` (a pipe where a one-only setter can't be written twice). |
 | **loose producer** | `M3e.Html.*` — one open-rowed constructor per component (no slot/attribute checking), which each strict `M3e.<Component>` surface tightens. Reach for it to opt out of the strict phantom rows while staying in the IR. **Not plain HTML** — it exposes the `m3e-*` elements, not `div`/`span`. |
-| **escape** | A call that leaves the typed tree — always loud, greppable, and lint-fenced. Two surfaces: `M3e.Unsafe` / `.Unsafe.Attributes` (`fromHtml` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAttr` re-kind to free phantom rows) and the raw forge `HtmlIr.Internal` (`element`, `node` / `attribute` / `property` / `on`, `lazy`). `M3e.Coerce` is a narrower, config-blessed kind crossing (e.g. `asButton`). |
-| **barrel** | The one-import API: `import M3e`, every component's `view` in one place, plus `text`, `toHtml`, the `M3e.Element` / `M3e.Attr` type aliases, and `M3e.mapMsg` — so consumers never import `HtmlIr`. |
+| **escape** | A call that leaves the typed tree — always loud, greppable, and lint-fenced. The one userland surface: `M3e.Unsafe` / `.Unsafe.Attributes` (`fromHtml` / `fromNode` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAll` / `recastAttr` / `recastAttrAll` re-kind to free phantom rows; `customElement` / `customAttribute` forge a tag or attribute the library has no producer for). It ships with the library — there is no userland module to hand-write. Underneath, these are built on the raw forge `HtmlIr.Internal` (`fromNode`, `node` / `attribute` / `property` / `on`, `lazy`), which application code never imports directly. `M3e.Coerce` is a narrower, config-blessed kind crossing (e.g. `asButton`). |
+| **barrel** | The one-import API: `import M3e`, every component's `view` in one place, plus `text` — and the whole substrate, re-exported so consumers never import `HtmlIr`: `Element` / `Attr` / `Node` / `toHtml` / `toNode` / `mapMsg` / `mapNode` (also on `M3e.Html`), plus `Value` (via `M3e.Values`) and `Supported` / `Shared` (via `M3e.Kind`) one import away. |
 | **component module** | The per-component import (`import M3e.Button`) — same components, tighter types, and where `el` / `build` and the compile-tight setters live. |
 | **shared / per-component vocabulary** | `M3e.Attributes.*` and `M3e.Values.*` close over the library-wide **union** of values (cross-component misuse is caught by elm-review); the per-component `M3e.<Component>.<attr>` setters are **compile-tight**. |
 | **kind** | The category a piece of content is — icon, text, button. |
 | **slot** | A labeled place a component puts content; each slot declares the kinds it accepts. |
 | **token** | An enum value that exists as a name (`M3e.Values.filled`) — invalid tokens aren't names at all. |
-| **seam** | Not a library feature — the *practice* of corralling escapes into one greppable, lint-fenced place. The mechanism is a brand `Unsafe` module: `M3e.Unsafe.recast` re-kinds an element to fit any slot ("the design system is wrong here"). This docs app keeps its own crossings in `Seam`. |
+| **seam** | Not something you build — the *practice* of reaching for the library's escapes instead of improvising around the type system. The mechanism is a brand `Unsafe` module, shipped with the library: `M3e.Unsafe.recast` re-kinds an element to fit any slot ("the design system is wrong here"). This docs app calls it from small, named producers, kept next to the code that needs them. |
 | **component facts** | The generated per-component list (required slots, valid tokens, required attributes) that the linter reads — the same list the API was generated from. |
 | **manifest** | The components' machine-readable self-description that everything above is generated from. |"""

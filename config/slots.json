@@ -200,7 +200,7 @@
           "iconButton",
           "button"
         ],
-        "multi": false,
+        "multi": true,
         "required": false
       },
       "title": {

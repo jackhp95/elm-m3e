@@ -1,16 +1,19 @@
 module TypedHtml.Unsafe exposing
     ( fromHtml
+    , fromNode
     , recast, recastAll
     , customElement
     )
 
 {-| THE loud legacy-interop escapes: wrap raw `Html` as an `Element`,
-re-kind an existing `Element`, or forge an element from a tag name this
-library has no generated producer for — all with FREE phantom rows, so the
-compiler checks nothing about the result. For incremental migration and
-slot-fit only; every use site is a grep target and a lint finding.
+re-assert rows on an erased `Node`, re-kind an existing `Element`, or forge
+an element from a tag name this library has no generated producer for — all
+with FREE phantom rows, so the compiler checks nothing about the result. For
+incremental migration and slot-fit only; every use site is a grep target and
+a lint finding.
 
 @docs fromHtml
+@docs fromNode
 @docs recast, recastAll
 @docs customElement
 
@@ -20,6 +23,7 @@ import Html exposing (Html)
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
+import HtmlIr.Node exposing (Node)
 
 
 {-| Wrap raw `Html` with FREE rows. Loud on purpose.
@@ -27,6 +31,13 @@ import HtmlIr.Internal as Ir
 fromHtml : Html msg -> Element accepts admittedBy msg
 fromHtml h =
     Ir.fromNode (Ir.fromHtml h)
+
+
+{-| Re-assert FREE rows on an erased [`Node`](HtmlIr-Node#Node) — the exact dual of the safe `HtmlIr.Element.toNode`. For the boundary where a typed tree was flattened to the IR and must be lifted back (a framework `View` record, a cache). Loud on purpose: the rows it re-asserts were never checked.
+-}
+fromNode : Node msg -> Element accepts admittedBy msg
+fromNode =
+    Ir.fromNode
 
 
 {-| Re-kind an `Element` to FREE rows so it fits any slot — the blessed form of the hand-forged `Ir.fromNode << HtmlIr.Element.toNode` recast. Loud on purpose.

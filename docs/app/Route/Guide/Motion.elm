@@ -14,13 +14,17 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
+import M3e
+import M3e.Unsafe
+import M3e.Unsafe.Attributes
+import M3e.Values
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -66,44 +70,40 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Motion: what ships, what you wire · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Motion: what ships, what you wire"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Inside the components (you don't animate this)"
-                        , Doc.markdown shippedBody
-                        , Doc.code_ Doc.Elm shippedCode
-                        , Doc.markdown shippedNote
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "The motion between components (you wire this)"
-                        , Doc.markdown authorBody
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "The AVT snackbar"
-                        , Doc.markdown snackbarBody
-                        , Doc.code_ Doc.Elm snackbarCode
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "View transitions"
-                        , Doc.markdown viewTransBody
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Reduced motion is not optional"
-                        , Doc.markdown reducedBody
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "Motion: what ships, what you wire · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Motion: what ships, what you wire"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Inside the components (you don't animate this)"
+                    , Doc.markdown shippedBody
+                    , Doc.code_ Doc.Elm shippedCode
+                    , Doc.markdown shippedNote
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "The motion between components (you wire this)"
+                    , Doc.markdown authorBody
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "The AVT snackbar"
+                    , Doc.markdown snackbarBody
+                    , Doc.code_ Doc.Elm snackbarCode
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "View transitions"
+                    , Doc.markdown viewTransBody
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Reduced motion is not optional"
+                    , Doc.markdown reducedBody
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -159,14 +159,14 @@ snackbarBody =
 snackbarCode : String
 snackbarCode =
     """-- Elm owns WHEN the snackbar exists; the element owns the slide-in animation.
--- Render the <avt-snackbar> element (via `Seam.node`) only while
+-- Render the <avt-snackbar> element (via `M3e.Unsafe.customElement`) only while
 -- shown — mounting it is what triggers the toast:
-snackbar : Toast -> Element { s | html : M3e.Kind.Brand } adm_ msg
+snackbar : Toast -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 snackbar t =
-    Seam.node (Html.node "avt-snackbar")
-        [ Seam.attribute "message" t.message
-        , Seam.attribute "action" "Undo"
-        , Seam.attribute "dismissible" ""
+    M3e.Unsafe.customElement (Html.node "avt-snackbar")
+        [ M3e.Unsafe.Attributes.customAttribute "message" t.message
+        , M3e.Unsafe.Attributes.customAttribute "action" "Undo"
+        , M3e.Unsafe.Attributes.customAttribute "dismissible" ""
         ]
         []
 

@@ -4,8 +4,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
@@ -82,41 +81,37 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Browser Support · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                        [ M3e.text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Supported browsers"
-                    , M3e.card
-                        [ M3e.Attributes.variant Value.outlined ]
-                        [ M3e.Card.content
-                            (TypedHtml.div [ TA.class "flex flex-col px-2" ]
-                                (List.intersperse (M3e.divider [] [])
-                                    [ supportRow "Chrome / Edge" "Latest 2 versions"
-                                    , supportRow "Firefox" "Latest 2 versions"
-                                    , supportRow "Safari" "Latest 2 versions"
-                                    , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
-                                    ]
-                                )
+    View.fromElement "Browser Support · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                    [ M3e.text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
+                ]
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Supported browsers"
+                , M3e.card
+                    [ M3e.Attributes.variant Value.outlined ]
+                    [ M3e.Card.content
+                        (TypedHtml.div [ TA.class "flex flex-col px-2" ]
+                            (List.intersperse (M3e.divider [] [])
+                                [ supportRow "Chrome / Edge" "Latest 2 versions"
+                                , supportRow "Firefox" "Latest 2 versions"
+                                , supportRow "Safari" "Latest 2 versions"
+                                , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
+                                ]
                             )
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Platform features used"
-                    , TypedHtml.ul [ TA.class "list-disc space-y-1.5 pl-5" ]
-                        [ featureItem "Custom Elements v1 and Shadow DOM for the @m3e/web components."
-                        , featureItem "ES modules for component registration (no-bundler import-map usage is also supported upstream)."
-                        , featureItem "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode."
-                        , featureItem "Variable fonts for the self-hosted Material Symbols icon axes."
-                        ]
+                        )
                     ]
                 ]
-            )
-        ]
-    }
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Platform features used"
+                , TypedHtml.ul [ TA.class "list-disc space-y-1.5 pl-5" ]
+                    [ featureItem "Custom Elements v1 and Shadow DOM for the @m3e/web components."
+                    , featureItem "ES modules for component registration (no-bundler import-map usage is also supported upstream)."
+                    , featureItem "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode."
+                    , featureItem "Variable fonts for the self-hosted Material Symbols icon axes."
+                    ]
+                ]
+            ]
+        )

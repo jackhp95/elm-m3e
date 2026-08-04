@@ -14,8 +14,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -78,52 +77,48 @@ labeledBack =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Accessibility reference · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Accessibility reference"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Accessible name: named slot vs ARIA label"
-                        , Doc.markdown nameBody
-                        , Doc.showcase labeledBack
-                        , Doc.code_ Doc.Elm nameCode
-                        , Doc.markdown nameLayers
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Focus: dialogs, menus, sheets"
-                        , Doc.markdown focusBody
-                        , Doc.code_ Doc.Elm focusCode
-                        , Doc.markdown focusNote
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Keyboard interaction by component family"
-                        , Doc.markdown keyboardBody
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "What ships vs what you wire"
-                        , Doc.markdown divisionBody
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Read the review errors as a11y guidance"
-                        , Doc.markdown reviewBody
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Testing with the a11y-tree harness"
-                        , Doc.markdown testingBody
-                        , Doc.code_ Doc.NoLang testingCode
-                        , Doc.markdown testingNote
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "Accessibility reference · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Accessibility reference"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Accessible name: named slot vs ARIA label"
+                    , Doc.markdown nameBody
+                    , Doc.showcase labeledBack
+                    , Doc.code_ Doc.Elm nameCode
+                    , Doc.markdown nameLayers
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Focus: dialogs, menus, sheets"
+                    , Doc.markdown focusBody
+                    , Doc.code_ Doc.Elm focusCode
+                    , Doc.markdown focusNote
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Keyboard interaction by component family"
+                    , Doc.markdown keyboardBody
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "What ships vs what you wire"
+                    , Doc.markdown divisionBody
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Read the review errors as a11y guidance"
+                    , Doc.markdown reviewBody
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Testing with the a11y-tree harness"
+                    , Doc.markdown testingBody
+                    , Doc.code_ Doc.NoLang testingCode
+                    , Doc.markdown testingNote
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String

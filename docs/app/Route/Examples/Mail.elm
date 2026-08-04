@@ -3,8 +3,9 @@ module Route.Examples.Mail exposing (ActionData, Data, Model, Msg, route)
 {-| **Mail** — a full-viewport, responsive Material 3 email client screen built
 almost entirely from `M3e.*` components. Tailwind is used only for layout
 (flex/grid/gap/padding/positioning/responsive visibility); every visual token —
-color, typography, surface, shape — comes through the `Seam` / `Seam.Surface` /
-`Seam.Shape` seam.
+color, typography, surface, shape — comes from M3 token classes applied
+directly with `TypedHtml.Attributes.class` (`text-on-surface`,
+`surfaceContainer`, …), not a userland adapter.
 
 Layout at a glance:
 
@@ -24,9 +25,7 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.AssistChip
 import M3e.Attributes
@@ -38,7 +37,6 @@ import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -195,19 +193,16 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    { title = "Mail · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode (HtmlIr.Element.map PagesMsg.fromMsg (screen model)) ]
-    }
+    View.fromElement "Mail · elm-m3e" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
 {-| The whole screen: full-viewport shell painted onto the base `surface`, with
 the nav rail beside a column of AppBar + two-pane body, plus the mobile bottom
 bar and the floating compose FAB.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
+screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface text-on-surface relative flex h-screen w-full overflow-hidden" ]
         [ navRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0" ]
@@ -222,7 +217,7 @@ screen model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -386,7 +381,8 @@ messageRow selected index message =
 
 
 {-| The reading pane for the selected message: subject heading, sender row with
-avatar and timestamp, label chips, and the body paragraphs via `Seam`.
+avatar and timestamp, label chips, and the body paragraphs — all styled with
+M3 token classes applied directly.
 -}
 readingPane : Message -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 readingPane message =

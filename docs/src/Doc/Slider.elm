@@ -23,12 +23,13 @@ so every tab UI in the docs can reuse the one implementation.
 
 -}
 
-import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
+import M3e exposing (Attr, Element)
 import M3e.Kind
-import Seam
+import M3e.Unsafe
+import M3e.Unsafe.Attributes
+import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 
 
 {-| Mount `panels` in a sliding track, showing the one at `activeIndex`.
@@ -38,17 +39,17 @@ renders the single panel plainly — no viewport/track wrapper — so the slider
 appears when there is actually something to slide between.
 
 -}
-slidingPanels : Int -> List (Element { s | html : M3e.Kind.Brand } admittedBy msg) -> Element { r | html : M3e.Kind.Brand } freeAdm msg
+slidingPanels : Int -> List (Element childAccepts (TypedHtml.Grouping.DivChildAdmittedBy childAdm) msg) -> Element (TypedHtml.Grouping.DivIs r) freeAdm msg
 slidingPanels activeIndex panels =
     case panels of
         [] ->
-            Seam.node "div" [] []
+            TypedHtml.div [] []
 
         [ only ] ->
             -- Plain passthrough (a bare wrapper, no viewport/track): a single panel
             -- has nothing to slide against. The wrapper re-opens the phantom row so
             -- the one panel drops into any context the slider itself would.
-            Seam.node "div" [] [ only ]
+            TypedHtml.div [] [ only ]
 
         _ ->
             let
@@ -60,34 +61,34 @@ slidingPanels activeIndex panels =
                 idx =
                     clamp 0 (count - 1) activeIndex
 
-                track : Element { k | html : M3e.Kind.Brand } trackAdm msg
+                track : Element (TypedHtml.Grouping.DivIs k) trackAdm msg
                 track =
-                    Seam.node "div"
+                    TypedHtml.div
                         [ TA.class "sp-track"
-                        , Seam.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
+                        , TA.style "transform" ("translateX(-" ++ String.fromInt (idx * 100) ++ "%)")
                         ]
                         (List.indexedMap (panel idx) panels)
             in
-            Seam.node "slide-panels"
+            M3e.Unsafe.customElement "slide-panels"
                 [ TA.class "sp-viewport"
-                , Seam.attribute "active-index" (String.fromInt idx)
+                , M3e.Unsafe.Attributes.customAttribute "active-index" (String.fromInt idx)
                 ]
                 [ track ]
 
 
 {-| One panel wrapper: inactive panels get `aria-hidden="true"` and `inert`.
 -}
-panel : Int -> Int -> Element { s | html : M3e.Kind.Brand } admittedBy msg -> Element { k | html : M3e.Kind.Brand } freeAdm msg
+panel : Int -> Int -> Element childAccepts (TypedHtml.Grouping.DivChildAdmittedBy childAdm) msg -> Element (TypedHtml.Grouping.DivIs k) freeAdm msg
 panel activeIndex i child =
     let
         inactive : Bool
         inactive =
             i /= activeIndex
 
-        attrs : List (Attr { c | class : HtmlIr.Kind.Supported } msg)
+        attrs : List (Attr { c | class : M3e.Kind.Supported } msg)
         attrs =
             TA.class "sp-panel"
-                :: Seam.attribute "aria-hidden"
+                :: M3e.Unsafe.Attributes.customAttribute "aria-hidden"
                     (if inactive then
                         "true"
 
@@ -95,10 +96,10 @@ panel activeIndex i child =
                         "false"
                     )
                 :: (if inactive then
-                        [ Seam.attribute "inert" "" ]
+                        [ M3e.Unsafe.Attributes.customAttribute "inert" "" ]
 
                     else
                         []
                    )
     in
-    Seam.node "div" attrs [ child ]
+    TypedHtml.div attrs [ child ]

@@ -91,21 +91,28 @@ element fails to unify and is rejected by the compiler.
   brand) and `Ctx` (the context-row marker). This is what makes kind segregation
   compile-time safe with zero runtime cost.
 - **`M3e.Coerce`** — the config-blessed named coercions between brands.
-- **`M3e.Unsafe`** — the published `fromHtml` escape hatch.
+- **`M3e.Unsafe`** / **`M3e.Unsafe.Attributes`** — the published escape hatches:
+  `fromHtml` / `fromHtmlAttribute` lift raw `Html`, `fromNode` re-asserts rows on an
+  erased `Node`, `recast` / `recastAttr` (and their `*All` list forms) re-kind to free
+  rows, and `customElement` / `customAttribute` forge a tag or attribute this library
+  has no generated producer for. Every use is a grep target and a lint finding.
 - **`M3e.Review.Facts`** — the generated component facts table, consumed by the
   `review/` app's `elm-review-cem` rules.
 
 ## The atom layer
 
-Atoms bridge raw content into the typed IR. Plain text is built in — `M3e.text : String
--> Element …` returns the shared text atom directly, so it needs nothing extra. Richer
-producers are userland: `docs/kit/Kit.elm` supplies `text`, `link`, `textLink`, and
-typography helpers, all returning `HtmlIr.Kind.Shared` in role-specific fields:
+Atoms bridge raw content into the typed IR, and there is no userland module in the
+loop anymore. Plain text is built in — `M3e.text : String -> Element …` returns the
+shared text atom directly, so it needs nothing extra. For native HTML, reach for the
+standalone native brand `TypedHtml.*` (`elm-typed-html`) directly — `TypedHtml.text`
+carries the same shared-text row natively, and elements like `TypedHtml.a` are
+polymorphic enough in their own kind row to unify directly with any slot that
+declares a matching `shared:<atom>` field, no adapter required:
 
 | Atom | Kind field | Type produced |
 |------|-----------|----------------|
-| `M3e.text "…"` | `sharedText : HtmlIr.Kind.Shared` | `Element { s \| sharedText : HtmlIr.Kind.Shared } … msg` |
-| `Kit.link "…" children` | `sharedLink : HtmlIr.Kind.Shared` | `Element { s \| sharedLink : HtmlIr.Kind.Shared } … msg` |
+| `M3e.text "…"` / `TypedHtml.text "…"` | `sharedText : HtmlIr.Kind.Shared` | `Element { s \| sharedText : HtmlIr.Kind.Shared } … msg` |
+| `TypedHtml.a [ TypedHtml.Attributes.href … ] […]` | `sharedLink : HtmlIr.Kind.Shared` | unifies with any slot requiring it — `a`'s own kind row is open, not fixed |
 
 An m3e component slot accepts an atom when its slot config declares `"shared:<atom>"` and
 the generated slot row contains that field. The Elm type checker resolves the
@@ -113,8 +120,8 @@ unification — no cast, no coercion, no seam crossing required. Atoms are the o
 that flows freely across brand boundaries; private-brand components are rejected by
 default.
 
-For native-HTML elements (`div`, `span`, `img`, …), copy `docs/kit/Native.elm`, or use
-the standalone native brand `TypedHtml.*` (`elm-typed-html`). ARIA setters come from
-`TypedHtml.Aria` (the ARIA hybrid) — see [`making-m3e-accessible`](Seams.md) and the
-accessibility guide. For crossing raw `Html` into the IR, `docs/kit/Seam.elm` (built on
-`HtmlIr.Internal`) is the single sanctioned boundary; see [`Seams`](Seams.md).
+For native-HTML elements (`div`, `span`, `img`, …), use the native brand `TypedHtml.*`
+(`elm-typed-html`) directly — there is no userland copy to maintain. ARIA setters come
+from `TypedHtml.Aria` (the ARIA hybrid) — see the accessibility guide. For crossing raw
+`Html` into the IR, `M3e.Unsafe.fromHtml` — shipped with the library, built on
+`HtmlIr.Internal` — is the single sanctioned boundary; see [`Seams`](Seams.md).

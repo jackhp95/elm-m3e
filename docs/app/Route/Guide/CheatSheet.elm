@@ -10,10 +10,10 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
 import M3e
 import M3e.Attributes
 import M3e.Heading
+import M3e.Html
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -65,7 +65,7 @@ head _ =
         |> Seo.website
 
 
-card : String -> List (HtmlIr.Element.Element (M3e.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> HtmlIr.Element.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
+card : String -> List (M3e.Element (M3e.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> M3e.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
 card title items =
     TypedHtml.section [ TA.class "space-y-3" ]
         (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text title ] :: items)
@@ -73,26 +73,22 @@ card title items =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Cheat sheet · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-10" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Cheat sheet"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        , Doc.userlandNote
-                        ]
-                    , card "The surfaces" [ Doc.markdown layers ]
-                    , card "Barrel vs component module" [ Doc.markdown barrelVsSpecific, Doc.code_ Doc.Elm barrelVsSpecificCode ]
-                    , card "The three forms" [ Doc.markdown shapes, Doc.code_ Doc.Elm shapesCode ]
-                    , card "The strictness dial" [ Doc.markdown dial ]
-                    , card "Where a seam may live" [ Doc.markdown seams ]
+    View.fromElement "Cheat sheet · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-10" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Cheat sheet"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
+                    , Doc.userlandNote
                     ]
+                , card "The surfaces" [ Doc.markdown layers ]
+                , card "Barrel vs component module" [ Doc.markdown barrelVsSpecific, Doc.code_ Doc.Elm barrelVsSpecificCode ]
+                , card "The three forms" [ Doc.markdown shapes, Doc.code_ Doc.Elm shapesCode ]
+                , card "The strictness dial" [ Doc.markdown dial ]
+                , card "Where a seam may live" [ Doc.markdown seams ]
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -162,11 +158,12 @@ dial =
 
 seams : String
 seams =
-    """From [your own seam](/guide/seams). Everything is a typed `Element` from `M3e.*` / `TypedHtml.*`, composed directly — you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). To bring in something *foreign*, there are exactly two loud, greppable, lint-fenced escape surfaces:
+    """From [your own seam](/guide/seams). Everything is a typed `Element` from `M3e.*` / `TypedHtml.*`, composed directly — you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). To bring in something *foreign*, there is exactly one loud, greppable, lint-fenced escape surface, shipped with the library itself:
 
 | Escape | What it gives you |
 | --- | --- |
-| **`<Brand>.Unsafe`** / **`.Unsafe.Attributes`** | `fromHtml` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAttr` re-kind to free rows so anything drops into any slot. Fenced by `NoUnsafeImportOutsideAllowed`. |
-| **`HtmlIr.Internal`** (the forge) | `element` (a custom-element tag as a slot-ready `Element`), `node` / `attribute` / `property` / `on` (define your own tags, attrs, events), `lazy`..`lazy8` (memoise). Fenced by `NoInternalImportOutsideAllowed`. |
+| **`<Brand>.Unsafe`** / **`.Unsafe.Attributes`** | `fromHtml` / `fromHtmlAttribute` lift raw `Html`; `recast` / `recastAttr` re-kind to free rows so anything drops into any slot; `customElement` / `customAttribute` forge a tag or attribute the library has no producer for. Fenced by `NoUnsafeImportOutsideAllowed`. |
 
-A "seam" isn't a library feature — it's the *practice* of corralling those escapes into one greppable place (this docs app keeps its own in `Seam`). Anywhere else a raw escape is flagged, and the linter offers to lift it into an escape for you."""
+Underneath, `Unsafe` is built on the raw forge `HtmlIr.Internal` (`fromNode`, `node` / `attribute` / `property` / `on`, `lazy`..`lazy8`) — but that forge is fenced to the library's own generated code by `NoInternalImportOutsideAllowed`; application code has no reason to import it.
+
+A "seam" isn't a library feature — it's the *practice* of corralling those escapes into one greppable place, a small named producer next to the code that needs it. Anywhere else a raw escape is flagged, and the linter offers to lift it into an escape for you."""

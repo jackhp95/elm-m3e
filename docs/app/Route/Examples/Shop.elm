@@ -2,9 +2,9 @@ module Route.Examples.Shop exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Shop** example — a full-viewport Material 3 e-commerce storefront screen,
 authored on the M3e API with the m3e component set carrying almost all of the
-structure and the kit (`Seam`) with M3 token classes owning every visual
-choice. Tailwind is used only for layout (flex/grid/gap/spacing/positioning and
-responsive visibility).
+structure, and M3 token classes (applied directly with
+`TypedHtml.Attributes.class`) owning every visual choice. Tailwind is used only
+for layout (flex/grid/gap/spacing/positioning and responsive visibility).
 
 Chrome adapts to the viewport: an `M3e.NavRail` on desktop (`hidden md:flex`) and
 an `M3e.NavBar` bottom bar on mobile (`md:hidden`), with a top `M3e.AppBar`
@@ -21,10 +21,7 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Attr, Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Card
@@ -32,10 +29,10 @@ import M3e.Events
 import M3e.Fab
 import M3e.Kind
 import M3e.NavItem
+import M3e.Unsafe
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -154,34 +151,30 @@ view _ _ model =
             else
                 List.filter (\p -> p.category == model.category) products
     in
-    { title = "Shop · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Seam.node "div"
-                [ TA.class "bg-surface text-on-surface flex min-h-screen w-full" ]
-                [ navRail model
-                , TypedHtml.div [ TA.class "flex min-w-0 flex-1 flex-col" ]
-                    [ appBar model
-                    , TypedHtml.section [ TA.class "relative flex-1 overflow-y-auto" ]
-                        [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6" ]
-                            [ hero
-                            , filterBar model.category
-                            , productGrid shown
-                            ]
-                        , exampleFooter
-                        , checkoutFab
+    View.fromElement "Shop · elm-m3e"
+        (TypedHtml.div
+            [ TA.class "bg-surface text-on-surface flex min-h-screen w-full" ]
+            [ navRail model
+            , TypedHtml.div [ TA.class "flex min-w-0 flex-1 flex-col" ]
+                [ appBar model
+                , TypedHtml.section [ TA.class "relative flex-1 overflow-y-auto" ]
+                    [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6" ]
+                        [ hero
+                        , filterBar model.category
+                        , productGrid shown
                         ]
+                    , exampleFooter
+                    , checkoutFab
                     ]
-                , navBar model
                 ]
-            )
-        ]
-    }
+            , navBar model
+            ]
+        )
 
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -219,16 +212,31 @@ appBar model =
 
 
 {-| Cart icon button carrying a Badge with the item count.
+
+The wrapper needs a loud `recast`, and that is the type system telling the truth
+rather than getting in the way. `AppBar.TrailingSlot` admits
+`{ button, html, iconButton, searchBar }` — deliberately, because the upstream
+manifest describes the slot as "one or more action buttons", and a Badge is not
+an action button. The Badge only lives here because `M3e.Attributes.for` anchors
+it to `#cart-btn` positionally, so it has to be _somewhere_ in the DOM nearby.
+
+A native wrapper cannot satisfy the slot either: `html` is stamped with M3e's
+private `Brand`, so no `TypedHtml.*` element can ever unify with it. That is the
+known cross-brand gap tracked as RC5 — see
+`planning/2026-08-04-elm-m3e-substrate-leak-elimination.md` §RC5.
+
 -}
-cartAction : Int -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
+cartAction : Int -> Element accepts admittedBy (PagesMsg Msg)
 cartAction count =
-    Seam.node "span"
-        [ TA.class "inline-flex" ]
-        [ M3e.iconButton
-            [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
-            [ M3e.icon [ TA.name "shopping_bag" ] [] ]
-        , M3e.badge [ M3e.Attributes.for "cart-btn" ] [ M3e.text (String.fromInt count) ]
-        ]
+    M3e.Unsafe.recast
+        (TypedHtml.div
+            [ TA.class "inline-flex" ]
+            [ M3e.iconButton
+                [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
+                [ M3e.icon [ TA.name "shopping_bag" ] [] ]
+            , M3e.badge [ M3e.Attributes.for "cart-btn" ] [ M3e.text (String.fromInt count) ]
+            ]
+        )
 
 
 {-| Left navigation rail — desktop only.
@@ -275,7 +283,7 @@ barItem current dest =
 navDestination : String -> Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navDestination current dest =
     let
-        attrs : List (Attr { c | selected : HtmlIr.Kind.Supported, onClick : HtmlIr.Kind.Supported } (PagesMsg Msg))
+        attrs : List (Attr { c | selected : M3e.Kind.Supported, onClick : M3e.Kind.Supported } (PagesMsg Msg))
         attrs =
             case dest.category of
                 Just cat ->
@@ -298,9 +306,9 @@ navDestination current dest =
 
 {-| A small welcome banner painted on a container surface.
 -}
-hero : Element { s | html : M3e.Kind.Brand } adm_ msg
+hero : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 hero =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-primary-container text-on-primary-container rounded-md-corner-extra-large flex flex-col gap-1 p-6" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide" ] [ M3e.text "New season" ]
         , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Everyday goods, thoughtfully made" ]
@@ -364,9 +372,9 @@ productCard product =
 
 {-| Placeholder media: a shape-clipped surface tile with a centered glyph.
 -}
-media : Product -> Element { s | html : M3e.Kind.Brand } adm_ msg
+media : Product -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 media product =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class (product.media ++ " rounded-md-corner-large flex aspect-square items-center justify-center") ]
         [ M3e.icon [ TA.name product.icon, M3e.Attributes.opticalSize 48 ] [] ]
 

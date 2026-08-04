@@ -14,7 +14,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
+import M3e
+import M3e.Values
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -66,49 +67,45 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Theming with tokens · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Theming with tokens"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "One theme at the root"
-                        , Doc.markdown rootBody
-                        , Doc.code_ Doc.Elm rootCode
-                        , Doc.markdown rootNote
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Paint with roles, not hex"
-                        , Doc.markdown rolesBody
-                        , Doc.code_ Doc.Elm rolesCode
-                        , Doc.markdown tokenFamilies
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "Dark and dynamic color are swaps"
-                        , Doc.markdown darkBody
-                        , Doc.code_ Doc.Elm darkCode
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "A brand re-skin, end to end"
-                        , Doc.markdown reskinBody
-                        , Doc.code_ Doc.Elm reskinCode
-                        , Doc.markdown reskinNote
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.sectionHeading "The Tailwind bridge: layout only"
-                        , Doc.markdown bridgeBody
-                        , Doc.code_ Doc.Elm bridgeCode
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "Theming with tokens · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Theming with tokens"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "One theme at the root"
+                    , Doc.markdown rootBody
+                    , Doc.code_ Doc.Elm rootCode
+                    , Doc.markdown rootNote
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Paint with roles, not hex"
+                    , Doc.markdown rolesBody
+                    , Doc.code_ Doc.Elm rolesCode
+                    , Doc.markdown tokenFamilies
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "Dark and dynamic color are swaps"
+                    , Doc.markdown darkBody
+                    , Doc.code_ Doc.Elm darkCode
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "A brand re-skin, end to end"
+                    , Doc.markdown reskinBody
+                    , Doc.code_ Doc.Elm reskinCode
+                    , Doc.markdown reskinNote
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.sectionHeading "The Tailwind bridge: layout only"
+                    , Doc.markdown bridgeBody
+                    , Doc.code_ Doc.Elm bridgeCode
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -199,7 +196,7 @@ Theme.view
     , Theme.contrast M3e.Values.medium -- a touch more contrast for the new palette
     , Theme.density -1                -- slightly more compact
     ]
-    [ appBody ]                        -- shapes: set the corner default in the Seam module,
+    [ appBody ]                        -- shapes: set the corner default where the surface is built,
                                        -- e.g. TA.class "rounded-md-corner-large" per surface"""
 
 

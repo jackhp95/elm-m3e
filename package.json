@@ -1,7 +1,7 @@
 {
   "name": "elm-m3e",
   "version": "0.1.0",
-  "description": "M3e.* — type-safe Make-Impossible-States-Impossible Elm layer over the @m3e/web Material 3 Expressive web components (introspectable IR + phantom-typed slots).",
+  "description": "M3e.* \u2014 type-safe Make-Impossible-States-Impossible Elm layer over the @m3e/web Material 3 Expressive web components (introspectable IR + phantom-typed slots).",
   "license": "BSD-3-Clause",
   "private": true,
   "type": "module",
@@ -18,7 +18,7 @@
     "test:roundtrip": "npm --prefix docs run test:roundtrip",
     "test:browser": "npm --prefix docs run test:browser",
     "check": "run-p \"check:!(review)\"",
-    "check:format": "node_modules/.bin/elm-format --validate docs/app docs/src docs/kit review/src",
+    "check:format": "node_modules/.bin/elm-format --validate docs/app docs/src review/src",
     "check:review": "docs/node_modules/.bin/elm-review --config review",
     "check:cem": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" gate --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json --skip-acid",
     "check:nav": "npm --prefix docs run check:nav",
@@ -26,7 +26,7 @@
     "dev": "npm --prefix docs run dev",
     "serve": "npm --prefix docs run serve",
     "gate": "run-s check test",
-    "format": "node_modules/.bin/elm-format --yes docs/app docs/src docs/kit review/src",
+    "format": "node_modules/.bin/elm-format --yes docs/app docs/src review/src",
     "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
     "postinstall": "npm run hooks:install"

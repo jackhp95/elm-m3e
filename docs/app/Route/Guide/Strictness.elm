@@ -14,8 +14,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Button
 import M3e.Kind
@@ -83,32 +82,28 @@ saveButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "The strictness dial · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "The strictness dial"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown linter ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown shapes
-                        , Doc.showcase saveButton
-                        , Doc.code_ Doc.Elm shapesCode
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown recordAha
-                        , Doc.code_ Doc.NoLang recordError
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "The strictness dial · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "The strictness dial"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown linter ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown shapes
+                    , Doc.showcase saveButton
+                    , Doc.code_ Doc.Elm shapesCode
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown recordAha
+                    , Doc.code_ Doc.NoLang recordError
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -154,7 +149,7 @@ recordError : String
 recordError =
     """The 1st argument to `el` is not what I expect:
 
-4| M3e.Button.el { content = Seam.text "Save" } [] []
+4| M3e.Button.el { content = M3e.text "Save" } [] []
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This argument is a record of type:
 

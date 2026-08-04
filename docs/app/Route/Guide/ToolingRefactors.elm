@@ -12,7 +12,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
+import M3e
+import M3e.Unsafe.Attributes
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -64,32 +65,28 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "The tooling refactors for you · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "The tooling refactors for you"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown extract
-                        , Doc.code_ Doc.Elm extractBefore
-                        , Doc.code_ Doc.Elm extractAfter
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown convert
-                        , Doc.code_ Doc.Elm convertBefore
-                        , Doc.code_ Doc.Elm convertAfter
-                        , Doc.markdown pipeline
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "The tooling refactors for you · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "The tooling refactors for you"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown extract
+                    , Doc.code_ Doc.Elm extractBefore
+                    , Doc.code_ Doc.Elm extractAfter
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown convert
+                    , Doc.code_ Doc.Elm convertBefore
+                    , Doc.code_ Doc.Elm convertAfter
+                    , Doc.markdown pipeline
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -105,7 +102,7 @@ extract =
 extractBefore : String
 extractBefore =
     """-- a raw escape inlined in a feature module (flagged: escapes are fenced)
-row [ Seam.asAttribute (class "flex-auto") ] children"""
+row [ M3e.Unsafe.Attributes.fromHtmlAttribute (class "flex-auto") ] children"""
 
 
 extractAfter : String
@@ -114,7 +111,7 @@ extractAfter =
 row [ flexAuto ] children
 
 -- (lifted into the seam module for you)
-flexAuto = Seam.asAttribute (class "flex-auto")"""
+flexAuto = M3e.Unsafe.Attributes.fromHtmlAttribute (class "flex-auto")"""
 
 
 convert : String

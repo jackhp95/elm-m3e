@@ -17,23 +17,42 @@ import Review.Rule exposing (Rule)
 -}
 config : List Rule
 config =
-    [ -- One Seam boundary (docs/DESIGN.md §4, #81). Allowed holders: the reusable
-      -- adapters (`Native`, `Layout`, `Kit`) and `Seam` itself, plus the docs
-      -- app's own adapters — `Doc` (doc-rendering) and `Shared` (the app-shell
-      -- root, already the sole holder of the `Node.toHtml` render exit). Prefixes,
-      -- so `Kit` covers `Kit.Surface`/`Kit.Shape`. Feature routes are NOT listed —
-      -- except `Route.Guide.Seams`, whose teaching subject IS a genuine seam (a
-      -- `<model-viewer>` custom element shown inline). Pedagogical exception, same
-      -- spirit as the Guide barrel/setter exemptions in ReviewConfig.
+    [ -- Escapes stay corralled (docs/DESIGN.md §4, #81). The userland `Seam` module
+      -- this rule used to fence is gone: the library now generates the escape
+      -- surface itself, per brand, so the rule fences THAT instead. Anything not
+      -- listed must compose out of typed producers.
+      --
+      -- Allowed holders, and why each earns it:
+      --   `Doc` / `Doc.Slider` — the doc-rendering adapters. Markdown, syntax
+      --     highlighting and a `<slide-panels>` custom element have no typed
+      --     producer, and centralising them here is the whole point of the module.
+      --   `Shared` — the app-shell root; raw `Html` chrome and the render exit.
+      --   `View` — the page boundary. `View.body` is the app's single re-assertion
+      --     of phantom rows onto an erased `Node` (see `View.elm`).
+      --   `Route.Examples.Shop` — one `recast`, because `AppBar.TrailingSlot`
+      --     genuinely does not admit a Badge. Documented at the call site.
+      --   `Route.Guide.*` — pedagogical: these pages' teaching subject IS the
+      --     escape surface, shown inline as live examples. Same spirit as the
+      --     Guide barrel/setter exemptions in ReviewConfig.
       NoSeamOutsideAllowedModules.rule
-        { seamModules = [ "Seam", "M3e.Seam.Internal" ]
-        , allowedModules = [ "Native", "Layout", "Kit", "Seam", "Doc", "Shared", "Route.Guide.Seams" ]
+        { seamModules =
+            [ "M3e.Unsafe"
+            , "M3e.Unsafe.Attributes"
+            , "TypedHtml.Unsafe"
+            , "TypedHtml.Unsafe.Attributes"
+            ]
+        , allowedModules =
+            [ "Doc"
+            , "Shared"
+            , "View"
+            , "Route.Examples.Shop"
+            , "Route.Guide"
+            ]
         }
 
-    -- The opaque-IR `*.Internal` boundary (docs/DESIGN.md §4): only generated `M3e.*`
-    -- code and the modules that actually build the crossings (`Seam`, and the
-    -- `Native`/`Layout`/`Kit` adapters) may import an interior module. The docs
-    -- `Doc`/`Shared` adapters cross through `Seam`, so they need no Internal
-    -- import and are deliberately absent here.
-    , NoInternalImportOutsideAllowed.rule [ "M3e", "TypedHtml", "HtmlIr", "Native", "Layout", "Kit", "Seam" ]
+    -- The opaque-IR `*.Internal` boundary (docs/DESIGN.md §4): only generated brand
+    -- code may import an interior module. Userland has no business here at all now
+    -- — the generated `*.Unsafe` modules are the sanctioned crossings, and they
+    -- live inside the brand.
+    , NoInternalImportOutsideAllowed.rule [ "M3e", "TypedHtml", "HtmlIr" ]
     ]

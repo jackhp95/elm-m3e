@@ -205,8 +205,7 @@ type alias AttrCaps =
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { leading : Available
-    , leadingIcon : Available
+    { leadingIcon : Available
     , subtitle : Available
     , title : Available
     , trailingIcon : Available
@@ -276,13 +275,6 @@ withSize value_ =
     B.withAttribute (size value_)
 
 
-{-| Pipe form of the `leading` slot — consumes its capability (write-once).
--}
-withLeading : Element LeadingSlot admittedBy msg -> Builder attrCaps { s | leading : Available } msg -> Builder attrCaps { s | leading : Used } msg
-withLeading element =
-    B.withChild (El.toNode (leading element))
-
-
 {-| Pipe form of the `leading-icon` slot — consumes its capability (write-once).
 -}
 withLeadingIcon : Element childAccepts admittedBy msg -> Builder attrCaps { s | leadingIcon : Available } msg -> Builder attrCaps { s | leadingIcon : Used } msg
@@ -309,6 +301,13 @@ withTitle element =
 withTrailingIcon : Element childAccepts admittedBy msg -> Builder attrCaps { s | trailingIcon : Available } msg -> Builder attrCaps { s | trailingIcon : Used } msg
 withTrailingIcon element =
     B.withChild (El.toNode (trailingIcon element))
+
+
+{-| Pipe form of the `leading` slot — appends into the child list (repeatable, like `withChild`).
+-}
+withLeading : Element LeadingSlot admittedBy msg -> Builder attrCaps slotCaps msg -> Builder attrCaps slotCaps msg
+withLeading element =
+    B.withChild (El.toNode (leading element))
 
 
 {-| Pipe form of the `trailing` slot — appends into the child list (repeatable, like `withChild`).

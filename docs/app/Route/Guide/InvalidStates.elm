@@ -11,8 +11,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Button
 import M3e.Kind
@@ -80,32 +79,28 @@ savedButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Invalid states don't compile · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Invalid states don't compile"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown valid
-                        , Doc.showcase savedButton
-                        , Doc.code_ Doc.Elm validCode
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown broken
-                        , Doc.code_ Doc.Elm brokenCode
-                        , Doc.code_ Doc.NoLang errorText
-                        , Doc.markdown readError
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "Invalid states don't compile · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Invalid states don't compile"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown valid
+                    , Doc.showcase savedButton
+                    , Doc.code_ Doc.Elm validCode
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown broken
+                    , Doc.code_ Doc.Elm brokenCode
+                    , Doc.code_ Doc.NoLang errorText
+                    , Doc.markdown readError
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -136,8 +131,8 @@ broken =
 brokenCode : String
 brokenCode =
     """M3e.button [ M3e.Attributes.variant Value.filled ]
-    [ M3e.Button.icon (M3e.chip [] [ Seam.text "not an icon" ])
-    , Seam.text "Save"
+    [ M3e.Button.icon (M3e.chip [] [ M3e.text "not an icon" ])
+    , M3e.text "Save"
     ]"""
 
 
@@ -145,7 +140,7 @@ errorText : String
 errorText =
     """The 1st argument to `icon` is not what I expect:
 
-9|     [ M3e.Button.icon (M3e.chip [] [ Seam.text "not an icon" ])
+9|     [ M3e.Button.icon (M3e.chip [] [ M3e.text "not an icon" ])
                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This `chip` call produces:
 

@@ -9,8 +9,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Button
 import M3e.Card
@@ -110,20 +109,16 @@ exampleCard ( slug, cardTitle, cardBody ) =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Examples · elm-m3e"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
-                        ]
+    View.fromElement "Examples · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
                     ]
-                , TypedHtml.section [ TA.class "grid gap-4 sm:grid-cols-2" ]
-                    (List.map exampleCard examples)
                 ]
-            )
-        ]
-    }
+            , TypedHtml.section [ TA.class "grid gap-4 sm:grid-cols-2" ]
+                (List.map exampleCard examples)
+            ]
+        )

@@ -1,20 +1,23 @@
 module TypedHtml.Unsafe.Attributes exposing
     ( fromHtmlAttribute
     , recastAttr, recastAttrAll
+    , customAttribute
     )
 
 {-| The attribute-side twins of [`TypedHtml.Unsafe`](TypedHtml-Unsafe): lift a raw
-`Html.Attribute`, or re-kind an existing `Attr` — both with a FREE capability row,
-so the compiler checks nothing about which element the attribute may land on. For
-incremental migration and slot-fit only; every use site is a grep target and a
-lint finding.
+`Html.Attribute`, re-kind an existing `Attr`, or set an attribute this library
+has no typed setter for — all with a FREE capability row, so the compiler checks
+nothing about which element the attribute may land on. For incremental migration
+and slot-fit only; every use site is a grep target and a lint finding.
 
 @docs fromHtmlAttribute
 @docs recastAttr, recastAttrAll
+@docs customAttribute
 
 -}
 
 import Html
+import Html.Attributes
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Internal as Ir
 
@@ -38,3 +41,10 @@ recastAttr attr =
 recastAttrAll : List (Attr aCapability msg) -> List (Attr bCapability msg)
 recastAttrAll =
     List.map recastAttr
+
+
+{-| Set an attribute by raw name, with a FREE capability row — the twin of `TypedHtml.Unsafe.customElement`, for the custom-element attributes this library has no typed setter for (`active-index`, `camera-controls`). Loud on purpose: for an attribute the library DOES model, use its typed setter, which checks the element admits it.
+-}
+customAttribute : String -> String -> Attr capability msg
+customAttribute name value =
+    Ir.fromHtmlAttribute (Html.Attributes.attribute name value)

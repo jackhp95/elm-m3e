@@ -3,12 +3,16 @@ module Doc exposing (Lang(..), anchorPill, code_, elmSignature, markdown, messag
 {-| Shared documentation-rendering helpers, lifted from the Styles/GettingStarted
 routes so per-component Usage pages can reuse them.
 
-This is also the docs app's designated **Seam adapter** (see `docs/DESIGN.md` §4): the doc
-routes render syntax-highlighted code, Markdown, and small raw-HTML leaves that
-have no typed M3e producer, so those raw-`Html`→`Element` crossings are
+This is also the docs app's designated **escape adapter** (see `docs/DESIGN.md` §4):
+the doc routes render syntax-highlighted code, Markdown, and small raw-HTML leaves
+that have no typed M3e producer, so those raw-`Html`→`Element` crossings are
 centralised here as named helpers (`rawPreview`, `markdown`, `code_`,
 `elmSignature`, `anchorPill`, `preBlock`, `message`) instead of scattering
-`Seam.fromHtml` through feature routes.
+`M3e.Unsafe.fromHtml` through feature routes.
+
+Every one of those helpers returns an `Element` with **free** phantom rows,
+because `M3e.Unsafe.fromHtml` asserts nothing about what it wraps — so they drop
+into any slot, and no caller has to name a kind row to receive one.
 
 @docs Lang, anchorPill, code_, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, showcase, userlandNote
 
@@ -17,17 +21,16 @@ centralised here as named helpers (`rawPreview`, `markdown`, `code_`,
 import Doc.Fold as Fold
 import Html exposing (Html, a, code, div, node, p, pre, text)
 import Html.Attributes exposing (attribute, class, href)
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.ContentPane
 import M3e.Heading
 import M3e.Kind
+import M3e.Unsafe
 import M3e.Values as Value
 import Markdown.Parser
 import Markdown.Renderer
-import Seam
 import SyntaxHighlight
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -43,7 +46,7 @@ items instead, so the card stays within `max-w-full` without clipping — a live
 example's escaping menu/tooltip is free to overflow the card.
 
 -}
-showcase : Element { s | html : M3e.Kind.Brand } admittedBy msg -> Element { r | card : M3e.Kind.Brand } freeAdm msg
+showcase : Element accepts admittedBy msg -> Element (M3e.Card.Is s) freeAdm msg
 showcase content =
     M3e.card
         [ M3e.Card.variant Value.outlined, TA.class "max-w-full" ]
@@ -59,9 +62,9 @@ injected subtree alone. Pre-render emits the empty wrapper; the content populate
 on hydration.
 
 -}
-rawPreview : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+rawPreview : String -> Element accepts admittedBy msg
 rawPreview html =
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (node "raw-html"
             [ attribute "content" html
 
@@ -89,7 +92,7 @@ type Lang
 
 
 {-| -}
-code_ : Lang -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+code_ : Lang -> String -> Element accepts admittedBy msg
 code_ lang s =
     let
         trimmed : String
@@ -103,7 +106,7 @@ code_ lang s =
     -- Auto-derived folding: the fold tree is computed from the raw
     -- string and highlighted per line, so we assemble nested `<details>`
     -- ourselves rather than emitting one flat highlighted block.
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (div [ class wrapperClass ]
             [ Fold.viewWith (highlightLine lang) trimmed ]
         )
@@ -146,23 +149,23 @@ Falls back to the raw text in a paragraph if parsing/rendering fails, so a
 malformed doc-comment never blanks the page. The `doc-prose` wrapper carries
 the prose spacing/typography from `style.css`.
 -}
-markdown : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+markdown : String -> Element accepts admittedBy msg
 markdown raw =
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (div [ class "doc-prose" ] (markdownBody raw))
 
 
 {-| The route content pane: the standard `M3e.contentPane` wrapper every docs
-route hands to `HtmlIr.Element.toNode` at its root.
+route hands to `View.fromElement` at its root.
 -}
-pane : List (Element { s | html : M3e.Kind.Brand } (M3e.ContentPane.ChildAdmittedBy childAdm) msg) -> Element { r | contentPane : M3e.Kind.Brand } freeAdm msg
+pane : List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg) -> Element (M3e.ContentPane.Is s) freeAdm msg
 pane items =
     M3e.contentPane [] items
 
 
 {-| A page's `<h1>`: display-small heading.
 -}
-pageHeading : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
+pageHeading : String -> Element (M3e.Heading.Is s) admittedBy msg
 pageHeading s =
     M3e.heading
         [ M3e.Heading.variant Value.display
@@ -174,7 +177,7 @@ pageHeading s =
 
 {-| A section's `<h2>`: headline-small heading.
 -}
-sectionHeading : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
+sectionHeading : String -> Element (M3e.Heading.Is s) admittedBy msg
 sectionHeading s =
     M3e.heading
         [ M3e.Heading.variant Value.headline
@@ -221,9 +224,9 @@ must not read as body prose (e.g. "these modules are yours to write"). The body 
 full Markdown, so it can carry links and inline `code`. Styled with the same surface
 tokens as the rest of the docs; a left accent bar marks it as a notice, not content.
 -}
-callout : String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+callout : String -> String -> Element accepts admittedBy msg
 callout label body =
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (div
             [ class "rounded-md-corner-medium bg-surface-container border-l-4 border-primary p-4 space-y-2" ]
             [ div [ class "text-label-md text-primary uppercase tracking-wide" ] [ text label ]
@@ -233,22 +236,20 @@ callout label body =
 
 
 {-| The shared "these helpers are our examples, not the library" callout, used
-everywhere an example leans on `Seam`. `Seam` is this docs app's own module —
-NOT in the package's `exposed-modules` (it lives in `docs/kit/` as a copyable
-starter) — and now holds only genuine escapes. One definition, so the framing
+everywhere an example leans on a `Doc.*` helper. One definition, so the framing
 can't drift.
 -}
-userlandNote : Element { s | html : M3e.Kind.Brand } admittedBy msg
+userlandNote : Element accepts admittedBy msg
 userlandNote =
     callout "These helpers are our examples, not the library"
-        """`Seam` in these examples is **this docs app's own module** — not part of `elm-m3e` (it won't resolve from a fresh install), and you rarely need it. The library gives you typed components (`M3e.*`) plus `TypedHtml` for standard HTML, and you never import `HtmlIr` (the barrel re-exports `M3e.Element` / `M3e.Attr` and `M3e.mapMsg`). Build layout, text, and links directly from those. `Seam` holds only the genuine *escapes* — a custom element the types can't express (via `HtmlIr.Internal`'s `element` / `attribute`), or raw `Html` via `M3e.Unsafe` (`fromHtml`, and `recast` to re-kind an element) — corralled into one greppable, lint-fenced place. Copy the [`docs/kit/`](https://github.com/jackhp95/elm-m3e/tree/main/docs/kit) starters, or roll your own. See [Your own seam](/guide/seams)."""
+        """The `Doc.*` helpers in these examples are **this docs app's own module** — not part of `elm-m3e` (they won't resolve from a fresh install). You rarely need anything like them. The library gives you typed components (`M3e.*`) plus `TypedHtml` for standard HTML, and you never import `HtmlIr`: `M3e.Element`, `M3e.Attr`, `M3e.Node`, `M3e.Values.Value` and `M3e.Kind.Supported` / `.Shared` are all re-exported, so every type annotation you need is reachable from the brand. Build layout, text, and links directly from those. The genuine *escapes* ship with the library too, in one greppable, lint-fenced place — `M3e.Unsafe` (`fromHtml`, `fromNode`, `recast`, and `customElement` for a custom tag the types can't express) and `M3e.Unsafe.Attributes`. See [Escapes](/guide/seams)."""
 
 
 {-| A syntax-highlighted Elm type signature (for API member rows). Rendered as an
 inline `<code>` block so it wraps within the list item; falls back to plain text
 if it doesn't tokenize as Elm.
 -}
-elmSignature : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+elmSignature : String -> Element accepts admittedBy msg
 elmSignature s =
     let
         trimmed : String
@@ -257,13 +258,13 @@ elmSignature s =
     in
     case SyntaxHighlight.elm trimmed of
         Ok highlighted ->
-            Seam.fromHtml
+            M3e.Unsafe.fromHtml
                 (div [ class "text-body-md leading-relaxed" ]
                     [ SyntaxHighlight.toInlineHtml highlighted ]
                 )
 
         Err _ ->
-            Seam.fromHtml
+            M3e.Unsafe.fromHtml
                 (code [ class "text-body-md" ] [ text trimmed ])
 
 
@@ -271,9 +272,9 @@ elmSignature s =
 carrying the outline/hover chrome). Raw `<a>` because the library doesn't
 opinionate plain navigation anchors.
 -}
-anchorPill : { href : String, label : String } -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+anchorPill : { href : String, label : String } -> Element accepts admittedBy msg
 anchorPill link =
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (a
             [ href link.href
             , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
@@ -284,9 +285,9 @@ anchorPill link =
 
 {-| A horizontally-scrollable `<pre><code>` block for a verbatim signature line.
 -}
-preBlock : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+preBlock : String -> Element accepts admittedBy msg
 preBlock s =
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (pre [ class "overflow-x-auto" ]
             [ code [] [ text s ] ]
         )
@@ -295,7 +296,7 @@ preBlock s =
 {-| A minimal `<div><p>…</p></div>` text block, for framework surfaces (e.g. the
 error page) that render a plain message with no typed M3e producer at hand.
 -}
-message : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+message : String -> Element accepts admittedBy msg
 message body =
-    Seam.fromHtml
+    M3e.Unsafe.fromHtml
         (div [] [ p [] [ text body ] ])

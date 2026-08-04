@@ -5,7 +5,6 @@
         "src",
         ".elm-pages",
         "../src",
-        "kit",
         "vendor/elm-foundation"
     ],
     "elm-version": "0.19.1",

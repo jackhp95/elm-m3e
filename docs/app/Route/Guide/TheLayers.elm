@@ -12,10 +12,11 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Html
 import M3e.Kind
+import M3e.Unsafe
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -77,32 +78,28 @@ saveButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "The surface map · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "The surface map"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown layers
-                        , Doc.code_ Doc.NoLang layersDiagram
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown sameButton
-                        , Doc.showcase saveButton
-                        , Doc.code_ Doc.Elm descentCode
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown tell ]
-                    , Doc.recapBox recap
+    View.fromElement "The surface map · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "The surface map"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown layers
+                    , Doc.code_ Doc.NoLang layersDiagram
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown sameButton
+                    , Doc.showcase saveButton
+                    , Doc.code_ Doc.Elm descentCode
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown tell ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -130,7 +127,7 @@ ESCAPES — leave the typed tree (loud, greppable, lint-fenced)
   M3e.Coerce.asButton …            config-blessed kind crossing
   M3e.Unsafe.fromHtml …            wrap raw elm/html; free rows, checks nothing
   M3e.Unsafe.recast …              re-kind an Element so it fits any slot
-  HtmlIr.Internal.element …        forge a custom-element tag as a slot-ready Element"""
+  M3e.Unsafe.customElement …       forge a custom-element tag as a slot-ready Element"""
 
 
 sameButton : String
@@ -157,13 +154,13 @@ M3e.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
 
 tell : String
 tell =
-    """There's a simple tell that you escaped when you didn't need to: **if you're hand-writing raw HTML (`M3e.Unsafe.fromHtml`, a bare `Seam.node`) for something the library already ships as a component, you reached too far.** The typed component already carries the tag, the slots, and the tokens — spelling them out by hand throws that away. Escapes exist for what the library genuinely can't express; reaching for one otherwise is the mistake."""
+    """There's a simple tell that you escaped when you didn't need to: **if you're hand-writing raw HTML (`M3e.Unsafe.fromHtml`, a bare `M3e.Unsafe.customElement`) for something the library already ships as a component, you reached too far.** The typed component already carries the tag, the slots, and the tokens — spelling them out by hand throws that away. Escapes exist for what the library genuinely can't express; reaching for one otherwise is the mistake."""
 
 
 recap : String
 recap =
     """- A component is **one typed value**, written through interchangeable **surfaces** (barrel `view`, `el`, `build`) — **peers, not a ranking**.
 - `M3e.Html.*` is the **loose** producer: opt out of strict phantom rows while staying in the IR (it is *not* plain HTML).
-- You leave the typed tree only through loud, named **escapes**: two lint-fenced doors — `M3e.Unsafe` (`fromHtml`/`recast`) and the raw forge `HtmlIr.Internal` — plus `M3e.Coerce` for the config-blessed kind crossings a brand declares.
+- You leave the typed tree only through loud, named **escapes**: `M3e.Unsafe` / `M3e.Unsafe.Attributes` (`fromHtml`, `fromNode`, `recast`, `customElement`, …) — shipped with the library, built on the raw forge `HtmlIr.Internal` that application code never touches directly — plus `M3e.Coerce` for the config-blessed kind crossings a brand declares.
 - The tell that you over-escaped: **hand-writing raw HTML the library already ships as a component.**
 - **Next: [Your own seam](/guide/seams) →** when you *do* need to step outside, do it through one of the sanctioned escapes."""

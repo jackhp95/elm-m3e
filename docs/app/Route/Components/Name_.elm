@@ -16,8 +16,7 @@ import Doc.Usage as Usage exposing (UsageExample)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
@@ -121,24 +120,20 @@ view app _ model =
         component =
             app.data.component
     in
-    { title = component.name ++ " · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (HtmlIr.Element.map PagesMsg.fromMsg
-                (Doc.pane
-                    [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
-                      -- section — header, Usage, API — so their spacing is uniform.
-                      TypedHtml.div [ TA.class "space-y-10" ]
-                        (header component
-                            :: Usage.usageBlocks 0 model app.data.usage
-                            ++ [ apiSection component.members ]
-                            ++ exampleAppsSection app.data.exampleUsage
-                        )
-                    ]
-                )
+    View.fromElement (component.name ++ " · elm-m3e")
+        (M3e.mapMsg PagesMsg.fromMsg
+            (Doc.pane
+                [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
+                  -- section — header, Usage, API — so their spacing is uniform.
+                  TypedHtml.div [ TA.class "space-y-10" ]
+                    (header component
+                        :: Usage.usageBlocks 0 model app.data.usage
+                        ++ [ apiSection component.members ]
+                        ++ exampleAppsSection app.data.exampleUsage
+                    )
+                ]
             )
-        ]
-    }
+        )
 
 
 {-| The page header, mirroring the matraic component pages: the component name as
@@ -213,7 +208,7 @@ same filled, rounded code block the Usage section uses (matraic's install card i
 a bare `<pre>`); wrapping it in an outlined Card would nest a surface-container
 fill inside a card border — a box-in-box that fights the M3 surface roles.
 -}
-installCard : Element { s | html : M3e.Kind.Brand } adm_ msg
+installCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 installCard =
     Doc.code_ Doc.Elm "import M3e\nimport M3e.Values"
 

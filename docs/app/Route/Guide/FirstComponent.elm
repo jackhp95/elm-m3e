@@ -11,8 +11,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
@@ -83,27 +82,23 @@ settingsCard =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Your first component · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Your first component"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown body
-                        , settingsCard
-                        , Doc.code_ Doc.Elm source
-                        , Doc.userlandNote
-                        ]
-                    , Doc.recapBox recap
+    View.fromElement "Your first component · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Your first component"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown body
+                    , settingsCard
+                    , Doc.code_ Doc.Elm source
+                    , Doc.userlandNote
+                    ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
@@ -113,7 +108,7 @@ intro =
 
 body : String
 body =
-    """Every component is a typed Elm value. Import the one-import `M3e` barrel, build a value in the shape `M3e.<name> [ attributes ] [ children ]`, and hand it to `HtmlIr.Element.toNode` at your app's root. Here is the start of our panel: an outlined card, a title, and a **Save** button.
+    """Every component is a typed Elm value. Import the one-import `M3e` barrel, build a value in the shape `M3e.<name> [ attributes ] [ children ]`, and hand it to `M3e.toNode` at your app's root. Here is the start of our panel: an outlined card, a title, and a **Save** button.
 
 Look at the shape. Attributes like `M3e.Attributes.variant Value.filled` go in the first list; content goes in the second. That is the whole API — one import, one shape, every component.
 
@@ -137,5 +132,5 @@ settingsCard =
 recap : String
 recap =
     """- Every component is `M3e.<name> [ attributes ] [ children ]`, from the one-import `M3e` barrel.
-- `HtmlIr.Element.toNode` renders your composed value at your app's root.
+- `M3e.toNode` renders your composed value at your app's root.
 - **Next: [Invalid states don't compile](/guide/invalid-states) →** we compose the *wrong* thing on purpose — and watch the compiler refuse it."""

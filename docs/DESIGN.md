@@ -6,8 +6,9 @@ web components: the [`elm-cem`](https://github.com/jackhp95/elm-cem) generator
 reads each component's custom-elements manifest (CEM) plus a small hand-authored
 `config/slots.json`, and emits the two surfaces described here. Nothing under
 `src/M3e/` is hand-written per component — the 130 modules there are regenerated
-wholesale. The hand-craft lives in three places only: the **generator**, the
-**config**, and the **userland seam** (`docs/kit/Seam.elm` and friends).
+wholesale. The hand-craft lives in two places only: the **generator** and the
+**config**. The escape surfaces themselves — `M3e.Unsafe` / `M3e.Unsafe.Attributes`
+— are generated too, so there is no userland adapter module left to hand-write.
 
 The schema for the config is [`CONFIG_SCHEMA.md`](CONFIG_SCHEMA.md); the config
 *vocabulary* — the ten primitives every brand is expressed in — is summarized in
@@ -85,9 +86,12 @@ the trusted/untrusted line is held by exactly one thing:
 > **`NoInternalImportOutsideAllowed`** (from the sibling
 > [`elm-review-cem`](https://github.com/jackhp95/elm-review-cem) package) flags any
 > import of `HtmlIr.Internal` outside a declared allow-list. In this repo the
-> allow-list is `[ "M3e", "TypedHtml", "HtmlIr", "Native", "Layout", "Kit", "Seam" ]`
-> (`review/src/CodegenReviewConfig.elm`): generated brand code plus the userland
-> adapters. A project that installs the rule gets the full element↔attribute, enum,
+> allow-list is `[ "M3e", "TypedHtml", "HtmlIr", "Native", "Layout", "Kit" ]`
+> (`review/src/CodegenReviewConfig.elm`): generated brand code and reusable adapter
+> namespaces a consuming project may use — application/docs code is never on it,
+> because the escapes it needs (`M3e.Unsafe`, `M3e.Unsafe.Attributes`) are generated
+> brand code, not a hand-written import of the forge itself. A project that installs
+> the rule gets the full element↔attribute, enum,
 > and nesting guarantee; a project that does not gets it only for code that stays
 > off `HtmlIr.Internal`. Documentation must never claim "compiler-guaranteed"
 > without this caveat.
@@ -307,7 +311,7 @@ Used qualified:
 ```elm
 import M3e.Button as Button
 
-Button.build { content = Kit.text "Save", action = M3e.Action.onClick SaveClicked }
+Button.build { content = M3e.text "Save", action = M3e.Action.onClick SaveClicked }
     |> Button.withVariant M3e.Values.filled
     |> Button.toElement
 ```
@@ -501,36 +505,41 @@ separate module you must remember to wire.
 
 ### The seam boundary
 
-Userland needs to build things the generator never will — an i18n text component, a
-styled link, a layout wrapper — and give them the *same* phantom typing generated
-code enjoys. Two sanctioned mechanisms cross into the IR, both loud and both fenced
-to declared modules by `NoSeamOutsideAllowedModules`.
+Userland sometimes needs to cross into the IR directly — wrap a raw `Html` value,
+re-kind an element for a slot the design system did not anticipate, forge a
+third-party custom element the generator never will. Every one of those crossings
+now ships *with the library*, fenced into one lint-guarded place: `M3e.Unsafe` and
+its attribute-side twin `M3e.Unsafe.Attributes`. There is no userland adapter module
+to hand-write and no direct `HtmlIr.Internal` import to justify outside the library's
+own generated code — both are fenced, by `NoSeamOutsideAllowedModules` and
+`NoInternalImportOutsideAllowed` respectively.
 
-**Atoms flow freely and are *not* a crossing.** `M3e.text` (built in) and the
-userland `Kit` producers (`link`, `textLink`, …) produce `HtmlIr.Kind.Shared`-typed
-elements. Any m3e slot that opts in with a matching `shared:<atom>` config entry
-admits them by ordinary unification — no cast, no coercion. This is why an app's
-"text" can be an i18n key resolving to the user's language and still drop into a
-button: the userland `Seam` module fills the same typed hole (`docs/kit/Seam.elm`):
+**Atoms flow freely and are *not* a crossing.** `M3e.text` (built in) and
+`TypedHtml`'s own producers (`TypedHtml.text`, and elements like `TypedHtml.a` whose
+own kind row is open enough to unify with a slot's declared atom) produce or admit
+`HtmlIr.Kind.Shared`-typed elements natively — no stamping step, no adapter module.
+Any m3e slot that opts in with a matching `shared:<atom>` config entry admits them by
+ordinary unification — no cast, no coercion. This is why an app's "text" can be an
+i18n key resolving to the user's language and still drop into a button: the
+producer carries the row itself, generated code included:
 
 ```elm
--- docs/kit/Seam.elm:79 — built on HtmlIr.Internal
+-- elm-typed-html/src/TypedHtml.elm:1168 — carries Shared natively, no seam required
 text : String -> Element { s | sharedText : Shared } admittedBy msg
-text s =
-    Ir.fromNode (Ir.text s)
 ```
 
-**`recast` — the general loud crossing.** When userland must move an element between
-brand kind rows with no stable semantic identity (a one-off layout adapter, a
-temporary foreign integration), the seam module's `recast` re-stamps the rows. It is
-loud (you write it explicitly), greppable (one function name), and
-review-fenced:
+**`M3e.Unsafe.recast` — the general loud crossing.** When userland must move an
+element between brand kind rows with no stable semantic identity (a one-off layout
+adapter, a temporary foreign integration), `recast` re-stamps the rows. It is loud
+(you write it explicitly), greppable (one function name), and review-fenced —
+called from a small, named producer kept next to the feature that needs it, not
+inline at every call site:
 
 ```elm
--- docs/kit/Seam.elm:62
-recast : Element a aAdm msg -> Element b bAdm msg
-recast el =
-    Ir.fromNode (HtmlIr.Element.toNode el)
+-- src/M3e/Unsafe.elm:45
+recast : Element aAccepts aAdmittedBy msg -> Element bAccepts bAdmittedBy msg
+recast element =
+    Ir.fromNode (HtmlIr.Element.toNode element)
 ```
 
 **`M3e.Coerce.*` — config-blessed typed crossings.** When a brand crossing recurs
@@ -549,13 +558,18 @@ asButton element =
     Ir.fromNode (HtmlIr.Element.toNode element)
 ```
 
-**`M3e.Unsafe.fromHtml` — the published legacy escape.** The one exported way to
-wrap raw `Html` as an `Element` with fully-free rows, for incremental migration;
-every use site is a grep target and a lint finding:
+**`M3e.Unsafe.fromHtml` / `.fromNode` / `.customElement` — the published escapes.**
+The exported ways to wrap raw `Html` as an `Element` with fully-free rows, re-assert
+rows on an erased `Node`, or forge a tag this library has no generated producer for
+(a third-party custom element the CEM never described) — for incremental migration
+and genuine foreign integration; every use site is a grep target and a lint finding:
 
 ```elm
--- src/M3e/Unsafe.elm:18
+-- src/M3e/Unsafe.elm:31
 fromHtml : Html msg -> Element accepts admittedBy msg
+
+-- src/M3e/Unsafe.elm:59
+customElement : String -> List (Attr capability msg) -> List (Element childAccepts childAdmittedBy msg) -> Element accepts admittedBy msg
 ```
 
 The posture is **permissive-default-you-trim**: a freshly generated component

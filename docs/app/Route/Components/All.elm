@@ -22,8 +22,7 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Events
 import M3e.Kind
@@ -135,21 +134,17 @@ view app _ model =
         content =
             if model.revealed then
                 stackedBlocks model.usage app.data
-                    |> List.map (HtmlIr.Element.map UsageMsg)
+                    |> List.map (M3e.mapMsg UsageMsg)
 
             else
                 [ overview app.data ]
     in
-    { title = "All components · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (HtmlIr.Element.map PagesMsg.fromMsg
-                (Doc.pane
-                    [ TypedHtml.div [ TA.class "space-y-12" ] (heading :: content) ]
-                )
+    View.fromElement "All components · elm-m3e"
+        (M3e.mapMsg PagesMsg.fromMsg
+            (Doc.pane
+                [ TypedHtml.div [ TA.class "space-y-12" ] (heading :: content) ]
             )
-        ]
-    }
+        )
 
 
 {-| The opt-in gate shown before the user reveals the stacked kitchen sink.

@@ -17,9 +17,7 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Events
@@ -30,7 +28,6 @@ import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -172,19 +169,16 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    { title = "Settings · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode (screen model) ]
-    }
+    View.fromElement "Settings · elm-m3e" (screen model)
 
 
 {-| The full-viewport shell: a desktop nav rail beside a main column, with a
 mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so only the
 content column scrolls.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
+screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 screen model =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail model.section
         , TypedHtml.div [ TA.class "flex flex-1 flex-col overflow-hidden" ]
@@ -202,7 +196,7 @@ screen model =
 {-| The shared "Built from" + prev/next strip. Settings is the last example, so
 it has no next screen.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -280,8 +274,8 @@ they must share ONE type to live in a single list, so `Row` names the union of
 every field any row needs. Each producing function's `view` returns an open row,
 which widens to fill this closed record.
 -}
-type alias Row adm_ msg =
-    Element { div : TypedHtml.Kind.Brand, html : M3e.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } adm_ msg
+type alias Row msg =
+    Element { div : TypedHtml.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } (TypedHtml.Grouping.DivChildAdmittedBy {}) msg
 
 
 content : Model -> List (Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg))
@@ -314,11 +308,11 @@ content model =
 {-| A settings section: an overline heading above a rounded surface-container card
 whose `ListItem` rows are separated by `Divider`s.
 -}
-sectionCard : String -> List (Row adm_ msg) -> Element (TypedHtml.Grouping.DivIs s) admOut_ msg
+sectionCard : String -> List (Row msg) -> Element (TypedHtml.Grouping.DivIs s) admOut_ msg
 sectionCard heading rows =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text heading ]
-        , Seam.node "div"
+        , TypedHtml.div
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize rows)
         ]
@@ -326,7 +320,7 @@ sectionCard heading rows =
 
 {-| Interleave `Divider`s between rows so groups read as one card.
 -}
-dividize : List (Row adm_ msg) -> List (Row adm_ msg)
+dividize : List (Row msg) -> List (Row msg)
 dividize rows =
     List.intersperse (M3e.divider [ M3e.Attributes.inset True ] []) rows
 
@@ -338,7 +332,7 @@ accountCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 accountCard =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Account" ]
-        , Seam.node "div"
+        , TypedHtml.div
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize
                 [ M3e.listItem []
@@ -356,7 +350,7 @@ accountCard =
 
 {-| A toggle row: leading icon, label + supporting text, trailing `Switch`.
 -}
-switchRow : String -> String -> String -> Bool -> Msg -> Row adm_ (PagesMsg Msg)
+switchRow : String -> String -> String -> Bool -> Msg -> Row (PagesMsg Msg)
 switchRow iconName label supporting on toggle =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
@@ -375,7 +369,7 @@ switchRow iconName label supporting on toggle =
 
 {-| A theme-choice row backed by a `Radio` (single group via shared `name`).
 -}
-themeRow : String -> String -> String -> String -> Row adm_ (PagesMsg Msg)
+themeRow : String -> String -> String -> String -> Row (PagesMsg Msg)
 themeRow theme label iconName current =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
@@ -419,7 +413,7 @@ densityRow =
 
 {-| A drill-in row: label + supporting text with a trailing chevron.
 -}
-linkRow : String -> String -> String -> Row adm_ msg
+linkRow : String -> String -> String -> Row msg
 linkRow iconName label supporting =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
@@ -431,7 +425,7 @@ linkRow iconName label supporting =
 
 {-| A static info row: label with a trailing value tinted as a variant.
 -}
-infoRow : String -> String -> String -> Row adm_ msg
+infoRow : String -> String -> String -> Row msg
 infoRow iconName label value =
     M3e.listItem []
         [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])

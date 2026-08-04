@@ -15,8 +15,8 @@ Navigation switches the same way every example does: an `M3e.NavRail` on desktop
 producer so the two copies never drift.
 
 Tailwind is layout only (flex/grid/gap/padding/positioning/responsive visibility);
-every visual token — color, typography, surface, shape — comes through the `Seam` /
-`Seam.Surface` / `Seam.Shape` seam.
+every visual token — color, typography, surface, shape — comes from M3 token
+classes applied directly with `TypedHtml.Attributes.class`.
 
 -}
 
@@ -24,9 +24,7 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Kind
@@ -36,7 +34,6 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -147,19 +144,16 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    { title = "List-detail · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode (HtmlIr.Element.map PagesMsg.fromMsg (screen model)) ]
-    }
+    View.fromElement "List-detail · elm-m3e" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + two-pane
 body, with a mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so
 only the panes scroll.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
+screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
@@ -171,7 +165,7 @@ screen model =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =

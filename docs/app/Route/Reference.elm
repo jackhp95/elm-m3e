@@ -12,9 +12,8 @@ import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
 import Json.Decode as Decode
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Heading
@@ -139,32 +138,28 @@ view app _ =
         ( barrel, componentModules ) =
             splitBarrel app.data
     in
-    { title = "elm-m3e · component reference"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ pageHeading
-                , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]
-                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                        [ M3e.text "Every "
-                        , TypedHtml.code [] [ M3e.text "M3e.*" ]
-                        , M3e.text " module, its overview, and every exposed value — extracted from the library source at build time."
-                        ]
+    View.fromElement "elm-m3e · component reference"
+        (Doc.pane
+            [ pageHeading
+            , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]
+                [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                    [ M3e.text "Every "
+                    , TypedHtml.code [] [ M3e.text "M3e.*" ]
+                    , M3e.text " module, its overview, and every exposed value — extracted from the library source at build time."
                     ]
-                , twoForms
-                , case barrel of
-                    Just b ->
-                        barrelBlock b
-
-                    Nothing ->
-                        M3e.text ""
-                , indexGrid componentModules
-                , TypedHtml.div [ TA.class "mt-12 space-y-12" ]
-                    (List.map componentBlock componentModules)
                 ]
-            )
-        ]
-    }
+            , twoForms
+            , case barrel of
+                Just b ->
+                    barrelBlock b
+
+                Nothing ->
+                    M3e.text ""
+            , indexGrid componentModules
+            , TypedHtml.div [ TA.class "mt-12 space-y-12" ]
+                (List.map componentBlock componentModules)
+            ]
+        )
 
 
 {-| The one "two forms" explainer, shared vocabulary with the Guide: the

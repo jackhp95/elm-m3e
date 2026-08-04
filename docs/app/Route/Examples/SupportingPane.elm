@@ -14,17 +14,15 @@ the primary content (the standard compact behavior for supporting panes: reflow,
 don't hide).
 
 Navigation switches the usual way: `M3e.NavRail` on desktop, `M3e.NavBar` on mobile,
-one destination list. Tailwind is layout only; every visual token comes through the
-`Seam` module (M3 token classes inlined directly).
+one destination list. Tailwind is layout only; every visual token comes from M3
+token classes inlined directly via `TypedHtml.Attributes.class`.
 
 -}
 
 import BackendTask
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Card
@@ -34,7 +32,6 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -96,18 +93,15 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Supporting pane · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode screen ]
-    }
+    View.fromElement "Supporting pane · elm-m3e" screen
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 primary/supporting body, with a mobile bottom bar.
 -}
-screen : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+screen : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 screen =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
@@ -121,7 +115,7 @@ screen =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -228,7 +222,7 @@ primary on `lg:`, reflowed beneath it on compact.
 supporting : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 supporting =
     TypedHtml.div [ TA.class "shrink-0 lg:w-80" ]
-        [ Seam.node "div"
+        [ TypedHtml.div
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large flex flex-col gap-4 p-4" ]
             [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Recent activity" ]
             , TypedHtml.div [ TA.class "flex flex-col gap-3" ]

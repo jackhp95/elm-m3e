@@ -1,16 +1,16 @@
 module Route.Examples.Dashboard exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Aperture Analytics** — a full-viewport Material 3 analytics dashboard screen,
-authored on the M3e API and the userland `Seam`. It carries its own nav chrome:
-an `AppBar` header, a `NavRail` on desktop and a bottom `NavBar` on mobile (same
-five destinations), a KPI stat-card row, an Accounts card grid, a Budgets card
-whose rows pair a category with a `Progress.linear` meter, a Recent-activity data
-table built from `ListItem` rows separated by `Divider`, and a `Fab` primary
-action.
+authored on the M3e API, with M3 token classes for every visual choice. It carries
+its own nav chrome: an `AppBar` header, a `NavRail` on desktop and a bottom `NavBar`
+on mobile (same five destinations), a KPI stat-card row, an Accounts card grid, a
+Budgets card whose rows pair a category with a `Progress.linear` meter, a
+Recent-activity data table built from `ListItem` rows separated by `Divider`, and a
+`Fab` primary action.
 
-Everything visual (color, type scale, surface, shape) goes through `Seam` /
-`Seam` (M3 token classes inlined directly); Tailwind is used only for layout and responsive
-visibility. Static screen (no local state).
+Everything visual (color, type scale, surface, shape) comes from M3 token classes
+inlined directly via `TypedHtml.Attributes.class`; Tailwind is used only for layout
+and responsive visibility. Static screen (no local state).
 
 -}
 
@@ -18,9 +18,7 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Card
@@ -32,7 +30,6 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -178,29 +175,25 @@ activity =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ _ =
-    { title = "Aperture Analytics · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Seam.node "div"
-                [ TA.class "bg-surface text-on-surface flex flex-col min-h-screen w-full" ]
-                [ appBar
-                , TypedHtml.div [ TA.class "flex flex-1" ]
-                    [ desktopRail
-                    , mainContent
-                    ]
-                , exampleFooter
-                , mobileBar
-                , fab
+    View.fromElement "Aperture Analytics · elm-m3e"
+        (TypedHtml.div
+            [ TA.class "bg-surface text-on-surface flex flex-col min-h-screen w-full" ]
+            [ appBar
+            , TypedHtml.div [ TA.class "flex flex-1" ]
+                [ desktopRail
+                , mainContent
                 ]
-            )
-        ]
-    }
+            , exampleFooter
+            , mobileBar
+            , fab
+            ]
+        )
 
 
 {-| The shared "Built from" + prev/next strip. Dashboard is the first example,
 so it has no previous screen.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -370,11 +363,11 @@ accountsSection =
         )
 
 
-accountRow : Account -> Element { s | html : M3e.Kind.Brand } adm_ msg
+accountRow : Account -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 accountRow a =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface-container-high text-on-surface rounded-md-corner-large flex items-center gap-3 p-3" ]
-        [ Seam.node "div"
+        [ TypedHtml.div
             [ TA.class "bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center p-2" ]
             [ M3e.icon [ TA.name a.icon ] [] ]
         , TypedHtml.div [ TA.class "flex flex-col min-w-0" ]

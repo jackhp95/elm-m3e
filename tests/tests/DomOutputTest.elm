@@ -1,8 +1,7 @@
 module DomOutputTest exposing (suite)
 
 {-| DOM-output shape tests (plan §3.2): render representative top-layer `M3e.*`
-compositions through the single eager exit (`HtmlIr.Element.toNode` then
-`HtmlIr.Node.toHtml`) and assert the shape of the emitted `Html`. Where the IR
+compositions through the single eager exit (`M3e.toHtml`) and assert the shape of the emitted `Html`. Where the IR
 package's own runtime suites (`MergeTest`, `IrCoreTest`, `NodeSlotTest` — they
 live in `elm-html-intermediate-representation/tests/`, next to the code they pin)
 probe the hand-written IR-core reductions in isolation, this suite pins the
@@ -16,41 +15,41 @@ These assertions run against the barrel API exactly as the examples and the
 quietly changed a tag name, dropped a slot stamp, or reordered children would fail
 here rather than only in the Playwright runtime harness.
 
-Ported to the phantom substrate: the retired `M3e.Element`/`M3e.Node` render
-path is now `HtmlIr.Element.toNode |> HtmlIr.Node.toHtml`; attribute setters moved
-to `M3e.Values` (variant tokens) and the per-component modules
+Ported to the phantom substrate: the two-step `HtmlIr.Element.toNode` then
+`HtmlIr.Node.toHtml` render path collapsed into `M3e.toHtml`; attribute setters
+moved to `M3e.Values` (variant tokens) and the per-component modules
 (`M3e.Icon.name`, `M3e.Button.icon`, `M3e.ListItem.leading`); `aria-label` has no
-typed setter, so it crosses the userland `Seam.asAttribute` boundary. Slotted text
-was the userland `Kit.text` seam when this suite was written; the unseam migration
-made it a library value (`M3e.text`, same signature) and deleted `docs/kit/Kit.elm`,
-so the calls below moved onto the barrel.
+typed setter, so it crosses the library's lint-fenced escape
+`M3e.Unsafe.Attributes.fromHtmlAttribute` (formerly the userland `Seam.asAttribute`,
+now deleted along with the rest of `docs/kit/Seam.elm`). Slotted text was the
+userland `Kit.text` seam when this suite was written; the unseam migration made it
+a library value (`M3e.text`, same signature), so the calls below moved onto the
+barrel.
 
 -}
 
 import Expect
 import Html.Attributes as HtmlAttr
-import HtmlIr.Element as Element
-import HtmlIr.Node as Node
 import M3e
 import M3e.Action as Action
 import M3e.Button
 import M3e.Icon
 import M3e.ListItem
+import M3e.Unsafe.Attributes
 import M3e.Values as Value
-import Seam
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
 
 
-{-| The one render path a screen uses: IR `Element` -> `Node` -> `Html`, then
-into a query. This is the only eager point, mirroring a `view` root. Rendered as
-the query root so the top-level `<m3e-*>` tag is directly assertable.
+{-| The one render path a screen uses: `Element` -> `Html` (the IR `Node` step is
+internal to `M3e.toHtml`), then into a query. This is the only eager point,
+mirroring a `view` root. Rendered as the query root so the top-level `<m3e-*>`
+tag is directly assertable.
 -}
-toQuery : Element.Element accepts admittedBy msg -> Query.Single msg
+toQuery : M3e.Element accepts admittedBy msg -> Query.Single msg
 toQuery el =
-    Element.toNode el
-        |> Node.toHtml
+    M3e.toHtml el
         |> Query.fromHtml
 
 
@@ -65,7 +64,7 @@ suite =
                         |> Query.has [ Selector.tag "m3e-button" ]
             , test "M3e.iconButton renders an <m3e-icon-button> wrapping an <m3e-icon>" <|
                 \_ ->
-                    M3e.iconButton [ Seam.asAttribute (HtmlAttr.attribute "aria-label" "Back") ]
+                    M3e.iconButton [ M3e.Unsafe.Attributes.fromHtmlAttribute (HtmlAttr.attribute "aria-label" "Back") ]
                         [ M3e.icon [ M3e.Icon.name "arrow_back" ] [] ]
                         |> toQuery
                         |> Expect.all
@@ -84,7 +83,7 @@ suite =
                             ]
             , test "an aria-label setter becomes an aria-label attribute" <|
                 \_ ->
-                    M3e.iconButton [ Seam.asAttribute (HtmlAttr.attribute "aria-label" "Close") ]
+                    M3e.iconButton [ M3e.Unsafe.Attributes.fromHtmlAttribute (HtmlAttr.attribute "aria-label" "Close") ]
                         [ M3e.icon [ M3e.Icon.name "close" ] [] ]
                         |> toQuery
                         |> Query.has

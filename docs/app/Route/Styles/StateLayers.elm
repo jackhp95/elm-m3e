@@ -10,8 +10,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Kind
@@ -106,36 +105,32 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "State Layers · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "Every interactive M3 surface paints a translucent state layer over itself to signal interaction. The layer takes the element's on-color and one of three opacities — hover, focus, or pressed — from the --md-sys-state-* tokens. It is additive: a focused-and-hovered element stacks both. m3e components render this for you; the tokens are here so you can match it in custom surfaces." ]
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "The three opacities"
-                    , M3e.card
-                        [ M3e.Attributes.variant Value.outlined ]
-                        [ M3e.Card.content
-                            (TypedHtml.div [ TA.class "flex flex-col px-2" ]
-                                (List.intersperse (M3e.divider [] []) (List.map stateRow states))
-                            )
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "Live"
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]
-                        ]
-                    , M3e.card [ M3e.Attributes.variant Value.outlined ] [ M3e.Card.content demoButtons ]
+    View.fromElement "State Layers · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "Every interactive M3 surface paints a translucent state layer over itself to signal interaction. The layer takes the element's on-color and one of three opacities — hover, focus, or pressed — from the --md-sys-state-* tokens. It is additive: a focused-and-hovered element stacks both. m3e components render this for you; the tokens are here so you can match it in custom surfaces." ]
                     ]
                 ]
-            )
-        ]
-    }
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "The three opacities"
+                , M3e.card
+                    [ M3e.Attributes.variant Value.outlined ]
+                    [ M3e.Card.content
+                        (TypedHtml.div [ TA.class "flex flex-col px-2" ]
+                            (List.intersperse (M3e.divider [] []) (List.map stateRow states))
+                        )
+                    ]
+                ]
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "Live"
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]
+                    ]
+                , M3e.card [ M3e.Attributes.variant Value.outlined ] [ M3e.Card.content demoButtons ]
+                ]
+            ]
+        )

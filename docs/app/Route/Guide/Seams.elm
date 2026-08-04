@@ -1,30 +1,31 @@
 module Route.Guide.Seams exposing (ActionData, Data, Model, Msg, route)
 
-{-| Guide (`/guide/seams`): a **seam** is the _practice_ of keeping the few places
-you genuinely step outside the type system in one greppable userland module,
-instead of scattering escapes through feature code. This docs app's own `Seam`
-module is the running example: standard HTML stays typed (`TypedHtml`), most
-"custom" content just fills a typed slot, and only the true escapes — a
-third-party custom element, raw `Html` — go through the library's lint-fenced
-doors. The two-column layout is live; the producers are shown as code.
+{-| Guide (`/guide/seams`): the real escapes — a third-party custom element,
+raw `Html`, a break-glass `recast` — ship _with the library_, fenced into one
+lint-guarded place: `M3e.Unsafe` and `M3e.Unsafe.Attributes`. There is no
+userland adapter module to hand-write anymore. Most code needs none of it:
+standard HTML stays typed (`TypedHtml`), and most "custom" content just fills
+a typed slot. This page shows the real reach (`M3e.Unsafe.customElement` for
+`<model-viewer>`) next to the close calls that only look like one. The
+two-column layout is live; the producers are shown as code.
 -}
 
 import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Button
 import M3e.FormField
 import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
+import M3e.Unsafe
+import M3e.Unsafe.Attributes
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes
@@ -65,7 +66,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "A seam is the practice of corralling the few real escapes — raw Html, a custom element the types can't express — into one greppable module. Everything else stays typed."
+        , description = "A seam is the practice of reaching for the library's own fenced escapes — M3e.Unsafe, for raw Html or a custom element the types can't express — instead of improvising around the type system. Everything else stays typed."
         , locale = Nothing
         , title = "Your own seam · elm-m3e"
         }
@@ -106,17 +107,17 @@ twoColumn =
 
 
 {-| A **genuine seam.** `<model-viewer>` is a third-party web component the typed
-tree has no producer for, so building it means stepping outside: `Seam.node`
-forges the custom tag and `Seam.attribute` sets its bespoke attributes. That
+tree has no producer for, so building it means stepping outside: `M3e.Unsafe.customElement`
+forges the custom tag and `M3e.Unsafe.Attributes.customAttribute` sets its bespoke attributes. That
 escape is exactly what a seam is _for_ — and it lives in one named userland
 producer, contained and greppable, not scattered through feature code.
 -}
-modelViewer : Element { k | html : M3e.Kind.Brand } freeAdm msg
+modelViewer : Element (TypedHtml.Grouping.DivIs k) freeAdm msg
 modelViewer =
-    Seam.node "model-viewer"
-        [ Seam.attribute "src" "/models/chair.glb"
-        , Seam.attribute "camera-controls" ""
-        , Seam.attribute "auto-rotate" ""
+    M3e.Unsafe.customElement "model-viewer"
+        [ M3e.Unsafe.Attributes.customAttribute "src" "/models/chair.glb"
+        , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
+        , M3e.Unsafe.Attributes.customAttribute "auto-rotate" ""
         , TypedHtml.Attributes.class "block h-48 w-full rounded-lg bg-surface-container"
         ]
         []
@@ -137,48 +138,44 @@ linkNav =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Your own seam · elm-m3e"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
-                    [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.pageHeading "Your own seam — one place for your escapes"
-                        , TypedHtml.div [ TypedHtml.Attributes.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.markdown userland
-                        , Doc.showcase twoColumn
-                        , Doc.code_ Doc.Elm seamCode
-                        ]
-                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.markdown realSeam
-                        , Doc.showcase modelViewer
-                        , Doc.code_ Doc.Elm realSeamCode
-                        ]
-                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.markdown slotSeam
-                        , Doc.showcase linkNav
-                        , Doc.code_ Doc.Elm linkNavCode
-                        ]
-                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.markdown payoff ]
-                    , Doc.recapBox recap
+    View.fromElement "Your own seam · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
+                [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.pageHeading "Your own seam — one place for your escapes"
+                    , TypedHtml.div [ TypedHtml.Attributes.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown userland
+                    , Doc.showcase twoColumn
+                    , Doc.code_ Doc.Elm seamCode
+                    ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown realSeam
+                    , Doc.showcase modelViewer
+                    , Doc.code_ Doc.Elm realSeamCode
+                    ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown slotSeam
+                    , Doc.showcase linkNav
+                    , Doc.code_ Doc.Elm linkNavCode
+                    ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown payoff ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
 intro =
-    """Everything you write on top of the library is **userland** — your own code. Most of it needs no escape at all: standard HTML is already typed (`TypedHtml.div`, `TypedHtml.label`, …), and "custom" content usually just fills a component's *typed slot*. A **seam** isn't a library feature — it's the *practice* of keeping the handful of places you genuinely _do_ step outside the type system in **one greppable module**, so an escape is never scattered through feature code. This docs app does exactly that: everything below lives in one `Seam` module you can audit at a glance."""
+    """Everything you write on top of the library is **userland** — your own code. Most of it needs no escape at all: standard HTML is already typed (`TypedHtml.div`, `TypedHtml.label`, …), and "custom" content usually just fills a component's *typed slot*. A **seam** isn't something you build — it's the *practice* of reaching for the library's own fenced escapes, `M3e.Unsafe` and `M3e.Unsafe.Attributes`, instead of improvising a way around the type system. They ship in one lint-guarded place so every real crossing is loud, named, and greppable — no userland adapter module required. This page shows the two things worth telling apart: a genuine escape (`modelViewer`, below) and typed code that only looks like one (`twoColumn`, `linkNav`)."""
 
 
 userland : String
 userland =
-    """Start with what is **not** a seam. A two-column layout is standard HTML, and standard HTML is typed — a `TypedHtml.div` with a class attribute. Naming it in one userland producer keeps the class string in one place, but there is no escape here and nothing for the linter to fence. Reaching for a `Seam.*` layout wrapper would be the mistake: it drags plain typed markup through the seam for no reason."""
+    """Start with what is **not** a seam. A two-column layout is standard HTML, and standard HTML is typed — a `TypedHtml.div` with a class attribute. Naming it in one userland producer keeps the class string in one place, but there is no escape here and nothing for the linter to fence. Reaching for `M3e.Unsafe.fromHtml` to build this would be the mistake: it drags plain typed markup through an escape door it never needed to walk through — the compiler already gives you `TypedHtml.div` for free."""
 
 
 seamCode : String
@@ -191,16 +188,16 @@ twoColumn =
 
 realSeam : String
 realSeam =
-    """Now a **real** seam. `<model-viewer>` is a third-party web component — the typed tree has no producer for it, so building it means genuinely stepping outside: `Seam.node` forges the custom tag and `Seam.attribute` sets its bespoke attributes. This is what the seam is *for*. Because it lives in one named userland producer, the escape is contained, greppable, and lint-fenced — you stepped outside on purpose, in one auditable place, instead of sprinkling `node`/`attribute` calls through feature code."""
+    """Now a **real** seam. `<model-viewer>` is a third-party web component — the typed tree has no producer for it, so building it means genuinely stepping outside: `M3e.Unsafe.customElement` forges the custom tag and `M3e.Unsafe.Attributes.customAttribute` sets its bespoke attributes. This is what the seam is *for*. Because it lives in one named userland producer, the escape is contained, greppable, and lint-fenced — you stepped outside on purpose, in one auditable place, instead of calling `M3e.Unsafe.customElement` inline wherever a `<model-viewer>` happens to show up."""
 
 
 realSeamCode : String
 realSeamCode =
     """-- a real seam: a custom element the types can't express, contained once.
 modelViewer =
-    Seam.node "model-viewer"
-        [ Seam.attribute "src" "/models/chair.glb"
-        , Seam.attribute "camera-controls" ""
+    M3e.Unsafe.customElement "model-viewer"
+        [ M3e.Unsafe.Attributes.customAttribute "src" "/models/chair.glb"
+        , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
         , TypedHtml.Attributes.class "block h-48 w-full rounded-lg"
         ]
         []"""
@@ -225,12 +222,12 @@ linkNav =
 
 payoff : String
 payoff =
-    """That is the whole discipline: **type everything you can, seam only what you must, and keep the seams in one place.** Layout and text are typed producers. Slots take typed kinds. The genuine escapes — a custom element, raw `Html` via `fromHtml`, or the break-glass `recast` when the design system is truly wrong for a case — are named, lint-fenced, and corralled into your one `Seam` module. You escaped the types where you had to and **kept** the guarantees everywhere else, because every real escape is loud, contained, and greppable."""
+    """That is the whole discipline: **type everything you can, seam only what you must, and keep the seams in one place.** Layout and text are typed producers. Slots take typed kinds. The genuine escapes — a custom element, raw `Html` via `fromHtml`, or the break-glass `recast` when the design system is truly wrong for a case — are named, lint-fenced, and already live in one place: `M3e.Unsafe` and `M3e.Unsafe.Attributes`. Your job is narrower than it used to be — call them from a small, named producer (like `modelViewer` above) instead of inline at every call site. You escaped the types where you had to and **kept** the guarantees everywhere else, because every real escape is loud, contained, and greppable."""
 
 
 recap : String
 recap =
-    """- A **seam** isn't a library feature — it's the *practice* of keeping the few real escapes (a custom element, raw `Html`, a `recast`) in **one greppable module**.
+    """- A **seam** isn't something you build — it's the *practice* of reaching for the library's fenced escapes (a custom element, raw `Html`, a `recast`) instead of improvising around the type system.
 - Most userland is **not** a seam: standard HTML is typed (`TypedHtml`), and custom content usually fills a **typed slot** — no escape needed.
-- The genuine escapes go through the library's lint-fenced doors — `Unsafe` (`fromHtml`/`recast`) and the `HtmlIr.Internal` forge (`node`/`attribute`) — and are named once so every use is auditable.
+- The genuine escapes go through the library's one fenced door for userland — `M3e.Unsafe` (`fromHtml`/`fromNode`/`recast`/`recastAll`/`customElement`) and `M3e.Unsafe.Attributes` (`fromHtmlAttribute`/`customAttribute`) — named once so every use is auditable.
 - **Next: [The tooling refactors for you](/guide/tooling-refactors) →** the linter doesn't just flag escapes — it extracts and rewrites them *for* you."""

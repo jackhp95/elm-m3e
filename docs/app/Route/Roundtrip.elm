@@ -12,9 +12,8 @@ import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
 import Json.Decode as Decode
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Heading
@@ -255,22 +254,18 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
-    { title = "Round-trip report · elm-m3e"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ pageHeading
-                , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]
-                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                        [ M3e.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
-                    ]
-                , surfaceLegend
-                , summarySection app.data.perSurface
-                , cellsSection app.data.cells
+    View.fromElement "Round-trip report · elm-m3e"
+        (Doc.pane
+            [ pageHeading
+            , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]
+                [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                    [ M3e.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
                 ]
-            )
-        ]
-    }
+            , surfaceLegend
+            , summarySection app.data.perSurface
+            , cellsSection app.data.cells
+            ]
+        )
 
 
 {-| Legend mapping this page's row names (top/record/build/barrel) to the Guide's

@@ -21,32 +21,32 @@ import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class)
 import Html.Events
-import HtmlIr.Attribute
-import HtmlIr.Element as Element exposing (Element)
-import HtmlIr.Kind
-import HtmlIr.Node as Node
 import Json.Decode as Decode
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.DrawerContainer
 import M3e.Events
 import M3e.FormField
+import M3e.Html
 import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Theme
+import M3e.Unsafe
+import M3e.Unsafe.Attributes
 import M3e.Values as Value
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Ports
 import Route exposing (Route)
-import Seam
 import SharedTemplate exposing (SharedTemplate)
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
 import TypedHtml.Events
+import TypedHtml.Grouping
+import TypedHtml.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -303,12 +303,7 @@ data =
 
 {-| Convenience alias: convert any `Element` to `Html`.
 -}
-toHtml : Element any anyAdm msg -> Html msg
-toHtml =
-    Element.toNode >> Node.toHtml
-
-
-schemeAttr : Scheme -> HtmlIr.Attribute.Attr { c | scheme : HtmlIr.Kind.Supported } msg
+schemeAttr : Scheme -> M3e.Attr { c | scheme : M3e.Kind.Supported } msg
 schemeAttr scheme =
     case scheme of
         Auto ->
@@ -321,7 +316,7 @@ schemeAttr scheme =
             M3e.Theme.scheme Value.dark
 
 
-contrastAttr : Contrast -> HtmlIr.Attribute.Attr { c | contrast : HtmlIr.Kind.Supported } msg
+contrastAttr : Contrast -> M3e.Attr { c | contrast : M3e.Kind.Supported } msg
 contrastAttr contrast =
     case contrast of
         Standard ->
@@ -347,8 +342,8 @@ view :
 view sharedData page model toMsg pageView =
     let
         -- `themed` wraps content Elements in `<m3e-theme>` and does the single
-        -- `Node.toHtml` conversion.
-        themed : List (Element { html : M3e.Kind.Brand } (M3e.Theme.ChildAdmittedBy childAdm) msg) -> Html msg
+        -- `M3e.Html.toHtml` conversion.
+        themed : List (Element childAccepts (M3e.Theme.ChildAdmittedBy childAdm) msg) -> Html msg
         themed children =
             M3e.theme
                 [ M3e.Theme.color model.seed
@@ -365,13 +360,13 @@ view sharedData page model toMsg pageView =
                 , TypedHtml.Attributes.class (densityClass model.density)
                 ]
                 children
-                |> toHtml
+                |> M3e.toHtml
 
         absolutePath : String
         absolutePath =
             UrlPath.toAbsolute page.path
     in
-    { title = pageView.title
+    { title = View.title pageView
     , body =
         if String.startsWith "/examples/" absolutePath then
             -- Individual example routes take the full viewport; they include their
@@ -381,28 +376,28 @@ view sharedData page model toMsg pageView =
             -- stable mobile URL bar, so a full-viewport example must scroll itself
             -- rather than the document, or tall demos would clip.
             [ themed
-                [ Seam.node "div"
+                [ TypedHtml.div
                     [ TypedHtml.Attributes.class "bg-surface text-on-surface h-dvh overflow-y-auto"
-                    , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
+                    , M3e.Unsafe.Attributes.fromHtmlAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    (List.map Seam.asElement pageView.body)
+                    (View.body pageView)
                 ]
             ]
 
         else
             [ themed
-                [ Seam.node "div"
+                [ TypedHtml.div
                     -- Fixed-height, non-scrolling shell: `h-dvh` fits the stable
                     -- visible viewport (see style.css app-shell note) and the
                     -- `auto_1fr` rows pin the app bar while the 1fr content row
                     -- (the drawer + its <main>) is the ONE scroll region — keeps
                     -- the mobile URL bar from collapsing on scroll.
                     [ TypedHtml.Attributes.class "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
-                    , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
+                    , M3e.Unsafe.Attributes.fromHtmlAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    [ Seam.fromHtml skipLink
-                    , Seam.fromHtml (Html.map toMsg appShellBar)
-                    , Seam.fromHtml (drawerShell toMsg model page sharedData.components (List.map Node.toHtml pageView.body))
+                    [ M3e.Unsafe.fromHtml skipLink
+                    , M3e.Unsafe.fromHtml (Html.map toMsg appShellBar)
+                    , drawerShell toMsg model page sharedData.components (View.body pageView)
                     ]
                 ]
             ]
@@ -454,19 +449,14 @@ appShellBar =
             [ M3e.AppBar.size Value.small
             , M3e.Attributes.id "docs-app-bar"
             ]
-            [ M3e.AppBar.leading
-                (Seam.recast
-                    (Seam.node "span"
-                        [ TypedHtml.Attributes.class "contents" ]
-                        [ brandMark, menuButton ]
-                    )
-                )
+            [ M3e.AppBar.leading brandMark
+            , M3e.AppBar.leading menuButton
             , M3e.AppBar.title (M3e.text "elm-m3e")
             , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
             , M3e.AppBar.trailing githubLink
             , M3e.AppBar.trailing settingsButton
             ]
-            |> toHtml
+            |> M3e.toHtml
         ]
 
 
@@ -482,7 +472,7 @@ brandMark =
     M3e.icon
         [ M3e.Icon.name "palette"
         , TypedHtml.Attributes.class "ms-2 me-1 hidden md:inline-flex"
-        , Seam.asAttribute (attribute "aria-hidden" "true")
+        , M3e.Unsafe.Attributes.fromHtmlAttribute (attribute "aria-hidden" "true")
         ]
         []
 
@@ -512,7 +502,7 @@ githubLink =
         , M3e.Attributes.target "_blank"
         , M3e.Attributes.rel "noreferrer noopener"
         ]
-        [ Seam.fromHtml githubMark ]
+        [ M3e.Unsafe.fromHtml githubMark ]
 
 
 githubMark : Html msg
@@ -548,18 +538,18 @@ from library components in the Element world: each control is a
 an `M3e.heading` label + a control (segmented buttons, or a
 [`FormField`](M3e-FormField) for the seed color). The container keeps its
 `#settings-drawer` id (matraic's flex-column/gap/padding styling lives in
-`style.css`, crossed through the one sanctioned `Seam.asAttribute`) and the
+`style.css`, crossed through the one sanctioned `M3e.Unsafe.Attributes.fromHtmlAttribute`) and the
 typed `role="complementary"` landmark via `Aria.role`. It returns `Element`, so
-it enters the drawer's `end` slot directly (no `Seam.fromHtml`).
+it enters the drawer's `end` slot directly (no `M3e.Unsafe.fromHtml`).
 
 All our richer controls are kept (scheme, contrast, seed color, density,
 direction); only their LOCATION moved from the old Card popover into this end
 drawer.
 
 -}
-settingsDrawerContent : Model -> Element { s | html : M3e.Kind.Brand } admittedBy Msg
+settingsDrawerContent : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 settingsDrawerContent model =
-    Seam.node "div"
+    TypedHtml.div
         [ TypedHtml.Attributes.id "settings-drawer"
         , Aria.role Aria.complementary
         ]
@@ -744,7 +734,13 @@ navSections =
 panel is the hierarchical nav-menu and whose default content is the page body.
 The nav is `NavItem` links inside `NavMenuItem` groups inside a `NavMenu`.
 -}
-drawerShell : (Msg -> msg) -> Model -> { path : UrlPath, route : Maybe Route } -> List NavComponent -> List (Html msg) -> Html msg
+drawerShell :
+    (Msg -> msg)
+    -> Model
+    -> { path : UrlPath, route : Maybe Route }
+    -> List NavComponent
+    -> List (Element childAccepts (TypedHtml.Sectioning.MainChildAdmittedBy childAdm) msg)
+    -> Element (M3e.DrawerContainer.Is s) freeAdm msg
 drawerShell toMsg model page components body =
     let
         currentPath : String
@@ -762,29 +758,27 @@ drawerShell toMsg model page components body =
         -- click, Esc, breakpoint auto-close) so element-driven closes don't leave
         -- Elm's state stale (which would need a double-toggle to reopen). The
         -- Shared.Msg decoder is mapped to the outer msg via `toMsg`.
-        , Seam.asAttribute (Html.Events.on "change" (Decode.map toMsg drawerChangeDecoder))
+        , M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Events.on "change" (Decode.map toMsg drawerChangeDecoder))
         ]
         [ M3e.DrawerContainer.start
             -- Wrap the nav-menu in a native `<nav>` landmark so AT users can
             -- jump straight to navigation (and skip past it via the skip-link).
-            (Seam.node "nav"
+            (TypedHtml.nav
                 [ Aria.label "Primary" ]
                 [ navMenu components currentPath ]
             )
         , M3e.DrawerContainer.end
-            (Element.map toMsg (settingsDrawerContent model))
-        , Seam.fromHtml
-            -- The page body is the `<main>` landmark and the skip-link target.
-            -- The ContentPane provides its own container padding; keep only a
-            -- modest inline margin like matraic's #body (margin-inline: 1rem).
-            (Html.main_
-                [ Attr.id "main-content"
-                , class "mx-auto w-full max-w-5xl px-2 py-2"
-                ]
-                body
-            )
+            (M3e.mapMsg toMsg (settingsDrawerContent model))
+
+        -- The page body is the `<main>` landmark and the skip-link target.
+        -- The ContentPane provides its own container padding; keep only a
+        -- modest inline margin like matraic's #body (margin-inline: 1rem).
+        , TypedHtml.main_
+            [ TypedHtml.Attributes.id "main-content"
+            , TypedHtml.Attributes.class "mx-auto w-full max-w-5xl px-2 py-2"
+            ]
+            body
         ]
-        |> toHtml
 
 
 {-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start` and

@@ -21,8 +21,8 @@ import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
 import Json.Decode as Decode
+import M3e
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -132,30 +132,26 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
-    { title = "How we prove it · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "How we prove it"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown loop
-                        , Doc.code_ Doc.NoLang (report app.data)
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown reportNote ]
-                        ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown alias ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown (honest app.data) ]
-                    , Doc.recapBox (recap app.data)
+    View.fromElement "How we prove it · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "How we prove it"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown loop
+                    , Doc.code_ Doc.NoLang (report app.data)
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown reportNote ]
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown alias ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown (honest app.data) ]
+                , Doc.recapBox (recap app.data)
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String

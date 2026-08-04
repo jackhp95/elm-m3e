@@ -21,13 +21,10 @@ annotates.
 
 -}
 
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
-import Seam
 import TypedHtml
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
@@ -49,9 +46,9 @@ footer :
     , prev : Maybe ( String, String )
     , next : Maybe ( String, String )
     }
-    -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+    -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 footer { builtFrom, prev, next } =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface-container text-on-surface w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
         [ backRow
         , builtFromRow builtFrom

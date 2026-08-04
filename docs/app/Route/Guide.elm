@@ -9,7 +9,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
+import M3e exposing (Element)
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -17,6 +17,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
+import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -60,51 +61,47 @@ head _ =
         |> Seo.website
 
 
-chapterLink : String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+chapterLink : String -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 chapterLink href label =
     Doc.anchorPill { href = href, label = label }
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "The Guide · elm-m3e"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "The Guide"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
+    View.fromElement "The Guide · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "The Guide"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
+                    ]
+                , TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.markdown chaptersLead
+                    , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
+                        [ chapterLink "/guide/first-component" "Your first component"
+                        , chapterLink "/guide/invalid-states" "Invalid states don't compile"
+                        , chapterLink "/guide/strictness" "The strictness dial"
+                        , chapterLink "/guide/accessible-by-construction" "Accessibility you can't forget"
+                        , chapterLink "/guide/accessibility" "Accessibility reference"
+                        , chapterLink "/guide/composition-text-field" "Composition, not injection"
+                        , chapterLink "/guide/theming" "Theming with tokens"
+                        , chapterLink "/guide/motion" "Motion"
+                        , chapterLink "/guide/generated-and-inspectable" "Generated & inspectable"
+                        , chapterLink "/guide/the-layers" "The surface map"
+                        , chapterLink "/guide/seams" "Your own seam"
+                        , chapterLink "/guide/tooling-refactors" "The tooling refactors for you"
+                        , chapterLink "/guide/troubleshooting" "Troubleshooting"
+                        , chapterLink "/guide/how-we-prove-it" "How we prove it"
                         ]
-                    , TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.markdown chaptersLead
-                        , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
-                            [ chapterLink "/guide/first-component" "Your first component"
-                            , chapterLink "/guide/invalid-states" "Invalid states don't compile"
-                            , chapterLink "/guide/strictness" "The strictness dial"
-                            , chapterLink "/guide/accessible-by-construction" "Accessibility you can't forget"
-                            , chapterLink "/guide/accessibility" "Accessibility reference"
-                            , chapterLink "/guide/composition-text-field" "Composition, not injection"
-                            , chapterLink "/guide/theming" "Theming with tokens"
-                            , chapterLink "/guide/motion" "Motion"
-                            , chapterLink "/guide/generated-and-inspectable" "Generated & inspectable"
-                            , chapterLink "/guide/the-layers" "The surface map"
-                            , chapterLink "/guide/seams" "Your own seam"
-                            , chapterLink "/guide/tooling-refactors" "The tooling refactors for you"
-                            , chapterLink "/guide/troubleshooting" "Troubleshooting"
-                            , chapterLink "/guide/how-we-prove-it" "How we prove it"
-                            ]
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown chaptersNote ]
-                        , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
-                            [ chapterLink "/guide/cheat-sheet" "Cheat sheet"
-                            , chapterLink "/guide/glossary" "Glossary"
-                            ]
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown chaptersNote ]
+                    , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
+                        [ chapterLink "/guide/cheat-sheet" "Cheat sheet"
+                        , chapterLink "/guide/glossary" "Glossary"
                         ]
                     ]
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String

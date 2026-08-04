@@ -5,15 +5,18 @@ Material Crane. A self-contained, full-viewport app screen with its own nav chro
 
   - Adaptive navigation: an `M3e.NavRail` on desktop (`hidden md:flex`) and an
     `M3e.NavBar` bottom bar on mobile (`md:hidden`), plus a top `M3e.AppBar`.
-  - A search HERO built from `M3e.SearchBar`, sitting in a `Surface` panel.
+  - A search HERO built from `M3e.SearchBar`, sitting in a tinted, large-cornered
+    panel — a plain `TypedHtml.div` carrying `bg-surface-container` and a corner
+    token.
   - Category `M3e.Tabs` (Flights / Stays / Experiences) driving the content.
   - Horizontally-scrolling destination RAILS (`flex gap-4 overflow-x-auto`) of
     `M3e.Card` items with shape-clipped media, a name, an `M3e.AssistChip` rating,
     and a price.
 
 Local state drives the active nav destination and the active category tab. All
-color / typography / shape come from the kit (`Seam`, `Surface`, `Shape`); Tailwind
-is used only for layout (flex / grid / gap / padding / responsive visibility).
+color / typography / shape come from M3 token classes applied directly with
+`TypedHtml.Attributes.class`; Tailwind is used only for layout (flex / grid / gap
+/ padding / responsive visibility).
 
 -}
 
@@ -22,9 +25,7 @@ import Doc.Slider
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.AssistChip
 import M3e.Attributes
@@ -36,7 +37,6 @@ import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -203,10 +203,7 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    { title = "Travel · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode (shell model) ]
-    }
+    View.fromElement "Travel · elm-m3e" (shell model)
 
 
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
@@ -229,7 +226,7 @@ shell model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -326,7 +323,7 @@ uses): every category's rail is mounted in the track, and switching the category
 tab slides the prior rail out and the new one in. The static "Nearby getaways"
 rail below is category-independent and stays put.
 -}
-popularRails : Category -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
+popularRails : Category -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 popularRails current =
     Doc.Slider.slidingPanels
         (categoryIndex current)
@@ -347,12 +344,13 @@ categoryIndex current =
         |> Maybe.withDefault 0
 
 
-{-| A search hero: a headline over a `SearchBar`, wrapped in a tinted, extra-large
-`Surface` panel.
+{-| A search hero: a headline over a `SearchBar`, wrapped in a tinted,
+extra-large-cornered panel — a plain `TypedHtml.div` carrying
+`bg-surface-container` and `rounded-md-corner-extra-large`.
 -}
-hero : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
+hero : Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 hero =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface-container text-on-surface rounded-md-corner-extra-large flex flex-col gap-4 p-6 md:p-8" ]
         [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Where to next?" ]
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Search destinations, dates, and guests." ]
@@ -426,9 +424,9 @@ placeCard place =
 
 {-| Placeholder media: a tinted card-media block standing in for a destination photo.
 -}
-media : Place -> Element { s | html : M3e.Kind.Brand } adm_ msg
+media : Place -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 media place =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class (place.tint ++ " rounded-md-corner-large overflow-hidden flex h-28 w-full items-end p-3") ]
         [ M3e.icon [ TA.name "image" ] [] ]
 

@@ -11,7 +11,8 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element
+import M3e
+import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -62,7 +63,7 @@ head _ =
         |> Seo.website
 
 
-entry : String -> String -> HtmlIr.Element.Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+entry : String -> String -> M3e.Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 entry prose code =
     TypedHtml.section [ TA.class "space-y-3" ]
         [ Doc.markdown prose
@@ -72,26 +73,22 @@ entry prose code =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Troubleshooting · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TA.class "space-y-12" ]
-                    [ TypedHtml.section [ TA.class "space-y-4" ]
-                        [ Doc.pageHeading "Troubleshooting"
-                        , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , entry kindMismatch kindMismatchError
-                    , entry deadClass deadClassNote
-                    , entry looseEnum looseEnumNote
-                    , entry missingName missingNameError
-                    , TypedHtml.section [ TA.class "space-y-4" ] [ Doc.markdown greenLint ]
-                    , Doc.recapBox recap
+    View.fromElement "Troubleshooting · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TA.class "space-y-12" ]
+                [ TypedHtml.section [ TA.class "space-y-4" ]
+                    [ Doc.pageHeading "Troubleshooting"
+                    , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , entry kindMismatch kindMismatchError
+                , entry deadClass deadClassNote
+                , entry looseEnum looseEnumNote
+                , entry missingName missingNameError
+                , TypedHtml.section [ TA.class "space-y-4" ] [ Doc.markdown greenLint ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String

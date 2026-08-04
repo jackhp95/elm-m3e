@@ -12,8 +12,8 @@ feed by category; selecting one is real state (`SelectFilter`). Navigation switc
 usual way: `M3e.NavRail` on desktop, `M3e.NavBar` on mobile, one destination list.
 
 Tailwind is layout only (grid/gap/padding/responsive columns); every visual token —
-color, typography, surface, shape — comes through the `Seam` / `Seam.Surface` /
-`Seam.Shape` seam.
+color, typography, surface, shape — comes from M3 token classes applied directly
+with `TypedHtml.Attributes.class`.
 
 -}
 
@@ -21,9 +21,7 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
-import HtmlIr.Element exposing (Element)
-import HtmlIr.Kind
-import M3e
+import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.Card
@@ -33,7 +31,6 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -151,18 +148,15 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    { title = "Feed · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode (HtmlIr.Element.map PagesMsg.fromMsg (screen model)) ]
-    }
+    View.fromElement "Feed · elm-m3e" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 filter bar and the reflowing card grid, with a mobile bottom bar.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
+screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
-    Seam.node "div"
+    TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
@@ -179,7 +173,7 @@ screen model =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
+exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -247,7 +241,7 @@ postCard : Post -> Element { s | card : M3e.Kind.Brand } adm_ msg
 postCard post =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
         [ M3e.Card.header
-            (Seam.node "div"
+            (TypedHtml.div
                 [ TA.class (post.media ++ " rounded-md-corner-medium flex h-32 items-center justify-center") ]
                 [ M3e.icon [ TA.name post.icon, TA.class "text-4xl" ] [] ]
             )

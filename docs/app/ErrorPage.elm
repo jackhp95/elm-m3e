@@ -2,7 +2,7 @@ module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound,
 
 import Doc
 import Effect exposing (Effect)
-import HtmlIr.Element as Element
+import M3e
 import View exposing (View)
 
 
@@ -41,8 +41,15 @@ internalError =
 
 view : ErrorPage -> Model -> View Msg
 view error _ =
-    { body =
-        [ Doc.message
+    View.fromElement
+        (case error of
+            NotFound ->
+                "Page Not Found"
+
+            InternalError _ ->
+                "Unexpected Error"
+        )
+        (Doc.message
             (case error of
                 NotFound ->
                     "Page not found. Maybe try another URL?"
@@ -50,16 +57,7 @@ view error _ =
                 InternalError string ->
                     "Something went wrong.\n" ++ string
             )
-            |> Element.toNode
-        ]
-    , title =
-        case error of
-            NotFound ->
-                "Page Not Found"
-
-            InternalError _ ->
-                "Unexpected Error"
-    }
+        )
 
 
 statusCode : ErrorPage -> number

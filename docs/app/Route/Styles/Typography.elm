@@ -4,8 +4,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Card
 import M3e.Heading
@@ -108,28 +107,24 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Typography · elm-m3e"
-    , body =
-        [ HtmlIr.Element.toNode
-            (Doc.pane
-                [ TypedHtml.section [ TA.class "space-y-3" ]
-                    [ pageHeading
-                    , TypedHtml.div [ TA.class "max-w-2xl" ]
-                        [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                            [ M3e.text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility. Each row below shows its font-size / line-height · weight from the tokens." ]
-                        ]
-                    ]
-                , TypedHtml.section [ TA.class "space-y-3" ]
-                    [ Doc.sectionHeading "The scale, live"
-                    , M3e.card
-                        [ M3e.Attributes.variant Value.outlined ]
-                        [ M3e.Card.content
-                            (TypedHtml.div [ TA.class "flex flex-col px-2" ]
-                                (List.intersperse (M3e.divider [] []) (List.map row scale))
-                            )
-                        ]
+    View.fromElement "Typography · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-3" ]
+                [ pageHeading
+                , TypedHtml.div [ TA.class "max-w-2xl" ]
+                    [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
+                        [ M3e.text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility. Each row below shows its font-size / line-height · weight from the tokens." ]
                     ]
                 ]
-            )
-        ]
-    }
+            , TypedHtml.section [ TA.class "space-y-3" ]
+                [ Doc.sectionHeading "The scale, live"
+                , M3e.card
+                    [ M3e.Attributes.variant Value.outlined ]
+                    [ M3e.Card.content
+                        (TypedHtml.div [ TA.class "flex flex-col px-2" ]
+                            (List.intersperse (M3e.divider [] []) (List.map row scale))
+                        )
+                    ]
+                ]
+            ]
+        )

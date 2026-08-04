@@ -12,9 +12,8 @@ module Doc.Usage exposing
 import Dict exposing (Dict)
 import Doc
 import Doc.Slider
-import HtmlIr.Element exposing (Element)
 import Json.Decode as Decode
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Events
 import M3e.Heading
@@ -272,10 +271,10 @@ surface is identical to `M3e` by design, so we show a short rationale instead of
 hollow duplicate.
 
 -}
-codeFor : Surface -> UsageExample -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+codeFor : Surface -> UsageExample -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 codeFor surface ex =
     let
-        elmOrHtml : Maybe String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+        elmOrHtml : Maybe String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
         elmOrHtml field =
             case field of
                 Just code ->
@@ -284,7 +283,7 @@ codeFor surface ex =
                 Nothing ->
                     Doc.code_ Doc.Xml ex.html
 
-        recordBuildCode : Maybe String -> String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+        recordBuildCode : Maybe String -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
         recordBuildCode field surfaceName =
             case field of
                 Just code ->
@@ -314,7 +313,7 @@ We surface that fact rather than hiding the tab (a hidden tab reads as "this
 surface doesn't apply", which is the wrong lesson — it applies, it's just a no-op
 here).
 -}
-identicalSurfaceNote : String -> Element { s | html : M3e.Kind.Brand } admittedBy msg
+identicalSurfaceNote : String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 identicalSurfaceNote surface =
     Doc.message
         (surface

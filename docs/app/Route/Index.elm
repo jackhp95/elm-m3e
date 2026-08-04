@@ -15,8 +15,7 @@ import Doc.Data
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Button
 import M3e.Card
@@ -27,7 +26,6 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -95,17 +93,13 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
-    { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ hero
-                , highlights app.data.componentCount
-                , statusGrid
-                ]
-            )
-        ]
-    }
+    View.fromElement "elm-m3e · type-safe Material 3 Expressive for Elm"
+        (Doc.pane
+            [ hero
+            , highlights app.data.componentCount
+            , statusGrid
+            ]
+        )
 
 
 hero : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
@@ -133,9 +127,9 @@ hero =
             , TypedHtml.div [ TA.class "flex items-center gap-3" ]
                 [ M3e.avatar [ Aria.label "Sample avatar" ] [ TypedHtml.Img.img [ TypedHtml.Img.src "/avatar-sample.svg" ] [] ]
                 , TypedHtml.div [ TA.class "flex gap-3" ]
-                    [ Seam.node "div" [ TA.class "bg-primary text-on-primary block w-10 h-10 rounded-md-corner-large" ] []
-                    , Seam.node "div" [ TA.class "bg-tertiary-container text-on-tertiary-container block w-10 h-10 rounded-md-corner-extra-large" ] []
-                    , Seam.node "div" [ TA.class "bg-secondary-container text-on-secondary-container block w-10 h-10 rounded-full" ] []
+                    [ TypedHtml.div [ TA.class "bg-primary text-on-primary block w-10 h-10 rounded-md-corner-large" ] []
+                    , TypedHtml.div [ TA.class "bg-tertiary-container text-on-tertiary-container block w-10 h-10 rounded-md-corner-extra-large" ] []
+                    , TypedHtml.div [ TA.class "bg-secondary-container text-on-secondary-container block w-10 h-10 rounded-full" ] []
                     ]
                 ]
             ]

@@ -35,6 +35,7 @@ result is identical across every surface tab):
 
 import Html exposing (Html)
 import Html.Attributes exposing (attribute, class)
+import M3e
 
 
 {-| A node in the fold tree.

@@ -8,7 +8,8 @@ noted.
 
 **atom**
 A small, accessible, cross-brand content element from the shared vocabulary — plain
-text (`M3e.text`, built in) plus the userland `Kit` producers (`link`, `textLink`, …).
+text (`M3e.text`, built in) plus `TypedHtml`'s own producers (`TypedHtml.text`,
+`TypedHtml.a`, …), which carry the shared kind natively — no adapter module required.
 Atoms carry `HtmlIr.Kind.Shared` in a role-specific kind field. They flow freely into
 any m3e slot that opts in with a matching `shared:<atom>` config entry. New atoms are
 non-breaking additions. See [`TheLayers — The atom layer`](TheLayers.md#the-atom-layer)
@@ -40,10 +41,11 @@ compile errors. See [`TheLayers`](TheLayers.md). (This replaces the retired
 "facet family" packaging, where each layer/form was its own published package.)
 
 **recast**
-The general loud seam crossing: `Seam.recast` coerces any `Element` to any other
-kind row with no semantic claim. Always greppable and review-enforced. Use for
-one-off or as-yet-unnamed crossings; promote to a named coercion when the crossing
-recurs with consistent intent. See [`Seams`](Seams.md).
+The general loud seam crossing: `M3e.Unsafe.recast` coerces any `Element` to any other
+kind row with no semantic claim (`recastAll` maps it over a list; `M3e.Unsafe.Attributes`
+ships the attribute-side twins, `recastAttr` / `recastAttrAll`). Always greppable and
+review-enforced. Use for one-off or as-yet-unnamed crossings; promote to a named
+coercion when the crossing recurs with consistent intent. See [`Seams`](Seams.md).
 
 **seam**
 Any crossing point where a value from outside the typed IR enters it. Two
@@ -51,8 +53,11 @@ sanctioned mechanisms exist: `recast` (general) and named coercions
 (`M3e.Coerce.*`, config-blessed). Every seam crossing must happen inside a
 module declared in `NoSeamOutsideAllowedModules`'s `allowedModules` list.
 The seam stampers (`fromNode`, `fromHtml`, `recast`) live only in `HtmlIr.Internal`,
-which is lint-guarded and not re-exported from the public surface (the one published
-escape is `M3e.Unsafe.fromHtml`). See [`Seams`](Seams.md) and [`DESIGN.md`](../DESIGN.md).
+which is lint-guarded and not re-exported from the public surface — but every brand
+ships a generated `Unsafe` module (`M3e.Unsafe` / `M3e.Unsafe.Attributes`) built on
+that forge, so userland code reaches for the published escapes (`fromHtml`, `fromNode`,
+`recast`, `recastAll`, `customElement`) without ever hand-writing an adapter on
+`HtmlIr.Internal` itself. See [`Seams`](Seams.md) and [`DESIGN.md`](../DESIGN.md).
 
 **shared** (kind)
 `HtmlIr.Kind.Shared` — the cross-brand atom marker. An `Element` carrying `Shared` in a

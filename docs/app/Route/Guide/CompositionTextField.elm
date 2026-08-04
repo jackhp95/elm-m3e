@@ -12,8 +12,7 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import HtmlIr.Element as Element exposing (Element)
-import M3e
+import M3e exposing (Element)
 import M3e.FormField
 import M3e.Kind
 import M3e.Values as Value
@@ -88,28 +87,24 @@ emailField =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Composition, not injection · elm-m3e"
-    , body =
-        [ Element.toNode
-            (Doc.pane
-                [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
-                    [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.pageHeading "Composition, not injection"
-                        , TypedHtml.div [ TypedHtml.Attributes.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
-                        ]
-                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.markdown composed
-                        , Doc.showcase emailField
-                        , Doc.code_ Doc.Elm emailCode
-                        ]
-                    , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
-                        [ Doc.markdown native ]
-                    , Doc.recapBox recap
+    View.fromElement "Composition, not injection · elm-m3e"
+        (Doc.pane
+            [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
+                [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.pageHeading "Composition, not injection"
+                    , TypedHtml.div [ TypedHtml.Attributes.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown composed
+                    , Doc.showcase emailField
+                    , Doc.code_ Doc.Elm emailCode
+                    ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown native ]
+                , Doc.recapBox recap
                 ]
-            )
-        ]
-    }
+            ]
+        )
 
 
 intro : String
