@@ -109,6 +109,16 @@
       "route": "/examples/travel"
     }
   ],
+  "chipset": [
+    {
+      "title": "Mail",
+      "route": "/examples/mail"
+    },
+    {
+      "title": "SupportingPane",
+      "route": "/examples/supportingpane"
+    }
+  ],
   "divider": [
     {
       "title": "Dashboard",
@@ -129,6 +139,24 @@
     {
       "title": "SupportingPane",
       "route": "/examples/supportingpane"
+    }
+  ],
+  "events": [
+    {
+      "title": "Feed",
+      "route": "/examples/feed"
+    },
+    {
+      "title": "Settings",
+      "route": "/examples/settings"
+    },
+    {
+      "title": "Shop",
+      "route": "/examples/shop"
+    },
+    {
+      "title": "Travel",
+      "route": "/examples/travel"
     }
   ],
   "fab": [
@@ -163,6 +191,40 @@
     {
       "title": "Shop",
       "route": "/examples/shop"
+    }
+  ],
+  "heading": [
+    {
+      "title": "Dashboard",
+      "route": "/examples/dashboard"
+    },
+    {
+      "title": "Feed",
+      "route": "/examples/feed"
+    },
+    {
+      "title": "ListDetail",
+      "route": "/examples/listdetail"
+    },
+    {
+      "title": "Mail",
+      "route": "/examples/mail"
+    },
+    {
+      "title": "Settings",
+      "route": "/examples/settings"
+    },
+    {
+      "title": "Shop",
+      "route": "/examples/shop"
+    },
+    {
+      "title": "SupportingPane",
+      "route": "/examples/supportingpane"
+    },
+    {
+      "title": "Travel",
+      "route": "/examples/travel"
     }
   ],
   "icon": [
@@ -255,6 +317,24 @@
   ],
   "list": [
     {
+      "title": "Dashboard",
+      "route": "/examples/dashboard"
+    },
+    {
+      "title": "ListDetail",
+      "route": "/examples/listdetail"
+    },
+    {
+      "title": "Mail",
+      "route": "/examples/mail"
+    },
+    {
+      "title": "SupportingPane",
+      "route": "/examples/supportingpane"
+    }
+  ],
+  "listaction": [
+    {
       "title": "ListDetail",
       "route": "/examples/listdetail"
     },
@@ -271,10 +351,6 @@
     {
       "title": "ListDetail",
       "route": "/examples/listdetail"
-    },
-    {
-      "title": "Mail",
-      "route": "/examples/mail"
     },
     {
       "title": "Settings",
@@ -410,10 +486,6 @@
     }
   ],
   "sliderthumb": [
-    {
-      "title": "Dashboard",
-      "route": "/examples/dashboard"
-    },
     {
       "title": "Settings",
       "route": "/examples/settings"
