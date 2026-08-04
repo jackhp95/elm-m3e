@@ -1,6 +1,7 @@
 module TypedHtml.Kind exposing
     ( Brand, Ctx, Role
     , Available, Used
+    , Supported, Shared
     , Embedded, Flow, Heading, Interactive, Metadata, Phrasing, Sectioning
     )
 
@@ -11,11 +12,32 @@ fields. Both are nominal and private to this library — a foreign library's
 markers never unify with them, even under the same field name.
 `Available`/`Used` are the pipe-builder's write-once capability markers.
 
+`Supported` and `Shared` are the CROSS-library markers, re-exported from
+the IR substrate so callers never import `HtmlIr.Kind` directly. Unlike
+`Brand`/`Ctx` these are deliberately shared: every brand's `Supported` is
+the same type, and a `Shared`-marked atom is admissible into any brand's
+opted-in slot.
+
 @docs Brand, Ctx, Role
 @docs Available, Used
+@docs Supported, Shared
 @docs Embedded, Flow, Heading, Interactive, Metadata, Phrasing, Sectioning
 
 -}
+
+import HtmlIr.Kind
+
+
+{-| Admission marker for capability and value rows. Re-exported from `HtmlIr.Kind`.
+-}
+type alias Supported =
+    HtmlIr.Kind.Supported
+
+
+{-| The cross-library atom marker. Re-exported from `HtmlIr.Kind`.
+-}
+type alias Shared =
+    HtmlIr.Kind.Shared
 
 
 {-| The private kind marker (never constructed).

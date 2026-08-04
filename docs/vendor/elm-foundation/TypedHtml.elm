@@ -1,8 +1,7 @@
 module TypedHtml exposing
     ( a, abbr, address, area, article, aside, audio, b, base, bdi, bdo, blockquote, body, br, button, canvas, caption, cite, code, col, colgroup, data, datalist, dd, del, details, dfn, dialog, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, i, iframe, img, input, ins, kbd, label, legend, li, link, main_, map, mark, menu, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, picture, pictureSource, pre, progress, q, rp, rt, ruby, s, samp, script, search, section, select, slot, small, source, span, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, title, tr, track, u, ul, var, video, wbr
     , text
-    , toHtml
-    , Element, Attr, mapMsg
+    , Element, Attr, toHtml, mapMsg
     )
 
 {-| The general surface: every component constructor in the elm/html call
@@ -15,8 +14,7 @@ content, builder, narrowed values), and `TypedHtml.Attributes` / `TypedHtml.Even
 
 @docs a, abbr, address, area, article, aside, audio, b, base, bdi, bdo, blockquote, body, br, button, canvas, caption, cite, code, col, colgroup, data, datalist, dd, del, details, dfn, dialog, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, i, iframe, img, input, ins, kbd, label, legend, li, link, main_, map, mark, menu, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, picture, pictureSource, pre, progress, q, rp, rt, ruby, s, samp, script, search, section, select, slot, small, source, span, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, title, tr, track, u, ul, var, video, wbr
 @docs text
-@docs toHtml
-@docs Element, Attr, mapMsg
+@docs Element, Attr, toHtml, mapMsg
 
 -}
 
@@ -1172,13 +1170,6 @@ text value_ =
     Ir.fromNode (Ir.text value_)
 
 
-{-| Render any element from this library to `elm/html`.
--}
-toHtml : Element accepts admittedBy msg -> Html.Html msg
-toHtml =
-    HtmlIr.Element.toNode >> HtmlIr.Node.toHtml
-
-
 {-| The typed IR element every constructor here produces. Re-exported so callers never import `HtmlIr.Element` directly.
 -}
 type alias Element accepts admittedBy msg =
@@ -1189,6 +1180,13 @@ type alias Element accepts admittedBy msg =
 -}
 type alias Attr capability msg =
     HtmlIr.Attribute.Attr capability msg
+
+
+{-| Render any element from this library to `elm/html`.
+-}
+toHtml : Element accepts admittedBy msg -> Html.Html msg
+toHtml =
+    HtmlIr.Element.toNode >> HtmlIr.Node.toHtml
 
 
 {-| Map the `msg` type of any element from this library (the typed IR's `Html.map`).

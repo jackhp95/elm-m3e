@@ -1,4 +1,7 @@
-module M3e.Html exposing (accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView)
+module M3e.Html exposing
+    ( accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
+    , Element, Attr, toHtml, mapMsg
+    )
 
 {-| The loose, elm/html-like producer layer: one open-rowed constructor
 per element, each owning `Ir.node "<tag>"`. This is the foundation the
@@ -6,13 +9,20 @@ per element, each owning `Ir.node "<tag>"`. This is the foundation the
 its producer here and re-exposes it under a tightened signature. Depends
 only on the IR substrate — no component module is imported.
 
+The substrate types are re-exported here too, so a consumer of the
+published package can write type annotations without importing
+`HtmlIr.*` directly.
+
 @docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
+@docs Element, Attr, toHtml, mapMsg
 
 -}
 
-import HtmlIr.Attribute exposing (Attr)
-import HtmlIr.Element as El exposing (Element)
+import Html
+import HtmlIr.Attribute
+import HtmlIr.Element
 import HtmlIr.Internal as Ir
+import HtmlIr.Node
 
 
 {-| The loose `m3e-accordion` producer — open attribute/child rows, elm/html call
@@ -23,7 +33,7 @@ accordion :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 accordion attrs children =
-    Ir.fromNode (Ir.node "m3e-accordion" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-accordion" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-action-list` producer — open attribute/child rows, elm/html call
@@ -34,7 +44,7 @@ actionList :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 actionList attrs children =
-    Ir.fromNode (Ir.node "m3e-action-list" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-action-list" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-app-bar` producer — open attribute/child rows, elm/html call
@@ -45,7 +55,7 @@ appBar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 appBar attrs children =
-    Ir.fromNode (Ir.node "m3e-app-bar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-app-bar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-assist-chip` producer — open attribute/child rows, elm/html call
@@ -56,7 +66,7 @@ assistChip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 assistChip attrs children =
-    Ir.fromNode (Ir.node "m3e-assist-chip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-assist-chip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-autocomplete` producer — open attribute/child rows, elm/html call
@@ -67,7 +77,7 @@ autocomplete :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 autocomplete attrs children =
-    Ir.fromNode (Ir.node "m3e-autocomplete" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-autocomplete" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-avatar` producer — open attribute/child rows, elm/html call
@@ -78,7 +88,7 @@ avatar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 avatar attrs children =
-    Ir.fromNode (Ir.node "m3e-avatar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-avatar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-badge` producer — open attribute/child rows, elm/html call
@@ -89,7 +99,7 @@ badge :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 badge attrs children =
-    Ir.fromNode (Ir.node "m3e-badge" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-badge" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-bottom-sheet` producer — open attribute/child rows, elm/html call
@@ -100,7 +110,7 @@ bottomSheet :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 bottomSheet attrs children =
-    Ir.fromNode (Ir.node "m3e-bottom-sheet" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-bottom-sheet" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-bottom-sheet-action` producer — open attribute/child rows, elm/html call
@@ -111,7 +121,7 @@ bottomSheetAction :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 bottomSheetAction attrs children =
-    Ir.fromNode (Ir.node "m3e-bottom-sheet-action" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-bottom-sheet-action" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-bottom-sheet-trigger` producer — open attribute/child rows, elm/html call
@@ -122,7 +132,7 @@ bottomSheetTrigger :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 bottomSheetTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-bottom-sheet-trigger" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-bottom-sheet-trigger" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-breadcrumb` producer — open attribute/child rows, elm/html call
@@ -133,7 +143,7 @@ breadcrumb :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 breadcrumb attrs children =
-    Ir.fromNode (Ir.node "m3e-breadcrumb" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-breadcrumb" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-breadcrumb-item` producer — open attribute/child rows, elm/html call
@@ -144,7 +154,7 @@ breadcrumbItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 breadcrumbItem attrs children =
-    Ir.fromNode (Ir.node "m3e-breadcrumb-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-breadcrumb-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-breadcrumb-item-button` producer — open attribute/child rows, elm/html call
@@ -155,7 +165,7 @@ breadcrumbItemButton :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 breadcrumbItemButton attrs children =
-    Ir.fromNode (Ir.node "m3e-breadcrumb-item-button" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-breadcrumb-item-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-button` producer — open attribute/child rows, elm/html call
@@ -166,7 +176,7 @@ button :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 button attrs children =
-    Ir.fromNode (Ir.node "m3e-button" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-button-group` producer — open attribute/child rows, elm/html call
@@ -177,7 +187,7 @@ buttonGroup :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 buttonGroup attrs children =
-    Ir.fromNode (Ir.node "m3e-button-group" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-button-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-button-segment` producer — open attribute/child rows, elm/html call
@@ -188,7 +198,7 @@ buttonSegment :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 buttonSegment attrs children =
-    Ir.fromNode (Ir.node "m3e-button-segment" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-button-segment" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-calendar` producer — open attribute/child rows, elm/html call
@@ -199,7 +209,7 @@ calendar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 calendar attrs children =
-    Ir.fromNode (Ir.node "m3e-calendar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-calendar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-card` producer — open attribute/child rows, elm/html call
@@ -210,7 +220,7 @@ card :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 card attrs children =
-    Ir.fromNode (Ir.node "m3e-card" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-card" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-checkbox` producer — open attribute/child rows, elm/html call
@@ -221,7 +231,7 @@ checkbox :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 checkbox attrs children =
-    Ir.fromNode (Ir.node "m3e-checkbox" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-checkbox" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-chip` producer — open attribute/child rows, elm/html call
@@ -232,7 +242,7 @@ chip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 chip attrs children =
-    Ir.fromNode (Ir.node "m3e-chip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-chip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-chip-set` producer — open attribute/child rows, elm/html call
@@ -243,7 +253,7 @@ chipSet :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 chipSet attrs children =
-    Ir.fromNode (Ir.node "m3e-chip-set" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-chip-set" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-circular-progress-indicator` producer — open attribute/child rows, elm/html call
@@ -254,7 +264,7 @@ circularProgressIndicator :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 circularProgressIndicator attrs children =
-    Ir.fromNode (Ir.node "m3e-circular-progress-indicator" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-circular-progress-indicator" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-collapsible` producer — open attribute/child rows, elm/html call
@@ -265,7 +275,7 @@ collapsible :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 collapsible attrs children =
-    Ir.fromNode (Ir.node "m3e-collapsible" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-collapsible" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-content-pane` producer — open attribute/child rows, elm/html call
@@ -276,7 +286,7 @@ contentPane :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 contentPane attrs children =
-    Ir.fromNode (Ir.node "m3e-content-pane" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-content-pane" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-date-input` producer — open attribute/child rows, elm/html call
@@ -287,7 +297,7 @@ dateInput :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 dateInput attrs children =
-    Ir.fromNode (Ir.node "m3e-date-input" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-date-input" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-datepicker` producer — open attribute/child rows, elm/html call
@@ -298,7 +308,7 @@ datepicker :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 datepicker attrs children =
-    Ir.fromNode (Ir.node "m3e-datepicker" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-datepicker" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-datepicker-toggle` producer — open attribute/child rows, elm/html call
@@ -309,7 +319,7 @@ datepickerToggle :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 datepickerToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-datepicker-toggle" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-datepicker-toggle" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-dialog` producer — open attribute/child rows, elm/html call
@@ -320,7 +330,7 @@ dialog :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 dialog attrs children =
-    Ir.fromNode (Ir.node "m3e-dialog" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-dialog" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-dialog-action` producer — open attribute/child rows, elm/html call
@@ -331,7 +341,7 @@ dialogAction :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 dialogAction attrs children =
-    Ir.fromNode (Ir.node "m3e-dialog-action" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-dialog-action" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-dialog-trigger` producer — open attribute/child rows, elm/html call
@@ -342,7 +352,7 @@ dialogTrigger :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 dialogTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-dialog-trigger" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-dialog-trigger" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-divider` producer — open attribute/child rows, elm/html call
@@ -353,7 +363,7 @@ divider :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 divider attrs children =
-    Ir.fromNode (Ir.node "m3e-divider" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-divider" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-drawer-container` producer — open attribute/child rows, elm/html call
@@ -364,7 +374,7 @@ drawerContainer :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 drawerContainer attrs children =
-    Ir.fromNode (Ir.node "m3e-drawer-container" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-drawer-container" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-drawer-toggle` producer — open attribute/child rows, elm/html call
@@ -375,7 +385,7 @@ drawerToggle :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 drawerToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-drawer-toggle" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-drawer-toggle" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-elevation` producer — open attribute/child rows, elm/html call
@@ -386,7 +396,7 @@ elevation :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 elevation attrs children =
-    Ir.fromNode (Ir.node "m3e-elevation" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-elevation" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-expandable-list-item` producer — open attribute/child rows, elm/html call
@@ -397,7 +407,7 @@ expandableListItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 expandableListItem attrs children =
-    Ir.fromNode (Ir.node "m3e-expandable-list-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-expandable-list-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-expansion-header` producer — open attribute/child rows, elm/html call
@@ -408,7 +418,7 @@ expansionHeader :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 expansionHeader attrs children =
-    Ir.fromNode (Ir.node "m3e-expansion-header" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-expansion-header" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-expansion-panel` producer — open attribute/child rows, elm/html call
@@ -419,7 +429,7 @@ expansionPanel :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 expansionPanel attrs children =
-    Ir.fromNode (Ir.node "m3e-expansion-panel" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-expansion-panel" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-fab` producer — open attribute/child rows, elm/html call
@@ -430,7 +440,7 @@ fab :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 fab attrs children =
-    Ir.fromNode (Ir.node "m3e-fab" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-fab" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-fab-menu` producer — open attribute/child rows, elm/html call
@@ -441,7 +451,7 @@ fabMenu :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 fabMenu attrs children =
-    Ir.fromNode (Ir.node "m3e-fab-menu" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-fab-menu" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-fab-menu-item` producer — open attribute/child rows, elm/html call
@@ -452,7 +462,7 @@ fabMenuItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 fabMenuItem attrs children =
-    Ir.fromNode (Ir.node "m3e-fab-menu-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-fab-menu-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-fab-menu-trigger` producer — open attribute/child rows, elm/html call
@@ -463,7 +473,7 @@ fabMenuTrigger :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 fabMenuTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-fab-menu-trigger" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-fab-menu-trigger" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-filter-chip` producer — open attribute/child rows, elm/html call
@@ -474,7 +484,7 @@ filterChip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 filterChip attrs children =
-    Ir.fromNode (Ir.node "m3e-filter-chip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-filter-chip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-filter-chip-set` producer — open attribute/child rows, elm/html call
@@ -485,7 +495,7 @@ filterChipSet :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 filterChipSet attrs children =
-    Ir.fromNode (Ir.node "m3e-filter-chip-set" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-filter-chip-set" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-floating-panel` producer — open attribute/child rows, elm/html call
@@ -496,7 +506,7 @@ floatingPanel :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 floatingPanel attrs children =
-    Ir.fromNode (Ir.node "m3e-floating-panel" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-floating-panel" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-focus-ring` producer — open attribute/child rows, elm/html call
@@ -507,7 +517,7 @@ focusRing :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 focusRing attrs children =
-    Ir.fromNode (Ir.node "m3e-focus-ring" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-focus-ring" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-focus-trap` producer — open attribute/child rows, elm/html call
@@ -518,7 +528,7 @@ focusTrap :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 focusTrap attrs children =
-    Ir.fromNode (Ir.node "m3e-focus-trap" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-focus-trap" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-form-field` producer — open attribute/child rows, elm/html call
@@ -529,7 +539,7 @@ formField :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 formField attrs children =
-    Ir.fromNode (Ir.node "m3e-form-field" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-form-field" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-heading` producer — open attribute/child rows, elm/html call
@@ -540,7 +550,7 @@ heading :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 heading attrs children =
-    Ir.fromNode (Ir.node "m3e-heading" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-heading" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-icon` producer — open attribute/child rows, elm/html call
@@ -551,7 +561,7 @@ icon :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 icon attrs children =
-    Ir.fromNode (Ir.node "m3e-icon" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-icon" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-icon-button` producer — open attribute/child rows, elm/html call
@@ -562,7 +572,7 @@ iconButton :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 iconButton attrs children =
-    Ir.fromNode (Ir.node "m3e-icon-button" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-icon-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-input-chip` producer — open attribute/child rows, elm/html call
@@ -573,7 +583,7 @@ inputChip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 inputChip attrs children =
-    Ir.fromNode (Ir.node "m3e-input-chip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-input-chip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-input-chip-set` producer — open attribute/child rows, elm/html call
@@ -584,7 +594,7 @@ inputChipSet :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 inputChipSet attrs children =
-    Ir.fromNode (Ir.node "m3e-input-chip-set" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-input-chip-set" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-linear-progress-indicator` producer — open attribute/child rows, elm/html call
@@ -595,7 +605,7 @@ linearProgressIndicator :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 linearProgressIndicator attrs children =
-    Ir.fromNode (Ir.node "m3e-linear-progress-indicator" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-linear-progress-indicator" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-list` producer — open attribute/child rows, elm/html call
@@ -606,7 +616,7 @@ list :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 list attrs children =
-    Ir.fromNode (Ir.node "m3e-list" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-list" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-list-action` producer — open attribute/child rows, elm/html call
@@ -617,7 +627,7 @@ listAction :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 listAction attrs children =
-    Ir.fromNode (Ir.node "m3e-list-action" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-list-action" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-list-item` producer — open attribute/child rows, elm/html call
@@ -628,7 +638,7 @@ listItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 listItem attrs children =
-    Ir.fromNode (Ir.node "m3e-list-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-list-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-list-item-button` producer — open attribute/child rows, elm/html call
@@ -639,7 +649,7 @@ listItemButton :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 listItemButton attrs children =
-    Ir.fromNode (Ir.node "m3e-list-item-button" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-list-item-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-list-option` producer — open attribute/child rows, elm/html call
@@ -650,7 +660,7 @@ listOption :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 listOption attrs children =
-    Ir.fromNode (Ir.node "m3e-list-option" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-list-option" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-loading-indicator` producer — open attribute/child rows, elm/html call
@@ -661,7 +671,7 @@ loadingIndicator :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 loadingIndicator attrs children =
-    Ir.fromNode (Ir.node "m3e-loading-indicator" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-loading-indicator" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-menu` producer — open attribute/child rows, elm/html call
@@ -672,7 +682,7 @@ menu :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 menu attrs children =
-    Ir.fromNode (Ir.node "m3e-menu" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-menu" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-menu-item` producer — open attribute/child rows, elm/html call
@@ -683,7 +693,7 @@ menuItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 menuItem attrs children =
-    Ir.fromNode (Ir.node "m3e-menu-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-menu-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-menu-item-checkbox` producer — open attribute/child rows, elm/html call
@@ -694,7 +704,7 @@ menuItemCheckbox :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 menuItemCheckbox attrs children =
-    Ir.fromNode (Ir.node "m3e-menu-item-checkbox" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-menu-item-checkbox" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-menu-item-group` producer — open attribute/child rows, elm/html call
@@ -705,7 +715,7 @@ menuItemGroup :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 menuItemGroup attrs children =
-    Ir.fromNode (Ir.node "m3e-menu-item-group" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-menu-item-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-menu-item-radio` producer — open attribute/child rows, elm/html call
@@ -716,7 +726,7 @@ menuItemRadio :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 menuItemRadio attrs children =
-    Ir.fromNode (Ir.node "m3e-menu-item-radio" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-menu-item-radio" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-menu-trigger` producer — open attribute/child rows, elm/html call
@@ -727,7 +737,7 @@ menuTrigger :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 menuTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-menu-trigger" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-menu-trigger" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-month-view` producer — open attribute/child rows, elm/html call
@@ -738,7 +748,7 @@ monthView :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 monthView attrs children =
-    Ir.fromNode (Ir.node "m3e-month-view" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-month-view" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-multi-year-view` producer — open attribute/child rows, elm/html call
@@ -749,7 +759,7 @@ multiYearView :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 multiYearView attrs children =
-    Ir.fromNode (Ir.node "m3e-multi-year-view" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-multi-year-view" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-bar` producer — open attribute/child rows, elm/html call
@@ -760,7 +770,7 @@ navBar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navBar attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-bar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-bar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-item` producer — open attribute/child rows, elm/html call
@@ -771,7 +781,7 @@ navItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navItem attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-menu` producer — open attribute/child rows, elm/html call
@@ -782,7 +792,7 @@ navMenu :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navMenu attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-menu" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-menu" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-menu-item` producer — open attribute/child rows, elm/html call
@@ -793,7 +803,7 @@ navMenuItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navMenuItem attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-menu-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-menu-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-menu-item-group` producer — open attribute/child rows, elm/html call
@@ -804,7 +814,7 @@ navMenuItemGroup :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navMenuItemGroup attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-menu-item-group" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-menu-item-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-rail` producer — open attribute/child rows, elm/html call
@@ -815,7 +825,7 @@ navRail :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navRail attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-rail" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-rail" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-nav-rail-toggle` producer — open attribute/child rows, elm/html call
@@ -826,7 +836,7 @@ navRailToggle :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 navRailToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-rail-toggle" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-nav-rail-toggle" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-optgroup` producer — open attribute/child rows, elm/html call
@@ -837,7 +847,7 @@ optgroup :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 optgroup attrs children =
-    Ir.fromNode (Ir.node "m3e-optgroup" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-optgroup" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-option` producer — open attribute/child rows, elm/html call
@@ -848,7 +858,7 @@ option :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 option attrs children =
-    Ir.fromNode (Ir.node "m3e-option" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-option" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-option-panel` producer — open attribute/child rows, elm/html call
@@ -859,7 +869,7 @@ optionPanel :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 optionPanel attrs children =
-    Ir.fromNode (Ir.node "m3e-option-panel" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-option-panel" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-paginator` producer — open attribute/child rows, elm/html call
@@ -870,7 +880,7 @@ paginator :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 paginator attrs children =
-    Ir.fromNode (Ir.node "m3e-paginator" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-paginator" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-pseudo-checkbox` producer — open attribute/child rows, elm/html call
@@ -881,7 +891,7 @@ pseudoCheckbox :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 pseudoCheckbox attrs children =
-    Ir.fromNode (Ir.node "m3e-pseudo-checkbox" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-pseudo-checkbox" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-pseudo-radio` producer — open attribute/child rows, elm/html call
@@ -892,7 +902,7 @@ pseudoRadio :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 pseudoRadio attrs children =
-    Ir.fromNode (Ir.node "m3e-pseudo-radio" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-pseudo-radio" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-radio` producer — open attribute/child rows, elm/html call
@@ -903,7 +913,7 @@ radio :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 radio attrs children =
-    Ir.fromNode (Ir.node "m3e-radio" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-radio" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-radio-group` producer — open attribute/child rows, elm/html call
@@ -914,7 +924,7 @@ radioGroup :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 radioGroup attrs children =
-    Ir.fromNode (Ir.node "m3e-radio-group" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-radio-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-rich-tooltip` producer — open attribute/child rows, elm/html call
@@ -925,7 +935,7 @@ richTooltip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 richTooltip attrs children =
-    Ir.fromNode (Ir.node "m3e-rich-tooltip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-rich-tooltip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-rich-tooltip-action` producer — open attribute/child rows, elm/html call
@@ -936,7 +946,7 @@ richTooltipAction :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 richTooltipAction attrs children =
-    Ir.fromNode (Ir.node "m3e-rich-tooltip-action" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-rich-tooltip-action" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-ripple` producer — open attribute/child rows, elm/html call
@@ -947,7 +957,7 @@ ripple :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 ripple attrs children =
-    Ir.fromNode (Ir.node "m3e-ripple" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-ripple" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-scroll-container` producer — open attribute/child rows, elm/html call
@@ -958,7 +968,7 @@ scrollContainer :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 scrollContainer attrs children =
-    Ir.fromNode (Ir.node "m3e-scroll-container" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-scroll-container" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-search-bar` producer — open attribute/child rows, elm/html call
@@ -969,7 +979,7 @@ searchBar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 searchBar attrs children =
-    Ir.fromNode (Ir.node "m3e-search-bar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-search-bar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-search-view` producer — open attribute/child rows, elm/html call
@@ -980,7 +990,7 @@ searchView :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 searchView attrs children =
-    Ir.fromNode (Ir.node "m3e-search-view" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-search-view" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-segmented-button` producer — open attribute/child rows, elm/html call
@@ -991,7 +1001,7 @@ segmentedButton :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 segmentedButton attrs children =
-    Ir.fromNode (Ir.node "m3e-segmented-button" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-segmented-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-select` producer — open attribute/child rows, elm/html call
@@ -1002,7 +1012,7 @@ select :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 select attrs children =
-    Ir.fromNode (Ir.node "m3e-select" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-select" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-selection-list` producer — open attribute/child rows, elm/html call
@@ -1013,7 +1023,7 @@ selectionList :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 selectionList attrs children =
-    Ir.fromNode (Ir.node "m3e-selection-list" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-selection-list" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-shape` producer — open attribute/child rows, elm/html call
@@ -1024,7 +1034,7 @@ shape :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 shape attrs children =
-    Ir.fromNode (Ir.node "m3e-shape" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-shape" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-skeleton` producer — open attribute/child rows, elm/html call
@@ -1035,7 +1045,7 @@ skeleton :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 skeleton attrs children =
-    Ir.fromNode (Ir.node "m3e-skeleton" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-skeleton" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-slide` producer — open attribute/child rows, elm/html call
@@ -1046,7 +1056,7 @@ slide :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 slide attrs children =
-    Ir.fromNode (Ir.node "m3e-slide" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-slide" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-slide-group` producer — open attribute/child rows, elm/html call
@@ -1057,7 +1067,7 @@ slideGroup :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 slideGroup attrs children =
-    Ir.fromNode (Ir.node "m3e-slide-group" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-slide-group" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-slider` producer — open attribute/child rows, elm/html call
@@ -1068,7 +1078,7 @@ slider :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 slider attrs children =
-    Ir.fromNode (Ir.node "m3e-slider" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-slider" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-slider-thumb` producer — open attribute/child rows, elm/html call
@@ -1079,7 +1089,7 @@ sliderThumb :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 sliderThumb attrs children =
-    Ir.fromNode (Ir.node "m3e-slider-thumb" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-slider-thumb" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-snackbar` producer — open attribute/child rows, elm/html call
@@ -1090,7 +1100,7 @@ snackbar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 snackbar attrs children =
-    Ir.fromNode (Ir.node "m3e-snackbar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-snackbar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-split-button` producer — open attribute/child rows, elm/html call
@@ -1101,7 +1111,7 @@ splitButton :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 splitButton attrs children =
-    Ir.fromNode (Ir.node "m3e-split-button" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-split-button" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-split-pane` producer — open attribute/child rows, elm/html call
@@ -1112,7 +1122,7 @@ splitPane :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 splitPane attrs children =
-    Ir.fromNode (Ir.node "m3e-split-pane" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-split-pane" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-state-layer` producer — open attribute/child rows, elm/html call
@@ -1123,7 +1133,7 @@ stateLayer :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 stateLayer attrs children =
-    Ir.fromNode (Ir.node "m3e-state-layer" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-state-layer" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-step` producer — open attribute/child rows, elm/html call
@@ -1134,7 +1144,7 @@ step :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 step attrs children =
-    Ir.fromNode (Ir.node "m3e-step" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-step" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-step-panel` producer — open attribute/child rows, elm/html call
@@ -1145,7 +1155,7 @@ stepPanel :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 stepPanel attrs children =
-    Ir.fromNode (Ir.node "m3e-step-panel" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-step-panel" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-stepper` producer — open attribute/child rows, elm/html call
@@ -1156,7 +1166,7 @@ stepper :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 stepper attrs children =
-    Ir.fromNode (Ir.node "m3e-stepper" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-stepper" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-stepper-next` producer — open attribute/child rows, elm/html call
@@ -1167,7 +1177,7 @@ stepperNext :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 stepperNext attrs children =
-    Ir.fromNode (Ir.node "m3e-stepper-next" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-stepper-next" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-stepper-previous` producer — open attribute/child rows, elm/html call
@@ -1178,7 +1188,7 @@ stepperPrevious :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 stepperPrevious attrs children =
-    Ir.fromNode (Ir.node "m3e-stepper-previous" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-stepper-previous" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-stepper-reset` producer — open attribute/child rows, elm/html call
@@ -1189,7 +1199,7 @@ stepperReset :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 stepperReset attrs children =
-    Ir.fromNode (Ir.node "m3e-stepper-reset" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-stepper-reset" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-suggestion-chip` producer — open attribute/child rows, elm/html call
@@ -1200,7 +1210,7 @@ suggestionChip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 suggestionChip attrs children =
-    Ir.fromNode (Ir.node "m3e-suggestion-chip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-suggestion-chip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-switch` producer — open attribute/child rows, elm/html call
@@ -1211,7 +1221,7 @@ switch :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 switch attrs children =
-    Ir.fromNode (Ir.node "m3e-switch" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-switch" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-tab` producer — open attribute/child rows, elm/html call
@@ -1222,7 +1232,7 @@ tab :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 tab attrs children =
-    Ir.fromNode (Ir.node "m3e-tab" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-tab" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-tab-panel` producer — open attribute/child rows, elm/html call
@@ -1233,7 +1243,7 @@ tabPanel :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 tabPanel attrs children =
-    Ir.fromNode (Ir.node "m3e-tab-panel" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-tab-panel" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-tabs` producer — open attribute/child rows, elm/html call
@@ -1244,7 +1254,7 @@ tabs :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 tabs attrs children =
-    Ir.fromNode (Ir.node "m3e-tabs" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-tabs" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-text-highlight` producer — open attribute/child rows, elm/html call
@@ -1255,7 +1265,7 @@ textHighlight :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 textHighlight attrs children =
-    Ir.fromNode (Ir.node "m3e-text-highlight" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-text-highlight" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-text-overflow` producer — open attribute/child rows, elm/html call
@@ -1266,7 +1276,7 @@ textOverflow :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 textOverflow attrs children =
-    Ir.fromNode (Ir.node "m3e-text-overflow" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-text-overflow" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-textarea-autosize` producer — open attribute/child rows, elm/html call
@@ -1277,7 +1287,7 @@ textareaAutosize :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 textareaAutosize attrs children =
-    Ir.fromNode (Ir.node "m3e-textarea-autosize" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-textarea-autosize" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-theme` producer — open attribute/child rows, elm/html call
@@ -1288,7 +1298,7 @@ theme :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 theme attrs children =
-    Ir.fromNode (Ir.node "m3e-theme" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-theme" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-theme-icon` producer — open attribute/child rows, elm/html call
@@ -1299,7 +1309,7 @@ themeIcon :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 themeIcon attrs children =
-    Ir.fromNode (Ir.node "m3e-theme-icon" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-theme-icon" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-timepicker` producer — open attribute/child rows, elm/html call
@@ -1310,7 +1320,7 @@ timepicker :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 timepicker attrs children =
-    Ir.fromNode (Ir.node "m3e-timepicker" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-timepicker" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-timepicker-dial` producer — open attribute/child rows, elm/html call
@@ -1321,7 +1331,7 @@ timepickerDial :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 timepickerDial attrs children =
-    Ir.fromNode (Ir.node "m3e-timepicker-dial" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-timepicker-dial" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-timepicker-input` producer — open attribute/child rows, elm/html call
@@ -1332,7 +1342,7 @@ timepickerInput :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 timepickerInput attrs children =
-    Ir.fromNode (Ir.node "m3e-timepicker-input" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-timepicker-input" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-timepicker-input-period-toggle` producer — open attribute/child rows, elm/html call
@@ -1343,7 +1353,7 @@ timepickerInputPeriodToggle :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 timepickerInputPeriodToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-timepicker-input-period-toggle" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-timepicker-input-period-toggle" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-timepicker-toggle` producer — open attribute/child rows, elm/html call
@@ -1354,7 +1364,7 @@ timepickerToggle :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 timepickerToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-timepicker-toggle" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-timepicker-toggle" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-toc` producer — open attribute/child rows, elm/html call
@@ -1365,7 +1375,7 @@ toc :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 toc attrs children =
-    Ir.fromNode (Ir.node "m3e-toc" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-toc" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-toc-item` producer — open attribute/child rows, elm/html call
@@ -1376,7 +1386,7 @@ tocItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 tocItem attrs children =
-    Ir.fromNode (Ir.node "m3e-toc-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-toc-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-toolbar` producer — open attribute/child rows, elm/html call
@@ -1387,7 +1397,7 @@ toolbar :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 toolbar attrs children =
-    Ir.fromNode (Ir.node "m3e-toolbar" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-toolbar" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-tooltip` producer — open attribute/child rows, elm/html call
@@ -1398,7 +1408,7 @@ tooltip :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 tooltip attrs children =
-    Ir.fromNode (Ir.node "m3e-tooltip" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-tooltip" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-tree` producer — open attribute/child rows, elm/html call
@@ -1409,7 +1419,7 @@ tree :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 tree attrs children =
-    Ir.fromNode (Ir.node "m3e-tree" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-tree" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-tree-item` producer — open attribute/child rows, elm/html call
@@ -1420,7 +1430,7 @@ treeItem :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 treeItem attrs children =
-    Ir.fromNode (Ir.node "m3e-tree-item" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-tree-item" attrs (List.map HtmlIr.Element.toNode children))
 
 
 {-| The loose `m3e-year-view` producer — open attribute/child rows, elm/html call
@@ -1431,4 +1441,30 @@ yearView :
     -> List (Element children childAdmittedBy msg)
     -> Element produced admittedBy msg
 yearView attrs children =
-    Ir.fromNode (Ir.node "m3e-year-view" attrs (List.map El.toNode children))
+    Ir.fromNode (Ir.node "m3e-year-view" attrs (List.map HtmlIr.Element.toNode children))
+
+
+{-| The typed IR element every constructor here produces. Re-exported so callers never import `HtmlIr.Element` directly.
+-}
+type alias Element accepts admittedBy msg =
+    HtmlIr.Element.Element accepts admittedBy msg
+
+
+{-| A typed attribute. Re-exported so callers never import `HtmlIr.Attribute` directly.
+-}
+type alias Attr capability msg =
+    HtmlIr.Attribute.Attr capability msg
+
+
+{-| Render any element from this library to `elm/html`.
+-}
+toHtml : Element accepts admittedBy msg -> Html.Html msg
+toHtml =
+    HtmlIr.Element.toNode >> HtmlIr.Node.toHtml
+
+
+{-| Map the `msg` type of any element from this library (the typed IR's `Html.map`).
+-}
+mapMsg : (a -> b) -> Element accepts admittedBy a -> Element accepts admittedBy b
+mapMsg =
+    HtmlIr.Element.map

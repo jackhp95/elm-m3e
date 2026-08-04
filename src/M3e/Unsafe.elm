@@ -1,19 +1,23 @@
 module M3e.Unsafe exposing
     ( fromHtml
     , recast, recastAll
+    , customElement
     )
 
-{-| THE loud legacy-interop escapes: wrap raw `Html` as an `Element`, or
-re-kind an existing `Element` — both with FREE phantom rows, so the
+{-| THE loud legacy-interop escapes: wrap raw `Html` as an `Element`,
+re-kind an existing `Element`, or forge an element from a tag name this
+library has no generated producer for — all with FREE phantom rows, so the
 compiler checks nothing about the result. For incremental migration and
 slot-fit only; every use site is a grep target and a lint finding.
 
 @docs fromHtml
 @docs recast, recastAll
+@docs customElement
 
 -}
 
 import Html exposing (Html)
+import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 
@@ -37,3 +41,10 @@ recast element =
 recastAll : List (Element aAccepts aAdmittedBy msg) -> List (Element bAccepts bAdmittedBy msg)
 recastAll =
     List.map recast
+
+
+{-| Forge an element from a raw tag name, with FREE rows — for a CUSTOM ELEMENT this library has no generated producer for (`<model-viewer>`, `<slide-panels>`). Loud on purpose: for a standard HTML tag reach for the native brand's typed constructor instead, and for a component this library already ships, use that.
+-}
+customElement : String -> List (Attr capability msg) -> List (Element childAccepts childAdmittedBy msg) -> Element accepts admittedBy msg
+customElement tagName attrs children =
+    Ir.fromNode (Ir.node tagName attrs (List.map HtmlIr.Element.toNode children))

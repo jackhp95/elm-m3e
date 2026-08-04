@@ -1,8 +1,7 @@
 module M3e exposing
     ( accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
     , text
-    , toHtml
-    , Element, Attr, mapMsg
+    , Element, Attr, toHtml, mapMsg
     )
 
 {-| The general surface: every component constructor in the elm/html call
@@ -15,8 +14,7 @@ content, builder, narrowed values), and `M3e.Attributes` / `M3e.Events` /
 
 @docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
 @docs text
-@docs toHtml
-@docs Element, Attr, mapMsg
+@docs Element, Attr, toHtml, mapMsg
 
 -}
 
@@ -1454,13 +1452,6 @@ text value_ =
     Ir.fromNode (Ir.text value_)
 
 
-{-| Render any element from this library to `elm/html`.
--}
-toHtml : Element accepts admittedBy msg -> Html.Html msg
-toHtml =
-    HtmlIr.Element.toNode >> HtmlIr.Node.toHtml
-
-
 {-| The typed IR element every constructor here produces. Re-exported so callers never import `HtmlIr.Element` directly.
 -}
 type alias Element accepts admittedBy msg =
@@ -1471,6 +1462,13 @@ type alias Element accepts admittedBy msg =
 -}
 type alias Attr capability msg =
     HtmlIr.Attribute.Attr capability msg
+
+
+{-| Render any element from this library to `elm/html`.
+-}
+toHtml : Element accepts admittedBy msg -> Html.Html msg
+toHtml =
+    HtmlIr.Element.toNode >> HtmlIr.Node.toHtml
 
 
 {-| Map the `msg` type of any element from this library (the typed IR's `Html.map`).
