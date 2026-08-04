@@ -15,6 +15,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
+import M3e.AppBar
 import M3e.Button
 import M3e.FormField
 import M3e.Icon
@@ -136,6 +137,26 @@ linkNav =
         ]
 
 
+{-| Native HTML filling an M3e slot that says "arbitrary content goes here".
+
+`AppBar.trailing` declares `shared:flow` and `shared:phrasing` — the two WHATWG
+content categories — so `TypedHtml.div` drops in as itself. No `recast`, and the
+compiler still checks what goes _inside_ the div.
+
+-}
+htmlInSlot : Element { s | appBar : M3e.Kind.Brand } admittedBy msg
+htmlInSlot =
+    M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
+        [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
+        , M3e.AppBar.trailing
+            (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
+                [ M3e.iconButton [] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
+                , M3e.badge [] [ M3e.text "3" ]
+                ]
+            )
+        ]
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     View.fromElement "Your own seam · elm-m3e"
@@ -159,6 +180,15 @@ view _ _ =
                     [ Doc.markdown slotSeam
                     , Doc.showcase linkNav
                     , Doc.code_ Doc.Elm linkNavCode
+                    ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown crossBrand
+                    , Doc.showcase htmlInSlot
+                    , Doc.code_ Doc.Elm htmlInSlotCode
+                    ]
+                , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
+                    [ Doc.markdown oneWay
+                    , Doc.code_ Doc.Elm oneWayCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown payoff ]
@@ -218,6 +248,54 @@ linkNav =
         [ M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
         , M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
         ]"""
+
+
+htmlInSlotCode : String
+htmlInSlotCode =
+    """-- AppBar.TrailingSlot admits { button, iconButton, searchBar, sharedFlow, sharedPhrasing }.
+-- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
+-- iconButton and badge INSIDE it are still checked against the div's content model.
+htmlInSlot =
+    M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
+        [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
+        , M3e.AppBar.trailing
+            (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
+                [ M3e.iconButton [] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
+                , M3e.badge [] [ M3e.text "3" ]
+                ]
+            )
+        ]"""
+
+
+oneWayCode : String
+oneWayCode =
+    """TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected
+TypedHtml.div  [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✓ div takes any children
+
+TypedHtml.span [] [ M3e.text "hi" ]                      -- ✓ text is a shared atom
+TypedHtml.span [] [ M3e.icon [ … ] [] ]                  -- ✓ so is icon"""
+
+
+crossBrand : String
+crossBrand =
+    """Slots that mean *"arbitrary content goes here"* say so in a vocabulary **both libraries speak**. `M3e.AppBar.trailing` declares the two WHATWG content categories, `shared:flow` and `shared:phrasing`, and `TypedHtml.div` produces `sharedFlow` — so a native wrapper drops straight into an M3e slot with no escape at all.
+
+The important half is what *stays* checked. `M3e.Unsafe.recast` would also have got the div in, by throwing away every row on the way; this keeps them. The div still has to be legal where it sits, and its children still have to be legal inside a div. You didn't buy admission by going blind."""
+
+
+oneWay : String
+oneWay =
+    """**The other direction is a designed limit, not a gap to route around.** An M3e component will not go inside a native container whose content model is enumerated — `<span>`, `<p>`, `<h1>`, `<li>`, `<td>`:
+
+The reason is the same rule that makes slots work at all: a producer's named kinds must be a **subset** of the slot's. `M3e.heading` names `heading` so that `AppBar.title` can tell a heading from a card — and that same field is what `SpanContent` has no name for. Erasing it would let M3e components into native containers *and* let a Card into a Menu. You can have a component discriminated by its own design system, or admitted by a foreign library's enumerated slots. Not both.
+
+In practice it rarely bites, and there are three honest answers before you reach for an escape:
+
+1. **Use a flow container.** `TypedHtml.div`, `section`, `article`, `header`, `footer`, `main_`, `nav`, `form`, `figure`, `aside`, `details`, `dialog` and 20-odd others take any children at all. Wrapping a component in a `<div>` is not a workaround — it is what the content model already says.
+2. **Check the slot first.** Text and icons cross both ways as shared atoms, so `M3e.text` and `M3e.icon` sit inside native phrasing content directly.
+3. **`M3e.Coerce`** for a crossing the design system has blessed in config, and **`M3e.Unsafe.recast`** for the one-off where the design system is genuinely wrong. Both are loud, named and lint-fenced — which is the point of this page.
+
+Two smaller residues, for completeness: a bare `<img>` or `<area>` keeps a per-tag kind (so `<picture>` and `<map>` stay exact) and needs a wrapper to enter an M3e slot; and `<dl>`/`<option>` accept any flow content rather than the narrower set the spec names."""
 
 
 payoff : String

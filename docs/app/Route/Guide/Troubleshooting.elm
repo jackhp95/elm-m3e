@@ -81,6 +81,7 @@ view _ _ =
                     , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
                 , entry kindMismatch kindMismatchError
+                , entry m3eInNativeSlot m3eInNativeSlotError
                 , entry deadClass deadClassNote
                 , entry looseEnum looseEnumNote
                 , entry missingName missingNameError
@@ -110,6 +111,22 @@ kindMismatchError =
 But `slotIcon` needs the 1st argument to be:
     Element { icon : M3e.Kind.Brand, loadingIndicator : M3e.Kind.Brand } adm_ msg
 Hint: Maybe chip should be icon?"""
+
+
+m3eInNativeSlot : String
+m3eInNativeSlot =
+    """### A native element won't accept an M3e component
+
+**Cause:** you put an M3e component inside a native element whose content model is *enumerated* — `<span>`, `<p>`, `<h1>`, `<li>`, `<td>`. Those admit HTML content categories (`sharedFlow` / `sharedPhrasing`) plus shared atoms, and an M3e component names its own brand kind so that its own slots can tell it apart. **Symptom:** a mismatch between `<Tag>Content` and a row that has absorbed your component's kind. **Fix:** use a flow container — `TypedHtml.div`, `section`, `header`, `nav`, `form` and ~20 more take any children at all. This is a designed limit, not a gap; the [seams guide](/guide/seams) explains why erasing the brand kind would also let a Card into a Menu. The reverse direction *does* work: native HTML goes into any M3e slot declaring `shared:flow` / `shared:phrasing`."""
+
+
+m3eInNativeSlotError : String
+m3eInNativeSlotError =
+    """This argument is a list of type:
+    List (M3e.Element (M3e.Heading.Is { a | …, sharedPhrasing : HtmlIr.Kind.Shared,
+        sharedText : HtmlIr.Kind.Shared }) (SpanChildAdmittedBy childAdm) msg)
+But `span` needs the 2nd argument to be:
+    List (Element TypedHtml.Text.SpanContent (SpanChildAdmittedBy childAdm) msg)"""
 
 
 deadClass : String
