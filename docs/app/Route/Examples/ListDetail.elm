@@ -241,7 +241,7 @@ contactRow selected index contact =
         [ TA.class rowSurface
         , M3e.ListAction.onClick (SelectContact index)
         ]
-        [ M3e.ListAction.leading (M3e.avatar [] [ M3e.text contact.initials ] )
+        [ M3e.ListAction.leading (M3e.avatar [] [ M3e.text contact.initials ])
         , M3e.text contact.name
         , M3e.ListAction.supportingText (M3e.text contact.role)
         ]
