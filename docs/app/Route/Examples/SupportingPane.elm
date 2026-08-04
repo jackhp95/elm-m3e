@@ -35,7 +35,6 @@ import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Seam
-import Seam.Avatar as Avatar
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -257,7 +256,7 @@ activity =
 activityRow : Activity -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 activityRow a =
     TypedHtml.div [ TA.class "flex items-start gap-3" ]
-        [ Avatar.initials a.initials
+        [ M3e.avatar [] [ M3e.text a.initials ]
         , TypedHtml.div [ TA.class "flex flex-col" ]
             [ TypedHtml.span [ TA.class "text-body-md text-on-surface" ] [ M3e.text a.who ]
             , TypedHtml.span [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text a.what ]
