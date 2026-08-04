@@ -10,7 +10,9 @@
     "format:check": "node_modules/.bin/elm-format --validate docs/app docs/src docs/kit review/src",
     "test": "cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm",
     "gate:cem": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" gate --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json --skip-acid",
-    "gate": "npm run format:check && npm run test && npm run gate:cem"
+    "gate": "npm run format:check && npm run test && npm run gate:cem",
+    "hooks:install": "git config core.hooksPath hooks",
+    "postinstall": "npm run hooks:install"
   },
   "devDependencies": {
     "elm": "0.19.1-6",
