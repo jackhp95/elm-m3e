@@ -75,6 +75,7 @@ of `../../elm-html-intermediate-representation/src` and `../../elm-typed-html/sr
 which are already excluded via the sibling paths below. Two path forms cover the
 vendored copies regardless of working directory:
 `vendor/elm-foundation/` (from docs/) and `../docs/vendor/elm-foundation/` (from repo root).
+
 -}
 ignoreGeneratedSubstrate : Rule -> Rule
 ignoreGeneratedSubstrate =

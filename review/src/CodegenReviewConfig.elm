@@ -26,9 +26,9 @@ config =
       -- `<model-viewer>` custom element shown inline). Pedagogical exception, same
       -- spirit as the Guide barrel/setter exemptions in ReviewConfig.
       NoSeamOutsideAllowedModules.rule
-            { seamModules = [ "Seam", "M3e.Seam.Internal" ]
-            , allowedModules = [ "Native", "Layout", "Kit", "Seam", "Doc", "Shared", "Route.Guide.Seams" ]
-            }
+        { seamModules = [ "Seam", "M3e.Seam.Internal" ]
+        , allowedModules = [ "Native", "Layout", "Kit", "Seam", "Doc", "Shared", "Route.Guide.Seams" ]
+        }
 
     -- The opaque-IR `*.Internal` boundary (docs/DESIGN.md §4): only generated `M3e.*`
     -- code and the modules that actually build the crossings (`Seam`, and the
