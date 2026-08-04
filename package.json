@@ -6,11 +6,28 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "gen": "run-s gen:src gen:vendor gen:reference",
+    "gen:src": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json --output=src && npm run format:src",
+    "gen:vendor": "npm --prefix docs run gen:vendor",
+    "gen:reference": "npm --prefix docs run gen:reference",
+    "build": "run-s check:drift build:site",
+    "build:site": "npm --prefix docs run build:site",
+    "test": "run-p \"test:*\"",
+    "test:elm": "cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm",
+    "test:examples-gen": "npm --prefix docs run test:examples-gen",
+    "test:roundtrip": "npm --prefix docs run test:roundtrip",
+    "test:browser": "npm --prefix docs run test:browser",
+    "check": "run-p \"check:!(review)\"",
+    "check:format": "node_modules/.bin/elm-format --validate docs/app docs/src docs/kit review/src",
+    "check:review": "docs/node_modules/.bin/elm-review --config review",
+    "check:cem": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" gate --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json --skip-acid",
+    "check:nav": "npm --prefix docs run check:nav",
+    "check:drift": "npm --prefix docs run check:drift",
+    "dev": "npm --prefix docs run dev",
+    "serve": "npm --prefix docs run serve",
+    "gate": "run-s check test",
     "format": "node_modules/.bin/elm-format --yes docs/app docs/src docs/kit review/src",
-    "format:check": "node_modules/.bin/elm-format --validate docs/app docs/src docs/kit review/src",
-    "test": "cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm",
-    "gate:cem": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" gate --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json --skip-acid",
-    "gate": "npm run format:check && npm run test && npm run gate:cem",
+    "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
     "postinstall": "npm run hooks:install"
   },
@@ -18,6 +35,7 @@
     "elm": "0.19.1-6",
     "elm-format": "0.8.8",
     "elm-test": "0.19.1-revision17",
-    "elm-tooling": "^1.20.0"
+    "elm-tooling": "^1.20.0",
+    "npm-run-all2": "^8.0.4"
   }
 }

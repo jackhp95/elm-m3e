@@ -259,7 +259,7 @@ cd docs
 pnpm install
 pnpm run build     # -> docs/dist  (CSS is Vite/Tailwind-bundled & content-hashed;
                    #                custom elements are bundled from index.ts)
-pnpm start         # local dev server
+pnpm run dev       # local dev server (from the repo root)
 ```
 
 Deploy (Netlify): **Base directory** = `docs`; build/publish come from
@@ -278,7 +278,7 @@ facts compile-time guarantees. Coverage now lives in four layers:
   the not-yet-published `HtmlIr.*` from its sibling checkout, so the full surface is
   compiled in CI two ways: the `elm-review` step (which compiles `../src` through
   `docs/elm.json`) and the docs pipeline's whole-API `elm make --docs`
-  (`docs` job → `build:reference`).
+  (`docs` job → `gen:reference`).
 - **elm-review rules** — the repo's strongest coverage. One rule is repo-local:
   `NoProprietaryDsClasses` (in [`review/src`](review/src/NoProprietaryDsClasses.elm)),
   with its own [`review/tests/`](review/tests/) suite (7 cases). It runs on top of the

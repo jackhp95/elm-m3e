@@ -39,9 +39,13 @@ export default defineConfig({
     // boot failure is visible in the CI log instead of a bare timeout.
     // Locally: reuse a dev server already on :1239 for fast iteration, else
     // start `elm-pages dev`.
-    command: process.env.CI
-      ? "npm run build && PORT=1239 npm run serve:dist"
-      : "npm start -- --port 1239",
+    // Build once, serve statically — in CI AND locally. `elm-pages dev`
+    // cold-compiles all routes on first request and holds a `/stream` SSE
+    // connection open, so it blows the boot timeout and breaks `networkidle`.
+    // Measured: the dev-server path times out at 480s locally. The static build
+    // is deterministic, serves instantly, and is the artifact we actually ship.
+    // `reuseExistingServer` still lets you point at a hand-started server.
+    command: "npm run build:site && PORT=1239 npm run serve",
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     stdout: "pipe",

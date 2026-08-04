@@ -56,7 +56,7 @@ cd docs && pnpm install --frozen-lockfile && pnpm exec elm-pages gen \
 ```bash
 cd docs
 pnpm install --frozen-lockfile
-pnpm run build:reference   # `elm make --docs` — fails on any exposed value missing a doc comment
+pnpm run gen:reference     # `elm make --docs` — fails on any exposed value missing a doc comment
 pnpm run build             # full elm-pages + Netlify build
 ```
 
@@ -72,7 +72,7 @@ pnpm run test:browser      # boots the app and asserts the runtime contract Test
 
 After changing `config/slots.json` or the generator, regenerate and re-run the
 library gates above so `elm.json`'s `exposed-modules` and the emitted tree stay in
-sync. Every exposed value must carry a doc comment (the `build:reference` gate).
+sync. Every exposed value must carry a doc comment (the `gen:reference` gate).
 
 ## Pull requests
 
