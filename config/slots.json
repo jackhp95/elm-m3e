@@ -207,7 +207,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -216,7 +217,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -226,7 +228,8 @@
           "iconButton",
           "button",
           "searchBar",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": true,
         "required": false
@@ -1265,7 +1268,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1276,7 +1280,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1285,7 +1290,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1294,7 +1300,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1305,7 +1312,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html",
+          "shared:flow",
+          "shared:phrasing",
           "switch",
           "radio",
           "checkbox"
@@ -1346,7 +1354,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1357,7 +1366,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1366,7 +1376,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1375,7 +1386,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1386,7 +1398,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html",
+          "shared:flow",
+          "shared:phrasing",
           "switch",
           "radio",
           "checkbox"
@@ -1425,7 +1438,8 @@
           "datepickerToggle",
           "timepickerToggle",
           "navRailToggle",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1436,7 +1450,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1445,7 +1460,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1454,7 +1470,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1465,7 +1482,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html",
+          "shared:flow",
+          "shared:phrasing",
           "switch",
           "radio",
           "checkbox"
@@ -1481,7 +1499,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1492,7 +1511,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1501,7 +1521,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1510,7 +1531,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1556,7 +1578,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1567,7 +1590,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1576,7 +1600,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1585,7 +1610,8 @@
         "kinds": [
           "shared:text",
           "heading",
-          "html"
+          "shared:flow",
+          "shared:phrasing"
         ],
         "multi": false,
         "required": false
@@ -1596,7 +1622,8 @@
           "avatar",
           "shared:text",
           "heading",
-          "html",
+          "shared:flow",
+          "shared:phrasing",
           "switch",
           "radio",
           "checkbox"
@@ -2617,7 +2644,6 @@
   },
   "_kinds": [
     "fabMenuItem",
-    "html",
     "stepperNext"
   ],
   "_legacyHtml": true

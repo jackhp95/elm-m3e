@@ -46,7 +46,8 @@ type alias Attrs =
 -}
 type alias Content =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -56,8 +57,9 @@ type alias Content =
 type alias LeadingSlot =
     { avatar : Brand
     , heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
     , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -66,7 +68,8 @@ type alias LeadingSlot =
 -}
 type alias OverlineSlot =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -75,7 +78,8 @@ type alias OverlineSlot =
 -}
 type alias SupportingTextSlot =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -86,9 +90,10 @@ type alias TrailingSlot =
     { avatar : Brand
     , checkbox : Brand
     , heading : Brand
-    , html : Brand
     , radio : Brand
+    , sharedFlow : Shared
     , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     , switch : Brand
     }

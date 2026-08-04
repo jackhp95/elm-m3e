@@ -62,10 +62,11 @@ type alias Content =
     , drawerToggle : Brand
     , fabMenuTrigger : Brand
     , heading : Brand
-    , html : Brand
     , menuTrigger : Brand
     , navRailToggle : Brand
     , richTooltipAction : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     , stepperPrevious : Brand
     , stepperReset : Brand
@@ -78,8 +79,9 @@ type alias Content =
 type alias LeadingSlot =
     { avatar : Brand
     , heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
     , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -88,7 +90,8 @@ type alias LeadingSlot =
 -}
 type alias OverlineSlot =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -97,7 +100,8 @@ type alias OverlineSlot =
 -}
 type alias SupportingTextSlot =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -108,9 +112,10 @@ type alias TrailingSlot =
     { avatar : Brand
     , checkbox : Brand
     , heading : Brand
-    , html : Brand
     , radio : Brand
+    , sharedFlow : Shared
     , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     , switch : Brand
     }

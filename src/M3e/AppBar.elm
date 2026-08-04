@@ -63,7 +63,8 @@ type alias LeadingSlot =
 -}
 type alias SubtitleSlot =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -72,7 +73,8 @@ type alias SubtitleSlot =
 -}
 type alias TitleSlot =
     { heading : Brand
-    , html : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
     }
 
@@ -81,9 +83,10 @@ type alias TitleSlot =
 -}
 type alias TrailingSlot =
     { button : Brand
-    , html : Brand
     , iconButton : Brand
     , searchBar : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     }
 
 
