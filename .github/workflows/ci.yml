@@ -1,10 +1,10 @@
 name: CI
 
+# MANUAL ONLY — `hooks/pre-push` runs this repo's gate locally before anything
+# reaches origin, so re-running it here is a slower duplicate. Kept dispatchable
+# for a clean-checkout or ubuntu-vs-macOS reproduction.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 env:
   ELM_VERSION: "0.19.1"
