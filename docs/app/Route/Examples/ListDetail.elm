@@ -37,7 +37,6 @@ import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Seam
-import Seam.Avatar as Avatar
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -242,7 +241,7 @@ contactRow selected index contact =
         [ TA.class rowSurface
         , M3e.ListAction.onClick (SelectContact index)
         ]
-        [ M3e.ListAction.leading (Avatar.initials contact.initials)
+        [ M3e.ListAction.leading (M3e.avatar [] [ M3e.text contact.initials ] )
         , M3e.text contact.name
         , M3e.ListAction.supportingText (M3e.text contact.role)
         ]
@@ -263,7 +262,7 @@ detailPane contact =
 header : Contact -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 header contact =
     TypedHtml.div [ TA.class "flex flex-col items-center gap-3 pt-2" ]
-        [ Avatar.initials contact.initials
+        [ M3e.avatar [] [ M3e.text contact.initials ]
         , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text contact.name ]
         , TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text contact.role ]
         ]

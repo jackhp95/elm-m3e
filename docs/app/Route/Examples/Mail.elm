@@ -39,7 +39,6 @@ import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Seam
-import Seam.Avatar as Avatar
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -373,7 +372,7 @@ messageRow selected index message =
         [ TA.class rowSurface
         , M3e.ListAction.onClick (SelectMessage index)
         ]
-        [ M3e.ListAction.leading (Avatar.initials message.initials)
+        [ M3e.ListAction.leading (M3e.avatar [] [ M3e.text message.initials ])
         , M3e.ListAction.overline (M3e.text message.sender)
         , M3e.text message.subject
         , M3e.ListAction.supportingText (M3e.text message.snippet)
@@ -394,7 +393,7 @@ readingPane message =
     TypedHtml.div [ TA.class "flex flex-col gap-6 p-6" ]
         [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
         , TypedHtml.div [ TA.class "flex items-center gap-3" ]
-            [ Avatar.initials message.initials
+            [ M3e.avatar [] [ M3e.text message.initials ]
             , TypedHtml.div [ TA.class "flex flex-col" ]
                 [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text message.sender ]
                 , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text ("to me · " ++ message.time) ]

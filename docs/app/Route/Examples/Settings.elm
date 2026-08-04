@@ -31,7 +31,6 @@ import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Seam
-import Seam.Avatar as Avatar
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -343,7 +342,7 @@ accountCard =
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize
                 [ M3e.listItem []
-                    [ M3e.ListItem.leading (Avatar.initials "JD")
+                    [ M3e.ListItem.leading (M3e.avatar [] [ M3e.text "JD" ])
                     , M3e.text "Jane Doe"
                     , M3e.ListItem.supportingText (M3e.text "jane@example.com")
                     , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
