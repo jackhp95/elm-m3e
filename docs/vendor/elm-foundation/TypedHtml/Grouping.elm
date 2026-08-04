@@ -24,7 +24,7 @@ import TypedHtml.Kind exposing (Brand, Ctx, Role)
 {-| The kind row `blockquote` produces.
 -}
 type alias BlockquoteIs s =
-    { s | blockquote : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `blockquote`'s closed attribute-capability row.
@@ -123,92 +123,17 @@ type alias DdAttrs =
 {-| The kinds `dd` admits.
 -}
 type alias DdContent =
-    { a : Brand
-    , abbr : Brand
-    , address : Brand
-    , area : Brand
-    , article : Brand
-    , aside : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , blockquote : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , details : Brand
-    , dfn : Brand
-    , dialog : Brand
-    , div : Brand
-    , dl : Brand
-    , em : Brand
-    , embed : Brand
-    , fieldset : Brand
-    , figure : Brand
-    , footer : Brand
-    , form : Brand
-    , h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
-    , header : Brand
-    , hgroup : Brand
-    , hr : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , main_ : Brand
-    , map : Brand
-    , mark : Brand
-    , menu : Brand
     , meta : Brand
-    , meter : Brand
-    , nav : Brand
     , noscript : Brand
-    , object : Brand
-    , ol : Brand
-    , output : Brand
-    , p : Brand
-    , picture : Brand
-    , pre : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , search : Brand
-    , section : Brand
-    , select : Brand
+    , sharedFlow : Shared
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
-    , table : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , ul : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -237,7 +162,7 @@ dd attrs children =
 {-| The kind row `dialog` produces.
 -}
 type alias DialogIs s =
-    { s | dialog : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `dialog`'s closed attribute-capability row.
@@ -296,7 +221,7 @@ dialog attrs children =
 {-| The kind row `div` produces.
 -}
 type alias DivIs s =
-    { s | div : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `div`'s closed attribute-capability row.
@@ -378,7 +303,7 @@ div attrs children =
 {-| The kind row `dl` produces.
 -}
 type alias DlIs s =
-    { s | dl : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `dl`'s closed attribute-capability row.
@@ -420,8 +345,8 @@ type alias DlAttrs =
 -}
 type alias DlContent =
     { dd : Brand
-    , div : Brand
     , dt : Brand
+    , sharedFlow : Shared
     }
 
 
@@ -485,92 +410,17 @@ type alias DtAttrs =
 {-| The kinds `dt` admits.
 -}
 type alias DtContent =
-    { a : Brand
-    , abbr : Brand
-    , address : Brand
-    , area : Brand
-    , article : Brand
-    , aside : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , blockquote : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , details : Brand
-    , dfn : Brand
-    , dialog : Brand
-    , div : Brand
-    , dl : Brand
-    , em : Brand
-    , embed : Brand
-    , fieldset : Brand
-    , figure : Brand
-    , footer : Brand
-    , form : Brand
-    , h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
-    , header : Brand
-    , hgroup : Brand
-    , hr : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , main_ : Brand
-    , map : Brand
-    , mark : Brand
-    , menu : Brand
     , meta : Brand
-    , meter : Brand
-    , nav : Brand
     , noscript : Brand
-    , object : Brand
-    , ol : Brand
-    , output : Brand
-    , p : Brand
-    , picture : Brand
-    , pre : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , search : Brand
-    , section : Brand
-    , select : Brand
+    , sharedFlow : Shared
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
-    , table : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , ul : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -640,92 +490,17 @@ type alias FigcaptionAttrs =
 {-| The kinds `figcaption` admits.
 -}
 type alias FigcaptionContent =
-    { a : Brand
-    , abbr : Brand
-    , address : Brand
-    , area : Brand
-    , article : Brand
-    , aside : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , blockquote : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , details : Brand
-    , dfn : Brand
-    , dialog : Brand
-    , div : Brand
-    , dl : Brand
-    , em : Brand
-    , embed : Brand
-    , fieldset : Brand
-    , figure : Brand
-    , footer : Brand
-    , form : Brand
-    , h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
-    , header : Brand
-    , hgroup : Brand
-    , hr : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , main_ : Brand
-    , map : Brand
-    , mark : Brand
-    , menu : Brand
     , meta : Brand
-    , meter : Brand
-    , nav : Brand
     , noscript : Brand
-    , object : Brand
-    , ol : Brand
-    , output : Brand
-    , p : Brand
-    , picture : Brand
-    , pre : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , search : Brand
-    , section : Brand
-    , select : Brand
+    , sharedFlow : Shared
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
-    , table : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , ul : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -754,7 +529,7 @@ figcaption attrs children =
 {-| The kind row `figure` produces.
 -}
 type alias FigureIs s =
-    { s | figure : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `figure`'s closed attribute-capability row.
@@ -811,7 +586,7 @@ figure attrs children =
 {-| The kind row `hr` produces.
 -}
 type alias HrIs s =
-    { s | hr : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `hr`'s closed attribute-capability row.
@@ -910,92 +685,17 @@ type alias LiAttrs =
 {-| The kinds `li` admits.
 -}
 type alias LiContent =
-    { a : Brand
-    , abbr : Brand
-    , address : Brand
-    , area : Brand
-    , article : Brand
-    , aside : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , blockquote : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , details : Brand
-    , dfn : Brand
-    , dialog : Brand
-    , div : Brand
-    , dl : Brand
-    , em : Brand
-    , embed : Brand
-    , fieldset : Brand
-    , figure : Brand
-    , footer : Brand
-    , form : Brand
-    , h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
-    , header : Brand
-    , hgroup : Brand
-    , hr : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , main_ : Brand
-    , map : Brand
-    , mark : Brand
-    , menu : Brand
     , meta : Brand
-    , meter : Brand
-    , nav : Brand
     , noscript : Brand
-    , object : Brand
-    , ol : Brand
-    , output : Brand
-    , p : Brand
-    , picture : Brand
-    , pre : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , search : Brand
-    , section : Brand
-    , select : Brand
+    , sharedFlow : Shared
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
-    , table : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , ul : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -1024,7 +724,7 @@ li attrs children =
 {-| The kind row `menu` produces.
 -}
 type alias MenuIs s =
-    { s | menu : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `menu`'s closed attribute-capability row.
@@ -1087,7 +787,7 @@ menu attrs children =
 {-| The kind row `ol` produces.
 -}
 type alias OlIs s =
-    { s | ol : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `ol`'s closed attribute-capability row.
@@ -1152,7 +852,7 @@ ol attrs children =
 {-| The kind row `p` produces.
 -}
 type alias PIs s =
-    { s | p : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `p`'s closed attribute-capability row.
@@ -1193,61 +893,16 @@ type alias PAttrs =
 {-| The kinds `p` admits.
 -}
 type alias PContent =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -1270,7 +925,7 @@ p attrs children =
 {-| The kind row `pre` produces.
 -}
 type alias PreIs s =
-    { s | pre : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `pre`'s closed attribute-capability row.
@@ -1311,61 +966,16 @@ type alias PreAttrs =
 {-| The kinds `pre` admits.
 -}
 type alias PreContent =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -1388,7 +998,7 @@ pre attrs children =
 {-| The kind row `ul` produces.
 -}
 type alias UlIs s =
-    { s | ul : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `ul`'s closed attribute-capability row.

@@ -24,7 +24,7 @@ import TypedHtml.Kind exposing (Brand, Ctx)
 {-| The kind row `datalist` produces.
 -}
 type alias DatalistIs s =
-    { s | datalist : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `datalist`'s closed attribute-capability row.
@@ -205,62 +205,17 @@ type alias OptionAttrs =
 {-| The kinds `option` admits.
 -}
 type alias OptionContent =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , div : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
+    , sharedFlow : Shared
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -289,7 +244,7 @@ option attrs children =
 {-| The kind row `select` produces.
 -}
 type alias SelectIs s =
-    { s | select : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `select`'s closed attribute-capability row.

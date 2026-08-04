@@ -73,137 +73,40 @@ type Used
 {-| The `embedded` kind set.
 -}
 type alias Embedded =
-    { audio : Brand
-    , canvas : Brand
-    , embed : Brand
-    , iframe : Brand
-    , img : Brand
-    , object : Brand
-    , picture : Brand
-    , video : Brand
+    { img : Brand
+    , sharedPhrasing : Shared
     }
 
 
 {-| The `flow` kind set.
 -}
 type alias Flow =
-    { a : Brand
-    , abbr : Brand
-    , address : Brand
-    , area : Brand
-    , article : Brand
-    , aside : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , blockquote : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , details : Brand
-    , dfn : Brand
-    , dialog : Brand
-    , div : Brand
-    , dl : Brand
-    , em : Brand
-    , embed : Brand
-    , fieldset : Brand
-    , figure : Brand
-    , footer : Brand
-    , form : Brand
-    , h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
-    , header : Brand
-    , hgroup : Brand
-    , hr : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , main_ : Brand
-    , map : Brand
-    , mark : Brand
-    , menu : Brand
     , meta : Brand
-    , meter : Brand
-    , nav : Brand
     , noscript : Brand
-    , object : Brand
-    , ol : Brand
-    , output : Brand
-    , p : Brand
-    , picture : Brand
-    , pre : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , search : Brand
-    , section : Brand
-    , select : Brand
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
-    , table : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , ul : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
 {-| The `heading` kind set.
 -}
 type alias Heading =
-    { h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
+    { sharedFlow : Shared
     }
 
 
 {-| The `interactive` kind set.
 -}
 type alias Interactive =
-    { a : Brand
-    , audio : Brand
-    , button : Brand
-    , details : Brand
-    , embed : Brand
-    , iframe : Brand
-    , img : Brand
-    , input : Brand
-    , label : Brand
-    , object : Brand
-    , select : Brand
-    , textarea : Brand
+    { img : Brand
+    , sharedFlow : Shared
+    , sharedPhrasing : Shared
     , th : Brand
-    , video : Brand
     }
 
 
@@ -224,68 +127,19 @@ type alias Metadata =
 {-| The `phrasing` kind set.
 -}
 type alias Phrasing =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
+    , sharedPhrasing : Shared
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
 {-| The `sectioning` kind set.
 -}
 type alias Sectioning =
-    { article : Brand
-    , aside : Brand
-    , nav : Brand
-    , section : Brand
+    { sharedFlow : Shared
     }

@@ -275,7 +275,7 @@ every field any row needs. Each producing function's `view` returns an open row,
 which widens to fill this closed record.
 -}
 type alias Row msg =
-    Element { div : TypedHtml.Kind.Brand, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } (TypedHtml.Grouping.DivChildAdmittedBy {}) msg
+    Element { sharedFlow : TypedHtml.Kind.Shared, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } (TypedHtml.Grouping.DivChildAdmittedBy {}) msg
 
 
 content : Model -> List (Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg))

@@ -18,13 +18,13 @@ import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import TypedHtml.Attributes
-import TypedHtml.Kind exposing (Brand, Ctx)
+import TypedHtml.Kind exposing (Ctx)
 
 
 {-| The kind row `textarea` produces.
 -}
 type alias Is s =
-    { s | textarea : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `textarea`'s closed attribute-capability row.

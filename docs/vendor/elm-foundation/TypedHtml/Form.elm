@@ -24,7 +24,7 @@ import TypedHtml.Kind exposing (Brand, Ctx)
 {-| The kind row `fieldset` produces.
 -}
 type alias FieldsetIs s =
-    { s | fieldset : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `fieldset`'s closed attribute-capability row.
@@ -85,7 +85,7 @@ fieldset attrs children =
 {-| The kind row `form` produces.
 -}
 type alias FormIs s =
-    { s | form : Brand }
+    { s | sharedFlow : Shared }
 
 
 {-| `form`'s closed attribute-capability row.
@@ -150,7 +150,7 @@ form attrs children =
 {-| The kind row `label` produces.
 -}
 type alias LabelIs s =
-    { s | label : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `label`'s closed attribute-capability row.
@@ -193,61 +193,16 @@ type alias LabelAttrs =
 {-| The kinds `label` admits.
 -}
 type alias LabelContent =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -311,61 +266,16 @@ type alias LegendAttrs =
 {-| The kinds `legend` admits.
 -}
 type alias LegendContent =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 
@@ -394,7 +304,7 @@ legend attrs children =
 {-| The kind row `output` produces.
 -}
 type alias OutputIs s =
-    { s | output : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `output`'s closed attribute-capability row.
@@ -440,61 +350,16 @@ type alias OutputAttrs =
 {-| The kinds `output` admits.
 -}
 type alias OutputContent =
-    { a : Brand
-    , abbr : Brand
-    , area : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , dfn : Brand
-    , em : Brand
-    , embed : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , map : Brand
-    , mark : Brand
     , meta : Brand
-    , meter : Brand
     , noscript : Brand
-    , object : Brand
-    , output : Brand
-    , picture : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , select : Brand
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 

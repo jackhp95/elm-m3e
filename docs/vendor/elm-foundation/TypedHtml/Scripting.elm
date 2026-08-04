@@ -65,92 +65,17 @@ type alias NoscriptAttrs =
 {-| The kinds `noscript` admits.
 -}
 type alias NoscriptContent =
-    { a : Brand
-    , abbr : Brand
-    , address : Brand
-    , area : Brand
-    , article : Brand
-    , aside : Brand
-    , audio : Brand
-    , b : Brand
-    , bdi : Brand
-    , bdo : Brand
-    , blockquote : Brand
-    , br : Brand
-    , button : Brand
-    , canvas : Brand
-    , cite : Brand
-    , code : Brand
-    , data : Brand
-    , datalist : Brand
-    , del : Brand
-    , details : Brand
-    , dfn : Brand
-    , dialog : Brand
-    , div : Brand
-    , dl : Brand
-    , em : Brand
-    , embed : Brand
-    , fieldset : Brand
-    , figure : Brand
-    , footer : Brand
-    , form : Brand
-    , h1 : Brand
-    , h2 : Brand
-    , h3 : Brand
-    , h4 : Brand
-    , h5 : Brand
-    , h6 : Brand
-    , header : Brand
-    , hgroup : Brand
-    , hr : Brand
-    , i : Brand
-    , iframe : Brand
+    { area : Brand
     , img : Brand
-    , input : Brand
-    , ins : Brand
-    , kbd : Brand
-    , label : Brand
     , link : Brand
-    , main_ : Brand
-    , map : Brand
-    , mark : Brand
-    , menu : Brand
     , meta : Brand
-    , meter : Brand
-    , nav : Brand
     , noscript : Brand
-    , object : Brand
-    , ol : Brand
-    , output : Brand
-    , p : Brand
-    , picture : Brand
-    , pre : Brand
-    , progress : Brand
-    , q : Brand
-    , ruby : Brand
-    , s : Brand
-    , samp : Brand
     , script : Brand
-    , search : Brand
-    , section : Brand
-    , select : Brand
+    , sharedFlow : Shared
+    , sharedIcon : Shared
+    , sharedPhrasing : Shared
     , sharedText : Shared
-    , slot : Brand
-    , small : Brand
-    , span : Brand
-    , strong : Brand
-    , sub : Brand
-    , sup : Brand
-    , table : Brand
     , template : Brand
-    , textarea : Brand
-    , time : Brand
-    , u : Brand
-    , ul : Brand
-    , var : Brand
-    , video : Brand
-    , wbr : Brand
     }
 
 

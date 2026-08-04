@@ -29,7 +29,6 @@ import M3e.Events
 import M3e.Fab
 import M3e.Kind
 import M3e.NavItem
-import M3e.Unsafe
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -213,30 +212,29 @@ appBar model =
 
 {-| Cart icon button carrying a Badge with the item count.
 
-The wrapper needs a loud `recast`, and that is the type system telling the truth
-rather than getting in the way. `AppBar.TrailingSlot` admits
-`{ button, html, iconButton, searchBar }` — deliberately, because the upstream
-manifest describes the slot as "one or more action buttons", and a Badge is not
-an action button. The Badge only lives here because `M3e.Attributes.for` anchors
-it to `#cart-btn` positionally, so it has to be _somewhere_ in the DOM nearby.
+`AppBar.TrailingSlot` still does not admit a Badge — the upstream manifest calls
+the slot "one or more action buttons", and a Badge is not one. The Badge is only
+here because `M3e.Attributes.for` anchors it to `#cart-btn` positionally, so it
+has to be _somewhere_ in the DOM nearby.
 
-A native wrapper cannot satisfy the slot either: `html` is stamped with M3e's
-private `Brand`, so no `TypedHtml.*` element can ever unify with it. That is the
-known cross-brand gap tracked as RC5 — see
-`planning/2026-08-04-elm-m3e-substrate-leak-elimination.md` §RC5.
+What changed with RC5 is that the honest fix now type-checks. The slot's config
+`"html"` kind used to desugar to M3e's private `Brand`, which nothing produced,
+so a native wrapper could not satisfy it and the only way in was a loud
+`M3e.Unsafe.recast`. It now desugars to `shared:flow` + `shared:phrasing`, and
+`TypedHtml.div` produces `sharedFlow` — so the wrapper goes in as itself, and the
+compiler still checks the Badge is legal _inside the div_ rather than being told
+to stop looking.
 
 -}
-cartAction : Int -> Element accepts admittedBy (PagesMsg Msg)
+cartAction : Int -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 cartAction count =
-    M3e.Unsafe.recast
-        (TypedHtml.div
-            [ TA.class "inline-flex" ]
-            [ M3e.iconButton
-                [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
-                [ M3e.icon [ TA.name "shopping_bag" ] [] ]
-            , M3e.badge [ M3e.Attributes.for "cart-btn" ] [ M3e.text (String.fromInt count) ]
-            ]
-        )
+    TypedHtml.div
+        [ TA.class "inline-flex" ]
+        [ M3e.iconButton
+            [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
+            [ M3e.icon [ TA.name "shopping_bag" ] [] ]
+        , M3e.badge [ M3e.Attributes.for "cart-btn" ] [ M3e.text (String.fromInt count) ]
+        ]
 
 
 {-| Left navigation rail — desktop only.

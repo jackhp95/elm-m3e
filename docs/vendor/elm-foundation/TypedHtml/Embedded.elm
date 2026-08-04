@@ -16,7 +16,7 @@ co-located re-exports of the shared attributes its elements admit.
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
-import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Kind exposing (Shared, Supported)
 import TypedHtml.Attributes
 import TypedHtml.Kind exposing (Brand, Ctx)
 
@@ -144,7 +144,7 @@ canvas attrs children =
 {-| The kind row `embed` produces.
 -}
 type alias EmbedIs s =
-    { s | embed : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `embed`'s closed attribute-capability row.
@@ -204,7 +204,7 @@ embed attrs children =
 {-| The kind row `iframe` produces.
 -}
 type alias IframeIs s =
-    { s | iframe : Brand }
+    { s | sharedPhrasing : Shared }
 
 
 {-| `iframe`'s closed attribute-capability row.

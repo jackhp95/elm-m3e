@@ -131,7 +131,7 @@ usageBlocks offset model examples =
 followed by each example's live preview paired with its per-example code tabs.
 Examples carry their page-global index so each tab strip stays independent.
 -}
-sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { a | card : M3e.Kind.Brand, div : TypedHtml.Kind.Brand, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
+sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { a | card : M3e.Kind.Brand, sharedFlow : TypedHtml.Kind.Shared, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 sectionBlock model ( sec, examples ) =
     let
         headingEl : List (Element { s | heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)

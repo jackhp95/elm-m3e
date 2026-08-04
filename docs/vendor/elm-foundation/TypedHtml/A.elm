@@ -16,7 +16,7 @@ co-located re-exports of the shared attributes its elements admit.
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Internal as Ir
-import HtmlIr.Kind exposing (Supported)
+import HtmlIr.Kind exposing (Shared, Supported)
 import TypedHtml.Attributes
 import TypedHtml.Kind exposing (Ctx, Role)
 

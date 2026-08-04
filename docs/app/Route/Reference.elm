@@ -244,7 +244,7 @@ isBarrelConstructor m =
 
 {-| One name-keyed subsection of the barrel; renders nothing when empty.
 -}
-barrelGroup : String -> (Member -> Bool) -> List Member -> Element { s | div : TypedHtml.Kind.Brand, section : TypedHtml.Kind.Brand } adm_ msg
+barrelGroup : String -> (Member -> Bool) -> List Member -> Element { s | sharedFlow : TypedHtml.Kind.Shared } adm_ msg
 barrelGroup label pred members =
     case List.filter pred members of
         [] ->
