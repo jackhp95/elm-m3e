@@ -5,7 +5,7 @@ almost entirely from `M3e.*` components. It demonstrates adaptive navigation
 (a `NavRail` on desktop, a bottom `NavBar` on mobile) around an `AppBar` and a
 scrollable, width-constrained column of sectioned preference groups.
 
-Each section is a `Seam.Surface` card (surface-container role, large corners) with
+Each section is a surface-container card (large corners) with
 an overline heading and a run of `ListItem` rows divided by `Divider`s. Trailing
 controls are real components: `Switch`es for toggles, a `Radio` group for theme,
 a `Slider` for density, and chevron `Icon`s for drill-in rows. Color, type, and
@@ -30,9 +30,8 @@ import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam
 import Seam.Avatar as Avatar
-import Seam.Shape as Shape
-import Seam.Surface as Surface
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -41,7 +40,6 @@ import TypedHtml.Grouping
 import TypedHtml.Kind
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -79,7 +77,6 @@ type Msg
     = SelectSection String
     | Flip Toggle
     | SetTheme String
-
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -168,7 +165,6 @@ head _ =
     []
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -186,8 +182,8 @@ content column scrolls.
 -}
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ (PagesMsg Msg)
 screen model =
-    Surface.view Surface.surface
-        [ TA.class "flex h-screen w-full overflow-hidden" ]
+    Seam.node "div"
+        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail model.section
         , TypedHtml.div [ TA.class "flex flex-1 flex-col overflow-hidden" ]
             [ appBar
@@ -230,7 +226,6 @@ appBar =
         ]
 
 
-
 -- NAVIGATION ------------------------------------------------------------------
 
 
@@ -270,7 +265,6 @@ navItem current ( section, name, iconName ) =
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text name
         ]
-
 
 
 -- CONTENT ---------------------------------------------------------------------
@@ -320,8 +314,8 @@ sectionCard : String -> List (Row adm_ msg) -> Element (TypedHtml.Grouping.DivIs
 sectionCard heading rows =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text heading ]
-        , Surface.view Surface.surfaceContainer
-            [ Shape.corner Shape.large, TA.class "overflow-hidden flex flex-col" ]
+        , Seam.node "div"
+            [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize rows)
         ]
 
@@ -340,8 +334,8 @@ accountCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 accountCard =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Account" ]
-        , Surface.view Surface.surfaceContainer
-            [ Shape.corner Shape.large, TA.class "overflow-hidden flex flex-col" ]
+        , Seam.node "div"
+            [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize
                 [ M3e.listItem []
                     [ M3e.ListItem.leading (Avatar.initials "JD")

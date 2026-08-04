@@ -19,8 +19,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam.Shape as Shape
-import Seam.Surface as Surface
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -85,9 +84,8 @@ levels =
 swatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 swatch ( shadow, label, token ) =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
-        [ Surface.view Surface.surfaceContainerHigh
-            [ TA.class (shadow ++ " flex min-h-24 items-center justify-center p-4")
-            , Shape.corner Shape.large
+        [ Seam.node "div"
+            [ TA.class ("bg-surface-container-high text-on-surface rounded-md-corner-large " ++ shadow ++ " flex min-h-24 items-center justify-center p-4")
             ]
             [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text label ] ]
         , TypedHtml.code [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text token ]

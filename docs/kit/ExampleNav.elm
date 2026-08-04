@@ -27,7 +27,7 @@ import M3e
 import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
-import Seam.Surface as Surface
+import Seam
 import TypedHtml
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
@@ -51,8 +51,8 @@ footer :
     }
     -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 footer { builtFrom, prev, next } =
-    Surface.view Surface.surfaceContainer
-        [ TA.class "w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
+    Seam.node "div"
+        [ TA.class "bg-surface-container text-on-surface w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
         [ backRow
         , builtFromRow builtFrom
         , prevNextRow prev next

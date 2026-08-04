@@ -36,16 +36,14 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam
 import Seam.Avatar as Avatar
-import Seam.Shape as Shape
-import Seam.Surface as Surface exposing (Surface)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -57,7 +55,6 @@ type alias Model =
 
 type Msg
     = SelectContact Int
-
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -108,7 +105,6 @@ head _ =
     []
 
 
-
 -- DATA ------------------------------------------------------------------------
 
 
@@ -143,7 +139,6 @@ destinations =
     ]
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -161,8 +156,8 @@ only the panes scroll.
 -}
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
-    Surface.view Surface.surface
-        [ TA.class "flex h-screen w-full overflow-hidden" ]
+    Seam.node "div"
+        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
             [ appBar
@@ -196,7 +191,6 @@ appBar =
         [ M3e.AppBar.title (M3e.text "Contacts") ]
 
 
-
 -- TWO-PANE BODY ---------------------------------------------------------------
 
 
@@ -225,25 +219,22 @@ listPane selected =
         ]
 
 
-{-| One row, an interactive `M3e.ListAction` — the `m3e-list-action` element
-carries the click/onClick fact, so the row is a real actionable list item with no
-userland `role="button"` bolt-on. The selected row swaps to a `surfaceContainer`
-role (a Surface-role token swap, not a background class) so the active item reads
+{-| One row — the selected row swaps to surfaceContainer so the active item reads
 against the base surface.
 -}
 contactRow : Int -> Int -> Contact -> Element { s | listAction : M3e.Kind.Brand } adm_ Msg
 contactRow selected index contact =
     let
-        rowSurface : Surface
+        rowSurface : String
         rowSurface =
             if index == selected then
-                Surface.surfaceContainer
+                "bg-surface-container text-on-surface"
 
             else
-                Surface.surface
+                "bg-surface text-on-surface"
     in
     M3e.listAction
-        [ Surface.asAttribute rowSurface
+        [ TA.class rowSurface
         , M3e.ListAction.onClick (SelectContact index)
         ]
         [ M3e.ListAction.leading (Avatar.initials contact.initials)
@@ -278,9 +269,7 @@ header contact =
 detailCard : Contact -> Element { s | list : M3e.Kind.Brand } adm_ msg
 detailCard contact =
     M3e.list
-        [ Surface.asAttribute Surface.surfaceContainer
-        , Shape.corner Shape.large
-        , TA.class "overflow-hidden"
+        [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden"
         ]
         (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
             [ fieldRow "mail" "Email" contact.email
@@ -310,7 +299,6 @@ selectedContact index =
 fallbackContact : Contact
 fallbackContact =
     { name = "No contact", initials = "?", role = "", email = "", phone = "", note = "" }
-
 
 
 -- NAVIGATION ------------------------------------------------------------------

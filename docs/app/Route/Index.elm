@@ -27,8 +27,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam.Shape as Shape
-import Seam.Surface as Surface
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -134,9 +133,9 @@ hero =
             , TypedHtml.div [ TA.class "flex items-center gap-3" ]
                 [ M3e.avatar [ Aria.label "Sample avatar" ] [ TypedHtml.Img.img [ TypedHtml.Img.src "/avatar-sample.svg" ] [] ]
                 , TypedHtml.div [ TA.class "flex gap-3" ]
-                    [ Surface.view Surface.primary [ TA.class "block w-10 h-10", Shape.corner Shape.large ] []
-                    , Surface.view Surface.tertiaryContainer [ TA.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []
-                    , Surface.view Surface.secondaryContainer [ TA.class "block w-10 h-10", Shape.corner Shape.full ] []
+                    [ Seam.node "div" [ TA.class "bg-primary text-on-primary block w-10 h-10 rounded-md-corner-large" ] []
+                    , Seam.node "div" [ TA.class "bg-tertiary-container text-on-tertiary-container block w-10 h-10 rounded-md-corner-extra-large" ] []
+                    , Seam.node "div" [ TA.class "bg-secondary-container text-on-secondary-container block w-10 h-10 rounded-full" ] []
                     ]
                 ]
             ]

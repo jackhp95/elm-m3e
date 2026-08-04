@@ -200,17 +200,17 @@ Theme.view
     , Theme.density -1                -- slightly more compact
     ]
     [ appBody ]                        -- shapes: set the corner default in the Seam module,
-                                       -- e.g. Seam.Shape.corner Shape.large per surface"""
+                                       -- e.g. TA.class "rounded-md-corner-large" per surface"""
 
 
 reskinNote : String
 reskinNote =
-    """That is the entire re-skin. Because every view named a role (`primary`, `onSurface`, `surfaceContainer`) and every corner came through `Seam.Shape`, the new seed and density reach every screen at once. There is nothing to find-and-replace, and no screen can drift from the brand because no screen ever hard-coded a brand value."""
+    """That is the entire re-skin. Because every view named a role (`primary`, `onSurface`, `surfaceContainer`) and every corner used M3 token classes directly, the new seed and density reach every screen at once. There is nothing to find-and-replace, and no screen can drift from the brand because no screen ever hard-coded a brand value."""
 
 
 bridgeBody : String
 bridgeBody =
-    """Utility CSS (Tailwind, in the docs app) is legitimate — for **layout only**: flex, grid, gap, padding, positioning, responsive visibility. It must never set a visual token. If you find yourself writing a class to change a color, a corner, or an elevation, the right move is a token: a color role, `Seam.Shape.corner`, or a `Theme` input. This boundary is enforced mechanically — the repo-local `NoProprietaryDsClasses` rule flags design-system class tokens in a `class` literal — and it is the same rule that keeps [layouts](/guide/composition-text-field) honest."""
+    """Utility CSS (Tailwind, in the docs app) is legitimate — for **layout only**: flex, grid, gap, padding, positioning, responsive visibility. It must never set a visual token. If you find yourself writing a class to change a color, a corner, or an elevation, the right move is a token: a color role (e.g. `bg-primary text-on-primary`), a corner token (`rounded-md-corner-large`), or a `Theme` input. This boundary is enforced mechanically — the repo-local `NoProprietaryDsClasses` rule flags design-system class tokens in a `class` literal — and it is the same rule that keeps [layouts](/guide/composition-text-field) honest."""
 
 
 bridgeCode : String

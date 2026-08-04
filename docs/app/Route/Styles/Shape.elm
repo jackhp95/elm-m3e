@@ -23,7 +23,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam.Surface as Surface
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -94,8 +94,8 @@ cornerScale =
 cornerSwatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 cornerSwatch ( rounded, label, value ) =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
-        [ Surface.view Surface.primaryContainer
-            [ TA.class (rounded ++ " h-20 w-full") ]
+        [ Seam.node "div"
+            [ TA.class ("bg-primary-container text-on-primary-container " ++ rounded ++ " h-20 w-full") ]
             []
         , TypedHtml.div [ TA.class "flex flex-col" ]
             [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text label ]

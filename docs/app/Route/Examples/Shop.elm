@@ -2,7 +2,7 @@ module Route.Examples.Shop exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Shop** example — a full-viewport Material 3 e-commerce storefront screen,
 authored on the M3e API with the m3e component set carrying almost all of the
-structure and the kit (`Seam`, `Seam.Surface`, `Seam.Shape`) owning every visual
+structure and the kit (`Seam`) with M3 token classes owning every visual
 choice. Tailwind is used only for layout (flex/grid/gap/spacing/positioning and
 responsive visibility).
 
@@ -11,7 +11,7 @@ an `M3e.NavBar` bottom bar on mobile (`md:hidden`), with a top `M3e.AppBar`
 carrying the store name and a cart `M3e.IconButton` wearing an `M3e.Badge` with a
 live item count. The catalog is filtered by an `M3e.FilterChipSet` toolbar and
 laid out as a responsive `M3e.Card` grid; each card has shape-clipped media (via
-`Seam.Shape.corner`), a name, a price, and an add-to-cart `M3e.IconButton`. An
+M3 corner tokens), a name, a price, and an add-to-cart `M3e.IconButton`. An
 `M3e.Fab` floats over the content. Interactive local state: the active category
 and the cart count.
 
@@ -35,9 +35,7 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam.Badge
-import Seam.Shape as Shape
-import Seam.Surface as Surface exposing (Surface)
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -45,7 +43,6 @@ import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL / MSG -----------------------------------------------------------------
@@ -110,7 +107,6 @@ head _ =
     []
 
 
-
 -- CATALOG ---------------------------------------------------------------------
 
 
@@ -118,28 +114,27 @@ type alias Product =
     { name : String
     , price : String
     , category : String
-    , media : Surface
+    , media : String
     , icon : String
     }
 
 
 products : List Product
 products =
-    [ { name = "Vagabond sack", price = "$120", category = "Apparel", media = Surface.primaryContainer, icon = "backpack" }
-    , { name = "Stella sunglasses", price = "$58", category = "Apparel", media = Surface.tertiaryContainer, icon = "eyeglasses" }
-    , { name = "Chambray shirt", price = "$70", category = "Apparel", media = Surface.secondaryContainer, icon = "apparel" }
-    , { name = "Gilt desk trio", price = "$58", category = "Home", media = Surface.secondaryContainer, icon = "table_restaurant" }
-    , { name = "Copper wire rack", price = "$44", category = "Home", media = Surface.primaryContainer, icon = "shelves" }
-    , { name = "Terracotta vase", price = "$36", category = "Home", media = Surface.tertiaryContainer, icon = "potted_plant" }
-    , { name = "Rosewater mist", price = "$28", category = "Beauty", media = Surface.tertiaryContainer, icon = "spa" }
-    , { name = "Velvet lip tint", price = "$22", category = "Beauty", media = Surface.primaryContainer, icon = "brush" }
+    [ { name = "Vagabond sack", price = "$120", category = "Apparel", media = "bg-primary-container text-on-primary-container", icon = "backpack" }
+    , { name = "Stella sunglasses", price = "$58", category = "Apparel", media = "bg-tertiary-container text-on-tertiary-container", icon = "eyeglasses" }
+    , { name = "Chambray shirt", price = "$70", category = "Apparel", media = "bg-secondary-container text-on-secondary-container", icon = "apparel" }
+    , { name = "Gilt desk trio", price = "$58", category = "Home", media = "bg-secondary-container text-on-secondary-container", icon = "table_restaurant" }
+    , { name = "Copper wire rack", price = "$44", category = "Home", media = "bg-primary-container text-on-primary-container", icon = "shelves" }
+    , { name = "Terracotta vase", price = "$36", category = "Home", media = "bg-tertiary-container text-on-tertiary-container", icon = "potted_plant" }
+    , { name = "Rosewater mist", price = "$28", category = "Beauty", media = "bg-tertiary-container text-on-tertiary-container", icon = "spa" }
+    , { name = "Velvet lip tint", price = "$22", category = "Beauty", media = "bg-primary-container text-on-primary-container", icon = "brush" }
     ]
 
 
 categories : List String
 categories =
     [ "All", "Apparel", "Home", "Beauty" ]
-
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -159,8 +154,8 @@ view _ _ model =
     { title = "Shop · elm-m3e"
     , body =
         [ HtmlIr.Element.toNode
-            (Surface.view Surface.surface
-                [ TA.class "flex min-h-screen w-full" ]
+            (Seam.node "div"
+                [ TA.class "bg-surface text-on-surface flex min-h-screen w-full" ]
                 [ navRail model
                 , TypedHtml.div [ TA.class "flex min-w-0 flex-1 flex-col" ]
                     [ appBar model
@@ -201,7 +196,6 @@ exampleFooter =
         }
 
 
-
 -- CHROME ----------------------------------------------------------------------
 
 
@@ -224,14 +218,13 @@ appBar model =
 -}
 cartAction : Int -> Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 cartAction count =
-    Seam.Badge.on
-        { anchor =
-            M3e.iconButton
-                [ M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
-                [ M3e.icon [ TA.name "shopping_bag" ] [] ]
-        , badge =
-            M3e.badge [] [ M3e.text (String.fromInt count) ]
-        }
+    Seam.node "span"
+        [ TA.class "inline-flex" ]
+        [ M3e.iconButton
+            [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard, Aria.label "Cart" ]
+            [ M3e.icon [ TA.name "shopping_bag" ] [] ]
+        , M3e.badge [ M3e.Attributes.for "cart-btn" ] [ M3e.text (String.fromInt count) ]
+        ]
 
 
 {-| Left navigation rail — desktop only.
@@ -295,7 +288,6 @@ navDestination current dest =
         ]
 
 
-
 -- CONTENT ---------------------------------------------------------------------
 
 
@@ -303,8 +295,8 @@ navDestination current dest =
 -}
 hero : Element { s | html : M3e.Kind.Brand } adm_ msg
 hero =
-    Surface.view Surface.primaryContainer
-        [ Shape.corner Shape.extraLarge, TA.class "flex flex-col gap-1 p-6" ]
+    Seam.node "div"
+        [ TA.class "bg-primary-container text-on-primary-container rounded-md-corner-extra-large flex flex-col gap-1 p-6" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide" ] [ M3e.text "New season" ]
         , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Everyday goods, thoughtfully made" ]
         , TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text "Free shipping on orders over $75." ]
@@ -369,8 +361,8 @@ productCard product =
 -}
 media : Product -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media product =
-    Surface.view product.media
-        [ Shape.corner Shape.large, TA.class "flex aspect-square items-center justify-center" ]
+    Seam.node "div"
+        [ TA.class (product.media ++ " rounded-md-corner-large flex aspect-square items-center justify-center") ]
         [ M3e.icon [ TA.name product.icon, M3e.Attributes.opticalSize 48 ] [] ]
 
 

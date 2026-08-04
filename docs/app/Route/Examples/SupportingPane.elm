@@ -15,7 +15,7 @@ don't hide).
 
 Navigation switches the usual way: `M3e.NavRail` on desktop, `M3e.NavBar` on mobile,
 one destination list. Tailwind is layout only; every visual token comes through the
-`Seam` / `Seam.Surface` / `Seam.Shape` seam.
+`Seam` module (M3 token classes inlined directly).
 
 -}
 
@@ -34,16 +34,14 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Seam.Avatar as Avatar
-import Seam.Shape as Shape
-import Seam.Surface as Surface
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
 import View exposing (View)
-
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -92,7 +90,6 @@ destinations =
     ]
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -109,8 +106,8 @@ primary/supporting body, with a mobile bottom bar.
 -}
 screen : Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ msg
 screen =
-    Surface.view Surface.surface
-        [ TA.class "flex h-screen w-full overflow-hidden" ]
+    Seam.node "div"
+        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
             [ appBar
@@ -144,7 +141,6 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
         [ M3e.AppBar.title (M3e.text "Rally redesign") ]
-
 
 
 -- PRIMARY + SUPPORTING BODY ---------------------------------------------------
@@ -230,8 +226,8 @@ primary on `lg:`, reflowed beneath it on compact.
 supporting : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 supporting =
     TypedHtml.div [ TA.class "shrink-0 lg:w-80" ]
-        [ Surface.view Surface.surfaceContainer
-            [ Shape.corner Shape.large, TA.class "flex flex-col gap-4 p-4" ]
+        [ Seam.node "div"
+            [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large flex flex-col gap-4 p-4" ]
             [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Recent activity" ]
             , TypedHtml.div [ TA.class "flex flex-col gap-3" ]
                 (List.map activityRow activity)
@@ -269,7 +265,6 @@ activityRow a =
 tag : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 tag label =
     M3e.assistChip [] [ M3e.text label ]
-
 
 
 -- NAVIGATION ------------------------------------------------------------------

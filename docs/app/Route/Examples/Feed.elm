@@ -33,15 +33,13 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam.Shape as Shape
-import Seam.Surface as Surface exposing (Surface)
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -53,7 +51,6 @@ type alias Model =
 
 type Msg
     = SelectFilter String
-
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -104,7 +101,6 @@ head _ =
     []
 
 
-
 -- DATA ------------------------------------------------------------------------
 
 
@@ -114,19 +110,19 @@ type alias Post =
     , category : String
     , author : String
     , when : String
-    , media : Surface
+    , media : String
     , icon : String
     }
 
 
 posts : List Post
 posts =
-    [ { title = "Motion tokens land in 2.5", excerpt = "Springs and shape morphing now derive from the theme's motion scheme.", category = "Release", author = "Design team", when = "2h", media = Surface.primaryContainer, icon = "animation" }
-    , { title = "Adaptive nav, one destination list", excerpt = "How the rail and the bottom bar share a single producer so they never drift.", category = "Guide", author = "Britta Holt", when = "5h", media = Surface.tertiaryContainer, icon = "dashboard" }
-    , { title = "A11y-tree spot-checks", excerpt = "The Playwright recipe for asserting every interactive node has a name.", category = "Guide", author = "Miriam Steketee", when = "1d", media = Surface.secondaryContainer, icon = "accessibility_new" }
-    , { title = "Re-skin with tokens", excerpt = "A brand refresh is a few Theme inputs, not a sheet of overrides.", category = "Guide", author = "Ali Connors", when = "1d", media = Surface.primaryContainer, icon = "palette" }
-    , { title = "Split panes and refreshed search", excerpt = "The 2.5 layer/form roles get expressive elevation tokens across the board.", category = "Release", author = "Product", when = "2d", media = Surface.tertiaryContainer, icon = "space_dashboard" }
-    , { title = "Community: composing rich cards", excerpt = "A pattern for media-topped cards that clip to the shape scale.", category = "Community", author = "Trevor Hansen", when = "3d", media = Surface.secondaryContainer, icon = "groups" }
+    [ { title = "Motion tokens land in 2.5", excerpt = "Springs and shape morphing now derive from the theme's motion scheme.", category = "Release", author = "Design team", when = "2h", media = "bg-primary-container text-on-primary-container", icon = "animation" }
+    , { title = "Adaptive nav, one destination list", excerpt = "How the rail and the bottom bar share a single producer so they never drift.", category = "Guide", author = "Britta Holt", when = "5h", media = "bg-tertiary-container text-on-tertiary-container", icon = "dashboard" }
+    , { title = "A11y-tree spot-checks", excerpt = "The Playwright recipe for asserting every interactive node has a name.", category = "Guide", author = "Miriam Steketee", when = "1d", media = "bg-secondary-container text-on-secondary-container", icon = "accessibility_new" }
+    , { title = "Re-skin with tokens", excerpt = "A brand refresh is a few Theme inputs, not a sheet of overrides.", category = "Guide", author = "Ali Connors", when = "1d", media = "bg-primary-container text-on-primary-container", icon = "palette" }
+    , { title = "Split panes and refreshed search", excerpt = "The 2.5 layer/form roles get expressive elevation tokens across the board.", category = "Release", author = "Product", when = "2d", media = "bg-tertiary-container text-on-tertiary-container", icon = "space_dashboard" }
+    , { title = "Community: composing rich cards", excerpt = "A pattern for media-topped cards that clip to the shape scale.", category = "Community", author = "Trevor Hansen", when = "3d", media = "bg-secondary-container text-on-secondary-container", icon = "groups" }
     ]
 
 
@@ -146,7 +142,6 @@ destinations =
     ]
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -163,8 +158,8 @@ filter bar and the reflowing card grid, with a mobile bottom bar.
 -}
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
-    Surface.view Surface.surface
-        [ TA.class "flex h-screen w-full overflow-hidden" ]
+    Seam.node "div"
+        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
             [ appBar
@@ -202,7 +197,6 @@ appBar =
         [ M3e.AppBar.title (M3e.text "Feed") ]
 
 
-
 -- FILTER BAR ------------------------------------------------------------------
 
 
@@ -223,7 +217,6 @@ filterChip current category =
         , M3e.Events.onClick (SelectFilter category)
         ]
         [ M3e.text category ]
-
 
 
 -- CARD GRID -------------------------------------------------------------------
@@ -248,8 +241,8 @@ postCard : Post -> Element { s | card : M3e.Kind.Brand } adm_ msg
 postCard post =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
         [ M3e.Card.header
-            (Surface.view post.media
-                [ Shape.corner Shape.medium, TA.class "flex h-32 items-center justify-center" ]
+            (Seam.node "div"
+                [ TA.class (post.media ++ " rounded-md-corner-medium flex h-32 items-center justify-center") ]
                 [ M3e.icon [ TA.name post.icon, TA.class "text-4xl" ] [] ]
             )
         , M3e.Card.content
@@ -261,7 +254,6 @@ postCard post =
                 ]
             )
         ]
-
 
 
 -- NAVIGATION ------------------------------------------------------------------

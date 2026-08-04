@@ -9,7 +9,7 @@ table built from `ListItem` rows separated by `Divider`, and a `Fab` primary
 action.
 
 Everything visual (color, type scale, surface, shape) goes through `Seam` /
-`Seam.Surface` / `Seam.Shape`; Tailwind is used only for layout and responsive
+`Seam` (M3 token classes inlined directly); Tailwind is used only for layout and responsive
 visibility. Static screen (no local state).
 
 -}
@@ -32,8 +32,7 @@ import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam.Shape as Shape
-import Seam.Surface as Surface
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -93,7 +92,6 @@ subscriptions _ _ _ _ =
 head : App Data ActionData RouteParams -> List Head.Tag
 head _ =
     []
-
 
 
 -- DATA ------------------------------------------------------------------------
@@ -173,7 +171,6 @@ activity =
     ]
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -182,8 +179,8 @@ view _ _ _ =
     { title = "Aperture Analytics · elm-m3e"
     , body =
         [ HtmlIr.Element.toNode
-            (Surface.view Surface.surface
-                [ TA.class "flex flex-col min-h-screen w-full" ]
+            (Seam.node "div"
+                [ TA.class "bg-surface text-on-surface flex flex-col min-h-screen w-full" ]
                 [ appBar
                 , TypedHtml.div [ TA.class "flex flex-1" ]
                     [ desktopRail
@@ -218,7 +215,6 @@ exampleFooter =
         , prev = Nothing
         , next = Just ( "/examples/shop", "Shop" )
         }
-
 
 
 -- CHROME ----------------------------------------------------------------------
@@ -291,7 +287,6 @@ fab =
         ]
 
 
-
 -- MAIN CONTENT ----------------------------------------------------------------
 
 
@@ -317,7 +312,6 @@ pageHeader =
         , M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] [ M3e.text "Good morning, Jack" ]
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Here is how your business is doing today." ]
         ]
-
 
 
 -- KPI ROW ---------------------------------------------------------------------
@@ -359,7 +353,6 @@ trendDelta trend delta =
         ]
 
 
-
 -- ACCOUNTS --------------------------------------------------------------------
 
 
@@ -373,17 +366,16 @@ accountsSection =
 
 accountRow : Account -> Element { s | html : M3e.Kind.Brand } adm_ msg
 accountRow a =
-    Surface.view Surface.surfaceContainerHigh
-        [ Shape.corner Shape.large, TA.class "flex items-center gap-3 p-3" ]
-        [ Surface.view Surface.secondaryContainer
-            [ Shape.corner Shape.full, TA.class "flex items-center justify-center p-2" ]
+    Seam.node "div"
+        [ TA.class "bg-surface-container-high text-on-surface rounded-md-corner-large flex items-center gap-3 p-3" ]
+        [ Seam.node "div"
+            [ TA.class "bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center p-2" ]
             [ M3e.icon [ TA.name a.icon ] [] ]
         , TypedHtml.div [ TA.class "flex flex-col min-w-0" ]
             [ TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text a.name ]
             , M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] [ M3e.text a.balance ]
             ]
         ]
-
 
 
 -- BUDGETS ---------------------------------------------------------------------
@@ -408,7 +400,6 @@ budgetRow b =
             [ M3e.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
             []
         ]
-
 
 
 -- RECENT ACTIVITY -------------------------------------------------------------
@@ -442,7 +433,6 @@ activityRow a =
         , M3e.ListItem.trailing
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [ M3e.text a.amount ])
         ]
-
 
 
 -- SHARED SECTION CARD ---------------------------------------------------------

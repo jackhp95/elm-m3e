@@ -38,8 +38,8 @@ import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Seam
 import Seam.Avatar as Avatar
-import Seam.Surface as Surface exposing (Surface)
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -101,7 +101,6 @@ subscriptions _ _ _ _ =
 head : App Data ActionData RouteParams -> List Head.Tag
 head _ =
     []
-
 
 
 -- DATA ------------------------------------------------------------------------
@@ -190,7 +189,6 @@ destinations =
     ]
 
 
-
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -208,8 +206,8 @@ bar and the floating compose FAB.
 -}
 screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : HtmlIr.Kind.Shared } adm_ Msg
 screen model =
-    Surface.view Surface.surface
-        [ TA.class "relative flex h-screen w-full overflow-hidden" ]
+    Seam.node "div"
+        [ TA.class "bg-surface text-on-surface relative flex h-screen w-full overflow-hidden" ]
         [ navRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0" ]
             [ topBar
@@ -239,7 +237,6 @@ exampleFooter =
         , prev = Just ( "/examples/shop", "Shop" )
         , next = Just ( "/examples/travel", "Travel" )
         }
-
 
 
 -- NAVIGATION ------------------------------------------------------------------
@@ -283,7 +280,6 @@ barItem index d =
         ]
 
 
-
 -- TOP BAR ---------------------------------------------------------------------
 
 
@@ -309,7 +305,6 @@ searchBar =
             )
         , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
         ]
-
 
 
 -- BODY: TWO-PANE --------------------------------------------------------------
@@ -361,16 +356,16 @@ divider =
 messageRow : Int -> Int -> Message -> Element { s | listAction : M3e.Kind.Brand } adm_ Msg
 messageRow selected index message =
     let
-        rowSurface : Surface
+        rowSurface : String
         rowSurface =
             if index == selected then
-                Surface.surfaceContainer
+                "bg-surface-container text-on-surface"
 
             else
-                Surface.surface
+                "bg-surface text-on-surface"
     in
     M3e.listAction
-        [ Surface.asAttribute rowSurface
+        [ TA.class rowSurface
         , M3e.ListAction.onClick (SelectMessage index)
         ]
         [ M3e.ListAction.leading (Avatar.initials message.initials)
@@ -380,7 +375,6 @@ messageRow selected index message =
         , M3e.ListAction.trailing
             (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text message.time ])
         ]
-
 
 
 -- READING PANE ----------------------------------------------------------------
@@ -414,7 +408,6 @@ labelChip name =
         [ M3e.text name
         , M3e.AssistChip.icon (M3e.icon [ TA.name "label" ] [])
         ]
-
 
 
 -- FAB -------------------------------------------------------------------------

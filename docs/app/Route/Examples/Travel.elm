@@ -36,9 +36,7 @@ import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam.Media as Media
-import Seam.Shape as Shape
-import Seam.Surface as Surface exposing (Surface)
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -47,7 +45,6 @@ import TypedHtml.Grouping
 import TypedHtml.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-
 
 
 -- MODEL
@@ -129,48 +126,44 @@ head _ =
     []
 
 
-
 -- DATA
 
 
-{-| A destination card: (name, region, gradient tint, rating, price).
-The tint is a `Surface` role so the placeholder media reads as color without
-touching Tailwind for background.
+{-| A destination card: (name, region, tint classes, rating, price).
 -}
 type alias Place =
     { name : String
     , region : String
-    , tint : Surface
+    , tint : String
     , rating : String
     , price : String
     }
 
 
-{-| Popular destinations vary by the active category, so the rails feel alive
-when the tabs change.
+{-| Popular destinations vary by the active category.
 -}
 popular : Category -> List Place
 popular category =
     case category of
         Flights ->
-            [ Place "Tokyo" "Japan" Surface.primaryContainer "4.9" "$780"
-            , Place "Reykjavík" "Iceland" Surface.secondaryContainer "4.8" "$610"
-            , Place "Cape Town" "South Africa" Surface.tertiaryContainer "4.7" "$920"
-            , Place "Lima" "Peru" Surface.primaryContainer "4.6" "$540"
+            [ Place "Tokyo" "Japan" "bg-primary-container text-on-primary-container" "4.9" "$780"
+            , Place "Reykjavík" "Iceland" "bg-secondary-container text-on-secondary-container" "4.8" "$610"
+            , Place "Cape Town" "South Africa" "bg-tertiary-container text-on-tertiary-container" "4.7" "$920"
+            , Place "Lima" "Peru" "bg-primary-container text-on-primary-container" "4.6" "$540"
             ]
 
         Stays ->
-            [ Place "Kyoto" "Japan" Surface.secondaryContainer "4.9" "$240/nt"
-            , Place "Santorini" "Greece" Surface.tertiaryContainer "4.8" "$310/nt"
-            , Place "Marrakesh" "Morocco" Surface.primaryContainer "4.7" "$180/nt"
-            , Place "Queenstown" "New Zealand" Surface.secondaryContainer "4.8" "$220/nt"
+            [ Place "Kyoto" "Japan" "bg-secondary-container text-on-secondary-container" "4.9" "$240/nt"
+            , Place "Santorini" "Greece" "bg-tertiary-container text-on-tertiary-container" "4.8" "$310/nt"
+            , Place "Marrakesh" "Morocco" "bg-primary-container text-on-primary-container" "4.7" "$180/nt"
+            , Place "Queenstown" "New Zealand" "bg-secondary-container text-on-secondary-container" "4.8" "$220/nt"
             ]
 
         Experiences ->
-            [ Place "Aurora Hunt" "Tromsø" Surface.tertiaryContainer "4.9" "$95"
-            , Place "Souk Food Tour" "Fez" Surface.primaryContainer "4.8" "$45"
-            , Place "Caldera Sail" "Oia" Surface.secondaryContainer "4.7" "$120"
-            , Place "Temple at Dawn" "Bagan" Surface.tertiaryContainer "4.9" "$60"
+            [ Place "Aurora Hunt" "Tromsø" "bg-tertiary-container text-on-tertiary-container" "4.9" "$95"
+            , Place "Souk Food Tour" "Fez" "bg-primary-container text-on-primary-container" "4.8" "$45"
+            , Place "Caldera Sail" "Oia" "bg-secondary-container text-on-secondary-container" "4.7" "$120"
+            , Place "Temple at Dawn" "Bagan" "bg-tertiary-container text-on-tertiary-container" "4.9" "$60"
             ]
 
 
@@ -178,10 +171,10 @@ popular category =
 -}
 nearby : List Place
 nearby =
-    [ Place "Lisbon" "Portugal" Surface.secondaryContainer "4.7" "$150/nt"
-    , Place "Oaxaca" "Mexico" Surface.primaryContainer "4.8" "$130/nt"
-    , Place "Bologna" "Italy" Surface.tertiaryContainer "4.6" "$170/nt"
-    , Place "Porto" "Portugal" Surface.secondaryContainer "4.7" "$140/nt"
+    [ Place "Lisbon" "Portugal" "bg-secondary-container text-on-secondary-container" "4.7" "$150/nt"
+    , Place "Oaxaca" "Mexico" "bg-primary-container text-on-primary-container" "4.8" "$130/nt"
+    , Place "Bologna" "Italy" "bg-tertiary-container text-on-tertiary-container" "4.6" "$170/nt"
+    , Place "Porto" "Portugal" "bg-secondary-container text-on-secondary-container" "4.7" "$140/nt"
     ]
 
 
@@ -200,7 +193,6 @@ destinations =
     , ( Saved, "favorite", "Saved" )
     , ( Profile, "person", "Profile" )
     ]
-
 
 
 -- VIEW
@@ -265,7 +257,6 @@ appBar =
         ]
 
 
-
 -- NAVIGATION
 
 
@@ -309,7 +300,6 @@ barItem current ( dest, iconName, label ) =
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         ]
-
 
 
 -- CONTENT
@@ -357,8 +347,8 @@ categoryIndex current =
 -}
 hero : Element { s | html : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 hero =
-    Surface.view Surface.surfaceContainer
-        [ Shape.corner Shape.extraLarge, TA.class "flex flex-col gap-4 p-6 md:p-8" ]
+    Seam.node "div"
+        [ TA.class "bg-surface-container text-on-surface rounded-md-corner-extra-large flex flex-col gap-4 p-6 md:p-8" ]
         [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Where to next?" ]
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Search destinations, dates, and guests." ]
         , searchBar
@@ -390,7 +380,6 @@ categoryTab current ( category, label ) =
         , M3e.Events.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
         [ M3e.text label ]
-
 
 
 -- RAILS
@@ -429,14 +418,12 @@ placeCard place =
         ]
 
 
-{-| Placeholder media: a shape-clipped, tinted card-media block standing in for a
-destination photo.
+{-| Placeholder media: a tinted card-media block standing in for a destination photo.
 -}
 media : Place -> Element { s | html : M3e.Kind.Brand } adm_ msg
 media place =
-    Media.view place.tint
-        Shape.large
-        [ TA.class "flex h-28 w-full items-end p-3" ]
+    Seam.node "div"
+        [ TA.class (place.tint ++ " rounded-md-corner-large overflow-hidden flex h-28 w-full items-end p-3") ]
         [ M3e.icon [ TA.name "image" ] [] ]
 
 

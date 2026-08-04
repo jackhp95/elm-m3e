@@ -17,8 +17,7 @@ import M3e
 import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
-import Seam.Shape as Shape
-import Seam.Surface as Surface
+import Seam
 import TypedHtml.Attributes as TA
 
 
@@ -29,9 +28,8 @@ import TypedHtml.Attributes as TA
 initials : String -> Element { s | avatar : M3e.Kind.Brand } adm_ msg
 initials text =
     M3e.avatar [ TA.class "flex" ]
-        [ Surface.view Surface.secondaryContainer
-            [ Shape.corner Shape.full
-            , TA.class "flex h-10 w-10 items-center justify-center"
+        [ Seam.node "div"
+            [ TA.class "bg-secondary-container text-on-secondary-container rounded-full flex h-10 w-10 items-center justify-center"
             ]
             [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.medium ] [ M3e.text text ] ]
         ]

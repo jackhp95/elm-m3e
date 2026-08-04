@@ -13,8 +13,7 @@ import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam.Shape as Shape
-import Seam.Surface as Surface exposing (Surface)
+import Seam
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -62,37 +61,32 @@ head _ =
         |> Seo.website
 
 
-{-| An accent family: the bold role and its lower-emphasis container, each with the
-`bg-*` role it paints. Each `Surface` bundles the background with its paired
-`text-on-*` color, so a legible swatch _is_ proof the container/on-container roles
-are paired correctly — the caption reads the role name off the surface.
--}
 type alias Accent =
     { name : String
-    , base : Surface
+    , base : String
     , baseBg : String
-    , container : Surface
+    , container : String
     , containerBg : String
     }
 
 
 accents : List Accent
 accents =
-    [ Accent "Primary" Surface.primary "bg-primary" Surface.primaryContainer "bg-primary-container"
-    , Accent "Secondary" Surface.secondary "bg-secondary" Surface.secondaryContainer "bg-secondary-container"
-    , Accent "Tertiary" Surface.tertiary "bg-tertiary" Surface.tertiaryContainer "bg-tertiary-container"
-    , Accent "Error" Surface.error "bg-error" Surface.errorContainer "bg-error-container"
+    [ Accent "Primary" "bg-primary text-on-primary" "bg-primary" "bg-primary-container text-on-primary-container" "bg-primary-container"
+    , Accent "Secondary" "bg-secondary text-on-secondary" "bg-secondary" "bg-secondary-container text-on-secondary-container" "bg-secondary-container"
+    , Accent "Tertiary" "bg-tertiary text-on-tertiary" "bg-tertiary" "bg-tertiary-container text-on-tertiary-container" "bg-tertiary-container"
+    , Accent "Error" "bg-error text-on-error" "bg-error" "bg-error-container text-on-error-container" "bg-error-container"
     ]
 
 
 {-| Neutral surface roles — the app backgrounds, no accent pairing.
 -}
-surfaces : List ( String, String, Surface )
+surfaces : List ( String, String, String )
 surfaces =
-    [ ( "Surface", "bg-surface", Surface.surface )
-    , ( "Surface Container", "bg-surface-container", Surface.surfaceContainer )
-    , ( "Surface Container High", "bg-surface-container-high", Surface.surfaceContainerHigh )
-    , ( "Inverse Surface", "bg-inverse-surface", Surface.inverseSurface )
+    [ ( "Surface", "bg-surface", "bg-surface text-on-surface" )
+    , ( "Surface Container", "bg-surface-container", "bg-surface-container text-on-surface" )
+    , ( "Surface Container High", "bg-surface-container-high", "bg-surface-container-high text-on-surface" )
+    , ( "Inverse Surface", "bg-inverse-surface", "bg-inverse-surface text-inverse-on-surface" )
     ]
 
 
@@ -107,12 +101,10 @@ accentRow accent =
         ]
 
 
-swatch : ( String, String, Surface ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
+swatch : ( String, String, String ) -> Element { s | html : M3e.Kind.Brand } adm_ msg
 swatch ( label, bg, role ) =
-    Surface.view role
-        [ TA.class "flex flex-col justify-between p-4 min-h-24"
-        , Shape.corner Shape.medium
-        , Surface.outlined
+    Seam.node "div"
+        [ TA.class (role ++ " rounded-md-corner-medium border border-outline-variant flex flex-col justify-between p-4 min-h-24")
         ]
         [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large ] [ M3e.text label ]
         , TypedHtml.code [ TA.class "text-body-sm" ] [ M3e.text bg ]

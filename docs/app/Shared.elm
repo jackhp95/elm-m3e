@@ -42,7 +42,6 @@ import Pages.PageUrl exposing (PageUrl)
 import Ports
 import Route exposing (Route)
 import Seam
-import Seam.Surface as Surface
 import SharedTemplate exposing (SharedTemplate)
 import TypedHtml
 import TypedHtml.Aria as Aria
@@ -61,7 +60,6 @@ template =
     , subscriptions = subscriptions
     , onPageChange = Just (\_ -> CloseMenu)
     }
-
 
 
 -- MODEL
@@ -298,7 +296,6 @@ data =
             )
 
 
-
 -- VIEW
 
 
@@ -382,8 +379,8 @@ view sharedData page model toMsg pageView =
             -- stable mobile URL bar, so a full-viewport example must scroll itself
             -- rather than the document, or tall demos would clip.
             [ themed
-                [ Surface.view Surface.surface
-                    [ TypedHtml.Attributes.class "h-dvh overflow-y-auto"
+                [ Seam.node "div"
+                    [ TypedHtml.Attributes.class "bg-surface text-on-surface h-dvh overflow-y-auto"
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     (List.map Seam.asElement pageView.body)
@@ -392,13 +389,13 @@ view sharedData page model toMsg pageView =
 
         else
             [ themed
-                [ Surface.view Surface.surface
+                [ Seam.node "div"
                     -- Fixed-height, non-scrolling shell: `h-dvh` fits the stable
                     -- visible viewport (see style.css app-shell note) and the
                     -- `auto_1fr` rows pin the app bar while the 1fr content row
                     -- (the drawer + its <main>) is the ONE scroll region — keeps
                     -- the mobile URL bar from collapsing on scroll.
-                    [ TypedHtml.Attributes.class "grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
+                    [ TypedHtml.Attributes.class "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ Seam.fromHtml skipLink
@@ -441,7 +438,6 @@ directionAttr dir =
 
         Rtl ->
             "rtl"
-
 
 
 -- TOP APP BAR
@@ -538,7 +534,6 @@ settingsButton =
     M3e.iconButton
         [ Aria.label "Settings", M3e.Events.onClick ToggleSettings ]
         [ M3e.icon [ M3e.Icon.name "settings" ] [] ]
-
 
 
 -- SETTINGS (end drawer content — cloned from matraic's #settings-drawer)
@@ -673,7 +668,6 @@ directionSegmented model =
         [ ( "LTR", model.dir == Ltr, SetDirection Ltr )
         , ( "RTL", model.dir == Rtl, SetDirection Rtl )
         ]
-
 
 
 -- SIDEBAR NAVIGATION (matraic IA)
