@@ -1,7 +1,7 @@
 module M3e.Radio exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
+    , checked, disabled, name, required, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
     , withChecked, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRequired, withSlot, withStyle, withValue
     )
 
@@ -11,7 +11,7 @@ A radio button that allows a user to select one option from a set of options.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
+@docs checked, disabled, name, required, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs withChecked, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRequired, withSlot, withStyle, withValue
 
 -}
@@ -102,6 +102,20 @@ required =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    A.defaultChecked
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

@@ -1,7 +1,7 @@
 module M3e.SliderThumb exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, name, value, onValueChange, onBeforeinput, onInput, onChange, onClick
+    , disabled, name, value, defaultValue, onValueChange, onBeforeinput, onInput, onChange, onClick
     , withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnValueChange, withSlot, withStyle, withValue
     )
 
@@ -11,7 +11,7 @@ A thumb used to select a value in a slider.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, name, value, onValueChange, onBeforeinput, onInput, onChange, onClick
+@docs disabled, name, value, defaultValue, onValueChange, onBeforeinput, onInput, onChange, onClick
 @docs withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnValueChange, withSlot, withStyle, withValue
 
 -}
@@ -83,10 +83,20 @@ name value_ =
 
 
 {-| The value of the thumb. (default: `null`)
+
+Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
+
 -}
 value : Float -> Attr { c | value : Supported } msg
 value value_ =
     Ir.property "value" (Json.Encode.float value_)
+
+
+{-| Set the `value` CONTENT attribute — the element's DEFAULT/initial `value`, mirroring HTML's own `defaultValue` IDL attribute. Unlike `value` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultValue : Float -> Attr { c | value : Supported } msg
+defaultValue value_ =
+    Ir.attribute "value" (String.fromFloat value_)
 
 
 {-| See `M3e.Events.onValueChange`.

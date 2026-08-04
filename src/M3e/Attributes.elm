@@ -1,7 +1,8 @@
 module M3e.Attributes exposing
     ( class, id, slot, style, classList, styleList
-    , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
-    , animation, contrast, current, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
+    , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
+    , defaultChecked, defaultSelected, defaultValue
+    , animation, contrast, current, disablePagination, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
     )
 
 {-| The canonical shared attribute vocabulary. Every setter is an open
@@ -11,8 +12,9 @@ values — cross-component misuse is caught by elm-review; reach for the
 per-component setters (`M3e.<Component>.<attr>`) for compile-tight narrowing.
 
 @docs class, id, slot, style, classList, styleList
-@docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
-@docs animation, contrast, current, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
+@docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
+@docs defaultChecked, defaultSelected, defaultValue
+@docs animation, contrast, current, disablePagination, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
 
 -}
 
@@ -180,6 +182,9 @@ centered value_ =
 
 
 {-| Whether the element is checked. (default: `false`)
+
+Sets the LIVE DOM property `checked`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultChecked`.
+
 -}
 checked : Bool -> Attr { c | checked : Supported } msg
 checked value_ =
@@ -321,13 +326,6 @@ disableHover value_ =
 
     else
         Ir.none
-
-
-{-| Whether scroll buttons are disabled.
--}
-disablePagination : String -> Attr { c | disablePagination : Supported } msg
-disablePagination =
-    Ir.attribute "disable-pagination"
 
 
 {-| Whether to focus should not be restored to the trigger when activated. (default: `false`)
@@ -1255,6 +1253,11 @@ secondary value_ =
 
 
 {-| Whether the item is selected. (default: `false`)
+
+Sets the LIVE DOM property `selected`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultSelected`.
+
+CAVEAT — this setter cannot RESYNC. `elm/virtual-dom` only re-forces an unchanged controlled property for the names `value` and `checked`; `selected` is compared by identity, so re-rendering the same model value after the user has changed it through the element's own UI will NOT push it back to the DOM. Keep the model in sync with a `change` handler.
+
 -}
 selected : Bool -> Attr { c | selected : Supported } msg
 selected value_ =
@@ -1446,6 +1449,9 @@ validationmessages =
 
 
 {-| A string representing the value of the switch. (default: `"on"`)
+
+Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
+
 -}
 value : String -> Attr { c | value : Supported } msg
 value value_ =
@@ -1499,6 +1505,35 @@ yearLabel =
     Ir.attribute "year-label"
 
 
+{-| Set the `checked` CONTENT attribute — the element's DEFAULT/initial `checked`, mirroring HTML's own `defaultChecked` IDL attribute. Unlike `checked` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked value_ =
+    if value_ then
+        Ir.attribute "checked" ""
+
+    else
+        Ir.none
+
+
+{-| Set the `selected` CONTENT attribute — the element's DEFAULT/initial `selected`, mirroring HTML's own `defaultSelected` IDL attribute. Unlike `selected` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to. Pair it with `selected` for the live state; see that setter's resync caveat.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected value_ =
+    if value_ then
+        Ir.attribute "selected" ""
+
+    else
+        Ir.none
+
+
+{-| Set the `value` CONTENT attribute — the element's DEFAULT/initial `value`, mirroring HTML's own `defaultValue` IDL attribute. Unlike `value` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    Ir.attribute "value"
+
+
 {-| The animation effect of the skeleton. (default: `"wave"`)
 -}
 animation : Value M3e.Values.Animation -> Attr { c | animation : Supported } msg
@@ -1518,6 +1553,13 @@ contrast value_ =
 current : Value M3e.Values.Current -> Attr { c | current : Supported } msg
 current value_ =
     Ir.attribute "current" (HtmlIr.Value.toString value_)
+
+
+{-| Whether scroll buttons are disabled.
+-}
+disablePagination : Value M3e.Values.DisablePagination -> Attr { c | disablePagination : Supported } msg
+disablePagination value_ =
+    Ir.attribute "disable-pagination" (HtmlIr.Value.toString value_)
 
 
 {-| The dividers used to separate scrollable content. (default: `"above-below"`)

@@ -42,6 +42,7 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+
 -- MODEL -----------------------------------------------------------------------
 
 
@@ -51,6 +52,7 @@ type alias Model =
 
 type Msg
     = SelectFilter String
+
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -101,6 +103,7 @@ head _ =
     []
 
 
+
 -- DATA ------------------------------------------------------------------------
 
 
@@ -140,6 +143,7 @@ destinations =
     , { icon = "bookmark", label = "Saved" }
     , { icon = "notifications", label = "Activity" }
     ]
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -197,6 +201,7 @@ appBar =
         [ M3e.AppBar.title (M3e.text "Feed") ]
 
 
+
 -- FILTER BAR ------------------------------------------------------------------
 
 
@@ -217,6 +222,7 @@ filterChip current category =
         , M3e.Events.onClick (SelectFilter category)
         ]
         [ M3e.text category ]
+
 
 
 -- CARD GRID -------------------------------------------------------------------
@@ -254,6 +260,7 @@ postCard post =
                 ]
             )
         ]
+
 
 
 -- NAVIGATION ------------------------------------------------------------------

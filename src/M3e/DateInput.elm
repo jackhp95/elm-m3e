@@ -2,7 +2,7 @@ module M3e.DateInput exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , TimeFormat, timeFormat, Type, type_
-    , dayLabel, disabled, hourLabel, maxDate, maxTime, minDate, minTime, minuteLabel, monthLabel, name, periodLabel, readonly, required, secondLabel, showSeconds, validationmessages, value, yearLabel, onChange, onBeforeinput, onInput, onInvalid
+    , dayLabel, disabled, hourLabel, maxDate, maxTime, minDate, minTime, minuteLabel, monthLabel, name, periodLabel, readonly, required, secondLabel, showSeconds, validationmessages, value, yearLabel, defaultValue, onChange, onBeforeinput, onInput, onInvalid
     , withClass, withDayLabel, withDisabled, withHourLabel, withId, withMaxDate, withMaxTime, withMinDate, withMinTime, withMinuteLabel, withMonthLabel, withName, withOnBeforeinput, withOnChange, withOnInput, withOnInvalid, withPeriodLabel, withReadonly, withRequired, withSecondLabel, withShowSeconds, withSlot, withStyle, withTimeFormat, withType, withValidationmessages, withValue, withYearLabel
     )
 
@@ -13,7 +13,7 @@ A segmented input for entering date and/or time values using a keyboard.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs TimeFormat, timeFormat, Type, type_
-@docs dayLabel, disabled, hourLabel, maxDate, maxTime, minDate, minTime, minuteLabel, monthLabel, name, periodLabel, readonly, required, secondLabel, showSeconds, validationmessages, value, yearLabel, onChange, onBeforeinput, onInput, onInvalid
+@docs dayLabel, disabled, hourLabel, maxDate, maxTime, minDate, minTime, minuteLabel, monthLabel, name, periodLabel, readonly, required, secondLabel, showSeconds, validationmessages, value, yearLabel, defaultValue, onChange, onBeforeinput, onInput, onInvalid
 @docs withClass, withDayLabel, withDisabled, withHourLabel, withId, withMaxDate, withMaxTime, withMinDate, withMinTime, withMinuteLabel, withMonthLabel, withName, withOnBeforeinput, withOnChange, withOnInput, withOnInvalid, withPeriodLabel, withReadonly, withRequired, withSecondLabel, withShowSeconds, withSlot, withStyle, withTimeFormat, withType, withValidationmessages, withValue, withYearLabel
 
 -}
@@ -243,6 +243,13 @@ value =
 yearLabel : String -> Attr { c | yearLabel : Supported } msg
 yearLabel =
     A.yearLabel
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onChange`.

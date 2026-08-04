@@ -42,6 +42,7 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+
 -- MODEL -----------------------------------------------------------------------
 
 
@@ -77,6 +78,7 @@ type Msg
     = SelectSection String
     | Flip Toggle
     | SetTheme String
+
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -165,6 +167,7 @@ head _ =
     []
 
 
+
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -226,6 +229,7 @@ appBar =
         ]
 
 
+
 -- NAVIGATION ------------------------------------------------------------------
 
 
@@ -265,6 +269,7 @@ navItem current ( section, name, iconName ) =
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text name
         ]
+
 
 
 -- CONTENT ---------------------------------------------------------------------

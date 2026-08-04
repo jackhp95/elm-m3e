@@ -2,7 +2,7 @@ module M3e.InputChip exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, AvatarSlot, IconSlot, RemoveIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
-    , disabled, disabledInteractive, removable, removeLabel, value, onRemove, onClick
+    , disabled, disabledInteractive, removable, removeLabel, value, defaultValue, onRemove, onClick
     , avatar, icon, removeIcon, child
     , withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A chip which represents a discrete piece of information entered by a user.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, AvatarSlot, IconSlot, RemoveIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
-@docs disabled, disabledInteractive, removable, removeLabel, value, onRemove, onClick
+@docs disabled, disabledInteractive, removable, removeLabel, value, defaultValue, onRemove, onClick
 @docs avatar, icon, removeIcon, child
 @docs withAvatar, withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnClick, withOnRemove, withRemovable, withRemoveIcon, withRemoveLabel, withSlot, withStyle, withValue, withVariant
 
@@ -157,6 +157,13 @@ removeLabel =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onRemove`.

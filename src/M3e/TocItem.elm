@@ -1,7 +1,7 @@
 module M3e.TocItem exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, selected, onClick
+    , disabled, selected, defaultSelected, onClick
     , child
     , withChild, withClass, withDisabled, withId, withOnClick, withSelected, withSlot, withStyle
     )
@@ -12,7 +12,7 @@ An item in a table of contents.
 
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, selected, onClick
+@docs disabled, selected, defaultSelected, onClick
 @docs child
 @docs withChild, withClass, withDisabled, withId, withOnClick, withSelected, withSlot, withStyle
 
@@ -95,6 +95,13 @@ disabled =
 selected : Bool -> Attr { c | selected : Supported } msg
 selected =
     A.selected
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| See `M3e.Events.onClick`.

@@ -1,7 +1,7 @@
 module M3e.ButtonSegment exposing
     ( view, build, toElement
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled, value, onBeforeinput, onInput, onChange, onClick
+    , checked, disabled, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
     , icon, child
     , withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValue
     )
@@ -12,7 +12,7 @@ A option that can be selected within a segmented button.
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled, value, onBeforeinput, onInput, onChange, onClick
+@docs checked, disabled, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs icon, child
 @docs withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSlot, withStyle, withValue
 
@@ -101,6 +101,20 @@ disabled =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    A.defaultChecked
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

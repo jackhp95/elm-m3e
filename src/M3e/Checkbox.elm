@@ -1,7 +1,7 @@
 module M3e.Checkbox exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled, indeterminate, name, required, validationmessages, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+    , checked, disabled, indeterminate, name, required, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onInvalid, onClick
     , withChecked, withClass, withDisabled, withId, withIndeterminate, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnInvalid, withRequired, withSlot, withStyle, withValidationmessages, withValue
     )
 
@@ -11,7 +11,7 @@ A checkbox that allows a user to select one or more options from a limited numbe
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled, indeterminate, name, required, validationmessages, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+@docs checked, disabled, indeterminate, name, required, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onInvalid, onClick
 @docs withChecked, withClass, withDisabled, withId, withIndeterminate, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOnInvalid, withRequired, withSlot, withStyle, withValidationmessages, withValue
 
 -}
@@ -119,6 +119,20 @@ validationmessages =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    A.defaultChecked
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

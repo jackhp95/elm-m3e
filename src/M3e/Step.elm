@@ -1,7 +1,7 @@
 module M3e.Step exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , completed, disabled, editable, for, invalid, optional, selected, onBeforeinput, onInput, onChange, onClick
+    , completed, disabled, editable, for, invalid, optional, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
     , doneIcon, editIcon, error, errorIcon, hint, icon, child
     , withChild, withClass, withCompleted, withDisabled, withDoneIcon, withEditIcon, withEditable, withError, withErrorIcon, withFor, withHint, withIcon, withId, withInvalid, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOptional, withSelected, withSlot, withStyle
     )
@@ -12,7 +12,7 @@ A step in a wizard-like workflow.
 
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs completed, disabled, editable, for, invalid, optional, selected, onBeforeinput, onInput, onChange, onClick
+@docs completed, disabled, editable, for, invalid, optional, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
 @docs doneIcon, editIcon, error, errorIcon, hint, icon, child
 @docs withChild, withClass, withCompleted, withDisabled, withDoneIcon, withEditIcon, withEditable, withError, withErrorIcon, withFor, withHint, withIcon, withId, withInvalid, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOptional, withSelected, withSlot, withStyle
 
@@ -178,6 +178,13 @@ optional =
 selected : Bool -> Attr { c | selected : Supported } msg
 selected =
     A.selected
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| See `M3e.Events.onBeforeinput`.

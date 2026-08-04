@@ -2,7 +2,7 @@ module M3e.Chip exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
-    , value
+    , value, defaultValue
     , icon, trailingIcon, child
     , withChild, withClass, withIcon, withId, withSlot, withStyle, withTrailingIcon, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A non-interactive chip used to convey small pieces of information.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
-@docs value
+@docs value, defaultValue
 @docs icon, trailingIcon, child
 @docs withChild, withClass, withIcon, withId, withSlot, withStyle, withTrailingIcon, withValue, withVariant
 
@@ -116,6 +116,13 @@ variant value_ =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| Place an element into the named `icon` slot (input constrained to the

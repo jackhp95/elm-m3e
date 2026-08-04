@@ -1,7 +1,7 @@
 module M3e.NavMenuItem exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, BadgeSlot, IconSlot, LabelSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+    , disabled, open, selected, defaultSelected, onOpening, onOpened, onClosing, onClosed, onClick
     , badge, icon, label, selectedIcon, toggleIcon, child
     , withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
     )
@@ -12,7 +12,7 @@ An expandable item, selectable item within a navigation menu.
 
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, BadgeSlot, IconSlot, LabelSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+@docs disabled, open, selected, defaultSelected, onOpening, onOpened, onClosing, onClosed, onClick
 @docs badge, icon, label, selectedIcon, toggleIcon, child
 @docs withBadge, withChild, withClass, withDisabled, withIcon, withId, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
 
@@ -141,6 +141,13 @@ open =
 selected : Bool -> Attr { c | selected : Supported } msg
 selected =
     A.selected
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| See `M3e.Events.onOpening`.

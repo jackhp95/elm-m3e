@@ -62,6 +62,7 @@ template =
     }
 
 
+
 -- MODEL
 
 
@@ -296,6 +297,7 @@ data =
             )
 
 
+
 -- VIEW
 
 
@@ -440,6 +442,7 @@ directionAttr dir =
             "rtl"
 
 
+
 -- TOP APP BAR
 
 
@@ -534,6 +537,7 @@ settingsButton =
     M3e.iconButton
         [ Aria.label "Settings", M3e.Events.onClick ToggleSettings ]
         [ M3e.icon [ M3e.Icon.name "settings" ] [] ]
+
 
 
 -- SETTINGS (end drawer content — cloned from matraic's #settings-drawer)
@@ -668,6 +672,7 @@ directionSegmented model =
         [ ( "LTR", model.dir == Ltr, SetDirection Ltr )
         , ( "RTL", model.dir == Rtl, SetDirection Rtl )
         ]
+
 
 
 -- SIDEBAR NAVIGATION (matraic IA)

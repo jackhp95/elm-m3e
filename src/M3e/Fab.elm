@@ -2,7 +2,7 @@ module M3e.Fab exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Size, size, Type, type_, Variant, variant
-    , disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, onClick
+    , disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
     , closeIcon, label, child
     , withChild, withClass, withCloseIcon, withDisabled, withDisabledInteractive, withDownload, withExtended, withHref, withId, withLabel, withLowered, withName, withOnClick, withRel, withSize, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A floating action button (FAB) used to present important actions.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Size, size, Type, type_, Variant, variant
-@docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, onClick
+@docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
 @docs closeIcon, label, child
 @docs withChild, withClass, withCloseIcon, withDisabled, withDisabledInteractive, withDownload, withExtended, withHref, withId, withLabel, withLowered, withName, withOnClick, withRel, withSize, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
@@ -260,6 +260,13 @@ target =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onClick`.

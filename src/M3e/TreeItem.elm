@@ -1,7 +1,7 @@
 module M3e.TreeItem exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, IconSlot, LabelSlot, OpenToggleIconSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+    , disabled, indeterminate, open, selected, defaultSelected, onOpening, onOpened, onClosing, onClosed, onClick
     , icon, label, openToggleIcon, selectedIcon, toggleIcon, child
     , withChild, withClass, withDisabled, withIcon, withId, withIndeterminate, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOpenToggleIcon, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
     )
@@ -12,7 +12,7 @@ An expandable item in a tree.
 
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, IconSlot, LabelSlot, OpenToggleIconSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+@docs disabled, indeterminate, open, selected, defaultSelected, onOpening, onOpened, onClosing, onClosed, onClick
 @docs icon, label, openToggleIcon, selectedIcon, toggleIcon, child
 @docs withChild, withClass, withDisabled, withIcon, withId, withIndeterminate, withLabel, withOnClick, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withOpenToggleIcon, withSelected, withSelectedIcon, withSlot, withStyle, withToggleIcon
 
@@ -146,6 +146,13 @@ open =
 selected : Bool -> Attr { c | selected : Supported } msg
 selected =
     A.selected
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| See `M3e.Events.onOpening`.

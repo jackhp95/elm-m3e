@@ -44,6 +44,7 @@ import TypedHtml.Grouping
 import View exposing (View)
 
 
+
 -- MODEL -----------------------------------------------------------------------
 
 
@@ -88,6 +89,7 @@ destinations =
     , { icon = "folder", label = "Files" }
     , { icon = "settings", label = "Settings" }
     ]
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -141,6 +143,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
         [ M3e.AppBar.title (M3e.text "Rally redesign") ]
+
 
 
 -- PRIMARY + SUPPORTING BODY ---------------------------------------------------
@@ -265,6 +268,7 @@ activityRow a =
 tag : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 tag label =
     M3e.assistChip [] [ M3e.text label ]
+
 
 
 -- NAVIGATION ------------------------------------------------------------------

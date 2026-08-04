@@ -45,6 +45,7 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+
 -- MODEL / MSG -----------------------------------------------------------------
 
 
@@ -107,6 +108,7 @@ head _ =
     []
 
 
+
 -- CATALOG ---------------------------------------------------------------------
 
 
@@ -135,6 +137,7 @@ products =
 categories : List String
 categories =
     [ "All", "Apparel", "Home", "Beauty" ]
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -194,6 +197,7 @@ exampleFooter =
         , prev = Just ( "/examples/dashboard", "Dashboard" )
         , next = Just ( "/examples/mail", "Mail" )
         }
+
 
 
 -- CHROME ----------------------------------------------------------------------
@@ -286,6 +290,7 @@ navDestination current dest =
         [ M3e.NavItem.icon (M3e.icon [ TA.name dest.icon ] [])
         , M3e.text dest.label
         ]
+
 
 
 -- CONTENT ---------------------------------------------------------------------

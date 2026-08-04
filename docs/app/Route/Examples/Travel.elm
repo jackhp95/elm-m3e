@@ -47,6 +47,7 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+
 -- MODEL
 
 
@@ -126,6 +127,7 @@ head _ =
     []
 
 
+
 -- DATA
 
 
@@ -195,6 +197,7 @@ destinations =
     ]
 
 
+
 -- VIEW
 
 
@@ -257,6 +260,7 @@ appBar =
         ]
 
 
+
 -- NAVIGATION
 
 
@@ -300,6 +304,7 @@ barItem current ( dest, iconName, label ) =
         [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         ]
+
 
 
 -- CONTENT
@@ -380,6 +385,7 @@ categoryTab current ( category, label ) =
         , M3e.Events.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
         [ M3e.text label ]
+
 
 
 -- RAILS

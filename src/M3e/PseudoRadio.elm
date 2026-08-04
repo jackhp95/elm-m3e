@@ -1,7 +1,7 @@
 module M3e.PseudoRadio exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled
+    , checked, disabled, defaultChecked
     , withChecked, withClass, withDisabled, withId, withSlot, withStyle
     )
 
@@ -11,7 +11,7 @@ An element which looks like a radio button.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled
+@docs checked, disabled, defaultChecked
 @docs withChecked, withClass, withDisabled, withId, withSlot, withStyle
 
 -}
@@ -72,6 +72,13 @@ checked =
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
     A.disabled
+
+
+{-| See `M3e.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    A.defaultChecked
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

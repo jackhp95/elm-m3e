@@ -2,7 +2,7 @@ module M3e.NavItem exposing
     ( view, build, toElement
     , Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation
-    , disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
+    , disabled, disabledInteractive, download, href, rel, selected, target, defaultSelected, onBeforeinput, onInput, onChange, onClick
     , icon, selectedIcon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
     )
@@ -14,7 +14,7 @@ An item, placed in a navigation bar or rail, used to navigate to destinations in
 @docs view, build, toElement
 @docs Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation
-@docs disabled, disabledInteractive, download, href, rel, selected, target, onBeforeinput, onInput, onChange, onClick
+@docs disabled, disabledInteractive, download, href, rel, selected, target, defaultSelected, onBeforeinput, onInput, onChange, onClick
 @docs icon, selectedIcon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOrientation, withRel, withSelected, withSelectedIcon, withSlot, withStyle, withTarget
 
@@ -158,6 +158,13 @@ selected =
 target : String -> Attr { c | target : Supported } msg
 target =
     A.target
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| See `M3e.Events.onBeforeinput`.

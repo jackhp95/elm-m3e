@@ -94,6 +94,7 @@ head _ =
     []
 
 
+
 -- DATA ------------------------------------------------------------------------
 
 
@@ -171,6 +172,7 @@ activity =
     ]
 
 
+
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -215,6 +217,7 @@ exampleFooter =
         , prev = Nothing
         , next = Just ( "/examples/shop", "Shop" )
         }
+
 
 
 -- CHROME ----------------------------------------------------------------------
@@ -287,6 +290,7 @@ fab =
         ]
 
 
+
 -- MAIN CONTENT ----------------------------------------------------------------
 
 
@@ -312,6 +316,7 @@ pageHeader =
         , M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] [ M3e.text "Good morning, Jack" ]
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Here is how your business is doing today." ]
         ]
+
 
 
 -- KPI ROW ---------------------------------------------------------------------
@@ -353,6 +358,7 @@ trendDelta trend delta =
         ]
 
 
+
 -- ACCOUNTS --------------------------------------------------------------------
 
 
@@ -378,6 +384,7 @@ accountRow a =
         ]
 
 
+
 -- BUDGETS ---------------------------------------------------------------------
 
 
@@ -400,6 +407,7 @@ budgetRow b =
             [ M3e.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
             []
         ]
+
 
 
 -- RECENT ACTIVITY -------------------------------------------------------------
@@ -433,6 +441,7 @@ activityRow a =
         , M3e.ListItem.trailing
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [ M3e.text a.amount ])
         ]
+
 
 
 -- SHARED SECTION CARD ---------------------------------------------------------

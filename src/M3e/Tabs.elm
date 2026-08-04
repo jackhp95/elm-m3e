@@ -1,8 +1,8 @@
 module M3e.Tabs exposing
     ( view, build, toElement
     , Is, Attrs, Content, NextIconSlot, PanelSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , HeaderPosition, headerPosition, Variant, variant
-    , disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
+    , DisablePagination, disablePagination, HeaderPosition, headerPosition, Variant, variant
+    , nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
     , nextIcon, panel, prevIcon, child
     , withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPanel, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
     )
@@ -13,8 +13,8 @@ Organizes content into separate views where only one view can be visible at a ti
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, NextIconSlot, PanelSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs HeaderPosition, headerPosition, Variant, variant
-@docs disablePagination, nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
+@docs DisablePagination, disablePagination, HeaderPosition, headerPosition, Variant, variant
+@docs nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
 @docs nextIcon, panel, prevIcon, child
 @docs withChild, withClass, withDisablePagination, withHeaderPosition, withId, withNextIcon, withNextPageLabel, withOnBeforeinput, withOnChange, withOnInput, withPanel, withPrevIcon, withPreviousPageLabel, withSlot, withStretch, withStyle, withVariant
 
@@ -87,6 +87,15 @@ type alias ChildAdmittedBy childAdm =
     { childAdm | tabs : Ctx }
 
 
+{-| The `disablePagination` values valid on this component (compile-tight narrowing).
+-}
+type alias DisablePagination =
+    { auto : Supported
+    , false : Supported
+    , true : Supported
+    }
+
+
 {-| The `headerPosition` values valid on this component (compile-tight narrowing).
 -}
 type alias HeaderPosition =
@@ -113,6 +122,13 @@ view =
     H.tabs
 
 
+{-| Whether scroll buttons are disabled.
+-}
+disablePagination : Value DisablePagination -> Attr { c | disablePagination : Supported } msg
+disablePagination value_ =
+    Ir.attribute "disable-pagination" (Val.toString value_)
+
+
 {-| The position of the tab headers. (default: `"before"`)
 -}
 headerPosition : Value HeaderPosition -> Attr { c | headerPosition : Supported } msg
@@ -125,13 +141,6 @@ headerPosition value_ =
 variant : Value Variant -> Attr { c | variant : Supported } msg
 variant value_ =
     Ir.attribute "variant" (Val.toString value_)
-
-
-{-| See `M3e.Attributes.disablePagination`.
--}
-disablePagination : String -> Attr { c | disablePagination : Supported } msg
-disablePagination =
-    A.disablePagination
 
 
 {-| See `M3e.Attributes.nextPageLabel`.
@@ -288,9 +297,9 @@ withStyle property value_ =
 
 {-| Pipe form of `disablePagination` — consumes its capability (write-once).
 -}
-withDisablePagination : String -> Builder { a | disablePagination : Available } slotCaps msg -> Builder { a | disablePagination : Used } slotCaps msg
+withDisablePagination : Value DisablePagination -> Builder { a | disablePagination : Available } slotCaps msg -> Builder { a | disablePagination : Used } slotCaps msg
 withDisablePagination value_ =
-    B.withAttribute (A.disablePagination value_)
+    B.withAttribute (disablePagination value_)
 
 
 {-| Pipe form of `headerPosition` — consumes its capability (write-once).

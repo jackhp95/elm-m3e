@@ -2,7 +2,7 @@ module M3e.CircularProgressIndicator exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
-    , indeterminate, max, value
+    , indeterminate, max, value, defaultValue
     , child
     , withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A circular indicator of progress and activity.
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
-@docs indeterminate, max, value
+@docs indeterminate, max, value, defaultValue
 @docs child
 @docs withChild, withClass, withId, withIndeterminate, withMax, withSlot, withStyle, withValue, withVariant
 
@@ -101,10 +101,20 @@ max =
 
 
 {-| A fractional value, between 0 and `max`, indicating progress. (default: `0`)
+
+Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
+
 -}
 value : Float -> Attr { c | value : Supported } msg
 value value_ =
     Ir.property "value" (Json.Encode.float value_)
+
+
+{-| Set the `value` CONTENT attribute — the element's DEFAULT/initial `value`, mirroring HTML's own `defaultValue` IDL attribute. Unlike `value` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultValue : Float -> Attr { c | value : Supported } msg
+defaultValue value_ =
+    Ir.attribute "value" (String.fromFloat value_)
 
 
 {-| Place a pre-built element into the default (unnamed) slot (input

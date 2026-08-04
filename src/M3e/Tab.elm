@@ -1,7 +1,7 @@
 module M3e.Tab exposing
     ( view, build, toElement
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, for, selected, onBeforeinput, onInput, onChange, onClick
+    , disabled, for, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
     , icon, child
     , withChild, withClass, withDisabled, withFor, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle
     )
@@ -12,7 +12,7 @@ An interactive element that, when activated, presents an associated tab panel.
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, for, selected, onBeforeinput, onInput, onChange, onClick
+@docs disabled, for, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
 @docs icon, child
 @docs withChild, withClass, withDisabled, withFor, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle
 
@@ -101,6 +101,13 @@ for =
 selected : Bool -> Attr { c | selected : Supported } msg
 selected =
     A.selected
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| See `M3e.Events.onBeforeinput`.

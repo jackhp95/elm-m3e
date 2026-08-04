@@ -2,7 +2,7 @@ module M3e.Card exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation, Type, type_, Variant, variant
-    , actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, onClick
+    , actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
     , actions, content, footer, header, child
     , withActionable, withActions, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A content container for text, images (or other media), and actions in the contex
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation, Type, type_, Variant, variant
-@docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, onClick
+@docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
 @docs actions, content, footer, header, child
 @docs withActionable, withActions, withChild, withClass, withContent, withDisabled, withDisabledInteractive, withDownload, withFooter, withHeader, withHref, withId, withInline, withName, withOnClick, withOrientation, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
@@ -198,6 +198,13 @@ target =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onClick`.

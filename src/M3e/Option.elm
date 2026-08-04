@@ -2,7 +2,7 @@ module M3e.Option exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , HighlightMode, highlightMode
-    , disableHighlight, disabled, selected, term, value
+    , disableHighlight, disabled, selected, term, value, defaultSelected, defaultValue
     , child
     , withChild, withClass, withDisableHighlight, withDisabled, withHighlightMode, withId, withSelected, withSlot, withStyle, withTerm, withValue
     )
@@ -14,7 +14,7 @@ An option that can be selected.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs HighlightMode, highlightMode
-@docs disableHighlight, disabled, selected, term, value
+@docs disableHighlight, disabled, selected, term, value, defaultSelected, defaultValue
 @docs child
 @docs withChild, withClass, withDisableHighlight, withDisabled, withHighlightMode, withId, withSelected, withSlot, withStyle, withTerm, withValue
 
@@ -137,6 +137,20 @@ term =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| Place a pre-built element into the default (unnamed) slot (input

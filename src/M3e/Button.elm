@@ -2,7 +2,7 @@ module M3e.Button exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant
-    , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
+    , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
     , icon, selected, selectedIcon, trailingIcon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A button users interact with to perform an action.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant
-@docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
+@docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs icon, selected, selectedIcon, trailingIcon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedIcon, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withTrailingIcon, withType, withValue, withVariant
 
@@ -305,6 +305,13 @@ toggle =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

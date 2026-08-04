@@ -1,7 +1,7 @@
 module M3e.PseudoCheckbox exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled, indeterminate
+    , checked, disabled, indeterminate, defaultChecked
     , withChecked, withClass, withDisabled, withId, withIndeterminate, withSlot, withStyle
     )
 
@@ -11,7 +11,7 @@ An element which looks like a checkbox.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled, indeterminate
+@docs checked, disabled, indeterminate, defaultChecked
 @docs withChecked, withClass, withDisabled, withId, withIndeterminate, withSlot, withStyle
 
 -}
@@ -80,6 +80,13 @@ disabled =
 indeterminate : Bool -> Attr { c | indeterminate : Supported } msg
 indeterminate =
     A.indeterminate
+
+
+{-| See `M3e.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    A.defaultChecked
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing

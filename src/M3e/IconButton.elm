@@ -2,7 +2,7 @@ module M3e.IconButton exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
-    , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
+    , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
     , selected, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
     )
@@ -14,7 +14,7 @@ An icon button users interact with to perform a supplementary action.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
-@docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, onBeforeinput, onInput, onChange, onClick
+@docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs selected, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withRel, withSelected, withSelectedSlot, withShape, withSize, withSlot, withStyle, withTarget, withToggle, withType, withValue, withVariant, withWidth
 
@@ -297,6 +297,13 @@ toggle =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

@@ -1,7 +1,7 @@
 module M3e.MenuItemRadio exposing
     ( view, build, toElement
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , checked, disabled, onClick
+    , checked, disabled, defaultChecked, onClick
     , icon, trailingIcon, child
     , withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
     )
@@ -12,7 +12,7 @@ An item of a menu which supports a mutually exclusive checkable state.
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs checked, disabled, onClick
+@docs checked, disabled, defaultChecked, onClick
 @docs icon, trailingIcon, child
 @docs withChecked, withChild, withClass, withDisabled, withIcon, withId, withOnClick, withSlot, withStyle, withTrailingIcon
 
@@ -96,6 +96,13 @@ checked =
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
     A.disabled
+
+
+{-| See `M3e.Attributes.defaultChecked`.
+-}
+defaultChecked : Bool -> Attr { c | checked : Supported } msg
+defaultChecked =
+    A.defaultChecked
 
 
 {-| See `M3e.Events.onClick`.

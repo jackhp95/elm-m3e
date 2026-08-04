@@ -1,7 +1,7 @@
 module M3e.ListOption exposing
     ( view, build, toElement
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disabled, selected, value, onBeforeinput, onInput, onChange, onClick
+    , disabled, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
     , leading, overline, supportingText, trailing, child
     , withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
     )
@@ -12,7 +12,7 @@ A selectable option in a list.
 
 @docs view, build, toElement
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disabled, selected, value, onBeforeinput, onInput, onChange, onClick
+@docs disabled, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs leading, overline, supportingText, trailing, child
 @docs withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
 
@@ -139,6 +139,20 @@ selected =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

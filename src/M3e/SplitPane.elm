@@ -2,7 +2,7 @@ module M3e.SplitPane exposing
     ( view, el, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Orientation, orientation
-    , detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, onChange, onBeforeinput, onInput
+    , detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, defaultValue, onChange, onBeforeinput, onInput
     , end, start
     , withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withWrapDetents
     )
@@ -14,7 +14,7 @@ A dual-view layout that separates content with a movable drag handle.
 @docs view, el, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Orientation, orientation
-@docs detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, onChange, onBeforeinput, onInput
+@docs detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, defaultValue, onChange, onBeforeinput, onInput
 @docs end, start
 @docs withClass, withDetents, withDisabled, withEnd, withId, withLabel, withMax, withMin, withName, withOnBeforeinput, withOnChange, withOnInput, withOrientation, withOvershootLimit, withSlot, withStart, withStep, withStyle, withValue, withWrapDetents
 
@@ -165,6 +165,9 @@ step =
 
 
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`)
+
+Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
+
 -}
 value : Float -> Attr { c | value : Supported } msg
 value value_ =
@@ -176,6 +179,13 @@ value value_ =
 wrapDetents : Bool -> Attr { c | wrapDetents : Supported } msg
 wrapDetents =
     A.wrapDetents
+
+
+{-| Set the `value` CONTENT attribute — the element's DEFAULT/initial `value`, mirroring HTML's own `defaultValue` IDL attribute. Unlike `value` (which writes the live DOM property) this one SERIALIZES: it is what server-rendered markup and `outerHTML` show, and it is what a form reset restores to.
+-}
+defaultValue : Float -> Attr { c | value : Supported } msg
+defaultValue value_ =
+    Ir.attribute "value" (String.fromFloat value_)
 
 
 {-| See `M3e.Events.onChange`.

@@ -2,7 +2,7 @@ module M3e.FilterChip exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
     , Variant, variant
-    , disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
+    , disabled, disabledInteractive, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
     , icon, trailingIcon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
     )
@@ -14,7 +14,7 @@ A chip users interact with to select/deselect options.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
 @docs Variant, variant
-@docs disabled, disabledInteractive, selected, value, onBeforeinput, onInput, onChange, onClick
+@docs disabled, disabledInteractive, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs icon, trailingIcon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withIcon, withId, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withSelected, withSlot, withStyle, withTrailingIcon, withValue, withVariant
 
@@ -145,6 +145,20 @@ selected =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onBeforeinput`.

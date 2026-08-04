@@ -2,7 +2,7 @@ module M3e.SuggestionChip exposing
     ( view, el, build, toElement
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
     , Type, type_, Variant, variant
-    , disabled, disabledInteractive, download, href, name, rel, target, value, onClick
+    , disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
     , icon, child
     , withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     )
@@ -15,7 +15,7 @@ suggested responses or search filters.
 @docs view, el, build, toElement
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps, Builder, AttrCaps, SlotCaps
 @docs Type, type_, Variant, variant
-@docs disabled, disabledInteractive, download, href, name, rel, target, value, onClick
+@docs disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
 @docs icon, child
 @docs withChild, withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withIcon, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 
@@ -217,6 +217,13 @@ target =
 value : String -> Attr { c | value : Supported } msg
 value =
     A.value
+
+
+{-| See `M3e.Attributes.defaultValue`.
+-}
+defaultValue : String -> Attr { c | value : Supported } msg
+defaultValue =
+    A.defaultValue
 
 
 {-| See `M3e.Events.onClick`.

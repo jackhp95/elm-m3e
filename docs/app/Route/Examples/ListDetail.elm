@@ -46,6 +46,7 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+
 -- MODEL -----------------------------------------------------------------------
 
 
@@ -55,6 +56,7 @@ type alias Model =
 
 type Msg
     = SelectContact Int
+
 
 
 -- ROUTE -----------------------------------------------------------------------
@@ -105,6 +107,7 @@ head _ =
     []
 
 
+
 -- DATA ------------------------------------------------------------------------
 
 
@@ -137,6 +140,7 @@ destinations =
     , { icon = "star", label = "Favorites" }
     , { icon = "history", label = "Recent" }
     ]
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -189,6 +193,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
         [ M3e.AppBar.title (M3e.text "Contacts") ]
+
 
 
 -- TWO-PANE BODY ---------------------------------------------------------------
@@ -299,6 +304,7 @@ selectedContact index =
 fallbackContact : Contact
 fallbackContact =
     { name = "No contact", initials = "?", role = "", email = "", phone = "", note = "" }
+
 
 
 -- NAVIGATION ------------------------------------------------------------------
