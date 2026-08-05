@@ -79,7 +79,19 @@ config =
     -- The use layer: names the call AND the typed setter that already exists.
     -- Evidence-driven — a setter is only ever suggested when the rule has seen
     -- its declaration, so it degrades to silence rather than to guesswork.
-    , NoRedundantAttributeEscape.rule { setterModules = [] } facts
+    , NoRedundantAttributeEscape.rule
+        { setterModules = []
+
+        -- The element-independent vocabulary, read from the generator rather than
+        -- hardcoded in the rule. Both brands contribute: TypedHtml carries HTML's
+        -- `_globals` roster, M3e carries its own four. A name outside this set is
+        -- element-SPECIFIC, and the rule must stay silent about it — from an escape
+        -- call site, `content` on a `<meta>` is indistinguishable from `content` on a
+        -- custom element that gives the name its own meaning.
+        , globalAttributes =
+            M3e.Review.Facts.globalAttributes ++ TypedHtml.Review.Facts.globalAttributes
+        }
+        facts
     , NoRedundantElementEscape.rule { seamEscapes = [] } facts
         -- `app/Shared.elm` holds the app's ONE render exit: elm-pages' `Shared.view`
         -- must return `{ body : List (Html msg) }`, so the shell has to call
