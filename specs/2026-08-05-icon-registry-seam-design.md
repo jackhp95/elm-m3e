@@ -25,6 +25,28 @@ So one static icon costs: an Elm string literal of raw markup, a bypass of the t
 `Element` layer, a custom element whose job is to run `innerHTML`, and a hand-maintained
 trust list.
 
+## CORRECTION (verified during implementation): import `registerIcon` from `@m3e/web/all`
+
+**`@m3e/web` ships two independent copies of `IconRegistry`** — one inlined in
+`dist/all.js`, one in `dist/icon.js` (`rg -c 'class IconRegistry'` returns 1 in each).
+Separate module scopes mean separate registries, with separate `Map`s.
+
+`docs/index.ts` imports `@m3e/web/all`, so the live `<m3e-icon>` elements read
+**all.js's** registry. Registering through `@m3e/web/icon` writes to the *other* instance —
+no error, no warning, and the icon silently renders as its unregistered-name text fallback.
+This was reproduced in a browser during implementation:
+
+```
+registered: false, textFallback: "github"
+shadowHTML: <div class="icon" …>github</div>
+```
+
+`@m3e/web/all` re-exports the same `registerIcon`, so the fix stays on the library's public
+seam. **Every snippet below that says `from "@m3e/web/icon"` should read
+`from "@m3e/web/all"`** for any app that loads the `all` bundle.
+
+This has a second consequence, recorded in "Related: `@m3e/icons`" below.
+
 ## The seam that already exists
 
 `@m3e/web/icon` publicly exports `registerIcon` — the documented extension point for
@@ -162,14 +184,50 @@ build-time example HTML generated from `config/*.rich.json`, never a hand-pasted
 
 Update the contract comment to drop the `Shared.githubMark` mention. Do not delete the file.
 
+## Related: `@m3e/icons`, and why it cannot be used in this app
+
+There is an official companion package, `@m3e/icons` (v1.0.12, `peerDependencies: @m3e/web`).
+It ships **3897 Material Symbols × 3 variants** as one side-effect module per icon — 1.7MB
+packed for the whole set, tree-shakeable. Each module is exactly this:
+
+```js
+import { registerIcon } from '@m3e/web/icon';
+registerIcon('palette','outlined',{outlined:'M480-80q…',filled:'M480-80q…'});
+```
+
+It would be the obvious source for Material glyphs — except that it imports from
+**`@m3e/web/icon`**, which is the registry instance the `all` bundle does not read (see the
+CORRECTION above). So in this app, which loads `@m3e/web/all`, **every `@m3e/icons` import
+would register into the wrong `IconRegistry` and silently render as text.** Verified:
+`grep -o "from '[^']*'" dist/outlined/palette.js` → `from '@m3e/web/icon'`.
+
+Using it would require either dropping `@m3e/web/all` in favour of per-component imports, or
+an upstream fix in `@m3e/web` to share one registry. Neither is in scope here. Recorded so
+the trap is not rediscovered — and note it is worth reporting upstream to matraic.
+
+Also note Iconify **normalises** Material Symbols onto a `0 0 24 24` viewBox, not the
+`0 -960 960 960` grid the raw Google font data uses. `@m3e/icons` ships the 960-grid paths.
+Anything computing geometry from these paths must read the declared viewBox rather than
+assume a grid.
+
 ## Explicitly out of scope
 
-Retiring the **3.9MB** `docs/public/material-symbols-outlined.woff2`. Registering every
-Material icon from `@iconify-json/material-symbols` would let the font go, and the payoff is
-large. But **252 distinct icon names** appear across the mined examples corpus
-(`config/examples.*.json`), and any name not registered regresses to a visible text label in
-a docs preview. That needs full coverage of all 252 plus a gate asserting it, which is its
-own change. Recorded here so the number is not re-derived later.
+Retiring the **3.9MB** `docs/public/material-symbols-outlined.woff2`. Decided against: the
+font stays.
+
+Two things worth recording so the decision is not re-litigated from bad numbers:
+
+- The real count is **65** distinct `<m3e-icon name="…">` values across the corpus (plus 5 in
+  the app's own Elm: `menu palette save settings widgets`). An earlier draft of this spec said
+  252 — that was wrong, counting `file:name` pairs across several config files and sweeping in
+  non-icon `name="…"` attributes such as m3e shape names (`arch`, `boom`, `bun`) and
+  form-field names (`address2`…`address5`).
+- Registry-rendered icons lose the variable axes. `m3e-icon`'s shadow CSS applies
+  `font-variation-settings` (`FILL`, `wght`, `GRAD`, `opsz`) only to `.icon`, the text div;
+  the registry branch is styled by `svg { fill: currentColor; … }`. `variant` and `filled`
+  survive (registry key, dual fill-set); `weight`, `grade` and `opticalSize` do not. The
+  docs use them exactly once — `docs/app/Route/Examples/Shop.elm:377`
+  (`M3e.Attributes.opticalSize 48`) — and zero times in the corpus.
 
 ## Verification
 
