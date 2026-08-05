@@ -126,10 +126,11 @@ success while other routes are broken. Compile all of them, and run a real
 Escapes that currently have no rung-1 or rung-2 alternative. Check whether these are
 still true before accepting one:
 
-- **`aria-hidden`** — `TypedHtml.Aria` exposes `role`, the roles, the state/property
-  setters (`checked`, `expanded`, `pressed`, …) and `label`/`labelledby`/`describedby`,
-  but **not** `hidden`. Sites needing it must use
-  `M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Attributes.attribute "aria-hidden" …)`.
+None currently known. `aria-hidden` was the last entry here — `TypedHtml.Aria` now
+exposes `hidden : Value Hidden -> Attr c msg` (enum-valued: `true`/`false`/`undefined`,
+reusing the same tokens `checked`/`expanded`/`orientation`/… already mint), so a site
+needing `aria-hidden` should call `Aria.hidden Aria.true` / `Aria.hidden Aria.false`,
+not escape.
 
 ## Why this exists
 

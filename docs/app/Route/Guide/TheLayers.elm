@@ -14,9 +14,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Html
 import M3e.Kind
-import M3e.Unsafe
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)

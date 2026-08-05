@@ -26,7 +26,6 @@ import M3e.Attributes
 import M3e.Card
 import M3e.ContentPane
 import M3e.Heading
-import M3e.Kind
 import M3e.Unsafe
 import M3e.Values as Value
 import Markdown.Parser

@@ -23,7 +23,6 @@ annotates.
 
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Kind
 import M3e.Values as Value
 import TypedHtml
 import TypedHtml.Attributes as TA

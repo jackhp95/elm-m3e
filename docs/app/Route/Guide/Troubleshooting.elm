@@ -12,7 +12,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e
-import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

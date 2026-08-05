@@ -1,7 +1,7 @@
 module TypedHtml.Aria exposing
     ( role, roleString
     , alert, alertdialog, application, banner, button, cell, checkbox, columnheader, combobox, complementary, contentinfo, definition, dialog, directory, document, feed, figure, form, generic, grid, gridcell, group, heading, img, link, list, listbox, listitem, log, main_, marquee, math, menu, menubar, menuitem, menuitemcheckbox, menuitemradio, meter, navigation, none, note, option, presentation, progressbar, radio, radiogroup, region, row, rowgroup, rowheader, scrollbar, search, searchbox, separator, slider, spinbutton, status, switch, tab, table, tablist, tabpanel, term, textbox, timer, toolbar, tooltip, tree, treegrid, treeitem
-    , Autocomplete, Checked, Current, Expanded, Haspopup, Invalid, Live, Orientation, Pressed, Relevant, Sort, autocomplete, checked, current, expanded, haspopup, invalid, live, orientation, pressed, relevant, sort
+    , Autocomplete, Checked, Current, Expanded, Haspopup, Hidden, Invalid, Live, Orientation, Pressed, Relevant, Sort, autocomplete, checked, current, expanded, haspopup, hidden, invalid, live, orientation, pressed, relevant, sort
     , additions, all, ascending, assertive, both, date, descending, dialogValue, false, grammar, gridValue, horizontal, inline, listValue, listboxValue, location, menuValue, mixed, noneValue, off, other, page, polite, removals, spelling, step, text, time, treeValue, true, undefined, vertical
     , describedby, description, label, labelledby
     )
@@ -14,7 +14,7 @@ dependency is lint territory.
 
 @docs role, roleString
 @docs alert, alertdialog, application, banner, button, cell, checkbox, columnheader, combobox, complementary, contentinfo, definition, dialog, directory, document, feed, figure, form, generic, grid, gridcell, group, heading, img, link, list, listbox, listitem, log, main_, marquee, math, menu, menubar, menuitem, menuitemcheckbox, menuitemradio, meter, navigation, none, note, option, presentation, progressbar, radio, radiogroup, region, row, rowgroup, rowheader, scrollbar, search, searchbox, separator, slider, spinbutton, status, switch, tab, table, tablist, tabpanel, term, textbox, timer, toolbar, tooltip, tree, treegrid, treeitem
-@docs Autocomplete, Checked, Current, Expanded, Haspopup, Invalid, Live, Orientation, Pressed, Relevant, Sort, autocomplete, checked, current, expanded, haspopup, invalid, live, orientation, pressed, relevant, sort
+@docs Autocomplete, Checked, Current, Expanded, Haspopup, Hidden, Invalid, Live, Orientation, Pressed, Relevant, Sort, autocomplete, checked, current, expanded, haspopup, hidden, invalid, live, orientation, pressed, relevant, sort
 @docs additions, all, ascending, assertive, both, date, descending, dialogValue, false, grammar, gridValue, horizontal, inline, listValue, listboxValue, location, menuValue, mixed, noneValue, off, other, page, polite, removals, spelling, step, text, time, treeValue, true, undefined, vertical
 @docs describedby, description, label, labelledby
 
@@ -617,6 +617,22 @@ type alias Haspopup =
 haspopup : Value Haspopup -> Attr c msg
 haspopup value_ =
     Ir.attribute "aria-haspopup" (HtmlIr.Value.toString value_)
+
+
+{-| The values `aria-hidden` admits.
+-}
+type alias Hidden =
+    { false : Supported
+    , true : Supported
+    , undefined : Supported
+    }
+
+
+{-| Value-typed `aria-hidden` (universal: any element admits it).
+-}
+hidden : Value Hidden -> Attr c msg
+hidden value_ =
+    Ir.attribute "aria-hidden" (HtmlIr.Value.toString value_)
 
 
 {-| The values `aria-invalid` admits.

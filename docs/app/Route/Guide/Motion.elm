@@ -14,17 +14,12 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import M3e
-import M3e.Unsafe
-import M3e.Unsafe.Attributes
-import M3e.Values
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 

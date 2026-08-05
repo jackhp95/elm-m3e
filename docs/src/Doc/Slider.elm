@@ -28,6 +28,7 @@ import M3e.Kind
 import M3e.Unsafe
 import M3e.Unsafe.Attributes
 import TypedHtml
+import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
 
@@ -88,12 +89,12 @@ panel activeIndex i child =
         attrs : List (Attr { c | class : M3e.Kind.Supported, inert : M3e.Kind.Supported } msg)
         attrs =
             TA.class "sp-panel"
-                :: M3e.Unsafe.Attributes.customAttribute "aria-hidden"
+                :: Aria.hidden
                     (if inactive then
-                        "true"
+                        Aria.true
 
                      else
-                        "false"
+                        Aria.false
                     )
                 :: (if inactive then
                         [ TA.inert True ]

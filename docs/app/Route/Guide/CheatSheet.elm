@@ -13,7 +13,6 @@ import Head.Seo as Seo
 import M3e
 import M3e.Attributes
 import M3e.Heading
-import M3e.Html
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)

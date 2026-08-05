@@ -29,6 +29,7 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
+import TypedHtml.Aria
 import TypedHtml.Attributes
 import TypedHtml.Grouping
 import UrlPath
@@ -150,7 +151,7 @@ htmlInSlot =
         [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
         , M3e.AppBar.trailing
             (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-                [ M3e.iconButton [] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
+                [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
                 , M3e.badge [] [ M3e.text "3" ]
                 ]
             )
@@ -260,7 +261,7 @@ htmlInSlot =
         [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
         , M3e.AppBar.trailing
             (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-                [ M3e.iconButton [] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
+                [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
                 , M3e.badge [] [ M3e.text "3" ]
                 ]
             )

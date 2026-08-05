@@ -2,7 +2,6 @@ module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound,
 
 import Doc
 import Effect exposing (Effect)
-import M3e
 import View exposing (View)
 
 

@@ -22,7 +22,6 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Json.Decode as Decode
-import M3e
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

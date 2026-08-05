@@ -19,8 +19,7 @@ import Doc.Data
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
-import Html.Attributes as Attr exposing (attribute, class)
-import Html.Events
+import Html.Attributes exposing (attribute, class)
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.AppBar
@@ -28,13 +27,11 @@ import M3e.Attributes
 import M3e.DrawerContainer
 import M3e.Events
 import M3e.FormField
-import M3e.Html
 import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Theme
 import M3e.Unsafe
-import M3e.Unsafe.Attributes
 import M3e.Values as Value
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -472,7 +469,7 @@ brandMark =
     M3e.icon
         [ M3e.Icon.name "palette"
         , TypedHtml.Attributes.class "ms-2 me-1 hidden md:inline-flex"
-        , M3e.Unsafe.Attributes.fromHtmlAttribute (attribute "aria-hidden" "true")
+        , Aria.hidden Aria.true
         ]
         []
 
@@ -538,9 +535,9 @@ from library components in the Element world: each control is a
 an `M3e.heading` label + a control (segmented buttons, or a
 [`FormField`](M3e-FormField) for the seed color). The container keeps its
 `#settings-drawer` id (matraic's flex-column/gap/padding styling lives in
-`style.css`, crossed through the one sanctioned `M3e.Unsafe.Attributes.fromHtmlAttribute`) and the
-typed `role="complementary"` landmark via `Aria.role`. It returns `Element`, so
-it enters the drawer's `end` slot directly (no `M3e.Unsafe.fromHtml`).
+`style.css`) and the typed `role="complementary"` landmark via `Aria.role`. It
+returns `Element`, so it enters the drawer's `end` slot directly (no
+`M3e.Unsafe.fromHtml`).
 
 All our richer controls are kept (scheme, contrast, seed color, density,
 direction); only their LOCATION moved from the old Card popover into this end

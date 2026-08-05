@@ -10,10 +10,6 @@ import BackendTask
 import Doc
 import Head
 import Head.Seo as Seo
-import M3e
-import M3e.Html
-import M3e.Unsafe
-import M3e.Values
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

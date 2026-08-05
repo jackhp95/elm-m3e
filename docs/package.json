@@ -20,7 +20,8 @@
     "check:drift": "node scripts/check-data-drift.mjs",
     "check:roundtrip": "node scripts/verify-roundtrip.mjs",
     "dev": "elm-pages dev",
-    "serve": "node scripts/serve-dist.mjs dist"
+    "serve": "node scripts/serve-dist.mjs dist",
+    "check:review": "elm-review --config ../review --compiler node_modules/.bin/elm"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.0",
