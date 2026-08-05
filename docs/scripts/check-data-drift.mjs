@@ -39,10 +39,9 @@ const REPO = path.resolve(DOCS, "..");
 // changes, and this list is the contract.
 const ARTIFACTS = [
   "data/reference.json",
-  // gen:brand-images — the 48x48 brand plate carrying the real
-  // material-symbols:palette glyph. Text, and the generator is pure string
-  // building, so it is byte-reproducible everywhere. See the note below for why
-  // its sibling RASTERS are deliberately absent from this list.
+  // gen:brand-images — the bare material-symbols:palette glyph. Text, and the
+  // generator is pure string building, so it is byte-reproducible everywhere.
+  // See the note below for why its sibling RASTER is deliberately absent.
   "public/favicon.svg",
   // gen:samples — the guide's displayed Elm, lifted back out into things a
   // compiler and a linter can judge. See scripts/samples-gen/extract-samples.mjs.
@@ -62,18 +61,18 @@ const ARTIFACT_DIRS = ["samples/good", "samples/bad"];
 
 const GEN_STEPS = ["gen:reference", "gen:samples", "gen:brand-images"];
 
-// DELIBERATELY NOT GATED: public/favicon.ico and public/og-card.png.
+// DELIBERATELY NOT GATED: public/og-card.png.
 //
-// gen:brand-images writes those two alongside favicon.svg, but they come out of
-// @resvg/resvg-js — a PREBUILT NATIVE binary, one per platform/libc — and then
-// through png-to-ico. Rasterisation is not byte-reproducible across those
-// builds: identical SVG in, subtly different pixels and PNG streams out on a
-// different machine or in CI. Gating them would fail for a reason no author
-// could act on, and a gate that cries wolf gets disabled — worse than no gate.
+// gen:brand-images writes it alongside favicon.svg, but it comes out of
+// @resvg/resvg-js — a PREBUILT NATIVE binary, one per platform/libc.
+// Rasterisation is not byte-reproducible across those builds: identical SVG in,
+// subtly different pixels and PNG stream out on a different machine or in CI.
+// Gating it would fail for a reason no author could act on, and a gate that
+// cries wolf gets disabled — worse than no gate.
 //
-// This is not a hole in the contract. favicon.svg IS gated above, and the
-// rasters are pure functions of it, so a stale raster can only follow a stale
-// SVG — which this check does catch. Regenerate the rasters whenever the SVG
+// This is not a hole in the contract. favicon.svg IS gated above, and the raster
+// is a pure function of the same glyph source, so a stale raster can only follow
+// a stale input — which this check does catch. Regenerate whenever the glyph
 // changes (`pnpm gen`, or `npm --prefix docs run gen:brand-images`).
 
 // DELIBERATELY NOT GATED (yet): data/examples.json and data/example-usage.json.
