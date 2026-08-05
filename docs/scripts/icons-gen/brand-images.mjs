@@ -2,6 +2,7 @@
 // the same icon the app bar renders (docs/app/Shared.elm: M3e.Icon.name "palette"):
 //
 //   docs/public/favicon.svg   48x48 plate + glyph   (deterministic, drift-gated)
+//   docs/public/favicon.ico   16/32/48 multi-image  (raster, NOT drift-gated)
 //
 // The glyph id lives in config/favicon.json, NOT config/icons.json. That other
 // file drives registerIcon, and registering a Material glyph overrides the
@@ -19,6 +20,8 @@
 import { writeFileSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { Resvg } from "@resvg/resvg-js";
+import pngToIco from "png-to-ico";
 import { resolveIcon, loadSets } from "./icons-to-js.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -29,6 +32,7 @@ const PLATE_GLYPH = 26;
 const OG_W = 1200;
 const OG_H = 630;
 const OG_GLYPH = Math.round(OG_H * 0.4); // 252
+const ICO_SIZES = [16, 32, 48];
 
 const GRADIENT = `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A6FE0"/>
@@ -80,6 +84,11 @@ export function renderOgSvg({ viewBox, path }) {
 `;
 }
 
+/** PNG bytes for `svg` rendered `size` px wide. */
+export function rasterise(svg, size) {
+  return new Resvg(svg, { fitTo: { mode: "width", value: size } }).render().asPng();
+}
+
 export function glyph() {
   const cfg = JSON.parse(readFileSync(resolve(REPO, "config", "favicon.json"), "utf8"));
   if (!cfg.glyph) throw new Error("config/favicon.json has no `glyph` — the brand glyph is unset.");
@@ -90,6 +99,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const icon = glyph();
   const out = (n) => resolve(REPO, "docs", "public", n);
 
-  writeFileSync(out("favicon.svg"), renderFavicon(icon));
+  const favSvg = renderFavicon(icon);
+  writeFileSync(out("favicon.svg"), favSvg);
   console.log(`Wrote favicon.svg (viewBox ${icon.viewBox}).`);
+
+  const icoPngs = ICO_SIZES.map((s) => rasterise(favSvg, s));
+  writeFileSync(out("favicon.ico"), await pngToIco(icoPngs));
+  console.log(`Wrote favicon.ico (${ICO_SIZES.join("/")}px).`);
 }

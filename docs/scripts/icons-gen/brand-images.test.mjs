@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { plateTransform, renderFavicon, renderOgSvg } from "./brand-images.mjs";
+import { plateTransform, renderFavicon, renderOgSvg, rasterise } from "./brand-images.mjs";
 
 test("places an Iconify-normalised 0 0 24 24 glyph in the plate", () => {
   // scale = 26/24; y in [0,24] -> [0,26], inset 11 -> translate(11 11).
@@ -35,4 +35,13 @@ test("renders the OG card at 1200x630 with a centred glyph and no text", () => {
   assert.doesNotMatch(svg, /<text/);
   // 252-unit glyph (40% of 630) centred: tx = (1200-252)/2 = 474, ty = (630-252)/2 = 189.
   assert.match(svg, /transform="translate\(474 189\) scale\(10\.5\)"/);
+});
+
+test("rasterises the favicon SVG to a real PNG of the requested size", () => {
+  const png = rasterise(renderFavicon({ viewBox: "0 0 24 24", path: "M12 3h4v4h-4z" }), 32);
+  // PNG magic number.
+  assert.deepEqual([...png.subarray(0, 4)], [0x89, 0x50, 0x4e, 0x47]);
+  // IHDR width/height are big-endian uint32 at offsets 16 and 20.
+  assert.equal(png.readUInt32BE(16), 32);
+  assert.equal(png.readUInt32BE(20), 32);
 });
