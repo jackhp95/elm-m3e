@@ -72,13 +72,13 @@ view _ _ =
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown extract
-                    , Doc.code_ Doc.Elm extractBefore
-                    , Doc.code_ Doc.Elm extractAfter
+                    , Doc.codeBlock Doc.Elm extractBefore
+                    , Doc.codeBlock Doc.Elm extractAfter
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown convert
-                    , Doc.code_ Doc.Elm convertBefore
-                    , Doc.code_ Doc.Elm convertAfter
+                    , Doc.codeBlock Doc.Elm convertBefore
+                    , Doc.codeBlock Doc.Elm convertAfter
                     , Doc.markdown pipeline
                     ]
                 , Doc.recapBox recap

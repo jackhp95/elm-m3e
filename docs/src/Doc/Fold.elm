@@ -2,7 +2,7 @@ module Doc.Fold exposing (Node, buildForest, serialize, viewWith)
 
 {-| Auto-derived code folding for the docs' code blocks.
 
-The render seam (`Doc.code_`) can only hand us a **raw code string** — the
+The render seam (`Doc.codeBlock`) can only hand us a **raw code string** — the
 `SyntaxHighlight.HCode`/`Line` internals are opaque, so we cannot fold a
 pre-highlighted block. Instead we compute a **fold tree from the raw string**
 here (pure, unit-tested) and assemble nested native `<details>` ourselves,

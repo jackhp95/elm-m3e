@@ -75,30 +75,30 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "One theme at the root"
                     , Doc.markdown rootBody
-                    , Doc.code_ Doc.Elm rootCode
+                    , Doc.codeBlock Doc.Elm rootCode
                     , Doc.markdown rootNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "Paint with roles, not hex"
                     , Doc.markdown rolesBody
-                    , Doc.code_ Doc.Elm rolesCode
+                    , Doc.codeBlock Doc.Elm rolesCode
                     , Doc.markdown tokenFamilies
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "Dark and dynamic color are swaps"
                     , Doc.markdown darkBody
-                    , Doc.code_ Doc.Elm darkCode
+                    , Doc.codeBlock Doc.Elm darkCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "A brand re-skin, end to end"
                     , Doc.markdown reskinBody
-                    , Doc.code_ Doc.Elm reskinCode
+                    , Doc.codeBlock Doc.Elm reskinCode
                     , Doc.markdown reskinNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "The Tailwind bridge: layout only"
                     , Doc.markdown bridgeBody
-                    , Doc.code_ Doc.Elm bridgeCode
+                    , Doc.codeBlock Doc.Elm bridgeCode
                     ]
                 , Doc.recapBox recap
                 ]

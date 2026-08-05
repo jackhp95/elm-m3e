@@ -278,16 +278,16 @@ codeFor surface ex =
         elmOrHtml field =
             case field of
                 Just code ->
-                    Doc.code_ Doc.Elm code
+                    Doc.codeBlock Doc.Elm code
 
                 Nothing ->
-                    Doc.code_ Doc.Xml ex.html
+                    Doc.codeBlock Doc.Xml ex.html
 
         recordBuildCode : Maybe String -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
         recordBuildCode field surfaceName =
             case field of
                 Just code ->
-                    Doc.code_ Doc.Elm code
+                    Doc.codeBlock Doc.Elm code
 
                 Nothing ->
                     identicalSurfaceNote surfaceName
@@ -303,7 +303,7 @@ codeFor surface ex =
             recordBuildCode ex.build "build"
 
         Raw ->
-            Doc.code_ Doc.Xml ex.html
+            Doc.codeBlock Doc.Xml ex.html
 
 
 {-| Shown on a `Record`/`Build` tab whose surface is identical to `M3e` for this

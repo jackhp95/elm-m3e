@@ -94,11 +94,11 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown shapes
                     , Doc.showcase saveButton
-                    , Doc.code_ Doc.Elm shapesCode
+                    , Doc.codeBlock Doc.Elm shapesCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown recordAha
-                    , Doc.code_ Doc.NoLang recordError
+                    , Doc.codeBlock Doc.NoLang recordError
                     ]
                 , Doc.recapBox recap
                 ]

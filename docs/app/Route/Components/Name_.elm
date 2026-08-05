@@ -210,7 +210,7 @@ fill inside a card border — a box-in-box that fights the M3 surface roles.
 -}
 installCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 installCard =
-    Doc.code_ Doc.Elm "import M3e\nimport M3e.Values"
+    Doc.codeBlock Doc.Elm "import M3e\nimport M3e.Values"
 
 
 {-| The API-reference section, rendered like an elm module page: the members

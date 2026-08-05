@@ -89,7 +89,7 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown inspectable
                     , Doc.showcase saveButton
-                    , Doc.code_ Doc.Elm rootCode
+                    , Doc.codeBlock Doc.Elm rootCode
                     ]
                 , Doc.recapBox recap
                 ]

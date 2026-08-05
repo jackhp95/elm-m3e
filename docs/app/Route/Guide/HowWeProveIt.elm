@@ -140,7 +140,7 @@ view app _ =
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown loop
-                    , Doc.code_ Doc.NoLang (report app.data)
+                    , Doc.codeBlock Doc.NoLang (report app.data)
                     , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown reportNote ]
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]

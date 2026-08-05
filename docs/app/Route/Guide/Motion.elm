@@ -75,7 +75,7 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "Inside the components (you don't animate this)"
                     , Doc.markdown shippedBody
-                    , Doc.code_ Doc.Elm shippedCode
+                    , Doc.codeBlock Doc.Elm shippedCode
                     , Doc.markdown shippedNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
@@ -85,7 +85,7 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "The AVT snackbar"
                     , Doc.markdown snackbarBody
-                    , Doc.code_ Doc.Elm snackbarCode
+                    , Doc.codeBlock Doc.Elm snackbarCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "View transitions"

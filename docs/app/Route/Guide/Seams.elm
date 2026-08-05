@@ -117,7 +117,7 @@ producer, contained and greppable, not scattered through feature code.
 modelViewer : Element (TypedHtml.Grouping.DivIs k) freeAdm msg
 modelViewer =
     M3e.Unsafe.customElement "model-viewer"
-        [ M3e.Unsafe.Attributes.customAttribute "src" "/models/chair.glb"
+        [ TypedHtml.Attributes.src "/models/chair.glb"
         , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
         , M3e.Unsafe.Attributes.customAttribute "auto-rotate" ""
         , TypedHtml.Attributes.class "block h-48 w-full rounded-lg bg-surface-container"
@@ -170,26 +170,26 @@ view _ _ =
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown userland
                     , Doc.showcase twoColumn
-                    , Doc.code_ Doc.Elm seamCode
+                    , Doc.codeBlock Doc.Elm seamCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown realSeam
                     , Doc.showcase modelViewer
-                    , Doc.code_ Doc.Elm realSeamCode
+                    , Doc.codeBlock Doc.Elm realSeamCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown slotSeam
                     , Doc.showcase linkNav
-                    , Doc.code_ Doc.Elm linkNavCode
+                    , Doc.codeBlock Doc.Elm linkNavCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown crossBrand
                     , Doc.showcase htmlInSlot
-                    , Doc.code_ Doc.Elm htmlInSlotCode
+                    , Doc.codeBlock Doc.Elm htmlInSlotCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown oneWay
-                    , Doc.code_ Doc.Elm oneWayCode
+                    , Doc.codeBlock Doc.Elm oneWayCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown payoff ]
@@ -227,7 +227,7 @@ realSeamCode =
     """-- a real seam: a custom element the types can't express, contained once.
 modelViewer =
     M3e.Unsafe.customElement "model-viewer"
-        [ M3e.Unsafe.Attributes.customAttribute "src" "/models/chair.glb"
+        [ TypedHtml.Attributes.src "/models/chair.glb"
         , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
         , TypedHtml.Attributes.class "block h-48 w-full rounded-lg"
         ]

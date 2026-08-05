@@ -20,7 +20,7 @@
     "check": "run-p \"check:*\"",
     "check:format": "node_modules/.bin/elm-format --validate docs/app docs/src review/src",
     "check:review": "npm --prefix docs run check:review",
-    "check:cem": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" gate --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json --skip-acid",
+    "check:cem": "PATH=\"$PWD/node_modules/.bin:$PATH\" node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" gate --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json",
     "check:nav": "npm --prefix docs run check:nav",
     "check:drift": "npm --prefix docs run check:drift",
     "dev": "npm --prefix docs run dev",
@@ -29,7 +29,8 @@
     "format": "node_modules/.bin/elm-format --yes docs/app docs/src review/src",
     "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
-    "postinstall": "npm run hooks:install"
+    "postinstall": "npm run hooks:install",
+    "check:gates": "node scripts/check-gates.mjs"
   },
   "devDependencies": {
     "elm": "0.19.1-6",

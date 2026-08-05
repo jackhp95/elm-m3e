@@ -87,12 +87,12 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown labeled
                     , Doc.showcase helpButton
-                    , Doc.code_ Doc.Elm labeledCode
+                    , Doc.codeBlock Doc.Elm labeledCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown nameless
-                    , Doc.code_ Doc.Elm namelessCode
-                    , Doc.code_ Doc.NoLang linterText
+                    , Doc.codeBlock Doc.Elm namelessCode
+                    , Doc.codeBlock Doc.NoLang linterText
                     , Doc.markdown wiring
                     ]
                 , Doc.recapBox recap

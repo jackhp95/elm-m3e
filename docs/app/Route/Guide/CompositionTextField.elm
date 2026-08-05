@@ -97,7 +97,7 @@ view _ _ =
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown composed
                     , Doc.showcase emailField
-                    , Doc.code_ Doc.Elm emailCode
+                    , Doc.codeBlock Doc.Elm emailCode
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown native ]

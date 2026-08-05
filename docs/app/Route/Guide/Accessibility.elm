@@ -88,13 +88,13 @@ view _ _ =
                     [ Doc.sectionHeading "Accessible name: named slot vs ARIA label"
                     , Doc.markdown nameBody
                     , Doc.showcase labeledBack
-                    , Doc.code_ Doc.Elm nameCode
+                    , Doc.codeBlock Doc.Elm nameCode
                     , Doc.markdown nameLayers
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "Focus: dialogs, menus, sheets"
                     , Doc.markdown focusBody
-                    , Doc.code_ Doc.Elm focusCode
+                    , Doc.codeBlock Doc.Elm focusCode
                     , Doc.markdown focusNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
@@ -112,7 +112,7 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.sectionHeading "Testing with the a11y-tree harness"
                     , Doc.markdown testingBody
-                    , Doc.code_ Doc.NoLang testingCode
+                    , Doc.codeBlock Doc.NoLang testingCode
                     , Doc.markdown testingNote
                     ]
                 , Doc.recapBox recap

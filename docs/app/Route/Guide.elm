@@ -10,13 +10,13 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
+import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -60,7 +60,7 @@ head _ =
         |> Seo.website
 
 
-chapterLink : String -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+chapterLink : String -> String -> Element { s | sharedText : M3e.Kind.Shared } admittedBy msg
 chapterLink href label =
     Doc.anchorPill { href = href, label = label }
 

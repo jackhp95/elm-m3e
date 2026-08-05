@@ -89,12 +89,12 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown valid
                     , Doc.showcase savedButton
-                    , Doc.code_ Doc.Elm validCode
+                    , Doc.codeBlock Doc.Elm validCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown broken
-                    , Doc.code_ Doc.Elm brokenCode
-                    , Doc.code_ Doc.NoLang errorText
+                    , Doc.codeBlock Doc.Elm brokenCode
+                    , Doc.codeBlock Doc.NoLang errorText
                     , Doc.markdown readError
                     ]
                 , Doc.recapBox recap

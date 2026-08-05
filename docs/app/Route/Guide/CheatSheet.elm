@@ -81,8 +81,8 @@ view _ _ =
                     , Doc.userlandNote
                     ]
                 , card "The surfaces" [ Doc.markdown layers ]
-                , card "Barrel vs component module" [ Doc.markdown barrelVsSpecific, Doc.code_ Doc.Elm barrelVsSpecificCode ]
-                , card "The three forms" [ Doc.markdown shapes, Doc.code_ Doc.Elm shapesCode ]
+                , card "Barrel vs component module" [ Doc.markdown barrelVsSpecific, Doc.codeBlock Doc.Elm barrelVsSpecificCode ]
+                , card "The three forms" [ Doc.markdown shapes, Doc.codeBlock Doc.Elm shapesCode ]
                 , card "The strictness dial" [ Doc.markdown dial ]
                 , card "Where a seam may live" [ Doc.markdown seams ]
                 ]

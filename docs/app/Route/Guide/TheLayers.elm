@@ -85,12 +85,12 @@ view _ _ =
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown layers
-                    , Doc.code_ Doc.NoLang layersDiagram
+                    , Doc.codeBlock Doc.NoLang layersDiagram
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown sameButton
                     , Doc.showcase saveButton
-                    , Doc.code_ Doc.Elm descentCode
+                    , Doc.codeBlock Doc.Elm descentCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown tell ]

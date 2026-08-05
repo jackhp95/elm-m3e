@@ -66,7 +66,7 @@ entry : String -> String -> M3e.Element (TypedHtml.Sectioning.SectionIs s) adm_ 
 entry prose code =
     TypedHtml.section [ TA.class "space-y-3" ]
         [ Doc.markdown prose
-        , Doc.code_ Doc.NoLang code
+        , Doc.codeBlock Doc.NoLang code
         ]
 
 
