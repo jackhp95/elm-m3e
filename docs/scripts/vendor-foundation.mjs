@@ -19,6 +19,12 @@
 //   ../../elm-html-intermediate-representation
 //   ../../elm-typed-html
 // Override with env vars HTMLIR_SRC / TYPEDHTML_SRC if they live elsewhere.
+//
+// The copy logic below (`copyFoundationInto`) is exported so `check:vendor`
+// (scripts/check-vendor-drift.mjs) can re-run the exact same copy into a scratch
+// dir and diff it against the committed one, instead of reimplementing the file
+// list. Importing this module never copies anything by itself — only running it
+// as a script (`node vendor-foundation.mjs`) does.
 
 import { cpSync, rmSync, mkdirSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
@@ -28,52 +34,72 @@ const here = dirname(fileURLToPath(import.meta.url)); // docs/scripts
 const docsDir = resolve(here, "..");
 const vendorDir = join(docsDir, "vendor", "elm-foundation");
 
-const htmlIrSrc =
+export const htmlIrSrc =
   process.env.HTMLIR_SRC ??
   resolve(docsDir, "..", "..", "elm-html-intermediate-representation", "src");
-const typedHtmlSrc =
+export const typedHtmlSrc =
   process.env.TYPEDHTML_SRC ?? resolve(docsDir, "..", "..", "elm-typed-html", "src");
+
+// The entries this script owns inside a vendor dir: deleted and recopied fresh
+// on every run so upstream deletions propagate. Anything else in the vendor dir
+// (namely the hand-authored VENDORED_FROM.txt marker) is left untouched.
+export const MANAGED_ENTRIES = ["HtmlIr", "TypedHtml", "TypedHtml.elm"];
+
+// Hand-authored marker committed alongside the copy; never written by
+// `copyFoundationInto`, so drift-checking against a fresh copy must exclude it.
+export const PRESERVED_MARKER = "VENDORED_FROM.txt";
+
+/**
+ * Copy HtmlIr.* + TypedHtml.* from the sibling sources into `targetDir`, exactly
+ * as the CLI below does for docs/vendor/elm-foundation. Throws (does not
+ * process.exit) on a missing source, so callers — the check:vendor scratch-dir
+ * comparison included — can handle the failure themselves.
+ */
+export function copyFoundationInto(
+  targetDir,
+  { htmlIrSrc: hi = htmlIrSrc, typedHtmlSrc: th = typedHtmlSrc } = {},
+) {
+  for (const [label, dir] of [
+    ["HtmlIr", hi],
+    ["TypedHtml", th],
+  ]) {
+    if (!existsSync(dir)) {
+      throw new Error(
+        `${label} source not found at ${dir}\n` +
+          `  Clone the sibling repo next to elm-m3e, or set ${label === "HtmlIr" ? "HTMLIR_SRC" : "TYPEDHTML_SRC"}.`,
+      );
+    }
+  }
+
+  // Fresh module trees every run so deletions upstream propagate, but keep the
+  // hand-authored VENDORED_FROM.txt marker that also lives in this dir.
+  mkdirSync(targetDir, { recursive: true });
+  for (const stale of MANAGED_ENTRIES) {
+    rmSync(join(targetDir, stale), { recursive: true, force: true });
+  }
+
+  // HtmlIr: whole HtmlIr/ package tree.
+  cpSync(join(hi, "HtmlIr"), join(targetDir, "HtmlIr"), { recursive: true });
+
+  // TypedHtml: the top-level module + the TypedHtml/ tree, but EXCLUDE
+  // TypedHtml/Review/* — those are elm-review rule facts that import Cem.Facts
+  // (an elm-review-only module the docs don't depend on) and are unexposed +
+  // unimported, so vendoring them would add an unresolvable import to a compiled
+  // source-directory.
+  cpSync(join(th, "TypedHtml.elm"), join(targetDir, "TypedHtml.elm"));
+  cpSync(join(th, "TypedHtml"), join(targetDir, "TypedHtml"), {
+    recursive: true,
+    filter: (src) => {
+      const rel = src.slice(join(th, "TypedHtml").length);
+      return !rel.startsWith("/Review");
+    },
+  });
+}
 
 function fail(msg) {
   console.error(`vendor-foundation: ${msg}`);
   process.exit(1);
 }
-
-for (const [label, dir] of [
-  ["HtmlIr", htmlIrSrc],
-  ["TypedHtml", typedHtmlSrc],
-]) {
-  if (!existsSync(dir)) {
-    fail(
-      `${label} source not found at ${dir}\n` +
-        `  Clone the sibling repo next to elm-m3e, or set ${label === "HtmlIr" ? "HTMLIR_SRC" : "TYPEDHTML_SRC"}.`,
-    );
-  }
-}
-
-// Fresh module trees every run so deletions upstream propagate, but keep the
-// hand-authored VENDORED_FROM.txt marker that also lives in this dir.
-mkdirSync(vendorDir, { recursive: true });
-for (const stale of ["HtmlIr", "TypedHtml", "TypedHtml.elm"]) {
-  rmSync(join(vendorDir, stale), { recursive: true, force: true });
-}
-
-// HtmlIr: whole HtmlIr/ package tree.
-cpSync(join(htmlIrSrc, "HtmlIr"), join(vendorDir, "HtmlIr"), { recursive: true });
-
-// TypedHtml: the top-level module + the TypedHtml/ tree, but EXCLUDE
-// TypedHtml/Review/* — those are elm-review rule facts that import Cem.Facts
-// (an elm-review-only module the docs don't depend on) and are unexposed +
-// unimported, so vendoring them would add an unresolvable import to a compiled
-// source-directory.
-cpSync(join(typedHtmlSrc, "TypedHtml.elm"), join(vendorDir, "TypedHtml.elm"));
-cpSync(join(typedHtmlSrc, "TypedHtml"), join(vendorDir, "TypedHtml"), {
-  recursive: true,
-  filter: (src) => {
-    const rel = src.slice(join(typedHtmlSrc, "TypedHtml").length);
-    return !rel.startsWith("/Review");
-  },
-});
 
 function countElm(dir) {
   let n = 0;
@@ -85,9 +111,23 @@ function countElm(dir) {
   return n;
 }
 
-console.log(
-  `vendor-foundation: refreshed ${vendorDir}\n` +
-    `  from HtmlIr:    ${htmlIrSrc}\n` +
-    `  from TypedHtml: ${typedHtmlSrc}\n` +
-    `  ${countElm(vendorDir)} .elm modules vendored.`,
-);
+function main() {
+  try {
+    copyFoundationInto(vendorDir);
+  } catch (err) {
+    fail(err.message);
+  }
+
+  console.log(
+    `vendor-foundation: refreshed ${vendorDir}\n` +
+      `  from HtmlIr:    ${htmlIrSrc}\n` +
+      `  from TypedHtml: ${typedHtmlSrc}\n` +
+      `  ${countElm(vendorDir)} .elm modules vendored.`,
+  );
+}
+
+// Only run as a script — importing this module (e.g. from check-vendor-drift.mjs)
+// must never mutate docs/vendor/elm-foundation as a side effect.
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
+  main();
+}

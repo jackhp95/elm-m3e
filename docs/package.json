@@ -20,6 +20,7 @@
     "test:browser": "playwright test",
     "check:nav": "node scripts/check-nav.mjs",
     "check:drift": "node scripts/check-data-drift.mjs",
+    "check:vendor": "node scripts/check-vendor-drift.mjs",
     "check:samples": "node scripts/samples-gen/verify-samples.mjs",
     "check:roundtrip": "node scripts/verify-roundtrip.mjs",
     "dev": "elm-pages dev",
