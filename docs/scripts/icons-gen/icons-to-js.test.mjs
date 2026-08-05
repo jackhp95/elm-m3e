@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { resolveIcon } from "./icons-to-js.mjs";
+import { generate, resolveIcon } from "./icons-to-js.mjs";
 
 // A minimal fake icon set — no network, no dependency on real Iconify content.
 const sets = {
@@ -37,4 +37,23 @@ test("rejects path data m3e's allowlist would reject at runtime", () => {
 
 test("rejects an unknown id", () => {
   assert.throws(() => resolveIcon(sets, "fake:nope"), /fake:nope/);
+});
+
+// Regression guard for a silent, browser-only failure. `@m3e/web/all` inlines its
+// OWN copy of IconRegistry; `@m3e/web/icon` ships a second, independent copy. Since
+// docs/index.ts loads `@m3e/web/all`, that is the registry the live <m3e-icon>
+// element reads. Importing registerIcon from "@m3e/web/icon" writes to the other
+// instance, so the icon registers "successfully" and still renders the text
+// fallback. Verified in a browser: it showed the literal word "github".
+test("imports registerIcon from @m3e/web/all, the registry the live element reads", () => {
+  const out = generate({ ok: "fake:ok" }, sets);
+  assert.match(out, /import \{ registerIcon \} from "@m3e\/web\/all";/);
+  assert.doesNotMatch(out, /"@m3e\/web\/icon"/);
+});
+
+test("emits the object form with an explicit viewBox for every variant", () => {
+  const out = generate({ ok: "fake:ok" }, sets);
+  assert.match(out, /"viewBox":"0 0 24 24"/);
+  assert.match(out, /\["outlined","rounded","sharp"\]/);
+  assert.match(out, /registerIcon\("ok", variant, \{ outlined: data, filled: data \}\)/);
 });
