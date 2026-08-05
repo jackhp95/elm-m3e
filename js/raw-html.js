@@ -4,14 +4,18 @@
 // elm-pages hydration, so a custom element owns its own subtree instead.
 //
 // SECURITY CONTRACT: `content` MUST be build-time-constant, author-controlled
-// HTML only. In this repo the callers are Doc.rawPreview (fed by
-// docs/data/examples.json, generated at build time from config/*.rich.json) and
-// Shared.githubMark (a hard-coded SVG literal) — never from user input,
-// URL/query params, or any string fetched/derived at runtime. Do NOT route untrusted input here: parsing an
-// arbitrary HTML string into the live DOM is a DOM-XSS sink (inline event
-// handlers, <img onerror>, etc. execute on adoption). If a future caller needs
-// to render untrusted HTML, sanitize it (e.g. DOMPurify) BEFORE it reaches this
-// element, or upgrade this element to sanitize internally.
+// HTML only. This element has exactly ONE caller — Doc.rawPreview, fed by
+// docs/data/examples.json, generated at build time from config/*.rich.json.
+// Never from user input, URL/query params, or any string fetched or derived at
+// runtime. Do NOT route untrusted input here: parsing an arbitrary HTML string
+// into the live DOM is a DOM-XSS sink (inline event handlers, <img onerror>,
+// etc. execute on adoption). If a future caller needs to render untrusted HTML,
+// sanitize it (e.g. DOMPurify) BEFORE it reaches this element, or upgrade this
+// element to sanitize internally.
+//
+// If you are here to render an ICON, you are in the wrong place: register it via
+// config/icons.json and m3e's IconRegistry (docs/gen/icons.js), which is a
+// validated path-data channel rather than an innerHTML sink.
 class RawHtml extends HTMLElement {
   static get observedAttributes() {
     return ["content"];
