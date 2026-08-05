@@ -1,5 +1,5 @@
 module TypedHtml.Attributes exposing
-    ( accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
+    ( accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, draggable, enterkeyhint, id, inert, inputmode, itemid, itemprop, itemref, itemscope, itemtype, nonce, popover, slot, spellcheck, style, translate, writingsuggestions, dir, hidden, lang, tabindex, title, classList, styleList
     , abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, valueNumeric, valueOrdinal, width
     , defaultChecked, defaultMuted, defaultSelected, defaultValue
     , coordsAsInts, stepAsNumber, valueAsNumber
@@ -21,7 +21,7 @@ custom element instead of restoring a setter here.
   - `formaction` — `_VirtualDom_noOnOrFormAction` rewrites every `VirtualDom.attribute` key matching `/^(on|formAction$)/i` to `data-` ++ key, so this would render as `data-formaction` and never as `formaction`. The property form is closed too — `_VirtualDom_noInnerHtmlOrFormAction` rewrites the exact key `formAction`, and the lowercase key is an inert expando no element observes — so there is no working path from Elm.
   - `is` — `is` is inert: a customized built-in element must be opted in at creation time via `document.createElement(tag, { is })`, and `_VirtualDom_render` calls `_VirtualDom_doc.createElement(vNode.__tag)` with no options argument, so the element already exists as its plain built-in self before any fact is applied. There is no `is` IDL attribute either, so the property form is an inert expando.
 
-@docs accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, dir, draggable, enterkeyhint, hidden, id, inert, inputmode, itemid, itemprop, itemref, itemscope, itemtype, lang, nonce, popover, slot, spellcheck, style, tabindex, title, translate, writingsuggestions, classList, styleList
+@docs accesskey, autocapitalize, autocorrect, autofocus, class, contenteditable, draggable, enterkeyhint, id, inert, inputmode, itemid, itemprop, itemref, itemscope, itemtype, nonce, popover, slot, spellcheck, style, translate, writingsuggestions, dir, hidden, lang, tabindex, title, classList, styleList
 @docs abbr, accept, acceptCharset, action, allow, allowfullscreen, alpha, alt, async, autocomplete, autoplay, checked, cite, color, cols, colspan, commandfor, content, controls, coords, data, datetime, default, defer, dirname, disabled, download, for, form, formnovalidate, formtarget, headers, height, high, href, hreflang, imagesizes, imagesrcset, integrity, ismap, label, list, loop, low, max, maxlength, media, min, minlength, multiple, muted, name, nomodule, novalidate, open, optimum, pattern, ping, placeholder, playsinline, popovertarget, poster, readonly, rel, required, reversed, rows, rowspan, selected, shadowrootclonable, shadowrootcustomelementregistry, shadowrootdelegatesfocus, shadowrootserializable, size, sizes, span, src, srcdoc, srclang, srcset, start, step, target, type_, usemap, value, valueNumeric, valueOrdinal, width
 @docs defaultChecked, defaultMuted, defaultSelected, defaultValue
 @docs coordsAsInts, stepAsNumber, valueAsNumber
@@ -90,13 +90,6 @@ contenteditable value_ =
     Ir.attribute "contenteditable" (HtmlIr.Value.toString value_)
 
 
-{-| The global `dir` attribute.
--}
-dir : Value TypedHtml.Values.Dir -> Attr { c | dir : Supported } msg
-dir value_ =
-    Ir.attribute "dir" (HtmlIr.Value.toString value_)
-
-
 {-| The global `draggable` attribute.
 -}
 draggable : Value TypedHtml.Values.Draggable -> Attr { c | draggable : Supported } msg
@@ -109,13 +102,6 @@ draggable value_ =
 enterkeyhint : Value TypedHtml.Values.Enterkeyhint -> Attr { c | enterkeyhint : Supported } msg
 enterkeyhint value_ =
     Ir.attribute "enterkeyhint" (HtmlIr.Value.toString value_)
-
-
-{-| The global `hidden` attribute.
--}
-hidden : Value TypedHtml.Values.Hidden -> Attr { c | hidden : Supported } msg
-hidden value_ =
-    Ir.attribute "hidden" (HtmlIr.Value.toString value_)
 
 
 {-| The global `id` attribute.
@@ -182,13 +168,6 @@ itemtype =
     Ir.attribute "itemtype"
 
 
-{-| The global `lang` attribute.
--}
-lang : String -> Attr { c | lang : Supported } msg
-lang =
-    Ir.attribute "lang"
-
-
 {-| The global `nonce` attribute.
 -}
 nonce : String -> Attr { c | nonce : Supported } msg
@@ -231,20 +210,6 @@ styleList =
     Ir.styles
 
 
-{-| The global `tabindex` attribute.
--}
-tabindex : Int -> Attr { c | tabindex : Supported } msg
-tabindex value_ =
-    Ir.attribute "tabindex" (String.fromInt value_)
-
-
-{-| The global `title` attribute.
--}
-title : String -> Attr { c | title : Supported } msg
-title =
-    Ir.attribute "title"
-
-
 {-| The global `translate` attribute.
 -}
 translate : Value TypedHtml.Values.Translate -> Attr { c | translate : Supported } msg
@@ -257,6 +222,41 @@ translate value_ =
 writingsuggestions : Value TypedHtml.Values.Writingsuggestions -> Attr { c | writingsuggestions : Supported } msg
 writingsuggestions value_ =
     Ir.attribute "writingsuggestions" (HtmlIr.Value.toString value_)
+
+
+{-| The global `dir` attribute.
+-}
+dir : Value TypedHtml.Values.Dir -> Attr c msg
+dir value_ =
+    Ir.attribute "dir" (HtmlIr.Value.toString value_)
+
+
+{-| The global `hidden` attribute.
+-}
+hidden : Value TypedHtml.Values.Hidden -> Attr c msg
+hidden value_ =
+    Ir.attribute "hidden" (HtmlIr.Value.toString value_)
+
+
+{-| The global `lang` attribute.
+-}
+lang : String -> Attr c msg
+lang =
+    Ir.attribute "lang"
+
+
+{-| The global `tabindex` attribute.
+-}
+tabindex : Int -> Attr c msg
+tabindex value_ =
+    Ir.attribute "tabindex" (String.fromInt value_)
+
+
+{-| The global `title` attribute.
+-}
+title : String -> Attr c msg
+title =
+    Ir.attribute "title"
 
 
 {-| Alternative label to use for the header cell when referencing the cell in other contexts

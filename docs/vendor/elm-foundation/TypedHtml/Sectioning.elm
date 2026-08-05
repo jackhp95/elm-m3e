@@ -33,10 +33,8 @@ type alias AddressAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -45,15 +43,12 @@ type alias AddressAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -90,10 +85,8 @@ type alias ArticleAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -102,15 +95,12 @@ type alias ArticleAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -147,10 +137,8 @@ type alias AsideAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -159,15 +147,12 @@ type alias AsideAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -204,10 +189,8 @@ type alias BodyAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -216,15 +199,12 @@ type alias BodyAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -261,10 +241,8 @@ type alias FooterAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -273,15 +251,12 @@ type alias FooterAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -318,10 +293,8 @@ type alias H1Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -330,15 +303,12 @@ type alias H1Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -391,10 +361,8 @@ type alias H2Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -403,15 +371,12 @@ type alias H2Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -464,10 +429,8 @@ type alias H3Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -476,15 +439,12 @@ type alias H3Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -537,10 +497,8 @@ type alias H4Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -549,15 +507,12 @@ type alias H4Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -610,10 +565,8 @@ type alias H5Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -622,15 +575,12 @@ type alias H5Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -683,10 +633,8 @@ type alias H6Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -695,15 +643,12 @@ type alias H6Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -756,10 +701,8 @@ type alias HeaderAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -768,15 +711,12 @@ type alias HeaderAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -813,10 +753,8 @@ type alias HgroupAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -825,15 +763,12 @@ type alias HgroupAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -870,10 +805,8 @@ type alias MainAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -882,15 +815,12 @@ type alias MainAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -927,10 +857,8 @@ type alias NavAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -939,15 +867,12 @@ type alias NavAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : NavRoles
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -996,10 +921,8 @@ type alias SearchAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -1008,15 +931,12 @@ type alias SearchAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -1053,10 +973,8 @@ type alias SectionAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -1065,15 +983,12 @@ type alias SectionAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : SectionRoles
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }

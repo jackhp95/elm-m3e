@@ -42,7 +42,6 @@ type alias Attrs =
     , class : Supported
     , colorspace : Supported
     , contenteditable : Supported
-    , dir : Supported
     , dirname : Supported
     , disabled : Supported
     , draggable : Supported
@@ -53,7 +52,6 @@ type alias Attrs =
     , formnovalidate : Supported
     , formtarget : Supported
     , height : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -62,7 +60,6 @@ type alias Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , list : Supported
     , max : Supported
     , maxlength : Supported
@@ -88,8 +85,6 @@ type alias Attrs =
     , src : Supported
     , step : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , type_ : Supported
     , value : Supported

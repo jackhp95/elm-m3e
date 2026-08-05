@@ -39,12 +39,10 @@ type alias Attrs =
     , contenteditable : Supported
     , crossorigin : Supported
     , decoding : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
     , fetchpriority : Supported
     , height : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -54,7 +52,6 @@ type alias Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , loading : Supported
     , nonce : Supported
     , popover : Supported
@@ -66,8 +63,6 @@ type alias Attrs =
     , src : Supported
     , srcset : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , usemap : Supported
     , width : Supported

@@ -36,10 +36,8 @@ type alias DatalistAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -48,15 +46,12 @@ type alias DatalistAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -101,11 +96,9 @@ type alias OptgroupAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , disabled : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -115,15 +108,12 @@ type alias OptgroupAttrs =
     , itemscope : Supported
     , itemtype : Supported
     , label : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -172,11 +162,9 @@ type alias OptionAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , disabled : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -186,7 +174,6 @@ type alias OptionAttrs =
     , itemscope : Supported
     , itemtype : Supported
     , label : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
@@ -194,8 +181,6 @@ type alias OptionAttrs =
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , value : Supported
     , writingsuggestions : Supported
@@ -257,12 +242,10 @@ type alias SelectAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , disabled : Supported
     , draggable : Supported
     , enterkeyhint : Supported
     , form : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -271,7 +254,6 @@ type alias SelectAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , multiple : Supported
     , name : Supported
     , nonce : Supported
@@ -286,8 +268,6 @@ type alias SelectAttrs =
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }

@@ -39,10 +39,8 @@ type alias AudioAttrs =
     , contenteditable : Supported
     , controls : Supported
     , crossorigin : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -51,7 +49,6 @@ type alias AudioAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , loading : Supported
     , loop : Supported
     , muted : Supported
@@ -64,8 +61,6 @@ type alias AudioAttrs =
     , spellcheck : Supported
     , src : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -111,10 +106,8 @@ type alias PictureAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -123,15 +116,12 @@ type alias PictureAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -176,11 +166,9 @@ type alias PictureSourceAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
     , height : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -189,7 +177,6 @@ type alias PictureSourceAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , media : Supported
     , nonce : Supported
     , popover : Supported
@@ -199,8 +186,6 @@ type alias PictureSourceAttrs =
     , spellcheck : Supported
     , srcset : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , width : Supported
     , writingsuggestions : Supported
@@ -244,10 +229,8 @@ type alias SourceAttrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -256,7 +239,6 @@ type alias SourceAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , media : Supported
     , nonce : Supported
     , popover : Supported
@@ -267,8 +249,6 @@ type alias SourceAttrs =
     , src : Supported
     , srcset : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -312,10 +292,8 @@ type alias TrackAttrs =
     , class : Supported
     , contenteditable : Supported
     , default : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -326,7 +304,6 @@ type alias TrackAttrs =
     , itemtype : Supported
     , kind : Supported
     , label : Supported
-    , lang : Supported
     , nonce : Supported
     , popover : Supported
     , role : Supported
@@ -335,8 +312,6 @@ type alias TrackAttrs =
     , src : Supported
     , srclang : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }
@@ -381,11 +356,9 @@ type alias VideoAttrs =
     , class : Supported
     , contenteditable : Supported
     , crossorigin : Supported
-    , dir : Supported
     , draggable : Supported
     , enterkeyhint : Supported
     , height : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -394,7 +367,6 @@ type alias VideoAttrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , loading : Supported
     , loop : Supported
     , muted : Supported
@@ -409,8 +381,6 @@ type alias VideoAttrs =
     , spellcheck : Supported
     , src : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , width : Supported
     , writingsuggestions : Supported

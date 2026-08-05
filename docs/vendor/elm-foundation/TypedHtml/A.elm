@@ -30,11 +30,9 @@ type alias Attrs =
     , autofocus : Supported
     , class : Supported
     , contenteditable : Supported
-    , dir : Supported
     , download : Supported
     , draggable : Supported
     , enterkeyhint : Supported
-    , hidden : Supported
     , href : Supported
     , hreflang : Supported
     , id : Supported
@@ -45,7 +43,6 @@ type alias Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , nonce : Supported
     , onClick : Supported
     , ping : Supported
@@ -56,9 +53,7 @@ type alias Attrs =
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
     , target : Supported
-    , title : Supported
     , translate : Supported
     , writingsuggestions : Supported
     }

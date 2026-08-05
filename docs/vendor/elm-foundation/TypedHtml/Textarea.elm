@@ -38,13 +38,11 @@ type alias Attrs =
     , class : Supported
     , cols : Supported
     , contenteditable : Supported
-    , dir : Supported
     , dirname : Supported
     , disabled : Supported
     , draggable : Supported
     , enterkeyhint : Supported
     , form : Supported
-    , hidden : Supported
     , id : Supported
     , inert : Supported
     , inputmode : Supported
@@ -53,7 +51,6 @@ type alias Attrs =
     , itemref : Supported
     , itemscope : Supported
     , itemtype : Supported
-    , lang : Supported
     , maxlength : Supported
     , minlength : Supported
     , name : Supported
@@ -70,8 +67,6 @@ type alias Attrs =
     , slot : Supported
     , spellcheck : Supported
     , style : Supported
-    , tabindex : Supported
-    , title : Supported
     , translate : Supported
     , wrap : Supported
     , writingsuggestions : Supported
