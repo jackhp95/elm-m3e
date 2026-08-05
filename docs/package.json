@@ -28,6 +28,9 @@
     "check:review": "elm-review --config ../review --compiler node_modules/.bin/elm"
   },
   "devDependencies": {
+    "@iconify-json/material-symbols": "^1.2.88",
+    "@iconify-json/mdi": "^1.2.3",
+    "@iconify/utils": "^3.1.4",
     "@playwright/test": "^1.62.0",
     "@tailwindcss/vite": "^4.3.3",
     "elm": "^0.19.1-6",
