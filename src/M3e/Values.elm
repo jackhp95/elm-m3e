@@ -1,6 +1,8 @@
 module M3e.Values exposing
     ( Value
+    , toString
     , Animation, Contrast, Current, DisablePagination, Dividers, EndMode, Filter, FloatLabel, Format, Grade, HeaderPosition, HideSubscript, HighlightMode, Icons, LabelPosition, Mode, Motion, Name, Orientation, PageSizeVariant, Period, Position, PositionX, PositionY, Scheme, ScrollStrategy, Shape, Size, StartMode, StartView, State, TimeFormat, ToggleDirection, TogglePosition, TouchGestures, Type, Variant, ViewAttr, Width
+    , animationFromString, animationValues, contrastFromString, contrastValues, currentFromString, currentValues, disablePaginationFromString, disablePaginationValues, dividersFromString, dividersValues, endModeFromString, endModeValues, filterFromString, filterValues, floatLabelFromString, floatLabelValues, formatFromString, formatValues, gradeFromString, gradeValues, headerPositionFromString, headerPositionValues, hideSubscriptFromString, hideSubscriptValues, highlightModeFromString, highlightModeValues, iconsFromString, iconsValues, labelPositionFromString, labelPositionValues, modeFromString, modeValues, motionFromString, motionValues, nameFromString, nameValues, orientationFromString, orientationValues, pageSizeVariantFromString, pageSizeVariantValues, periodFromString, periodValues, positionFromString, positionValues, positionXFromString, positionXValues, positionYFromString, positionYValues, schemeFromString, schemeValues, scrollStrategyFromString, scrollStrategyValues, shapeFromString, shapeValues, sizeFromString, sizeValues, startModeFromString, startModeValues, startViewFromString, startViewValues, stateFromString, stateValues, timeFormatFromString, timeFormatValues, toggleDirectionFromString, toggleDirectionValues, togglePositionFromString, togglePositionValues, touchGesturesFromString, touchGesturesValues, type_FromString, type_Values, variantFromString, variantValues, viewAttrFromString, viewAttrValues, widthFromString, widthValues
     , value12, value12SidedCookie, value24, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, above, aboveAfter, aboveBefore, aboveBelow, after, always, am, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, datetime, default, determinate, dial, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, false, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, hour, indeterminate, input, label, large, light, loading, location, low, medium, minute, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, pm, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, second, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, tonal, tonalSpot, triangle, true, uncontained, vertical, verySunny, vibrant, wave, wavy, wide, year
     , animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, disablePaginationAuto, disablePaginationFalse, disablePaginationTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, timeFormatValue12, timeFormatValue24, timeFormatAuto, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Date, type_Datetime, type_Reset, type_Submit, type_Time, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
     )
@@ -15,7 +17,9 @@ are fed by these same tokens.
 `HtmlIr.Value` import.
 
 @docs Value
+@docs toString
 @docs Animation, Contrast, Current, DisablePagination, Dividers, EndMode, Filter, FloatLabel, Format, Grade, HeaderPosition, HideSubscript, HighlightMode, Icons, LabelPosition, Mode, Motion, Name, Orientation, PageSizeVariant, Period, Position, PositionX, PositionY, Scheme, ScrollStrategy, Shape, Size, StartMode, StartView, State, TimeFormat, ToggleDirection, TogglePosition, TouchGestures, Type, Variant, ViewAttr, Width
+@docs animationFromString, animationValues, contrastFromString, contrastValues, currentFromString, currentValues, disablePaginationFromString, disablePaginationValues, dividersFromString, dividersValues, endModeFromString, endModeValues, filterFromString, filterValues, floatLabelFromString, floatLabelValues, formatFromString, formatValues, gradeFromString, gradeValues, headerPositionFromString, headerPositionValues, hideSubscriptFromString, hideSubscriptValues, highlightModeFromString, highlightModeValues, iconsFromString, iconsValues, labelPositionFromString, labelPositionValues, modeFromString, modeValues, motionFromString, motionValues, nameFromString, nameValues, orientationFromString, orientationValues, pageSizeVariantFromString, pageSizeVariantValues, periodFromString, periodValues, positionFromString, positionValues, positionXFromString, positionXValues, positionYFromString, positionYValues, schemeFromString, schemeValues, scrollStrategyFromString, scrollStrategyValues, shapeFromString, shapeValues, sizeFromString, sizeValues, startModeFromString, startModeValues, startViewFromString, startViewValues, stateFromString, stateValues, timeFormatFromString, timeFormatValues, toggleDirectionFromString, toggleDirectionValues, togglePositionFromString, togglePositionValues, touchGesturesFromString, touchGesturesValues, type_FromString, type_Values, variantFromString, variantValues, viewAttrFromString, viewAttrValues, widthFromString, widthValues
 @docs value12, value12SidedCookie, value24, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, above, aboveAfter, aboveBefore, aboveBelow, after, always, am, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, datetime, default, determinate, dial, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, false, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, hour, indeterminate, input, label, large, light, loading, location, low, medium, minute, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, pm, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, second, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, tonal, tonalSpot, triangle, true, uncontained, vertical, verySunny, vibrant, wave, wavy, wide, year
 @docs animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, disablePaginationAuto, disablePaginationFalse, disablePaginationTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, timeFormatValue12, timeFormatValue24, timeFormatAuto, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Date, type_Datetime, type_Reset, type_Submit, type_Time, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
 
@@ -30,6 +34,13 @@ import HtmlIr.Value
 -}
 type alias Value tags =
     HtmlIr.Value.Value tags
+
+
+{-| The token's underlying string — the safe out-bound direction. Re-exported so callers never import `HtmlIr.Value` directly.
+-}
+toString : Value tags -> String
+toString =
+    HtmlIr.Value.toString
 
 
 {-| The union row for `animation` (from `SkeletonAnimation`).
@@ -468,6 +479,1242 @@ type alias Width =
     , narrow : Supported
     , wide : Supported
     }
+
+
+{-| Parse a `animation` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+animationFromString : String -> Maybe (Value Animation)
+animationFromString s =
+    case s of
+        "none" ->
+            Just none
+
+        "pulse" ->
+            Just pulse
+
+        "wave" ->
+            Just wave
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `contrast` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+contrastFromString : String -> Maybe (Value Contrast)
+contrastFromString s =
+    case s of
+        "high" ->
+            Just high
+
+        "medium" ->
+            Just medium
+
+        "standard" ->
+            Just standard
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `current` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+currentFromString : String -> Maybe (Value Current)
+currentFromString s =
+    case s of
+        "date" ->
+            Just date
+
+        "location" ->
+            Just location
+
+        "page" ->
+            Just page
+
+        "step" ->
+            Just step
+
+        "time" ->
+            Just time
+
+        "true" ->
+            Just true
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `disablePagination` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+disablePaginationFromString : String -> Maybe (Value DisablePagination)
+disablePaginationFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "false" ->
+            Just false
+
+        "true" ->
+            Just true
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `dividers` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+dividersFromString : String -> Maybe (Value Dividers)
+dividersFromString s =
+    case s of
+        "above" ->
+            Just above
+
+        "above-below" ->
+            Just aboveBelow
+
+        "below" ->
+            Just below
+
+        "none" ->
+            Just none
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `endMode` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+endModeFromString : String -> Maybe (Value EndMode)
+endModeFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "over" ->
+            Just over
+
+        "push" ->
+            Just push
+
+        "side" ->
+            Just side
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `filter` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+filterFromString : String -> Maybe (Value Filter)
+filterFromString s =
+    case s of
+        "contains" ->
+            Just contains
+
+        "ends-with" ->
+            Just endsWith
+
+        "none" ->
+            Just none
+
+        "starts-with" ->
+            Just startsWith
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `floatLabel` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+floatLabelFromString : String -> Maybe (Value FloatLabel)
+floatLabelFromString s =
+    case s of
+        "always" ->
+            Just always
+
+        "auto" ->
+            Just auto
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `format` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+formatFromString : String -> Maybe (Value Format)
+formatFromString s =
+    case s of
+        "12" ->
+            Just value12
+
+        "24" ->
+            Just value24
+
+        "auto" ->
+            Just auto
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `grade` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+gradeFromString : String -> Maybe (Value Grade)
+gradeFromString s =
+    case s of
+        "high" ->
+            Just high
+
+        "low" ->
+            Just low
+
+        "medium" ->
+            Just medium
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `headerPosition` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+headerPositionFromString : String -> Maybe (Value HeaderPosition)
+headerPositionFromString s =
+    case s of
+        "above" ->
+            Just above
+
+        "after" ->
+            Just after
+
+        "before" ->
+            Just before
+
+        "below" ->
+            Just below
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `hideSubscript` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+hideSubscriptFromString : String -> Maybe (Value HideSubscript)
+hideSubscriptFromString s =
+    case s of
+        "always" ->
+            Just always
+
+        "auto" ->
+            Just auto
+
+        "never" ->
+            Just never
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `highlightMode` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+highlightModeFromString : String -> Maybe (Value HighlightMode)
+highlightModeFromString s =
+    case s of
+        "contains" ->
+            Just contains
+
+        "ends-with" ->
+            Just endsWith
+
+        "starts-with" ->
+            Just startsWith
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `icons` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+iconsFromString : String -> Maybe (Value Icons)
+iconsFromString s =
+    case s of
+        "both" ->
+            Just both
+
+        "none" ->
+            Just none
+
+        "selected" ->
+            Just selected
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `labelPosition` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+labelPositionFromString : String -> Maybe (Value LabelPosition)
+labelPositionFromString s =
+    case s of
+        "below" ->
+            Just below
+
+        "end" ->
+            Just end
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `mode` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+modeFromString : String -> Maybe (Value Mode)
+modeFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "buffer" ->
+            Just buffer
+
+        "compact" ->
+            Just compact
+
+        "contains" ->
+            Just contains
+
+        "determinate" ->
+            Just determinate
+
+        "dial" ->
+            Just dial
+
+        "docked" ->
+            Just docked
+
+        "ends-with" ->
+            Just endsWith
+
+        "expanded" ->
+            Just expanded
+
+        "fullscreen" ->
+            Just fullscreen
+
+        "indeterminate" ->
+            Just indeterminate
+
+        "input" ->
+            Just input
+
+        "query" ->
+            Just query
+
+        "starts-with" ->
+            Just startsWith
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `motion` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+motionFromString : String -> Maybe (Value Motion)
+motionFromString s =
+    case s of
+        "expressive" ->
+            Just expressive
+
+        "standard" ->
+            Just standard
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `name` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+nameFromString : String -> Maybe (Value Name)
+nameFromString s =
+    case s of
+        "12-sided-cookie" ->
+            Just value12SidedCookie
+
+        "4-leaf-clover" ->
+            Just value4LeafClover
+
+        "4-sided-cookie" ->
+            Just value4SidedCookie
+
+        "6-sided-cookie" ->
+            Just value6SidedCookie
+
+        "7-sided-cookie" ->
+            Just value7SidedCookie
+
+        "8-leaf-clover" ->
+            Just value8LeafClover
+
+        "9-sided-cookie" ->
+            Just value9SidedCookie
+
+        "arch" ->
+            Just arch
+
+        "arrow" ->
+            Just arrow
+
+        "boom" ->
+            Just boom
+
+        "bun" ->
+            Just bun
+
+        "burst" ->
+            Just burst
+
+        "circle" ->
+            Just circle
+
+        "diamond" ->
+            Just diamond
+
+        "fan" ->
+            Just fan
+
+        "flower" ->
+            Just flower
+
+        "gem" ->
+            Just gem
+
+        "ghost-ish" ->
+            Just ghostIsh
+
+        "heart" ->
+            Just heart
+
+        "hexagon" ->
+            Just hexagon
+
+        "oval" ->
+            Just oval
+
+        "pentagon" ->
+            Just pentagon
+
+        "pill" ->
+            Just pill
+
+        "pixel-circle" ->
+            Just pixelCircle
+
+        "pixel-triangle" ->
+            Just pixelTriangle
+
+        "puffy" ->
+            Just puffy
+
+        "puffy-diamond" ->
+            Just puffyDiamond
+
+        "semicircle" ->
+            Just semicircle
+
+        "slanted" ->
+            Just slanted
+
+        "soft-boom" ->
+            Just softBoom
+
+        "soft-burst" ->
+            Just softBurst
+
+        "square" ->
+            Just square
+
+        "sunny" ->
+            Just sunny
+
+        "triangle" ->
+            Just triangle
+
+        "very-sunny" ->
+            Just verySunny
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `orientation` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+orientationFromString : String -> Maybe (Value Orientation)
+orientationFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "both" ->
+            Just both
+
+        "horizontal" ->
+            Just horizontal
+
+        "vertical" ->
+            Just vertical
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `pageSizeVariant` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+pageSizeVariantFromString : String -> Maybe (Value PageSizeVariant)
+pageSizeVariantFromString s =
+    case s of
+        "filled" ->
+            Just filled
+
+        "outlined" ->
+            Just outlined
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `period` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+periodFromString : String -> Maybe (Value Period)
+periodFromString s =
+    case s of
+        "am" ->
+            Just am
+
+        "pm" ->
+            Just pm
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `position` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+positionFromString : String -> Maybe (Value Position)
+positionFromString s =
+    case s of
+        "above" ->
+            Just above
+
+        "above-after" ->
+            Just aboveAfter
+
+        "above-before" ->
+            Just aboveBefore
+
+        "after" ->
+            Just after
+
+        "before" ->
+            Just before
+
+        "below" ->
+            Just below
+
+        "below-after" ->
+            Just belowAfter
+
+        "below-before" ->
+            Just belowBefore
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `positionX` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+positionXFromString : String -> Maybe (Value PositionX)
+positionXFromString s =
+    case s of
+        "after" ->
+            Just after
+
+        "before" ->
+            Just before
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `positionY` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+positionYFromString : String -> Maybe (Value PositionY)
+positionYFromString s =
+    case s of
+        "above" ->
+            Just above
+
+        "below" ->
+            Just below
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `scheme` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+schemeFromString : String -> Maybe (Value Scheme)
+schemeFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "dark" ->
+            Just dark
+
+        "light" ->
+            Just light
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `scrollStrategy` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+scrollStrategyFromString : String -> Maybe (Value ScrollStrategy)
+scrollStrategyFromString s =
+    case s of
+        "hide" ->
+            Just hide
+
+        "reposition" ->
+            Just reposition
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `shape` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+shapeFromString : String -> Maybe (Value Shape)
+shapeFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "circular" ->
+            Just circular
+
+        "rounded" ->
+            Just rounded
+
+        "square" ->
+            Just square
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `size` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+sizeFromString : String -> Maybe (Value Size)
+sizeFromString s =
+    case s of
+        "extra-large" ->
+            Just extraLarge
+
+        "extra-small" ->
+            Just extraSmall
+
+        "large" ->
+            Just large
+
+        "medium" ->
+            Just medium
+
+        "small" ->
+            Just small
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `startMode` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+startModeFromString : String -> Maybe (Value StartMode)
+startModeFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "over" ->
+            Just over
+
+        "push" ->
+            Just push
+
+        "side" ->
+            Just side
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `startView` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+startViewFromString : String -> Maybe (Value StartView)
+startViewFromString s =
+    case s of
+        "month" ->
+            Just month
+
+        "multi-year" ->
+            Just multiYear
+
+        "year" ->
+            Just year
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `state` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+stateFromString : String -> Maybe (Value State)
+stateFromString s =
+    case s of
+        "content" ->
+            Just content
+
+        "loading" ->
+            Just loading
+
+        "no-data" ->
+            Just noData
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `timeFormat` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+timeFormatFromString : String -> Maybe (Value TimeFormat)
+timeFormatFromString s =
+    case s of
+        "12" ->
+            Just value12
+
+        "24" ->
+            Just value24
+
+        "auto" ->
+            Just auto
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `toggleDirection` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+toggleDirectionFromString : String -> Maybe (Value ToggleDirection)
+toggleDirectionFromString s =
+    case s of
+        "horizontal" ->
+            Just horizontal
+
+        "vertical" ->
+            Just vertical
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `togglePosition` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+togglePositionFromString : String -> Maybe (Value TogglePosition)
+togglePositionFromString s =
+    case s of
+        "after" ->
+            Just after
+
+        "before" ->
+            Just before
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `touchGestures` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+touchGesturesFromString : String -> Maybe (Value TouchGestures)
+touchGesturesFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "off" ->
+            Just off
+
+        "on" ->
+            Just on
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `type_` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+type_FromString : String -> Maybe (Value Type)
+type_FromString s =
+    case s of
+        "button" ->
+            Just button
+
+        "date" ->
+            Just date
+
+        "datetime" ->
+            Just datetime
+
+        "reset" ->
+            Just reset
+
+        "submit" ->
+            Just submit
+
+        "time" ->
+            Just time
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `variant` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+variantFromString : String -> Maybe (Value Variant)
+variantFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "connected" ->
+            Just connected
+
+        "contained" ->
+            Just contained
+
+        "content" ->
+            Just content
+
+        "display" ->
+            Just display
+
+        "docked" ->
+            Just docked
+
+        "elevated" ->
+            Just elevated
+
+        "expressive" ->
+            Just expressive
+
+        "fidelity" ->
+            Just fidelity
+
+        "filled" ->
+            Just filled
+
+        "flat" ->
+            Just flat
+
+        "fruit-salad" ->
+            Just fruitSalad
+
+        "headline" ->
+            Just headline
+
+        "label" ->
+            Just label
+
+        "modal" ->
+            Just modal
+
+        "monochrome" ->
+            Just monochrome
+
+        "neutral" ->
+            Just neutral
+
+        "outlined" ->
+            Just outlined
+
+        "primary" ->
+            Just primary
+
+        "primary-container" ->
+            Just primaryContainer
+
+        "rainbow" ->
+            Just rainbow
+
+        "rounded" ->
+            Just rounded
+
+        "secondary" ->
+            Just secondary
+
+        "secondary-container" ->
+            Just secondaryContainer
+
+        "segmented" ->
+            Just segmented
+
+        "sharp" ->
+            Just sharp
+
+        "standard" ->
+            Just standard
+
+        "surface" ->
+            Just surface
+
+        "tertiary" ->
+            Just tertiary
+
+        "tertiary-container" ->
+            Just tertiaryContainer
+
+        "text" ->
+            Just text
+
+        "title" ->
+            Just title
+
+        "tonal" ->
+            Just tonal
+
+        "tonal-spot" ->
+            Just tonalSpot
+
+        "uncontained" ->
+            Just uncontained
+
+        "vibrant" ->
+            Just vibrant
+
+        "wavy" ->
+            Just wavy
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `viewAttr` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+viewAttrFromString : String -> Maybe (Value ViewAttr)
+viewAttrFromString s =
+    case s of
+        "hour" ->
+            Just hour
+
+        "minute" ->
+            Just minute
+
+        "second" ->
+            Just second
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `width` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+widthFromString : String -> Maybe (Value Width)
+widthFromString s =
+    case s of
+        "default" ->
+            Just default
+
+        "narrow" ->
+            Just narrow
+
+        "wide" ->
+            Just wide
+
+        _ ->
+            Nothing
+
+
+{-| Every `animation` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+animationValues : List (Value Animation)
+animationValues =
+    [ none, pulse, wave ]
+
+
+{-| Every `contrast` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+contrastValues : List (Value Contrast)
+contrastValues =
+    [ high, medium, standard ]
+
+
+{-| Every `current` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+currentValues : List (Value Current)
+currentValues =
+    [ date, location, page, step, time, true ]
+
+
+{-| Every `disablePagination` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+disablePaginationValues : List (Value DisablePagination)
+disablePaginationValues =
+    [ auto, false, true ]
+
+
+{-| Every `dividers` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+dividersValues : List (Value Dividers)
+dividersValues =
+    [ above, aboveBelow, below, none ]
+
+
+{-| Every `endMode` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+endModeValues : List (Value EndMode)
+endModeValues =
+    [ auto, over, push, side ]
+
+
+{-| Every `filter` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+filterValues : List (Value Filter)
+filterValues =
+    [ contains, endsWith, none, startsWith ]
+
+
+{-| Every `floatLabel` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+floatLabelValues : List (Value FloatLabel)
+floatLabelValues =
+    [ always, auto ]
+
+
+{-| Every `format` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+formatValues : List (Value Format)
+formatValues =
+    [ value12, value24, auto ]
+
+
+{-| Every `grade` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+gradeValues : List (Value Grade)
+gradeValues =
+    [ high, low, medium ]
+
+
+{-| Every `headerPosition` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+headerPositionValues : List (Value HeaderPosition)
+headerPositionValues =
+    [ above, after, before, below ]
+
+
+{-| Every `hideSubscript` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+hideSubscriptValues : List (Value HideSubscript)
+hideSubscriptValues =
+    [ always, auto, never ]
+
+
+{-| Every `highlightMode` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+highlightModeValues : List (Value HighlightMode)
+highlightModeValues =
+    [ contains, endsWith, startsWith ]
+
+
+{-| Every `icons` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+iconsValues : List (Value Icons)
+iconsValues =
+    [ both, none, selected ]
+
+
+{-| Every `labelPosition` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+labelPositionValues : List (Value LabelPosition)
+labelPositionValues =
+    [ below, end ]
+
+
+{-| Every `mode` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+modeValues : List (Value Mode)
+modeValues =
+    [ auto, buffer, compact, contains, determinate, dial, docked, endsWith, expanded, fullscreen, indeterminate, input, query, startsWith ]
+
+
+{-| Every `motion` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+motionValues : List (Value Motion)
+motionValues =
+    [ expressive, standard ]
+
+
+{-| Every `name` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+nameValues : List (Value Name)
+nameValues =
+    [ value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow, boom, bun, burst, circle, diamond, fan, flower, gem, ghostIsh, heart, hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted, softBoom, softBurst, square, sunny, triangle, verySunny ]
+
+
+{-| Every `orientation` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+orientationValues : List (Value Orientation)
+orientationValues =
+    [ auto, both, horizontal, vertical ]
+
+
+{-| Every `pageSizeVariant` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+pageSizeVariantValues : List (Value PageSizeVariant)
+pageSizeVariantValues =
+    [ filled, outlined ]
+
+
+{-| Every `period` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+periodValues : List (Value Period)
+periodValues =
+    [ am, pm ]
+
+
+{-| Every `position` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+positionValues : List (Value Position)
+positionValues =
+    [ above, aboveAfter, aboveBefore, after, before, below, belowAfter, belowBefore ]
+
+
+{-| Every `positionX` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+positionXValues : List (Value PositionX)
+positionXValues =
+    [ after, before ]
+
+
+{-| Every `positionY` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+positionYValues : List (Value PositionY)
+positionYValues =
+    [ above, below ]
+
+
+{-| Every `scheme` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+schemeValues : List (Value Scheme)
+schemeValues =
+    [ auto, dark, light ]
+
+
+{-| Every `scrollStrategy` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+scrollStrategyValues : List (Value ScrollStrategy)
+scrollStrategyValues =
+    [ hide, reposition ]
+
+
+{-| Every `shape` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+shapeValues : List (Value Shape)
+shapeValues =
+    [ auto, circular, rounded, square ]
+
+
+{-| Every `size` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+sizeValues : List (Value Size)
+sizeValues =
+    [ extraLarge, extraSmall, large, medium, small ]
+
+
+{-| Every `startMode` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+startModeValues : List (Value StartMode)
+startModeValues =
+    [ auto, over, push, side ]
+
+
+{-| Every `startView` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+startViewValues : List (Value StartView)
+startViewValues =
+    [ month, multiYear, year ]
+
+
+{-| Every `state` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+stateValues : List (Value State)
+stateValues =
+    [ content, loading, noData ]
+
+
+{-| Every `timeFormat` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+timeFormatValues : List (Value TimeFormat)
+timeFormatValues =
+    [ value12, value24, auto ]
+
+
+{-| Every `toggleDirection` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+toggleDirectionValues : List (Value ToggleDirection)
+toggleDirectionValues =
+    [ horizontal, vertical ]
+
+
+{-| Every `togglePosition` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+togglePositionValues : List (Value TogglePosition)
+togglePositionValues =
+    [ after, before ]
+
+
+{-| Every `touchGestures` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+touchGesturesValues : List (Value TouchGestures)
+touchGesturesValues =
+    [ auto, off, on ]
+
+
+{-| Every `type_` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+type_Values : List (Value Type)
+type_Values =
+    [ button, date, datetime, reset, submit, time ]
+
+
+{-| Every `variant` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+variantValues : List (Value Variant)
+variantValues =
+    [ auto, connected, contained, content, display, docked, elevated, expressive, fidelity, filled, flat, fruitSalad, headline, label, modal, monochrome, neutral, outlined, primary, primaryContainer, rainbow, rounded, secondary, secondaryContainer, segmented, sharp, standard, surface, tertiary, tertiaryContainer, text, title, tonal, tonalSpot, uncontained, vibrant, wavy ]
+
+
+{-| Every `viewAttr` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+viewAttrValues : List (Value ViewAttr)
+viewAttrValues =
+    [ hour, minute, second ]
+
+
+{-| Every `width` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+widthValues : List (Value Width)
+widthValues =
+    [ default, narrow, wide ]
 
 
 {-| The `12` token.
