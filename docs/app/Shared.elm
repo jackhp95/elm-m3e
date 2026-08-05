@@ -19,7 +19,6 @@ import Doc.Data
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
-import Html.Attributes exposing (attribute, class)
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.AppBar
@@ -31,7 +30,6 @@ import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Theme
-import M3e.Unsafe
 import M3e.Values as Value
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -484,12 +482,11 @@ menuButton =
         [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
 
 
-{-| The GitHub link. The GitHub mark is an inline `<svg fill="currentColor">`
-(path copied verbatim from matraic's `docs/index.html`) so it inherits the app
-bar's on-surface foreground and adapts to light/dark — a Material Symbol `code`
-glyph was a stand-in. The SVG rides in via the docs' `raw-html` custom element
-(same seam as `Doc.rawPreview`); parsed inside a `<template>` it lands in the SVG
-namespace and renders as a real vector.
+{-| The GitHub link. The mark is registered into `m3e-icon`'s own icon registry at
+startup (`docs/gen/icons.js`, generated from `config/icons.json`), so this is an
+ordinary typed icon — no raw SVG string and no `M3e.Unsafe` escape. Registry-rendered
+icons are `<svg><path/></svg>` inside `m3e-icon`, so the mark still inherits the app
+bar's on-surface foreground and adapts to light/dark.
 -}
 githubLink : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 githubLink =
@@ -499,21 +496,7 @@ githubLink =
         , M3e.Attributes.target "_blank"
         , M3e.Attributes.rel "noreferrer noopener"
         ]
-        [ M3e.Unsafe.fromHtml githubMark ]
-
-
-githubMark : Html msg
-githubMark =
-    Html.node "raw-html"
-        [ attribute "content" githubMarkSvg
-        , class "inline-flex"
-        ]
-        []
-
-
-githubMarkSvg : String
-githubMarkSvg =
-    "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"currentColor\" width=\"24\" height=\"24\" aria-hidden=\"true\" style=\"display:block\"><path d=\"M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5l0 52C323 491.5 335.5 500 350.5 494 441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5l0-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21z\"/></svg>"
+        [ M3e.icon [ M3e.Icon.name "github" ] [] ]
 
 
 {-| The app-bar settings control: a plain icon button that flips `settingsOpen`,

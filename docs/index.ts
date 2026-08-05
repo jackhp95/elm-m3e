@@ -3,6 +3,7 @@
 // injected automatically) — not hand-linked static assets. These are
 // side-effect imports: registering the <m3e-*> elements and pulling in the CSS.
 import "@m3e/web/all";
+import "./gen/icons.js";
 import "../js/avt-snackbar.js";
 import "../js/raw-html.js";
 import "../js/slide-panels.js";
