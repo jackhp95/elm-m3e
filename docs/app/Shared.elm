@@ -32,7 +32,7 @@ import M3e.Icon
 import M3e.Kind
 import M3e.NavMenuItem
 import M3e.Theme
-import M3e.Values as Value
+import M3e.Values as Value exposing (Value)
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Ports
@@ -67,9 +67,9 @@ template =
 type alias Model =
     { showMenu : Bool
     , viewportWidth : Int
-    , scheme : Value.Value Value.Scheme
+    , scheme : Value Value.Scheme
     , seed : String
-    , contrast : Value.Value Value.Contrast
+    , contrast : Value Value.Contrast
     , density : Float
     , dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , settingsOpen : Bool
@@ -111,9 +111,9 @@ type Msg
     | ViewportResized Int
     | ToggleSettings
     | DrawerChanged Bool Bool
-    | SetScheme (Value.Value Value.Scheme)
+    | SetScheme (Value Value.Scheme)
     | SetSeed String
-    | SetContrast (Value.Value Value.Contrast)
+    | SetContrast (Value Value.Contrast)
     | SetDensity Float
     | SetDirection (TypedHtml.Values.Value TypedHtml.Values.Dir)
 
@@ -166,7 +166,7 @@ The string↔token conversion is generated (`M3e.Values.schemeFromString`), so t
 persisted strings and the DOM attribute values cannot drift apart.
 
 -}
-schemeFromFlags : Pages.Flags.Flags -> Value.Value Value.Scheme
+schemeFromFlags : Pages.Flags.Flags -> Value Value.Scheme
 schemeFromFlags flags =
     case flags of
         Pages.Flags.BrowserFlags raw ->
@@ -298,6 +298,7 @@ view sharedData page model toMsg pageView =
             , M3e.Theme.scheme model.scheme
             , M3e.Theme.contrast model.contrast
             , M3e.Theme.density model.density
+            , TypedHtml.Attributes.dir model.dir
 
             -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
             -- control has no effect unless we drive `--md-sys-density-scale` (which
@@ -305,22 +306,13 @@ view sharedData page model toMsg pageView =
             -- CSS custom property directly — `style` uses `node.style[key]=…` which
             -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
             -- so it goes through a Tailwind arbitrary-property CLASS instead.
-            , TypedHtml.Attributes.class (densityClass model.density)
+            , TypedHtml.Attributes.class (shellClass ++ " " ++ densityClass model.density)
             ]
-            -- The shell layout CANNOT be hoisted onto the `m3e-theme` host: its
-            -- generated capability row (`M3e.Theme.Attrs`) is closed, and the only
-            -- global attributes elm-cem admits on a custom element are
-            -- class/id/slot/style — `dir` is not among them, so
-            -- `TypedHtml.Attributes.dir` does not typecheck there. This wrapper
-            -- therefore stays, and it carries BOTH the class list and `dir`:
-            -- splitting them (classes on the host, `dir` here) would turn this div
-            -- into a single grid ITEM and collapse `grid-rows-[auto_1fr]`.
-            [ TypedHtml.div
-                [ TypedHtml.Attributes.class shellClass
-                , TypedHtml.Attributes.dir model.dir
-                ]
-                children
-            ]
+            -- `dir` is admissible directly on the `m3e-theme` host because `dir` is
+            -- part of the open-row `_globals` axis (elm-cem, elm-typed-html), so the
+            -- wrapper div that used to carry the shell classes and `dir` together is
+            -- gone — both now live on the host itself.
+            children
             |> M3e.toHtml
         ]
     }
@@ -515,7 +507,7 @@ schemeSegmented model =
 is not the generated list's alphabetical order. A value we have not placed sorts last
 rather than disappearing.
 -}
-schemeOrder : Value.Value Value.Scheme -> Int
+schemeOrder : Value Value.Scheme -> Int
 schemeOrder v =
     case Value.toString v of
         "light" ->
@@ -535,7 +527,7 @@ schemeOrder v =
 have not named falls back to its wire string, so a new value shows up VISIBLY
 mislabelled rather than silently missing from the drawer.
 -}
-schemeLabel : Value.Value Value.Scheme -> String
+schemeLabel : Value Value.Scheme -> String
 schemeLabel v =
     case Value.toString v of
         "auto" ->
@@ -556,7 +548,7 @@ contrastSegmented model =
 
 {-| Display order — ascending intensity, which alphabetical order does not give.
 -}
-contrastOrder : Value.Value Value.Contrast -> Int
+contrastOrder : Value Value.Contrast -> Int
 contrastOrder v =
     case Value.toString v of
         "standard" ->
