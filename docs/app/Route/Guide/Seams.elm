@@ -12,6 +12,7 @@ two-column layout is live; the producers are shown as code.
 
 import BackendTask
 import Doc
+import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
@@ -102,8 +103,15 @@ two-column grid is a plain `TypedHtml.div` with a class attribute; the class
 string is contained in one named producer instead of sprinkled at every call
 site. No escape, no door.
 -}
+
+
+
+-- @sample-source seamsTwoColumn
+
+
 twoColumn : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 twoColumn =
+    -- NOT a seam: standard HTML is already typed, so layout is a plain div.
     TypedHtml.div [ TypedHtml.Attributes.class "grid grid-cols-1 gap-4 md:grid-cols-2" ]
         [ emailField, saveButton ]
 
@@ -114,8 +122,15 @@ forges the custom tag and `M3e.Unsafe.Attributes.customAttribute` sets its bespo
 escape is exactly what a seam is _for_ — and it lives in one named userland
 producer, contained and greppable, not scattered through feature code.
 -}
+
+
+
+-- @sample-source seamsModelViewer
+
+
 modelViewer : Element (TypedHtml.Grouping.DivIs k) freeAdm msg
 modelViewer =
+    -- a real seam: a custom element the types can't express, contained once.
     M3e.Unsafe.customElement "model-viewer"
         [ TypedHtml.Attributes.src "/models/chair.glb"
         , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
@@ -130,8 +145,17 @@ the `text` and `link` kinds, so `TypedHtml.a` drops straight in as an `<a href>`
 label — no raw HTML, no seam, no break-glass `recast`. The slot's phantom row
 admits exactly the kinds the design system declared for it.
 -}
+
+
+
+-- @sample-source seamsLinkNav
+
+
 linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
+    -- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so a
+    -- typed `TypedHtml.a` fills it directly — a nav item that IS an anchor. The
+    -- required-record form (`M3e.NavMenuItem.el`) enforces the required `label`.
     M3e.navMenu []
         [ M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
         , M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
@@ -145,8 +169,17 @@ content categories — so `TypedHtml.div` drops in as itself. No `recast`, and t
 compiler still checks what goes _inside_ the div.
 
 -}
+
+
+
+-- @sample-source seamsHtmlInSlot
+
+
 htmlInSlot : Element { s | appBar : M3e.Kind.Brand } admittedBy msg
 htmlInSlot =
+    -- AppBar.TrailingSlot admits { button, iconButton, searchBar, sharedFlow, sharedPhrasing }.
+    -- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
+    -- iconButton and badge INSIDE it are still checked against the div's content model.
     M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
         [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
         , M3e.AppBar.trailing
@@ -170,26 +203,27 @@ view _ _ =
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown userland
                     , Doc.showcase twoColumn
-                    , Doc.codeBlock Doc.Elm seamCode
+                    , Doc.codeBlock Doc.Elm Samples.seamsTwoColumn
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown realSeam
                     , Doc.showcase modelViewer
-                    , Doc.codeBlock Doc.Elm realSeamCode
+                    , Doc.codeBlock Doc.Elm Samples.seamsModelViewer
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown slotSeam
                     , Doc.showcase linkNav
-                    , Doc.codeBlock Doc.Elm linkNavCode
+                    , Doc.codeBlock Doc.Elm Samples.seamsLinkNav
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown crossBrand
                     , Doc.showcase htmlInSlot
-                    , Doc.codeBlock Doc.Elm htmlInSlotCode
+                    , Doc.codeBlock Doc.Elm Samples.seamsHtmlInSlot
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown oneWay
-                    , Doc.codeBlock Doc.Elm oneWayCode
+                    , Doc.codeBlock Doc.Elm oneWayRejected
+                    , Doc.codeBlock Doc.Elm oneWayAccepted
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown payoff ]
@@ -209,29 +243,9 @@ userland =
     """Start with what is **not** a seam. A two-column layout is standard HTML, and standard HTML is typed — a `TypedHtml.div` with a class attribute. Naming it in one userland producer keeps the class string in one place, but there is no escape here and nothing for the linter to fence. Reaching for `M3e.Unsafe.fromHtml` to build this would be the mistake: it drags plain typed markup through an escape door it never needed to walk through — the compiler already gives you `TypedHtml.div` for free."""
 
 
-seamCode : String
-seamCode =
-    """-- NOT a seam: standard HTML is already typed, so layout is a plain div.
-twoColumn =
-    TypedHtml.div [ TypedHtml.Attributes.class "grid grid-cols-1 md:grid-cols-2" ]
-        [ emailField, saveButton ]"""
-
-
 realSeam : String
 realSeam =
     """Now a **real** seam. `<model-viewer>` is a third-party web component — the typed tree has no producer for it, so building it means genuinely stepping outside: `M3e.Unsafe.customElement` forges the custom tag and `M3e.Unsafe.Attributes.customAttribute` sets its bespoke attributes. This is what the seam is *for*. Because it lives in one named userland producer, the escape is contained, greppable, and lint-fenced — you stepped outside on purpose, in one auditable place, instead of calling `M3e.Unsafe.customElement` inline wherever a `<model-viewer>` happens to show up."""
-
-
-realSeamCode : String
-realSeamCode =
-    """-- a real seam: a custom element the types can't express, contained once.
-modelViewer =
-    M3e.Unsafe.customElement "model-viewer"
-        [ TypedHtml.Attributes.src "/models/chair.glb"
-        , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
-        , TypedHtml.Attributes.class "block h-48 w-full rounded-lg"
-        ]
-        []"""
 
 
 slotSeam : String
@@ -239,42 +253,21 @@ slotSeam =
     """Most "custom" content needs no escape at all — it fills the *typed slots* a component declares. A nav-menu item's `label` slot accepts the `text` **and** `link` kinds, so a nav item can be an ordinary `<a href>` with no raw HTML at the call site: `TypedHtml.a` produces the `link` kind, so it drops into the slot directly — no seam, no door, no break-glass `recast`. The slot's phantom row admits exactly the kinds the design system declared for it."""
 
 
-linkNavCode : String
-linkNavCode =
-    """-- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so a
--- typed `TypedHtml.a` fills it directly — a nav item that IS an anchor. The
--- required-record form (`M3e.NavMenuItem.el`) enforces the required `label`.
-linkNav =
-    M3e.navMenu []
-        [ M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
-        , M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
-        ]"""
+
+-- @sample expect-compile-error: the whole point of the block — `span`'s content
+-- row has no field for `heading`, and this page says so. Verified to be rejected.
 
 
-htmlInSlotCode : String
-htmlInSlotCode =
-    """-- AppBar.TrailingSlot admits { button, iconButton, searchBar, sharedFlow, sharedPhrasing }.
--- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
--- iconButton and badge INSIDE it are still checked against the div's content model.
-htmlInSlot =
-    M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
-        [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
-        , M3e.AppBar.trailing
-            (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-                [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
-                , M3e.badge [] [ M3e.text "3" ]
-                ]
-            )
-        ]"""
+oneWayRejected : String
+oneWayRejected =
+    """TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected"""
 
 
-oneWayCode : String
-oneWayCode =
-    """TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected
-TypedHtml.div  [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✓ div takes any children
-
-TypedHtml.span [] [ M3e.text "hi" ]                      -- ✓ text is a shared atom
-TypedHtml.span [] [ M3e.icon [ … ] [] ]                  -- ✓ so is icon"""
+oneWayAccepted : String
+oneWayAccepted =
+    """TypedHtml.div [] [ M3e.heading [] [ M3e.text "hi" ] ]        -- ✓ div takes any children
+TypedHtml.span [] [ M3e.text "hi" ]                          -- ✓ text is a shared atom
+TypedHtml.span [] [ M3e.icon [ TA.name "star" ] [] ]         -- ✓ so is icon"""
 
 
 crossBrand : String

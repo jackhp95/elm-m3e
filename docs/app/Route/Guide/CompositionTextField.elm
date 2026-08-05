@@ -10,6 +10,7 @@ Email field, live, beside its exact source.
 
 import BackendTask
 import Doc
+import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
@@ -69,6 +70,12 @@ head _ =
 field holds a native `<label>` and a typed native `<input>`, wired together by
 the one shared id "email-field". This is the value shown live and printed below.
 -}
+
+
+
+-- @sample-source guideEmailField
+
+
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
     M3e.formField [ M3e.FormField.variant Value.outlined ]
@@ -97,7 +104,7 @@ view _ _ =
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown composed
                     , Doc.showcase emailField
-                    , Doc.codeBlock Doc.Elm emailCode
+                    , Doc.codeBlock Doc.Elm Samples.guideEmailField
                     ]
                 , TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]
                     [ Doc.markdown native ]
@@ -115,24 +122,6 @@ intro =
 composed : String
 composed =
     """Here's the Email field. A **form field** holds two things: a native `<label>` and a typed native `<input>`. They're wired into one accessible control by a single shared id — `"email-field"` appears once on the label slot and once on the input slot, and the library stamps the matching `for`/`id` for you. This is the label wiring from [accessibility you can't forget](/guide/accessible-by-construction), paying off exactly where you'd want it:"""
-
-
-emailCode : String
-emailCode =
-    """emailField =
-    M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ M3e.FormField.label
-            (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ M3e.text "Email address" ])
-        , M3e.FormField.hint (M3e.text "We'll never share it.")
-        , M3e.FormField.child
-            (TypedHtml.input
-                [ TypedHtml.Attributes.type_ "email"
-                , TypedHtml.Attributes.placeholder "you@example.com"
-                , TypedHtml.Attributes.name "email"
-                ]
-                []
-            )
-        ]"""
 
 
 native : String

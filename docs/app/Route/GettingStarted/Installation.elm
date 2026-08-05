@@ -136,36 +136,9 @@ cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
                 [ stepHeading "4. Wrap your app in a theme and render"
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                     [ M3e.text "M3e.Theme is an attribute-style element (not a builder): M3e.Theme.view takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
-                , codeBlock Elm """
-module Main exposing (main)
-
-import Browser
-import M3e.Button as Button
-import M3e
-import M3e.Theme as Theme
-import M3e.Values as Value
-
-
-main : Program () () ()
-main =
-    Browser.sandbox { init = (), update = \\_ model -> model, view = view }
-
-
-view : () -> Html.Html ()
-view _ =
-    M3e.toNode
-        (Theme.view
-            [ Theme.color "#6750A4"
-            , Theme.scheme Value.auto
-            ]
-            [ Button.view
-                [ Button.variant Value.filled ]
-                [ M3e.text "It works" ]
-            ]
-        )
-"""
+                , codeBlock Elm mainModule
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                    [ M3e.text "M3e.toNode turns an M3e Element into elm/html, so Browser.sandbox can render it (add `import Html` alongside the imports above). Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
+                    [ M3e.text "M3e.toHtml turns an M3e Element into elm/html, so Browser.sandbox can render it. Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
                 , codeBlock Xml """
 <!doctype html>
 <html lang="en">
@@ -189,3 +162,41 @@ view _ =
                 ]
             ]
         )
+
+
+
+-- @sample expect-review NoRedundantElementEscape: `Browser.sandbox` requires
+-- `Html`, so the app root has to leave the typed tree exactly once. That is the
+-- same documented exemption `app/Shared.elm` carries in the docs review config —
+-- recorded here rather than hidden, so a SECOND toHtml would still be caught.
+
+
+mainModule : String
+mainModule =
+    """module Main exposing (main)
+
+import Browser
+import Html
+import M3e
+import M3e.Button as Button
+import M3e.Theme as Theme
+import M3e.Values as Value
+
+
+main : Program () () ()
+main =
+    Browser.sandbox { init = (), update = \\_ model -> model, view = view }
+
+
+view : () -> Html.Html ()
+view _ =
+    M3e.toHtml
+        (Theme.view
+            [ Theme.color "#6750A4"
+            , Theme.scheme Value.auto
+            ]
+            [ Button.view
+                [ Button.variant Value.filled ]
+                [ M3e.text "It works" ]
+            ]
+        )"""

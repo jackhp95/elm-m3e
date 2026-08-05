@@ -112,19 +112,22 @@ body =
 
 Look at the shape. Attributes like `M3e.Attributes.variant Value.filled` go in the first list; content goes in the second. That is the whole API — one import, one shape, every component.
 
-(One deliberate choice: the Guide writes the generic setters — `M3e.slotHeader`, not `M3e.cardSlotHeader` — because in [the tooling chapter](/guide/tooling-refactors) you'll watch the linter upgrade exactly this code to the component-precise form, for you.)"""
+(One thing to notice: the *constructors* all live on the barrel, but a component's **slot setters** live on its own module — `M3e.Card.header`, not `M3e.header` — because each one is typed to the kinds that slot admits. That is why `M3e.Card` is imported alongside the barrel here.)"""
 
 
 source : String
 source =
     """import M3e
+import M3e.Attributes
+import M3e.Card
+import M3e.Values as Value
 
 
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
-        [ M3e.slotHeader
+        [ M3e.Card.header
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ M3e.text "Account settings" ])
-        , M3e.slotContent
+        , M3e.Card.content
             (M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ])
         ]"""
 

@@ -124,8 +124,8 @@ rootCode =
 
 Theme.view
     [ Theme.color model.seed                    -- the brand/seed color, e.g. "#4285F4"
-    , Theme.scheme (schemeToken model.scheme)   -- M3e.Values.light | M3e.Values.dark
-    , Theme.contrast (contrastToken model.contrast) -- standard | medium | high
+    , Theme.scheme model.scheme                 -- M3e.Values.light | M3e.Values.dark
+    , Theme.contrast model.contrast             -- standard | medium | high
     , Theme.density model.density               -- 0 (default) down to -3 (compact)
     ]
     [ appBody ]"""
@@ -143,8 +143,8 @@ rolesBody =
 
 rolesCode : String
 rolesCode =
-    """-- A selected row is a surface-ROLE swap, not a background class:
-Surface.view Surface.surfaceContainer [ … ] rows   -- container role, correct tint + elevation
+    """-- A selected row is a surface-ROLE swap, not a hand-picked color:
+TypedHtml.div [ TypedHtml.Attributes.class "bg-surface-container" ] rows
 TypedHtml.span [ TypedHtml.Attributes.class "text-body-lg text-on-surface-variant" ] [ M3e.text "Secondary text" ]
 TypedHtml.a [ TypedHtml.Attributes.href href, TypedHtml.Attributes.class "text-primary" ] [ M3e.text "Primary action" ]
 
@@ -192,10 +192,11 @@ Theme.view
     [ Theme.color "#6750A4"          -- brand accent — every role re-derives
     , Theme.scheme M3e.Values.light
     , Theme.contrast M3e.Values.medium -- a touch more contrast for the new palette
-    , Theme.density -1                -- slightly more compact
+    , Theme.density -1                 -- slightly more compact
     ]
-    [ appBody ]                        -- shapes: set the corner default where the surface is built,
-                                       -- e.g. TA.class "rounded-md-corner-large" per surface"""
+    -- Shapes are not a Theme input: set the corner where the surface is built,
+    -- e.g. TA.class "rounded-md-corner-large" on that surface.
+    [ appBody ]"""
 
 
 reskinNote : String
@@ -210,13 +211,16 @@ bridgeBody =
 
 bridgeCode : String
 bridgeCode =
-    """-- GOOD: layout via utility classes; surface + shape + color via tokens/components.
-Surface.view Surface.surfaceContainer
-    [ Shape.corner Shape.large, TypedHtml.Attributes.class "overflow-hidden flex flex-col" ]
+    """-- GOOD: layout via utility classes; surface + shape + color via M3 token classes.
+TypedHtml.div
+    [ TypedHtml.Attributes.class "bg-surface-container rounded-md-corner-large"
+    , TypedHtml.Attributes.class "overflow-hidden flex flex-col"
+    ]
     rows
 
--- WRONG: a class doing a visual (color/shape) job — flagged, and wrong in dark.
-TypedHtml.div [ TypedHtml.Attributes.class "rounded-3xl bg-primary-container p-4" ] rows"""
+-- WRONG: a raw corner and a raw color doing a token's job — adrift from the
+-- shape scale, and wrong the moment the scheme flips.
+TypedHtml.div [ TypedHtml.Attributes.class "rounded-3xl bg-[#4285F4] p-4" ] rows"""
 
 
 recap : String

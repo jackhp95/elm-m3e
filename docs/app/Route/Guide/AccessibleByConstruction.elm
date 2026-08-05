@@ -11,6 +11,7 @@ version is shown as code beside the rule's real output.
 
 import BackendTask
 import Doc
+import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
@@ -69,6 +70,12 @@ head _ =
 you should ship and it renders. The nameless version is shown only as code,
 beside the real output of the `missingRequiredAttribute` rule.
 -}
+
+
+
+-- @sample-source-body guideHelpButton
+
+
 helpButton : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 helpButton =
     M3e.iconButton [ Aria.label "Help" ]
@@ -87,7 +94,7 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown labeled
                     , Doc.showcase helpButton
-                    , Doc.codeBlock Doc.Elm labeledCode
+                    , Doc.codeBlock Doc.Elm Samples.guideHelpButton
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown nameless
@@ -111,15 +118,15 @@ labeled =
     """Add the help button *with* its accessible name and it's fine — this renders, and it announces itself as "Help":"""
 
 
-labeledCode : String
-labeledCode =
-    """M3e.iconButton [ Aria.label "Help" ]
-    [ M3e.icon [ TA.name "help" ] [] ]"""
-
-
 nameless : String
 nameless =
     """Now drop the name. The component list the API was generated from records that an icon button **requires** an accessible name — and the codegen-aware `missingRequiredAttribute` rule reads that same list, so in a project that runs elm-review this does not pass CI. The message below is the rule's real output:"""
+
+
+
+-- @sample expect-review MissingRequiredAttribute: the page's claim, in one line.
+-- It compiles — that is the point — and the linter is what refuses it, so the
+-- rule name below is checked against the real elm-review run.
 
 
 namelessCode : String

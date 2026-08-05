@@ -9,6 +9,7 @@ slot stops the build — shown as the real compiler output, not an assertion.
 
 import BackendTask
 import Doc
+import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
@@ -69,6 +70,12 @@ head _ =
 This is the VALID version — the one that renders. The chapter's failures are
 shown as real compiler text, not built here.
 -}
+
+
+
+-- @sample-source-body guideSavedButton
+
+
 savedButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 savedButton =
     M3e.button [ M3e.Attributes.variant Value.filled ]
@@ -89,7 +96,7 @@ view _ _ =
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown valid
                     , Doc.showcase savedButton
-                    , Doc.codeBlock Doc.Elm validCode
+                    , Doc.codeBlock Doc.Elm Samples.guideSavedButton
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
                     [ Doc.markdown broken
@@ -115,17 +122,15 @@ valid =
     """Give the Save button a leading icon. The button has an `icon` slot, and that slot accepts icon-kind content. `M3e.icon` is icon-kind, so it drops right in — this renders:"""
 
 
-validCode : String
-validCode =
-    """M3e.button [ M3e.Attributes.variant Value.filled ]
-    [ M3e.Button.icon (M3e.icon [ TA.name "save" ] [])
-    , M3e.text "Save"
-    ]"""
-
-
 broken : String
 broken =
     """Now do it wrong on purpose. The `icon` slot accepts only icon-kind content — put a **chip** in there instead and the build refuses. This is the real output of `elm make`, not a screenshot we wrote:"""
+
+
+
+-- @sample expect-compile-error: this page's subject. The `icon` slot admits the
+-- `icon` kind and a Chip does not name it, so the compiler refuses this call —
+-- which is exactly what the page tells the reader, and now proves.
 
 
 brokenCode : String

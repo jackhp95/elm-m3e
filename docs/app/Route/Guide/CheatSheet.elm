@@ -138,10 +138,11 @@ shapesCode =
 M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
-M3e.Button.el { content = …, action = … } [] []
+M3e.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe — a one-only setter is unwritable twice; order-free
-M3e.Button.build { content = …, action = … } |> M3e.Button.toElement"""
+M3e.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
+    |> M3e.Button.toElement"""
 
 
 dial : String

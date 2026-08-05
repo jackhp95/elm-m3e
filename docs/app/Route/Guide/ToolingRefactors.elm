@@ -54,7 +54,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "The linter doesn't just flag — it extracts inline escapes into named seams and converts your codebase to one approved form, with autofix."
+        , description = "The linter doesn't just flag — it rewrites a needless escape to the typed setter that already covers it, and converts your codebase to one approved form, with autofix."
         , locale = Nothing
         , title = "The tooling refactors for you · elm-m3e"
         }
@@ -94,37 +94,43 @@ intro =
 
 extract : String
 extract =
-    """**One — it extracts seams for you.** You inline a raw escape in a feature module — a stray class on an element. The linter flags it (escapes belong in the fenced seam modules), you run the autofix, and the tool *lifts it into a named seam function and rewrites the call site*. Free variables become arguments; duplicates collapse to one definition. Before:"""
+    """**One — it removes the escapes you never needed.** You inline a raw escape in a feature module — a stray `class` on an element. The linter flags it *and names the typed setter that already covers it*: it reads the same component manifest the API was generated from, so it knows `class` has one. Run the autofix and the call site is rewritten to that setter. The escape doesn't move somewhere tidier — it stops existing. Before:"""
+
+
+
+-- @sample expect-review NoRedundantAttributeEscape: this IS the finding the
+-- section is about. Verified to be flagged by the named rule, so the "before"
+-- can never quietly become something the linter would accept.
 
 
 extractBefore : String
 extractBefore =
     """-- a raw escape inlined in a feature module, for something the library
 -- already models: `class` has a typed setter, so this is a needless escape
-row [ M3e.Unsafe.Attributes.fromHtmlAttribute (class "flex-auto") ] children"""
+M3e.button [ M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Attributes.class "flex-auto") ] [ M3e.text "Save" ]"""
 
 
 extractAfter : String
 extractAfter =
     """-- after autofix: the typed setter, no escape at all
-row [ TypedHtml.Attributes.class "flex-auto" ] children"""
+M3e.button [ TypedHtml.Attributes.class "flex-auto" ] [ M3e.text "Save" ]"""
 
 
 convert : String
 convert =
-    """**Two — it converts your codebase to one approved form.** Pin a canonical form and run the autofix; every call site is rewritten to it. This is real: these docs pin the specific-barrel form, and the linter rewrote every generic slot to its component-specific setter automatically. Before and after, from an actual autofix run:"""
+    """**Two — it converts your codebase to one approved form.** Pin a canonical form and run the autofix; every call site is rewritten to it. This is real: these docs pin the one-import **barrel** form (`preferBarrel`, in `review/src/ReviewConfig.elm`), and the linter rewrote every per-component call site to it automatically. Before and after, from an actual autofix run:"""
 
 
 convertBefore : String
 convertBefore =
-    """-- generic (loose) — what you might write, or teach
-M3e.listItem [] [ M3e.slotLeading (M3e.icon [ TA.name "star" ] []) ]"""
+    """-- the per-component surface — what you might write, or arrive with
+M3e.Button.view [ M3e.Button.variant Value.filled ] [ M3e.text "Save" ]"""
 
 
 convertAfter : String
 convertAfter =
-    """-- after autofix: the component-specific, kind-precise setter
-M3e.listItem [] [ M3e.ListItem.leading (M3e.icon [ TA.name "star" ] []) ]"""
+    """-- after autofix: the pinned form — one import, the shared vocabulary
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]"""
 
 
 pipeline : String
@@ -135,6 +141,6 @@ pipeline =
 recap : String
 recap =
     """- The linter **applies fixes**, not just warnings — it knows your components.
-- It **extracts inline escapes into named seams** and rewrites the call site (free vars → arguments, duplicates de-dup).
+- It **removes escapes the typed layer already covers** — naming the setter and rewriting the call site for you, so the escape is gone rather than relocated.
 - It **converts your codebase to one approved form**; residue routes through seams and gets flagged next pass.
 - **Next: [Troubleshooting](/guide/troubleshooting) →** when something does go wrong, how to read and rescue it."""

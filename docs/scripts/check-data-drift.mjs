@@ -37,9 +37,25 @@ const REPO = path.resolve(DOCS, "..");
 // The artifacts `gen` writes, relative to docs/. Kept explicit rather than
 // globbed: a glob would silently start (or stop) covering files as the tree
 // changes, and this list is the contract.
-const ARTIFACTS = ["data/reference.json"];
+const ARTIFACTS = [
+  "data/reference.json",
+  // gen:samples — the guide's displayed Elm, lifted back out into things a
+  // compiler and a linter can judge. See scripts/samples-gen/extract-samples.mjs.
+  "src/Guide/Samples.elm",
+  "samples/manifest.json",
+  "samples/review/elm.json",
+  "samples/review/src/CodegenReviewConfig.elm",
+];
 
-const GEN_STEPS = ["gen:reference"];
+// Whole trees whose CONTENTS are generated: every file must match, and the file
+// SET must match too (an extra or missing module is drift as surely as a changed
+// one). Listing directories rather than each `.elm` keeps the contract explicit
+// — `samples/manifest.json` above is the enumerated list of what should be here,
+// and it is byte-compared — without a per-sample edit to this file every time a
+// guide page gains or loses a code block.
+const ARTIFACT_DIRS = ["samples/good", "samples/bad"];
+
+const GEN_STEPS = ["gen:reference", "gen:samples"];
 
 // DELIBERATELY NOT GATED (yet): data/examples.json and data/example-usage.json.
 //
@@ -118,6 +134,35 @@ const drifted = ARTIFACTS.filter((rel) => {
   return !fs.readFileSync(committed).equals(fs.readFileSync(fresh));
 });
 
+/** Every file under `dir`, relative to it, sorted. */
+function tree(dir) {
+  if (!fs.existsSync(dir)) return [];
+  const out = [];
+  const walk = (sub) => {
+    for (const entry of fs.readdirSync(path.join(dir, sub), { withFileTypes: true })) {
+      const rel = path.join(sub, entry.name);
+      if (entry.isDirectory()) walk(rel);
+      else out.push(rel);
+    }
+  };
+  walk("");
+  return out.sort();
+}
+
+let counted = ARTIFACTS.length;
+for (const dir of ARTIFACT_DIRS) {
+  const committed = tree(path.join(DOCS, dir));
+  const fresh = tree(path.join(scratchDocs, dir));
+  counted += fresh.length;
+  for (const rel of new Set([...committed, ...fresh])) {
+    const a = path.join(DOCS, dir, rel);
+    const b = path.join(scratchDocs, dir, rel);
+    if (!fs.existsSync(a) || !fs.existsSync(b) || !fs.readFileSync(a).equals(fs.readFileSync(b))) {
+      drifted.push(path.join(dir, rel));
+    }
+  }
+}
+
 if (drifted.length) {
   console.error("check:drift: FAIL — committed generated data is stale:");
   for (const d of drifted) console.error(`  docs/${d}`);
@@ -126,4 +171,4 @@ if (drifted.length) {
   process.exit(1);
 }
 
-console.log(`check:drift: OK — ${ARTIFACTS.length} generated artifact(s) match a fresh regen.`);
+console.log(`check:drift: OK — ${counted} generated artifact(s) match a fresh regen.`);
