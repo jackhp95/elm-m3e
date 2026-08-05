@@ -33,7 +33,7 @@
     "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
     "postinstall": "npm run hooks:install",
-    "check:gates": "node scripts/check-gates.mjs"
+    "check:gates": "node \"${ELM_CEM_BIN:-../elm-cem/bin/elm-cem.js}\" check-gates"
   },
   "devDependencies": {
     "elm": "0.19.1-6",
