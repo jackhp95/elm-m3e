@@ -229,3 +229,25 @@ git commit -m "Pin the app shell's computed layout on the m3e-theme host"
 **Type consistency.** `( shellClass, children )` destructured once and both parts used once. `densityClass : Float -> String` matches `:560`. `M3e.Theme.scheme` / `.contrast` take `Value` tokens, which holds only after the Values plan lands — stated as the blocking constraint.
 
 **Ordering note.** Task 1 Step 1 deliberately re-reads `view` rather than trusting this plan's illustration, because the Values plan edits the same attribute list first.
+
+---
+
+## OUTCOME (executed 2026-08-05)
+
+Task 1 landed a **third shape**, because this plan's Step 2 does not compile. The failure is
+not the predicted `children` unification (which was a non-issue — `View.body` is fully
+row-polymorphic); it is the attribute list. `M3e.Theme.Attrs` is a closed generated row with
+no `dir`, and `rg -l "dir : Supported" src/M3e/` returns nothing library-wide — elm-cem emits
+only `class`/`id`/`slot`/`style` as globals. See the BLOCKED section in
+`specs/2026-08-05-theme-host-view-restructure-design.md`.
+
+Landed: `( shellClass, children )` pair → one `M3e.theme` → one `M3e.toHtml`, `themed`
+deleted, wrapper `<div>` **retained** carrying the class list and `dir`.
+
+Commits `1cd6fca0` (Task 1) and `2c366b41` (Task 2). Both scroll-region comments survive;
+per-branch class lists intact. Falsification passed: collapsing the two branches onto the
+docs-shell list failed exactly the two example assertions and left both docs-shell
+assertions green, with `/examples/shop` scrollable overflow going 477px → 0 (clipped).
+
+Task 2's spec selector is `"m3e-theme.h-dvh, m3e-theme > .h-dvh"`, matching host or wrapper,
+so it keeps holding unchanged if `dir` ever becomes typeable and the hoist lands.

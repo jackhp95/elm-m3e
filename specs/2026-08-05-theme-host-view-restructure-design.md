@@ -71,11 +71,65 @@ That is not on its own a reason to reject the change — hoisting removes a DOM 
 better — but it should be a conscious trade with a regression test pinning the shell's
 computed layout, not an incidental consequence of tidying.
 
-## Decided shape
+## BLOCKED (found during implementation): the DOM node cannot be removed
 
-**Remove the DOM node too** — hoist onto the `m3e-theme` host, accept the `display: contents`
-coupling as a deliberate trade, and pin it with a regression test. The wrapper `<div>`s go
-away; `themed` goes away; there is one `M3e.toHtml` call.
+The decided shape below is **not implementable**, and the reason is not the `children`
+unification this spec predicted. It is the *attribute* list.
+
+`M3e.Theme.Attrs` (`src/M3e/Theme.elm:43`) is a **closed** generated capability row:
+
+```elm
+type alias Attrs =
+    { class, color, contrast, density, id, motion
+    , onChange, scheme, slot, strongFocus, style, variant : Supported }
+```
+
+There is no `dir`. And `TypedHtml.Attributes.dir : Value Dir -> Attr { c | dir : Supported } msg`
+demands exactly that field, so the hoisted attribute list fails to compile with:
+
+```
+But `theme` needs the 1st argument to be:  List (M3e.Attr M3e.Theme.Attrs msg)
+```
+
+This is **systemic, not a `m3e-theme` quirk.** Verified:
+
+- `rg -l "dir : Supported" src/M3e/` → no matches anywhere in the generated library.
+- `M3e.Attributes` exposes exactly four global attributes: `class`, `id`, `slot`, `style`.
+- `dir`, `lang`, `tabindex`, `hidden` and `title` are all absent from the generated surface.
+
+So `dir` cannot be placed on *any* generated m3e element. The spec's specified fallback (two
+`M3e.theme` calls) does not help — `dir` is illegal in both. The only routes would be an
+unsafe escape (`TypedHtml.Unsafe.Attributes.customAttribute`, which would re-stringify the
+`Value` token that Spec B just finished typing — a straight regression) or adding `dir` to
+elm-cem's generated global-attribute set, which is an upstream change in a different repo.
+
+### What actually landed
+
+A third shape, better than either the spec anticipated:
+
+`( shellClass, children )` destructured pair → **one** `M3e.theme` call → **one**
+`M3e.toHtml`; `themed` deleted; the wrapper `<div>` **retained**, carrying both the class
+list and `dir`, with a comment recording why it cannot go away.
+
+The `children` unification the spec worried about was a non-issue — `View.body` is fully
+row-polymorphic and unified without complaint.
+
+Net win is real but smaller than intended: the theme attribute list and the shell wrapper are
+each written once instead of twice, and the branch is a single tuple. The
+`:host { display: contents }` coupling never comes into play, because nothing was hoisted.
+
+Splitting them — classes on the host, `dir` on the wrapper — was considered and rejected: it
+is worse than either option, because the wrapper would become a single grid **item** and
+`grid-rows-[auto_1fr]` would stop pinning the app bar.
+
+### Follow-up worth opening upstream
+
+elm-cem emits only `class`/`id`/`slot`/`style` as global attributes. `dir` and `lang` are
+load-bearing for internationalisation and `tabindex`/`hidden` for accessibility, on any custom
+element. That looks like a general gap in the generated global-attribute roster rather than a
+one-attribute oversight, and it is the precondition for reopening this hoist.
+
+## Decided shape (NOT implementable — retained for the record)
 
 The one non-negotiable amendment to the original diff: **the class list stays per branch.**
 The `if` selects both the class list and the children, not just the children:
