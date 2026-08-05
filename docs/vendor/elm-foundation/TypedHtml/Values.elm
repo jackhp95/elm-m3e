@@ -1,6 +1,8 @@
 module TypedHtml.Values exposing
     ( Value
+    , toString
     , Autocapitalize, Autocorrect, Blocking, Charset, Closedby, Colorspace, Contenteditable, Crossorigin, Decoding, Dir, Draggable, Enctype, Enterkeyhint, Fetchpriority, Formenctype, Formmethod, Hidden, HttpEquiv, Inputmode, Kind, Loading, Method, Popover, Popovertargetaction, Preload, Referrerpolicy, Sandbox, Scope, Shadowrootmode, Shadowrootslotassignment, Shape, Spellcheck, Translate, Wrap, Writingsuggestions
+    , autocapitalizeFromString, autocapitalizeValues, autocorrectFromString, autocorrectValues, blockingFromString, blockingValues, charsetFromString, charsetValues, closedbyFromString, closedbyValues, colorspaceFromString, colorspaceValues, contenteditableFromString, contenteditableValues, crossoriginFromString, crossoriginValues, decodingFromString, decodingValues, dirFromString, dirValues, draggableFromString, draggableValues, enctypeFromString, enctypeValues, enterkeyhintFromString, enterkeyhintValues, fetchpriorityFromString, fetchpriorityValues, formenctypeFromString, formenctypeValues, formmethodFromString, formmethodValues, hiddenFromString, hiddenValues, httpEquivFromString, httpEquivValues, inputmodeFromString, inputmodeValues, kindFromString, kindValues, loadingFromString, loadingValues, methodFromString, methodValues, popoverFromString, popoverValues, popovertargetactionFromString, popovertargetactionValues, preloadFromString, preloadValues, referrerpolicyFromString, referrerpolicyValues, sandboxFromString, sandboxValues, scopeFromString, scopeValues, shadowrootmodeFromString, shadowrootmodeValues, shadowrootslotassignmentFromString, shadowrootslotassignmentValues, shapeFromString, shapeValues, spellcheckFromString, spellcheckValues, translateFromString, translateValues, wrapFromString, wrapValues, writingsuggestionsFromString, writingsuggestionsValues
     , value, allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols, anonymous, any, applicationXWwwFormUrlencoded, async, auto, captions, chapters, characters, circle, closed, closerequest, col, colgroup, contentSecurityPolicy, contentType, decimal, default, defaultStyle, descriptions, dialog, displayP3, done, eager, email, enter, false, get, go, hard, hidden, hide, high, hint, lazy, limitedSrgb, low, ltr, manual, metadata, multipartFormData, named, next, no, noReferrer, noReferrerWhenDowngrade, none, numeric, off, on, open, origin, originWhenCrossOrigin, plaintextOnly, poly, post, previous, rect, refresh, render, row, rowgroup, rtl, sameOrigin, search, send, sentences, show, soft, strictOrigin, strictOriginWhenCrossOrigin, subtitles, sync, tel, text, textPlain, toggle, true, unsafeUrl, untilFound, url, useCredentials, utf8, words, xUaCompatible, yes
     , autocapitalizeCharacters, autocapitalizeNone, autocapitalizeOff, autocapitalizeSentences, autocapitalizeWords, autocorrectOff, autocorrectOn, blockingRender, charsetUtf8, closedbyAny, closedbyCloserequest, closedbyNone, colorspaceDisplayP3, colorspaceLimitedSrgb, contenteditableFalse, contenteditablePlaintextOnly, contenteditableTrue, crossoriginValue, crossoriginAnonymous, crossoriginUseCredentials, decodingAsync, decodingAuto, decodingSync, dirAuto, dirLtr, dirRtl, draggableFalse, draggableTrue, enctypeApplicationXWwwFormUrlencoded, enctypeMultipartFormData, enctypeTextPlain, enterkeyhintDone, enterkeyhintEnter, enterkeyhintGo, enterkeyhintNext, enterkeyhintPrevious, enterkeyhintSearch, enterkeyhintSend, fetchpriorityAuto, fetchpriorityHigh, fetchpriorityLow, formenctypeApplicationXWwwFormUrlencoded, formenctypeMultipartFormData, formenctypeTextPlain, formmethodDialog, formmethodGet, formmethodPost, hiddenHidden, hiddenUntilFound, httpEquivContentSecurityPolicy, httpEquivContentType, httpEquivDefaultStyle, httpEquivRefresh, httpEquivXUaCompatible, inputmodeDecimal, inputmodeEmail, inputmodeNone, inputmodeNumeric, inputmodeSearch, inputmodeTel, inputmodeText, inputmodeUrl, kindCaptions, kindChapters, kindDescriptions, kindMetadata, kindSubtitles, loadingEager, loadingLazy, methodDialog, methodGet, methodPost, popoverAuto, popoverHint, popoverManual, popovertargetactionHide, popovertargetactionShow, popovertargetactionToggle, preloadValue, preloadAuto, preloadMetadata, preloadNone, referrerpolicyValue, referrerpolicyNoReferrer, referrerpolicyNoReferrerWhenDowngrade, referrerpolicyOrigin, referrerpolicyOriginWhenCrossOrigin, referrerpolicySameOrigin, referrerpolicyStrictOrigin, referrerpolicyStrictOriginWhenCrossOrigin, referrerpolicyUnsafeUrl, sandboxAllowDownloads, sandboxAllowForms, sandboxAllowModals, sandboxAllowOrientationLock, sandboxAllowPointerLock, sandboxAllowPopups, sandboxAllowPopupsToEscapeSandbox, sandboxAllowPresentation, sandboxAllowSameOrigin, sandboxAllowScripts, sandboxAllowTopNavigation, sandboxAllowTopNavigationByUserActivation, sandboxAllowTopNavigationToCustomProtocols, scopeCol, scopeColgroup, scopeRow, scopeRowgroup, shadowrootmodeClosed, shadowrootmodeOpen, shadowrootslotassignmentManual, shadowrootslotassignmentNamed, shapeCircle, shapeDefault, shapePoly, shapeRect, spellcheckFalse, spellcheckTrue, translateNo, translateYes, wrapHard, wrapSoft, writingsuggestionsFalse, writingsuggestionsTrue
     )
@@ -15,7 +17,9 @@ are fed by these same tokens.
 `HtmlIr.Value` import.
 
 @docs Value
+@docs toString
 @docs Autocapitalize, Autocorrect, Blocking, Charset, Closedby, Colorspace, Contenteditable, Crossorigin, Decoding, Dir, Draggable, Enctype, Enterkeyhint, Fetchpriority, Formenctype, Formmethod, Hidden, HttpEquiv, Inputmode, Kind, Loading, Method, Popover, Popovertargetaction, Preload, Referrerpolicy, Sandbox, Scope, Shadowrootmode, Shadowrootslotassignment, Shape, Spellcheck, Translate, Wrap, Writingsuggestions
+@docs autocapitalizeFromString, autocapitalizeValues, autocorrectFromString, autocorrectValues, blockingFromString, blockingValues, charsetFromString, charsetValues, closedbyFromString, closedbyValues, colorspaceFromString, colorspaceValues, contenteditableFromString, contenteditableValues, crossoriginFromString, crossoriginValues, decodingFromString, decodingValues, dirFromString, dirValues, draggableFromString, draggableValues, enctypeFromString, enctypeValues, enterkeyhintFromString, enterkeyhintValues, fetchpriorityFromString, fetchpriorityValues, formenctypeFromString, formenctypeValues, formmethodFromString, formmethodValues, hiddenFromString, hiddenValues, httpEquivFromString, httpEquivValues, inputmodeFromString, inputmodeValues, kindFromString, kindValues, loadingFromString, loadingValues, methodFromString, methodValues, popoverFromString, popoverValues, popovertargetactionFromString, popovertargetactionValues, preloadFromString, preloadValues, referrerpolicyFromString, referrerpolicyValues, sandboxFromString, sandboxValues, scopeFromString, scopeValues, shadowrootmodeFromString, shadowrootmodeValues, shadowrootslotassignmentFromString, shadowrootslotassignmentValues, shapeFromString, shapeValues, spellcheckFromString, spellcheckValues, translateFromString, translateValues, wrapFromString, wrapValues, writingsuggestionsFromString, writingsuggestionsValues
 @docs value, allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols, anonymous, any, applicationXWwwFormUrlencoded, async, auto, captions, chapters, characters, circle, closed, closerequest, col, colgroup, contentSecurityPolicy, contentType, decimal, default, defaultStyle, descriptions, dialog, displayP3, done, eager, email, enter, false, get, go, hard, hidden, hide, high, hint, lazy, limitedSrgb, low, ltr, manual, metadata, multipartFormData, named, next, no, noReferrer, noReferrerWhenDowngrade, none, numeric, off, on, open, origin, originWhenCrossOrigin, plaintextOnly, poly, post, previous, rect, refresh, render, row, rowgroup, rtl, sameOrigin, search, send, sentences, show, soft, strictOrigin, strictOriginWhenCrossOrigin, subtitles, sync, tel, text, textPlain, toggle, true, unsafeUrl, untilFound, url, useCredentials, utf8, words, xUaCompatible, yes
 @docs autocapitalizeCharacters, autocapitalizeNone, autocapitalizeOff, autocapitalizeSentences, autocapitalizeWords, autocorrectOff, autocorrectOn, blockingRender, charsetUtf8, closedbyAny, closedbyCloserequest, closedbyNone, colorspaceDisplayP3, colorspaceLimitedSrgb, contenteditableFalse, contenteditablePlaintextOnly, contenteditableTrue, crossoriginValue, crossoriginAnonymous, crossoriginUseCredentials, decodingAsync, decodingAuto, decodingSync, dirAuto, dirLtr, dirRtl, draggableFalse, draggableTrue, enctypeApplicationXWwwFormUrlencoded, enctypeMultipartFormData, enctypeTextPlain, enterkeyhintDone, enterkeyhintEnter, enterkeyhintGo, enterkeyhintNext, enterkeyhintPrevious, enterkeyhintSearch, enterkeyhintSend, fetchpriorityAuto, fetchpriorityHigh, fetchpriorityLow, formenctypeApplicationXWwwFormUrlencoded, formenctypeMultipartFormData, formenctypeTextPlain, formmethodDialog, formmethodGet, formmethodPost, hiddenHidden, hiddenUntilFound, httpEquivContentSecurityPolicy, httpEquivContentType, httpEquivDefaultStyle, httpEquivRefresh, httpEquivXUaCompatible, inputmodeDecimal, inputmodeEmail, inputmodeNone, inputmodeNumeric, inputmodeSearch, inputmodeTel, inputmodeText, inputmodeUrl, kindCaptions, kindChapters, kindDescriptions, kindMetadata, kindSubtitles, loadingEager, loadingLazy, methodDialog, methodGet, methodPost, popoverAuto, popoverHint, popoverManual, popovertargetactionHide, popovertargetactionShow, popovertargetactionToggle, preloadValue, preloadAuto, preloadMetadata, preloadNone, referrerpolicyValue, referrerpolicyNoReferrer, referrerpolicyNoReferrerWhenDowngrade, referrerpolicyOrigin, referrerpolicyOriginWhenCrossOrigin, referrerpolicySameOrigin, referrerpolicyStrictOrigin, referrerpolicyStrictOriginWhenCrossOrigin, referrerpolicyUnsafeUrl, sandboxAllowDownloads, sandboxAllowForms, sandboxAllowModals, sandboxAllowOrientationLock, sandboxAllowPointerLock, sandboxAllowPopups, sandboxAllowPopupsToEscapeSandbox, sandboxAllowPresentation, sandboxAllowSameOrigin, sandboxAllowScripts, sandboxAllowTopNavigation, sandboxAllowTopNavigationByUserActivation, sandboxAllowTopNavigationToCustomProtocols, scopeCol, scopeColgroup, scopeRow, scopeRowgroup, shadowrootmodeClosed, shadowrootmodeOpen, shadowrootslotassignmentManual, shadowrootslotassignmentNamed, shapeCircle, shapeDefault, shapePoly, shapeRect, spellcheckFalse, spellcheckTrue, translateNo, translateYes, wrapHard, wrapSoft, writingsuggestionsFalse, writingsuggestionsTrue
 
@@ -30,6 +34,13 @@ import HtmlIr.Value
 -}
 type alias Value tags =
     HtmlIr.Value.Value tags
+
+
+{-| The token's underlying string — the safe out-bound direction. Re-exported so callers never import `HtmlIr.Value` directly.
+-}
+toString : Value tags -> String
+toString =
+    HtmlIr.Value.toString
 
 
 {-| The union row for `autocapitalize`.
@@ -364,6 +375,938 @@ type alias Writingsuggestions =
     { false : Supported
     , true : Supported
     }
+
+
+{-| Parse a `autocapitalize` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+autocapitalizeFromString : String -> Maybe (Value Autocapitalize)
+autocapitalizeFromString s =
+    case s of
+        "characters" ->
+            Just characters
+
+        "none" ->
+            Just none
+
+        "off" ->
+            Just off
+
+        "sentences" ->
+            Just sentences
+
+        "words" ->
+            Just words
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `autocorrect` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+autocorrectFromString : String -> Maybe (Value Autocorrect)
+autocorrectFromString s =
+    case s of
+        "off" ->
+            Just off
+
+        "on" ->
+            Just on
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `blocking` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+blockingFromString : String -> Maybe (Value Blocking)
+blockingFromString s =
+    case s of
+        "render" ->
+            Just render
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `charset` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+charsetFromString : String -> Maybe (Value Charset)
+charsetFromString s =
+    case s of
+        "utf-8" ->
+            Just utf8
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `closedby` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+closedbyFromString : String -> Maybe (Value Closedby)
+closedbyFromString s =
+    case s of
+        "any" ->
+            Just any
+
+        "closerequest" ->
+            Just closerequest
+
+        "none" ->
+            Just none
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `colorspace` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+colorspaceFromString : String -> Maybe (Value Colorspace)
+colorspaceFromString s =
+    case s of
+        "display-p3" ->
+            Just displayP3
+
+        "limited-srgb" ->
+            Just limitedSrgb
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `contenteditable` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+contenteditableFromString : String -> Maybe (Value Contenteditable)
+contenteditableFromString s =
+    case s of
+        "false" ->
+            Just false
+
+        "plaintext-only" ->
+            Just plaintextOnly
+
+        "true" ->
+            Just true
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `crossorigin` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+crossoriginFromString : String -> Maybe (Value Crossorigin)
+crossoriginFromString s =
+    case s of
+        "" ->
+            Just value
+
+        "anonymous" ->
+            Just anonymous
+
+        "use-credentials" ->
+            Just useCredentials
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `decoding` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+decodingFromString : String -> Maybe (Value Decoding)
+decodingFromString s =
+    case s of
+        "async" ->
+            Just async
+
+        "auto" ->
+            Just auto
+
+        "sync" ->
+            Just sync
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `dir` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+dirFromString : String -> Maybe (Value Dir)
+dirFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "ltr" ->
+            Just ltr
+
+        "rtl" ->
+            Just rtl
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `draggable` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+draggableFromString : String -> Maybe (Value Draggable)
+draggableFromString s =
+    case s of
+        "false" ->
+            Just false
+
+        "true" ->
+            Just true
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `enctype` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+enctypeFromString : String -> Maybe (Value Enctype)
+enctypeFromString s =
+    case s of
+        "application/x-www-form-urlencoded" ->
+            Just applicationXWwwFormUrlencoded
+
+        "multipart/form-data" ->
+            Just multipartFormData
+
+        "text/plain" ->
+            Just textPlain
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `enterkeyhint` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+enterkeyhintFromString : String -> Maybe (Value Enterkeyhint)
+enterkeyhintFromString s =
+    case s of
+        "done" ->
+            Just done
+
+        "enter" ->
+            Just enter
+
+        "go" ->
+            Just go
+
+        "next" ->
+            Just next
+
+        "previous" ->
+            Just previous
+
+        "search" ->
+            Just search
+
+        "send" ->
+            Just send
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `fetchpriority` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+fetchpriorityFromString : String -> Maybe (Value Fetchpriority)
+fetchpriorityFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "high" ->
+            Just high
+
+        "low" ->
+            Just low
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `formenctype` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+formenctypeFromString : String -> Maybe (Value Formenctype)
+formenctypeFromString s =
+    case s of
+        "application/x-www-form-urlencoded" ->
+            Just applicationXWwwFormUrlencoded
+
+        "multipart/form-data" ->
+            Just multipartFormData
+
+        "text/plain" ->
+            Just textPlain
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `formmethod` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+formmethodFromString : String -> Maybe (Value Formmethod)
+formmethodFromString s =
+    case s of
+        "dialog" ->
+            Just dialog
+
+        "get" ->
+            Just get
+
+        "post" ->
+            Just post
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `hidden` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+hiddenFromString : String -> Maybe (Value Hidden)
+hiddenFromString s =
+    case s of
+        "hidden" ->
+            Just hidden
+
+        "until-found" ->
+            Just untilFound
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `httpEquiv` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+httpEquivFromString : String -> Maybe (Value HttpEquiv)
+httpEquivFromString s =
+    case s of
+        "content-security-policy" ->
+            Just contentSecurityPolicy
+
+        "content-type" ->
+            Just contentType
+
+        "default-style" ->
+            Just defaultStyle
+
+        "refresh" ->
+            Just refresh
+
+        "x-ua-compatible" ->
+            Just xUaCompatible
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `inputmode` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+inputmodeFromString : String -> Maybe (Value Inputmode)
+inputmodeFromString s =
+    case s of
+        "decimal" ->
+            Just decimal
+
+        "email" ->
+            Just email
+
+        "none" ->
+            Just none
+
+        "numeric" ->
+            Just numeric
+
+        "search" ->
+            Just search
+
+        "tel" ->
+            Just tel
+
+        "text" ->
+            Just text
+
+        "url" ->
+            Just url
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `kind` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+kindFromString : String -> Maybe (Value Kind)
+kindFromString s =
+    case s of
+        "captions" ->
+            Just captions
+
+        "chapters" ->
+            Just chapters
+
+        "descriptions" ->
+            Just descriptions
+
+        "metadata" ->
+            Just metadata
+
+        "subtitles" ->
+            Just subtitles
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `loading` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+loadingFromString : String -> Maybe (Value Loading)
+loadingFromString s =
+    case s of
+        "eager" ->
+            Just eager
+
+        "lazy" ->
+            Just lazy
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `method` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+methodFromString : String -> Maybe (Value Method)
+methodFromString s =
+    case s of
+        "dialog" ->
+            Just dialog
+
+        "get" ->
+            Just get
+
+        "post" ->
+            Just post
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `popover` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+popoverFromString : String -> Maybe (Value Popover)
+popoverFromString s =
+    case s of
+        "auto" ->
+            Just auto
+
+        "hint" ->
+            Just hint
+
+        "manual" ->
+            Just manual
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `popovertargetaction` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+popovertargetactionFromString : String -> Maybe (Value Popovertargetaction)
+popovertargetactionFromString s =
+    case s of
+        "hide" ->
+            Just hide
+
+        "show" ->
+            Just show
+
+        "toggle" ->
+            Just toggle
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `preload` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+preloadFromString : String -> Maybe (Value Preload)
+preloadFromString s =
+    case s of
+        "" ->
+            Just value
+
+        "auto" ->
+            Just auto
+
+        "metadata" ->
+            Just metadata
+
+        "none" ->
+            Just none
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `referrerpolicy` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+referrerpolicyFromString : String -> Maybe (Value Referrerpolicy)
+referrerpolicyFromString s =
+    case s of
+        "" ->
+            Just value
+
+        "no-referrer" ->
+            Just noReferrer
+
+        "no-referrer-when-downgrade" ->
+            Just noReferrerWhenDowngrade
+
+        "origin" ->
+            Just origin
+
+        "origin-when-cross-origin" ->
+            Just originWhenCrossOrigin
+
+        "same-origin" ->
+            Just sameOrigin
+
+        "strict-origin" ->
+            Just strictOrigin
+
+        "strict-origin-when-cross-origin" ->
+            Just strictOriginWhenCrossOrigin
+
+        "unsafe-url" ->
+            Just unsafeUrl
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `sandbox` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+sandboxFromString : String -> Maybe (Value Sandbox)
+sandboxFromString s =
+    case s of
+        "allow-downloads" ->
+            Just allowDownloads
+
+        "allow-forms" ->
+            Just allowForms
+
+        "allow-modals" ->
+            Just allowModals
+
+        "allow-orientation-lock" ->
+            Just allowOrientationLock
+
+        "allow-pointer-lock" ->
+            Just allowPointerLock
+
+        "allow-popups" ->
+            Just allowPopups
+
+        "allow-popups-to-escape-sandbox" ->
+            Just allowPopupsToEscapeSandbox
+
+        "allow-presentation" ->
+            Just allowPresentation
+
+        "allow-same-origin" ->
+            Just allowSameOrigin
+
+        "allow-scripts" ->
+            Just allowScripts
+
+        "allow-top-navigation" ->
+            Just allowTopNavigation
+
+        "allow-top-navigation-by-user-activation" ->
+            Just allowTopNavigationByUserActivation
+
+        "allow-top-navigation-to-custom-protocols" ->
+            Just allowTopNavigationToCustomProtocols
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `scope` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+scopeFromString : String -> Maybe (Value Scope)
+scopeFromString s =
+    case s of
+        "col" ->
+            Just col
+
+        "colgroup" ->
+            Just colgroup
+
+        "row" ->
+            Just row
+
+        "rowgroup" ->
+            Just rowgroup
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `shadowrootmode` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+shadowrootmodeFromString : String -> Maybe (Value Shadowrootmode)
+shadowrootmodeFromString s =
+    case s of
+        "closed" ->
+            Just closed
+
+        "open" ->
+            Just open
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `shadowrootslotassignment` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+shadowrootslotassignmentFromString : String -> Maybe (Value Shadowrootslotassignment)
+shadowrootslotassignmentFromString s =
+    case s of
+        "manual" ->
+            Just manual
+
+        "named" ->
+            Just named
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `shape` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+shapeFromString : String -> Maybe (Value Shape)
+shapeFromString s =
+    case s of
+        "circle" ->
+            Just circle
+
+        "default" ->
+            Just default
+
+        "poly" ->
+            Just poly
+
+        "rect" ->
+            Just rect
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `spellcheck` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+spellcheckFromString : String -> Maybe (Value Spellcheck)
+spellcheckFromString s =
+    case s of
+        "false" ->
+            Just false
+
+        "true" ->
+            Just true
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `translate` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+translateFromString : String -> Maybe (Value Translate)
+translateFromString s =
+    case s of
+        "no" ->
+            Just no
+
+        "yes" ->
+            Just yes
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `wrap` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+wrapFromString : String -> Maybe (Value Wrap)
+wrapFromString s =
+    case s of
+        "hard" ->
+            Just hard
+
+        "soft" ->
+            Just soft
+
+        _ ->
+            Nothing
+
+
+{-| Parse a `writingsuggestions` value from the string it writes to the DOM. The inverse of `toString`.
+-}
+writingsuggestionsFromString : String -> Maybe (Value Writingsuggestions)
+writingsuggestionsFromString s =
+    case s of
+        "false" ->
+            Just false
+
+        "true" ->
+            Just true
+
+        _ ->
+            Nothing
+
+
+{-| Every `autocapitalize` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+autocapitalizeValues : List (Value Autocapitalize)
+autocapitalizeValues =
+    [ characters, none, off, sentences, words ]
+
+
+{-| Every `autocorrect` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+autocorrectValues : List (Value Autocorrect)
+autocorrectValues =
+    [ off, on ]
+
+
+{-| Every `blocking` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+blockingValues : List (Value Blocking)
+blockingValues =
+    [ render ]
+
+
+{-| Every `charset` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+charsetValues : List (Value Charset)
+charsetValues =
+    [ utf8 ]
+
+
+{-| Every `closedby` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+closedbyValues : List (Value Closedby)
+closedbyValues =
+    [ any, closerequest, none ]
+
+
+{-| Every `colorspace` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+colorspaceValues : List (Value Colorspace)
+colorspaceValues =
+    [ displayP3, limitedSrgb ]
+
+
+{-| Every `contenteditable` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+contenteditableValues : List (Value Contenteditable)
+contenteditableValues =
+    [ false, plaintextOnly, true ]
+
+
+{-| Every `crossorigin` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+crossoriginValues : List (Value Crossorigin)
+crossoriginValues =
+    [ value, anonymous, useCredentials ]
+
+
+{-| Every `decoding` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+decodingValues : List (Value Decoding)
+decodingValues =
+    [ async, auto, sync ]
+
+
+{-| Every `dir` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+dirValues : List (Value Dir)
+dirValues =
+    [ auto, ltr, rtl ]
+
+
+{-| Every `draggable` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+draggableValues : List (Value Draggable)
+draggableValues =
+    [ false, true ]
+
+
+{-| Every `enctype` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+enctypeValues : List (Value Enctype)
+enctypeValues =
+    [ applicationXWwwFormUrlencoded, multipartFormData, textPlain ]
+
+
+{-| Every `enterkeyhint` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+enterkeyhintValues : List (Value Enterkeyhint)
+enterkeyhintValues =
+    [ done, enter, go, next, previous, search, send ]
+
+
+{-| Every `fetchpriority` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+fetchpriorityValues : List (Value Fetchpriority)
+fetchpriorityValues =
+    [ auto, high, low ]
+
+
+{-| Every `formenctype` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+formenctypeValues : List (Value Formenctype)
+formenctypeValues =
+    [ applicationXWwwFormUrlencoded, multipartFormData, textPlain ]
+
+
+{-| Every `formmethod` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+formmethodValues : List (Value Formmethod)
+formmethodValues =
+    [ dialog, get, post ]
+
+
+{-| Every `hidden` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+hiddenValues : List (Value Hidden)
+hiddenValues =
+    [ hidden, untilFound ]
+
+
+{-| Every `httpEquiv` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+httpEquivValues : List (Value HttpEquiv)
+httpEquivValues =
+    [ contentSecurityPolicy, contentType, defaultStyle, refresh, xUaCompatible ]
+
+
+{-| Every `inputmode` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+inputmodeValues : List (Value Inputmode)
+inputmodeValues =
+    [ decimal, email, none, numeric, search, tel, text, url ]
+
+
+{-| Every `kind` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+kindValues : List (Value Kind)
+kindValues =
+    [ captions, chapters, descriptions, metadata, subtitles ]
+
+
+{-| Every `loading` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+loadingValues : List (Value Loading)
+loadingValues =
+    [ eager, lazy ]
+
+
+{-| Every `method` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+methodValues : List (Value Method)
+methodValues =
+    [ dialog, get, post ]
+
+
+{-| Every `popover` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+popoverValues : List (Value Popover)
+popoverValues =
+    [ auto, hint, manual ]
+
+
+{-| Every `popovertargetaction` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+popovertargetactionValues : List (Value Popovertargetaction)
+popovertargetactionValues =
+    [ hide, show, toggle ]
+
+
+{-| Every `preload` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+preloadValues : List (Value Preload)
+preloadValues =
+    [ value, auto, metadata, none ]
+
+
+{-| Every `referrerpolicy` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+referrerpolicyValues : List (Value Referrerpolicy)
+referrerpolicyValues =
+    [ value, noReferrer, noReferrerWhenDowngrade, origin, originWhenCrossOrigin, sameOrigin, strictOrigin, strictOriginWhenCrossOrigin, unsafeUrl ]
+
+
+{-| Every `sandbox` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+sandboxValues : List (Value Sandbox)
+sandboxValues =
+    [ allowDownloads, allowForms, allowModals, allowOrientationLock, allowPointerLock, allowPopups, allowPopupsToEscapeSandbox, allowPresentation, allowSameOrigin, allowScripts, allowTopNavigation, allowTopNavigationByUserActivation, allowTopNavigationToCustomProtocols ]
+
+
+{-| Every `scope` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+scopeValues : List (Value Scope)
+scopeValues =
+    [ col, colgroup, row, rowgroup ]
+
+
+{-| Every `shadowrootmode` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+shadowrootmodeValues : List (Value Shadowrootmode)
+shadowrootmodeValues =
+    [ closed, open ]
+
+
+{-| Every `shadowrootslotassignment` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+shadowrootslotassignmentValues : List (Value Shadowrootslotassignment)
+shadowrootslotassignmentValues =
+    [ manual, named ]
+
+
+{-| Every `shape` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+shapeValues : List (Value Shape)
+shapeValues =
+    [ circle, default, poly, rect ]
+
+
+{-| Every `spellcheck` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+spellcheckValues : List (Value Spellcheck)
+spellcheckValues =
+    [ false, true ]
+
+
+{-| Every `translate` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+translateValues : List (Value Translate)
+translateValues =
+    [ no, yes ]
+
+
+{-| Every `wrap` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+wrapValues : List (Value Wrap)
+wrapValues =
+    [ hard, soft ]
+
+
+{-| Every `writingsuggestions` value. Map a UI over this and adding a value to the manifest cannot silently miss it.
+-}
+writingsuggestionsValues : List (Value Writingsuggestions)
+writingsuggestionsValues =
+    [ false, true ]
 
 
 {-| The \`\` token.
