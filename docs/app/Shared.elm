@@ -1,4 +1,4 @@
-module Shared exposing (Contrast, Data, Direction, Model, Msg, NavComponent, Scheme, componentCategories, template)
+module Shared exposing (Data, Model, Msg, NavComponent, componentCategories, template)
 
 {-| The M3 application shell that frames every docs route.
 
@@ -8,7 +8,9 @@ and the live theme controls in an `end`-slot settings drawer — cloning
 matraic's shell. Every icon goes through `M3e.Icon`; every action through
 `M3e.IconButton`; every theme control through `M3e.SegmentedButton`.
 
-The `Scheme`/`Contrast` unions are local; `M3e.Theme` is token-driven, and every
+The scheme/contrast/direction state is held as generated `Value` tokens — there is
+no local shadow union — so `M3e.Theme` takes the model field directly and the
+settings controls render from the generated `<enum>Values` lists. Every
 constructor is `Module.view [attrs] [content]`.
 
 -}
@@ -62,31 +64,14 @@ template =
 -- MODEL
 
 
-{-| The color scheme toggle. The new `M3e.Theme` is token-driven (no `Theme.Scheme`
-union), so this lives locally now; it maps to `Value.auto|light|dark`.
--}
-type Scheme
-    = Auto
-    | Light
-    | Dark
-
-
-{-| The contrast toggle — local for the same reason; maps to `Value.standard|medium|high`.
--}
-type Contrast
-    = Standard
-    | Medium
-    | High
-
-
 type alias Model =
     { showMenu : Bool
     , viewportWidth : Int
-    , scheme : Scheme
+    , scheme : Value.Value Value.Scheme
     , seed : String
-    , contrast : Contrast
+    , contrast : Value.Value Value.Contrast
     , density : Float
-    , dir : Direction
+    , dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , settingsOpen : Bool
     }
 
@@ -102,13 +87,6 @@ mdBreakpointPx =
 isMobile : Model -> Bool
 isMobile model =
     model.viewportWidth < mdBreakpointPx
-
-
-{-| Text direction toggle (drives the `dir` attribute on the shell).
--}
-type Direction
-    = Ltr
-    | Rtl
 
 
 {-| One drawer-nav component, derived from `data/reference.json`: the entries
@@ -133,11 +111,11 @@ type Msg
     | ViewportResized Int
     | ToggleSettings
     | DrawerChanged Bool Bool
-    | SetScheme Scheme
+    | SetScheme (Value.Value Value.Scheme)
     | SetSeed String
-    | SetContrast Contrast
+    | SetContrast (Value.Value Value.Contrast)
     | SetDensity Float
-    | SetDirection Direction
+    | SetDirection (TypedHtml.Values.Value TypedHtml.Values.Dir)
 
 
 init :
@@ -158,9 +136,9 @@ init flags _ =
       , viewportWidth = initialViewportWidth flags
       , scheme = schemeFromFlags flags
       , seed = "#6750A4"
-      , contrast = Standard
+      , contrast = Value.standard
       , density = 0
-      , dir = Ltr
+      , dir = TypedHtml.Values.ltr
       , settingsOpen = False
       }
     , Effect.none
@@ -182,48 +160,23 @@ initialViewportWidth flags =
 
 
 {-| The initial color scheme: the value persisted in `localStorage` (passed by
-`index.ts` as `flags.scheme`), else **Auto** — follow the OS light/dark setting.
+`index.ts` as `flags.scheme`), else **auto** — follow the OS light/dark setting.
+
+The string↔token conversion is generated (`M3e.Values.schemeFromString`), so the
+persisted strings and the DOM attribute values cannot drift apart.
+
 -}
-schemeFromFlags : Pages.Flags.Flags -> Scheme
+schemeFromFlags : Pages.Flags.Flags -> Value.Value Value.Scheme
 schemeFromFlags flags =
     case flags of
         Pages.Flags.BrowserFlags raw ->
             Decode.decodeValue (Decode.field "scheme" Decode.string) raw
                 |> Result.toMaybe
-                |> Maybe.andThen schemeFromString
-                |> Maybe.withDefault Auto
+                |> Maybe.andThen Value.schemeFromString
+                |> Maybe.withDefault Value.auto
 
         Pages.Flags.PreRenderFlags ->
-            Auto
-
-
-schemeToString : Scheme -> String
-schemeToString scheme =
-    case scheme of
-        Auto ->
-            "auto"
-
-        Light ->
-            "light"
-
-        Dark ->
-            "dark"
-
-
-schemeFromString : String -> Maybe Scheme
-schemeFromString s =
-    case s of
-        "auto" ->
-            Just Auto
-
-        "light" ->
-            Just Light
-
-        "dark" ->
-            Just Dark
-
-        _ ->
-            Nothing
+            Value.auto
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -251,7 +204,7 @@ update msg model =
 
         SetScheme scheme ->
             ( { model | scheme = scheme }
-            , Effect.fromCmd (Ports.storeScheme (schemeToString scheme))
+            , Effect.fromCmd (Ports.storeScheme (Value.toString scheme))
             )
 
         SetSeed seed ->
@@ -297,34 +250,6 @@ data =
 -- VIEW
 
 
-{-| Convenience alias: convert any `Element` to `Html`.
--}
-schemeAttr : Scheme -> M3e.Attr { c | scheme : M3e.Kind.Supported } msg
-schemeAttr scheme =
-    case scheme of
-        Auto ->
-            M3e.Theme.scheme Value.auto
-
-        Light ->
-            M3e.Theme.scheme Value.light
-
-        Dark ->
-            M3e.Theme.scheme Value.dark
-
-
-contrastAttr : Contrast -> M3e.Attr { c | contrast : M3e.Kind.Supported } msg
-contrastAttr contrast =
-    case contrast of
-        Standard ->
-            M3e.Theme.contrast Value.standard
-
-        Medium ->
-            M3e.Theme.contrast Value.medium
-
-        High ->
-            M3e.Theme.contrast Value.high
-
-
 view :
     Data
     ->
@@ -343,8 +268,8 @@ view sharedData page model toMsg pageView =
         themed children =
             M3e.theme
                 [ M3e.Theme.color model.seed
-                , schemeAttr model.scheme
-                , contrastAttr model.contrast
+                , M3e.Theme.scheme model.scheme
+                , M3e.Theme.contrast model.contrast
                 , M3e.Theme.density model.density
 
                 -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
@@ -374,7 +299,7 @@ view sharedData page model toMsg pageView =
             [ themed
                 [ TypedHtml.div
                     [ TypedHtml.Attributes.class "bg-surface text-on-surface h-dvh overflow-y-auto"
-                    , TypedHtml.Attributes.dir (directionAttr model.dir)
+                    , TypedHtml.Attributes.dir model.dir
                     ]
                     (View.body pageView)
                 ]
@@ -389,7 +314,7 @@ view sharedData page model toMsg pageView =
                     -- (the drawer + its <main>) is the ONE scroll region — keeps
                     -- the mobile URL bar from collapsing on scroll.
                     [ TypedHtml.Attributes.class "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
-                    , TypedHtml.Attributes.dir (directionAttr model.dir)
+                    , TypedHtml.Attributes.dir model.dir
                     ]
                     [ skipLink
                     , M3e.mapMsg toMsg appShellBar
@@ -421,16 +346,6 @@ normalizePath path =
 
     else
         path
-
-
-directionAttr : Direction -> TypedHtml.Values.Value TypedHtml.Values.Dir
-directionAttr dir =
-    case dir of
-        Ltr ->
-            TypedHtml.Values.ltr
-
-        Rtl ->
-            TypedHtml.Values.rtl
 
 
 
@@ -568,22 +483,92 @@ segmented segments =
         )
 
 
+{-| Upper-case the first character. Enum wire strings are lower-case; the settings
+controls display them title-cased.
+-}
+capitalize : String -> String
+capitalize s =
+    case String.uncons s of
+        Just ( c, rest ) ->
+            String.cons (Char.toUpper c) rest
+
+        Nothing ->
+            s
+
+
+{-| These controls compare tokens with `==`. A `Value` is opaque over a `String`, so
+the comparison is on the underlying wire string — meaning tokens from DIFFERENT enums
+that share a string would compare equal. Safe here because each control only ever
+compares a field against its own enum's values.
+-}
 schemeSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 schemeSegmented model =
     segmented
-        [ ( "Light", model.scheme == Light, SetScheme Light )
-        , ( "System", model.scheme == Auto, SetScheme Auto )
-        , ( "Dark", model.scheme == Dark, SetScheme Dark )
-        ]
+        (Value.schemeValues
+            |> List.sortBy schemeOrder
+            |> List.map (\v -> ( schemeLabel v, model.scheme == v, SetScheme v ))
+        )
+
+
+{-| Display order — the neutral option sits between the two poles, which is why this
+is not the generated list's alphabetical order. A value we have not placed sorts last
+rather than disappearing.
+-}
+schemeOrder : Value.Value Value.Scheme -> Int
+schemeOrder v =
+    case Value.toString v of
+        "light" ->
+            0
+
+        "auto" ->
+            1
+
+        "dark" ->
+            2
+
+        _ ->
+            3
+
+
+{-| Editorial labels: `auto` reads as "System". Anything the manifest gains that we
+have not named falls back to its wire string, so a new value shows up VISIBLY
+mislabelled rather than silently missing from the drawer.
+-}
+schemeLabel : Value.Value Value.Scheme -> String
+schemeLabel v =
+    case Value.toString v of
+        "auto" ->
+            "System"
+
+        other ->
+            capitalize other
 
 
 contrastSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 contrastSegmented model =
     segmented
-        [ ( "Standard", model.contrast == Standard, SetContrast Standard )
-        , ( "Medium", model.contrast == Medium, SetContrast Medium )
-        , ( "High", model.contrast == High, SetContrast High )
-        ]
+        (Value.contrastValues
+            |> List.sortBy contrastOrder
+            |> List.map (\v -> ( capitalize (Value.toString v), model.contrast == v, SetContrast v ))
+        )
+
+
+{-| Display order — ascending intensity, which alphabetical order does not give.
+-}
+contrastOrder : Value.Value Value.Contrast -> Int
+contrastOrder v =
+    case Value.toString v of
+        "standard" ->
+            0
+
+        "medium" ->
+            1
+
+        "high" ->
+            2
+
+        _ ->
+            3
 
 
 {-| The source-color control, dogfooding the composition-text-field pattern
@@ -639,9 +624,20 @@ densitySegmented model =
 directionSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 directionSegmented model =
     segmented
-        [ ( "LTR", model.dir == Ltr, SetDirection Ltr )
-        , ( "RTL", model.dir == Rtl, SetDirection Rtl )
-        ]
+        (TypedHtml.Values.dirValues
+            -- `dir` admits auto|ltr|rtl. `auto` defers to the document/OS, which is
+            -- already what the shell does when this control is untouched, so offering
+            -- it would be a button that visibly does nothing. Filtered explicitly
+            -- rather than hand-listing ltr/rtl, so a FOURTH value would still appear.
+            |> List.filter (\v -> TypedHtml.Values.toString v /= "auto")
+            |> List.map
+                (\v ->
+                    ( String.toUpper (TypedHtml.Values.toString v)
+                    , model.dir == v
+                    , SetDirection v
+                    )
+                )
+        )
 
 
 
