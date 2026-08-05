@@ -262,66 +262,67 @@ view :
     -> { body : List (Html msg), title : String }
 view sharedData page model toMsg pageView =
     let
-        -- `themed` wraps content Elements in `<m3e-theme>` and does the single
-        -- `M3e.Html.toHtml` conversion.
-        themed : List (Element childAccepts (M3e.Theme.ChildAdmittedBy childAdm) msg) -> Html msg
-        themed children =
-            M3e.theme
-                [ M3e.Theme.color model.seed
-                , M3e.Theme.scheme model.scheme
-                , M3e.Theme.contrast model.contrast
-                , M3e.Theme.density model.density
-
-                -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
-                -- control has no effect unless we drive `--md-sys-density-scale` (which
-                -- the m3e components read via density.calc) ourselves. Elm can't set a
-                -- CSS custom property directly — `style` uses `node.style[key]=…` which
-                -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
-                -- so it goes through a Tailwind arbitrary-property CLASS instead.
-                , TypedHtml.Attributes.class (densityClass model.density)
-                ]
-                children
-                |> M3e.toHtml
-
         absolutePath : String
         absolutePath =
             UrlPath.toAbsolute page.path
+
+        ( shellClass, children ) =
+            if String.startsWith "/examples/" absolutePath then
+                -- Individual example routes take the full viewport; they include their
+                -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
+                -- `h-dvh overflow-y-auto` makes each example its OWN bounded scroll
+                -- region: the document (html/body) is fixed + non-scrolling for the
+                -- stable mobile URL bar, so a full-viewport example must scroll itself
+                -- rather than the document, or tall demos would clip.
+                ( "bg-surface text-on-surface h-dvh overflow-y-auto"
+                , View.body pageView
+                )
+
+            else
+                -- Fixed-height, non-scrolling shell: `h-dvh` fits the stable
+                -- visible viewport (see style.css app-shell note) and the
+                -- `auto_1fr` rows pin the app bar while the 1fr content row
+                -- (the drawer + its <main>) is the ONE scroll region — keeps
+                -- the mobile URL bar from collapsing on scroll.
+                ( "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
+                , [ skipLink
+                  , M3e.mapMsg toMsg appShellBar
+                  , drawerShell toMsg model page sharedData.components (View.body pageView)
+                  ]
+                )
     in
     { title = View.title pageView
     , body =
-        if String.startsWith "/examples/" absolutePath then
-            -- Individual example routes take the full viewport; they include their
-            -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
-            -- `h-dvh overflow-y-auto` makes each example its OWN bounded scroll
-            -- region: the document (html/body) is fixed + non-scrolling for the
-            -- stable mobile URL bar, so a full-viewport example must scroll itself
-            -- rather than the document, or tall demos would clip.
-            [ themed
-                [ TypedHtml.div
-                    [ TypedHtml.Attributes.class "bg-surface text-on-surface h-dvh overflow-y-auto"
-                    , TypedHtml.Attributes.dir model.dir
-                    ]
-                    (View.body pageView)
-                ]
-            ]
+        [ M3e.theme
+            [ M3e.Theme.color model.seed
+            , M3e.Theme.scheme model.scheme
+            , M3e.Theme.contrast model.contrast
+            , M3e.Theme.density model.density
 
-        else
-            [ themed
-                [ TypedHtml.div
-                    -- Fixed-height, non-scrolling shell: `h-dvh` fits the stable
-                    -- visible viewport (see style.css app-shell note) and the
-                    -- `auto_1fr` rows pin the app bar while the 1fr content row
-                    -- (the drawer + its <main>) is the ONE scroll region — keeps
-                    -- the mobile URL bar from collapsing on scroll.
-                    [ TypedHtml.Attributes.class "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
-                    , TypedHtml.Attributes.dir model.dir
-                    ]
-                    [ skipLink
-                    , M3e.mapMsg toMsg appShellBar
-                    , drawerShell toMsg model page sharedData.components (View.body pageView)
-                    ]
-                ]
+            -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
+            -- control has no effect unless we drive `--md-sys-density-scale` (which
+            -- the m3e components read via density.calc) ourselves. Elm can't set a
+            -- CSS custom property directly — `style` uses `node.style[key]=…` which
+            -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
+            -- so it goes through a Tailwind arbitrary-property CLASS instead.
+            , TypedHtml.Attributes.class (densityClass model.density)
             ]
+            -- The shell layout CANNOT be hoisted onto the `m3e-theme` host: its
+            -- generated capability row (`M3e.Theme.Attrs`) is closed, and the only
+            -- global attributes elm-cem admits on a custom element are
+            -- class/id/slot/style — `dir` is not among them, so
+            -- `TypedHtml.Attributes.dir` does not typecheck there. This wrapper
+            -- therefore stays, and it carries BOTH the class list and `dir`:
+            -- splitting them (classes on the host, `dir` here) would turn this div
+            -- into a single grid ITEM and collapse `grid-rows-[auto_1fr]`.
+            [ TypedHtml.div
+                [ TypedHtml.Attributes.class shellClass
+                , TypedHtml.Attributes.dir model.dir
+                ]
+                children
+            ]
+            |> M3e.toHtml
+        ]
     }
 
 
