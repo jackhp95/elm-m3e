@@ -274,7 +274,14 @@ view sharedData page model toMsg pageView =
                 -- region: the document (html/body) is fixed + non-scrolling for the
                 -- stable mobile URL bar, so a full-viewport example must scroll itself
                 -- rather than the document, or tall demos would clip.
-                ( "bg-surface text-on-surface h-dvh overflow-y-auto"
+                -- `block` is load-bearing: `m3e-theme`'s shadow styles set
+                -- `:host { display: contents }`, and this branch is otherwise the
+                -- only one that never names a `display` value of its own (the
+                -- docs-shell branch below wins the cascade with its `grid`). With
+                -- no competing declaration, `:host` wins by default, the host stops
+                -- generating a box, and `h-dvh`/`overflow-y-auto` become inert —
+                -- `scrollHeight`/`clientHeight` both read 0 and nothing scrolls.
+                ( "bg-surface text-on-surface block h-dvh overflow-y-auto"
                 , View.body pageView
                 )
 
@@ -347,19 +354,16 @@ normalizePath path =
 
 appShellBar : Element (TypedHtml.Sectioning.HeaderIs s) adm_ Msg
 appShellBar =
-    TypedHtml.header
-        [ TypedHtml.Attributes.class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container-low shadow-md-level1" ]
-        [ M3e.appBar
-            [ M3e.AppBar.size Value.small
-            , M3e.Attributes.id "docs-app-bar"
-            ]
-            [ M3e.AppBar.leading brandMark
-            , M3e.AppBar.leading menuButton
-            , M3e.AppBar.title (M3e.text "elm-m3e")
-            , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
-            , M3e.AppBar.trailing githubLink
-            , M3e.AppBar.trailing settingsButton
-            ]
+    M3e.appBar
+        [ M3e.AppBar.size Value.small
+        , M3e.Attributes.id "docs-app-bar"
+        ]
+        [ M3e.AppBar.leading brandMark
+        , M3e.AppBar.leading menuButton
+        , M3e.AppBar.title (M3e.text "elm-m3e")
+        , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
+        , M3e.AppBar.trailing githubLink
+        , M3e.AppBar.trailing settingsButton
         ]
 
 
