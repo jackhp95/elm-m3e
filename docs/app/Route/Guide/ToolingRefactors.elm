@@ -101,17 +101,15 @@ extract =
 
 extractBefore : String
 extractBefore =
-    """-- a raw escape inlined in a feature module (flagged: escapes are fenced)
+    """-- a raw escape inlined in a feature module, for something the library
+-- already models: `class` has a typed setter, so this is a needless escape
 row [ M3e.Unsafe.Attributes.fromHtmlAttribute (class "flex-auto") ] children"""
 
 
 extractAfter : String
 extractAfter =
-    """-- after autofix: a named seam, and your call site rewritten to it
-row [ flexAuto ] children
-
--- (lifted into the seam module for you)
-flexAuto = M3e.Unsafe.Attributes.fromHtmlAttribute (class "flex-auto")"""
+    """-- after autofix: the typed setter, no escape at all
+row [ TypedHtml.Attributes.class "flex-auto" ] children"""
 
 
 convert : String

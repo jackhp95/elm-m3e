@@ -47,6 +47,7 @@ import TypedHtml.Attributes
 import TypedHtml.Events
 import TypedHtml.Grouping
 import TypedHtml.Sectioning
+import TypedHtml.Values
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -378,7 +379,7 @@ view sharedData page model toMsg pageView =
             [ themed
                 [ TypedHtml.div
                     [ TypedHtml.Attributes.class "bg-surface text-on-surface h-dvh overflow-y-auto"
-                    , M3e.Unsafe.Attributes.fromHtmlAttribute (attribute "dir" (directionAttr model.dir))
+                    , TypedHtml.Attributes.dir (directionAttr model.dir)
                     ]
                     (View.body pageView)
                 ]
@@ -393,10 +394,10 @@ view sharedData page model toMsg pageView =
                     -- (the drawer + its <main>) is the ONE scroll region — keeps
                     -- the mobile URL bar from collapsing on scroll.
                     [ TypedHtml.Attributes.class "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
-                    , M3e.Unsafe.Attributes.fromHtmlAttribute (attribute "dir" (directionAttr model.dir))
+                    , TypedHtml.Attributes.dir (directionAttr model.dir)
                     ]
-                    [ M3e.Unsafe.fromHtml skipLink
-                    , M3e.Unsafe.fromHtml (Html.map toMsg appShellBar)
+                    [ skipLink
+                    , M3e.mapMsg toMsg appShellBar
                     , drawerShell toMsg model page sharedData.components (View.body pageView)
                     ]
                 ]
@@ -409,13 +410,13 @@ keyboard/AT users can jump the ~98-item nav and land on `#main-content` (the
 `<main>` landmark `drawerShell` wraps the page body in). Visually hidden until
 focused, then it surfaces as a floating chip.
 -}
-skipLink : Html msg
+skipLink : Element { s | sharedText : M3e.Kind.Shared } adm_ msg
 skipLink =
-    Html.a
-        [ Attr.href "#main-content"
-        , class "sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-on-primary focus:shadow-md-level2"
+    TypedHtml.a
+        [ TypedHtml.Attributes.href "#main-content"
+        , TypedHtml.Attributes.class "sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-on-primary focus:shadow-md-level2"
         ]
-        [ Html.text "Skip to main content" ]
+        [ M3e.text "Skip to main content" ]
 
 
 normalizePath : String -> String
@@ -427,24 +428,24 @@ normalizePath path =
         path
 
 
-directionAttr : Direction -> String
+directionAttr : Direction -> TypedHtml.Values.Value TypedHtml.Values.Dir
 directionAttr dir =
     case dir of
         Ltr ->
-            "ltr"
+            TypedHtml.Values.ltr
 
         Rtl ->
-            "rtl"
+            TypedHtml.Values.rtl
 
 
 
 -- TOP APP BAR
 
 
-appShellBar : Html Msg
+appShellBar : Element (TypedHtml.Sectioning.HeaderIs s) adm_ Msg
 appShellBar =
-    Html.header
-        [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container-low shadow-md-level1" ]
+    TypedHtml.header
+        [ TypedHtml.Attributes.class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container-low shadow-md-level1" ]
         [ M3e.appBar
             [ M3e.AppBar.size Value.small
             , M3e.Attributes.id "docs-app-bar"
@@ -456,7 +457,6 @@ appShellBar =
             , M3e.AppBar.trailing githubLink
             , M3e.AppBar.trailing settingsButton
             ]
-            |> M3e.toHtml
         ]
 
 
@@ -758,7 +758,7 @@ drawerShell toMsg model page components body =
         -- click, Esc, breakpoint auto-close) so element-driven closes don't leave
         -- Elm's state stale (which would need a double-toggle to reopen). The
         -- Shared.Msg decoder is mapped to the outer msg via `toMsg`.
-        , M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Events.on "change" (Decode.map toMsg drawerChangeDecoder))
+        , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
         ]
         [ M3e.DrawerContainer.start
             -- Wrap the nav-menu in a native `<nav>` landmark so AT users can

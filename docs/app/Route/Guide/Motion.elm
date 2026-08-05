@@ -163,7 +163,7 @@ snackbarCode =
 -- shown — mounting it is what triggers the toast:
 snackbar : Toast -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 snackbar t =
-    M3e.Unsafe.customElement (Html.node "avt-snackbar")
+    M3e.Unsafe.customElement "avt-snackbar"
         [ M3e.Unsafe.Attributes.customAttribute "message" t.message
         , M3e.Unsafe.Attributes.customAttribute "action" "Undo"
         , M3e.Unsafe.Attributes.customAttribute "dismissible" ""

@@ -85,7 +85,7 @@ panel activeIndex i child =
         inactive =
             i /= activeIndex
 
-        attrs : List (Attr { c | class : M3e.Kind.Supported } msg)
+        attrs : List (Attr { c | class : M3e.Kind.Supported, inert : M3e.Kind.Supported } msg)
         attrs =
             TA.class "sp-panel"
                 :: M3e.Unsafe.Attributes.customAttribute "aria-hidden"
@@ -96,7 +96,7 @@ panel activeIndex i child =
                         "false"
                     )
                 :: (if inactive then
-                        [ M3e.Unsafe.Attributes.customAttribute "inert" "" ]
+                        [ TA.inert True ]
 
                     else
                         []
