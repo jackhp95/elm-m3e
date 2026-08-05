@@ -23,6 +23,7 @@ import M3e.Heading
 import M3e.Icon
 import M3e.Kind
 import M3e.Values as Value
+import MimeType
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -79,10 +80,10 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image =
-            { url = [ "favicon.ico" ] |> UrlPath.join |> Pages.Url.fromPath
+            { url = [ "og-card.png" ] |> UrlPath.join |> Pages.Url.fromPath
             , alt = "elm-m3e"
-            , dimensions = Nothing
-            , mimeType = Nothing
+            , dimensions = Just { width = 1200, height = 630 }
+            , mimeType = Just (MimeType.Image MimeType.Png)
             }
         , description = "Type-safe Material 3 Expressive web components for Elm."
         , locale = Nothing

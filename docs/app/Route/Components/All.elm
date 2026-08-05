@@ -27,6 +27,7 @@ import M3e.Attributes
 import M3e.Events
 import M3e.Kind
 import M3e.Values as Value
+import MimeType
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -109,10 +110,10 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image =
-            { url = [ "favicon.ico" ] |> UrlPath.join |> Pages.Url.fromPath
+            { url = [ "og-card.png" ] |> UrlPath.join |> Pages.Url.fromPath
             , alt = "elm-m3e"
-            , dimensions = Nothing
-            , mimeType = Nothing
+            , dimensions = Just { width = 1200, height = 630 }
+            , mimeType = Just (MimeType.Image MimeType.Png)
             }
         , description = "Every elm-m3e component's Usage examples stacked on one kitchen-sink page."
         , locale = Nothing

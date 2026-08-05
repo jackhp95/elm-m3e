@@ -19,6 +19,7 @@ import M3e.Attributes
 import M3e.Kind
 import M3e.Shape as Shape
 import M3e.Values as Value
+import MimeType
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -61,7 +62,12 @@ head _ =
     Seo.summary
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
-        , image = { url = [ "favicon.ico" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
+        , image =
+            { url = [ "og-card.png" ] |> UrlPath.join |> Pages.Url.fromPath
+            , alt = "elm-m3e"
+            , dimensions = Just { width = 1200, height = 630 }
+            , mimeType = Just (MimeType.Image MimeType.Png)
+            }
         , description = "The M3 Expressive shape system: the corner-radius scale, named shapes, and shape morphing."
         , locale = Nothing
         , title = "Shape · elm-m3e"

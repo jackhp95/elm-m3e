@@ -8,6 +8,7 @@ import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Kind
 import M3e.Values as Value
+import MimeType
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -49,7 +50,12 @@ head _ =
     Seo.summary
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
-        , image = { url = [ "favicon.ico" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
+        , image =
+            { url = [ "og-card.png" ] |> UrlPath.join |> Pages.Url.fromPath
+            , alt = "elm-m3e"
+            , dimensions = Just { width = 1200, height = 630 }
+            , mimeType = Just (MimeType.Image MimeType.Png)
+            }
         , description = "Install elm-m3e and register the @m3e/web custom elements."
         , locale = Nothing
         , title = "Installation · elm-m3e"

@@ -3,6 +3,7 @@
 //
 //   docs/public/favicon.svg   48x48 plate + glyph   (deterministic, drift-gated)
 //   docs/public/favicon.ico   16/32/48 multi-image  (raster, NOT drift-gated)
+//   docs/public/og-card.png   1200x630 social card  (raster, NOT drift-gated)
 //
 // The glyph id lives in config/favicon.json, NOT config/icons.json. That other
 // file drives registerIcon, and registering a Material glyph overrides the
@@ -106,4 +107,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const icoPngs = ICO_SIZES.map((s) => rasterise(favSvg, s));
   writeFileSync(out("favicon.ico"), await pngToIco(icoPngs));
   console.log(`Wrote favicon.ico (${ICO_SIZES.join("/")}px).`);
+
+  writeFileSync(out("og-card.png"), rasterise(renderOgSvg(icon), OG_W));
+  console.log(`Wrote og-card.png (${OG_W}x${OG_H}).`);
 }
