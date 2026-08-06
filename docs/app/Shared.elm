@@ -32,6 +32,7 @@ import M3e.Events
 import M3e.FormField
 import M3e.Icon
 import M3e.Kind
+import M3e.NavItem
 import M3e.NavMenuItem
 import M3e.Theme
 import M3e.Values as Value exposing (Value)
@@ -815,3 +816,80 @@ componentCategories =
     , ( "Text inputs", "edit" )
     , ( "Layout & style", "palette" )
     ]
+
+
+-- TOP-LEVEL NAV RAIL / NAV BAR
+
+
+{-| One of the 5 top-level sections the rail/bar switch between. `href` is
+where clicking the section navigates to — the section's real landing page
+(Guide, Examples) or, for the 3 sections with no landing page yet, its first
+real child (see `specs/2026-08-06-nav-rail-migration-design.md`, "Decided
+information architecture"). `prefix` is the first URL path segment that
+belongs to this section, used only for highlighting which rail/bar item is
+current — it is independent of `href` (e.g. Components' `href` is
+`/components/button`, but ANY `/components/*` path is "current").
+-}
+type alias Section =
+    { label : String
+    , icon : String
+    , href : String
+    , prefix : String
+    }
+
+
+sections : List Section
+sections =
+    [ { label = "Getting Started", icon = "rocket_launch", href = "/getting-started/installation", prefix = "getting-started" }
+    , { label = "The Guide", icon = "auto_stories", href = "/guide", prefix = "guide" }
+    , { label = "Styles", icon = "palette", href = "/styles/color", prefix = "styles" }
+    , { label = "Examples", icon = "auto_awesome", href = "/examples", prefix = "examples" }
+    , { label = "Components", icon = "widgets", href = "/components/button", prefix = "components" }
+    ]
+
+
+{-| Is this section the one the given route belongs to? Matched on the FIRST
+path segment only, so every `/components/*` route (not just `/components/button`
+itself) highlights "Components". `UrlPath` is `List String` (`dillonkearns/elm-pages`),
+so this is a plain `List.head` check — no string-prefix parsing.
+-}
+sectionIsCurrent : UrlPath -> Section -> Bool
+sectionIsCurrent path section =
+    List.head path == Just section.prefix
+
+
+{-| One rail/bar destination — real `href`-based navigation via `m3e-nav-item`'s
+`href` attribute (`config/slots.json`'s `NavItem.actionMap` maps it to elm-pages'
+own link handling), not an `onClick`-driven `Msg`. Shared between `docsNavRail`
+and `docsNavBar`: both `M3e.NavRail` and `M3e.NavBar` admit `navItem` children
+(`config/slots.json`).
+-}
+railItem : UrlPath -> Section -> Element { s | navItem : M3e.Kind.Brand } admittedBy msg
+railItem path section =
+    M3e.navItem
+        [ M3e.Attributes.href section.href
+        , M3e.Attributes.selected (sectionIsCurrent path section)
+        ]
+        [ M3e.NavItem.icon (M3e.icon [ M3e.Icon.name section.icon ] [])
+        , M3e.text section.label
+        ]
+
+
+{-| Desktop: a persistent full-height rail beside the app bar. Hidden below the
+`md` breakpoint, where `docsNavBar` takes over — the same Tailwind-class swap
+`Route/Examples/Shop.elm`'s own `navRail`/`navBar` pair already uses.
+-}
+docsNavRail : UrlPath -> Element { s | navRail : M3e.Kind.Brand } admittedBy msg
+docsNavRail path =
+    M3e.navRail
+        [ Aria.label "Sections", TypedHtml.Attributes.class "hidden shrink-0 md:flex" ]
+        (List.map (railItem path) sections)
+
+
+{-| Mobile: a fixed bottom nav bar, replacing the rail below the `md` breakpoint.
+-}
+docsNavBar : UrlPath -> Element { s | navBar : M3e.Kind.Brand } admittedBy msg
+docsNavBar path =
+    M3e.navBar
+        [ Aria.label "Sections", TypedHtml.Attributes.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+        (List.map (railItem path) sections)
