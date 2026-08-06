@@ -690,6 +690,10 @@ navSections =
             , ( "/guide/tooling-refactors", "The tooling refactors for you" )
             , ( "/guide/troubleshooting", "Troubleshooting" )
             , ( "/guide/how-we-prove-it", "How we prove it" )
+            , ( "/guide/cheat-sheet", "Cheat sheet" )
+            , ( "/guide/glossary", "Glossary" )
+            , ( "/reference", "Full API reference" )
+            , ( "/roundtrip", "Round-trip report" )
             ]
       }
     , { title = "Styles"
@@ -781,14 +785,18 @@ navMenu : List NavComponent -> String -> Element { s | navMenu : M3e.Kind.Brand 
 navMenu components currentPath =
     M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer" ]
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
-            ++ [ componentsGroup components currentPath
-               , navGroup currentPath "menu_book" "Reference" [ ( "/guide/cheat-sheet", "Cheat sheet" ), ( "/guide/glossary", "Glossary" ), ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
-               ]
+            ++ [ componentsGroup components currentPath ]
         )
 
 
-{-| The single top-level **Components** nav group — every component listed
-alphabetically (by label), with no category sub-groups.
+{-| The top-level **Components** nav group, holding "All components" (pinned,
+matching `/components/all`'s kitchen-sink page) plus one `navGroup` sub-group
+per `componentCategories` entry — reusing `navGroup` unmodified, since a
+category is exactly "a labelled group of navLeaf items", the same shape
+`navGroup` already builds for Getting Started/Guide/Styles/Examples. Only the
+category actually holding the current route auto-opens (`navGroup`'s own
+`open`-when-current-route-matches logic), so navigating within Components
+doesn't force all 7 categories open at once.
 -}
 componentsGroup : List NavComponent -> String -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 componentsGroup components currentPath =
@@ -802,9 +810,23 @@ componentsGroup components currentPath =
         (M3e.NavMenuItem.label (M3e.text "Components")
             :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name "widgets" ] [])
             :: navLeaf currentPath ( "/components/all", "All components" )
-            :: List.map
-                (\c -> navLeaf currentPath ( "/components/" ++ c.slug, c.label ))
-                (List.sortBy (\c -> String.toLower c.label) components)
+            :: List.map (categoryGroup components currentPath) componentCategories
+        )
+
+
+{-| One category sub-group within Components — its members, sorted
+alphabetically by label (the same sort key the old flat list used, just
+applied per-category instead of globally).
+-}
+categoryGroup : List NavComponent -> String -> ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
+categoryGroup components currentPath ( category, glyph ) =
+    navGroup currentPath
+        glyph
+        category
+        (components
+            |> List.filter (\c -> c.category == category)
+            |> List.sortBy (\c -> String.toLower c.label)
+            |> List.map (\c -> ( "/components/" ++ c.slug, c.label ))
         )
 
 

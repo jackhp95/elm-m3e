@@ -1,23 +1,14 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * The drawer's Components group lists every component as ONE flat,
- * alphabetically-sorted list — not grouped by category. `componentCategories`
- * (the 7 editorial categories in `Shared.elm`) is real, used data, but it
- * orders the `/components/all` kitchen-sink page, not the drawer.
- * `Shared.componentsGroup` has been flat by design since the current app
- * shell's initial commit (`32e4f1e6`) — a wholesale rewrite of an older
- * `Shared.elm` that this test was originally written against, back when the
- * drawer did group by category.
- *
- * (See jackhp95/elm-m3e#212 — closed as stale: the category-grouped drawer
- * the test expected no longer exists, so the pre-existing test was updated to
- * match the current, intentional flat design rather than the other way
- * around.)
+ * The drawer's Components group groups components by category (Actions,
+ * Communication, Containment, Navigation, Selection, Text inputs, Layout & style),
+ * each category displayed as a sub-group within the Components group.
+ * `componentCategories` (the 7 editorial categories in `Shared.elm`) was
+ * previously used only for the `/components/all` kitchen-sink page, but is now
+ * also used to structure the drawer's Components group.
  */
-test("drawer lists every component alphabetically under one Components group", async ({
-  page,
-}) => {
+test("drawer groups components by category", async ({ page }) => {
   await page.goto("/components/button");
   // The nav drawer starts closed (`Shared.Model.showMenu = False`) — open it
   // before asserting on its contents.
@@ -25,11 +16,45 @@ test("drawer lists every component alphabetically under one Components group", a
 
   // The "Components" nav group auto-opens on any /components/* route
   // (Shared.componentsGroup), so its children are already visible without an
-  // extra expand click.
-  await expect(page.getByRole("link", { name: "All components", exact: true })).toBeVisible();
-  // A sampling of components render as flat, alphabetically-sorted leaves —
-  // no category sub-group headers anywhere in between.
-  for (const label of ["App Bar", "Button", "Tooltip"]) {
-    await expect(page.getByRole("link", { name: label, exact: true })).toBeVisible();
+  // extra expand click. Verify "All components" is visible.
+  const drawer = page.locator(".primary-nav-drawer");
+  await expect(drawer.getByRole("link", { name: "All components", exact: true })).toBeVisible();
+
+  // Components are now grouped by category. Verify the category headers exist.
+  // We check for the category text in the drawer (these appear as slot="label"
+  // in the navMenuItem elements for category groups).
+  for (const category of [
+    "Actions",
+    "Communication",
+    "Containment",
+    "Navigation",
+    "Selection",
+    "Text inputs",
+    "Layout & style",
+  ]) {
+    await expect(drawer.locator(`[slot="label"]`).filter({ hasText: category }).first()).toBeVisible();
   }
+  // Verify Button is accessible (should be visible when on /components/button route)
+  await expect(drawer.getByRole("link", { name: "Button", exact: true })).toBeVisible();
+});
+
+test("Reference is dissolved into Guide", async ({ page }) => {
+  await page.goto("/guide");
+  await page.getByRole("button", { name: "Toggle navigation" }).click();
+
+  // Reference is gone as its own group (a non-interactive `NavMenuItem.label`
+  // group title, hence a text check, not a role check); its 4 links live
+  // under Guide instead, as real `navLeaf` anchors (role "link" is correct
+  // here — `navLeaf` renders a genuine `TypedHtml.a [ href ]`, unlike the
+  // rail's `m3e-nav-item`, which is role "button" — see nav-rail-layout.md
+  // Task 1).
+  const drawer = page.locator(".primary-nav-drawer");
+  await expect(drawer.getByText("Reference", { exact: true })).toHaveCount(0);
+
+  // The 4 Reference links now live under Guide, as real navLeaf anchors
+  // within the drawer
+  await expect(drawer.getByRole("link", { name: "Full API reference", exact: true })).toBeVisible();
+  await expect(drawer.getByRole("link", { name: "Round-trip report", exact: true })).toBeVisible();
+  await expect(drawer.getByRole("link", { name: "Cheat sheet", exact: true })).toBeVisible();
+  await expect(drawer.getByRole("link", { name: "Glossary", exact: true })).toBeVisible();
 });
