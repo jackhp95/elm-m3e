@@ -7,13 +7,13 @@ import { expect, test } from "@playwright/test";
  * exact path, so e.g. /components/button and /components/tooltip both
  * select "Components".
  *
- * Locators below use `getByRole("button", ...)` for `m3e-nav-item`, NOT
- * "link" — confirmed against @m3e/web's compiled source
- * (`node_modules/@m3e/web/dist/nav-bar.js`): `M3eNavItemElement` extends
- * `Role(LitElement, "button")`, so its ARIA role is "button" even with
- * `href` set (it synthesizes a temporary real `<a>` to perform actual
- * navigation on click, but the accessible role of the component itself
- * never changes).
+ * Locators below use `getByRole("link", ...)` for `m3e-nav-item`. While
+ * `M3eNavItemElement` declares `Role(LitElement, "button")` at the class level,
+ * a `LinkButton` mixin in @m3e/web runtime (dist/all.js) upgrades the role
+ * to "link" in `connectedCallback` when `href` is set:
+ * `if (this.hasAttribute("href") && this.role === "button") { this.role = "link" }`
+ * Every nav item in this app has `href` set (they're real routes), so all are
+ * upgraded to `role="link"` by design.
  */
 const SECTIONS: { label: string; href: string }[] = [
   { label: "Getting Started", href: "/getting-started/installation" },
@@ -28,8 +28,7 @@ test("rail renders all 5 sections with correct hrefs", async ({ page }) => {
   const rail = page.locator("m3e-nav-rail");
   await expect(rail).toHaveCount(1);
   for (const { label, href } of SECTIONS) {
-    const item = page.locator(`m3e-nav-rail m3e-nav-item[href="${href}"]`);
-    await expect(item).toContainText(label);
+    const item = rail.getByRole("link", { name: label, exact: true });
     await expect(item).toHaveAttribute("href", href);
   }
 });
@@ -37,16 +36,23 @@ test("rail renders all 5 sections with correct hrefs", async ({ page }) => {
 test("rail highlights the section matching the current route", async ({ page }) => {
   await page.goto("/components/button");
   const rail = page.locator("m3e-nav-rail");
-  await expect(rail.locator('m3e-nav-item[href="/components/button"]')).toHaveAttribute("selected", "");
-  await expect(rail.locator('m3e-nav-item[href="/guide"]')).not.toHaveAttribute("selected");
+  await expect(rail.getByRole("link", { name: "Components", exact: true })).toHaveAttribute(
+    "selected",
+    "",
+  );
+  await expect(rail.getByRole("link", { name: "The Guide", exact: true })).not.toHaveAttribute(
+    "selected",
+  );
 });
 
 test("no section is selected on a route outside all 5", async ({ page }) => {
   await page.goto("/");
   const rail = page.locator("m3e-nav-rail");
   await expect(rail).toHaveCount(1);
-  for (const { href } of SECTIONS) {
-    await expect(rail.locator(`m3e-nav-item[href="${href}"]`)).not.toHaveAttribute("selected");
+  for (const { label } of SECTIONS) {
+    await expect(rail.getByRole("link", { name: label, exact: true })).not.toHaveAttribute(
+      "selected",
+    );
   }
 });
 
@@ -56,7 +62,10 @@ test("mobile viewport shows the nav bar instead of the rail", async ({ page }) =
   await expect(page.locator("m3e-nav-rail")).toBeHidden();
   const bar = page.locator("m3e-nav-bar");
   await expect(bar).toBeVisible();
-  await expect(bar.locator('m3e-nav-item[href="/guide"]')).toHaveAttribute("selected", "");
+  await expect(bar.getByRole("link", { name: "The Guide", exact: true })).toHaveAttribute(
+    "selected",
+    "",
+  );
 });
 
 test("rail sits beside the app bar, not above it", async ({ page }) => {
