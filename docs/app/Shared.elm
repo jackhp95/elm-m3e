@@ -121,9 +121,10 @@ type Msg
     | CloseMenu
     | ToggleSettings
     | SettingsSheetClosed
-    | DrawerChanged Bool
+    | DrawerChanged Bool Bool
     | ViewportResized Int
     | ToggleToc
+    | CloseToc
     | SetScheme (Value Value.Scheme)
     | SetSeed String
     | SetContrast (Value Value.Contrast)
@@ -213,18 +214,28 @@ update msg model =
             ( { model | settingsOpen = False }, Effect.none )
 
         -- The `<m3e-drawer-container>` `change` event reports the element's own
-        -- `start` open state (scrim click, Esc, breakpoint auto-close). Synced
-        -- from it so an element-driven close can't desync Elm (which would need a
-        -- double-toggle to reopen). `event.target.start` is the reflected boolean
-        -- property read by `drawerChangeDecoder`.
-        DrawerChanged startOpen ->
-            ( { model | showMenu = startOpen }, Effect.none )
+        -- `start`/`end` open state (scrim click, Esc, breakpoint auto-close — a
+        -- scrim click closes BOTH sides in one event, per `_handleScrimClick` in
+        -- `@m3e/web/dist/drawer-container.js`). Synced from both here so an
+        -- element-driven close can't desync Elm (which would need a double-tap of
+        -- `MenuClicked`/`ToggleToc` to reopen — the first tap would just be
+        -- computing the state the element is already in). `event.target.start`/
+        -- `.end` are the reflected boolean properties read by `drawerChangeDecoder`.
+        DrawerChanged startOpen endOpen ->
+            ( { model | showMenu = startOpen, endOpen = endOpen }, Effect.none )
 
         ViewportResized width ->
             ( { model | viewportWidth = width }, Effect.none )
 
         ToggleToc ->
             ( { model | endOpen = not model.endOpen }, Effect.none )
+
+        -- Fired when a TOC jump-link is clicked, so the mobile overlay doesn't
+        -- stay open (and the page behind it `inert`) after the user has already
+        -- navigated to the target heading. Always closes rather than toggling —
+        -- harmless on desktop, where `endOpen` doesn't gate visibility anyway.
+        CloseToc ->
+            ( { model | endOpen = False }, Effect.none )
 
         SetScheme scheme ->
             ( { model | scheme = scheme }
@@ -320,7 +331,7 @@ view sharedData page model toMsg pageView =
                 , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-row" ]
                     [ docsNavRail page.path
                     , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
-                        [ M3e.mapMsg toMsg (appShellBar (View.toc pageView))
+                        [ M3e.mapMsg toMsg (appShellBar model (View.toc pageView))
                         , drawerShell toMsg model page sharedData.components (View.toc pageView) (View.body pageView)
                         ]
                     , docsNavBar page.path
@@ -360,8 +371,15 @@ normalizePath path =
 -- TOP APP BAR
 
 
-appShellBar : List View.TocEntry -> Element (M3e.AppBar.Is s) admittedBy Msg
-appShellBar tocEntries =
+{-| Takes the whole `Model` (not just a `Bool`) so it can gate the TOC-toggle
+button on `isMobile model`, not just on whether the page HAS a TOC: on desktop
+the TOC is always pinned open (`drawerShell`'s `end` visibility formula shows
+it whenever `tocEntries` is non-empty, independent of `endOpen`), so a button
+that only checked `tocEntries` would render on desktop too and silently do
+nothing when clicked — flip `endOpen`, but nothing visible depends on it there.
+-}
+appShellBar : Model -> List View.TocEntry -> Element (M3e.AppBar.Is s) admittedBy Msg
+appShellBar model tocEntries =
     M3e.appBar
         [ M3e.AppBar.size Value.small
         , M3e.Attributes.id "docs-app-bar"
@@ -373,7 +391,7 @@ appShellBar tocEntries =
          , M3e.AppBar.title (M3e.text "elm-m3e")
          , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
          ]
-            ++ (if List.isEmpty tocEntries then
+            ++ (if List.isEmpty tocEntries || not (isMobile model) then
                     []
 
                 else
@@ -780,7 +798,7 @@ drawerShell toMsg model page components tocEntries body =
                 , TypedHtml.Attributes.class "overflow-y-auto mx-auto h-full w-full max-w-5xl md:p-4 md:pt-1"
                 ]
                 body
-            , M3e.DrawerContainer.end (tocPanel tocEntries)
+            , M3e.DrawerContainer.end (tocPanel toMsg tocEntries)
             ]
         ]
 
@@ -789,30 +807,46 @@ drawerShell toMsg model page components tocEntries body =
 means an empty panel, but the `end` attribute above is already `False` in
 that case, so `auto`/`side` mode never shows it — this only renders when
 there is something to show.
+
+Each link also dispatches `CloseToc` on click — on mobile the `end` drawer is
+an `over`/`push` overlay with the page content `inert` while open, so without
+this the user would land on the right heading but be stuck behind the
+still-open panel (having to dismiss it separately via the scrim). Harmless on
+desktop: `drawerShell`'s visibility formula ignores `endOpen` there, so
+setting it `False` has no visible effect on a pinned-open TOC.
+
 -}
-tocPanel : List View.TocEntry -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
-tocPanel tocEntries =
+tocPanel : (Msg -> msg) -> List View.TocEntry -> Element (TypedHtml.Sectioning.NavIs s) admittedBy msg
+tocPanel toMsg tocEntries =
     TypedHtml.nav
         [ Aria.label "On this page", TypedHtml.Attributes.class "flex flex-col gap-2 p-4" ]
         (List.map
             (\entry ->
                 TypedHtml.a
-                    [ TypedHtml.Attributes.href ("#" ++ entry.id) ]
+                    [ TypedHtml.Attributes.href ("#" ++ entry.id)
+                    , TypedHtml.Events.onClick (toMsg CloseToc)
+                    ]
                     [ M3e.text entry.label ]
             )
             tocEntries
         )
 
 
-{-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start` is
-the reflected boolean property for the drawer's open state. Change events
-bubbling up from inner components have a target without this property, so the
-decoder fails and Elm ignores them — exactly what we want.
+{-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start`/
+`.end` are the reflected boolean properties for the two drawers' open state.
+Both are decoded together (not just `start`) because a single scrim click can
+close BOTH sides in one `change` event (`_handleScrimClick` sets `this.start`
+AND `this.end`, per `@m3e/web/dist/drawer-container.js`) — decoding only
+`start` would leave `model.endOpen` desynced from the element after a scrim
+dismiss. Change events bubbling up from inner components have a target
+without these properties, so the decoder fails and Elm ignores them — exactly
+what we want.
 -}
 drawerChangeDecoder : Decode.Decoder Msg
 drawerChangeDecoder =
-    Decode.map DrawerChanged
+    Decode.map2 DrawerChanged
         (Decode.at [ "target", "start" ] Decode.bool)
+        (Decode.at [ "target", "end" ] Decode.bool)
 
 
 {-| The docs sidebar nav, an `M3e.NavMenu` of nested `NavMenuItem` groups. Each

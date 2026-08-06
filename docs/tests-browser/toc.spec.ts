@@ -5,9 +5,13 @@ import { expect, test } from "@playwright/test";
  * drawer's `end` slot; a page that doesn't (the vast majority today) gets no
  * TOC panel content at all — `View.toc` defaults to `[]`.
  */
-test("a component page's TOC jump-link scrolls to its matching heading", async ({ page }) => {
+test("a component page's TOC jump-link scrolls to its matching heading", async ({
+  page,
+}) => {
   await page.goto("/components/button");
-  const tocLink = page.locator("#docs-drawer [slot='end']").getByRole("link", { name: "API" });
+  const tocLink = page
+    .locator("#docs-drawer [slot='end']")
+    .getByRole("link", { name: "API" });
   await expect(tocLink).toBeVisible();
 
   const heading = page.locator("#api");
@@ -28,7 +32,83 @@ test("on mobile, the TOC toggle button opens the panel", async ({ page }) => {
   await expect(tocPanel.getByRole("link", { name: "API" })).toBeVisible();
 });
 
-test("a page with no toc entries shows no TOC toggle button", async ({ page }) => {
+test("a page with no toc entries shows no TOC toggle button", async ({
+  page,
+}) => {
   await page.goto("/guide");
-  await expect(page.getByRole("button", { name: "On this page" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "On this page" })).toHaveCount(
+    0,
+  );
+});
+
+/**
+ * On desktop the TOC is pinned open the same way the tree panel is (see
+ * `Shared.appShellBar`'s doc comment) -- `endOpen` never gates visibility
+ * there, so a toggle button would be a focusable no-op. It must only render
+ * on mobile, where it's the only way to reach the panel at all.
+ */
+test("on desktop, the TOC panel has no toggle button but is shown pinned open", async ({
+  page,
+}) => {
+  await page.goto("/components/button");
+  await expect(page.getByRole("button", { name: "On this page" })).toHaveCount(
+    0,
+  );
+  await expect(page.locator("#docs-drawer [slot='end']")).toBeVisible();
+});
+
+/**
+ * A jump-link's native `href="#id"` scrolls the page, but on mobile the `end`
+ * drawer is an `over`/`push` overlay with the main content `inert` while
+ * open -- without an explicit close, the user would land on the heading but
+ * stay stuck behind the still-open panel. Regression test for the bug where
+ * `tocPanel`'s links had no way to close the panel on click.
+ */
+test("on mobile, clicking a TOC jump-link closes the panel", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 411, height: 761 });
+  await page.goto("/components/button");
+
+  const tocPanel = page.locator("#docs-drawer [slot='end']");
+  await page.getByRole("button", { name: "On this page" }).click();
+  await expect(tocPanel).toBeVisible();
+
+  await tocPanel.getByRole("link", { name: "API" }).click();
+  await expect(tocPanel).toBeHidden();
+  await expect(page.locator("#api")).toBeInViewport();
+});
+
+/**
+ * `<m3e-drawer-container>`'s scrim click closes BOTH the start and end
+ * drawers in a single `change` event (`_handleScrimClick` in
+ * `@m3e/web/dist/drawer-container.js` sets `this.start = false` AND
+ * `this.end = false`). Regression test for the bug where `drawerChangeDecoder`
+ * only read `event.target.start`, leaving `model.endOpen` desynced from the
+ * element after a scrim dismiss -- the next tap of the toggle button would
+ * compute the state the element was already in (a dead tap), requiring a
+ * second tap to actually reopen it.
+ */
+test("on mobile, the TOC panel reopens on the first tap after being dismissed via the scrim", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 411, height: 761 });
+  await page.goto("/components/button");
+
+  const toggle = page.getByRole("button", { name: "On this page" });
+  const tocPanel = page.locator("#docs-drawer [slot='end']");
+
+  await toggle.click();
+  await expect(tocPanel).toBeVisible();
+
+  // Dismiss via the drawer's scrim, not the toggle button -- clicking near
+  // the top-left corner, which the `end` (right-hand) panel doesn't cover.
+  await page.locator("#docs-drawer .scrim").click({ position: { x: 5, y: 5 } });
+  await expect(tocPanel).toBeHidden();
+
+  // A single subsequent tap must reopen it. Before the fix, `endOpen` was
+  // still `True` from before the scrim dismiss, so this tap computed `False`
+  // -- matching the already-closed state, so nothing visibly happened.
+  await toggle.click();
+  await expect(tocPanel).toBeVisible();
 });
