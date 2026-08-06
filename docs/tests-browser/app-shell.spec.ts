@@ -80,6 +80,36 @@ test("a tall example's content is reachable, not clipped off past the fold", asy
   await expect(footerLink).toBeInViewport();
 });
 
+test("a component page composes rail, tree, content, and TOC together", async ({ page }) => {
+  await page.goto("/components/button");
+
+  // Rail: present, Components selected. `m3e-nav-item` is upgraded to
+  // role="link" (href is set on every rail item — see nav-rail.spec.ts).
+  await expect(
+    page.locator("m3e-nav-rail").getByRole("link", { name: "Components", exact: true }),
+  ).toHaveAttribute("selected", "");
+
+  // Tree: pinned open on desktop, showing Button's category.
+  await expect(page.locator("#docs-drawer")).toHaveAttribute("start", "");
+  await expect(
+    page.locator("#docs-drawer [slot='start']").getByText("Actions", { exact: true }),
+  ).toBeVisible();
+
+  // Content: the page's own heading renders in the content pane.
+  await expect(
+    page
+      .locator("#main-content m3e-content-pane")
+      .first()
+      .getByRole("heading", { name: "Button" }),
+  ).toBeVisible();
+
+  // TOC: pinned open on desktop (no toggle button needed — see toc.spec.ts),
+  // the API jump-link is visible in the end drawer slot.
+  await expect(
+    page.locator("#docs-drawer [slot='end']").getByRole("link", { name: "API" }),
+  ).toBeVisible();
+});
+
 test("the shell carries the document direction", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
