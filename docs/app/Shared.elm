@@ -285,9 +285,13 @@ view sharedData page model toMsg pageView =
 
              else
                 [ skipLink
-                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-col" ]
-                    [ M3e.mapMsg toMsg appShellBar
-                    , drawerShell toMsg model page sharedData.components (View.body pageView)
+                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-row" ]
+                    [ docsNavRail page.path
+                    , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
+                        [ M3e.mapMsg toMsg appShellBar
+                        , drawerShell toMsg model page sharedData.components (View.body pageView)
+                        ]
+                    , docsNavBar page.path
                     ]
                 , M3e.mapMsg toMsg (settingsBottomSheet model)
                 ]

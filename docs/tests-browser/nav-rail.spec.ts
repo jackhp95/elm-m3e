@@ -28,7 +28,8 @@ test("rail renders all 5 sections with correct hrefs", async ({ page }) => {
   const rail = page.locator("m3e-nav-rail");
   await expect(rail).toHaveCount(1);
   for (const { label, href } of SECTIONS) {
-    const item = rail.getByRole("button", { name: label, exact: true });
+    const item = page.locator(`m3e-nav-rail m3e-nav-item[href="${href}"]`);
+    await expect(item).toContainText(label);
     await expect(item).toHaveAttribute("href", href);
   }
 });
@@ -36,25 +37,16 @@ test("rail renders all 5 sections with correct hrefs", async ({ page }) => {
 test("rail highlights the section matching the current route", async ({ page }) => {
   await page.goto("/components/button");
   const rail = page.locator("m3e-nav-rail");
-  await expect(rail.getByRole("button", { name: "Components", exact: true })).toHaveAttribute(
-    "selected",
-    "",
-  );
-  await expect(rail.getByRole("button", { name: "The Guide", exact: true })).not.toHaveAttribute(
-    "selected",
-    "",
-  );
+  await expect(rail.locator('m3e-nav-item[href="/components/button"]')).toHaveAttribute("selected", "");
+  await expect(rail.locator('m3e-nav-item[href="/guide"]')).not.toHaveAttribute("selected");
 });
 
 test("no section is selected on a route outside all 5", async ({ page }) => {
   await page.goto("/");
   const rail = page.locator("m3e-nav-rail");
   await expect(rail).toHaveCount(1);
-  for (const { label } of SECTIONS) {
-    await expect(rail.getByRole("button", { name: label, exact: true })).not.toHaveAttribute(
-      "selected",
-      "",
-    );
+  for (const { href } of SECTIONS) {
+    await expect(rail.locator(`m3e-nav-item[href="${href}"]`)).not.toHaveAttribute("selected");
   }
 });
 
@@ -64,8 +56,21 @@ test("mobile viewport shows the nav bar instead of the rail", async ({ page }) =
   await expect(page.locator("m3e-nav-rail")).toBeHidden();
   const bar = page.locator("m3e-nav-bar");
   await expect(bar).toBeVisible();
-  await expect(bar.getByRole("button", { name: "The Guide", exact: true })).toHaveAttribute(
-    "selected",
-    "",
-  );
+  await expect(bar.locator('m3e-nav-item[href="/guide"]')).toHaveAttribute("selected", "");
+});
+
+test("rail sits beside the app bar, not above it", async ({ page }) => {
+  await page.goto("/guide");
+  const rail = page.locator("m3e-nav-rail");
+  const appBar = page.locator("#docs-app-bar");
+  const railBox = await rail.boundingBox();
+  const appBarBox = await appBar.boundingBox();
+  if (!railBox || !appBarBox) throw new Error("rail or app bar has no box");
+
+  // The rail spans (close to) the full viewport height...
+  const viewportHeight = page.viewportSize()?.height ?? 0;
+  expect(railBox.height).toBeGreaterThan(viewportHeight - 5);
+  // ...while the app bar starts to the right of the rail, not above it.
+  expect(appBarBox.x).toBeGreaterThanOrEqual(railBox.x + railBox.width - 1);
+  expect(appBarBox.y).toBeLessThanOrEqual(railBox.y + 1);
 });

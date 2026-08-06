@@ -6,9 +6,10 @@ import { expect, test } from "@playwright/test";
  *
  *  - `/` (docs shell): `<m3e-theme>` (itself `display: contents` — it carries
  *    no layout classes of its own anymore) renders a fixed-viewport
- *    `<div class="h-dvh flex flex-col">` holding the app bar above the
- *    drawer/content area. The ONE scroll region is the content-pane inside
- *    the drawer (`overflow-y: auto`); the shell div itself does not scroll.
+ *    `<div class="h-dvh flex flex-row">` with a nav rail on the left and a main
+ *    column on the right holding the app bar above the drawer/content area. The
+ *    ONE scroll region is the content-pane inside the drawer (`overflow-y: auto`);
+ *    the shell div itself does not scroll.
  *  - `/examples/*` (full-viewport examples): `<m3e-theme>`'s child is the
  *    example page's OWN root — no docs-shell wrapper, no app bar, no nav —
  *    so double-nav is avoided and the page owns 100% of its own layout.
@@ -26,23 +27,23 @@ import { expect, test } from "@playwright/test";
  *     future ancestor re-adds a clipping `overflow: hidden`), content past
  *     the fold silently becomes unreachable rather than erroring.
  */
-const DOCS_SHELL = "m3e-theme > div.h-dvh.flex.flex-col";
+const DOCS_SHELL = "m3e-theme > div.h-dvh.flex.flex-row";
 
 // A `/examples/*` route whose content is taller than the viewport, so the
 // "content is reachable" assertion is meaningful rather than vacuous.
 const TALL_EXAMPLE = "/examples/shop";
 
-test("the docs shell is a fixed-viewport flex column with one scroll region", async ({
+test("the docs shell is a fixed-viewport flex row with nav rail and one scroll region", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
   const shell = page.locator(DOCS_SHELL);
-  // `flex` + `flex-col` stacks the app bar above the single scrolling content
-  // row. If this reads `contents` or `block`, the shell has flattened.
+  // `flex` + `flex-row` places the nav rail on the left and the main column on
+  // the right. If this reads `contents` or `block`, the shell has flattened.
   await expect(shell).toHaveCSS("display", "flex");
-  await expect(shell).toHaveCSS("flex-direction", "column");
+  await expect(shell).toHaveCSS("flex-direction", "row");
 
   // The shell itself must NOT be the scroller — the content-pane inside the
   // drawer is the one bounded scroll region (`Shared.drawerShell`).
