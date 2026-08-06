@@ -69,6 +69,7 @@ template =
 
 type alias Model =
     { showMenu : Bool
+    , endOpen : Bool
     , viewportWidth : Int
     , scheme : Value Value.Scheme
     , seed : String
@@ -122,6 +123,7 @@ type Msg
     | SettingsSheetClosed
     | DrawerChanged Bool
     | ViewportResized Int
+    | ToggleToc
     | SetScheme (Value Value.Scheme)
     | SetSeed String
     | SetContrast (Value Value.Contrast)
@@ -144,6 +146,7 @@ init :
     -> ( Model, Effect Msg )
 init flags _ =
     ( { showMenu = False
+      , endOpen = False
       , viewportWidth = initialViewportWidth flags
       , scheme = schemeFromFlags flags
       , seed = "#6750A4"
@@ -219,6 +222,9 @@ update msg model =
 
         ViewportResized width ->
             ( { model | viewportWidth = width }, Effect.none )
+
+        ToggleToc ->
+            ( { model | endOpen = not model.endOpen }, Effect.none )
 
         SetScheme scheme ->
             ( { model | scheme = scheme }
@@ -314,8 +320,8 @@ view sharedData page model toMsg pageView =
                 , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-row" ]
                     [ docsNavRail page.path
                     , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
-                        [ M3e.mapMsg toMsg appShellBar
-                        , drawerShell toMsg model page sharedData.components (View.body pageView)
+                        [ M3e.mapMsg toMsg (appShellBar (View.toc pageView))
+                        , drawerShell toMsg model page sharedData.components (View.toc pageView) (View.body pageView)
                         ]
                     , docsNavBar page.path
                     ]
@@ -354,21 +360,33 @@ normalizePath path =
 -- TOP APP BAR
 
 
-appShellBar : Element (M3e.AppBar.Is s) admittedBy Msg
-appShellBar =
+appShellBar : List View.TocEntry -> Element (M3e.AppBar.Is s) admittedBy Msg
+appShellBar tocEntries =
     M3e.appBar
         [ M3e.AppBar.size Value.small
         , M3e.Attributes.id "docs-app-bar"
         ]
-        [ M3e.AppBar.leading
+        ([ M3e.AppBar.leading
             (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick MenuClicked ]
                 [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
             )
-        , M3e.AppBar.title (M3e.text "elm-m3e")
-        , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
-        , M3e.AppBar.trailing githubLink
-        , M3e.AppBar.trailing settingsButton
-        ]
+         , M3e.AppBar.title (M3e.text "elm-m3e")
+         , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
+         ]
+            ++ (if List.isEmpty tocEntries then
+                    []
+
+                else
+                    [ M3e.AppBar.trailing
+                        (M3e.iconButton [ Aria.label "On this page", M3e.Events.onClick ToggleToc ]
+                            [ M3e.icon [ M3e.Icon.name "toc" ] [] ]
+                        )
+                    ]
+               )
+            ++ [ M3e.AppBar.trailing githubLink
+               , M3e.AppBar.trailing settingsButton
+               ]
+        )
 
 
 {-| The GitHub link. The mark is registered into `m3e-icon`'s own icon registry at
@@ -734,9 +752,10 @@ drawerShell :
     -> Model
     -> { path : UrlPath, route : Maybe Route }
     -> List NavComponent
+    -> List View.TocEntry
     -> List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg)
     -> Element (TypedHtml.Sectioning.MainIs s) admittedBy msg
-drawerShell toMsg model page components body =
+drawerShell toMsg model page components tocEntries body =
     let
         currentPath : String
         currentPath =
@@ -750,6 +769,8 @@ drawerShell toMsg model page components body =
             [ M3e.Attributes.id "docs-drawer"
             , M3e.DrawerContainer.startMode Value.auto
             , M3e.Attributes.start (not (isMobile model) || model.showMenu)
+            , M3e.DrawerContainer.endMode Value.auto
+            , M3e.Attributes.end (not (List.isEmpty tocEntries) && (not (isMobile model) || model.endOpen))
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
             , TypedHtml.Attributes.class "h-full w-full"
             ]
@@ -759,8 +780,28 @@ drawerShell toMsg model page components body =
                 , TypedHtml.Attributes.class "overflow-y-auto mx-auto h-full w-full max-w-5xl md:p-4 md:pt-1"
                 ]
                 body
+            , M3e.DrawerContainer.end (tocPanel tocEntries)
             ]
         ]
+
+
+{-| The TOC drawer panel: a jump-link per `View.toc` entry. Empty `tocEntries`
+means an empty panel, but the `end` attribute above is already `False` in
+that case, so `auto`/`side` mode never shows it — this only renders when
+there is something to show.
+-}
+tocPanel : List View.TocEntry -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+tocPanel tocEntries =
+    TypedHtml.nav
+        [ Aria.label "On this page", TypedHtml.Attributes.class "flex flex-col gap-2 p-4" ]
+        (List.map
+            (\entry ->
+                TypedHtml.a
+                    [ TypedHtml.Attributes.href ("#" ++ entry.id) ]
+                    [ M3e.text entry.label ]
+            )
+            tocEntries
+        )
 
 
 {-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start` is

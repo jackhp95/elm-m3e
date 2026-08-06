@@ -134,6 +134,7 @@ view app _ model =
                 ]
             )
         )
+        |> View.withToc [ { id = "api", label = "API" } ]
 
 
 {-| The page header, mirroring the matraic component pages: the component name as
@@ -221,9 +222,7 @@ keep their `@docs` order within a group. Empty groups drop out.
 apiSection : List Doc.Data.Member -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 apiSection members =
     TypedHtml.div [ TA.class "space-y-6" ]
-        (M3e.heading
-            [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
-            [ M3e.text "API" ]
+        (Doc.sectionHeadingWithId "api" "API"
             :: List.filterMap (apiGroup members) apiGroups
         )
 

@@ -1,7 +1,7 @@
 module View exposing
-    ( View
+    ( View, TocEntry
     , fromElement, fromElements
-    , title, body
+    , title, body, toc, withToc
     , map
     , Freezable, freeze, freezableToHtml, htmlToFreezable
     )
@@ -21,9 +21,9 @@ erasure cannot leak: this module is the only place it happens.
 
 ## The view
 
-@docs View
+@docs View, TocEntry
 @docs fromElement, fromElements
-@docs title, body
+@docs title, body, toc, withToc
 @docs map
 
 
@@ -38,12 +38,20 @@ import M3e.Html
 import M3e.Unsafe
 
 
+{-| One TOC jump-link: `id` matches a heading's `id` attribute
+(`Doc.sectionHeadingWithId`); `label` is the link text.
+-}
+type alias TocEntry =
+    { id : String, label : String }
+
+
 {-| A page: a title, and a body of renderable content.
 -}
 type View msg
     = View
         { title : String
         , body : List (M3e.Html.Node msg)
+        , toc : List TocEntry
         }
 
 
@@ -62,6 +70,7 @@ fromElements pageTitle elements =
     View
         { title = pageTitle
         , body = List.map M3e.Html.toNode elements
+        , toc = []
         }
 
 
@@ -85,6 +94,22 @@ body (View view) =
     List.map M3e.Unsafe.fromNode view.body
 
 
+{-| The page's TOC entries — `[]` for the vast majority of pages that don't
+opt in.
+-}
+toc : View msg -> List TocEntry
+toc (View view) =
+    view.toc
+
+
+{-| Attach TOC entries to a view: `View.fromElement "Title" el |> View.withToc
+[ { id = "api", label = "API" } ]`.
+-}
+withToc : List TocEntry -> View msg -> View msg
+withToc entries (View view) =
+    View { view | toc = entries }
+
+
 {-| Map the message type. Structural — the body is not rendered.
 -}
 map : (msg1 -> msg2) -> View msg1 -> View msg2
@@ -92,6 +117,7 @@ map fn (View view) =
     View
         { title = view.title
         , body = List.map (M3e.Html.mapNode fn) view.body
+        , toc = view.toc
         }
 
 

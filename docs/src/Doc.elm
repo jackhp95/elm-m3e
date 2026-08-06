@@ -1,4 +1,4 @@
-module Doc exposing (Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, showcase, userlandNote)
+module Doc exposing (Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, sectionHeadingWithId, showcase, userlandNote)
 
 {-| Shared documentation-rendering helpers, lifted from the Styles/GettingStarted
 routes so per-component Usage pages can reuse them.
@@ -14,7 +14,7 @@ Every one of those helpers returns an `Element` with **free** phantom rows,
 because `M3e.Unsafe.fromHtml` asserts nothing about what it wraps — so they drop
 into any slot, and no caller has to name a kind row to receive one.
 
-@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, showcase, userlandNote
+@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, sectionHeadingWithId, showcase, userlandNote
 
 -}
 
@@ -179,6 +179,22 @@ sectionHeading s =
         [ M3e.Heading.variant Value.headline
         , M3e.Heading.size Value.small
         , M3e.Attributes.level 2
+        ]
+        [ M3e.text s ]
+
+
+{-| Like `sectionHeading`, but carries an `id` so a `View.toc` jump-link
+(`href="#id"`) has something to land on. A sibling function, not a changed
+signature on `sectionHeading` — 37 existing call sites across 12 files don't
+need to change for the ~handful of headings that opt into a TOC.
+-}
+sectionHeadingWithId : String -> String -> Element (M3e.Heading.Is s) admittedBy msg
+sectionHeadingWithId id s =
+    M3e.heading
+        [ M3e.Heading.variant Value.headline
+        , M3e.Heading.size Value.small
+        , M3e.Attributes.level 2
+        , M3e.Attributes.id id
         ]
         [ M3e.text s ]
 
