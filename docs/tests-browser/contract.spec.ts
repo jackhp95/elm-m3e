@@ -108,8 +108,13 @@ test.describe("coverage — runtime behaviors Test.Html cannot observe", () => {
     expect(await anyOpen(), "menus start closed").toBe(false);
     // Activate the first example's menu trigger. The trigger label is
     // example-derived (e.g. "Menu"), so target the trigger element itself
-    // rather than a hardcoded label.
-    await page.locator(`${CONTENT} m3e-menu-trigger`).first().click();
+    // rather than a hardcoded label — but `m3e-menu-trigger` renders
+    // `display: contents` (no box of its own; see the comment above), so
+    // click its wrapping button instead. A `.click()` on the boxless trigger
+    // can't be scrolled into view reliably (Playwright has no box to scroll
+    // toward) and may land on whatever's underneath once the real button
+    // sits near a scroll container's clipped edge.
+    await page.locator(`${CONTENT} m3e-menu-trigger`).first().locator("xpath=..").click();
     await expect
       .poll(anyOpen, { message: "a menu opens on trigger activation" })
       .toBe(true);

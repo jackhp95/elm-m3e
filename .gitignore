@@ -23,6 +23,12 @@ scratchpad/
 memory/
 .claude/
 
+# Editor-local LSP config. .zed/settings.json pins elm-language-server at
+# docs/elm.json through an absolute file:// URI, because the root elm.json
+# depends on two unpublished packages and so shadows every nested elm.json
+# with a workspace that cannot resolve. That makes the file machine-specific.
+.zed/
+
 # working clone of the matraic m3e-docs wiki (regen input; not part of this repo)
 /m3e-docs/
 

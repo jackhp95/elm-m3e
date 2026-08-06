@@ -5,18 +5,17 @@ import { test, expect } from "@playwright/test";
  * Playwright test at the 411×761 mobile viewport before merge).
  *
  * What this pins:
- *  1. URL-bar stability — the mechanism is a NON-scrolling document. Mobile
- *     browsers only collapse the URL bar when the *document* scrolls; our shell
- *     makes html/body `overflow:hidden` at a fixed `100dvh`, so the document
- *     can't scroll and the bar stays put. We assert the document is pinned.
- *  2. Content is still reachable — scrolling is delegated to ONE bounded inner
- *     region, so a page taller than the viewport must have a scrollable inner
- *     scroller (else content would be clipped by the overflow:hidden shell).
- *  3. FOUC guard — the `:not(:defined)` rule ships (custom elements stay hidden
+ *  1. Content is still reachable — a page taller than the viewport must have
+ *     a scrollable inner scroller (else content would be clipped).
+ *  2. FOUC guard — the `:not(:defined)` rule ships (custom elements stay hidden
  *     until upgraded) and nothing is left stuck undefined after load.
- *  4. feedback-fab (dev-only) — present + upgraded with the right repo when the
+ *  3. feedback-fab (dev-only) — present + upgraded with the right repo when the
  *     dev build injected it. Gated on EXPECT_FAB so the prod dist (no fab) still
  *     passes in CI.
+ *
+ * html/body are no longer forced `overflow: hidden` — the document scrolling
+ * (and the mobile URL-bar collapse that comes with it) is accepted, not
+ * fought, so there's no "document is pinned" assertion here anymore.
  */
 
 const MOBILE = { width: 411, height: 761 };
@@ -24,32 +23,6 @@ const MOBILE = { width: 411, height: 761 };
 const LONG_ROUTE = "/reference";
 
 test.use({ viewport: MOBILE });
-
-test("mobile shell: document does not scroll (URL bar stays visible)", async ({ page }) => {
-  await page.goto(LONG_ROUTE);
-  // No networkidle: elm-pages dev holds a /stream SSE open. Wait on the shell.
-  await expect(page.locator("#docs-app-bar")).toBeVisible();
-
-  // html + body are the fixed, non-scrolling shell.
-  const overflow = await page.evaluate(() => ({
-    html: getComputedStyle(document.documentElement).overflowY,
-    body: getComputedStyle(document.body).overflowY,
-    bodyH: document.body.clientHeight,
-    innerH: window.innerHeight,
-  }));
-  expect(overflow.html).toBe("hidden");
-  expect(overflow.body).toBe("hidden");
-  // The shell fits the visible viewport (no vh-vs-dvh bottom overhang).
-  expect(Math.abs(overflow.bodyH - overflow.innerH)).toBeLessThanOrEqual(2);
-
-  // The document is pinned: trying to scroll it does nothing → the mobile URL
-  // bar never gets a document-scroll signal to collapse.
-  const scrolled = await page.evaluate(() => {
-    window.scrollTo(0, 10000);
-    return { x: window.scrollX, y: window.scrollY };
-  });
-  expect(scrolled.y).toBe(0);
-});
 
 test("mobile shell: content scrolls in a bounded inner region (nothing clipped)", async ({ page }) => {
   await page.goto(LONG_ROUTE);

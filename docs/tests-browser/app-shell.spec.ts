@@ -1,90 +1,93 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * App-shell layout contract — the two branches of `Shared.view` must keep
- * DIFFERENT layout class lists, and the shell element must really generate the
- * box those classes describe.
+ * App-shell layout contract — pins the CURRENT split between the two branches
+ * of `Shared.view`:
  *
- * Why computed style, and not markup: `Test.Html` (elm-test) can only see the
- * emitted attribute string, which cannot distinguish "the class list won the
- * cascade" from "something else won and the shell silently reflowed". Two
- * failure modes are in scope here and both are silent — no compile error, no
+ *  - `/` (docs shell): `<m3e-theme>` (itself `display: contents` — it carries
+ *    no layout classes of its own anymore) renders a fixed-viewport
+ *    `<div class="h-dvh flex flex-col">` holding the app bar above the
+ *    drawer/content area. The ONE scroll region is the content-pane inside
+ *    the drawer (`overflow-y: auto`); the shell div itself does not scroll.
+ *  - `/examples/*` (full-viewport examples): `<m3e-theme>`'s child is the
+ *    example page's OWN root — no docs-shell wrapper, no app bar, no nav —
+ *    so double-nav is avoided and the page owns 100% of its own layout.
+ *
+ * Two failure modes are in scope and both are silent — no compile error, no
  * console warning:
  *
- *  1. Branch collapse. If the docs-shell list is ever hoisted onto BOTH
- *     branches, `/examples/*` loses `overflow-y-auto` and gains
- *     `grid-rows-[auto_1fr]`. The document (html/body) is fixed and
- *     non-scrolling for mobile URL-bar stability, so a full-viewport example
- *     that is not its own scroll region CLIPS instead of scrolling.
- *  2. `:host` winning. `@m3e/web` sets `:host { display: contents }` on
- *     `m3e-theme` (`node_modules/@m3e/web/dist/theme.js`). The shell currently
- *     lives on a wrapper INSIDE that host, so it is unaffected — but if the
- *     shell classes are ever hoisted onto the host itself, the layout only
- *     works because normal declarations from the outer tree beat a shadow
- *     tree's `:host` rules. A future `!important` there would stop the host
- *     generating a box and flatten the whole app shell.
- *
- * The `SHELL` selector matches EITHER shape (host or wrapper) on purpose, so
- * these assertions survive the hoist and keep pinning the same contract.
+ *  1. Branch collapse. If the docs-shell wrapper is ever rendered for
+ *     `/examples/*` too, an example gains a second app bar/nav it never
+ *     asked for.
+ *  2. A tall example's content becoming unreachable. Each example page is
+ *     responsible for its OWN scrolling (internal `overflow-y-auto`, or the
+ *     document itself) — nothing in the shared shell provides that for it.
+ *     If an example page's root stops being tall enough to scroll (or a
+ *     future ancestor re-adds a clipping `overflow: hidden`), content past
+ *     the fold silently becomes unreachable rather than erroring.
  */
-const SHELL = "m3e-theme.h-dvh, m3e-theme > .h-dvh";
+const DOCS_SHELL = "m3e-theme > div.h-dvh.flex.flex-col";
 
 // A `/examples/*` route whose content is taller than the viewport, so the
-// "owns its scroll region" assertion is meaningful rather than vacuous.
+// "content is reachable" assertion is meaningful rather than vacuous.
 const TALL_EXAMPLE = "/examples/shop";
 
-test("the docs shell is a fixed-height grid, not flow content", async ({ page }) => {
+test("the docs shell is a fixed-viewport flex column with one scroll region", async ({
+  page,
+}) => {
   await page.goto("/");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
-  const shell = page.locator(SHELL).first();
-  // `grid` + `auto_1fr` is what pins the app bar above the single scrolling
-  // content row. If this reads `contents` or `block`, the shell has flattened.
-  await expect(shell).toHaveCSS("display", "grid");
-  // The shell itself must NOT scroll — the inner content row does.
-  await expect(shell).toHaveCSS("overflow-y", "hidden");
+  const shell = page.locator(DOCS_SHELL);
+  // `flex` + `flex-col` stacks the app bar above the single scrolling content
+  // row. If this reads `contents` or `block`, the shell has flattened.
+  await expect(shell).toHaveCSS("display", "flex");
+  await expect(shell).toHaveCSS("flex-direction", "column");
+
+  // The shell itself must NOT be the scroller — the content-pane inside the
+  // drawer is the one bounded scroll region (`Shared.drawerShell`).
+  await expect(shell).toHaveCSS("overflow-y", "visible");
+  await expect(page.locator("#main-content m3e-content-pane").first()).toHaveCSS(
+    "overflow-y",
+    "auto",
+  );
 });
 
-test("a full-viewport example route owns its own scroll region", async ({ page }) => {
+test("a full-viewport example route skips the docs shell entirely", async ({ page }) => {
   await page.goto(TALL_EXAMPLE);
 
-  const shell = page.locator(SHELL).first();
-  await expect(shell).toBeAttached();
-  // NOT the docs-shell grid: examples are authored as plain flow content, and
-  // `grid-rows-[auto_1fr]` would lay them into rows they never asked for.
-  await expect(shell).not.toHaveCSS("display", "grid");
-  // Its own bounded scroll region — the document cannot scroll for it.
-  await expect(shell).toHaveCSS("overflow-y", "auto");
+  // No docs-shell wrapper, no docs app bar, no docs nav main landmark — the
+  // example owns its own chrome instead of getting a second one layered on.
+  await expect(page.locator(DOCS_SHELL)).toHaveCount(0);
+  await expect(page.locator("#docs-app-bar")).toHaveCount(0);
+  await expect(page.locator("#main-content")).toHaveCount(0);
 });
 
-test("a tall example scrolls instead of clipping", async ({ page }) => {
+test("a tall example's content is reachable, not clipped off past the fold", async ({
+  page,
+}) => {
   await page.goto(TALL_EXAMPLE);
 
-  const shell = page.locator(SHELL).first();
-  await expect(shell).toBeAttached();
+  // The page's own footer strip (`ExampleNav.footer`) sits at the very end of
+  // its content — reachable only if SOMETHING scrolls (the document itself,
+  // or the page's own internal scroll region; the shared shell contract
+  // doesn't care which).
+  const footerLink = page.getByRole("link", { name: "← Back to examples" });
+  await expect(footerLink).not.toBeInViewport();
 
-  const scroll = await shell.evaluate((el) => {
-    el.scrollTop = 400;
-    return {
-      overflow: el.scrollHeight - el.clientHeight,
-      moved: el.scrollTop,
-    };
-  });
-
-  // Taller than its box (so clipping is actually possible here) …
-  expect(scroll.overflow).toBeGreaterThan(20);
-  // … and reachable, because the shell is the scroller.
-  expect(scroll.moved).toBeGreaterThan(0);
+  await footerLink.scrollIntoViewIfNeeded();
+  await expect(footerLink).toBeInViewport();
 });
 
 test("the shell carries the document direction", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
-  const shell = page.locator(SHELL).first();
-  // `dir` lives on the shell element, so direction must resolve there and
-  // inherit down to the app bar and drawer. A missing `dir` would leave the
-  // RTL control in the settings drawer with nothing to flip.
-  await expect(shell).toHaveAttribute("dir", /^(ltr|rtl|auto)$/);
-  await expect(shell).toHaveCSS("direction", "ltr");
+  const theme = page.locator("m3e-theme").first();
+  // `dir` lives on the `m3e-theme` host itself (part of elm-cem's open-row
+  // `_globals` axis), so direction must resolve there and inherit down to the
+  // app bar and drawer. A missing `dir` would leave the RTL control in the
+  // settings sheet with nothing to flip.
+  await expect(theme).toHaveAttribute("dir", /^(ltr|rtl|auto)$/);
+  await expect(theme).toHaveCSS("direction", "ltr");
 });

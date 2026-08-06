@@ -3,10 +3,10 @@ module Shared exposing (Data, Model, Msg, NavComponent, componentCategories, tem
 {-| The M3 application shell that frames every docs route.
 
 Owns the single `<m3e-theme>` for the whole app, renders a real `M3e.AppBar`
-top app bar, and an `M3e.DrawerContainer` holding the nav in the `start` slot
-and the live theme controls in an `end`-slot settings drawer — cloning
-matraic's shell. Every icon goes through `M3e.Icon`; every action through
-`M3e.IconButton`; every theme control through `M3e.SegmentedButton`.
+top app bar, an `M3e.DrawerContainer` holding the nav in the `start` slot, and
+the live theme controls in a settings bottom sheet toggled from the app bar —
+cloning matraic's shell. Every icon goes through `M3e.Icon`; every action
+through `M3e.IconButton`; every theme control through `M3e.SegmentedButton`.
 
 The scheme/contrast/direction state is held as generated `Value` tokens — there is
 no local shadow union — so `M3e.Theme` takes the model field directly and the
@@ -25,6 +25,8 @@ import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
+import M3e.BottomSheet
+import M3e.ContentPane
 import M3e.DrawerContainer
 import M3e.Events
 import M3e.FormField
@@ -66,7 +68,6 @@ template =
 
 type alias Model =
     { showMenu : Bool
-    , viewportWidth : Int
     , scheme : Value Value.Scheme
     , seed : String
     , contrast : Value Value.Contrast
@@ -74,19 +75,6 @@ type alias Model =
     , dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , settingsOpen : Bool
     }
-
-
-{-| The Tailwind `md` breakpoint — kept in Elm only because the drawer's
-`start` is a Lit JS property, not CSS state.
--}
-mdBreakpointPx : Int
-mdBreakpointPx =
-    768
-
-
-isMobile : Model -> Bool
-isMobile model =
-    model.viewportWidth < mdBreakpointPx
 
 
 {-| One drawer-nav component, derived from `data/reference.json`: the entries
@@ -108,9 +96,9 @@ type alias Data =
 type Msg
     = MenuClicked
     | CloseMenu
-    | ViewportResized Int
     | ToggleSettings
-    | DrawerChanged Bool Bool
+    | SettingsSheetClosed
+    | DrawerChanged Bool
     | SetScheme (Value Value.Scheme)
     | SetSeed String
     | SetContrast (Value Value.Contrast)
@@ -133,7 +121,6 @@ init :
     -> ( Model, Effect Msg )
 init flags _ =
     ( { showMenu = False
-      , viewportWidth = initialViewportWidth flags
       , scheme = schemeFromFlags flags
       , seed = "#6750A4"
       , contrast = Value.standard
@@ -188,19 +175,23 @@ update msg model =
         CloseMenu ->
             ( { model | showMenu = False }, Effect.none )
 
-        ViewportResized w ->
-            ( { model | viewportWidth = w }, Effect.none )
-
         ToggleSettings ->
             ( { model | settingsOpen = not model.settingsOpen }, Effect.none )
 
+        -- The bottom sheet's own `closed` event fires on every element-driven
+        -- close (swipe-down, scrim click) that never goes through `ToggleSettings`.
+        -- Sync `settingsOpen` back to `False` here so it can't desync Elm (which
+        -- would need a double-toggle of `settingsButton` to reopen).
+        SettingsSheetClosed ->
+            ( { model | settingsOpen = False }, Effect.none )
+
         -- The `<m3e-drawer-container>` `change` event reports the element's own
-        -- open state (scrim click, Esc, breakpoint auto-close). Sync our booleans
+        -- `start` open state (scrim click, Esc, breakpoint auto-close). Synced
         -- from it so an element-driven close can't desync Elm (which would need a
-        -- double-toggle to reopen). `event.target.start`/`.end` are the reflected
-        -- boolean properties read by `drawerChangeDecoder`.
-        DrawerChanged startOpen endOpen ->
-            ( { model | showMenu = startOpen, settingsOpen = endOpen }, Effect.none )
+        -- double-toggle to reopen). `event.target.start` is the reflected boolean
+        -- property read by `drawerChangeDecoder`.
+        DrawerChanged startOpen ->
+            ( { model | showMenu = startOpen }, Effect.none )
 
         SetScheme scheme ->
             ( { model | scheme = scheme }
@@ -225,7 +216,7 @@ mobile to desktop.
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
-    Browser.Events.onResize (\w _ -> ViewportResized w)
+    Sub.none
 
 
 data : BackendTask FatalError Data
@@ -265,38 +256,6 @@ view sharedData page model toMsg pageView =
         absolutePath : String
         absolutePath =
             UrlPath.toAbsolute page.path
-
-        ( shellClass, children ) =
-            if String.startsWith "/examples/" absolutePath then
-                -- Individual example routes take the full viewport; they include their
-                -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
-                -- `h-dvh overflow-y-auto` makes each example its OWN bounded scroll
-                -- region: the document (html/body) is fixed + non-scrolling for the
-                -- stable mobile URL bar, so a full-viewport example must scroll itself
-                -- rather than the document, or tall demos would clip.
-                -- `block` is load-bearing: `m3e-theme`'s shadow styles set
-                -- `:host { display: contents }`, and this branch is otherwise the
-                -- only one that never names a `display` value of its own (the
-                -- docs-shell branch below wins the cascade with its `grid`). With
-                -- no competing declaration, `:host` wins by default, the host stops
-                -- generating a box, and `h-dvh`/`overflow-y-auto` become inert —
-                -- `scrollHeight`/`clientHeight` both read 0 and nothing scrolls.
-                ( "bg-surface text-on-surface block h-dvh overflow-y-auto"
-                , View.body pageView
-                )
-
-            else
-                -- Fixed-height, non-scrolling shell: `h-dvh` fits the stable
-                -- visible viewport (see style.css app-shell note) and the
-                -- `auto_1fr` rows pin the app bar while the 1fr content row
-                -- (the drawer + its <main>) is the ONE scroll region — keeps
-                -- the mobile URL bar from collapsing on scroll.
-                ( "bg-surface text-on-surface grid h-dvh grid-rows-[auto_1fr] overflow-hidden"
-                , [ skipLink
-                  , M3e.mapMsg toMsg appShellBar
-                  , drawerShell toMsg model page sharedData.components (View.body pageView)
-                  ]
-                )
     in
     { title = View.title pageView
     , body =
@@ -306,6 +265,7 @@ view sharedData page model toMsg pageView =
             , M3e.Theme.contrast model.contrast
             , M3e.Theme.density model.density
             , TypedHtml.Attributes.dir model.dir
+            , TypedHtml.Attributes.class "background-color: var(--md-sys-color-primary);color: var(--md-sys-color-on-primary);"
 
             -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
             -- control has no effect unless we drive `--md-sys-density-scale` (which
@@ -313,13 +273,24 @@ view sharedData page model toMsg pageView =
             -- CSS custom property directly — `style` uses `node.style[key]=…` which
             -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
             -- so it goes through a Tailwind arbitrary-property CLASS instead.
-            , TypedHtml.Attributes.class (shellClass ++ " " ++ densityClass model.density)
+            , TypedHtml.Attributes.class (densityClass model.density)
             ]
             -- `dir` is admissible directly on the `m3e-theme` host because `dir` is
             -- part of the open-row `_globals` axis (elm-cem, elm-typed-html), so the
             -- wrapper div that used to carry the shell classes and `dir` together is
             -- gone — both now live on the host itself.
-            children
+            (if String.startsWith "/examples/" absolutePath then
+                View.body pageView
+
+             else
+                [ skipLink
+                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-col" ]
+                    [ M3e.mapMsg toMsg appShellBar
+                    , drawerShell toMsg model page sharedData.components (View.body pageView)
+                    ]
+                , M3e.mapMsg toMsg (settingsBottomSheet model)
+                ]
+            )
             |> M3e.toHtml
         ]
     }
@@ -352,46 +323,21 @@ normalizePath path =
 -- TOP APP BAR
 
 
-appShellBar : Element (TypedHtml.Sectioning.HeaderIs s) adm_ Msg
+appShellBar : Element (M3e.AppBar.Is s) admittedBy Msg
 appShellBar =
     M3e.appBar
         [ M3e.AppBar.size Value.small
         , M3e.Attributes.id "docs-app-bar"
         ]
-        [ M3e.AppBar.leading brandMark
-        , M3e.AppBar.leading menuButton
+        [ M3e.AppBar.leading
+            (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick MenuClicked ]
+                [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
+            )
         , M3e.AppBar.title (M3e.text "elm-m3e")
         , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
         , M3e.AppBar.trailing githubLink
         , M3e.AppBar.trailing settingsButton
         ]
-
-
-{-| The brand mark in the app bar: the real Material Symbols "palette" glyph,
-rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
-(the drawer takes over there), shown from `md` up.
--}
-brandMark : Element (M3e.Icon.Is s) admittedBy Msg
-brandMark =
-    -- Purely decorative brand glyph — hidden from assistive tech (aria-hidden)
-    -- so it isn't announced alongside the adjacent "elm-m3e" title. Visibility
-    -- and spacing ride on the icon itself; no wrapper needed.
-    M3e.icon
-        [ M3e.Icon.name "palette"
-        , TypedHtml.Attributes.class "ms-2 me-1 hidden md:inline-flex"
-        , Aria.hidden Aria.true
-        ]
-        []
-
-
-{-| The mobile hamburger. `md:hidden` rides on the icon button itself (the side
-drawer is always visible on wider viewports), so no wrapper span is needed.
--}
-menuButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
-menuButton =
-    M3e.iconButton
-        [ Aria.label "Toggle navigation", TypedHtml.Attributes.class "md:hidden", M3e.Events.onClick MenuClicked ]
-        [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
 
 
 {-| The GitHub link. The mark is registered into `m3e-icon`'s own icon registry at
@@ -412,37 +358,73 @@ githubLink =
 
 
 {-| The app-bar settings control: a plain icon button that flips `settingsOpen`,
-which drives the end drawer's `open` state. (Was a Card popover trigger.)
+which drives the settings bottom sheet's `open` state. (Was a Card popover
+trigger, then an end-drawer toggle; the icon is the standard overflow "more"
+glyph rather than a gear, matching the sheet's move off the settings-specific
+end drawer.)
 -}
 settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
         [ Aria.label "Settings", M3e.Events.onClick ToggleSettings ]
-        [ M3e.icon [ M3e.Icon.name "settings" ] [] ]
+        [ M3e.icon [ M3e.Icon.name "more_vert" ] [] ]
 
 
 
--- SETTINGS (end drawer content — cloned from matraic's #settings-drawer)
+-- SETTINGS (bottom sheet — cloned from matraic's #settings-drawer, moved off the end drawer)
 
 
-{-| The theme controls, rendered into the drawer-container's `end` slot. Built
-from library components in the Element world: each control is a
-an `M3e.heading` label + a control (segmented buttons, or a
-[`FormField`](M3e-FormField) for the seed color). The container keeps its
-`#settings-drawer` id (matraic's flex-column/gap/padding styling lives in
-`style.css`) and the typed `role="complementary"` landmark via `Aria.role`. It
-returns `Element`, so it enters the drawer's `end` slot directly (no
-`M3e.Unsafe.fromHtml`).
+{-| The settings bottom sheet, toggled open/closed by `settingsButton` via
+`model.settingsOpen`. `modal` scrims the page behind it (replacing the end
+drawer's `Value.over` overlay behavior); `handle` + `hideable` let a swipe-down
+dismiss it the same as clicking the trigger again — that path never goes
+through `ToggleSettings`, so `onClosed` syncs `settingsOpen` back to `False`
+(see the `SettingsSheetClosed` case in `update`).
+-}
+settingsBottomSheet : Model -> Element (M3e.BottomSheet.Is s) admittedBy Msg
+settingsBottomSheet model =
+    M3e.bottomSheet
+        [ M3e.Attributes.id "settings-sheet"
+        , M3e.BottomSheet.open model.settingsOpen
+        , M3e.BottomSheet.handle True
+        , M3e.BottomSheet.hideable True
+        , M3e.BottomSheet.detents "half full"
+
+        -- NOT `modal`: the library only excludes a trigger from its own
+        -- click-outside dismissal when that trigger is wired through its
+        -- dedicated `m3e-bottom-sheet-trigger` element (which registers via
+        -- `attach()`); `M3e.BottomSheetTrigger`'s content model only admits
+        -- `heading`/`sharedText`, not an icon, so it can't hold `settingsButton`'s
+        -- glyph. Without that registration, `modal`'s document click-outside
+        -- listener treats `settingsButton`'s own opening click as an outside
+        -- click and closes the sheet in the same tick it opened — confirmed by
+        -- capturing the actual WAAPI animations: every click produced an
+        -- open-to-real-height call immediately followed by a close-to-0 call,
+        -- non-deterministically racing on which one the final frame kept.
+        -- Dropping `modal` removes that listener entirely; `hideable` + the
+        -- drag handle still dismiss it, and `settingsButton`/`SettingsSheetClosed`
+        -- still own open/close explicitly.
+        , M3e.BottomSheet.onClosed SettingsSheetClosed
+        ]
+        [ settingsSheetContent model ]
+
+
+{-| The theme controls, rendered into the settings bottom sheet. Built from
+library components in the Element world: each control is an `M3e.heading`
+label + a control (segmented buttons, or a [`FormField`](M3e-FormField) for
+the seed color). The container keeps the typed `role="complementary"`
+landmark via `Aria.role`.
 
 All our richer controls are kept (scheme, contrast, seed color, density,
-direction); only their LOCATION moved from the old Card popover into this end
-drawer.
+direction); only their LOCATION moved, first from the old Card popover into
+an end drawer, and now from that end drawer into this bottom sheet.
 
 -}
-settingsDrawerContent : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-settingsDrawerContent model =
+settingsSheetContent : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+settingsSheetContent model =
     TypedHtml.div
-        [ TypedHtml.Attributes.id "settings-drawer"
+        [ TypedHtml.Attributes.id "settings-sheet-content"
+        , TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         , Aria.role Aria.complementary
         ]
         [ seedColorInput model
@@ -571,9 +553,8 @@ contrastOrder v =
 {-| The source-color control, dogfooding the composition-text-field pattern
 (`/guide/composition-text-field`): an outlined `FormField` whose label and typed
 native `<input type=color>` are wired into one accessible control by a single
-shared id (`"seed-color"`), with the live hex shown as the field hint. The
-`#settings-drawer input[type="color"]` rule in `style.css` still rounds the
-swatch. `onInput` is the typed `TypedHtml.Events.onInput`.
+shared id (`"seed-color"`), with the live hex shown as the field hint.
+`onInput` is the typed `TypedHtml.Events.onInput`.
 -}
 seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
 seedColorInput model =
@@ -581,7 +562,13 @@ seedColorInput model =
         [ M3e.FormField.label
             (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ M3e.text "Source color" ])
         , M3e.FormField.hint
-            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TypedHtml.Attributes.class "text-on-surface-variant" ] [ M3e.text model.seed ])
+            (M3e.heading
+                [ M3e.Attributes.variant Value.label
+                , M3e.Attributes.size Value.small
+                , TypedHtml.Attributes.class "text-on-surface-variant"
+                ]
+                [ M3e.text model.seed ]
+            )
         , TypedHtml.input
             [ TypedHtml.Attributes.id "seed-color"
             , TypedHtml.Attributes.type_ "color"
@@ -712,59 +699,44 @@ drawerShell :
     -> Model
     -> { path : UrlPath, route : Maybe Route }
     -> List NavComponent
-    -> List (Element childAccepts (TypedHtml.Sectioning.MainChildAdmittedBy childAdm) msg)
-    -> Element (M3e.DrawerContainer.Is s) freeAdm msg
+    -> List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg)
+    -> Element (TypedHtml.Sectioning.MainIs s) admittedBy msg
 drawerShell toMsg model page components body =
     let
         currentPath : String
         currentPath =
             normalizePath (UrlPath.toAbsolute page.path)
     in
-    M3e.drawerContainer
-        [ M3e.Attributes.id "docs-drawer"
-        , M3e.DrawerContainer.startMode Value.auto
-        , M3e.Attributes.start (not (isMobile model) || model.showMenu)
-        , M3e.DrawerContainer.endMode Value.auto
-        , M3e.Attributes.end model.settingsOpen
-
-        -- Sync our drawer booleans from the element's own `change` event (scrim
-        -- click, Esc, breakpoint auto-close) so element-driven closes don't leave
-        -- Elm's state stale (which would need a double-toggle to reopen). The
-        -- Shared.Msg decoder is mapped to the outer msg via `toMsg`.
-        , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
+    TypedHtml.main_
+        [ TypedHtml.Attributes.id "main-content"
+        , TypedHtml.Attributes.class "flex-auto relative mx-auto w-full h-0"
         ]
-        [ M3e.DrawerContainer.start
-            -- Wrap the nav-menu in a native `<nav>` landmark so AT users can
-            -- jump straight to navigation (and skip past it via the skip-link).
-            (TypedHtml.nav
-                [ Aria.label "Primary" ]
-                [ navMenu components currentPath ]
-            )
-        , M3e.DrawerContainer.end
-            (M3e.mapMsg toMsg (settingsDrawerContent model))
-
-        -- The page body is the `<main>` landmark and the skip-link target.
-        -- The ContentPane provides its own container padding; keep only a
-        -- modest inline margin like matraic's #body (margin-inline: 1rem).
-        , TypedHtml.main_
-            [ TypedHtml.Attributes.id "main-content"
-            , TypedHtml.Attributes.class "mx-auto w-full max-w-5xl px-2 py-2"
+        [ M3e.drawerContainer
+            [ M3e.Attributes.id "docs-drawer"
+            , M3e.DrawerContainer.startMode Value.over
+            , M3e.Attributes.start model.showMenu
+            , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
+            , TypedHtml.Attributes.class "h-full w-full"
             ]
-            body
+            [ M3e.DrawerContainer.start (navMenu components currentPath)
+            , M3e.contentPane
+                [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-lowest"
+                , TypedHtml.Attributes.class "overflow-y-auto mx-auto h-full w-full max-w-5xl md:p-4 md:pt-1"
+                ]
+                body
+            ]
         ]
 
 
-{-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start` and
-`event.target.end` are the reflected boolean properties for each drawer's open
-state. Change events bubbling up from inner components (e.g. the settings
-segmented buttons) have a target without these properties, so the decoder fails
-and Elm ignores them — exactly what we want.
+{-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start` is
+the reflected boolean property for the drawer's open state. Change events
+bubbling up from inner components have a target without this property, so the
+decoder fails and Elm ignores them — exactly what we want.
 -}
 drawerChangeDecoder : Decode.Decoder Msg
 drawerChangeDecoder =
-    Decode.map2 DrawerChanged
+    Decode.map DrawerChanged
         (Decode.at [ "target", "start" ] Decode.bool)
-        (Decode.at [ "target", "end" ] Decode.bool)
 
 
 {-| The docs sidebar nav, an `M3e.NavMenu` of nested `NavMenuItem` groups. Each
@@ -776,7 +748,7 @@ child list; only the group on the current route is opened.
 -}
 navMenu : List NavComponent -> String -> Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 navMenu components currentPath =
-    M3e.navMenu []
+    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer" ]
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
             ++ [ componentsGroup components currentPath
                , navGroup currentPath "menu_book" "Reference" [ ( "/guide/cheat-sheet", "Cheat sheet" ), ( "/guide/glossary", "Glossary" ), ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
