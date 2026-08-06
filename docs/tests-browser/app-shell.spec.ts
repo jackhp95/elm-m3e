@@ -28,12 +28,13 @@ import { expect, test } from "@playwright/test";
  *     the fold silently becomes unreachable rather than erroring.
  */
 const DOCS_SHELL = "m3e-theme > div.h-dvh.flex.flex-row";
+const MAIN_COLUMN = `${DOCS_SHELL} > div.flex.flex-1.flex-col`;
 
 // A `/examples/*` route whose content is taller than the viewport, so the
 // "content is reachable" assertion is meaningful rather than vacuous.
 const TALL_EXAMPLE = "/examples/shop";
 
-test("the docs shell is a fixed-viewport flex row with nav rail and one scroll region", async ({
+test("the docs shell is a fixed-viewport flex row (rail | main column) with one scroll region", async ({
   page,
 }) => {
   await page.goto("/");
@@ -48,6 +49,11 @@ test("the docs shell is a fixed-viewport flex row with nav rail and one scroll r
   // The shell itself must NOT be the scroller — the content-pane inside the
   // drawer is the one bounded scroll region (`Shared.drawerShell`).
   await expect(shell).toHaveCSS("overflow-y", "visible");
+
+  const mainColumn = page.locator(MAIN_COLUMN);
+  await expect(mainColumn).toHaveCSS("display", "flex");
+  await expect(mainColumn).toHaveCSS("flex-direction", "column");
+
   await expect(page.locator("#main-content m3e-content-pane").first()).toHaveCSS(
     "overflow-y",
     "auto",
