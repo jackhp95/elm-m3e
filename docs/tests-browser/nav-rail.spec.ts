@@ -83,3 +83,14 @@ test("rail sits beside the app bar, not above it", async ({ page }) => {
   expect(appBarBox.x).toBeGreaterThanOrEqual(railBox.x + railBox.width - 1);
   expect(appBarBox.y).toBeLessThanOrEqual(railBox.y + 1);
 });
+
+test("tree panel is open (pinned) by default on desktop, closed by default on mobile", async ({
+  page,
+}) => {
+  await page.goto("/guide");
+  await expect(page.locator("#docs-drawer")).toHaveAttribute("start", "");
+
+  await page.setViewportSize({ width: 411, height: 761 });
+  await page.goto("/guide");
+  await expect(page.locator("#docs-drawer")).not.toHaveAttribute("start", "");
+});

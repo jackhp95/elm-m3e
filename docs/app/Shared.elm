@@ -69,6 +69,7 @@ template =
 
 type alias Model =
     { showMenu : Bool
+    , viewportWidth : Int
     , scheme : Value Value.Scheme
     , seed : String
     , contrast : Value Value.Contrast
@@ -94,12 +95,33 @@ type alias Data =
     { components : List NavComponent }
 
 
+{-| The Tailwind `md` breakpoint — kept in Elm only because the tree/TOC
+drawer panels' `start`/`end` open state is a Lit JS property, not CSS state,
+so Elm has to decide up front whether they start pinned-open (desktop) or
+collapsed (mobile). `DrawerContainer`'s own `auto` mode only picks WHICH
+visual mode (`side`/`push`/`over`) applies at a breakpoint — verified against
+`@m3e/web/dist/drawer-container.js`'s `_updateMode`, it never sets the
+`start`/`end` boolean itself except to auto-CLOSE when shrinking into
+`push`/`over`. Restored from `fba5f46e` (2026-06-25), removed since, needed
+again for this reason.
+-}
+mdBreakpointPx : Int
+mdBreakpointPx =
+    768
+
+
+isMobile : Model -> Bool
+isMobile model =
+    model.viewportWidth < mdBreakpointPx
+
+
 type Msg
     = MenuClicked
     | CloseMenu
     | ToggleSettings
     | SettingsSheetClosed
     | DrawerChanged Bool
+    | ViewportResized Int
     | SetScheme (Value Value.Scheme)
     | SetSeed String
     | SetContrast (Value Value.Contrast)
@@ -122,6 +144,7 @@ init :
     -> ( Model, Effect Msg )
 init flags _ =
     ( { showMenu = False
+      , viewportWidth = initialViewportWidth flags
       , scheme = schemeFromFlags flags
       , seed = "#6750A4"
       , contrast = Value.standard
@@ -194,6 +217,9 @@ update msg model =
         DrawerChanged startOpen ->
             ( { model | showMenu = startOpen }, Effect.none )
 
+        ViewportResized width ->
+            ( { model | viewportWidth = width }, Effect.none )
+
         SetScheme scheme ->
             ( { model | scheme = scheme }
             , Effect.fromCmd (Ports.storeScheme (Value.toString scheme))
@@ -217,7 +243,7 @@ mobile to desktop.
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
-    Sub.none
+    Browser.Events.onResize (\w _ -> ViewportResized w)
 
 
 data : BackendTask FatalError Data
@@ -718,8 +744,8 @@ drawerShell toMsg model page components body =
         ]
         [ M3e.drawerContainer
             [ M3e.Attributes.id "docs-drawer"
-            , M3e.DrawerContainer.startMode Value.over
-            , M3e.Attributes.start model.showMenu
+            , M3e.DrawerContainer.startMode Value.auto
+            , M3e.Attributes.start (not (isMobile model) || model.showMenu)
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
             , TypedHtml.Attributes.class "h-full w-full"
             ]
