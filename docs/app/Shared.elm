@@ -5,13 +5,15 @@ module Shared exposing (Data, Model, Msg, NavComponent, componentCategories, tem
 Owns the single `<m3e-theme>` for the whole app. Navigation is split across
 three surfaces:
 
-  - **Top-level sections** (Getting Started, The Guide, Styles, Examples,
-    Components) live in a persistent `M3e.NavRail` down the left edge on
-    desktop, swapped for a fixed-bottom `M3e.NavBar` on mobile
-    (`docsNavRail`/`docsNavBar`, Tailwind `md:` swap at 768px).
+  - **Top-level sections** (Start, Guide, Styles, Examples, Components) live
+    in a persistent `M3e.NavRail` down the left edge on desktop, swapped for a
+    fixed-bottom `M3e.NavBar` on mobile (`docsNavRail`/`docsNavBar`, Tailwind
+    `md:` swap at 768px).
   - **The current section's page tree** lives in the `start` slot of an
     `M3e.DrawerContainer` below the app bar (`navMenu`), pinned open on
-    desktop and toggled from the app bar's hamburger on narrow screens.
+    desktop and toggled from the app bar's hamburger on narrow screens. It
+    shows only the CURRENT section's items (`currentSectionItems`) — the rail
+    already says which section you're in, so the tree doesn't repeat it.
   - **The current page's table of contents** is opt-in (`View.withToc`) and
     lives in the same container's `end` slot (`tocPanel`), pinned open on
     wide screens and toggled from the app bar's "On this page" button
@@ -864,21 +866,24 @@ directionSegmented model =
 -- SIDEBAR NAVIGATION (matraic IA)
 
 
+{-| One top-level section's flat page list for the tree drawer, looked up by
+`prefix` (matching `Section.prefix`) in `currentSectionItems`. No title/icon
+fields — the tree never labels itself, since it only ever shows the ONE
+section the rail already highlights.
+-}
 type alias NavSection =
-    { title : String, icon : String, items : List ( String, String ) }
+    { prefix : String, items : List ( String, String ) }
 
 
 navSections : List NavSection
 navSections =
-    [ { title = "Getting Started"
-      , icon = "rocket_launch"
+    [ { prefix = "getting-started"
       , items =
             [ ( "/getting-started/installation", "Installation" )
             , ( "/getting-started/browser-support", "Browser Support" )
             ]
       }
-    , { title = "The Guide"
-      , icon = "auto_stories"
+    , { prefix = "guide"
       , items =
             [ ( "/guide", "Start here" )
             , ( "/guide/first-component", "Your first component" )
@@ -901,8 +906,7 @@ navSections =
             , ( "/roundtrip", "Round-trip report" )
             ]
       }
-    , { title = "Styles"
-      , icon = "palette"
+    , { prefix = "styles"
       , items =
             [ ( "/styles/color", "Color" )
             , ( "/styles/typography", "Typography" )
@@ -913,8 +917,7 @@ navSections =
             , ( "/styles/density", "Density" )
             ]
       }
-    , { title = "Examples"
-      , icon = "auto_awesome"
+    , { prefix = "examples"
       , items =
             [ ( "/examples", "Overview" )
             , ( "/examples/dashboard", "Dashboard" )
@@ -961,11 +964,6 @@ drawerShell :
     -> List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg)
     -> Element (TypedHtml.Sectioning.MainIs s) admittedBy msg
 drawerShell toMsg model page components tocEntries body =
-    let
-        currentPath : String
-        currentPath =
-            normalizePath (UrlPath.toAbsolute page.path)
-    in
     TypedHtml.main_
         [ TypedHtml.Attributes.id "main-content"
         , TypedHtml.Attributes.class "flex-auto relative mx-auto w-full h-0"
@@ -979,7 +977,7 @@ drawerShell toMsg model page components tocEntries body =
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
             , TypedHtml.Attributes.class "h-full w-full [--m3e-drawer-container-width:17.5rem]"
             ]
-            [ M3e.DrawerContainer.start (navMenu components currentPath)
+            [ M3e.DrawerContainer.start (navMenu components page.path)
             , M3e.contentPane
                 [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-lowest overflow-y-auto mx-auto h-full w-full max-w-5xl pb-20 md:p-4 md:pt-1 md:pb-4"
                 ]
@@ -1043,77 +1041,67 @@ drawerChangeDecoder =
 leaf's **label** is a real `a[href]` supplied through the `link` seam (see
 `navLeaf`): `config/slots.json` declares `NavMenuItem.label`'s `link` kind, so a
 link-kind label slots in cleanly and the item navigates like any anchor — no
-`onClick` intercept. Groups (`navGroup`/`componentsGroup`) nest via each item's
-child list; only the group on the current route is opened.
+`onClick` intercept.
+
+The tree is per-route: it renders ONLY the current top-level section's items
+(`currentSectionItems`), not every section stacked together. The rail already
+identifies which section is current, so a second, redundant "which section am
+I in" affordance inside the tree would just be clutter — and it made the
+Components branch, with its 7 category sub-groups sitting alongside 4 other
+whole sections, the reason the drawer felt overwhelming rather than a page
+tree.
+
 -}
-navMenu : List NavComponent -> String -> Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
-navMenu components currentPath =
+navMenu : List NavComponent -> UrlPath -> Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
+navMenu components path =
+    let
+        currentPath : String
+        currentPath =
+            normalizePath (UrlPath.toAbsolute path)
+    in
     M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer pb-20 md:pb-0" ]
-        (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
-            ++ [ componentsGroup components currentPath ]
-        )
+        (currentSectionItems components path |> List.map (navLeaf currentPath))
 
 
-{-| The top-level **Components** nav group, holding "All components" (pinned,
-matching `/components/all`'s kitchen-sink page) plus one `navGroup` sub-group
-per `componentCategories` entry — reusing `navGroup` unmodified, since a
-category is exactly "a labelled group of navLeaf items", the same shape
-`navGroup` already builds for Getting Started/Guide/Styles/Examples. Only the
-category actually holding the current route auto-opens (`navGroup`'s own
-`open`-when-current-route-matches logic), so navigating within Components
-doesn't force all 7 categories open at once.
+{-| The current top-level section's flat page list, looked up by the route's
+first path segment (matching `Section.prefix`). Components' list is derived
+from the shared component data — sorted alphabetically by label, with "All
+components" pinned first (matching `/components/all`'s kitchen-sink page) —
+rather than the static lookup every other section uses, since it isn't known
+until `Shared.data` loads it. No section sub-groups: `componentCategories`
+still exists for `/components/all`'s own grouping, but the tree itself no
+longer nests by category (see `navMenu`).
+
+The homepage ("/") and any path with no matching section both fall through to
+`[]` — there is no section for the tree to show, so the drawer is legitimately
+empty (the `start` attribute above gates on `model.treeOpen`, but an empty
+list here would just be a panel with nothing in it; nothing currently opts out
+of showing that empty panel, since only `/` reaches this branch and it has no
+tree hamburger use case to begin with).
+
 -}
-componentsGroup : List NavComponent -> String -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
-componentsGroup components currentPath =
-    M3e.navMenuItem
-        (if String.startsWith "/components/" currentPath then
-            [ M3e.Attributes.open True ]
+currentSectionItems : List NavComponent -> UrlPath -> List ( String, String )
+currentSectionItems components path =
+    case List.head path of
+        Just "components" ->
+            ( "/components/all", "All components" )
+                :: (components
+                        |> List.sortBy (\c -> String.toLower c.label)
+                        |> List.map (\c -> ( "/components/" ++ c.slug, c.label ))
+                   )
 
-         else
+        Just prefix ->
+            navSections
+                |> List.filter (\s -> s.prefix == prefix)
+                |> List.head
+                |> Maybe.map .items
+                |> Maybe.withDefault []
+
+        Nothing ->
             []
-        )
-        (M3e.NavMenuItem.label (M3e.text "Components")
-            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name "widgets" ] [])
-            :: navLeaf currentPath ( "/components/all", "All components" )
-            :: List.map (categoryGroup components currentPath) componentCategories
-        )
 
 
-{-| One category sub-group within Components — its members, sorted
-alphabetically by label (the same sort key the old flat list used, just
-applied per-category instead of globally).
--}
-categoryGroup : List NavComponent -> String -> ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
-categoryGroup components currentPath ( category, glyph ) =
-    navGroup currentPath
-        glyph
-        category
-        (components
-            |> List.filter (\c -> c.category == category)
-            |> List.sortBy (\c -> String.toLower c.label)
-            |> List.map (\c -> ( "/components/" ++ c.slug, c.label ))
-        )
-
-
-navGroup : String -> String -> String -> List ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
-navGroup currentPath glyph grpTitle items =
-    M3e.navMenuItem
-        -- Only SET `open` when this group holds the current route. `open` is a
-        -- controlled property, so setting it False pins the group closed and the
-        -- user can't expand it; leaving it unset lets the component toggle freely.
-        (if List.any (\( path, _ ) -> path == currentPath) items then
-            [ M3e.Attributes.open True ]
-
-         else
-            []
-        )
-        (M3e.NavMenuItem.label (M3e.text grpTitle)
-            :: M3e.NavMenuItem.icon (M3e.icon [ M3e.Icon.name glyph ] [])
-            :: List.map (navLeaf currentPath) items
-        )
-
-
-navLeaf : String -> ( String, String ) -> Element { navMenuItem : M3e.Kind.Brand } admittedBy msg
+navLeaf : String -> ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 navLeaf currentPath ( path, lbl ) =
     M3e.navMenuItem
         [ M3e.Attributes.selected (path == currentPath) ]
@@ -1158,8 +1146,8 @@ type alias Section =
 
 sections : List Section
 sections =
-    [ { label = "Getting Started", icon = "rocket_launch", href = "/getting-started/installation", prefix = "getting-started" }
-    , { label = "The Guide", icon = "auto_stories", href = "/guide", prefix = "guide" }
+    [ { label = "Start", icon = "rocket_launch", href = "/getting-started/installation", prefix = "getting-started" }
+    , { label = "Guide", icon = "auto_stories", href = "/guide", prefix = "guide" }
     , { label = "Styles", icon = "palette", href = "/styles/color", prefix = "styles" }
     , { label = "Examples", icon = "auto_awesome", href = "/examples", prefix = "examples" }
     , { label = "Components", icon = "widgets", href = "/components/button", prefix = "components" }

@@ -16,8 +16,8 @@ import { expect, test } from "@playwright/test";
  * upgraded to `role="link"` by design.
  */
 const SECTIONS: { label: string; href: string }[] = [
-  { label: "Getting Started", href: "/getting-started/installation" },
-  { label: "The Guide", href: "/guide" },
+  { label: "Start", href: "/getting-started/installation" },
+  { label: "Guide", href: "/guide" },
   { label: "Styles", href: "/styles/color" },
   { label: "Examples", href: "/examples" },
   { label: "Components", href: "/components/button" },
@@ -40,7 +40,7 @@ test("rail highlights the section matching the current route", async ({ page }) 
     "selected",
     "",
   );
-  await expect(rail.getByRole("link", { name: "The Guide", exact: true })).not.toHaveAttribute(
+  await expect(rail.getByRole("link", { name: "Guide", exact: true })).not.toHaveAttribute(
     "selected",
   );
 });
@@ -62,7 +62,7 @@ test("mobile viewport shows the nav bar instead of the rail", async ({ page }) =
   await expect(page.locator("m3e-nav-rail")).toBeHidden();
   const bar = page.locator("m3e-nav-bar");
   await expect(bar).toBeVisible();
-  await expect(bar.getByRole("link", { name: "The Guide", exact: true })).toHaveAttribute(
+  await expect(bar.getByRole("link", { name: "Guide", exact: true })).toHaveAttribute(
     "selected",
     "",
   );

@@ -95,10 +95,11 @@ test("a component page composes rail, tree, content, and TOC together", async ({
     page.locator("m3e-nav-rail").getByRole("link", { name: "Components", exact: true }),
   ).toHaveAttribute("selected", "");
 
-  // Tree: pinned open on desktop, showing Button's category.
+  // Tree: pinned open on desktop, showing the (per-route, flat) Components
+  // list -- see nav.spec.ts for the per-route contract itself.
   await expect(page.locator("#docs-drawer")).toHaveAttribute("start", "");
   await expect(
-    page.locator("#docs-drawer [slot='start']").getByText("Actions", { exact: true }),
+    page.locator("#docs-drawer [slot='start']").getByRole("link", { name: "Button", exact: true }),
   ).toBeVisible();
 
   // Content: the page's own heading renders in the content pane.
