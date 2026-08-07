@@ -45,6 +45,11 @@ The FAB is a pure trigger, not a search host. It sits in `docsNavRail`
 flips `model.searchOpen`. It doesn't hold the input or results — the rail is
 a fixed 96px column, too narrow for either.
 
+The same FAB also goes in `docsNavBar` (the mobile bottom bar): Cmd/Ctrl+K
+doesn't exist on a touch device, so without a mobile trigger, search would
+be desktop-only. Both rails render the identical component with the same
+`OpenSearch` click handler — one function, two call sites, no new UI.
+
 The actual search surface, an `M3e.searchView`, mounts at the shell root as
 a sibling of `settingsBottomSheet` in `Shared.view` — the same pattern
 already established there: an overlay component keyed off one model
@@ -127,8 +132,16 @@ results panel shows a plain "Search unavailable" message rather than
 silently looking empty.
 
 **Keyboard shortcut:** Cmd/Ctrl+K opens search from anywhere in the shell.
-A `Browser.Events.onKeyDown` subscription in `Shared.subscriptions`, the
-same shape `ViewportResized` already uses — no ports.
+Chrome and Edge already bind Ctrl/Cmd+K to focusing the address bar; without
+calling `preventDefault()` on the native keydown event, our shortcut would
+fire ALONGSIDE that browser action rather than instead of it (both compete
+for focus, breaking the shortcut). `Browser.Events.onKeyDown` only decodes
+event data — it cannot call `preventDefault`. So this needs one incoming
+port, `Ports.onOpenSearchRequested`, and a `document.addEventListener`
+registered in `index.ts` that checks for Ctrl/Cmd+K, calls
+`event.preventDefault()`, and sends on the port — the mirror image of the
+existing outgoing `Ports.storeScheme` in the same file. Elm subscribes to
+it in `Shared.subscriptions` exactly like any other subscription.
 
 **Matching:** case-insensitive substring match against `heading` (falling
 back to `title` when an entry has no heading), capped at the first 20
