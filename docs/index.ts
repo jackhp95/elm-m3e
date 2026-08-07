@@ -97,9 +97,18 @@ const config: ElmPagesInit = {
     // to be a real DOM listener that calls preventDefault before sending on
     // the port, or our shortcut would fire ALONGSIDE the browser's, not
     // instead of it.
+    //
+    // `/examples/*` routes render with no docs shell (Shared.view
+    // short-circuits to the bare page body), so there is no FAB and no
+    // overlay to open there. Shared.subscriptions already refuses to produce
+    // OpenSearch on those routes; mirror the same prefix check HERE, before
+    // preventDefault, so the browser keeps its own Cmd/Ctrl+K instead of
+    // having it swallowed for no visible effect. Keep in sync with
+    // `Shared.hasDocsShell`.
     document.addEventListener("keydown", (event) => {
       const isSearchShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
       if (!isSearchShortcut) return;
+      if (window.location.pathname.startsWith("/examples/")) return;
       event.preventDefault();
       app?.ports?.onOpenSearchRequested?.send(null);
     });

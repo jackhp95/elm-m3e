@@ -197,6 +197,77 @@ tocPinBreakpointPx =
     1200
 
 
+{-| The width below which the search overlay runs in **fullscreen** mode
+instead of **docked**.
+
+Not a layout choice of ours: this is `@m3e/web`'s own `Breakpoint.XSmall`
+(`max-width: 599.98px`) restated in Elm, because `searchOverlay` drives
+`mode` explicitly rather than letting the element pick — see `searchModeFor`.
+Keep it equal to that breakpoint; a mismatch would only mean the overlay
+renders in the mode we asked for at a width the element would have chosen
+differently, which is harmless but confusing.
+
+-}
+searchFullscreenBreakpointPx : Int
+searchFullscreenBreakpointPx =
+    600
+
+
+{-| The `mode` to hand `m3e-search-view` at this width.
+
+The element ships a `mode="auto"` that computes exactly this itself, and we
+deliberately do NOT use it. `auto` installs an `M3eBreakpointObserver` in
+`willUpdate`, and its callback fires ONCE on install with the real match:
+
+    const currentMode = this.currentMode;             // "docked" (the default)
+    this._mode = matches.get(Breakpoint.XSmall) ? "fullscreen" : "docked";
+    if (currentMode !== this._mode && this.open) {
+        this.open = false;                            // no `toggle` event!
+    }
+
+Since `searchOverlay` mounts the element already `open`, below 600px that
+callback flips `open` back to `false` on the very first render — and it does
+so WITHOUT dispatching `toggle`, so `searchToggleDecoder` never fires and
+`model.searchOpen` stays `True` forever. The panel never opens, and every
+later FAB tap is a no-op (no model change -> no re-render -> the element is
+never asked to open again). Passing a non-`auto` mode takes the
+`this._mode = undefined; updateMode()` branch instead, which installs no
+observer at all, so there is no race to lose.
+
+`model.viewportWidth` is already maintained by the `Browser.Events.onResize`
+subscription, so a resize across the breakpoint re-renders with the other
+mode — the element's `willUpdate` then closes the overlay on a genuine mode
+CHANGE, which does route through `updated`/`toggle` and stays in sync.
+
+-}
+searchModeFor : Int -> Value M3e.SearchView.Mode
+searchModeFor width =
+    if width < searchFullscreenBreakpointPx then
+        Value.fullscreen
+
+    else
+        Value.docked
+
+
+{-| Does this route render the docs shell at all?
+
+`/examples/*` pages render bare (`view` short-circuits to `View.body`) so the
+example owns the whole viewport. Nothing shell-shaped exists on those routes:
+no rail, no bottom bar, no FAB — and no `searchOverlay`, since that is mounted
+inside the same branch. `subscriptions` reads this too, so the Cmd/Ctrl+K port
+cannot set `searchOpen = True` on a route with nothing to show for it (which
+would then pop the overlay open unrequested on the NEXT navigation).
+
+`docs/index.ts` mirrors this prefix check before it calls `preventDefault()`,
+so on `/examples/*` the browser keeps its own Cmd/Ctrl+K instead of having it
+swallowed for no visible effect.
+
+-}
+hasDocsShell : UrlPath -> Bool
+hasDocsShell path =
+    not (String.startsWith "/examples/" (UrlPath.toAbsolute path))
+
+
 {-| Is the page tree pinned open at this width? Also the default it is restored
 to on a route change or on growing past the breakpoint.
 -}
@@ -393,10 +464,19 @@ update msg model =
         -- it triggered), open where they belong pinned. `update` cannot see the
         -- INCOMING page's TOC entries, so `tocOpen` is set optimistically and
         -- `drawerShell` still gates the `end` slot on non-empty entries.
+        --
+        -- The search overlay is that same kind of overlay, at every width, so
+        -- it closes unconditionally. Its query is cleared with it: the overlay
+        -- is unmounted while closed, so a surviving `searchQuery` would only
+        -- reappear pre-filled on the NEXT open, stale by a whole navigation.
+        -- (`searchIndex` is deliberately kept — it's an immutable fetched
+        -- cache, not overlay state, and dropping it would refetch per page.)
         PageChanged ->
             ( { model
                 | treeOpen = treePinsOpen model.viewportWidth
                 , tocOpen = tocPinsOpen model.viewportWidth
+                , searchOpen = False
+                , searchQuery = ""
               }
             , Effect.none
             )
@@ -503,12 +583,23 @@ update msg model =
 window to a wide one. Without this the panels the element auto-closed on the way
 DOWN would stay closed on the way back up, since nothing else in the app ever
 sets `treeOpen` without a deliberate tap.
+
+The Cmd/Ctrl+K port is gated on `hasDocsShell`, because `searchOverlay` is
+mounted inside the shell branch of `view`: on an `/examples/*` route the
+shortcut would set `searchOpen = True` with nothing rendered to show it, and
+the flag would then survive until the next `PageChanged` — popping the overlay
+open unrequested on a route the user never asked to search from.
+
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
-subscriptions _ _ =
+subscriptions path _ =
     Sub.batch
         [ Browser.Events.onResize (\w _ -> ViewportResized w)
-        , Ports.onOpenSearchRequested (\_ -> OpenSearch)
+        , if hasDocsShell path then
+            Ports.onOpenSearchRequested (\_ -> OpenSearch)
+
+          else
+            Sub.none
         ]
 
 
@@ -545,11 +636,6 @@ view :
     -> View msg
     -> { body : List (Html msg), title : String }
 view sharedData page model toMsg pageView =
-    let
-        absolutePath : String
-        absolutePath =
-            UrlPath.toAbsolute page.path
-    in
     { title = View.title pageView
     , body =
         [ M3e.theme
@@ -571,7 +657,7 @@ view sharedData page model toMsg pageView =
             -- part of the open-row `_globals` axis (elm-cem, elm-typed-html), so the
             -- wrapper div that used to carry the shell classes and `dir` together is
             -- gone — both now live on the host itself.
-            (if String.startsWith "/examples/" absolutePath then
+            (if not (hasDocsShell page.path) then
                 View.body pageView
 
              else
@@ -953,10 +1039,29 @@ neither `contained` nor any other attribute suppresses it), and nothing in
 this layout wants that pill sitting anywhere -- the FAB is the only visible
 trigger. Conditional rendering sidesteps needing to suppress it via CSS.
 
-`mode Value.auto` picks fullscreen on mobile / docked on desktop on its own,
-the same responsibility `DrawerContainer`'s own `auto` mode already has.
-`open True` is set unconditionally here since the element is never mounted
-in any other state.
+The mode is derived from `model.viewportWidth` rather than delegated to the
+element's own `mode="auto"` — see `searchModeFor` for why `auto` is a race
+this overlay always loses below 600px. `open True` is set unconditionally
+here since the element is never mounted in any other state.
+
+**The classes are load-bearing, not decoration.** `m3e-bottom-sheet` is
+`position: fixed` on its host and positions itself; `m3e-search-view` is
+`:host { display: block }` — plain static flow. Mounted here, as the last
+child of `m3e-theme` next to the shell's own `h-dvh` div, it lands directly
+BELOW a box that already fills the viewport: measured at 1400x900, the host
+sat at `y = 900`, entirely under the fold, so clicking the FAB looked like
+it did nothing. (Playwright hid this: `.click()` auto-scrolls and
+`toBeVisible()` never asserts in-viewport — hence the bounding-box
+assertion in `search.spec.ts`.)
+
+Only DOCKED mode depends on this: `#openDocked` positions its popover from
+the shadow `.anchor` inside the host, so the host's own box is what it
+follows. Fullscreen mode sets `position: fixed` + `100dvw/100dvh` on the
+popover and ignores the host entirely — the classes are harmless there.
+`max-w-2xl mx-auto` keeps the docked bar from stretching to a 1400px-wide
+pill (the docked popover's width is copied from the anchor's `clientWidth`);
+padding is avoided on the host for the same reason, since `clientWidth`
+would include it.
 
 -}
 searchOverlay : Model -> Element { s | searchView : M3e.Kind.Brand, sharedText : M3e.Kind.Shared } admittedBy Msg
@@ -966,7 +1071,8 @@ searchOverlay model =
 
     else
         M3e.searchView
-            [ M3e.SearchView.mode Value.auto
+            [ TypedHtml.Attributes.class "fixed inset-x-0 top-2 z-50 mx-auto w-full max-w-2xl"
+            , M3e.SearchView.mode (searchModeFor model.viewportWidth)
             , M3e.SearchView.open True
             , M3e.Events.onQueryWith searchQueryDecoder
             , M3e.Events.onToggleWith searchToggleDecoder
