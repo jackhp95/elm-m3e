@@ -2,11 +2,29 @@ module Shared exposing (Data, Model, Msg, NavComponent, componentCategories, tem
 
 {-| The M3 application shell that frames every docs route.
 
-Owns the single `<m3e-theme>` for the whole app, renders a real `M3e.AppBar`
-top app bar, an `M3e.DrawerContainer` holding the nav in the `start` slot, and
-the live theme controls in a settings bottom sheet toggled from the app bar —
-cloning matraic's shell. Every icon goes through `M3e.Icon`; every action
-through `M3e.IconButton`; every theme control through `M3e.SegmentedButton`.
+Owns the single `<m3e-theme>` for the whole app. Navigation is split across
+three surfaces:
+
+  - **Top-level sections** (Getting Started, The Guide, Styles, Examples,
+    Components) live in a persistent `M3e.NavRail` down the left edge on
+    desktop, swapped for a fixed-bottom `M3e.NavBar` on mobile
+    (`docsNavRail`/`docsNavBar`, Tailwind `md:` swap at 768px).
+  - **The current section's page tree** lives in the `start` slot of an
+    `M3e.DrawerContainer` below the app bar (`navMenu`), pinned open on
+    desktop and toggled from the app bar's hamburger on narrow screens.
+  - **The current page's table of contents** is opt-in (`View.withToc`) and
+    lives in the same container's `end` slot (`tocPanel`), pinned open on
+    wide screens and toggled from the app bar's "On this page" button
+    otherwise.
+
+Above them sits a real `M3e.AppBar` top app bar; the live theme controls are in
+a settings bottom sheet toggled from it. Every icon goes through `M3e.Icon`;
+every action through `M3e.IconButton`; every theme control through
+`M3e.SegmentedButton`.
+
+Both drawer panels' open state is genuinely model-owned (`treeOpen`/`tocOpen`)
+rather than recomputed per render — see `drawerSideBreakpointPx` for why that
+distinction is load-bearing.
 
 The scheme/contrast/direction state is held as generated `Value` tokens — there is
 no local shadow union — so `M3e.Theme` takes the model field directly and the
@@ -59,7 +77,7 @@ template =
     , view = view
     , data = data
     , subscriptions = subscriptions
-    , onPageChange = Just (\_ -> CloseMenu)
+    , onPageChange = Just (\_ -> PageChanged)
     }
 
 
@@ -68,8 +86,8 @@ template =
 
 
 type alias Model =
-    { showMenu : Bool
-    , endOpen : Bool
+    { treeOpen : Bool
+    , tocOpen : Bool
     , viewportWidth : Int
     , scheme : Value Value.Scheme
     , seed : String
@@ -96,29 +114,92 @@ type alias Data =
     { components : List NavComponent }
 
 
-{-| The Tailwind `md` breakpoint — kept in Elm only because the tree/TOC
-drawer panels' `start`/`end` open state is a Lit JS property, not CSS state,
-so Elm has to decide up front whether they start pinned-open (desktop) or
-collapsed (mobile). `DrawerContainer`'s own `auto` mode only picks WHICH
-visual mode (`side`/`push`/`over`) applies at a breakpoint — verified against
-`@m3e/web/dist/drawer-container.js`'s `_updateMode`, it never sets the
-`start`/`end` boolean itself except to auto-CLOSE when shrinking into
-`push`/`over`. Restored from `fba5f46e` (2026-06-25), removed since, needed
-again for this reason.
+{-| The width at or above which `DrawerContainer`'s `auto` mode keeps a panel
+in `side` (pinned, content-shrinking) rather than `push`/`over` (overlaying,
+scrim-dismissable).
+
+**This number is not ours to pick.** It is `Breakpoint.Medium`'s
+`(min-width: 960px)` in `@m3e/web/dist/core-layout.js`, which
+`_updateMode` in `@m3e/web/dist/drawer-container.js` observes. Elm has to
+mirror it because the panels' open state is a Lit property, not CSS state:
+Elm decides whether a panel starts pinned open, and the element decides how a
+pinned panel is drawn. Elm used to say 768 while the element said 960, and
+every width in between was a trap: the element auto-CLOSED the panel and said
+so via its `change` event, but Elm's open state was a formula
+(`not (isMobile model) || model.showMenu`) that still evaluated to the same
+constant `True`, so the virtual-DOM diff emitted no patch and the panel stayed
+shut for good — no later tap and no later resize could reopen it.
+
+Hence both halves of the fix: this constant matches the element's, AND the open
+state is now a plain model field (`treeOpen`/`tocOpen`) rendered directly, so it
+cannot collapse into a constant again.
+
+This is deliberately NOT the Tailwind `md` breakpoint (768px), which
+independently controls the `docsNavRail`/`docsNavBar` swap in pure CSS and
+needs no Elm state at all.
+
 -}
-mdBreakpointPx : Int
-mdBreakpointPx =
-    768
+drawerSideBreakpointPx : Int
+drawerSideBreakpointPx =
+    960
 
 
-isMobile : Model -> Bool
-isMobile model =
-    model.viewportWidth < mdBreakpointPx
+{-| The width at or above which the TOC panel is ALSO pinned open beside the
+tree, instead of being one-at-a-time with it.
+
+Derived from the layout budget rather than from a Material breakpoint: the
+rail is 96px and each drawer panel is `--m3e-drawer-container-width` = 17.5rem
+= 280px (set in `drawerShell`), so both panels open costs 96 + 280 + 280 =
+656px of chrome. At 1200px that still leaves ~544px of readable content; below
+it, pinning both would crush the content pane to a single word per line (at
+960px it would leave ~304px), so below this width `panelsExclusive` lets only
+one panel be open at a time.
+
+-}
+tocPinBreakpointPx : Int
+tocPinBreakpointPx =
+    1200
+
+
+{-| Is the page tree pinned open at this width? Also the default it is restored
+to on a route change or on growing past the breakpoint.
+-}
+treePinsOpen : Int -> Bool
+treePinsOpen width =
+    width >= drawerSideBreakpointPx
+
+
+{-| Is the TOC pinned open at this width? (Only relevant on a page that opted
+into a TOC — `drawerShell` still gates the `end` slot on non-empty entries.)
+-}
+tocPinsOpen : Int -> Bool
+tocPinsOpen width =
+    width >= tocPinBreakpointPx
+
+
+{-| May only ONE of the two panels be open at this width?
+
+Below `drawerSideBreakpointPx` this is forced on us: `DrawerContainer.willUpdate`
+force-closes `start` when `end` opens (and vice versa) whenever the other panel
+is not in `side` mode — and it does so WITHOUT dispatching a `change` event, so
+Elm cannot learn about it after the fact and has to apply the same rule in its
+own handlers or its model silently drifts from the element's.
+
+Between `drawerSideBreakpointPx` and `tocPinBreakpointPx` the element would
+happily hold both open, but there is not enough room for a readable content
+column, so we enforce exclusivity ourselves. Elm being STRICTER than the
+element is safe: it closes the other panel in the same update, so the element
+never sees the both-open state it would have corrected.
+
+-}
+panelsExclusive : Int -> Bool
+panelsExclusive width =
+    not (tocPinsOpen width)
 
 
 type Msg
-    = MenuClicked
-    | CloseMenu
+    = ToggleTree
+    | PageChanged
     | ToggleSettings
     | SettingsSheetClosed
     | DrawerChanged Bool Bool
@@ -146,9 +227,14 @@ init :
             }
     -> ( Model, Effect Msg )
 init flags _ =
-    ( { showMenu = False
-      , endOpen = False
-      , viewportWidth = initialViewportWidth flags
+    let
+        width : Int
+        width =
+            initialViewportWidth flags
+    in
+    ( { treeOpen = treePinsOpen width
+      , tocOpen = tocPinsOpen width
+      , viewportWidth = width
       , scheme = schemeFromFlags flags
       , seed = "#6750A4"
       , contrast = Value.standard
@@ -158,6 +244,65 @@ init flags _ =
       }
     , Effect.none
     )
+
+
+{-| Open or close the page tree, applying the tree/TOC mutual exclusion
+`panelsExclusive` describes. Opening the tree can close the TOC; closing it
+never touches the TOC.
+-}
+setTreeOpen : Bool -> Model -> Model
+setTreeOpen open model =
+    { model
+        | treeOpen = open
+        , tocOpen = model.tocOpen && not (open && panelsExclusive model.viewportWidth)
+    }
+
+
+{-| `setTreeOpen`'s mirror image for the TOC panel.
+-}
+setTocOpen : Bool -> Model -> Model
+setTocOpen open model =
+    { model
+        | tocOpen = open
+        , treeOpen = model.treeOpen && not (open && panelsExclusive model.viewportWidth)
+    }
+
+
+{-| Record a new viewport width, re-pinning each panel to its default when — and
+only when — the resize CROSSED that panel's breakpoint.
+
+Crossing-only, rather than recomputing from the width every time, is what keeps
+an explicit toggle sticky: a user who closes the pinned tree at 1440px keeps it
+closed while nudging the window to 1500px. Crossing back up is what makes the
+old "stuck closed forever" failure recoverable at all — the `subscriptions`
+comment has always promised this; before, `ViewportResized` only stored the
+width.
+
+Both defaults are routed through `setTreeOpen`/`setTocOpen` so that widening
+from mobile — where the user may have had the TOC open — into the 960-1199 band
+cannot leave both panels open at once.
+
+-}
+resizeTo : Int -> Model -> Model
+resizeTo width model =
+    let
+        resized : Model
+        resized =
+            { model | viewportWidth = width }
+
+        afterTree : Model
+        afterTree =
+            if treePinsOpen width /= treePinsOpen model.viewportWidth then
+                setTreeOpen (treePinsOpen width) resized
+
+            else
+                resized
+    in
+    if tocPinsOpen width /= tocPinsOpen model.viewportWidth then
+        setTocOpen (tocPinsOpen width) afterTree
+
+    else
+        afterTree
 
 
 {-| Read `flags.width` (passed by docs/index.ts on the client). Falls back to
@@ -197,11 +342,21 @@ schemeFromFlags flags =
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        MenuClicked ->
-            ( { model | showMenu = not model.showMenu }, Effect.none )
+        ToggleTree ->
+            ( setTreeOpen (not model.treeOpen) model, Effect.none )
 
-        CloseMenu ->
-            ( { model | showMenu = False }, Effect.none )
+        -- A route change re-pins both panels to their width's default: closed
+        -- on a narrow screen (so a mobile overlay can't survive the navigation
+        -- it triggered), open where they belong pinned. `update` cannot see the
+        -- INCOMING page's TOC entries, so `tocOpen` is set optimistically and
+        -- `drawerShell` still gates the `end` slot on non-empty entries.
+        PageChanged ->
+            ( { model
+                | treeOpen = treePinsOpen model.viewportWidth
+                , tocOpen = tocPinsOpen model.viewportWidth
+              }
+            , Effect.none
+            )
 
         ToggleSettings ->
             ( { model | settingsOpen = not model.settingsOpen }, Effect.none )
@@ -218,24 +373,35 @@ update msg model =
         -- scrim click closes BOTH sides in one event, per `_handleScrimClick` in
         -- `@m3e/web/dist/drawer-container.js`). Synced from both here so an
         -- element-driven close can't desync Elm (which would need a double-tap of
-        -- `MenuClicked`/`ToggleToc` to reopen — the first tap would just be
+        -- `ToggleTree`/`ToggleToc` to reopen — the first tap would just be
         -- computing the state the element is already in). `event.target.start`/
         -- `.end` are the reflected boolean properties read by `drawerChangeDecoder`.
+        --
+        -- NOTE this is the element telling us what it already did, so it is the
+        -- one place that assigns both fields raw, WITHOUT `setTreeOpen`'s
+        -- exclusion rule: whatever combination the element reports is by
+        -- definition the truth to sync to.
         DrawerChanged startOpen endOpen ->
-            ( { model | showMenu = startOpen, endOpen = endOpen }, Effect.none )
+            ( { model | treeOpen = startOpen, tocOpen = endOpen }, Effect.none )
 
         ViewportResized width ->
-            ( { model | viewportWidth = width }, Effect.none )
+            ( resizeTo width model, Effect.none )
 
         ToggleToc ->
-            ( { model | endOpen = not model.endOpen }, Effect.none )
+            ( setTocOpen (not model.tocOpen) model, Effect.none )
 
-        -- Fired when a TOC jump-link is clicked, so the mobile overlay doesn't
-        -- stay open (and the page behind it `inert`) after the user has already
-        -- navigated to the target heading. Always closes rather than toggling —
-        -- harmless on desktop, where `endOpen` doesn't gate visibility anyway.
+        -- Fired when a TOC jump-link is clicked. Below `drawerSideBreakpointPx`
+        -- the panel is a `push`/`over` overlay that holds the content `inert`,
+        -- so without this the user would land on the right heading but stay
+        -- stuck behind the still-open panel. At or above it the panel is a
+        -- `side` panel sitting BESIDE live content, so dismissing it would just
+        -- be yanking the TOC away from someone using it — left alone there.
         CloseToc ->
-            ( { model | endOpen = False }, Effect.none )
+            if treePinsOpen model.viewportWidth then
+                ( model, Effect.none )
+
+            else
+                ( setTocOpen False model, Effect.none )
 
         SetScheme scheme ->
             ( { model | scheme = scheme }
@@ -255,8 +421,11 @@ update msg model =
             ( { model | dir = dir }, Effect.none )
 
 
-{-| Watch viewport width to re-open the side drawer when the user crosses from
-mobile to desktop.
+{-| Watch viewport width so `resizeTo` can re-pin the tree (and, past
+`tocPinBreakpointPx`, the TOC) when the user crosses back up from a narrow
+window to a wide one. Without this the panels the element auto-closed on the way
+DOWN would stay closed on the way back up, since nothing else in the app ever
+sets `treeOpen` without a deliberate tap.
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
@@ -331,7 +500,7 @@ view sharedData page model toMsg pageView =
                 , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-row" ]
                     [ docsNavRail page.path
                     , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
-                        [ M3e.mapMsg toMsg (appShellBar model (View.toc pageView))
+                        [ M3e.mapMsg toMsg (appShellBar (View.toc pageView))
                         , drawerShell toMsg model page sharedData.components (View.toc pageView) (View.body pageView)
                         ]
                     , docsNavBar page.path
@@ -371,27 +540,28 @@ normalizePath path =
 -- TOP APP BAR
 
 
-{-| Takes the whole `Model` (not just a `Bool`) so it can gate the TOC-toggle
-button on `isMobile model`, not just on whether the page HAS a TOC: on desktop
-the TOC is always pinned open (`drawerShell`'s `end` visibility formula shows
-it whenever `tocEntries` is non-empty, independent of `endOpen`), so a button
-that only checked `tocEntries` would render on desktop too and silently do
-nothing when clicked — flip `endOpen`, but nothing visible depends on it there.
+{-| The TOC toggle is gated on ONE thing only: whether the page has any TOC
+entries. It used to be gated on viewport width as well, because the `end`
+panel's visibility was a formula that ignored `tocOpen` on desktop — so the
+button would have been a focusable no-op there. Now that `tocOpen` is the
+single authority at every width, the button always does something visible:
+below `tocPinBreakpointPx` it opens the panel (closing the tree), at or above
+it collapses the pinned panel to give the content column its width back.
 -}
-appShellBar : Model -> List View.TocEntry -> Element (M3e.AppBar.Is s) admittedBy Msg
-appShellBar model tocEntries =
+appShellBar : List View.TocEntry -> Element (M3e.AppBar.Is s) admittedBy Msg
+appShellBar tocEntries =
     M3e.appBar
         [ M3e.AppBar.size Value.small
         , M3e.Attributes.id "docs-app-bar"
         ]
         ([ M3e.AppBar.leading
-            (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick MenuClicked ]
+            (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick ToggleTree ]
                 [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
             )
          , M3e.AppBar.title (M3e.text "elm-m3e")
          , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
          ]
-            ++ (if List.isEmpty tocEntries || not (isMobile model) then
+            ++ (if List.isEmpty tocEntries then
                     []
 
                 else
@@ -761,9 +931,27 @@ navSections =
     ]
 
 
-{-| The whole below-app-bar shell: a side `m3e-drawer-container` whose `start`
-panel is the hierarchical nav-menu and whose default content is the page body.
-The nav is `NavItem` links inside `NavMenuItem` groups inside a `NavMenu`.
+{-| The whole below-app-bar shell: an `m3e-drawer-container` whose `start` panel
+is the current section's hierarchical nav-menu, whose `end` panel is the page's
+opt-in TOC, and whose default content is the page body. The nav is `NavItem`
+links inside `NavMenuItem` groups inside a `NavMenu`.
+
+Both panels' `start`/`end` attributes render `model.treeOpen`/`model.tocOpen`
+DIRECTLY. That directness is the fix for the dead-hamburger bug — see
+`drawerSideBreakpointPx`. The only qualifier left on `end` is "does this page
+have a TOC at all", which cannot collapse into a stuck constant because the TOC
+toggle that drives `tocOpen` isn't rendered on a page with no entries either.
+
+`--m3e-drawer-container-width` is narrowed from the library default (22.5rem =
+360px) to 17.5rem = 280px, which is what keeps the content column readable once
+the 96px rail is also on screen: 280px panels leave ~584px of content at 960px
+with one panel open, and ~624px at 1280px with both. See
+`tocPinBreakpointPx` for the rest of that budget.
+
+The content pane carries `pb-20` below the Tailwind `md` breakpoint because
+`docsNavBar` is `fixed ... bottom-0` there and would otherwise hide the last
+~68px of every page behind itself.
+
 -}
 drawerShell :
     (Msg -> msg)
@@ -786,16 +974,16 @@ drawerShell toMsg model page components tocEntries body =
         [ M3e.drawerContainer
             [ M3e.Attributes.id "docs-drawer"
             , M3e.DrawerContainer.startMode Value.auto
-            , M3e.Attributes.start (not (isMobile model) || model.showMenu)
+            , M3e.Attributes.start model.treeOpen
             , M3e.DrawerContainer.endMode Value.auto
-            , M3e.Attributes.end (not (List.isEmpty tocEntries) && (not (isMobile model) || model.endOpen))
+            , M3e.Attributes.end (model.tocOpen && not (List.isEmpty tocEntries))
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
-            , TypedHtml.Attributes.class "h-full w-full"
+            , TypedHtml.Attributes.class "h-full w-full [--m3e-drawer-container-width:17.5rem]"
             ]
             [ M3e.DrawerContainer.start (navMenu components currentPath)
             , M3e.contentPane
                 [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-lowest"
-                , TypedHtml.Attributes.class "overflow-y-auto mx-auto h-full w-full max-w-5xl md:p-4 md:pt-1"
+                , TypedHtml.Attributes.class "overflow-y-auto mx-auto h-full w-full max-w-5xl pb-20 md:p-4 md:pt-1 md:pb-4"
                 ]
                 body
             , M3e.DrawerContainer.end (tocPanel toMsg tocEntries)
@@ -808,18 +996,22 @@ means an empty panel, but the `end` attribute above is already `False` in
 that case, so `auto`/`side` mode never shows it — this only renders when
 there is something to show.
 
-Each link also dispatches `CloseToc` on click — on mobile the `end` drawer is
-an `over`/`push` overlay with the page content `inert` while open, so without
-this the user would land on the right heading but be stuck behind the
-still-open panel (having to dismiss it separately via the scrim). Harmless on
-desktop: `drawerShell`'s visibility formula ignores `endOpen` there, so
-setting it `False` has no visible effect on a pinned-open TOC.
+Each link also dispatches `CloseToc` on click — below
+`drawerSideBreakpointPx` the `end` drawer is an
+`over`/`push` overlay with the page content `inert` while open, so without this
+the user would land on the right heading but be stuck behind the still-open
+panel (having to dismiss it separately via the scrim). `update`'s `CloseToc`
+case is a no-op above that width, where the panel is `side` and dismissing it
+would just be taking the TOC away from someone reading it.
+
+`pb-20` matches the content pane's: `docsNavBar` is fixed over the bottom of
+the viewport on mobile and would otherwise sit on top of the last jump-links.
 
 -}
 tocPanel : (Msg -> msg) -> List View.TocEntry -> Element (TypedHtml.Sectioning.NavIs s) admittedBy msg
 tocPanel toMsg tocEntries =
     TypedHtml.nav
-        [ Aria.label "On this page", TypedHtml.Attributes.class "flex flex-col gap-2 p-4" ]
+        [ Aria.label "On this page", TypedHtml.Attributes.class "flex flex-col gap-2 p-4 pb-20 md:pb-4" ]
         (List.map
             (\entry ->
                 TypedHtml.a
@@ -858,7 +1050,7 @@ child list; only the group on the current route is opened.
 -}
 navMenu : List NavComponent -> String -> Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 navMenu components currentPath =
-    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer" ]
+    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer pb-20 md:pb-0" ]
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
             ++ [ componentsGroup components currentPath ]
         )

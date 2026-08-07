@@ -42,19 +42,49 @@ test("a page with no toc entries shows no TOC toggle button", async ({
 });
 
 /**
- * On desktop the TOC is pinned open the same way the tree panel is (see
- * `Shared.appShellBar`'s doc comment) -- `endOpen` never gates visibility
- * there, so a toggle button would be a focusable no-op. It must only render
- * on mobile, where it's the only way to reach the panel at all.
+ * At or above `Shared.tocPinBreakpointPx` (1200) the TOC is pinned open beside
+ * the tree. The toggle button still renders there -- `model.tocOpen` is the
+ * single authority for the panel at EVERY width now, so the button collapses
+ * the pinned panel (handing its 280px back to the content column) instead of
+ * being the focusable no-op it would have been under the old
+ * width-dependent visibility formula.
  */
-test("on desktop, the TOC panel has no toggle button but is shown pinned open", async ({
+test("on a wide desktop, the TOC is pinned open and its toggle collapses it", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/components/button");
-  await expect(page.getByRole("button", { name: "On this page" })).toHaveCount(
-    0,
-  );
-  await expect(page.locator("#docs-drawer [slot='end']")).toBeVisible();
+
+  const tocPanel = page.locator("#docs-drawer [slot='end']");
+  await expect(tocPanel).toBeVisible();
+
+  const toggle = page.getByRole("button", { name: "On this page" });
+  await toggle.click();
+  await expect(tocPanel).toBeHidden();
+  await toggle.click();
+  await expect(tocPanel).toBeVisible();
+});
+
+/**
+ * Between 960 and 1200 there is a rail (96px) plus at most one 280px panel on
+ * screen, so the content column keeps ~580px. Pinning the TOC there too would
+ * leave it ~300px -- one word per line. The TOC is toggle-driven instead, and
+ * opening it closes the tree (`Shared.panelsExclusive`).
+ */
+test("at 1024px the TOC is not pinned and opening it closes the tree", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await page.goto("/components/button");
+
+  const tree = page.locator("#docs-drawer [slot='start']");
+  const tocPanel = page.locator("#docs-drawer [slot='end']");
+  await expect(tree).toBeVisible();
+  await expect(tocPanel).toBeHidden();
+
+  await page.getByRole("button", { name: "On this page" }).click();
+  await expect(tocPanel).toBeVisible();
+  await expect(tree).toBeHidden();
 });
 
 /**

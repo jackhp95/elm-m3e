@@ -1,0 +1,174 @@
+import { expect, test } from "@playwright/test";
+
+/**
+ * The tree/TOC drawer panels' open state must be genuinely MODEL-OWNED, and
+ * Elm's notion of "narrow" must agree with the one `<m3e-drawer-container>`
+ * actually uses.
+ *
+ * The bug these pin: `Shared.elm` used to render the panels' open state as a
+ * per-render FORMULA (`not (isMobile model) || model.showMenu`) against its own
+ * `768px` breakpoint, while `DrawerContainer`'s `auto` mode switches
+ * `side` -> `push` at `960px` (`Breakpoint.Medium` = `(min-width: 960px)`, see
+ * `@m3e/web/dist/core-layout.js`). In the 768-959px band the element
+ * auto-CLOSED itself and told Elm so via its `change` event, but Elm's formula
+ * still evaluated to the same constant `True` it had already rendered -- so the
+ * virtual-DOM diff produced no patch and the panel stayed shut. Every later tap
+ * of the hamburger recomputed the same constant, so the button was permanently
+ * dead, and resizing back to a wide desktop did not recover it either.
+ */
+
+const DRAWER = "#docs-drawer";
+const TREE = "#docs-drawer [slot='start']";
+const TOC = "#docs-drawer [slot='end']";
+
+const hamburger = (page: import("@playwright/test").Page) =>
+  page.getByRole("button", { name: "Toggle navigation" });
+const tocToggle = (page: import("@playwright/test").Page) =>
+  page.getByRole("button", { name: "On this page" });
+
+/**
+ * 900px is inside the band where Elm used to think "desktop" while the element
+ * had already switched to `push` and slammed itself shut.
+ */
+test("at 900px the hamburger opens the tree on the first tap", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.goto("/components/button");
+
+  // 900 < 960, so the element is in `push`: nothing is pinned open here.
+  await expect(page.locator(TREE)).toBeHidden();
+
+  await hamburger(page).click();
+  await expect(page.locator(DRAWER)).toHaveAttribute("start", "");
+  await expect(page.locator(TREE)).toBeVisible();
+
+  // ...and it is a real toggle, not a one-way latch.
+  await hamburger(page).click();
+  await expect(page.locator(TREE)).toBeHidden();
+});
+
+test("at 900px the TOC toggle exists and opens the TOC panel", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.goto("/components/button");
+
+  await expect(page.locator(TOC)).toBeHidden();
+  await expect(tocToggle(page)).toHaveCount(1);
+
+  await tocToggle(page).click();
+  await expect(page.locator(TOC)).toBeVisible();
+  await expect(page.locator(TOC).getByRole("link", { name: "API" })).toBeVisible();
+});
+
+/**
+ * The STICKY half of the bug: it is not enough that a fresh load at 900px
+ * works. Shrinking a desktop window through the band and growing it back has
+ * to restore the pinned tree with no manual toggle -- that round trip is what
+ * proved the old formula was stuck on a constant rather than tracking state.
+ */
+test("the tree survives a desktop -> 900px -> desktop round trip", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/guide");
+  await expect(page.locator(DRAWER)).toHaveAttribute("start", "");
+  await expect(page.locator(TREE)).toBeVisible();
+
+  // Down into the band the element auto-closes; Elm must record that.
+  await page.setViewportSize({ width: 900, height: 900 });
+  await expect(page.locator(TREE)).toBeHidden();
+
+  // Back up to desktop the tree must re-pin itself, with NO manual toggle.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(page.locator(DRAWER)).toHaveAttribute("start", "");
+  await expect(page.locator(TREE)).toBeVisible();
+
+  // And the hamburger is still live afterwards (it closes the pinned tree).
+  await hamburger(page).click();
+  await expect(page.locator(TREE)).toBeHidden();
+  await hamburger(page).click();
+  await expect(page.locator(TREE)).toBeVisible();
+});
+
+/**
+ * `DrawerContainer.willUpdate` force-closes `start` when `end` opens (and vice
+ * versa) whenever the other panel is not in `side` mode -- WITHOUT dispatching
+ * a `change` event. Elm therefore cannot learn about it from the element and
+ * has to enforce the same exclusion in its own toggle handlers, or its model
+ * drifts and the next hamburger tap is dead.
+ */
+test("on mobile, opening the TOC closes the tree and the hamburger reopens it on the first tap", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 411, height: 761 });
+  await page.goto("/components/button");
+
+  await hamburger(page).click();
+  await expect(page.locator(TREE)).toBeVisible();
+
+  await tocToggle(page).click();
+  await expect(page.locator(TOC)).toBeVisible();
+  // The element force-closed the tree behind Elm's back.
+  await expect(page.locator(TREE)).toBeHidden();
+
+  // ONE tap has to bring it back. Before the fix `showMenu` was still `True`,
+  // so this tap computed `False` -- matching the already-closed element.
+  await hamburger(page).click();
+  await expect(page.locator(TREE)).toBeVisible();
+  // ...and opening the tree closes the TOC, mirroring the element.
+  await expect(page.locator(TOC)).toBeHidden();
+});
+
+/**
+ * Chrome budget: the rail is 96px and each drawer panel is 280px
+ * (`--m3e-drawer-container-width`, narrowed from the library's 360px default in
+ * `Shared.drawerShell`). With no minimum content width and nothing gating the
+ * TOC, the pre-fix shell put 96 + 360 + 360 = 816px of chrome on screen at
+ * every width >= 768, leaving 144-208px of content at a 960-1024px viewport --
+ * one word per line, code blocks clipped.
+ */
+for (const width of [960, 1024, 1280, 1440]) {
+  test(`the content column stays readable at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/components/button");
+
+    // Wait for the shell to settle before measuring.
+    await expect(page.locator("#docs-app-bar")).toBeVisible();
+
+    const contentWidth = await page
+      .locator("#main-content m3e-content-pane")
+      .first()
+      .evaluate((el) => el.getBoundingClientRect().width);
+
+    expect(contentWidth).toBeGreaterThanOrEqual(500);
+  });
+}
+
+/**
+ * `docsNavBar` is `fixed inset-x-0 bottom-0`, so it floats over the scroll
+ * region. Without compensating bottom padding the last ~68px of every page is
+ * behind it: visible-looking but unreadable and unclickable.
+ */
+test("the mobile bottom nav bar does not occlude the end of the page content", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 411, height: 761 });
+  await page.goto("/reference");
+
+  const bar = page.locator("m3e-nav-bar");
+  await expect(bar).toBeVisible();
+  const barBox = await bar.boundingBox();
+  if (!barBox) throw new Error("nav bar has no box");
+
+  // Scroll the real scroller (`.scroll-container`, inside m3e-content-pane's
+  // shadow root) to the very bottom, then measure the last piece of content.
+  const lastBottom = await page
+    .locator("#main-content m3e-content-pane")
+    .first()
+    .evaluate((el) => {
+      const sc = el.shadowRoot?.querySelector(".scroll-container");
+      if (!sc) throw new Error("no scroll-container");
+      sc.scrollTop = sc.scrollHeight;
+      const last = el.querySelector(":scope > *:last-child");
+      if (!last) throw new Error("content pane has no children");
+      return last.getBoundingClientRect().bottom;
+    });
+
+  expect(lastBottom).toBeLessThanOrEqual(barBox.y);
+});

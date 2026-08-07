@@ -10,9 +10,9 @@ import { test, expect } from "@playwright/test";
  */
 test("drawer groups components by category", async ({ page }) => {
   await page.goto("/components/button");
-  // The nav drawer starts closed (`Shared.Model.showMenu = False`) — open it
-  // before asserting on its contents.
-  await page.getByRole("button", { name: "Toggle navigation" }).click();
+  // At a desktop width the tree is already pinned open (`Shared.init` seeds
+  // `treeOpen` from `treePinsOpen`), so there is nothing to click first —
+  // tapping the hamburger here would CLOSE it.
 
   // The "Components" nav group auto-opens on any /components/* route
   // (Shared.componentsGroup), so its children are already visible without an
@@ -32,7 +32,12 @@ test("drawer groups components by category", async ({ page }) => {
     "Text inputs",
     "Layout & style",
   ]) {
-    await expect(drawer.locator(`[slot="label"]`).filter({ hasText: category }).first()).toBeVisible();
+    // Exact match, not `.filter({ hasText })` (a SUBSTRING match): with a
+    // substring match a category renamed to "Navigation & routing" would still
+    // satisfy "Navigation", and "Actions" would be satisfied by any longer
+    // label containing it -- so the assertion could not fail for the reason it
+    // exists.
+    await expect(drawer.getByText(category, { exact: true }).first()).toBeVisible();
   }
   // Verify Button is accessible (should be visible when on /components/button route)
   await expect(drawer.getByRole("link", { name: "Button", exact: true })).toBeVisible();
@@ -40,7 +45,7 @@ test("drawer groups components by category", async ({ page }) => {
 
 test("Reference is dissolved into Guide", async ({ page }) => {
   await page.goto("/guide");
-  await page.getByRole("button", { name: "Toggle navigation" }).click();
+  // Pinned open at a desktop width — see the note in the test above.
 
   // Reference is gone as its own group (a non-interactive `NavMenuItem.label`
   // group title, hence a text check, not a role check); its 4 links live
