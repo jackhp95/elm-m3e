@@ -478,7 +478,6 @@ view sharedData page model toMsg pageView =
             , M3e.Theme.contrast model.contrast
             , M3e.Theme.density model.density
             , TypedHtml.Attributes.dir model.dir
-            , TypedHtml.Attributes.class "background-color: var(--md-sys-color-primary);color: var(--md-sys-color-on-primary);"
 
             -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
             -- control has no effect unless we drive `--md-sys-density-scale` (which
@@ -982,8 +981,7 @@ drawerShell toMsg model page components tocEntries body =
             ]
             [ M3e.DrawerContainer.start (navMenu components currentPath)
             , M3e.contentPane
-                [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-lowest"
-                , TypedHtml.Attributes.class "overflow-y-auto mx-auto h-full w-full max-w-5xl pb-20 md:p-4 md:pt-1 md:pb-4"
+                [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-lowest overflow-y-auto mx-auto h-full w-full max-w-5xl pb-20 md:p-4 md:pt-1 md:pb-4"
                 ]
                 body
             , M3e.DrawerContainer.end (tocPanel toMsg tocEntries)
