@@ -41,6 +41,7 @@ import Doc.Data
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
+import Http
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.AppBar
@@ -54,6 +55,7 @@ import M3e.Icon
 import M3e.Kind
 import M3e.NavItem
 import M3e.NavMenuItem
+import M3e.SearchView
 import M3e.Theme
 import M3e.Values as Value exposing (Value)
 import Pages.Flags
@@ -97,7 +99,39 @@ type alias Model =
     , density : Float
     , dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , settingsOpen : Bool
+    , searchOpen : Bool
+    , searchQuery : String
+    , searchIndex : Maybe (Result Http.Error (List SearchEntry))
     }
+
+
+{-| One search-index entry: either a whole page (`heading = Nothing`) or one
+heading inside it. Built by `docs/scripts/search-index-gen/build-search-index.mjs`
+from the rendered `dist/**/index.html` -- titles and headings only, no body
+text (see `specs/2026-08-07-nav-rail-search-design.md`). Fetched at
+`/search-index.json` on the first search-view `query` event, not eagerly on
+app boot.
+-}
+type alias SearchEntry =
+    { url : String
+    , title : String
+    , heading : Maybe String
+    , anchor : Maybe String
+    }
+
+
+searchEntryDecoder : Decode.Decoder SearchEntry
+searchEntryDecoder =
+    Decode.map4 SearchEntry
+        (Decode.field "url" Decode.string)
+        (Decode.field "title" Decode.string)
+        (Decode.field "heading" (Decode.nullable Decode.string))
+        (Decode.field "anchor" (Decode.nullable Decode.string))
+
+
+searchEntryListDecoder : Decode.Decoder (List SearchEntry)
+searchEntryListDecoder =
+    Decode.list searchEntryDecoder
 
 
 {-| One drawer-nav component, derived from `data/reference.json`: the entries
@@ -208,6 +242,10 @@ type Msg
     | ViewportResized Int
     | ToggleToc
     | CloseToc
+    | OpenSearch
+    | CloseSearch
+    | SetSearchQuery String
+    | GotSearchIndex (Result Http.Error (List SearchEntry))
     | SetScheme (Value Value.Scheme)
     | SetSeed String
     | SetContrast (Value Value.Contrast)
@@ -243,6 +281,9 @@ init flags _ =
       , density = 0
       , dir = TypedHtml.Values.ltr
       , settingsOpen = False
+      , searchOpen = False
+      , searchQuery = ""
+      , searchIndex = Nothing
       }
     , Effect.none
     )
@@ -405,6 +446,40 @@ update msg model =
             else
                 ( setTocOpen False model, Effect.none )
 
+        OpenSearch ->
+            ( { model | searchOpen = True }, Effect.none )
+
+        -- Fired by CloseSearch itself, by a result link's click (see
+        -- searchResultLink), and by searchToggleDecoder when the search
+        -- view's own internal back button closes it -- the same
+        -- element-can-close-itself sync `SettingsSheetClosed` already
+        -- handles for the bottom sheet.
+        CloseSearch ->
+            ( { model | searchOpen = False }, Effect.none )
+
+        -- The search view fires `query` both when it opens (term = "") and
+        -- on every keystroke -- there's no separate "opened" event to hang
+        -- the lazy fetch on. Fetching only when `searchIndex == Nothing`
+        -- means the very first query (on open) triggers it, and every
+        -- later keystroke (this session) just re-filters the already-loaded
+        -- index.
+        SetSearchQuery term ->
+            ( { model | searchQuery = term }
+            , if model.searchIndex == Nothing then
+                Effect.fromCmd
+                    (Http.get
+                        { url = "/search-index.json"
+                        , expect = Http.expectJson GotSearchIndex searchEntryListDecoder
+                        }
+                    )
+
+              else
+                Effect.none
+            )
+
+        GotSearchIndex result ->
+            ( { model | searchIndex = Just result }, Effect.none )
+
         SetScheme scheme ->
             ( { model | scheme = scheme }
             , Effect.fromCmd (Ports.storeScheme (Value.toString scheme))
@@ -499,14 +574,15 @@ view sharedData page model toMsg pageView =
              else
                 [ skipLink
                 , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-row" ]
-                    [ docsNavRail page.path
+                    [ docsNavRail toMsg page.path
                     , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
                         [ M3e.mapMsg toMsg (appShellBar (View.toc pageView))
                         , drawerShell toMsg model page sharedData.components (View.toc pageView) (View.body pageView)
                         ]
-                    , docsNavBar page.path
+                    , docsNavBar toMsg page.path
                     ]
                 , M3e.mapMsg toMsg (settingsBottomSheet model)
+                , M3e.mapMsg toMsg (searchOverlay model)
                 ]
             )
             |> M3e.toHtml
@@ -863,6 +939,129 @@ directionSegmented model =
 
 
 
+-- SEARCH
+
+
+{-| The search overlay. Unlike `settingsBottomSheet` (always mounted, toggled
+via its own `open` attribute), this is only mounted in the DOM at all while
+`model.searchOpen`: `m3e-search-view` renders a persistent, full-width pill
+bar whenever it's present and NOT open (verified against a live build --
+neither `contained` nor any other attribute suppresses it), and nothing in
+this layout wants that pill sitting anywhere -- the FAB is the only visible
+trigger. Conditional rendering sidesteps needing to suppress it via CSS.
+
+`mode Value.auto` picks fullscreen on mobile / docked on desktop on its own,
+the same responsibility `DrawerContainer`'s own `auto` mode already has.
+`open True` is set unconditionally here since the element is never mounted
+in any other state.
+
+-}
+searchOverlay : Model -> Element { s | searchView : M3e.Kind.Brand, sharedText : M3e.Kind.Shared } admittedBy Msg
+searchOverlay model =
+    if not model.searchOpen then
+        M3e.text ""
+
+    else
+        M3e.searchView
+            [ M3e.SearchView.mode Value.auto
+            , M3e.SearchView.open True
+            , M3e.Events.onQueryWith searchQueryDecoder
+            , M3e.Events.onToggleWith searchToggleDecoder
+            ]
+            [ M3e.SearchView.input
+                (TypedHtml.input
+                    [ TypedHtml.Attributes.type_ "text"
+                    , TypedHtml.Attributes.placeholder "Search..."
+                    , TypedHtml.Attributes.value model.searchQuery
+                    ]
+                    []
+                )
+            , M3e.SearchView.child (searchResults model)
+            ]
+
+
+{-| The results list (or an empty-state hint). `filterSearchEntries` never
+runs against an unloaded or failed index -- both surface their own message
+instead, so a failed fetch is visibly "Search unavailable," not a silently
+empty panel.
+-}
+searchResults : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+searchResults model =
+    case model.searchIndex of
+        Nothing ->
+            TypedHtml.div [ TypedHtml.Attributes.class "p-4 text-on-surface-variant" ] [ M3e.text "Loading..." ]
+
+        Just (Err _) ->
+            TypedHtml.div [ TypedHtml.Attributes.class "p-4 text-on-surface-variant" ] [ M3e.text "Search unavailable" ]
+
+        Just (Ok entries) ->
+            if String.isEmpty (String.trim model.searchQuery) then
+                TypedHtml.div [ TypedHtml.Attributes.class "p-4 text-on-surface-variant" ] [ M3e.text "Type to search" ]
+
+            else
+                case filterSearchEntries model.searchQuery entries of
+                    [] ->
+                        TypedHtml.div [ TypedHtml.Attributes.class "p-4 text-on-surface-variant" ] [ M3e.text "No results" ]
+
+                    matches ->
+                        TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1 p-2" ]
+                            (List.map searchResultLink matches)
+
+
+{-| Case-insensitive substring match against `heading` (falling back to
+`title` for a page-level entry, where `heading = Nothing`), capped at the
+first 20 matches in index order -- see Global Constraints.
+-}
+filterSearchEntries : String -> List SearchEntry -> List SearchEntry
+filterSearchEntries query entries =
+    let
+        needle : String
+        needle =
+            String.toLower (String.trim query)
+    in
+    entries
+        |> List.filter
+            (\entry -> String.contains needle (String.toLower (Maybe.withDefault entry.title entry.heading)))
+        |> List.take 20
+
+
+{-| One result. Primary text is the matched heading when the entry is a
+heading, falling back to the page title for a page-level entry (`heading =
+Nothing`) -- the mirror image of `filterSearchEntries`' own "match heading,
+fall back to title" rule, so what's highlighted is always whichever string
+the query actually matched. The page title renders as a secondary line
+ONLY for a heading entry (context: "this heading lives on that page"); a
+page-level entry has nothing to add below its own title.
+
+This distinction also keeps results from colliding in the accessible tree:
+a heading entry named e.g. "Button" (the h1 text) and the page-level entry
+named "Button · elm-m3e" (the real `<title>`, which is never bare "Button")
+are two different accessible names, not the same string rendered twice.
+
+Clicking navigates (real `a[href]`, an anchor when the heading has a real
+id) and fires `CloseSearch` -- the same "navigate closes the panel"
+convention `tocPanel`'s jump-links already follow for `CloseToc`.
+
+-}
+searchResultLink : SearchEntry -> Element { s | sharedText : M3e.Kind.Shared, sharedFlow : M3e.Kind.Shared } admittedBy Msg
+searchResultLink entry =
+    TypedHtml.a
+        [ TypedHtml.Attributes.href (entry.url ++ (entry.anchor |> Maybe.map (\a -> "#" ++ a) |> Maybe.withDefault ""))
+        , TypedHtml.Attributes.class "flex flex-col gap-0.5 rounded-lg px-3 py-2 hover:bg-surface-container-highest"
+        , TypedHtml.Events.onClick CloseSearch
+        ]
+        (M3e.text (Maybe.withDefault entry.title entry.heading)
+            :: (case entry.heading of
+                    Just _ ->
+                        [ TypedHtml.div [ TypedHtml.Attributes.class "text-on-surface-variant text-sm" ] [ M3e.text entry.title ] ]
+
+                    Nothing ->
+                        []
+               )
+        )
+
+
+
 -- SIDEBAR NAVIGATION (matraic IA)
 
 
@@ -1037,6 +1236,36 @@ drawerChangeDecoder =
         (Decode.at [ "target", "end" ] Decode.bool)
 
 
+{-| Decode the search view's `query` event: `event.detail.term` is the
+current search term, sent both when the view opens (term = "") and on every
+keystroke -- see `SetSearchQuery`.
+-}
+searchQueryDecoder : Decode.Decoder Msg
+searchQueryDecoder =
+    Decode.map SetSearchQuery (Decode.at [ "detail", "term" ] Decode.string)
+
+
+{-| Decode the search view's `toggle` event, but only for a close: `newState`
+is a native `ToggleEvent` property (not nested under `.detail`, unlike
+`query`). The OPEN direction is never decoded here -- Elm already knows it
+opened (it's the one that set `searchOpen = True` to mount the view in the
+first place), so decoding that case too would just be an echo. Failing the
+decoder for "open" makes Elm ignore that event entirely, the same way
+`drawerChangeDecoder` ignores events from a mismatched target.
+-}
+searchToggleDecoder : Decode.Decoder Msg
+searchToggleDecoder =
+    Decode.field "newState" Decode.string
+        |> Decode.andThen
+            (\newState ->
+                if newState == "closed" then
+                    Decode.succeed CloseSearch
+
+                else
+                    Decode.fail "search view opened (Elm already knows)"
+            )
+
+
 {-| The docs sidebar nav, an `M3e.NavMenu` of nested `NavMenuItem` groups. Each
 leaf's **label** is a real `a[href]` supplied through the `link` seam (see
 `navLeaf`): `config/slots.json` declares `NavMenuItem.label`'s `link` kind, so a
@@ -1181,21 +1410,53 @@ railItem path section =
         ]
 
 
+{-| The search trigger, shared by the rail and the bottom bar -- a plain
+icon FAB, `size small` (matching @m3e/web's own nav-rail usage example in
+`NavRailElement.d.ts`), opening the search overlay (`searchOverlay`).
+
+`NavRail` admits `fab` directly in its unnamed slot alongside `navItem`
+(`config/slots.json`), so on the rail this is a normal child, not a new slot
+to wire. `NavBar`'s `config/slots.json` entry admits ONLY `navItem`, though —
+it does not admit `fab` -- so `docsNavBar` below cannot place this inside the
+`M3e.navBar` itself; `extraClasses` is how it gets positioned as a floating
+sibling instead.
+
+-}
+searchFab : String -> msg -> Element { s | fab : M3e.Kind.Brand } admittedBy msg
+searchFab extraClasses openMsg =
+    M3e.fab
+        [ M3e.Attributes.size Value.small
+        , M3e.Attributes.class extraClasses
+        , Aria.label "Search"
+        , M3e.Events.onClick openMsg
+        ]
+        [ M3e.icon [ M3e.Icon.name "search" ] [] ]
+
+
 {-| Desktop: a persistent full-height rail beside the app bar. Hidden below the
 `md` breakpoint, where `docsNavBar` takes over — the same Tailwind-class swap
 `Route/Examples/Shop.elm`'s own `navRail`/`navBar` pair already uses.
 -}
-docsNavRail : UrlPath -> Element { s | navRail : M3e.Kind.Brand } admittedBy msg
-docsNavRail path =
+docsNavRail : (Msg -> msg) -> UrlPath -> Element { s | navRail : M3e.Kind.Brand } admittedBy msg
+docsNavRail toMsg path =
     M3e.navRail
         [ Aria.label "Sections", TypedHtml.Attributes.class "hidden shrink-0 md:flex" ]
-        (List.map (railItem path) sections)
+        (M3e.mapMsg toMsg (searchFab "" OpenSearch) :: List.map (railItem path) sections)
 
 
-{-| Mobile: a fixed bottom nav bar, replacing the rail below the `md` breakpoint.
+{-| Mobile: a fixed bottom nav bar, replacing the rail below the `md`
+breakpoint. Unlike the rail, `M3e.NavBar` does not admit a `fab` child
+(`config/slots.json` only lists `navItem`), so the search FAB is rendered as
+a floating sibling positioned above the bar, inside a `display: contents`
+wrapper div so it contributes no box of its own to the flex layout the call
+site (`view`) already relies on.
 -}
-docsNavBar : UrlPath -> Element { s | navBar : M3e.Kind.Brand } admittedBy msg
-docsNavBar path =
-    M3e.navBar
-        [ Aria.label "Sections", TypedHtml.Attributes.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
-        (List.map (railItem path) sections)
+docsNavBar : (Msg -> msg) -> UrlPath -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+docsNavBar toMsg path =
+    TypedHtml.div
+        [ TypedHtml.Attributes.class "contents" ]
+        [ M3e.mapMsg toMsg (searchFab "fixed right-4 bottom-20 z-40 md:hidden" OpenSearch)
+        , M3e.navBar
+            [ Aria.label "Sections", TypedHtml.Attributes.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+            (List.map (railItem path) sections)
+        ]
