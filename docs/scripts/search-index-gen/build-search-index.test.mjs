@@ -44,3 +44,14 @@ test("a page with no <title> is skipped entirely (returns no entries)", () => {
   const entries = extractEntries(html, "/orphan");
   assert.deepEqual(entries, []);
 });
+
+test("an <m3e-heading> (this app's custom heading element, not a native h1-h6) is indexed the same as a native heading", () => {
+  const html = `<html><head><title>X</title></head><body>
+    <main id="main-content"><m3e-heading id="api" level="2">API</m3e-heading></main>
+  </body></html>`;
+  const entries = extractEntries(html, "/x");
+  assert.deepEqual(entries, [
+    { url: "/x", title: "X", heading: null, anchor: null },
+    { url: "/x", title: "X", heading: "API", anchor: "api" },
+  ]);
+});

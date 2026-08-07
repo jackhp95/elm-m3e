@@ -17,7 +17,7 @@ const DIST = path.resolve(here, "../../dist");
 const ALL_PATHS = path.resolve(DIST, "all-paths.json");
 const OUT = path.resolve(DIST, "search-index.json");
 
-const HEADING_SELECTOR = "#main-content h1, #main-content h2, #main-content h3, #main-content h4, #main-content h5, #main-content h6";
+const HEADING_SELECTOR = "#main-content h1, #main-content h2, #main-content h3, #main-content h4, #main-content h5, #main-content h6, #main-content m3e-heading";
 
 /**
  * Pure: given one page's rendered HTML and its route path, returns the
