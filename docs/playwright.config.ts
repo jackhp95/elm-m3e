@@ -11,8 +11,12 @@ import { defineConfig, devices } from "@playwright/test";
  * mount the real components (via the docs component pages, which render the
  * actual `Ui.*` modules) in Chromium and assert the runtime contract.
  *
- * Run: `npm run test:browser` (reuses a dev server on :1239 if one is up,
- * otherwise starts one). Override the target with `BASE_URL=...`.
+ * Run: `npm run test:browser`. A `pretest:browser` hook kills anything
+ * already listening on :1239 first, so this always rebuilds and serves
+ * fresh rather than risking a pass against stale content — load-bearing for
+ * the pre-push gate, since Netlify deploys from whatever `main` says passed.
+ * Override the target with `BASE_URL=...` (skips the local server and the
+ * port-kill hook has nothing to affect).
  */
 const baseURL = process.env.BASE_URL ?? "http://localhost:1239";
 

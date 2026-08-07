@@ -31,7 +31,7 @@
     "check:samples": "npm --prefix docs run check:samples",
     "dev": "npm --prefix docs run dev",
     "serve": "npm --prefix docs run serve",
-    "gate": "run-s check test",
+    "gate": "run-s check build:site test",
     "format": "node_modules/.bin/elm-format --yes docs/app docs/src review/src",
     "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
