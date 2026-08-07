@@ -33,34 +33,52 @@ test("the FAB opens search, typing filters results, and clicking a result naviga
 /**
  * A heading-level entry (`heading` non-null) renders the matched heading as
  * its primary text and the page's own title as a secondary line -- and
- * navigates to the page the heading lives on when clicked.
+ * navigates to the page the heading lives on when clicked, with a real
+ * `#anchor` in the URL.
  *
- * This does NOT exercise a real `#anchor` -- every entry the real crawled
- * `/search-index.json` currently produces has `anchor: null` site-wide
- * (verified: `curl .../search-index.json | jq '[.[] | select(.anchor !=
- * null)] | length'` -> 0). Root cause, confirmed against the rendered
- * output: `build-search-index.mjs`'s `HEADING_SELECTOR` only matches native
- * `h1`-`h6` tags inside `#main-content`, but `Doc.sectionHeadingWithId`
- * (used by every Components page, e.g. `#api` on `/components/button` --
- * see `Route/Components/Name_.elm`) renders a `<m3e-heading id="..."
- * level="...">` CUSTOM element, not a native heading tag, so the crawler's
- * selector never matches it and no anchor ever survives into the index.
- * That's a pre-existing gap in Task 1's crawler (`docs/scripts/search-index-gen/build-search-index.mjs`),
- * out of this task's file scope to fix -- once `HEADING_SELECTOR` is
- * extended to also match `m3e-heading[id]`, this test should gain a
- * `href`/anchor assertion mirroring the brief's original intent.
+ * `Doc.sectionHeadingWithId` (used by every Components page, e.g. `#api` on
+ * `/components/button` -- see `Route/Components/Name_.elm`) renders a
+ * `<m3e-heading id="..." level="...">` CUSTOM element. `build-search-index.mjs`'s
+ * `HEADING_SELECTOR` now matches `m3e-heading` in addition to native
+ * `h1`-`h6` (fixed in 1488c602), so the crawled index carries a real
+ * `heading: "API", anchor: "api"` entry for that page.
+ *
+ * Every Components page has its own "API" heading, so the query alone
+ * returns 20 same-named results (`filterSearchEntries` caps at 20) -- pin
+ * the Button one by `href` rather than by accessible name/text, which is
+ * ambiguous here on purpose (it's the realistic case this feature has to
+ * handle well, not a contrived one).
  */
-test("clicking a heading result navigates to the page it lives on", async ({ page }) => {
+test("clicking a heading result navigates to the page and its anchor", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+
+  const view = page.locator("m3e-search-view");
+  await view.locator("input").fill("API");
+
+  const result = view.locator('a[href="/components/button#api"]');
+  await expect(result).toBeVisible();
+  // The secondary line is the page's own title, not the heading text.
+  await expect(result.getByText("Button · elm-m3e")).toBeVisible();
+
+  await result.click();
+  await expect(page).toHaveURL(/\/components\/button#api$/);
+  await expect(page.locator("m3e-search-view")).toHaveCount(0);
+});
+
+/**
+ * A heading match with no anchor is a real, still-valid case elsewhere in
+ * the index (not every heading the crawler visits renders as `m3e-heading`
+ * with an id) -- this keeps that shape covered alongside the anchor case
+ * above.
+ */
+test("clicking a heading result with no anchor navigates to the page it lives on", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Search", exact: true }).click();
 
   const view = page.locator("m3e-search-view");
   await view.locator("input").fill("renders nothing");
 
-  // Not `exact` here: the link's one accessible name is the concatenation of
-  // BOTH its lines (the accessible-name algorithm flattens all descendant
-  // text), so it is "A class renders nothing" + the secondary title line,
-  // not "A class renders nothing" alone.
   const result = view.getByRole("link", { name: "A class renders nothing" });
   await expect(result).toBeVisible();
   await expect(result).toHaveAttribute("href", "/guide/troubleshooting");
@@ -70,4 +88,20 @@ test("clicking a heading result navigates to the page it lives on", async ({ pag
   await result.click();
   await expect(page).toHaveURL(/\/guide\/troubleshooting$/);
   await expect(page.locator("m3e-search-view")).toHaveCount(0);
+});
+
+test("Cmd/Ctrl+K opens search from an arbitrary route", async ({ page }) => {
+  await page.goto("/guide");
+  await page.keyboard.press("ControlOrMeta+k");
+  await expect(page.locator("m3e-search-view")).toHaveAttribute("open", "");
+});
+
+test("a failed index fetch shows an unavailable message, not a silently empty panel", async ({
+  page,
+}) => {
+  await page.route("**/search-index.json", (route) => route.abort());
+  await page.goto("/");
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await page.locator("m3e-search-view input").fill("button");
+  await expect(page.getByText("Search unavailable")).toBeVisible();
 });

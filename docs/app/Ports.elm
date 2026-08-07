@@ -1,9 +1,8 @@
-port module Ports exposing (storeScheme)
+port module Ports exposing (onOpenSearchRequested, storeScheme)
 
-{-| Client-side outgoing ports for the docs app. Wired to the browser in
-`index.ts`.
+{-| Client-side ports for the docs app. Wired to the browser in `index.ts`.
 
-@docs storeScheme
+@docs onOpenSearchRequested, storeScheme
 
 -}
 
@@ -13,3 +12,13 @@ port module Ports exposing (storeScheme)
 saved value is read back as a flag and applied in `Shared.init`.
 -}
 port storeScheme : String -> Cmd msg
+
+
+{-| Fired when the user presses Cmd/Ctrl+K anywhere in the app. `index.ts`
+registers a real `document.addEventListener("keydown", ...)` and calls
+`event.preventDefault()` before sending on this port -- Chrome and Edge bind
+that shortcut to focusing the address bar, and `Browser.Events.onKeyDown`
+cannot call `preventDefault` (it only decodes event data), so without this
+port our shortcut would fire ALONGSIDE the browser's, not instead of it.
+-}
+port onOpenSearchRequested : (() -> msg) -> Sub msg

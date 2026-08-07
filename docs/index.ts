@@ -67,7 +67,12 @@ function mountFeedbackFab(): void {
 
 const config: ElmPagesInit = {
   load: async function (elmLoaded) {
-    const app = (await elmLoaded) as { ports?: Record<string, { subscribe: (cb: (v: string) => void) => void }> };
+    const app = (await elmLoaded) as {
+      ports?: {
+        storeScheme?: { subscribe: (cb: (v: string) => void) => void };
+        onOpenSearchRequested?: { send: (v: null) => void };
+      };
+    };
     // elm-pages hard-codes its route-change announcer as aria-live="assertive"
     // (in its pre-render template + AriaLiveAnnouncer.elm, both under
     // node_modules). Assertive interrupts whatever the user is reading on every
@@ -84,6 +89,19 @@ const config: ElmPagesInit = {
       } catch (_) {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
+    });
+
+    // Cmd/Ctrl+K opens search from anywhere. Chrome and Edge bind that
+    // shortcut to focusing the address bar, and Browser.Events.onKeyDown
+    // cannot call preventDefault (it only decodes event data) -- so this has
+    // to be a real DOM listener that calls preventDefault before sending on
+    // the port, or our shortcut would fire ALONGSIDE the browser's, not
+    // instead of it.
+    document.addEventListener("keydown", (event) => {
+      const isSearchShortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+      if (!isSearchShortcut) return;
+      event.preventDefault();
+      app?.ports?.onOpenSearchRequested?.send(null);
     });
 
     if (import.meta.env.DEV) {

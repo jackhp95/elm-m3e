@@ -1,4 +1,4 @@
-module Shared exposing (Data, Model, Msg, NavComponent, componentCategories, template)
+module Shared exposing (Data, Model, Msg, NavComponent, SearchEntry, componentCategories, template)
 
 {-| The M3 application shell that frames every docs route.
 
@@ -506,7 +506,10 @@ sets `treeOpen` without a deliberate tap.
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
-    Browser.Events.onResize (\w _ -> ViewportResized w)
+    Sub.batch
+        [ Browser.Events.onResize (\w _ -> ViewportResized w)
+        , Ports.onOpenSearchRequested (\_ -> OpenSearch)
+        ]
 
 
 data : BackendTask FatalError Data
@@ -976,7 +979,7 @@ searchOverlay model =
                     ]
                     []
                 )
-            , M3e.SearchView.child (searchResults model)
+            , searchResults model
             ]
 
 
