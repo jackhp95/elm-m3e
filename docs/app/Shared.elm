@@ -653,9 +653,27 @@ view sharedData page model toMsg pageView =
 
              else
                 [ skipLink
-                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh w-full flex flex-row" ]
+
+                -- `flex-col md:flex-row`: one shell, two axes. At `md`+ it is a
+                -- ROW (rail | main column) and `docsNavBar` is `md:hidden`. Below
+                -- `md` the rail is `hidden` -- so it takes no flex slot -- and the
+                -- SAME div is a COLUMN whose in-flow children are, top to bottom,
+                -- the main column then the bottom nav bar. That is what lets the
+                -- bar stop being `position: fixed`: an in-flow bar can't occlude
+                -- the content above it, so no scroll region anywhere in the shell
+                -- needs a compensating `pb-20 md:pb-0` to stay reachable.
+                --
+                -- `min-h-0` is the column-axis twin of `min-w-0`: a flex item's
+                -- default `min-height: auto` would let the main column grow to fit
+                -- its content instead of its flex basis, pushing the nav bar off
+                -- the bottom of the viewport and turning the DOCUMENT into the
+                -- scroller. It is belt-and-braces today (`drawerShell`'s own `h-0`
+                -- already keeps the column's intrinsic height at ~0), but it is the
+                -- guard that keeps the "one bounded scroll region" invariant from
+                -- depending on that one class in another function.
+                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh w-full flex flex-col md:flex-row" ]
                     [ docsNavRail toMsg page.path
-                    , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
+                    , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0 min-h-0" ]
                         [ M3e.mapMsg toMsg (appShellBar page.path)
                         , drawerShell toMsg model page sharedData.components (View.body pageView)
                         ]
@@ -1649,12 +1667,23 @@ docsNavRail toMsg path =
         )
 
 
-{-| Mobile: a fixed bottom nav bar, replacing the rail below the `md`
-breakpoint. Unlike the rail, `M3e.NavBar` does not admit a `fab` child
+{-| Mobile: a bottom nav bar, replacing the rail below the `md` breakpoint.
+
+The bar is a REAL flex child of the shell (`view`'s outer
+`flex flex-col md:flex-row`), not `position: fixed` -- so on mobile it takes
+its own row at the bottom of the column and can't occlude anything above it.
+That is what lets every scrollable region in the shell skip the compensating
+`pb-20 md:pb-0` a floating bar would otherwise need, forever, in every
+current and future scroll region.
+
+Unlike the rail, `M3e.NavBar` does not admit a `fab` child
 (`config/slots.json` only lists `navItem`), so the search FAB is rendered as
 a floating sibling positioned above the bar, inside a `display: contents`
-wrapper div so it contributes no box of its own to the flex layout the call
-site (`view`) already relies on.
+wrapper div so it contributes no box of its own -- which is what makes the
+bar itself, not the wrapper, the flex child. The FAB stays `fixed`: a
+Material FAB floats over content by design, and it sits in the bar's own
+gutter (`bottom-20`) rather than displacing content.
+
 -}
 docsNavBar : (Msg -> msg) -> UrlPath -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 docsNavBar toMsg path =
@@ -1662,6 +1691,6 @@ docsNavBar toMsg path =
         [ TypedHtml.Attributes.class "contents" ]
         [ M3e.mapMsg toMsg (searchFab "fixed right-4 bottom-20 z-40 md:hidden" OpenSearch)
         , M3e.navBar
-            [ Aria.label "Sections", TypedHtml.Attributes.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+            [ Aria.label "Sections", TypedHtml.Attributes.class "shrink-0 md:hidden" ]
             (List.map (railItem path) sections)
         ]
