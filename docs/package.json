@@ -16,6 +16,7 @@
     "gen:samples": "node scripts/samples-gen/extract-samples.mjs",
     "gen:pages": "elm-pages gen",
     "build:site": "elm-pages build && node scripts/search-index-gen/build-search-index.mjs",
+    "build:ci": "pnpm run gen:reference && pnpm run check:nav && pnpm run build:site",
     "test:examples-gen": "node --test scripts/examples-gen/lib/*.test.mjs",
     "test:samples-gen": "node --test scripts/samples-gen/lib/*.test.mjs",
     "test:roundtrip": "node --test scripts/roundtrip/*.test.mjs",
