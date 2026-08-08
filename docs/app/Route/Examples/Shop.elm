@@ -182,13 +182,24 @@ view _ _ model =
             , TypedHtml.div [ TA.class "flex min-h-0 min-w-0 flex-1 flex-col" ]
                 [ appBar model
                 , TypedHtml.section [ TA.class "relative min-h-0 flex-1 overflow-y-auto" ]
-                    [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6" ]
-                        [ hero
-                        , filterBar model.category
-                        , productGrid shown
+                    -- `checkoutFab` is `sticky`, and a sticky element's stick
+                    -- range is its CONTAINING BLOCK. Left as a direct child of
+                    -- the scroller that block spans the footer too, so the FAB
+                    -- never settled back into its own row and sat over the
+                    -- prev/next strip at full scroll (measured: FAB 589-669
+                    -- across "Mail ->" at 579-595). This wrapper ends where the
+                    -- content ends, so the FAB un-sticks and scrolls away as the
+                    -- footer arrives -- no z-index fight, no offset tuned to the
+                    -- footer's height.
+                    [ TypedHtml.div []
+                        [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6" ]
+                            [ hero
+                            , filterBar model.category
+                            , productGrid shown
+                            ]
+                        , checkoutFab
                         ]
                     , exampleFooter
-                    , checkoutFab
                     ]
                 ]
             , navBar model

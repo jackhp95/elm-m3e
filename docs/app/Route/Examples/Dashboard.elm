@@ -176,22 +176,49 @@ activity =
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ _ =
     View.fromElement "Aperture Analytics"
+        -- A COLUMN bounded to the viewport: app bar, then the rail|content row,
+        -- then the mobile bottom bar as a plain in-flow last child.
+        --
+        -- `h-dvh` + `overflow-hidden`, NOT `min-h-screen`. `min-h-screen` is a
+        -- FLOOR, not a height: the root stayed auto-tall, the DOCUMENT was the
+        -- scroller, and the bar needed `sticky bottom-0` to stay on screen. A
+        -- definite height bounds the root instead, so `mainContent` is the one
+        -- scroll region and the bar simply cannot be pushed anywhere -- no
+        -- positioning of any kind on it, and no compensating bottom padding on
+        -- anything it might otherwise have occluded. `h-dvh` (not `h-screen`)
+        -- because `100vh` overshoots the visible viewport on mobile browsers
+        -- with a retracting URL bar, which would push an in-flow bar under the
+        -- browser chrome -- reintroducing by UNIT the occlusion this removes by
+        -- POSITIONING.
+        --
+        -- `min-h-0` on the row is the guard that makes the bound real: a flex
+        -- item's default `min-height: auto` lets it grow to fit content instead
+        -- of its flex basis. Verified load-bearing by perturbation -- dropping
+        -- it at 411x761 grows the row from 629px to 2061px and puts the bar at
+        -- y=2125, which `overflow-hidden` then clips away entirely: the bar is
+        -- not merely below the fold, it is gone, and no amount of scrolling
+        -- reaches it.
         (TypedHtml.div
-            [ TA.class "bg-surface text-on-surface flex flex-col min-h-screen w-full" ]
+            [ TA.class "bg-surface text-on-surface flex flex-col h-dvh w-full overflow-hidden" ]
             [ appBar
-            , TypedHtml.div [ TA.class "flex flex-1" ]
+            , TypedHtml.div [ TA.class "flex flex-1 min-h-0" ]
                 [ desktopRail
                 , mainContent
                 ]
-            , exampleFooter
             , mobileBar
-            , fab
             ]
         )
 
 
 {-| The shared "Built from" + prev/next strip. Dashboard is the first example,
 so it has no previous screen.
+
+It lives INSIDE `mainContent`'s scroll region rather than beside it as a root
+child. Once the root is bounded to `h-dvh`, every root child spends viewport
+height that the content can never get back -- a permanent ~100px tax on a
+761px phone, for a strip that is by design a quiet annotation read after the
+screen. Scrolling it in with the content is also what the other examples do.
+
 -}
 exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 exampleFooter =
@@ -235,10 +262,16 @@ iconAction name =
 
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
+
+No `sticky top-0 self-start` any more: that existed only to keep the rail on
+screen while the DOCUMENT scrolled past it. The document no longer scrolls, so
+the rail is a plain full-height flex child of the bounded row and stays put on
+its own.
+
 -}
 desktopRail : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 desktopRail =
-    TypedHtml.div [ TA.class "hidden md:flex sticky top-0 self-start" ]
+    TypedHtml.div [ TA.class "hidden md:flex shrink-0" ]
         [ M3e.navRail []
             (List.map railItem destinations)
         ]
@@ -254,10 +287,17 @@ railItem d =
 
 
 {-| The mobile bottom bar. Hidden on desktop via `md:hidden`.
+
+A plain STATIC last-in-flow child of the bounded root column -- no `sticky`,
+no `fixed`, no `z-10`. The parent is height-bounded and `mainContent` absorbs
+every extra pixel, so nothing can push the bar and there is nothing for it to
+stack above. `shrink-0` keeps it at its intrinsic height when the row above
+competes for space.
+
 -}
 mobileBar : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 mobileBar =
-    TypedHtml.div [ TA.class "md:hidden sticky bottom-0 z-10" ]
+    TypedHtml.div [ TA.class "md:hidden shrink-0" ]
         [ M3e.navBar []
             (List.map barItem destinations)
         ]
@@ -272,13 +312,31 @@ barItem d =
         ]
 
 
+{-| The primary action, floating over the content by Material convention.
+
+`sticky`, not `fixed`, and it lives INSIDE `mainContent`'s scroll region. The
+distinction is the whole point: `fixed` is viewport-relative wherever it sits in
+the DOM, so it had to hardcode `bottom-20` to clear the bar -- a magic number
+that silently encodes the bar's 68px height and goes wrong the moment the bar
+changes. `sticky` is relative to the nearest scrolling ancestor, and that
+scroller's bottom edge IS the bar's top edge, so a plain `bottom-6` clears the
+bar by construction with no knowledge of it. That also drops the `md:` variant:
+one offset is now correct at both widths.
+
+`pointer-events-none` on the positioned wrapper with `pointer-events-auto` on
+the FAB itself keeps the full-width sticky row from blanketing the content it
+floats over.
+
+-}
 fab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 fab =
-    TypedHtml.div [ TA.class "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20" ]
-        [ M3e.fab
-            [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
-            [ M3e.icon [ TA.name "add" ] []
-            , M3e.Fab.label (M3e.text "New report")
+    TypedHtml.div [ TA.class "pointer-events-none sticky bottom-6 flex justify-end pr-4 md:pr-6" ]
+        [ TypedHtml.div [ TA.class "pointer-events-auto" ]
+            [ M3e.fab
+                [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
+                [ M3e.icon [ TA.name "add" ] []
+                , M3e.Fab.label (M3e.text "New report")
+                ]
             ]
         ]
 
@@ -287,18 +345,51 @@ fab =
 -- MAIN CONTENT ----------------------------------------------------------------
 
 
+{-| The one scroll region on the page. `overflow-y-auto` is what makes it absorb
+all the overflow the bounded root refuses to grow for, which is in turn what
+lets `mobileBar` be static -- and, because this box's bottom edge is exactly the
+bar's top edge, what gives the sticky `fab` an offset that clears the bar
+without knowing the bar exists.
+
+`min-h-0` here is belt-and-braces, and honestly so: `overflow-y-auto` already
+zeroes this box's own automatic minimum size, and perturbation confirms it --
+dropping `min-h-0` from this section moves nothing by a pixel, while dropping
+it from the parent row blows the layout out. It stays because the invariant
+should not silently depend on the overflow class never moving; the class that
+actually holds the line is the parent's.
+
+The padding moves to an inner wrapper so `exampleFooter` and `fab` can sit
+inside the scroller (edge to edge, and outside the `gap-6` rhythm of the content
+above them) rather than costing the viewport a permanent row each. The old
+`pb-28 md:pb-6` is gone: it was compensation for a floating bar, and nothing
+floats over this box any more.
+
+-}
 mainContent : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 mainContent =
-    TypedHtml.section [ TA.class "flex-1 min-w-0 flex flex-col gap-6 p-4 md:p-6 pb-28 md:pb-6" ]
-        [ pageHeader
-        , kpiRow
-        , TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 lg:grid-cols-3" ]
-            [ TypedHtml.div [ TA.class "lg:col-span-2 flex flex-col gap-6" ]
-                [ accountsSection
-                , activitySection
+    TypedHtml.section [ TA.class "flex-1 min-w-0 min-h-0 overflow-y-auto" ]
+        -- `fab` is `sticky`, and a sticky element's stick range is its
+        -- CONTAINING BLOCK. Left as a direct child of the scroller that block
+        -- spans the footer too, so the FAB never settled back into its own row
+        -- and sat over the prev/next strip at full scroll (measured on Shop,
+        -- which had the identical shape: FAB 589-669 across the next-example
+        -- link at 579-595). This wrapper ends where the content ends, so the
+        -- FAB un-sticks and scrolls away as the footer arrives.
+        [ TypedHtml.div []
+            [ TypedHtml.div [ TA.class "flex flex-col gap-6 p-4 md:p-6" ]
+                [ pageHeader
+                , kpiRow
+                , TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 lg:grid-cols-3" ]
+                    [ TypedHtml.div [ TA.class "lg:col-span-2 flex flex-col gap-6" ]
+                        [ accountsSection
+                        , activitySection
+                        ]
+                    , budgetsSection
+                    ]
                 ]
-            , budgetsSection
+            , fab
             ]
+        , exampleFooter
         ]
 
 
