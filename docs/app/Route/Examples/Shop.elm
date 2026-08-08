@@ -151,13 +151,33 @@ view _ _ model =
                 List.filter (\p -> p.category == model.category) products
     in
     View.fromElement "Shop"
+        -- `flex-col md:flex-row`: one root, two axes. At `md`+ it is a ROW
+        -- (rail | main column) and `navBar` is `md:hidden`. Below `md` the rail
+        -- is `hidden` -- so it takes no flex slot -- and the SAME div is a
+        -- COLUMN whose in-flow children are, top to bottom, the main column then
+        -- the bottom nav bar. That is what lets the bar stop being
+        -- `position: fixed`: an in-flow bar can't occlude the content above it,
+        -- so the content wrapper no longer needs the compensating `pb-24` that
+        -- kept the last row of cards clear of a floating bar.
+        --
+        -- NOTE the deliberate absence of the shell's `min-h-0` here, and that it
+        -- is NOT an oversight. `Shared.elm` pins its shell to `h-dvh`, a DEFINITE
+        -- height, so its column has real negative free space to shrink against
+        -- and `min-height: auto` could push the bar off-viewport -- hence the
+        -- guard. This root is `min-h-screen`: a floor, not a height. The
+        -- container stays auto-height, so its main size just IS the sum of its
+        -- children's content heights, there is never negative free space, and
+        -- `min-h-0` is measurably inert (verified: adding it moves neither the
+        -- column height nor the bar by a single pixel). The invariant here runs
+        -- the other way -- the column must stay content-tall so the DOCUMENT
+        -- scrolls and the page's footer stays reachable past the fold.
         (TypedHtml.div
-            [ TA.class "bg-surface text-on-surface flex min-h-screen w-full" ]
+            [ TA.class "bg-surface text-on-surface flex min-h-screen w-full flex-col md:flex-row" ]
             [ navRail model
             , TypedHtml.div [ TA.class "flex min-w-0 flex-1 flex-col" ]
                 [ appBar model
                 , TypedHtml.section [ TA.class "relative flex-1 overflow-y-auto" ]
-                    [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6" ]
+                    [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6" ]
                         [ hero
                         , filterBar model.category
                         , productGrid shown
@@ -247,11 +267,18 @@ navRail model =
 
 
 {-| Bottom navigation bar — mobile only.
+
+A REAL flex child of the page root (`view`'s `flex flex-col md:flex-row`), not
+`position: fixed` — below `md` it takes its own row at the end of the column and
+so cannot occlude anything above it. That is what lets the content wrapper drop
+the compensating `pb-24` a floating bar would otherwise demand, forever, from
+every current and future block that reaches the bottom of the page.
+
 -}
 navBar : Model -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar model =
     M3e.navBar
-        [ TA.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+        [ TA.class "shrink-0 md:hidden" ]
         (List.map (barItem model.category) destinations)
 
 
