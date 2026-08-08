@@ -21,13 +21,16 @@ import { expect, test } from "@playwright/test";
  * assertions pin that structural property rather than the padding workaround,
  * so a regression to `fixed` fails here instead of silently hiding content.
  *
- * `/examples/dashboard` is deliberately NOT in this list: it uses a `sticky
- * bottom-0` bar over a `min-h-screen` document-scrolling page, which is a
- * different (and intentional) pattern, not the `fixed` one this replaced.
+ * Every full-viewport example route is covered. `/examples/dashboard` was the
+ * last holdout — a `sticky bottom-0` bar over a `min-h-screen`
+ * document-scrolling page. `sticky` did reserve its own space, so it was not
+ * the occlusion bug, but it put the bar at the end of a long *document*
+ * instead of the bottom of a bounded pane. It is now bounded like the rest.
  */
 const MOBILE = { width: 411, height: 761 };
 
 const ROUTES = [
+  "/examples/dashboard",
   "/examples/shop",
   "/examples/mail",
   "/examples/feed",
