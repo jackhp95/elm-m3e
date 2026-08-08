@@ -1,4 +1,4 @@
-module Route.Index exposing (ActionData, Data, Model, Msg, route)
+module Route.GettingStarted.Welcome exposing (ActionData, Data, Model, Msg, route)
 
 {-| Documentation home for `m3e-builder` / `elm-m3e` — the type-safe, MISI Elm
 builder layer (`M3e.*`) over matraic's `@m3e/web` Material 3 Expressive web
@@ -94,7 +94,7 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
-    View.fromElement "elm-m3e · type-safe Material 3 Expressive for Elm"
+    View.fromElement "Welcome"
         (Doc.pane
             [ hero
             , highlights app.data.componentCount

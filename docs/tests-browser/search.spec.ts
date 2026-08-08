@@ -36,7 +36,7 @@ async function expectWithinViewport(page: Page, locator: Locator) {
 test("the FAB opens search, typing filters results, and clicking a result navigates and closes it", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Search", exact: true }).click();
 
   const view = page.locator("m3e-search-view");
@@ -83,7 +83,7 @@ test("the FAB opens search, typing filters results, and clicking a result naviga
  * handle well, not a contrived one).
  */
 test("clicking a heading result navigates to the page and its anchor", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Search", exact: true }).click();
 
   const view = page.locator("m3e-search-view");
@@ -106,7 +106,7 @@ test("clicking a heading result navigates to the page and its anchor", async ({ 
  * above.
  */
 test("clicking a heading result with no anchor navigates to the page it lives on", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Search", exact: true }).click();
 
   const view = page.locator("m3e-search-view");
@@ -151,7 +151,7 @@ test("on mobile the FAB opens search fullscreen, and still works after it is clo
   page,
 }) => {
   await page.setViewportSize(MOBILE);
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
 
   const fab = page.getByRole("button", { name: "Search", exact: true });
   await fab.click();
@@ -215,7 +215,7 @@ test("Cmd/Ctrl+K on an /examples/* route opens nothing, and does not leak into t
 test("navigating with search open closes it, and does not leave a stale query behind", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   // An in-app route change first, so the step back below is an SPA history
   // pop (which fires `PageChanged`) rather than a full document reload.
   await page.getByRole("link", { name: "Guide", exact: true }).first().click();
@@ -230,7 +230,7 @@ test("navigating with search open closes it, and does not leave a stale query be
   // can be what closes the overlay. (The open panel holds the rest of the page
   // `inert`, so a nav-rail click is not available here -- browser history is.)
   await page.goBack();
-  await expect(page).toHaveURL(/localhost:\d+\/$|\/$/);
+  await expect(page).toHaveURL(/\/getting-started\/welcome$/);
   await expect(view).toHaveCount(0);
 
   // Reopening starts from an empty query, not the one from the last route.
@@ -242,7 +242,7 @@ test("a failed index fetch shows an unavailable message, not a silently empty pa
   page,
 }) => {
   await page.route("**/search-index.json", (route) => route.abort());
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Search", exact: true }).click();
   await page.locator("m3e-search-view input").fill("button");
   await expect(page.getByText("Search unavailable")).toBeVisible();

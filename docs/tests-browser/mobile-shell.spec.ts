@@ -71,7 +71,7 @@ test("mobile shell: content scrolls in a bounded inner region (nothing clipped)"
 });
 
 test("FOUC guard is shipped and nothing stays undefined after load", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
   // The `:not(:defined)` hide rule is present in a loaded stylesheet.
@@ -108,7 +108,7 @@ test("FOUC guard is shipped and nothing stays undefined after load", async ({ pa
 // the run targets a dev server (EXPECT_FAB=1).
 test("feedback-fab is present and upgraded in dev", async ({ page }) => {
   test.skip(!process.env.EXPECT_FAB, "prod build strips the dev-only feedback-fab");
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   const fab = page.locator("feedback-fab");
   await expect(fab).toHaveCount(1);
   await expect(fab).toHaveAttribute("repo", "jackhp95/elm-m3e");

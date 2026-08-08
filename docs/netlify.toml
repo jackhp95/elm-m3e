@@ -47,3 +47,9 @@
   to = "/guide/roundtrip"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/"
+  to = "/getting-started/welcome"
+  status = 301
+  force = true

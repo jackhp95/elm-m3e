@@ -50,7 +50,15 @@ export default defineConfig({
     // is deterministic, serves instantly, and is the artifact we actually ship.
     // `reuseExistingServer` still lets you point at a hand-started server.
     command: "npm run build:site && PORT=1239 npm run serve",
-    url: baseURL,
+    // NOT `baseURL` bare: `/` has no prerendered file anymore (it's a
+    // Netlify-only 301 to `/getting-started/welcome`, which `netlify.toml`
+    // doesn't apply to this raw static server), and `serve-dist.mjs`'s SPA
+    // fallback for an unresolved path tries `dist/index.html`, which no
+    // longer exists either -- so a readiness GET of `/` gets a 404 forever
+    // and this never comes up. Poll a route that's guaranteed to exist
+    // instead; this only affects the test harness's own health check, not
+    // anything served to a real visitor.
+    url: `${baseURL}/getting-started/welcome`,
     reuseExistingServer: !process.env.CI,
     stdout: "pipe",
     stderr: "pipe",

@@ -1193,7 +1193,8 @@ navSections : List NavSection
 navSections =
     [ { prefix = "getting-started"
       , items =
-            [ ( "/getting-started/installation", "Installation" )
+            [ ( "/getting-started/welcome", "Welcome" )
+            , ( "/getting-started/installation", "Installation" )
             , ( "/getting-started/browser-support", "Browser Support" )
             ]
       }
@@ -1508,7 +1509,7 @@ type alias Section =
 
 sections : List Section
 sections =
-    [ { label = "Start", icon = "rocket_launch", href = "/getting-started/installation", prefix = "getting-started" }
+    [ { label = "Start", icon = "rocket_launch", href = "/getting-started/welcome", prefix = "getting-started" }
     , { label = "Guide", icon = "auto_stories", href = "/guide", prefix = "guide" }
     , { label = "Styles", icon = "palette", href = "/styles/color", prefix = "styles" }
     , { label = "Examples", icon = "auto_awesome", href = "/examples", prefix = "examples" }

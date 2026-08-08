@@ -14,9 +14,18 @@ import { expect, test } from "@playwright/test";
  * `if (this.hasAttribute("href") && this.role === "button") { this.role = "link" }`
  * Every nav item in this app has `href` set (they're real routes), so all are
  * upgraded to `role="link"` by design.
+ *
+ * There used to be a test here for "no section is selected on a route
+ * outside all 5" (using `/` as that outside route). It was removed once `/`
+ * stopped being a real route (the homepage moved to `/getting-started/welcome`,
+ * with `/` reduced to a Netlify-only redirect) -- every remaining route in
+ * the app now belongs to one of the 5 sections by construction (`Route/`'s
+ * only top-level directories are Components, Examples, GettingStarted,
+ * Guide, Styles), so there is no longer any real page left to exercise that
+ * scenario against.
  */
 const SECTIONS: { label: string; href: string }[] = [
-  { label: "Start", href: "/getting-started/installation" },
+  { label: "Start", href: "/getting-started/welcome" },
   { label: "Guide", href: "/guide" },
   { label: "Styles", href: "/styles/color" },
   { label: "Examples", href: "/examples" },
@@ -43,17 +52,6 @@ test("rail highlights the section matching the current route", async ({ page }) 
   await expect(rail.getByRole("link", { name: "Guide", exact: true })).not.toHaveAttribute(
     "selected",
   );
-});
-
-test("no section is selected on a route outside all 5", async ({ page }) => {
-  await page.goto("/");
-  const rail = page.locator("m3e-nav-rail");
-  await expect(rail).toHaveCount(1);
-  for (const { label } of SECTIONS) {
-    await expect(rail.getByRole("link", { name: label, exact: true })).not.toHaveAttribute(
-      "selected",
-    );
-  }
 });
 
 test("mobile viewport shows the nav bar instead of the rail", async ({ page }) => {

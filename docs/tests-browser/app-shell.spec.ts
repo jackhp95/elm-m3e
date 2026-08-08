@@ -4,12 +4,13 @@ import { expect, test } from "@playwright/test";
  * App-shell layout contract — pins the CURRENT split between the two branches
  * of `Shared.view`:
  *
- *  - `/` (docs shell): `<m3e-theme>` (itself `display: contents` — it carries
- *    no layout classes of its own anymore) renders a fixed-viewport
- *    `<div class="h-dvh flex flex-row">` with a nav rail on the left and a main
- *    column on the right holding the app bar above the drawer/content area. The
- *    ONE scroll region is the content-pane inside the drawer (`overflow-y: auto`);
- *    the shell div itself does not scroll.
+ *  - Every docs route (everything except `/examples/*`): `<m3e-theme>` (itself
+ *    `display: contents` — it carries no layout classes of its own anymore)
+ *    renders a fixed-viewport `<div class="h-dvh flex flex-row">` with a nav
+ *    rail on the left and a main column on the right holding the app bar
+ *    above the drawer/content area. The ONE scroll region is the content-pane
+ *    inside the drawer (`overflow-y: auto`); the shell div itself does not
+ *    scroll.
  *  - `/examples/*` (full-viewport examples): `<m3e-theme>`'s child is the
  *    example page's OWN root — no docs-shell wrapper, no app bar, no nav —
  *    so double-nav is avoided and the page owns 100% of its own layout.
@@ -48,7 +49,7 @@ const TALL_EXAMPLE = "/examples/shop";
 test("the docs shell is a fixed-viewport flex row (rail | main column) with one scroll region", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
   const shell = page.locator(DOCS_SHELL);
@@ -123,7 +124,7 @@ test("a component page composes rail, tree, content, and TOC together", async ({
 });
 
 test("the shell carries the document direction", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/getting-started/welcome");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
   const theme = page.locator("m3e-theme").first();
