@@ -47,6 +47,7 @@ import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.BottomSheet
+import M3e.BottomSheetTrigger
 import M3e.DrawerContainer
 import M3e.Events
 import M3e.Fab
@@ -310,7 +311,6 @@ panelsExclusive width =
 type Msg
     = ToggleTree
     | PageChanged
-    | ToggleSettings
     | SettingsSheetClosed
     | DrawerChanged Bool Bool
     | ViewportResized Int
@@ -484,13 +484,10 @@ update msg model =
             , Effect.none
             )
 
-        ToggleSettings ->
-            ( { model | settingsOpen = not model.settingsOpen }, Effect.none )
-
-        -- The bottom sheet's own `closed` event fires on every element-driven
-        -- close (swipe-down, scrim click) that never goes through `ToggleSettings`.
-        -- Sync `settingsOpen` back to `False` here so it can't desync Elm (which
-        -- would need a double-toggle of `settingsButton` to reopen).
+        -- The bottom sheet's own `closed` event fires on every dismissal path
+        -- (the trigger's `.show()`, a swipe-down, an outside click, Escape) --
+        -- none of them go through Elm, so this is the only place `settingsOpen`
+        -- is ever set back to `False`.
         SettingsSheetClosed ->
             ( { model | settingsOpen = False }, Effect.none )
 
@@ -765,53 +762,49 @@ githubLink =
         [ M3e.icon [ M3e.Icon.name "github" ] [] ]
 
 
-{-| The app-bar settings control: a plain icon button that flips `settingsOpen`,
-which drives the settings bottom sheet's `open` state. (Was a Card popover
-trigger, then an end-drawer toggle; the icon is the standard overflow "more"
-glyph rather than a gear, matching the sheet's move off the settings-specific
-end drawer.)
+{-| The app-bar settings control: an icon button carrying a nested
+`m3e-bottom-sheet-trigger` (matching `docsNavRail`'s `m3e-nav-rail-toggle`
+composition -- an action element nested INSIDE a clickable element, not a
+container wrapping one), which opens `settingsBottomSheet` directly. (Was a
+Card popover trigger, then an end-drawer toggle; the icon is the standard
+overflow "more" glyph rather than a gear, matching the sheet's move off the
+settings-specific end drawer.)
 -}
 settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
-        [ Aria.label "Settings", M3e.Events.onClick ToggleSettings ]
-        [ M3e.icon [ M3e.Icon.name "more_vert" ] [] ]
+        [ Aria.label "Settings" ]
+        [ M3e.icon [ M3e.Icon.name "more_vert" ] []
+        , M3e.bottomSheetTrigger [ M3e.BottomSheetTrigger.for "settings-sheet" ] []
+        ]
 
 
 
 -- SETTINGS (bottom sheet — cloned from matraic's #settings-drawer, moved off the end drawer)
 
 
-{-| The settings bottom sheet, toggled open/closed by `settingsButton` via
-`model.settingsOpen`. `modal` scrims the page behind it (replacing the end
-drawer's `Value.over` overlay behavior); `handle` + `hideable` let a swipe-down
-dismiss it the same as clicking the trigger again — that path never goes
-through `ToggleSettings`, so `onClosed` syncs `settingsOpen` back to `False`
-(see the `SettingsSheetClosed` case in `update`).
+{-| The settings bottom sheet, opened by the `m3e-bottom-sheet-trigger` nested
+in `settingsButton` (the element's own `_onClick` calls `.show()` directly --
+no Elm round-trip). `modal` scrims the page and dismisses on an outside click
+or Escape (the actual dismiss-outside-listener attach is deferred a frame via
+`requestAnimationFrame`, so the SAME click that opened it is never seen as
+"outside" -- that race is what an earlier, `onClick`-through-Elm version of
+this trigger hit, since Elm's own render round-trip landed unpredictably
+relative to that same deferred frame; a native trigger's synchronous
+`.show()` call doesn't have that round-trip to race). `handle` + `hideable`
+let a swipe-down dismiss it too. None of these paths go through Elm, so
+`onClosed` is what syncs `model.settingsOpen` back to `False` for every one
+of them (see the `SettingsSheetClosed` case in `update`).
 -}
 settingsBottomSheet : Model -> Element (M3e.BottomSheet.Is s) admittedBy Msg
 settingsBottomSheet model =
     M3e.bottomSheet
         [ M3e.Attributes.id "settings-sheet"
         , M3e.BottomSheet.open model.settingsOpen
+        , M3e.BottomSheet.modal True
         , M3e.BottomSheet.handle True
         , M3e.BottomSheet.hideable True
         , M3e.BottomSheet.detents "half full"
-
-        -- NOT `modal`: the library only excludes a trigger from its own
-        -- click-outside dismissal when that trigger is wired through its
-        -- dedicated `m3e-bottom-sheet-trigger` element (which registers via
-        -- `attach()`); `M3e.BottomSheetTrigger`'s content model only admits
-        -- `heading`/`sharedText`, not an icon, so it can't hold `settingsButton`'s
-        -- glyph. Without that registration, `modal`'s document click-outside
-        -- listener treats `settingsButton`'s own opening click as an outside
-        -- click and closes the sheet in the same tick it opened — confirmed by
-        -- capturing the actual WAAPI animations: every click produced an
-        -- open-to-real-height call immediately followed by a close-to-0 call,
-        -- non-deterministically racing on which one the final frame kept.
-        -- Dropping `modal` removes that listener entirely; `hideable` + the
-        -- drag handle still dismiss it, and `settingsButton`/`SettingsSheetClosed`
-        -- still own open/close explicitly.
         , M3e.BottomSheet.onClosed SettingsSheetClosed
         ]
         [ settingsSheetContent model ]
@@ -1435,12 +1428,11 @@ until `Shared.data` loads it. No section sub-groups: `componentCategories`
 still exists for `/components/all`'s own grouping, but the tree itself no
 longer nests by category (see `navMenu`).
 
-The homepage ("/") and any path with no matching section both fall through to
-`[]` — there is no section for the tree to show, so the drawer is legitimately
-empty (the `start` attribute above gates on `model.treeOpen`, but an empty
-list here would just be a panel with nothing in it; nothing currently opts out
-of showing that empty panel, since only `/` reaches this branch and it has no
-tree hamburger use case to begin with).
+A path with no matching section falls through to `[]` — there is no section
+for the tree to show, so the drawer is legitimately empty (the `start`
+attribute above gates on `model.treeOpen`, but an empty list here would just
+be a panel with nothing in it). Every route in the app currently belongs to
+a section, so this is a defensive fallback rather than a live case today.
 
 -}
 currentSectionItems : List NavComponent -> UrlPath -> List ( String, String )
@@ -1531,7 +1523,9 @@ sectionIsCurrent path section =
 BOTH the app bar's title (`appShellBar`) and the document-title breadcrumb
 (`breadcrumbTitle`) -- one lookup, so the two can't drift apart.
 
-`Nothing` means "no section" -- currently only the homepage.
+`Nothing` means the route belongs to no top-level section -- every route in
+the app currently belongs to one, so this is a defensive fallback rather
+than a live case today.
 
 -}
 currentSectionLabel : UrlPath -> Maybe String
@@ -1545,30 +1539,28 @@ currentSectionLabel path =
 {-| The document `<title>`: a reverse breadcrumb, most specific first --
 e.g. `"Button < Components < elm-m3e"`. `pageTitle` is each route's own bare
 name (`View.fromElement`'s argument -- the old hand-typed "· elm-m3e" suffix
-was stripped from every route but the homepage when this was added). The
-`Head.Seo` title each route ALSO sets is a separate, deliberately untouched
-concern (search-result/social-preview copy, not what shows in the tab).
+was stripped from every route when this was added). The `Head.Seo` title
+each route ALSO sets is a separate, deliberately untouched concern
+(search-result/social-preview copy, not what shows in the tab).
 
-The homepage is the one exception: `path == []` (UrlPath's root) returns
-`pageTitle` unchanged. `Route.Index` still carries its own distinct
-tagline-style title ("elm-m3e · type-safe Material 3 Expressive for Elm")
-rather than a bare page name, and there is no section to name for `/`
-anyway -- forcing it through "<page> < elm-m3e" would just double the site
-name.
+Every route belongs to one of the 5 top-level sections now (`Route/`'s only
+directories are Components, Examples, GettingStarted, Guide, Styles), so
+`currentSectionLabel` always resolves to `Just` in practice; the `Nothing`
+arm is kept for the same reason `currentSectionLabel` keeps its own -- a
+plain exhaustive `case`, not a live special case. (The homepage used to be
+the one route with no section, forcing an early return of `pageTitle`
+unchanged here; that branch is gone along with `/` itself -- see
+`Route.GettingStarted.Welcome`.)
 
 -}
 breadcrumbTitle : UrlPath -> String -> String
 breadcrumbTitle path pageTitle =
-    if List.isEmpty path then
-        pageTitle
+    case currentSectionLabel path of
+        Just section ->
+            pageTitle ++ " < " ++ section ++ " < elm-m3e"
 
-    else
-        case currentSectionLabel path of
-            Just section ->
-                pageTitle ++ " < " ++ section ++ " < elm-m3e"
-
-            Nothing ->
-                pageTitle ++ " < elm-m3e"
+        Nothing ->
+            pageTitle ++ " < elm-m3e"
 
 
 {-| One rail/bar destination — real `href`-based navigation via `m3e-nav-item`'s
