@@ -116,6 +116,26 @@ const config: ElmPagesInit = {
     if (import.meta.env.DEV) {
       mountFeedbackFab();
     }
+
+    // Reactivity workaround for @m3e/web <m3e-theme>: `contrast` and `color`
+    // attribute mutations don't trigger the element's internal re-derivation of
+    // --md-sys-color-* custom properties post-mount (confirmed 2026-08-08 — see
+    // TASK1-FINDING.md). `scheme` does trigger it. Force a re-render by
+    // calling the element's own update-request method on those two attributes
+    // only. `<m3e-theme>` is a LitElement (verified in
+    // node_modules/@m3e/web/dist/theme.js), so `.requestUpdate()` is the real
+    // public re-render trigger, not a guess.
+    const themeEl = document.querySelector("m3e-theme");
+    if (themeEl) {
+      const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (m.type === "attributes" && (m.attributeName === "contrast" || m.attributeName === "color")) {
+            (themeEl as unknown as { requestUpdate?: () => void }).requestUpdate?.();
+          }
+        }
+      });
+      observer.observe(themeEl, { attributes: true, attributeFilter: ["contrast", "color"] });
+    }
   },
   flags: function () {
     // `width` picks the initial drawer mode (side vs over) before
