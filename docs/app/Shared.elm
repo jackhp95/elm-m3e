@@ -1243,14 +1243,31 @@ DIRECTLY. That directness is the fix for the dead-hamburger bug — see
 have a TOC at all", which cannot collapse into a stuck constant because the TOC
 toggle that drives `tocOpen` isn't rendered on a page with no entries either.
 
-`--m3e-drawer-container-width` is narrowed from the library default (22.5rem =
-360px) to 14rem = 224px, which is what keeps the content column readable once
-the rail's fixed 220px `expanded` width (`docsNavRail`) is also on screen:
-224px panels leave ~516px of content at 960px with one panel open (the
-`shell-breakpoints.spec.ts` floor is 500px — narrowed from 17.5rem/280px
-specifically to restore that margin once the rail went from a 96px compact
-width to 220px expanded), and ~836px at 1280px. See `tocPinBreakpointPx` for
-the rest of that budget.
+Each `M3e.contentPane` carries `w-max` (Tailwind's `width: max-content`)
+instead of a fixed `--m3e-drawer-container-width`. `@m3e/web`'s own shadow DOM
+sets `::slotted([slot="start"]), ::slotted([slot="end"]) { width:
+var(--m3e-drawer-container-width, 22.5rem) }`, which by raw selector
+specificity (an attribute selector on a pseudo-element vs. a bare class) should
+out-rank `w-max` and force the library's 360px default — but it does not:
+verified directly against a live instance (toggling the `w-max` class and
+reading `getBoundingClientRect().width`) that `w-max` wins the cascade every
+time, sizing each panel to its own content instead. A hand-rolled
+`[--m3e-drawer-container-width:<value>]` override is deliberately avoided here
+in favor of this generated utility class, since a fixed width turned out to be
+unnecessary: content-driven sizing already keeps the column readable at every
+tested width (see the `shell-breakpoints.spec.ts` budget comment) and adapts
+to whichever section's nav labels are actually on screen, rather than
+truncating the longer ones (e.g. Guide's "Accessibility you can't forget") to
+fit a number picked for the shortest.
+
+The `end` panel's `*:me-11` looks redundant with `w-max` but is not: `-me-7`
+bleeds the panel's background past its own box to the container edge, and
+without a matching inward margin on its children the _content_ (not just the
+background) bleeds past the viewport's trailing edge too — measured at 1440px
+wide, `m3e-toc`'s own right edge sat at 1451px (11px off-screen) with
+`*:me-11` removed, and back inside at 1407px with it restored. The `start`
+panel has no such compensation because `navMenu`'s own content never
+approaches that edge the way `-me-7`'s bleed does on the `end` side.
 
 The content pane, `tocPanel`, and `navMenu` each carry `pb-20` below the
 Tailwind `md` breakpoint because `docsNavBar` is `fixed ... bottom-0` there
@@ -1280,17 +1297,20 @@ drawerShell toMsg model page components body =
             , M3e.DrawerContainer.endMode Value.auto
             , M3e.Attributes.end model.tocOpen
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
-            , TypedHtml.Attributes.class "h-full w-full [--m3e-drawer-container-width:14rem]"
+            , TypedHtml.Attributes.class "h-full w-full"
             ]
             [ [ navMenu components page.path ]
                 |> M3e.contentPane
-                    [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -ms-7"
+                    [ TypedHtml.Attributes.class "w-max"
+                    , TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -ms-7"
                     ]
                 |> M3e.DrawerContainer.start
-            , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ] body
+            , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ]
+                body
             , [ tocPanel toMsg ]
                 |> M3e.contentPane
-                    [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -me-7"
+                    [ TypedHtml.Attributes.class "w-max"
+                    , TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -me-7 *:me-11"
                     ]
                 |> M3e.DrawerContainer.end
             ]
@@ -1332,7 +1352,6 @@ tocPanel toMsg =
         [ M3e.Toc.for "main-content"
         , M3e.Toc.maxDepth 3
         , M3e.Events.delegate (M3e.Events.onClick (toMsg CloseToc))
-        , TypedHtml.Attributes.class "pb-20 md:pb-0"
         ]
         [ M3e.Toc.title (M3e.text "On this page") ]
 
@@ -1406,7 +1425,7 @@ navMenu components path =
         currentPath =
             normalizePath (UrlPath.toAbsolute path)
     in
-    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto pb-20 md:pb-0" ]
+    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto" ]
         (currentSectionItems components path |> List.map (navLeaf currentPath))
 
 
