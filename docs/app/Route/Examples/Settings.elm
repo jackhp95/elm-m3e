@@ -175,16 +175,31 @@ view _ _ model =
 {-| The full-viewport shell: a desktop nav rail beside a main column, with a
 mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so only the
 content column scrolls.
+
+`flex-col md:flex-row`: one shell, two axes. At `md`+ it is a ROW
+(rail | main column) and `mobileBar` is `md:hidden`. Below `md` the rail is
+`hidden` -- so it takes no flex slot -- and the SAME div is a COLUMN whose
+in-flow children are, top to bottom, the main column then the bottom nav bar.
+That is what lets the bar stop being `position: fixed`: an in-flow bar can't
+occlude the content above it, so the content column needs no compensating
+`pb-24` to keep its last row (and `exampleFooter`) reachable.
+
+`min-h-0` is the column-axis guard: a flex item's default `min-height: auto`
+would let the main column grow to fit its content instead of its flex basis,
+pushing the nav bar off the bottom of the viewport. Belt-and-braces today (the
+column's own `overflow-hidden` already suppresses the automatic minimum size),
+but it keeps the bounded-scroll invariant from depending on that.
+
 -}
 screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 screen model =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
         [ desktopRail model.section
-        , TypedHtml.div [ TA.class "flex flex-1 flex-col overflow-hidden" ]
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-h-0 overflow-hidden" ]
             [ appBar
             , TypedHtml.div [ TA.class "flex-1 overflow-y-auto" ]
-                [ TypedHtml.div [ TA.class "mx-auto w-full max-w-2xl flex flex-col gap-6 px-4 py-6 pb-24 md:pb-6" ]
+                [ TypedHtml.div [ TA.class "mx-auto w-full max-w-2xl flex flex-col gap-6 px-4 py-6" ]
                     (content model)
                 , exampleFooter
                 ]
@@ -244,12 +259,18 @@ desktopRail current =
         (List.map (navItem current) sections)
 
 
-{-| Mobile bottom navigation bar — hidden at `md` and up, pinned to the viewport
-bottom so it stays put while the content scrolls.
+{-| Mobile bottom navigation bar — hidden at `md` and up.
+
+The bar is a REAL flex child of `screen`'s outer `flex flex-col md:flex-row`,
+not `position: fixed` — so on mobile it takes its own row at the bottom of the
+column and stays put while the content column scrolls beside it, without
+occluding anything. That is what lets the content column skip the compensating
+`pb-24` a floating bar would otherwise demand of every scroll region.
+
 -}
 mobileBar : String -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 mobileBar current =
-    M3e.navBar [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
+    M3e.navBar [ TA.class "md:hidden shrink-0" ]
         (List.map (navItem current) sections)
 
 
