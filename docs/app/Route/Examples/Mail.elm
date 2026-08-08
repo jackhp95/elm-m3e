@@ -14,11 +14,15 @@ Layout at a glance:
     (`md:hidden`) — a real flex child, not a `fixed` overlay, so nothing needs
     compensating bottom padding to stay clear of it. A top
     `M3e.AppBar` holds the app name and an `M3e.SearchBar`.
-  - A two-pane body that reflows: on `md:` the message `M3e.List` sits in a fixed
-    `md:w-96` column beside a reading pane that fills the rest; below `md:` the
-    list is full-width and the reading pane stacks beneath it.
-  - Selecting a row (`SelectMessage`) repaints the reading pane and marks the row
-    with a `surfaceContainer` background.
+  - A message `M3e.List` beside an `M3e.DrawerContainer` `end` drawer holding the
+    reading pane. The drawer slides in horizontally from the trailing edge when a
+    row is selected; it never splits the screen vertically, which is what the
+    list previously did below `md:` and which left both halves too short to read.
+    `endMode auto` lets the element sit the pane BESIDE the list where there is
+    room and slide it OVER the list where there is not.
+  - Selecting a row (`SelectMessage`) repaints the reading pane and opens the
+    drawer; dismissing it (scrim, Escape) reports back through `DrawerChanged`
+    so Elm's model cannot drift from the element's own state.
   - An `M3e.Fab` floats bottom-right to compose.
 
 -}
@@ -27,10 +31,13 @@ import BackendTask
 import Effect exposing (Effect)
 import ExampleNav
 import Head
+import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.AppBar
 import M3e.AssistChip
 import M3e.Attributes
+import M3e.DrawerContainer
+import M3e.Events
 import M3e.Fab
 import M3e.Kind
 import M3e.ListAction
@@ -50,11 +57,12 @@ import View exposing (View)
 
 
 type alias Model =
-    { selected : Int }
+    { selected : Int, readerOpen : Bool }
 
 
 type Msg
     = SelectMessage Int
+    | DrawerChanged Bool
 
 
 type alias RouteParams =
@@ -82,14 +90,21 @@ route =
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init _ _ =
-    ( { selected = 0 }, Effect.none )
+    ( { selected = 0, readerOpen = False }, Effect.none )
 
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ msg model =
     case msg of
         SelectMessage i ->
-            ( { model | selected = i }, Effect.none )
+            ( { model | selected = i, readerOpen = True }, Effect.none )
+
+        -- The element telling us what it already did -- a scrim click or Escape
+        -- closes the drawer without asking Elm first. Syncing here is what keeps
+        -- `readerOpen` from drifting out of step with the element, which would
+        -- otherwise leave a row selected that opens nothing on the next click.
+        DrawerChanged open ->
+            ( { model | readerOpen = open }, Effect.none )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
@@ -229,7 +244,6 @@ screen model =
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0" ]
             [ topBar
             , body model
-            , exampleFooter
             ]
         , bottomBar
         , composeFab
@@ -339,25 +353,77 @@ searchBar =
 -- BODY: TWO-PANE --------------------------------------------------------------
 
 
-{-| The reflowing two-pane body. On `md:` the list is a fixed-width column beside
-a filling reading pane; below `md:` they stack (list first, reading pane under).
+{-| The body: the message list, with the reading pane as a drawer that slides in
+from the trailing edge.
 
-Below `md:` BOTH sections are `flex-1 min-h-0`, which is what actually makes the
-stacking claim true. With `flex-basis: auto` and no minimum-size guard the list's
-intrinsic height (608px of rows) consumed the whole column and the reading pane
-measured `height: 0` -- present in the DOM, scrollable in principle, and
-completely unreachable in practice. Halving the space keeps both panes real and
-independently scrollable. `md:flex-none` hands the row axis back to `md:w-96`.
+This used to be a two-pane split that stacked VERTICALLY below `md:`, and that
+was the wrong shape twice over. It halved an already short phone viewport, so
+neither the list nor the message was comfortably readable; and before the
+`flex-1 min-h-0` fix the list's intrinsic 608px of rows ate the whole column and
+the reading pane measured `height: 0` -- present, scrollable in principle, and
+completely unreachable. A drawer sidesteps the whole class of problem: the
+reading pane is either beside the list or over it, never carved out of it.
+
+`endMode auto` is what makes one markup serve both widths. The element picks
+`side` where there is room for the pane to sit BESIDE the list and `over` where
+there is not, so the horizontal slide-in is the narrow-width behaviour without
+Elm having to know the breakpoint or duplicate the pane.
+
+The list is the ONE scroll region, and `exampleFooter` lives at the bottom of it
+rather than pinned under the body -- so the footer is what you reach after
+reading the inbox, not a strip permanently spending viewport height.
 
 -}
-body : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+body : Model -> Element (M3e.DrawerContainer.Is s) adm_ Msg
 body model =
-    TypedHtml.div [ TA.class "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden" ]
-        [ TypedHtml.section [ TA.class "w-full md:w-96 min-h-0 flex-1 md:flex-none md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
-            [ messageList model ]
-        , TypedHtml.section [ TA.class "min-h-0 flex-1 overflow-y-auto" ]
-            [ readingPane (selectedMessage model) ]
+    M3e.drawerContainer
+        [ M3e.DrawerContainer.endMode Value.auto
+        , M3e.Attributes.end model.readerOpen
+        , M3e.Events.onChangeWith drawerChangeDecoder
+        , TA.class "flex-1 min-h-0 overflow-hidden"
         ]
+        [ TypedHtml.section [ TA.class "h-full min-h-0 overflow-y-auto" ]
+            [ messageList model
+            , exampleFooter
+            ]
+        , [ readingPane (selectedMessage model) ]
+            |> M3e.contentPane [ TA.class "h-full w-full overflow-y-auto md:w-[32rem]" ]
+            |> M3e.DrawerContainer.end
+        ]
+
+
+{-| The way back to the inbox.
+
+This is load-bearing, not decoration. Below `md` the drawer opens in `over` mode
+at the full width of the viewport, so there is no exposed scrim to click past
+it, and the element does not close `end` on Escape. Without an explicit control
+the reading pane is a one-way door: measured before this existed, the pane
+opened at `left: 0` and neither Escape nor an outside click could dismiss it.
+
+Shown at every width. At `md`+ the pane sits BESIDE the list rather than over
+it, where dismissing is a preference rather than a necessity -- but a control
+that moves or disappears between widths is worse than one that does not.
+
+-}
+closeReader : Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+closeReader =
+    TypedHtml.div [ TA.class "flex" ]
+        [ M3e.iconButton
+            [ M3e.Attributes.variant Value.standard
+            , Aria.label "Back to inbox"
+            , M3e.Events.onClick (DrawerChanged False)
+            ]
+            [ M3e.icon [ TA.name "arrow_back" ] [] ]
+        ]
+
+
+{-| `event.target.end` is the drawer's reflected open state. Read it from the
+element rather than assuming our own last write still holds: the element closes
+`end` itself on a scrim click or Escape and does not consult Elm first.
+-}
+drawerChangeDecoder : Decode.Decoder Msg
+drawerChangeDecoder =
+    Decode.map DrawerChanged (Decode.at [ "target", "end" ] Decode.bool)
 
 
 selectedMessage : Model -> Message
@@ -422,10 +488,11 @@ messageRow selected index message =
 avatar and timestamp, label chips, and the body paragraphs — all styled with
 M3 token classes applied directly.
 -}
-readingPane : Message -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+readingPane : Message -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 readingPane message =
     TypedHtml.div [ TA.class "flex flex-col gap-6 p-6" ]
-        [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
+        [ closeReader
+        , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
         , TypedHtml.div [ TA.class "flex items-center gap-3" ]
             [ M3e.avatar [] [ M3e.text message.initials ]
             , TypedHtml.div [ TA.class "flex flex-col" ]
@@ -454,10 +521,18 @@ labelChip name =
 
 
 {-| Floating compose action, anchored bottom-right (kept above the mobile bar).
+
+`pointer-events-none` on the positioned wrapper with `pointer-events-auto` on
+the FAB is not cosmetic here. Without it the wrapper's box sat over the footer's
+next-example link and swallowed the click outright -- Playwright could not
+follow "Travel ->" at 411px at all, reporting the FAB subtree as intercepting
+pointer events. Only the FAB itself should be clickable; the gutter around it
+belongs to whatever is underneath.
+
 -}
 composeFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 composeFab =
-    TypedHtml.div [ TA.class "absolute bottom-20 right-6 md:bottom-6" ]
+    TypedHtml.div [ TA.class "pointer-events-none absolute bottom-20 right-6 md:bottom-6 [&>*]:pointer-events-auto" ]
         [ M3e.fab
             [ M3e.Attributes.variant Value.primaryContainer
             , M3e.Attributes.extended True
