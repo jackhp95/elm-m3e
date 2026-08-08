@@ -394,6 +394,35 @@
   contain-intrinsic-size: 0 1200px;
 }
 
+/* TEMPORARY SHIM — delete when @m3e/web ships the nav-bar compact fix.
+   ------------------------------------------------------------------
+   `@m3e/web` 2.7.3 gives vertical nav items a hard
+   `min-width: var(--m3e-nav-bar-vertical-item-width, 7rem)`. 7rem is 112px, so
+   five destinations claim 560px inside a 411px bar: the end items are painted
+   OUTSIDE the bar and are unreachable. Measured at 411px, Dashboard lost
+   "Overview" and "Settings"; Feed lost "Home" and "Activity". Nothing is
+   deliberately hidden — the bar simply overflows both edges.
+
+   3rem, not 0: at these item counts both give an identical result (Dashboard
+   82px per item, Feed 103px, nothing clipped) because the floor is never
+   reached. They diverge only when items would drop below 48px — 0 would hand
+   out sub-touch-target destinations, whereas 3rem lets the bar scroll instead.
+   3rem is also the floor the upstream fix settled on.
+
+   The real fix already exists upstream as `fix(nav-bar): fit compact
+   destinations within the bar at phone widths`, which makes items shrink to
+   share the bar by DEFAULT. It is unreleased and sits on a branch based on
+   2.5.14 while this app is on 2.7.3, so it cannot be consumed yet. When a
+   release carries it, delete this block rather than updating it — the default
+   will be correct and this override would only pin a worse floor.
+
+   Centralised here rather than as an opt-in per-call-site class on purpose: a
+   shim with a scheduled deletion is safer in one place than sprinkled across
+   nine nav bars, and this way a newly added route cannot forget it. */
+m3e-nav-bar {
+  --m3e-nav-bar-vertical-item-width: 3rem;
+}
+
 /* Custom elements render raw, unstyled light-DOM until Lit upgrades them.
    Hide undefined ones (opacity keeps the layout box → no shift), then fade in
    on upgrade. :where() keeps specificity 0 so element-specific rules win. */
