@@ -522,8 +522,9 @@ update msg model =
         -- Fired by CloseSearch itself, by a result link's click (see
         -- searchResultLink), and by searchToggleDecoder when the search
         -- view's own internal back button closes it -- the same
-        -- element-can-close-itself sync `SettingsSheetClosed` already
-        -- handles for the bottom sheet.
+        -- element-can-close-itself sync the settings bottom sheet no longer
+        -- needs at all now that it's a native `m3e-bottom-sheet-trigger`
+        -- with no Elm-tracked open state (see `settingsButton`).
         CloseSearch ->
             ( { model | searchOpen = False }, Effect.none )
 
