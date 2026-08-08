@@ -6,11 +6,13 @@ import { expect, test } from "@playwright/test";
  *
  *  - Every docs route (everything except `/examples/*`): `<m3e-theme>` (itself
  *    `display: contents` — it carries no layout classes of its own anymore)
- *    renders a fixed-viewport `<div class="h-dvh flex flex-row">` with a nav
- *    rail on the left and a main column on the right holding the app bar
- *    above the drawer/content area. The ONE scroll region is the content-pane
- *    inside the drawer (`overflow-y: auto`); the shell div itself does not
- *    scroll.
+ *    renders a fixed-viewport `<div class="h-dvh flex flex-col md:flex-row">`.
+ *    At `md` and up that is a ROW: nav rail on the left, main column on the
+ *    right holding the app bar above the drawer/content area. Below `md` the
+ *    rail is hidden and the same div is a COLUMN: main column on top, bottom
+ *    nav bar as a real in-flow last child. Either way the ONE scroll region
+ *    is the content-pane inside the drawer (`overflow-y: auto`); the shell
+ *    div itself does not scroll.
  *  - `/examples/*` (full-viewport examples): `<m3e-theme>`'s child is the
  *    example page's OWN root — no docs-shell wrapper, no app bar, no nav —
  *    so double-nav is avoided and the page owns 100% of its own layout.
@@ -28,7 +30,19 @@ import { expect, test } from "@playwright/test";
  *     future ancestor re-adds a clipping `overflow: hidden`), content past
  *     the fold silently becomes unreachable rather than erroring.
  */
-const DOCS_SHELL = "m3e-theme > div.h-dvh.flex.flex-row";
+// An ID, not a class shape. This used to be `m3e-theme > div.h-dvh.flex`,
+// which identified the shell only by coincidence: the moment an example route
+// adopted the same bounded `h-dvh` + flex layout (`Route/Examples/Shop.elm`),
+// that selector matched the example's OWN root too and the "examples skip the
+// docs shell" test below started failing on a page that has no docs shell at
+// all. Layout classes are shared vocabulary and cannot identify a component;
+// `#docs-shell` can.
+//
+// Note this deliberately does not pin a direction either: the shell is
+// `flex-col md:flex-row` (column on mobile, so the nav bar is a real bottom
+// flex child instead of a `fixed` overlay). Direction is asserted per viewport
+// below, from computed style.
+const DOCS_SHELL = "#docs-shell";
 const MAIN_COLUMN = `${DOCS_SHELL} > div.flex.flex-1.flex-col`;
 
 // `#docs-drawer` slots the tree (`slot="start"`) and TOC (`slot="end"`) panels
@@ -49,12 +63,14 @@ const TALL_EXAMPLE = "/examples/shop";
 test("the docs shell is a fixed-viewport flex row (rail | main column) with one scroll region", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/getting-started/welcome");
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 
   const shell = page.locator(DOCS_SHELL);
-  // `flex` + `flex-row` places the nav rail on the left and the main column on
-  // the right. If this reads `contents` or `block`, the shell has flattened.
+  // At `md` and up, `flex-row` places the nav rail on the left and the main
+  // column on the right. If this reads `contents` or `block`, the shell has
+  // flattened.
   await expect(shell).toHaveCSS("display", "flex");
   await expect(shell).toHaveCSS("flex-direction", "row");
 
@@ -66,6 +82,49 @@ test("the docs shell is a fixed-viewport flex row (rail | main column) with one 
   await expect(mainColumn).toHaveCSS("display", "flex");
   await expect(mainColumn).toHaveCSS("flex-direction", "column");
 
+  // Desktop: the rail is the visible section switcher, the bar is gone.
+  await expect(page.locator("m3e-nav-rail")).toBeVisible();
+  await expect(page.locator("m3e-nav-bar")).toBeHidden();
+
+  await expect(page.locator(MAIN_SCROLL_REGION)).toHaveCSS("overflow-y", "auto");
+});
+
+test("below `md` the same shell is a flex COLUMN, with the nav bar as its last in-flow child", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 411, height: 761 });
+  await page.goto("/getting-started/welcome");
+  await expect(page.locator("#docs-app-bar")).toBeVisible();
+
+  const shell = page.locator(DOCS_SHELL);
+  await expect(shell).toHaveCSS("display", "flex");
+  await expect(shell).toHaveCSS("flex-direction", "column");
+  await expect(shell).toHaveCSS("overflow-y", "visible");
+
+  // The rail is gone below `md`, so it takes no flex slot; the bar takes over.
+  await expect(page.locator("m3e-nav-rail")).toBeHidden();
+  const bar = page.locator("m3e-nav-bar");
+  await expect(bar).toBeVisible();
+
+  // The bar is a REAL flex child, not a `fixed` overlay. `position: static`
+  // is the whole point: an out-of-flow bar occludes whatever is beneath it,
+  // which is what forced compensating `pb-20 md:pb-0` on every scroll region.
+  await expect(bar).toHaveCSS("position", "static");
+
+  // ...and being in flow, it sits BELOW the main column rather than on top of
+  // it: the column's box ends where the bar's begins, with no overlap.
+  const mainBox = await page.locator(MAIN_COLUMN).boundingBox();
+  const barBox = await bar.boundingBox();
+  if (!mainBox || !barBox) throw new Error("shell children have no box");
+  expect(mainBox.y + mainBox.height).toBeLessThanOrEqual(barBox.y + 1);
+  expect(barBox.y + barBox.height).toBeLessThanOrEqual(761 + 1);
+
+  // The single-scroll-region invariant survives the direction flip: the
+  // document itself still doesn't scroll, only the drawer's inner pane.
+  const docScroll = await page.evaluate(() => ({
+    scrollable: document.documentElement.scrollHeight - window.innerHeight,
+  }));
+  expect(docScroll.scrollable).toBeLessThanOrEqual(1);
   await expect(page.locator(MAIN_SCROLL_REGION)).toHaveCSS("overflow-y", "auto");
 });
 

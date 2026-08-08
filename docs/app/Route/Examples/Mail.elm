@@ -10,7 +10,9 @@ directly with `TypedHtml.Attributes.class` (`text-on-surface`,
 Layout at a glance:
 
   - Adaptive navigation: an `M3e.NavRail` down the left on desktop (`hidden md:flex`)
-    and an `M3e.NavBar` pinned to the bottom on mobile (`md:hidden`). A top
+    and an `M3e.NavBar` as the last in-flow row of the shell column on mobile
+    (`md:hidden`) — a real flex child, not a `fixed` overlay, so nothing needs
+    compensating bottom padding to stay clear of it. A top
     `M3e.AppBar` holds the app name and an `M3e.SearchBar`.
   - A two-pane body that reflows: on `md:` the message `M3e.List` sits in a fixed
     `md:w-96` column beside a reading pane that fills the rest; below `md:` the
@@ -199,13 +201,32 @@ view _ _ model =
 {-| The whole screen: full-viewport shell painted onto the base `surface`, with
 the nav rail beside a column of AppBar + two-pane body, plus the mobile bottom
 bar and the floating compose FAB.
+
+`flex-col md:flex-row`: one shell, two axes. At `md`+ it is a ROW (rail | main
+column) and `bottomBar` is `md:hidden`. Below `md` the rail is `hidden` -- so it
+takes no flex slot -- and the SAME div is a COLUMN whose in-flow children are,
+top to bottom, the main column then the bottom nav bar. That is what lets the
+bar stop being `position: fixed`: an in-flow bar cannot occlude the content
+above it, so no scroll region here needs a compensating bottom padding to stay
+reachable.
+
+`min-h-0` is the column-axis twin of `min-w-0` on the main column, and here it is
+load-bearing rather than belt-and-braces: a flex item's default
+`min-height: auto` lets that column grow to fit its content instead of its flex
+basis. Without it, at 411x761 the column measures 1233px tall and pushes the nav
+bar 540px past the bottom of the viewport, where the shell's `overflow-hidden`
+clips it away entirely.
+
+`composeFab` is `absolute`, not a flex child, so it keeps floating over the
+content in both directions -- which is what the `relative` here anchors.
+
 -}
 screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface relative flex h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface relative flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
         [ navRail
-        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0" ]
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0" ]
             [ topBar
             , body model
             , exampleFooter
@@ -259,10 +280,19 @@ railItem index d =
 
 
 {-| Mobile bottom navigation bar (hidden at `md:` and up).
+
+The `<nav>` landmark is the REAL last flex child of `screen`'s
+`flex flex-col md:flex-row` shell -- it is not `position: fixed` -- so below
+`md` it takes its own row at the bottom of the column and cannot occlude
+anything above it. `shrink-0` keeps it at its intrinsic height when the column
+above wants more room. Keeping the wrapper (rather than a `display: contents`
+wrapper around the bar) as the flex child mirrors `navRail`, whose `<nav>` is
+likewise the flex child at `md:` and up.
+
 -}
 bottomBar : Element (TypedHtml.Sectioning.NavIs s) adm_ Msg
 bottomBar =
-    TypedHtml.nav [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
+    TypedHtml.nav [ TA.class "md:hidden shrink-0" ]
         [ M3e.navBar []
             (List.indexedMap barItem destinations)
         ]
@@ -311,13 +341,21 @@ searchBar =
 
 {-| The reflowing two-pane body. On `md:` the list is a fixed-width column beside
 a filling reading pane; below `md:` they stack (list first, reading pane under).
+
+Below `md:` BOTH sections are `flex-1 min-h-0`, which is what actually makes the
+stacking claim true. With `flex-basis: auto` and no minimum-size guard the list's
+intrinsic height (608px of rows) consumed the whole column and the reading pane
+measured `height: 0` -- present in the DOM, scrollable in principle, and
+completely unreachable in practice. Halving the space keeps both panes real and
+independently scrollable. `md:flex-none` hands the row axis back to `md:w-96`.
+
 -}
 body : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 body model =
     TypedHtml.div [ TA.class "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden" ]
-        [ TypedHtml.section [ TA.class "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
+        [ TypedHtml.section [ TA.class "w-full md:w-96 min-h-0 flex-1 md:flex-none md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
             [ messageList model ]
-        , TypedHtml.section [ TA.class "flex-1 overflow-y-auto" ]
+        , TypedHtml.section [ TA.class "min-h-0 flex-1 overflow-y-auto" ]
             [ readingPane (selectedMessage model) ]
         ]
 

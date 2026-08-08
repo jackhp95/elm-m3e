@@ -122,12 +122,17 @@ test("on mobile, opening the TOC closes the tree and the hamburger reopens it on
 });
 
 /**
- * Chrome budget: the rail is compact (~96px) by default and each drawer panel
- * is 224px (`--m3e-drawer-container-width`, narrowed from the library's 360px
- * default in `Shared.drawerShell`). With no minimum content width and nothing
- * gating the TOC, the pre-fix shell put 96 + 360 + 360 = 816px of chrome on
- * screen at every width >= 768, leaving 144-208px of content at a
- * 960-1024px viewport -- one word per line, code blocks clipped.
+ * Chrome budget: the rail is compact (~96px) by default, and each drawer
+ * panel now sizes to its own content (`w-max` in `Shared.drawerShell`)
+ * instead of the library's fixed 360px default -- so the exact chrome width
+ * varies by section (e.g. ~246px for Components' short labels, ~310px for
+ * Guide's longest, "Accessibility you can't forget"). The worst measured
+ * case -- Guide's longest labels, one panel open, 960px viewport -- still
+ * leaves ~542px of content, comfortably above this test's 500px floor. With
+ * no minimum content width and nothing gating the TOC, the pre-fix shell put
+ * 96 + 360 + 360 = 816px of chrome on screen at every width >= 768, leaving
+ * 144-208px of content at a 960-1024px viewport -- one word per line, code
+ * blocks clipped.
  */
 for (const width of [960, 1024, 1280, 1440]) {
   test(`the content column stays readable at ${width}px`, async ({ page }) => {
@@ -146,9 +151,13 @@ for (const width of [960, 1024, 1280, 1440]) {
 }
 
 /**
- * `docsNavBar` is `fixed inset-x-0 bottom-0`, so it floats over the scroll
- * region. Without compensating bottom padding the last ~68px of every page is
- * behind it: visible-looking but unreadable and unclickable.
+ * `docsNavBar` is a real in-flow flex child of the shell's `flex-col` mobile
+ * layout, so it sits BELOW the scroll region rather than floating over it and
+ * structurally cannot cover the end of the page. This test is the regression
+ * guard on that: if the bar ever goes back to `fixed inset-x-0 bottom-0`, the
+ * last ~68px of every page becomes visible-looking but unreadable and
+ * unclickable again, and no amount of per-region `pb-20` reliably prevents it
+ * (it has to be remembered for each new scroll region, and once wasn't).
  */
 test("the mobile bottom nav bar does not occlude the end of the page content", async ({
   page,

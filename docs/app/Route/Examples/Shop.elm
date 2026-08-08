@@ -151,13 +151,38 @@ view _ _ model =
                 List.filter (\p -> p.category == model.category) products
     in
     View.fromElement "Shop"
+        -- `flex-col md:flex-row`: one root, two axes. At `md`+ it is a ROW
+        -- (rail | main column) and `navBar` is `md:hidden`. Below `md` the rail
+        -- is `hidden` -- so it takes no flex slot -- and the SAME div is a
+        -- COLUMN whose in-flow children are, top to bottom, the main column then
+        -- the bottom nav bar. That is what lets the bar stop being
+        -- `position: fixed`: an in-flow bar can't occlude the content above it,
+        -- so the content wrapper no longer needs the compensating `pb-24` that
+        -- kept the last row of cards clear of a floating bar.
+        --
+        -- `h-dvh` + `overflow-hidden`, NOT `min-h-screen`. This used to be a
+        -- floor rather than a height, which left the root auto-tall and made the
+        -- DOCUMENT the scroller -- and an in-flow bar at the bottom of a 4400px
+        -- document is only visible once you reach the end of the page, which is
+        -- the opposite of what a bottom nav is for. A definite height bounds the
+        -- root to the viewport, so the bar stays put and the `overflow-y-auto`
+        -- section below is the one scroll region. `h-dvh` (not `h-screen`)
+        -- because `100vh` overshoots the visible viewport on mobile browsers
+        -- with a retracting URL bar -- which would push an in-flow bar under the
+        -- browser chrome, reintroducing by unit exactly the occlusion this
+        -- change removes by positioning.
+        --
+        -- `min-h-0` on the column and the section is the standard guard: a flex
+        -- item's default `min-height: auto` would let either grow to fit content
+        -- instead of its flex basis, unbounding the scroll region and pushing the
+        -- bar off-viewport.
         (TypedHtml.div
-            [ TA.class "bg-surface text-on-surface flex min-h-screen w-full" ]
+            [ TA.class "bg-surface text-on-surface flex h-dvh w-full flex-col overflow-hidden md:flex-row" ]
             [ navRail model
-            , TypedHtml.div [ TA.class "flex min-w-0 flex-1 flex-col" ]
+            , TypedHtml.div [ TA.class "flex min-h-0 min-w-0 flex-1 flex-col" ]
                 [ appBar model
-                , TypedHtml.section [ TA.class "relative flex-1 overflow-y-auto" ]
-                    [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6" ]
+                , TypedHtml.section [ TA.class "relative min-h-0 flex-1 overflow-y-auto" ]
+                    [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6" ]
                         [ hero
                         , filterBar model.category
                         , productGrid shown
@@ -247,11 +272,18 @@ navRail model =
 
 
 {-| Bottom navigation bar — mobile only.
+
+A REAL flex child of the page root (`view`'s `flex flex-col md:flex-row`), not
+`position: fixed` — below `md` it takes its own row at the end of the column and
+so cannot occlude anything above it. That is what lets the content wrapper drop
+the compensating `pb-24` a floating bar would otherwise demand, forever, from
+every current and future block that reaches the bottom of the page.
+
 -}
 navBar : Model -> Element { s | navBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 navBar model =
     M3e.navBar
-        [ TA.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+        [ TA.class "shrink-0 md:hidden" ]
         (List.map (barItem model.category) destinations)
 
 
@@ -381,7 +413,7 @@ media product =
 -}
 checkoutFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 checkoutFab =
-    TypedHtml.div [ TA.class "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6" ]
+    TypedHtml.div [ TA.class "pointer-events-none sticky bottom-6 flex justify-end pr-2" ]
         [ TypedHtml.div [ TA.class "pointer-events-auto" ]
             [ M3e.fab
                 [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Checkout" ]

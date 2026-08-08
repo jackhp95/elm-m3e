@@ -211,7 +211,7 @@ that only appears on small screens.
 -}
 shell : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 shell model =
-    TypedHtml.div [ TA.class "flex h-screen w-full flex-col" ]
+    TypedHtml.div [ TA.class "flex h-dvh w-full flex-col" ]
         [ appBar
         , TypedHtml.div [ TA.class "flex min-h-0 flex-1" ]
             [ navRail model.destination

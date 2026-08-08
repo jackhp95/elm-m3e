@@ -653,9 +653,30 @@ view sharedData page model toMsg pageView =
 
              else
                 [ skipLink
-                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh w-full flex flex-row" ]
+
+                -- `flex-col md:flex-row`: one shell, two axes. At `md`+ it is a
+                -- ROW (rail | main column) and `docsNavBar` is `md:hidden`. Below
+                -- `md` the rail is `hidden` -- so it takes no flex slot -- and the
+                -- SAME div is a COLUMN whose in-flow children are, top to bottom,
+                -- the main column then the bottom nav bar. That is what lets the
+                -- bar stop being `position: fixed`: an in-flow bar can't occlude
+                -- the content above it, so no scroll region anywhere in the shell
+                -- needs a compensating `pb-20 md:pb-0` to stay reachable.
+                --
+                -- `min-h-0` is the column-axis twin of `min-w-0`: a flex item's
+                -- default `min-height: auto` would let the main column grow to fit
+                -- its content instead of its flex basis, pushing the nav bar off
+                -- the bottom of the viewport and turning the DOCUMENT into the
+                -- scroller. It is belt-and-braces today (`drawerShell`'s own `h-0`
+                -- already keeps the column's intrinsic height at ~0), but it is the
+                -- guard that keeps the "one bounded scroll region" invariant from
+                -- depending on that one class in another function.
+                , TypedHtml.div
+                    [ TypedHtml.Attributes.id "docs-shell"
+                    , TypedHtml.Attributes.class "h-dvh w-full flex flex-col md:flex-row"
+                    ]
                     [ docsNavRail toMsg page.path
-                    , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
+                    , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0 min-h-0" ]
                         [ M3e.mapMsg toMsg (appShellBar page.path)
                         , drawerShell toMsg model page sharedData.components (View.body pageView)
                         ]
@@ -1243,22 +1264,43 @@ DIRECTLY. That directness is the fix for the dead-hamburger bug — see
 have a TOC at all", which cannot collapse into a stuck constant because the TOC
 toggle that drives `tocOpen` isn't rendered on a page with no entries either.
 
-`--m3e-drawer-container-width` is narrowed from the library default (22.5rem =
-360px) to 14rem = 224px, which is what keeps the content column readable once
-the rail's fixed 220px `expanded` width (`docsNavRail`) is also on screen:
-224px panels leave ~516px of content at 960px with one panel open (the
-`shell-breakpoints.spec.ts` floor is 500px — narrowed from 17.5rem/280px
-specifically to restore that margin once the rail went from a 96px compact
-width to 220px expanded), and ~836px at 1280px. See `tocPinBreakpointPx` for
-the rest of that budget.
+Each `M3e.contentPane` carries `w-max` (Tailwind's `width: max-content`)
+instead of a fixed `--m3e-drawer-container-width`. `@m3e/web`'s own shadow DOM
+sets `::slotted([slot="start"]), ::slotted([slot="end"]) { width:
+var(--m3e-drawer-container-width, 22.5rem) }`, which by raw selector
+specificity (an attribute selector on a pseudo-element vs. a bare class) should
+out-rank `w-max` and force the library's 360px default — but it does not:
+verified directly against a live instance (toggling the `w-max` class and
+reading `getBoundingClientRect().width`) that `w-max` wins the cascade every
+time, sizing each panel to its own content instead. A hand-rolled
+`[--m3e-drawer-container-width:<value>]` override is deliberately avoided here
+in favor of this generated utility class, since a fixed width turned out to be
+unnecessary: content-driven sizing already keeps the column readable at every
+tested width (see the `shell-breakpoints.spec.ts` budget comment) and adapts
+to whichever section's nav labels are actually on screen, rather than
+truncating the longer ones (e.g. Guide's "Accessibility you can't forget") to
+fit a number picked for the shortest.
 
-The content pane, `tocPanel`, and `navMenu` each carry `pb-20` below the
-Tailwind `md` breakpoint because `docsNavBar` is `fixed ... bottom-0` there
-and would otherwise hide the last ~68px of every scrollable panel behind
-itself -- `navMenu`'s own `pb-20` went unverified for a while: the one test
-asserting this (`shell-breakpoints.spec.ts`, "does not occlude") drove a
-route whose tree was, until a routing fix elsewhere gave it real content,
-empty and therefore never actually scrollable.
+The `end` panel's `*:me-11` looks redundant with `w-max` but is not: `-me-7`
+bleeds the panel's background past its own box to the container edge, and
+without a matching inward margin on its children the _content_ (not just the
+background) bleeds past the viewport's trailing edge too — measured at 1440px
+wide, `m3e-toc`'s own right edge sat at 1451px (11px off-screen) with
+`*:me-11` removed, and back inside at 1407px with it restored. The `start`
+panel has no such compensation because `navMenu`'s own content never
+approaches that edge the way `-me-7`'s bleed does on the `end` side.
+
+Nothing here carries compensating bottom padding, and nothing added here
+should: `docsNavBar` is a real in-flow flex child of the shell (see `view`),
+not `fixed ... bottom-0`, so it cannot cover the end of a scrollable panel
+in the first place. The `pb-20 md:pb-0` this used to need on the content
+pane, `tocPanel`, AND `navMenu` was exactly the wrong shape of fix: it had
+to be remembered separately for every scroll region, and `navMenu`'s copy
+went unverified for a while (the one test asserting it,
+`shell-breakpoints.spec.ts`'s "does not occlude", drove a route whose tree
+was empty and therefore never actually scrollable). If a future scroll
+region here ever looks like it needs that padding back, the flex structure
+above has broken -- fix that, not this.
 
 -}
 drawerShell :
@@ -1280,18 +1322,17 @@ drawerShell toMsg model page components body =
             , M3e.DrawerContainer.endMode Value.auto
             , M3e.Attributes.end model.tocOpen
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
-            , TypedHtml.Attributes.class "h-full w-full [--m3e-drawer-container-width:14rem]"
+            , TypedHtml.Attributes.class "h-full w-full"
             ]
             [ [ navMenu components page.path ]
                 |> M3e.contentPane
-                    [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -ms-7"
-                    ]
+                    [ TypedHtml.Attributes.class "w-max m3e-content-pane-container-color-surface-container-low -ms-7" ]
                 |> M3e.DrawerContainer.start
-            , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ] body
+            , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ]
+                body
             , [ tocPanel toMsg ]
                 |> M3e.contentPane
-                    [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -me-7"
-                    ]
+                    [ TypedHtml.Attributes.class "w-max m3e-content-pane-container-color-surface-container-low -me-7 *:me-11" ]
                 |> M3e.DrawerContainer.end
             ]
         ]
@@ -1332,7 +1373,6 @@ tocPanel toMsg =
         [ M3e.Toc.for "main-content"
         , M3e.Toc.maxDepth 3
         , M3e.Events.delegate (M3e.Events.onClick (toMsg CloseToc))
-        , TypedHtml.Attributes.class "pb-20 md:pb-0"
         ]
         [ M3e.Toc.title (M3e.text "On this page") ]
 
@@ -1406,7 +1446,7 @@ navMenu components path =
         currentPath =
             normalizePath (UrlPath.toAbsolute path)
     in
-    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto pb-20 md:pb-0" ]
+    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto" ]
         (currentSectionItems components path |> List.map (navLeaf currentPath))
 
 
@@ -1630,12 +1670,23 @@ docsNavRail toMsg path =
         )
 
 
-{-| Mobile: a fixed bottom nav bar, replacing the rail below the `md`
-breakpoint. Unlike the rail, `M3e.NavBar` does not admit a `fab` child
+{-| Mobile: a bottom nav bar, replacing the rail below the `md` breakpoint.
+
+The bar is a REAL flex child of the shell (`view`'s outer
+`flex flex-col md:flex-row`), not `position: fixed` -- so on mobile it takes
+its own row at the bottom of the column and can't occlude anything above it.
+That is what lets every scrollable region in the shell skip the compensating
+`pb-20 md:pb-0` a floating bar would otherwise need, forever, in every
+current and future scroll region.
+
+Unlike the rail, `M3e.NavBar` does not admit a `fab` child
 (`config/slots.json` only lists `navItem`), so the search FAB is rendered as
 a floating sibling positioned above the bar, inside a `display: contents`
-wrapper div so it contributes no box of its own to the flex layout the call
-site (`view`) already relies on.
+wrapper div so it contributes no box of its own -- which is what makes the
+bar itself, not the wrapper, the flex child. The FAB stays `fixed`: a
+Material FAB floats over content by design, and it sits in the bar's own
+gutter (`bottom-20`) rather than displacing content.
+
 -}
 docsNavBar : (Msg -> msg) -> UrlPath -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 docsNavBar toMsg path =
@@ -1643,6 +1694,6 @@ docsNavBar toMsg path =
         [ TypedHtml.Attributes.class "contents" ]
         [ M3e.mapMsg toMsg (searchFab "fixed right-4 bottom-20 z-40 md:hidden" OpenSearch)
         , M3e.navBar
-            [ Aria.label "Sections", TypedHtml.Attributes.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
+            [ Aria.label "Sections", TypedHtml.Attributes.class "shrink-0 md:hidden" ]
             (List.map (railItem path) sections)
         ]
