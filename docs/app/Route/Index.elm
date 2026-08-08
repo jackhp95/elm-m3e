@@ -121,7 +121,7 @@ hero =
             ]
         , TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3 pt-2" ]
             [ M3e.button [ M3e.Button.variant Value.filled, M3e.Button.href "/getting-started/installation" ] [ M3e.text "Get started" ]
-            , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/reference" ] [ M3e.text "Browse the API reference" ]
+            , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/guide/reference" ] [ M3e.text "Browse the API reference" ]
             ]
         , TypedHtml.div [ TA.class "space-y-2 pt-4" ]
             [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text "Live theme — try the ⚙ settings in the app bar" ]
@@ -179,7 +179,7 @@ statusGrid =
         , TypedHtml.div [ TA.class "max-w-2xl" ]
             [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                 [ M3e.text "Prerelease — breaking changes are embraced while the API settles. Every example in these docs is round-tripped against the real components; the "
-                , TypedHtml.a [ TA.href "/roundtrip", TA.class "hover:underline text-primary" ] [ M3e.text "report" ]
+                , TypedHtml.a [ TA.href "/guide/roundtrip", TA.class "hover:underline text-primary" ] [ M3e.text "report" ]
                 , M3e.text " shows the current score."
                 ]
             ]
