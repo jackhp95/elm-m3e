@@ -26,7 +26,12 @@
  * These are filled in via oklch(from …) relative color calc.
  */
 
-:root {
+/*
+ * :where(:root) instead of :root — specificity (0,0,0) so @m3e/web's adopted
+ * html { --md-sys-color-* } (specificity 0,0,1) deterministically wins when
+ * <m3e-theme> is present. Fallback preserved when no theme element exists.
+ */
+:where(:root) {
   /* Declare support for both schemes; production apps can override to
      "light" via inline style on <html> to disable the dark-mode toggle. */
   color-scheme: light dark;
