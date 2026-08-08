@@ -671,7 +671,10 @@ view sharedData page model toMsg pageView =
                 -- already keeps the column's intrinsic height at ~0), but it is the
                 -- guard that keeps the "one bounded scroll region" invariant from
                 -- depending on that one class in another function.
-                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh w-full flex flex-col md:flex-row" ]
+                , TypedHtml.div
+                    [ TypedHtml.Attributes.id "docs-shell"
+                    , TypedHtml.Attributes.class "h-dvh w-full flex flex-col md:flex-row"
+                    ]
                     [ docsNavRail toMsg page.path
                     , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0 min-h-0" ]
                         [ M3e.mapMsg toMsg (appShellBar page.path)

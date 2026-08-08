@@ -30,11 +30,19 @@ import { expect, test } from "@playwright/test";
  *     future ancestor re-adds a clipping `overflow: hidden`), content past
  *     the fold silently becomes unreachable rather than erroring.
  */
-// Deliberately does NOT pin a direction class: the shell is
+// An ID, not a class shape. This used to be `m3e-theme > div.h-dvh.flex`,
+// which identified the shell only by coincidence: the moment an example route
+// adopted the same bounded `h-dvh` + flex layout (`Route/Examples/Shop.elm`),
+// that selector matched the example's OWN root too and the "examples skip the
+// docs shell" test below started failing on a page that has no docs shell at
+// all. Layout classes are shared vocabulary and cannot identify a component;
+// `#docs-shell` can.
+//
+// Note this deliberately does not pin a direction either: the shell is
 // `flex-col md:flex-row` (column on mobile, so the nav bar is a real bottom
-// flex child instead of a `fixed` overlay). The direction is asserted per
-// viewport below, from computed style, rather than baked into the selector.
-const DOCS_SHELL = "m3e-theme > div.h-dvh.flex";
+// flex child instead of a `fixed` overlay). Direction is asserted per viewport
+// below, from computed style.
+const DOCS_SHELL = "#docs-shell";
 const MAIN_COLUMN = `${DOCS_SHELL} > div.flex.flex-1.flex-col`;
 
 // `#docs-drawer` slots the tree (`slot="start"`) and TOC (`slot="end"`) panels
