@@ -98,13 +98,30 @@ view _ _ =
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 primary/supporting body, with a mobile bottom bar.
+
+`flex-col md:flex-row`: one shell, two axes. At `md`+ it is a ROW (rail | main
+column) and `mobileBar` is `md:hidden`. Below `md` the rail is `hidden` — so it
+takes no flex slot — and the SAME div is a COLUMN whose in-flow children are,
+top to bottom, the main column then the bottom nav bar. That is what lets the
+bar stop being `position: fixed`: an in-flow bar can't occlude the content
+above it, so no scroll region on this page needs a compensating `pb-24` to keep
+its last row readable.
+
+Note this `md:` breakpoint is the NAVIGATION one, and is independent of the
+`lg:` breakpoint `body` uses to reflow the supporting pane.
+
+`min-h-0` is the column-axis twin of `min-w-0`: a flex item's default
+`min-height: auto` would let the main column grow to fit its content instead of
+its flex basis, pushing the nav bar off the bottom of the viewport and turning
+the DOCUMENT into the scroller.
+
 -}
 screen : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 screen =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden" ]
             [ appBar
             , TypedHtml.div [ TA.class "flex-1 overflow-y-auto" ]
                 [ body
@@ -149,7 +166,7 @@ crowds the primary.
 -}
 body : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 body =
-    TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 pb-24 md:p-6 lg:flex-row" ]
+    TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6 lg:flex-row" ]
         [ primary
         , supporting
         ]
@@ -273,9 +290,17 @@ desktopRail =
         (List.map navItem destinations)
 
 
+{-| Mobile: a bottom nav bar, replacing the rail below the `md` breakpoint.
+
+The bar is a REAL flex child of `screen`'s outer `flex flex-col md:flex-row`,
+not `position: fixed` — so on mobile it takes its own row at the bottom of the
+column and can't occlude anything above it. That is what lets `body` skip the
+compensating `pb-24` a floating bar would otherwise need.
+
+-}
 mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
-    M3e.navBar [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
+    M3e.navBar [ TA.class "md:hidden shrink-0" ]
         (List.map navItem destinations)
 
 
