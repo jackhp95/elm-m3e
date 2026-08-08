@@ -368,19 +368,28 @@ floats over this box any more.
 mainContent : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 mainContent =
     TypedHtml.section [ TA.class "flex-1 min-w-0 min-h-0 overflow-y-auto" ]
-        [ TypedHtml.div [ TA.class "flex flex-col gap-6 p-4 md:p-6" ]
-            [ pageHeader
-            , kpiRow
-            , TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 lg:grid-cols-3" ]
-                [ TypedHtml.div [ TA.class "lg:col-span-2 flex flex-col gap-6" ]
-                    [ accountsSection
-                    , activitySection
+        -- `fab` is `sticky`, and a sticky element's stick range is its
+        -- CONTAINING BLOCK. Left as a direct child of the scroller that block
+        -- spans the footer too, so the FAB never settled back into its own row
+        -- and sat over the prev/next strip at full scroll (measured on Shop,
+        -- which had the identical shape: FAB 589-669 across the next-example
+        -- link at 579-595). This wrapper ends where the content ends, so the
+        -- FAB un-sticks and scrolls away as the footer arrives.
+        [ TypedHtml.div []
+            [ TypedHtml.div [ TA.class "flex flex-col gap-6 p-4 md:p-6" ]
+                [ pageHeader
+                , kpiRow
+                , TypedHtml.div [ TA.class "grid grid-cols-1 gap-6 lg:grid-cols-3" ]
+                    [ TypedHtml.div [ TA.class "lg:col-span-2 flex flex-col gap-6" ]
+                        [ accountsSection
+                        , activitySection
+                        ]
+                    , budgetsSection
                     ]
-                , budgetsSection
                 ]
+            , fab
             ]
         , exampleFooter
-        , fab
         ]
 
 
