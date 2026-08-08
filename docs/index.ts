@@ -9,6 +9,54 @@ import "../js/raw-html.js";
 import "../js/slide-panels.js";
 import "./style.css";
 
+// ─── Cascade-specificity fix ────────────────────────────────────────────────
+//
+// ROOT CAUSE: vendor static CSS uses `:root { --md-sys-color-* }` (specificity
+// 0,1,0). @m3e/web's <m3e-theme> adopted stylesheet uses `html { --md-sys-color-* }`
+// (specificity 0,0,1). Pseudo-class `:root` BEATS type-selector `html`, so the
+// static vendor palette silently wins every time — color/contrast attribute
+// changes on <m3e-theme> recompute the adopted-sheet values correctly but are
+// never visible in getComputedStyle.
+//
+// The CSS-layer fix (wrapping vendor :root in @layer) is the right approach per
+// spec, but Tailwind v4 / LightningCSS strips all @layer annotations from
+// non-entry imported files AND normalizes :where(:root) back to :root, making
+// any pure-CSS fix impossible without forking the build pipeline.
+//
+// JS FIX: after every <m3e-theme> `change` event (fired post-_apply()), copy
+// the computed --md-sys-color-* values from the adopted stylesheet to inline
+// styles on <html>. Inline styles have specificity (1,0,0,0) — always beats
+// any selector in any author stylesheet.
+//
+// LISTENER PLACEMENT: registered at module-evaluation time (before Elm renders
+// and before the first Lit update cycle), so the first `change` from <m3e-theme>
+// is never missed. `capture: true` so it fires before other listeners in case
+// any sibling handler calls stopPropagation.
+function _applyThemeInlineStyles(): void {
+  for (const sheet of document.adoptedStyleSheets) {
+    const rule = sheet.cssRules[0] as CSSStyleRule | undefined;
+    if (rule?.selectorText === "html") {
+      const { style } = rule;
+      for (let i = 0; i < style.length; i++) {
+        const prop = style.item(i);
+        if (prop.startsWith("--md-sys-color-")) {
+          document.documentElement.style.setProperty(prop, style.getPropertyValue(prop));
+        }
+      }
+      return;
+    }
+  }
+}
+document.addEventListener(
+  "change",
+  (e) => {
+    if ((e.target as Element | null)?.tagName === "M3E-THEME") {
+      _applyThemeInlineStyles();
+    }
+  },
+  true,
+);
+// ─────────────────────────────────────────────────────────────────────────────
 
 type ElmPagesInit = {
   load: (elmLoaded: Promise<unknown>) => Promise<void>;
@@ -117,6 +165,18 @@ const config: ElmPagesInit = {
     if (import.meta.env.DEV) {
       mountFeedbackFab();
     }
+
+    // (The MutationObserver + requestUpdate() shim that lived here was removed.
+    //  It was added under commit eb30e90b based on a wrong diagnosis — the
+    //  element was always recomputing correctly. The real fix is the inline-style
+    //  sync via the `change` event listener registered at module-init above.)
+
+    // Safety-net initial sync: defer past the microtask queue so Lit's first
+    // update cycle (which fills the adopted stylesheet) has completed before we
+    // read from it. setTimeout(0) runs after ALL pending microtasks drain — the
+    // `change` event listener above handles all subsequent updates.
+    await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    _applyThemeInlineStyles();
   },
   flags: function () {
     // `width` picks the initial drawer mode (side vs over) before
