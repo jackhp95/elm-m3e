@@ -90,7 +90,7 @@ An earlier draft of this spec proposed an explicit ordered `List ( Value, String
 worth recording: there is **no Elm test runner wired for the docs app**. `tests/elm.json`'s
 source directories are `../src` and the two substrate packages — not `docs/app` — and the
 docs' only Elm test (`docs/tests/FoldTest.elm`) runs through a bespoke `Platform.worker`
-runner (`docs/scripts/run-fold-test.cjs`). A permutation test would mean standing up a whole
+runner (`docs/scripts/run-elm-worker-test.cjs`). A permutation test would mean standing up a whole
 test harness to protect three lists, or falling back to text-parsing Elm from a `.mjs` check,
 which is brittle.
 

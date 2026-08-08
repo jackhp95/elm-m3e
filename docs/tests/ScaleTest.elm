@@ -2,8 +2,9 @@ port module ScaleTest exposing (main)
 
 {-| Unit tests for `Theme.Scale`'s pure scale-mode computation.
 
-Run via `elm make` + a tiny node runner (see `scripts/run-fold-test.cjs`,
-reused generically); the docs project has no `elm-test` runner wired, so this
+Run via `elm make` + a tiny node runner (see `scripts/run-elm-worker-test.cjs`,
+invoked as `node scripts/run-elm-worker-test.cjs <compiled-elm.js> ScaleTest`);
+the docs project has no `elm-test` runner wired, so this
 is a self-checking `Platform.worker` that emits per-case `PASS`/`FAIL`
 diagnostics plus a final structured `RESULT ok=<passed>/<total>` line through
 a port. The runner keys the exit code off that structured count (0 = all

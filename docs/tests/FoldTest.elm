@@ -2,8 +2,9 @@ port module FoldTest exposing (main)
 
 {-| Unit tests for `Doc.Fold`'s pure fold-tree computation.
 
-Run via `elm make` + a tiny node runner (see `scripts/run-fold-test.cjs`); the
-docs project has no `elm-test` runner wired, so this is a self-checking
+Run via `elm make` + a tiny node runner (see `scripts/run-elm-worker-test.cjs`,
+invoked as `node scripts/run-elm-worker-test.cjs <compiled-elm.js> FoldTest`);
+the docs project has no `elm-test` runner wired, so this is a self-checking
 `Platform.worker` that emits per-case `PASS`/`FAIL` diagnostics plus a final
 structured `RESULT ok=<passed>/<total>` line through a port. The runner keys the
 exit code off that structured count (0 = all pass, 1 = any fail), not off the
