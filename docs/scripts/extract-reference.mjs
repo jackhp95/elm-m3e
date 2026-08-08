@@ -16,7 +16,7 @@
 // cache of it — is reused) with symlinks to `src/M3e` (the library) and
 // `vendor/elm-m3e/Cem` (the atoms, kept in source-dirs but NOT exposed), runs
 // `elm make --docs` there, then maps the produced `docs.json` to the existing
-// `reference.json` schema consumed by Route.Reference and Route.Components.Name_.
+// `reference.json` schema consumed by Route.Guide.Reference and Route.Components.Name_.
 // `M3e.Internal` is the unexposed escape-hatch and is excluded from the docs.
 
 import fs from "fs";

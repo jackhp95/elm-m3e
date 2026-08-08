@@ -176,7 +176,7 @@ test("the mobile bottom nav bar does not occlude the end of the page content", a
   // The deepest descendant (e.g. the link inside the last nav-menu item) is
   // the actual last piece of content a user would try to read or tap, and
   // its position DOES shift clear of the bar as trailing padding increases.
-  const lastBottom = await page
+  const last = await page
     .locator("#main-content m3e-content-pane")
     .first()
     .evaluate((el) => {
@@ -184,10 +184,15 @@ test("the mobile bottom nav bar does not occlude the end of the page content", a
       if (!sc) throw new Error("no scroll-container");
       sc.scrollTop = sc.scrollHeight;
       const nodes = el.querySelectorAll("*");
-      const last = nodes[nodes.length - 1];
-      if (!last) throw new Error("content pane has no children");
-      return last.getBoundingClientRect().bottom;
+      const lastNode = nodes[nodes.length - 1];
+      if (!lastNode) throw new Error("content pane has no descendants");
+      const rect = lastNode.getBoundingClientRect();
+      return { bottom: rect.bottom, width: rect.width, height: rect.height };
     });
 
-  expect(lastBottom).toBeLessThanOrEqual(barBox.y);
+  // Guard against a vacuous pass: if the last-in-document-order node were a
+  // zero-size or `display:none` trailing element, its position would satisfy
+  // the assertion below without actually measuring any visible content.
+  expect(last.width > 0 || last.height > 0).toBe(true);
+  expect(last.bottom).toBeLessThanOrEqual(barBox.y);
 });

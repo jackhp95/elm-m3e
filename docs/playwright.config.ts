@@ -55,10 +55,12 @@ export default defineConfig({
     // doesn't apply to this raw static server), and `serve-dist.mjs`'s SPA
     // fallback for an unresolved path tries `dist/index.html`, which no
     // longer exists either -- so a readiness GET of `/` gets a 404 forever
-    // and this never comes up. Poll a route that's guaranteed to exist
-    // instead; this only affects the test harness's own health check, not
-    // anything served to a real visitor.
-    url: `${baseURL}/getting-started/welcome`,
+    // and this never comes up. Poll `/search-index.json` instead of a content
+    // route: it's a build artifact emitted at the dist root regardless of
+    // routing (see `docs/scripts/search-index-gen`), so renaming or moving a
+    // page can never silently reintroduce the 480s boot-timeout hang this
+    // fixed by making the readiness probe depend on a route again.
+    url: `${baseURL}/search-index.json`,
     reuseExistingServer: !process.env.CI,
     stdout: "pipe",
     stderr: "pipe",

@@ -1,8 +1,8 @@
 module Route.GettingStarted.Welcome exposing (ActionData, Data, Model, Msg, route)
 
-{-| Documentation home for `m3e-builder` / `elm-m3e` — the type-safe, MISI Elm
-builder layer (`M3e.*`) over matraic's `@m3e/web` Material 3 Expressive web
-components.
+{-| The Start section's welcome page for `m3e-builder` / `elm-m3e` — the
+type-safe, MISI Elm builder layer (`M3e.*`) over matraic's `@m3e/web`
+Material 3 Expressive web components.
 
 The app shell (`Shared.elm`) owns the `<m3e-theme>`, the top app bar, and the
 sidebar nav, so this page is just the hero + highlights content.

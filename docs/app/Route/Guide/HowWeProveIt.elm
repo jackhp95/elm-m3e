@@ -8,10 +8,10 @@ That's why you can copy any example here and trust it. The meta-chapter — no n
 running-example beat.
 
 Every figure on this page is derived at build time from the SAME source the
-[`/roundtrip`](/roundtrip) report renders: `data/roundtrip-report.json`. Nothing
+[`/guide/roundtrip`](/guide/roundtrip) report renders: `data/roundtrip-report.json`. Nothing
 here is hand-typed, so the guide and the report can never drift apart. We headline
 the **top** form (`M3e.Button.view` — the typed, slot-safe layer the guide
-teaches first); the full per-form table lives on `/roundtrip`.
+teaches first); the full per-form table lives on `/guide/roundtrip`.
 
 -}
 
@@ -45,9 +45,9 @@ type alias RouteParams =
 
 
 {-| The headline form's round-trip breakdown, computed at build time from
-`data/roundtrip-report.json` so this chapter and `/roundtrip` share one source.
+`data/roundtrip-report.json` so this chapter and `/guide/roundtrip` share one source.
 
-  - `total` — examples in the corpus (matches `/roundtrip`'s denominator).
+  - `total` — examples in the corpus (matches `/guide/roundtrip`'s denominator).
   - `converted` — of those, how many this API could express at all.
   - `cleanIdentity` — converted and round-tripped byte-for-byte.
   - `allowedAlias` — round-tripped with cosmetic-only deviations (functionally
@@ -160,7 +160,7 @@ intro =
 
 loop : String
 loop =
-    """The loop is simple. Each example starts as real component markup. It's converted to every layer/form — the standard top, the strict shapes, the raw floor — and each version is compiled. Then it's rendered **back** to HTML and diffed against the original markup it came from. If a form can't reproduce the original, or reproduces it only by leaning on an escape, that's a *measured* number we track — not something we bury. The corpus is the same one the [round-trip report](/roundtrip) scores; the figures below are read straight out of that report at build time. Here's the **top** form — the `M3e.*` this guide teaches:"""
+    """The loop is simple. Each example starts as real component markup. It's converted to every layer/form — the standard top, the strict shapes, the raw floor — and each version is compiled. Then it's rendered **back** to HTML and diffed against the original markup it came from. If a form can't reproduce the original, or reproduces it only by leaning on an escape, that's a *measured* number we track — not something we bury. The corpus is the same one the [round-trip report](/guide/roundtrip) scores; the figures below are read straight out of that report at build time. Here's the **top** form — the `M3e.*` this guide teaches:"""
 
 
 {-| The ASCII report, filled in from build-time data. The four lines always sum to
@@ -196,7 +196,7 @@ report d =
 
 reportNote : String
 reportNote =
-    """Those four buckets sum to the whole corpus. The denominator (the total above) is the **same count of examples the [round-trip report](/roundtrip) uses** — one example is one HTML snippet, checked once per form. Other forms express more or fewer of them and drift by different amounts; the report has the full table. We headline `top` because it's the form the guide leads with, not because it's the best-scoring."""
+    """Those four buckets sum to the whole corpus. The denominator (the total above) is the **same count of examples the [round-trip report](/guide/roundtrip) uses** — one example is one HTML snippet, checked once per form. Other forms express more or fewer of them and drift by different amounts; the report has the full table. We headline `top` because it's the form the guide leads with, not because it's the best-scoring."""
 
 
 {-| Chapter body: what an "allowed alias" is, with a concrete worked example
@@ -213,7 +213,7 @@ Here's a real one from the run. The **Autocomplete** example (`Autocomplete/8`) 
 + <div class="options" role="group">…</div>   (round-tripped)
 ```
 
-The output is functionally identical — same element, same children, same behavior; the platform just annotated it. That's an **allowed alias**: counted in the `allowed alias` line, never in `unexpected drift`. Contrast it with a *functional* deviation — a dropped `filter="starts-with"` attribute that actually changes matching behavior. That one lands in `unexpected drift`, in red, at the top of the [round-trip report](/roundtrip)."""
+The output is functionally identical — same element, same children, same behavior; the platform just annotated it. That's an **allowed alias**: counted in the `allowed alias` line, never in `unexpected drift`. Contrast it with a *functional* deviation — a dropped `filter="starts-with"` attribute that actually changes matching behavior. That one lands in `unexpected drift`, in red, at the top of the [round-trip report](/guide/roundtrip)."""
 
 
 {-| The honest close, wired to the real drift number so it can never overclaim.
@@ -229,11 +229,11 @@ honest d =
             else
                 "On this run the standard surface has **"
                     ++ String.fromInt d.functionalDrift
-                    ++ " example(s) of unexpected drift** — real functional mismatches, shown in red at the top of the [round-trip report](/roundtrip). We don't paper over them; we rank them first."
+                    ++ " example(s) of unexpected drift** — real functional mismatches, shown in red at the top of the [round-trip report](/guide/roundtrip). We don't paper over them; we rank them first."
     in
     """The number that matters is the last line: **unexpected drift.** """
         ++ driftClause
-        ++ """ Where a value takes a known, allowed shape-change on the way back — a slot setter that round-trips to an equivalent name, an ARIA role the platform adds — it's counted and labeled, not hidden. That honesty is the point: the docs don't claim perfection, they *measure* faithfulness and show the measurement. So when you copy an example from any page here, you're copying code that was rendered back to HTML and checked against the real component. It works because it was proven to — and if it ever stops, the [report](/roundtrip) says so before you find out the hard way."""
+        ++ """ Where a value takes a known, allowed shape-change on the way back — a slot setter that round-trips to an equivalent name, an ARIA role the platform adds — it's counted and labeled, not hidden. That honesty is the point: the docs don't claim perfection, they *measure* faithfulness and show the measurement. So when you copy an example from any page here, you're copying code that was rendered back to HTML and checked against the real component. It works because it was proven to — and if it ever stops, the [report](/guide/roundtrip) says so before you find out the hard way."""
 
 
 recap : Data -> String

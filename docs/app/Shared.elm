@@ -102,7 +102,6 @@ type alias Model =
     , contrast : Value Value.Contrast
     , density : Float
     , dir : TypedHtml.Values.Value TypedHtml.Values.Dir
-    , settingsOpen : Bool
     , searchOpen : Bool
     , searchQuery : String
     , searchIndex : Maybe (Result Http.Error (List SearchEntry))
@@ -311,7 +310,6 @@ panelsExclusive width =
 type Msg
     = ToggleTree
     | PageChanged
-    | SettingsSheetClosed
     | DrawerChanged Bool Bool
     | ViewportResized Int
     | ToggleToc
@@ -354,7 +352,6 @@ init flags _ =
       , contrast = Value.standard
       , density = 0
       , dir = TypedHtml.Values.ltr
-      , settingsOpen = False
       , searchOpen = False
       , searchQuery = ""
       , searchIndex = Nothing
@@ -483,13 +480,6 @@ update msg model =
               }
             , Effect.none
             )
-
-        -- The bottom sheet's own `closed` event fires on every dismissal path
-        -- (the trigger's `.show()`, a swipe-down, an outside click, Escape) --
-        -- none of them go through Elm, so this is the only place `settingsOpen`
-        -- is ever set back to `False`.
-        SettingsSheetClosed ->
-            ( { model | settingsOpen = False }, Effect.none )
 
         -- The `<m3e-drawer-container>` `change` event reports the element's own
         -- `start`/`end` open state (scrim click, Esc, breakpoint auto-close — a
@@ -792,20 +782,20 @@ or Escape (the actual dismiss-outside-listener attach is deferred a frame via
 this trigger hit, since Elm's own render round-trip landed unpredictably
 relative to that same deferred frame; a native trigger's synchronous
 `.show()` call doesn't have that round-trip to race). `handle` + `hideable`
-let a swipe-down dismiss it too. None of these paths go through Elm, so
-`onClosed` is what syncs `model.settingsOpen` back to `False` for every one
-of them (see the `SettingsSheetClosed` case in `update`).
+let a swipe-down dismiss it too. The element owns its own open/closed state
+entirely -- opening AND closing -- with no Elm involvement at all, not even
+to sync a mirrored model field back afterward; the same way `docsNavRail`'s
+`m3e-nav-rail-toggle` owns the rail's expanded/compact width with no
+Elm-side counterpart either.
 -}
 settingsBottomSheet : Model -> Element (M3e.BottomSheet.Is s) admittedBy Msg
 settingsBottomSheet model =
     M3e.bottomSheet
         [ M3e.Attributes.id "settings-sheet"
-        , M3e.BottomSheet.open model.settingsOpen
         , M3e.BottomSheet.modal True
         , M3e.BottomSheet.handle True
         , M3e.BottomSheet.hideable True
         , M3e.BottomSheet.detents "half full"
-        , M3e.BottomSheet.onClosed SettingsSheetClosed
         ]
         [ settingsSheetContent model ]
 
@@ -1523,9 +1513,12 @@ sectionIsCurrent path section =
 BOTH the app bar's title (`appShellBar`) and the document-title breadcrumb
 (`breadcrumbTitle`) -- one lookup, so the two can't drift apart.
 
-`Nothing` means the route belongs to no top-level section -- every route in
-the app currently belongs to one, so this is a defensive fallback rather
-than a live case today.
+`Nothing` means the route belongs to no top-level section -- every route this
+docs site links to or navigates between belongs to one, so this is a
+defensive fallback rather than a live case in normal navigation. (It is a
+live case for `/roundtrip-harness`, the transient route
+`scripts/roundtrip/gen-harness-route.mjs` generates during `check:roundtrip`
+-- that route has no section prefix and is never linked from the site.)
 
 -}
 currentSectionLabel : UrlPath -> Maybe String

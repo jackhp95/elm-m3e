@@ -110,7 +110,7 @@ layers =
 
 barrelVsSpecific : String
 barrelVsSpecific =
-    """A second axis, orthogonal to the surfaces: *which import you reach through*. Same output either way; the [reference](/reference) documents both.
+    """A second axis, orthogonal to the surfaces: *which import you reach through*. Same output either way; the [reference](/guide/reference) documents both.
 
 | Import | Statement | You get |
 | --- | --- | --- |
