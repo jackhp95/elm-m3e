@@ -151,9 +151,13 @@ for (const width of [960, 1024, 1280, 1440]) {
 }
 
 /**
- * `docsNavBar` is `fixed inset-x-0 bottom-0`, so it floats over the scroll
- * region. Without compensating bottom padding the last ~68px of every page is
- * behind it: visible-looking but unreadable and unclickable.
+ * `docsNavBar` is a real in-flow flex child of the shell's `flex-col` mobile
+ * layout, so it sits BELOW the scroll region rather than floating over it and
+ * structurally cannot cover the end of the page. This test is the regression
+ * guard on that: if the bar ever goes back to `fixed inset-x-0 bottom-0`, the
+ * last ~68px of every page becomes visible-looking but unreadable and
+ * unclickable again, and no amount of per-region `pb-20` reliably prevents it
+ * (it has to be remembered for each new scroll region, and once wasn't).
  */
 test("the mobile bottom nav bar does not occlude the end of the page content", async ({
   page,

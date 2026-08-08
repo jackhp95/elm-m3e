@@ -1287,13 +1287,17 @@ wide, `m3e-toc`'s own right edge sat at 1451px (11px off-screen) with
 panel has no such compensation because `navMenu`'s own content never
 approaches that edge the way `-me-7`'s bleed does on the `end` side.
 
-The content pane, `tocPanel`, and `navMenu` each carry `pb-20` below the
-Tailwind `md` breakpoint because `docsNavBar` is `fixed ... bottom-0` there
-and would otherwise hide the last ~68px of every scrollable panel behind
-itself -- `navMenu`'s own `pb-20` went unverified for a while: the one test
-asserting this (`shell-breakpoints.spec.ts`, "does not occlude") drove a
-route whose tree was, until a routing fix elsewhere gave it real content,
-empty and therefore never actually scrollable.
+Nothing here carries compensating bottom padding, and nothing added here
+should: `docsNavBar` is a real in-flow flex child of the shell (see `view`),
+not `fixed ... bottom-0`, so it cannot cover the end of a scrollable panel
+in the first place. The `pb-20 md:pb-0` this used to need on the content
+pane, `tocPanel`, AND `navMenu` was exactly the wrong shape of fix: it had
+to be remembered separately for every scroll region, and `navMenu`'s copy
+went unverified for a while (the one test asserting it,
+`shell-breakpoints.spec.ts`'s "does not occlude", drove a route whose tree
+was empty and therefore never actually scrollable). If a future scroll
+region here ever looks like it needs that padding back, the flex structure
+above has broken -- fix that, not this.
 
 -}
 drawerShell :
@@ -1319,17 +1323,13 @@ drawerShell toMsg model page components body =
             ]
             [ [ navMenu components page.path ]
                 |> M3e.contentPane
-                    [ TypedHtml.Attributes.class "w-max"
-                    , TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -ms-7"
-                    ]
+                    [ TypedHtml.Attributes.class "w-max m3e-content-pane-container-color-surface-container-low -ms-7" ]
                 |> M3e.DrawerContainer.start
             , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ]
                 body
             , [ tocPanel toMsg ]
                 |> M3e.contentPane
-                    [ TypedHtml.Attributes.class "w-max"
-                    , TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -me-7 *:me-11"
-                    ]
+                    [ TypedHtml.Attributes.class "w-max m3e-content-pane-container-color-surface-container-low -me-7 *:me-11" ]
                 |> M3e.DrawerContainer.end
             ]
         ]
