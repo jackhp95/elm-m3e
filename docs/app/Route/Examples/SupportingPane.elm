@@ -119,7 +119,7 @@ the DOCUMENT into the scroller.
 screen : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 screen =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden" ]
             [ appBar

@@ -224,7 +224,7 @@ content in both directions -- which is what the `relative` here anchors.
 screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface relative flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface relative flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
         [ navRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0" ]
             [ topBar
@@ -341,13 +341,21 @@ searchBar =
 
 {-| The reflowing two-pane body. On `md:` the list is a fixed-width column beside
 a filling reading pane; below `md:` they stack (list first, reading pane under).
+
+Below `md:` BOTH sections are `flex-1 min-h-0`, which is what actually makes the
+stacking claim true. With `flex-basis: auto` and no minimum-size guard the list's
+intrinsic height (608px of rows) consumed the whole column and the reading pane
+measured `height: 0` -- present in the DOM, scrollable in principle, and
+completely unreachable in practice. Halving the space keeps both panes real and
+independently scrollable. `md:flex-none` hands the row axis back to `md:w-96`.
+
 -}
 body : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 body model =
     TypedHtml.div [ TA.class "flex flex-1 flex-col md:flex-row min-h-0 overflow-hidden" ]
-        [ TypedHtml.section [ TA.class "w-full md:w-96 md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
+        [ TypedHtml.section [ TA.class "w-full md:w-96 min-h-0 flex-1 md:flex-none md:shrink-0 overflow-y-auto md:border-r md:border-outline-variant" ]
             [ messageList model ]
-        , TypedHtml.section [ TA.class "flex-1 overflow-y-auto" ]
+        , TypedHtml.section [ TA.class "min-h-0 flex-1 overflow-y-auto" ]
             [ readingPane (selectedMessage model) ]
         ]
 

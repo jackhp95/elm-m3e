@@ -148,7 +148,7 @@ view _ _ model =
     View.fromElement "List-detail" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
-{-| The full-viewport shell. `h-screen`/`overflow-hidden` pin the chrome so only
+{-| The full-viewport shell. `h-dvh`/`overflow-hidden` pin the chrome so only
 the panes scroll.
 
 `flex-col md:flex-row` is one shell serving two axes. At `md:` and up it is a ROW
@@ -171,7 +171,7 @@ overflow class staying put.
 screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
         [ desktopRail
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden" ]
             [ appBar
@@ -226,7 +226,7 @@ body model =
 -}
 listPane : Int -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 listPane selected =
-    TypedHtml.div [ TA.class "shrink-0 overflow-y-auto border-outline-variant/40 md:w-80 md:border-r" ]
+    TypedHtml.div [ TA.class "min-h-0 flex-1 overflow-y-auto border-outline-variant/40 md:w-80 md:flex-none md:shrink-0 md:border-r" ]
         [ M3e.list []
             (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                 (List.indexedMap (contactRow selected) contacts)
@@ -262,7 +262,7 @@ contactRow selected index contact =
 -}
 detailPane : Contact -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 detailPane contact =
-    TypedHtml.div [ TA.class "flex-1 overflow-y-auto p-4 md:p-8" ]
+    TypedHtml.div [ TA.class "min-h-0 flex-1 overflow-y-auto p-4 md:p-8" ]
         [ TypedHtml.div [ TA.class "mx-auto flex w-full max-w-xl flex-col gap-6" ]
             [ header contact
             , detailCard contact

@@ -173,7 +173,7 @@ view _ _ model =
 
 
 {-| The full-viewport shell: a desktop nav rail beside a main column, with a
-mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so only the
+mobile bottom bar. `h-dvh`/`overflow-hidden` pin the chrome so only the
 content column scrolls.
 
 `flex-col md:flex-row`: one shell, two axes. At `md`+ it is a ROW
@@ -194,7 +194,7 @@ but it keeps the bounded-scroll invariant from depending on that.
 screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 screen model =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
         [ desktopRail model.section
         , TypedHtml.div [ TA.class "flex flex-1 flex-col min-h-0 overflow-hidden" ]
             [ appBar
