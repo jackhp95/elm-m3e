@@ -206,7 +206,6 @@ view _ _ _ =
                 , mainContent
                 ]
             , mobileBar
-            , fab
             ]
         )
 
@@ -313,13 +312,31 @@ barItem d =
         ]
 
 
+{-| The primary action, floating over the content by Material convention.
+
+`sticky`, not `fixed`, and it lives INSIDE `mainContent`'s scroll region. The
+distinction is the whole point: `fixed` is viewport-relative wherever it sits in
+the DOM, so it had to hardcode `bottom-20` to clear the bar -- a magic number
+that silently encodes the bar's 68px height and goes wrong the moment the bar
+changes. `sticky` is relative to the nearest scrolling ancestor, and that
+scroller's bottom edge IS the bar's top edge, so a plain `bottom-6` clears the
+bar by construction with no knowledge of it. That also drops the `md:` variant:
+one offset is now correct at both widths.
+
+`pointer-events-none` on the positioned wrapper with `pointer-events-auto` on
+the FAB itself keeps the full-width sticky row from blanketing the content it
+floats over.
+
+-}
 fab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 fab =
-    TypedHtml.div [ TA.class "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20" ]
-        [ M3e.fab
-            [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
-            [ M3e.icon [ TA.name "add" ] []
-            , M3e.Fab.label (M3e.text "New report")
+    TypedHtml.div [ TA.class "pointer-events-none sticky bottom-6 flex justify-end pr-4 md:pr-6" ]
+        [ TypedHtml.div [ TA.class "pointer-events-auto" ]
+            [ M3e.fab
+                [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
+                [ M3e.icon [ TA.name "add" ] []
+                , M3e.Fab.label (M3e.text "New report")
+                ]
             ]
         ]
 
@@ -330,7 +347,9 @@ fab =
 
 {-| The one scroll region on the page. `overflow-y-auto` is what makes it absorb
 all the overflow the bounded root refuses to grow for, which is in turn what
-lets `mobileBar` be static and `fab` keep a fixed offset.
+lets `mobileBar` be static -- and, because this box's bottom edge is exactly the
+bar's top edge, what gives the sticky `fab` an offset that clears the bar
+without knowing the bar exists.
 
 `min-h-0` here is belt-and-braces, and honestly so: `overflow-y-auto` already
 zeroes this box's own automatic minimum size, and perturbation confirms it --
@@ -339,10 +358,11 @@ it from the parent row blows the layout out. It stays because the invariant
 should not silently depend on the overflow class never moving; the class that
 actually holds the line is the parent's.
 
-The padding moves to an inner wrapper so `exampleFooter` can sit inside the
-scroller (edge to edge, and outside the `gap-6` rhythm of the content above it)
-rather than costing the viewport a permanent row. The old `pb-28 md:pb-6` is
-gone: it was compensation for chrome that no longer floats over this box.
+The padding moves to an inner wrapper so `exampleFooter` and `fab` can sit
+inside the scroller (edge to edge, and outside the `gap-6` rhythm of the content
+above them) rather than costing the viewport a permanent row each. The old
+`pb-28 md:pb-6` is gone: it was compensation for a floating bar, and nothing
+floats over this box any more.
 
 -}
 mainContent : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
@@ -360,6 +380,7 @@ mainContent =
                 ]
             ]
         , exampleFooter
+        , fab
         ]
 
 
