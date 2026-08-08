@@ -37,7 +37,7 @@
     "@iconify-json/material-symbols": "^1.2.88",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify/utils": "^3.1.4",
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.62.1",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.3.3",
     "elm": "^0.19.1-6",
@@ -48,7 +48,7 @@
     "npm-run-all2": "^9.0.3",
     "png-to-ico": "^3.0.2",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.1.5"
+    "vite": "^8.2.0"
   },
   "dependencies": {
     "@m3e/web": "^2.7.0",
