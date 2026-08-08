@@ -1,9 +1,14 @@
 module Theme.Tokens exposing
-    ( ColorToken, colorGroups
-    , ShapeToken, shapeTokens
-    , TypescaleToken, typescaleTokens
-    , MotionDurationToken, motionDurationTokens
-    , StateOpacityToken, stateOpacityTokens
+    ( ColorToken
+    , MotionDurationToken
+    , ShapeToken
+    , StateOpacityToken
+    , TypescaleToken
+    , colorGroups
+    , motionDurationTokens
+    , shapeTokens
+    , stateOpacityTokens
+    , typescaleTokens
     )
 
 {-| The `--md-sys-*` custom-property surface this editor exposes, read
@@ -120,8 +125,21 @@ from this repo's real 120-token typescale surface — 2 variants [standard,
 emphasized] x 5 roles x 3 sizes x 4 axes [font-size, font-weight,
 line-height, tracking] — matching the reference editor's 15-token scope,
 which only ever manipulates font-size). `step` is this token's position on
-the modular scale, anchored at `Body Large` (1rem, the M3 baseline body-text
-size) = step 0.
+the modular scale, NOT a uniform +1 per row — it is assigned by rank-ordering
+the _unique_ `defaultRem` values across all 15 tokens in ascending order and
+giving each successive unique rem value the next integer step (anchored so
+`Body Large`, 1rem, the M3 baseline body-text size, lands on step 0). Several
+tokens share the same `defaultRem` (e.g. `Label Medium`/`Body Small` are both
+0.75rem; `Body Medium`/`Title Small`/`Label Large` are all 0.875rem;
+`Body Large`/`Title Medium` are both 1rem), and same-rem tokens share the
+same step — that's why the step sequence repeats values and skips others
+rather than incrementing by 1 every row (e.g. `Title Small` is step -4 while
+the very next row, `Body Large`, is step 0; `Display Medium` is step 6 while
+`Display Large` is step 8, skipping 7). Full label -> step mapping, in
+ascending `defaultRem` order: Label Small=-6, Label Medium=-5, Body Small=-5,
+Label Large=-4, Body Medium=-4, Title Small=-4, Body Large=0, Title Medium=0,
+Title Large=1, Headline Small=2, Headline Medium=3, Headline Large=4,
+Display Small=5, Display Medium=6, Display Large=8.
 -}
 type alias TypescaleToken =
     { label : String, cssVar : String, defaultRem : Float, step : Int }
