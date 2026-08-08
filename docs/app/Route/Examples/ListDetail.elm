@@ -10,9 +10,10 @@ a fixed-width `M3e.List` of contacts (`md:w-80`) beside a filling detail pane. B
 contact's detail stacks beneath it — the standard compact fallback for list-detail.
 
 Navigation switches the same way every example does: an `M3e.NavRail` on desktop
-(`hidden md:flex`), an `M3e.NavBar` pinned to the bottom on mobile
-(`md:hidden fixed inset-x-0 bottom-0`), one shared destination list and one `navItem`
-producer so the two copies never drift.
+(`hidden md:flex`), an `M3e.NavBar` at the bottom on mobile (`md:hidden shrink-0`,
+a real in-flow flex child of the screen's `flex-col md:flex-row` root rather than a
+`position: fixed` overlay), one shared destination list and one `navItem` producer
+so the two copies never drift.
 
 Tailwind is layout only (flex/grid/gap/padding/positioning/responsive visibility);
 every visual token — color, typography, surface, shape — comes from M3 token
@@ -147,16 +148,32 @@ view _ _ model =
     View.fromElement "List-detail" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
-{-| The full-viewport shell: a desktop rail beside a column of AppBar + two-pane
-body, with a mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so
-only the panes scroll.
+{-| The full-viewport shell. `h-screen`/`overflow-hidden` pin the chrome so only
+the panes scroll.
+
+`flex-col md:flex-row` is one shell serving two axes. At `md:` and up it is a ROW
+— rail on the left, then the column of AppBar + two-pane body — and `mobileBar`
+is `md:hidden`. Below `md:` the rail is `hidden`, so it takes no flex slot, and
+the SAME div is a COLUMN whose in-flow children are, top to bottom, that main
+column then the bottom nav bar. That is what lets the bar stop being
+`position: fixed`: an in-flow bar cannot occlude the content above it, so neither
+pane — nor any scroll region added here later — needs a compensating bottom
+padding to stay fully reachable.
+
+`min-h-0` is the column-axis twin of `min-w-0` on the main column: a flex item's
+default `min-height: auto` would let that column grow to fit its content instead
+of its flex basis, pushing the nav bar off the bottom of the viewport and turning
+the DOCUMENT into the scroller. `overflow-hidden` already forces the same `0`
+today; `min-h-0` states it directly so the invariant does not hinge on the
+overflow class staying put.
+
 -}
 screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 screen model =
     TypedHtml.div
-        [ TA.class "bg-surface text-on-surface flex h-screen w-full overflow-hidden" ]
+        [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-screen w-full overflow-hidden" ]
         [ desktopRail
-        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 overflow-hidden" ]
+        , TypedHtml.div [ TA.class "flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden" ]
             [ appBar
             , body model
             , exampleFooter
@@ -309,9 +326,13 @@ desktopRail =
         (List.map navItem destinations)
 
 
+{-| Mobile: the bottom nav bar, replacing the rail below `md:`. It is a REAL last
+flex child of `screen`'s `flex-col md:flex-row` root, not a `fixed` overlay, so it
+takes its own row at the bottom of the column and cannot occlude the panes above.
+-}
 mobileBar : Element { s | navBar : M3e.Kind.Brand } adm_ msg
 mobileBar =
-    M3e.navBar [ TA.class "md:hidden fixed inset-x-0 bottom-0" ]
+    M3e.navBar [ TA.class "md:hidden shrink-0" ]
         (List.map navItem destinations)
 
 
