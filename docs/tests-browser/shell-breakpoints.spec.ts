@@ -153,12 +153,12 @@ for (const width of [960, 1024, 1280, 1440]) {
 test("the mobile bottom nav bar does not occlude the end of the page content", async ({
   page,
 }) => {
-  // `/reference` renders every component's full API in one page (5000+
+  // `/guide/reference` renders every component's full API in one page (5000+
   // `m3e-card` custom elements to upgrade) -- a cold context can take longer
   // than the default 30s timeout just to load and hydrate it.
   test.setTimeout(60_000);
   await page.setViewportSize({ width: 411, height: 761 });
-  await page.goto("/reference");
+  await page.goto("/guide/reference");
 
   const bar = page.locator("m3e-nav-bar");
   await expect(bar).toBeVisible();
@@ -166,7 +166,16 @@ test("the mobile bottom nav bar does not occlude the end of the page content", a
   if (!barBox) throw new Error("nav bar has no box");
 
   // Scroll the real scroller (`.scroll-container`, inside m3e-content-pane's
-  // shadow root) to the very bottom, then measure the last piece of content.
+  // shadow root) to the very bottom, then measure the deepest, last-rendered
+  // element in document order -- NOT `:scope > *:last-child` (the panel's
+  // single wrapping child, e.g. `m3e-nav-menu`). That wrapper's own bottom
+  // edge, once its scroller is driven to `scrollHeight`, is mathematically
+  // pinned to the scroller's own bottom edge regardless of how much trailing
+  // padding the wrapper carries -- padding only grows how far you have to
+  // scroll to reach it, never where the fully-scrolled wrapper's box ends up.
+  // The deepest descendant (e.g. the link inside the last nav-menu item) is
+  // the actual last piece of content a user would try to read or tap, and
+  // its position DOES shift clear of the bar as trailing padding increases.
   const lastBottom = await page
     .locator("#main-content m3e-content-pane")
     .first()
@@ -174,7 +183,8 @@ test("the mobile bottom nav bar does not occlude the end of the page content", a
       const sc = el.shadowRoot?.querySelector(".scroll-container");
       if (!sc) throw new Error("no scroll-container");
       sc.scrollTop = sc.scrollHeight;
-      const last = el.querySelector(":scope > *:last-child");
+      const nodes = el.querySelectorAll("*");
+      const last = nodes[nodes.length - 1];
       if (!last) throw new Error("content pane has no children");
       return last.getBoundingClientRect().bottom;
     });

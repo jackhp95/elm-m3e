@@ -1216,8 +1216,8 @@ navSections =
             , ( "/guide/how-we-prove-it", "How we prove it" )
             , ( "/guide/cheat-sheet", "Cheat sheet" )
             , ( "/guide/glossary", "Glossary" )
-            , ( "/reference", "Full API reference" )
-            , ( "/roundtrip", "Round-trip report" )
+            , ( "/guide/reference", "Full API reference" )
+            , ( "/guide/roundtrip", "Round-trip report" )
             ]
       }
     , { prefix = "styles"
@@ -1267,9 +1267,13 @@ specifically to restore that margin once the rail went from a 96px compact
 width to 220px expanded), and ~836px at 1280px. See `tocPinBreakpointPx` for
 the rest of that budget.
 
-The content pane carries `pb-20` below the Tailwind `md` breakpoint because
-`docsNavBar` is `fixed ... bottom-0` there and would otherwise hide the last
-~68px of every page behind itself.
+The content pane, `tocPanel`, and `navMenu` each carry `pb-20` below the
+Tailwind `md` breakpoint because `docsNavBar` is `fixed ... bottom-0` there
+and would otherwise hide the last ~68px of every scrollable panel behind
+itself -- `navMenu`'s own `pb-20` went unverified for a while: the one test
+asserting this (`shell-breakpoints.spec.ts`, "does not occlude") drove a
+route whose tree was, until a routing fix elsewhere gave it real content,
+empty and therefore never actually scrollable.
 
 -}
 drawerShell :
@@ -1417,7 +1421,7 @@ navMenu components path =
         currentPath =
             normalizePath (UrlPath.toAbsolute path)
     in
-    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto" ]
+    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto pb-20 md:pb-0" ]
         (currentSectionItems components path |> List.map (navLeaf currentPath))
 
 
@@ -1526,29 +1530,15 @@ sectionIsCurrent path section =
 BOTH the app bar's title (`appShellBar`) and the document-title breadcrumb
 (`breadcrumbTitle`) -- one lookup, so the two can't drift apart.
 
-`/reference` and `/roundtrip` are a deliberate exception: their own first
-path segment is neither `"reference"` nor `"roundtrip"` in `sections`' own
-`prefix` list (they're not top-level rail destinations), but both pages live
-in Guide's drawer tree (`navSections`) and are conceptually part of it, so
-they report `"Guide"` here rather than falling through to `Nothing`.
-
 `Nothing` means "no section" -- currently only the homepage.
 
 -}
 currentSectionLabel : UrlPath -> Maybe String
 currentSectionLabel path =
-    case List.head path of
-        Just "reference" ->
-            Just "Guide"
-
-        Just "roundtrip" ->
-            Just "Guide"
-
-        _ ->
-            sections
-                |> List.filter (sectionIsCurrent path)
-                |> List.head
-                |> Maybe.map .label
+    sections
+        |> List.filter (sectionIsCurrent path)
+        |> List.head
+        |> Maybe.map .label
 
 
 {-| The document `<title>`: a reverse breadcrumb, most specific first --

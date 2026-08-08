@@ -96,8 +96,8 @@ view _ _ =
                     , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
                         [ chapterLink "/guide/cheat-sheet" "Cheat sheet"
                         , chapterLink "/guide/glossary" "Glossary"
-                        , chapterLink "/reference" "Full API reference"
-                        , chapterLink "/roundtrip" "Round-trip report"
+                        , chapterLink "/guide/reference" "Full API reference"
+                        , chapterLink "/guide/roundtrip" "Round-trip report"
                         ]
                     ]
                 ]

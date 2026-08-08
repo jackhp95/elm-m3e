@@ -1,4 +1,4 @@
-module Route.Roundtrip exposing (ActionData, Data, Model, Msg, route)
+module Route.Guide.Roundtrip exposing (ActionData, Data, Model, Msg, route)
 
 {-| Round-trip verification report (`data/roundtrip-report.json`). Renders a
 per-form summary of the HTML → Elm → HTML round-trip harness plus every cell,

@@ -35,3 +35,15 @@
   to = "/guide"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/reference"
+  to = "/guide/reference"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/roundtrip"
+  to = "/guide/roundtrip"
+  status = 301
+  force = true

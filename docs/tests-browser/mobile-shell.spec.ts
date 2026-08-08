@@ -20,12 +20,12 @@ import { test, expect } from "@playwright/test";
 
 const MOBILE = { width: 411, height: 761 };
 // A guaranteed-tall route so the inner-scroll assertion is meaningful.
-const LONG_ROUTE = "/reference";
+const LONG_ROUTE = "/guide/reference";
 
 test.use({ viewport: MOBILE });
 
 test("mobile shell: content scrolls in a bounded inner region (nothing clipped)", async ({ page }) => {
-  // `/reference` renders every component's full API in one page (5000+
+  // `/guide/reference` renders every component's full API in one page (5000+
   // `m3e-card` custom elements to upgrade) -- a cold context can take longer
   // than the default 30s timeout just to load and hydrate it.
   test.setTimeout(60_000);

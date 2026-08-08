@@ -1,4 +1,4 @@
-module Route.Reference exposing (ActionData, Data, Model, Msg, route)
+module Route.Guide.Reference exposing (ActionData, Data, Model, Msg, route)
 
 {-| Complete API reference for every M3e.\* module, extracted from the library
 source at build time (scripts/extract-reference.mjs -> data/reference.json).
