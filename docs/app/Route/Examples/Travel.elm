@@ -203,7 +203,7 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    View.fromElement "Travel · elm-m3e" (shell model)
+    View.fromElement "Travel" (shell model)
 
 
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar

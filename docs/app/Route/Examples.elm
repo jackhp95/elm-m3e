@@ -115,7 +115,7 @@ exampleCard ( slug, cardTitle, cardBody ) =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Examples · elm-m3e"
+    View.fromElement "Examples"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading

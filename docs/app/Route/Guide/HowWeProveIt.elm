@@ -131,7 +131,7 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
-    View.fromElement "How we prove it · elm-m3e"
+    View.fromElement "How we prove it"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

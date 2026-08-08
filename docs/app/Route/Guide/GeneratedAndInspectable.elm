@@ -77,7 +77,7 @@ saveButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Generated, and data underneath · elm-m3e"
+    View.fromElement "Generated, and data underneath"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

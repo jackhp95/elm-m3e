@@ -110,7 +110,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Density · elm-m3e"
+    View.fromElement "Density"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading

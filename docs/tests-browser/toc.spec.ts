@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * A page that opts into `View.toc` gets a jump-link list rendered into the
- * drawer's `end` slot; a page that doesn't (the vast majority today) gets no
- * TOC panel content at all — `View.toc` defaults to `[]`.
+ * `Shared.tocPanel` mounts a single `m3e-toc` pointed at the content
+ * container; it discovers headings from the real rendered DOM at runtime
+ * (`M3e.Toc.for "main-content"`), rendering one `m3e-toc-item` (role
+ * "link", no `href`) per heading found.
  */
 test("a component page's TOC jump-link scrolls to its matching heading", async ({
   page,
@@ -32,13 +33,24 @@ test("on mobile, the TOC toggle button opens the panel", async ({ page }) => {
   await expect(tocPanel.getByRole("link", { name: "API" })).toBeVisible();
 });
 
-test("a page with no toc entries shows no TOC toggle button", async ({
+/**
+ * The toggle is unconditional now — `Shared.appShellBar` has no advance list
+ * of headings to gate on (`m3e-toc` discovers them from the live DOM), so
+ * even a page that never called the old `View.withToc` still gets a button,
+ * and its panel still finds real headings. At the default (>= 1200px) test
+ * viewport the TOC is pinned open already (`Shared.tocPinBreakpointPx`), so
+ * `/guide` — which never opted into the old hand-built TOC — should surface
+ * its own "The Guide" / "Chapters" headings without any click.
+ */
+test("a page that never opted into the old hand-built TOC still shows the toggle and real headings", async ({
   page,
 }) => {
   await page.goto("/guide");
-  await expect(page.getByRole("button", { name: "On this page" })).toHaveCount(
-    0,
-  );
+  await expect(page.getByRole("button", { name: "On this page" })).toBeVisible();
+
+  const tocPanel = page.locator("#docs-drawer [slot='end']");
+  await expect(tocPanel.getByRole("link", { name: "The Guide" })).toBeVisible();
+  await expect(tocPanel.getByRole("link", { name: "Chapters" })).toBeVisible();
 });
 
 /**

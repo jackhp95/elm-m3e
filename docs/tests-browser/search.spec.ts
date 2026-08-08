@@ -55,7 +55,7 @@ test("the FAB opens search, typing filters results, and clicking a result naviga
   // A page-level entry (`heading = null`) renders its real `<title>`, which
   // is never the bare component name -- see `searchResultLink`'s doc comment
   // on why that distinction matters for the accessible tree.
-  const result = view.getByRole("link", { name: "Button · elm-m3e", exact: true });
+  const result = view.getByRole("link", { name: "Button < Components < elm-m3e", exact: true });
   await expect(result).toBeVisible();
 
   await result.click();
@@ -92,7 +92,7 @@ test("clicking a heading result navigates to the page and its anchor", async ({ 
   const result = view.locator('a[href="/components/button#api"]');
   await expect(result).toBeVisible();
   // The secondary line is the page's own title, not the heading text.
-  await expect(result.getByText("Button · elm-m3e")).toBeVisible();
+  await expect(result.getByText("Button < Components < elm-m3e")).toBeVisible();
 
   await result.click();
   await expect(page).toHaveURL(/\/components\/button#api$/);
@@ -116,7 +116,7 @@ test("clicking a heading result with no anchor navigates to the page it lives on
   await expect(result).toBeVisible();
   await expect(result).toHaveAttribute("href", "/guide/troubleshooting");
   // The secondary line is the page's own title, not the heading text.
-  await expect(result.getByText("Troubleshooting · elm-m3e")).toBeVisible();
+  await expect(result.getByText("Troubleshooting < Guide < elm-m3e")).toBeVisible();
 
   await result.click();
   await expect(page).toHaveURL(/\/guide\/troubleshooting$/);
@@ -168,7 +168,7 @@ test("on mobile the FAB opens search fullscreen, and still works after it is clo
   const input = view.locator("input");
   await expectWithinViewport(page, input);
   await input.fill("button");
-  await expect(view.getByRole("link", { name: "Button · elm-m3e", exact: true })).toBeVisible();
+  await expect(view.getByRole("link", { name: "Button < Components < elm-m3e", exact: true })).toBeVisible();
 
   // Close it through the element's OWN back button (in shadow DOM -- Playwright
   // CSS pierces open shadow roots), the path that dispatches `toggle` ->
@@ -224,7 +224,7 @@ test("navigating with search open closes it, and does not leave a stale query be
   const view = page.locator("m3e-search-view");
   await page.getByRole("button", { name: "Search", exact: true }).click();
   await view.locator("input").fill("button");
-  await expect(view.getByRole("link", { name: "Button · elm-m3e", exact: true })).toBeVisible();
+  await expect(view.getByRole("link", { name: "Button < Components < elm-m3e", exact: true })).toBeVisible();
 
   // Navigate WITHOUT clicking a search result, so nothing but `PageChanged`
   // can be what closes the overlay. (The open panel holds the rest of the page

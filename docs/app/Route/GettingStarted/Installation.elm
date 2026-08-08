@@ -79,7 +79,7 @@ stepHeading label =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Installation · elm-m3e"
+    View.fromElement "Installation"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading

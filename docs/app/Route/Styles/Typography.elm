@@ -113,7 +113,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Typography · elm-m3e"
+    View.fromElement "Typography"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -123,7 +123,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "The scale, live"
+                [ Doc.sectionHeadingWithId (Doc.slugify "The scale, live") "The scale, live"
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
                     [ M3e.Card.content

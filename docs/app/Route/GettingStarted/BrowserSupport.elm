@@ -87,7 +87,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Browser Support · elm-m3e"
+    View.fromElement "Browser Support"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -95,7 +95,7 @@ view _ _ =
                     [ M3e.text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Supported browsers"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Supported browsers") "Supported browsers"
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
                     [ M3e.Card.content
@@ -111,7 +111,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Platform features used"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Platform features used") "Platform features used"
                 , TypedHtml.ul [ TA.class "list-disc space-y-1.5 pl-5" ]
                     [ featureItem "Custom Elements v1 and Shadow DOM for the @m3e/web components."
                     , featureItem "ES modules for component registration (no-bundler import-map usage is also supported upstream)."

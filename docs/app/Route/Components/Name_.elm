@@ -120,7 +120,7 @@ view app _ model =
         component =
             app.data.component
     in
-    View.fromElement (component.name ++ " · elm-m3e")
+    View.fromElement component.name
         (M3e.mapMsg PagesMsg.fromMsg
             (Doc.pane
                 [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
@@ -134,7 +134,6 @@ view app _ model =
                 ]
             )
         )
-        |> View.withToc [ { id = "api", label = "API" } ]
 
 
 {-| The page header, mirroring the matraic component pages: the component name as
@@ -167,7 +166,7 @@ exampleAppsSection usages =
 
     else
         [ TypedHtml.div [ TA.class "space-y-4" ]
-            [ Doc.sectionHeading "In the example apps"
+            [ Doc.sectionHeadingWithId (Doc.slugify "In the example apps") "In the example apps"
             , TypedHtml.div [ TA.class "flex flex-wrap gap-2" ]
                 (List.map
                     (\u -> Doc.anchorPill { href = u.route, label = u.title })
@@ -222,7 +221,7 @@ keep their `@docs` order within a group. Empty groups drop out.
 apiSection : List Doc.Data.Member -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 apiSection members =
     TypedHtml.div [ TA.class "space-y-6" ]
-        (Doc.sectionHeadingWithId "api" "API"
+        (Doc.sectionHeadingWithId (Doc.slugify "API") "API"
             :: List.filterMap (apiGroup members) apiGroups
         )
 

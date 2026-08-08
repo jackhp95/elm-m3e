@@ -65,7 +65,7 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Theming with tokens · elm-m3e"
+    View.fromElement "Theming with tokens"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]
@@ -73,30 +73,30 @@ view _ _ =
                     , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "One theme at the root"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "One theme at the root") "One theme at the root"
                     , Doc.markdown rootBody
                     , Doc.codeBlock Doc.Elm rootCode
                     , Doc.markdown rootNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Paint with roles, not hex"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Paint with roles, not hex") "Paint with roles, not hex"
                     , Doc.markdown rolesBody
                     , Doc.codeBlock Doc.Elm rolesCode
                     , Doc.markdown tokenFamilies
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Dark and dynamic color are swaps"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Dark and dynamic color are swaps") "Dark and dynamic color are swaps"
                     , Doc.markdown darkBody
                     , Doc.codeBlock Doc.Elm darkCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "A brand re-skin, end to end"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "A brand re-skin, end to end") "A brand re-skin, end to end"
                     , Doc.markdown reskinBody
                     , Doc.codeBlock Doc.Elm reskinCode
                     , Doc.markdown reskinNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "The Tailwind bridge: layout only"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "The Tailwind bridge: layout only") "The Tailwind bridge: layout only"
                     , Doc.markdown bridgeBody
                     , Doc.codeBlock Doc.Elm bridgeCode
                     ]

@@ -72,7 +72,7 @@ entry prose code =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Troubleshooting · elm-m3e"
+    View.fromElement "Troubleshooting"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

@@ -1,7 +1,7 @@
 module View exposing
-    ( View, TocEntry
+    ( View
     , fromElement, fromElements
-    , title, body, toc, withToc
+    , title, body
     , map
     , Freezable, freeze, freezableToHtml, htmlToFreezable
     )
@@ -18,12 +18,22 @@ That erasure is an implementation detail, not an interface.
 `Node` or reaches for the IR itself. The type is opaque precisely so the
 erasure cannot leak: this module is the only place it happens.
 
+There is deliberately no TOC field here. An earlier version carried a
+hand-built `List TocEntry` that every route had to enumerate itself
+(`View.withToc [ { id = "api", label = "API" } ]`) -- which meant any
+heading a route added without also updating that list silently never showed
+up in the table of contents (exactly what happened: a whole page's
+Usage/Variants/Sizes sections went missing this way). `Shared.tocPanel`
+now mounts a single `m3e-toc` pointed at the content container instead; it
+discovers headings from the real rendered DOM at runtime, so there is
+nothing for a route to enumerate or forget.
+
 
 ## The view
 
-@docs View, TocEntry
+@docs View
 @docs fromElement, fromElements
-@docs title, body, toc, withToc
+@docs title, body
 @docs map
 
 
@@ -38,20 +48,12 @@ import M3e.Html
 import M3e.Unsafe
 
 
-{-| One TOC jump-link: `id` matches a heading's `id` attribute
-(`Doc.sectionHeadingWithId`); `label` is the link text.
--}
-type alias TocEntry =
-    { id : String, label : String }
-
-
 {-| A page: a title, and a body of renderable content.
 -}
 type View msg
     = View
         { title : String
         , body : List (M3e.Html.Node msg)
-        , toc : List TocEntry
         }
 
 
@@ -70,7 +72,6 @@ fromElements pageTitle elements =
     View
         { title = pageTitle
         , body = List.map M3e.Html.toNode elements
-        , toc = []
         }
 
 
@@ -94,22 +95,6 @@ body (View view) =
     List.map M3e.Unsafe.fromNode view.body
 
 
-{-| The page's TOC entries — `[]` for the vast majority of pages that don't
-opt in.
--}
-toc : View msg -> List TocEntry
-toc (View view) =
-    view.toc
-
-
-{-| Attach TOC entries to a view: `View.fromElement "Title" el |> View.withToc
-[ { id = "api", label = "API" } ]`.
--}
-withToc : List TocEntry -> View msg -> View msg
-withToc entries (View view) =
-    View { view | toc = entries }
-
-
 {-| Map the message type. Structural — the body is not rendered.
 -}
 map : (msg1 -> msg2) -> View msg1 -> View msg2
@@ -117,7 +102,6 @@ map fn (View view) =
     View
         { title = view.title
         , body = List.map (M3e.Html.mapNode fn) view.body
-        , toc = view.toc
         }
 
 

@@ -106,6 +106,13 @@ drops cleanly out of the top-level `space-y-10` rhythm).
 `offset` shifts every example's page-global index so that stacked components on
 one page get disjoint tab-state ranges in a shared `Model`.
 
+Both the "Usage" heading and each named sub-heading carry a stable `id`
+(`Doc.slugify` of their own text) rather than the random id `m3e-toc`'s own
+generator falls back to for an unidentified heading -- a stable id keeps
+`#usage`/`#variants`-style URLs bookmarkable across reloads. `Shared.tocPanel`
+mounts a single `m3e-toc` that discovers these headings (and everything
+else on the page) at runtime; nothing here needs to enumerate them.
+
 -}
 usageBlocks : Int -> Model -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
 usageBlocks offset model examples =
@@ -119,6 +126,7 @@ usageBlocks offset model examples =
                     [ M3e.Heading.variant Value.headline
                     , M3e.Heading.size Value.small
                     , M3e.Attributes.level 2
+                    , M3e.Attributes.id (Doc.slugify "Usage")
                     ]
                     [ M3e.text "Usage" ]
                     :: List.concatMap (sectionBlock model)
@@ -144,6 +152,7 @@ sectionBlock model ( sec, examples ) =
                     [ M3e.Heading.variant Value.title
                     , M3e.Heading.size Value.large
                     , M3e.Attributes.level 3
+                    , M3e.Attributes.id (Doc.slugify sec)
                     ]
                     [ M3e.text sec ]
                 ]

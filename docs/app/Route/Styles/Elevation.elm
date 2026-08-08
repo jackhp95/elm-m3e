@@ -105,7 +105,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Elevation · elm-m3e"
+    View.fromElement "Elevation"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -115,7 +115,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "The six levels, live"
+                [ Doc.sectionHeadingWithId (Doc.slugify "The six levels, live") "The six levels, live"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "Each swatch is a surface-container-high tile carrying its own shadow-md-level* utility, so the shadow you see is the real token. The caption is the CSS custom property it resolves." ]
@@ -126,7 +126,7 @@ view _ _ =
                     )
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Tinting the shadow"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Tinting the shadow") "Tinting the shadow"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "Every level resolves its color through --m3e-elevation-color → --md-sys-color-shadow → #000000. Override --m3e-elevation-color on a subtree to tint all six levels at once without touching the shadow geometry." ]

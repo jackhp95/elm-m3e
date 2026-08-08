@@ -193,7 +193,7 @@ htmlInSlot =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Your own seam · elm-m3e"
+    View.fromElement "Your own seam"
         (Doc.pane
             [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
                 [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]

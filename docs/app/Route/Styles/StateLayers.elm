@@ -111,7 +111,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "State Layers · elm-m3e"
+    View.fromElement "State Layers"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -121,7 +121,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "The three opacities"
+                [ Doc.sectionHeadingWithId (Doc.slugify "The three opacities") "The three opacities"
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
                     [ M3e.Card.content
@@ -131,7 +131,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Live"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Live") "Live"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]

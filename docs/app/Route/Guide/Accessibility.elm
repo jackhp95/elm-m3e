@@ -77,7 +77,7 @@ labeledBack =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Accessibility reference · elm-m3e"
+    View.fromElement "Accessibility reference"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]
@@ -85,32 +85,32 @@ view _ _ =
                     , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Accessible name: named slot vs ARIA label"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Accessible name: named slot vs ARIA label") "Accessible name: named slot vs ARIA label"
                     , Doc.markdown nameBody
                     , Doc.showcase labeledBack
                     , Doc.codeBlock Doc.Elm nameCode
                     , Doc.markdown nameLayers
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Focus: dialogs, menus, sheets"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Focus: dialogs, menus, sheets") "Focus: dialogs, menus, sheets"
                     , Doc.markdown focusBody
                     , Doc.codeBlock Doc.Elm focusCode
                     , Doc.markdown focusNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Keyboard interaction by component family"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Keyboard interaction by component family") "Keyboard interaction by component family"
                     , Doc.markdown keyboardBody
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "What ships vs what you wire"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "What ships vs what you wire") "What ships vs what you wire"
                     , Doc.markdown divisionBody
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Read the review errors as a11y guidance"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Read the review errors as a11y guidance") "Read the review errors as a11y guidance"
                     , Doc.markdown reviewBody
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Testing with the a11y-tree harness"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Testing with the a11y-tree harness") "Testing with the a11y-tree harness"
                     , Doc.markdown testingBody
                     , Doc.codeBlock Doc.NoLang testingCode
                     , Doc.markdown testingNote

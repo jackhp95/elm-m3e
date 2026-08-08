@@ -65,7 +65,7 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Motion: what ships, what you wire · elm-m3e"
+    View.fromElement "Motion: what ships, what you wire"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]
@@ -73,26 +73,26 @@ view _ _ =
                     , TypedHtml.div [ TA.class "max-w-2xl text-on-surface-variant" ] [ Doc.markdown intro ]
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Inside the components (you don't animate this)"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Inside the components (you don't animate this)") "Inside the components (you don't animate this)"
                     , Doc.markdown shippedBody
                     , Doc.codeBlock Doc.Elm shippedCode
                     , Doc.markdown shippedNote
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "The motion between components (you wire this)"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "The motion between components (you wire this)") "The motion between components (you wire this)"
                     , Doc.markdown authorBody
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "The AVT snackbar"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "The AVT snackbar") "The AVT snackbar"
                     , Doc.markdown snackbarBody
                     , Doc.codeBlock Doc.Elm snackbarCode
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "View transitions"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "View transitions") "View transitions"
                     , Doc.markdown viewTransBody
                     ]
                 , TypedHtml.section [ TA.class "space-y-4" ]
-                    [ Doc.sectionHeading "Reduced motion is not optional"
+                    [ Doc.sectionHeadingWithId (Doc.slugify "Reduced motion is not optional") "Reduced motion is not optional"
                     , Doc.markdown reducedBody
                     ]
                 , Doc.recapBox recap

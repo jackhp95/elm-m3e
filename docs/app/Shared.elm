@@ -14,10 +14,10 @@ three surfaces:
     desktop and toggled from the app bar's hamburger on narrow screens. It
     shows only the CURRENT section's items (`currentSectionItems`) — the rail
     already says which section you're in, so the tree doesn't repeat it.
-  - **The current page's table of contents** is opt-in (`View.withToc`) and
-    lives in the same container's `end` slot (`tocPanel`), pinned open on
-    wide screens and toggled from the app bar's "On this page" button
-    otherwise.
+  - **The current page's table of contents** auto-discovers the page's
+    headings at render time (`M3e.Toc`, in `tocPanel`) and lives in the same
+    container's `end` slot, pinned open on wide screens and toggled from the
+    app bar's "On this page" button otherwise.
 
 Above them sits a real `M3e.AppBar` top app bar; the live theme controls are in
 a settings bottom sheet toggled from it. Every icon goes through `M3e.Icon`;
@@ -47,16 +47,19 @@ import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
 import M3e.BottomSheet
-import M3e.ContentPane
 import M3e.DrawerContainer
 import M3e.Events
+import M3e.Fab
 import M3e.FormField
 import M3e.Icon
+import M3e.IconButton
 import M3e.Kind
 import M3e.NavItem
 import M3e.NavMenuItem
+import M3e.NavRailToggle
 import M3e.SearchView
 import M3e.Theme
+import M3e.Toc
 import M3e.Values as Value exposing (Value)
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -184,12 +187,12 @@ drawerSideBreakpointPx =
 tree, instead of being one-at-a-time with it.
 
 Derived from the layout budget rather than from a Material breakpoint: the
-rail is 96px and each drawer panel is `--m3e-drawer-container-width` = 17.5rem
-= 280px (set in `drawerShell`), so both panels open costs 96 + 280 + 280 =
-656px of chrome. At 1200px that still leaves ~544px of readable content; below
-it, pinning both would crush the content pane to a single word per line (at
-960px it would leave ~304px), so below this width `panelsExclusive` lets only
-one panel be open at a time.
+rail is fixed `expanded` (`docsNavRail`) at 220px and each drawer panel is
+`--m3e-drawer-container-width` = 14rem = 224px (set in `drawerShell`), so both
+panels open costs 220 + 224 + 224 = 668px of chrome. At 1200px that still
+leaves ~532px of readable content; below it, pinning both would crush the
+content pane, so below this width `panelsExclusive` lets only one panel be
+open at a time.
 
 -}
 tocPinBreakpointPx : Int
@@ -636,7 +639,7 @@ view :
     -> View msg
     -> { body : List (Html msg), title : String }
 view sharedData page model toMsg pageView =
-    { title = View.title pageView
+    { title = breadcrumbTitle page.path (View.title pageView)
     , body =
         [ M3e.theme
             [ M3e.Theme.color model.seed
@@ -662,11 +665,11 @@ view sharedData page model toMsg pageView =
 
              else
                 [ skipLink
-                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh flex flex-row" ]
+                , TypedHtml.div [ TypedHtml.Attributes.class "h-dvh w-full flex flex-row" ]
                     [ docsNavRail toMsg page.path
                     , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-1 flex-col min-w-0" ]
-                        [ M3e.mapMsg toMsg (appShellBar (View.toc pageView))
-                        , drawerShell toMsg model page sharedData.components (View.toc pageView) (View.body pageView)
+                        [ M3e.mapMsg toMsg (appShellBar page.path)
+                        , drawerShell toMsg model page sharedData.components (View.body pageView)
                         ]
                     , docsNavBar toMsg page.path
                     ]
@@ -706,41 +709,43 @@ normalizePath path =
 -- TOP APP BAR
 
 
-{-| The TOC toggle is gated on ONE thing only: whether the page has any TOC
-entries. It used to be gated on viewport width as well, because the `end`
-panel's visibility was a formula that ignored `tocOpen` on desktop — so the
-button would have been a focusable no-op there. Now that `tocOpen` is the
-single authority at every width, the button always does something visible:
-below `tocPinBreakpointPx` it opens the panel (closing the tree), at or above
-it collapses the pinned panel to give the content column its width back.
+{-| The TOC toggle is always shown. It used to be gated on whether the route
+had declared any `View.TocEntry`s, back when a route had to enumerate its own
+headings by hand — but `tocPanel` now mounts a single `m3e-toc` that discovers
+headings from the real rendered DOM at runtime, so Elm has no advance list to
+check emptiness against. The rare page with no qualifying headings just opens
+to a near-empty panel rather than hiding the button; that's an honest (if
+minor) trade against ever again silently missing a heading, which is exactly
+how this button's old gating condition and the old hand-built entry lists
+drifted apart.
+
+It used to be gated on viewport width too, because the `end` panel's
+visibility was a formula that ignored `tocOpen` on desktop — so the button
+would have been a focusable no-op there. Now that `tocOpen` is the single
+authority at every width, the button always does something visible: below
+`tocPinBreakpointPx` it opens the panel (closing the tree), at or above it
+collapses the pinned panel to give the content column its width back.
+
 -}
-appShellBar : List View.TocEntry -> Element (M3e.AppBar.Is s) admittedBy Msg
-appShellBar tocEntries =
+appShellBar : UrlPath -> Element (M3e.AppBar.Is s) admittedBy Msg
+appShellBar path =
     M3e.appBar
         [ M3e.AppBar.size Value.small
         , M3e.Attributes.id "docs-app-bar"
         ]
-        ([ M3e.AppBar.leading
+        [ M3e.AppBar.leading
             (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick ToggleTree ]
-                [ M3e.icon [ M3e.Icon.name "menu" ] [] ]
+                [ M3e.icon [ M3e.Icon.name "list" ] [] ]
             )
-         , M3e.AppBar.title (M3e.text "elm-m3e")
-         , M3e.AppBar.subtitle (M3e.text "Material 3 Expressive for Elm")
-         ]
-            ++ (if List.isEmpty tocEntries then
-                    []
-
-                else
-                    [ M3e.AppBar.trailing
-                        (M3e.iconButton [ Aria.label "On this page", M3e.Events.onClick ToggleToc ]
-                            [ M3e.icon [ M3e.Icon.name "toc" ] [] ]
-                        )
-                    ]
-               )
-            ++ [ M3e.AppBar.trailing githubLink
-               , M3e.AppBar.trailing settingsButton
-               ]
-        )
+        , M3e.AppBar.title (M3e.text (Maybe.withDefault "" (currentSectionLabel path)))
+        , M3e.AppBar.subtitle (M3e.text "elm-m3e — Material 3 Expressive for Elm")
+        , M3e.AppBar.trailing
+            (M3e.iconButton [ Aria.label "On this page", M3e.Events.onClick ToggleToc ]
+                [ M3e.icon [ M3e.Icon.name "toc" ] [] ]
+            )
+        , M3e.AppBar.trailing githubLink
+        , M3e.AppBar.trailing settingsButton
+        ]
 
 
 {-| The GitHub link. The mark is registered into `m3e-icon`'s own icon registry at
@@ -1144,7 +1149,8 @@ page-level entry has nothing to add below its own title.
 
 This distinction also keeps results from colliding in the accessible tree:
 a heading entry named e.g. "Button" (the h1 text) and the page-level entry
-named "Button · elm-m3e" (the real `<title>`, which is never bare "Button")
+named "Button < Components < elm-m3e" (the real `<title>`, a reverse
+breadcrumb -- see `Shared.breadcrumbTitle` -- which is never bare "Button")
 are two different accessible names, not the same string rendered twice.
 
 Clicking navigates (real `a[href]`, an anchor when the heading has a real
@@ -1253,10 +1259,13 @@ have a TOC at all", which cannot collapse into a stuck constant because the TOC
 toggle that drives `tocOpen` isn't rendered on a page with no entries either.
 
 `--m3e-drawer-container-width` is narrowed from the library default (22.5rem =
-360px) to 17.5rem = 280px, which is what keeps the content column readable once
-the 96px rail is also on screen: 280px panels leave ~584px of content at 960px
-with one panel open, and ~624px at 1280px with both. See
-`tocPinBreakpointPx` for the rest of that budget.
+360px) to 14rem = 224px, which is what keeps the content column readable once
+the rail's fixed 220px `expanded` width (`docsNavRail`) is also on screen:
+224px panels leave ~516px of content at 960px with one panel open (the
+`shell-breakpoints.spec.ts` floor is 500px — narrowed from 17.5rem/280px
+specifically to restore that margin once the rail went from a 96px compact
+width to 220px expanded), and ~836px at 1280px. See `tocPinBreakpointPx` for
+the rest of that budget.
 
 The content pane carries `pb-20` below the Tailwind `md` breakpoint because
 `docsNavBar` is `fixed ... bottom-0` there and would otherwise hide the last
@@ -1268,10 +1277,9 @@ drawerShell :
     -> Model
     -> { path : UrlPath, route : Maybe Route }
     -> List NavComponent
-    -> List View.TocEntry
-    -> List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg)
+    -> List (Element childAccepts (TypedHtml.Grouping.DivChildAdmittedBy childAdm) msg)
     -> Element (TypedHtml.Sectioning.MainIs s) admittedBy msg
-drawerShell toMsg model page components tocEntries body =
+drawerShell toMsg model page components body =
     TypedHtml.main_
         [ TypedHtml.Attributes.id "main-content"
         , TypedHtml.Attributes.class "flex-auto relative mx-auto w-full h-0"
@@ -1281,51 +1289,63 @@ drawerShell toMsg model page components tocEntries body =
             , M3e.DrawerContainer.startMode Value.auto
             , M3e.Attributes.start model.treeOpen
             , M3e.DrawerContainer.endMode Value.auto
-            , M3e.Attributes.end (model.tocOpen && not (List.isEmpty tocEntries))
+            , M3e.Attributes.end model.tocOpen
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
-            , TypedHtml.Attributes.class "h-full w-full [--m3e-drawer-container-width:17.5rem]"
+            , TypedHtml.Attributes.class "h-full w-full [--m3e-drawer-container-width:14rem]"
             ]
-            [ M3e.DrawerContainer.start (navMenu components page.path)
-            , M3e.contentPane
-                [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-lowest overflow-y-auto mx-auto h-full w-full max-w-5xl pb-20 md:p-4 md:pt-1 md:pb-4"
-                ]
-                body
-            , M3e.DrawerContainer.end (tocPanel toMsg tocEntries)
+            [ [ navMenu components page.path ]
+                |> M3e.contentPane
+                    [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -ms-7"
+                    ]
+                |> M3e.DrawerContainer.start
+            , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ] body
+            , [ tocPanel toMsg ]
+                |> M3e.contentPane
+                    [ TypedHtml.Attributes.class "m3e-content-pane-container-color-surface-container-low -me-7"
+                    ]
+                |> M3e.DrawerContainer.end
             ]
         ]
 
 
-{-| The TOC drawer panel: a jump-link per `View.toc` entry. Empty `tocEntries`
-means an empty panel, but the `end` attribute above is already `False` in
-that case, so `auto`/`side` mode never shows it — this only renders when
-there is something to show.
+{-| The TOC drawer panel: one `m3e-toc`, pointed at `#main-content` (this
+`drawerShell`'s own `<main>`). Unlike the hand-built jump-link list this
+replaced, `m3e-toc` discovers its entries itself -- scanning the real
+rendered DOM for headings (native `h1`-`h6` and this app's own
+`m3e-heading[level]`) rather than needing a page-specific list Elm has to
+keep in sync. `end`'s own gate (`drawerShell`) no longer checks emptiness
+for the same reason: Elm doesn't know in advance whether a page has any
+headings, only `m3e-toc`'s own runtime scan does.
 
-Each link also dispatches `CloseToc` on click — below
-`drawerSideBreakpointPx` the `end` drawer is an
-`over`/`push` overlay with the page content `inert` while open, so without this
-the user would land on the right heading but be stuck behind the still-open
-panel (having to dismiss it separately via the scrim). `update`'s `CloseToc`
-case is a no-op above that width, where the panel is `side` and dismissing it
-would just be taking the TOC away from someone reading it.
+`for="main-content"` also picks up the page's own `Doc.pageHeading`/H1 as a
+level-1 entry above its sections -- a minor, known redundancy with the
+visible page title, not a bug; excluding it would need `m3e-toc-ignore` on
+every page's own H1 (17 routes via `Doc.pageHeading`, ~23 more with their
+own local `pageHeading` never routed through it), which is out of scope
+here.
 
-`pb-20` matches the content pane's: `docsNavBar` is fixed over the bottom of
-the viewport on mobile and would otherwise sit on top of the last jump-links.
+`M3e.Events.delegate` is required because `m3e-toc` itself doesn't declare
+an `onClick` capability -- only `m3e-toc-item` fires `click`, per its own
+`@fires` -- so this relies on that click bubbling up to the element the
+listener actually sits on. Closing on ANY click inside the panel (not just
+on an item) is an intentional, low-risk approximation of the old
+per-link `CloseToc`: below `drawerSideBreakpointPx` the `end` drawer is an
+`over`/`push` overlay with the page content `inert` while open, so without
+this the user would land on the right heading but be stuck behind the
+still-open panel. `update`'s `CloseToc` case is a no-op above that width,
+where the panel is `side` and dismissing it would just be taking the TOC
+away from someone reading it.
 
 -}
-tocPanel : (Msg -> msg) -> List View.TocEntry -> Element (TypedHtml.Sectioning.NavIs s) admittedBy msg
-tocPanel toMsg tocEntries =
-    TypedHtml.nav
-        [ Aria.label "On this page", TypedHtml.Attributes.class "flex flex-col gap-2 p-4 pb-20 md:pb-4" ]
-        (List.map
-            (\entry ->
-                TypedHtml.a
-                    [ TypedHtml.Attributes.href ("#" ++ entry.id)
-                    , TypedHtml.Events.onClick (toMsg CloseToc)
-                    ]
-                    [ M3e.text entry.label ]
-            )
-            tocEntries
-        )
+tocPanel : (Msg -> msg) -> Element (M3e.Toc.Is s) admittedBy msg
+tocPanel toMsg =
+    M3e.toc
+        [ M3e.Toc.for "main-content"
+        , M3e.Toc.maxDepth 3
+        , M3e.Events.delegate (M3e.Events.onClick (toMsg CloseToc))
+        , TypedHtml.Attributes.class "pb-20 md:pb-0"
+        ]
+        [ M3e.Toc.title (M3e.text "On this page") ]
 
 
 {-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start`/
@@ -1397,7 +1417,7 @@ navMenu components path =
         currentPath =
             normalizePath (UrlPath.toAbsolute path)
     in
-    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer pb-20 md:pb-0" ]
+    M3e.navMenu [ Aria.label "Primary", TypedHtml.Attributes.class "primary-nav-drawer w-fit flex-auto" ]
         (currentSectionItems components path |> List.map (navLeaf currentPath))
 
 
@@ -1502,6 +1522,64 @@ sectionIsCurrent path section =
     List.head path == Just section.prefix
 
 
+{-| The current section's plain-text label ("Start", "Guide", ...), used for
+BOTH the app bar's title (`appShellBar`) and the document-title breadcrumb
+(`breadcrumbTitle`) -- one lookup, so the two can't drift apart.
+
+`/reference` and `/roundtrip` are a deliberate exception: their own first
+path segment is neither `"reference"` nor `"roundtrip"` in `sections`' own
+`prefix` list (they're not top-level rail destinations), but both pages live
+in Guide's drawer tree (`navSections`) and are conceptually part of it, so
+they report `"Guide"` here rather than falling through to `Nothing`.
+
+`Nothing` means "no section" -- currently only the homepage.
+
+-}
+currentSectionLabel : UrlPath -> Maybe String
+currentSectionLabel path =
+    case List.head path of
+        Just "reference" ->
+            Just "Guide"
+
+        Just "roundtrip" ->
+            Just "Guide"
+
+        _ ->
+            sections
+                |> List.filter (sectionIsCurrent path)
+                |> List.head
+                |> Maybe.map .label
+
+
+{-| The document `<title>`: a reverse breadcrumb, most specific first --
+e.g. `"Button < Components < elm-m3e"`. `pageTitle` is each route's own bare
+name (`View.fromElement`'s argument -- the old hand-typed "· elm-m3e" suffix
+was stripped from every route but the homepage when this was added). The
+`Head.Seo` title each route ALSO sets is a separate, deliberately untouched
+concern (search-result/social-preview copy, not what shows in the tab).
+
+The homepage is the one exception: `path == []` (UrlPath's root) returns
+`pageTitle` unchanged. `Route.Index` still carries its own distinct
+tagline-style title ("elm-m3e · type-safe Material 3 Expressive for Elm")
+rather than a bare page name, and there is no section to name for `/`
+anyway -- forcing it through "<page> < elm-m3e" would just double the site
+name.
+
+-}
+breadcrumbTitle : UrlPath -> String -> String
+breadcrumbTitle path pageTitle =
+    if List.isEmpty path then
+        pageTitle
+
+    else
+        case currentSectionLabel path of
+            Just section ->
+                pageTitle ++ " < " ++ section ++ " < elm-m3e"
+
+            Nothing ->
+                pageTitle ++ " < elm-m3e"
+
+
 {-| One rail/bar destination — real `href`-based navigation via `m3e-nav-item`'s
 `href` attribute (`config/slots.json`'s `NavItem.actionMap` maps it to elm-pages'
 own link handling), not an `onClick`-driven `Msg`. Shared between `docsNavRail`
@@ -1519,9 +1597,13 @@ railItem path section =
         ]
 
 
-{-| The search trigger, shared by the rail and the bottom bar -- a plain
-icon FAB, `size small` (matching @m3e/web's own nav-rail usage example in
-`NavRailElement.d.ts`), opening the search overlay (`searchOverlay`).
+{-| The search trigger, shared by the rail and the bottom bar -- `size small`,
+`extended` with a visible "Search" label, opening the search overlay
+(`searchOverlay`). Matches @m3e/web's own nav-rail usage example
+(`NavRailElement.d.ts`) composition-for-composition: an icon in the default
+slot plus label text in the `label` slot, the same pair of children that
+example's own FAB carries (`<m3e-icon>` + `<span slot="label">`) -- an
+icon-only FAB was a departure from that reference, not a deliberate choice.
 
 `NavRail` admits `fab` directly in its unnamed slot alongside `navItem`
 (`config/slots.json`), so on the rail this is a normal child, not a new slot
@@ -1535,11 +1617,15 @@ searchFab : String -> msg -> Element { s | fab : M3e.Kind.Brand } admittedBy msg
 searchFab extraClasses openMsg =
     M3e.fab
         [ M3e.Attributes.size Value.small
+        , M3e.Fab.extended True
+        , M3e.Fab.variant Value.secondary
         , M3e.Attributes.class extraClasses
         , Aria.label "Search"
         , M3e.Events.onClick openMsg
         ]
-        [ M3e.icon [ M3e.Icon.name "search" ] [] ]
+        [ M3e.icon [ M3e.Icon.name "search" ] []
+        , M3e.Fab.label (M3e.text "Search")
+        ]
 
 
 {-| Desktop: a persistent full-height rail beside the app bar. Hidden below the
@@ -1549,8 +1635,22 @@ searchFab extraClasses openMsg =
 docsNavRail : (Msg -> msg) -> UrlPath -> Element { s | navRail : M3e.Kind.Brand } admittedBy msg
 docsNavRail toMsg path =
     M3e.navRail
-        [ Aria.label "Sections", TypedHtml.Attributes.class "hidden shrink-0 md:flex" ]
-        (M3e.mapMsg toMsg (searchFab "" OpenSearch) :: List.map (railItem path) sections)
+        [ Aria.label "Sections"
+        , M3e.Attributes.id "nav-rail"
+        , TypedHtml.Attributes.class "hidden shrink-0 md:flex flex-col items-stretch w-fit bg-surface-container-lowest"
+        ]
+        (M3e.iconButton
+            [ Aria.label "Toggle rail width"
+            , M3e.IconButton.toggle True
+            , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
+            ]
+            [ M3e.icon [ M3e.Icon.name "menu" ] []
+            , M3e.IconButton.selected (M3e.icon [ M3e.Icon.name "menu_open" ] [])
+            , M3e.navRailToggle [ M3e.NavRailToggle.for "nav-rail" ] []
+            ]
+            :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
+            :: List.map (railItem path) sections
+        )
 
 
 {-| Mobile: a fixed bottom nav bar, replacing the rail below the `md`

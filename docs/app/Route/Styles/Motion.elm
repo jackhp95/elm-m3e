@@ -96,7 +96,7 @@ tokenRow ( token, value ) =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Motion · elm-m3e"
+    View.fromElement "Motion"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -106,7 +106,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Schemes"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Schemes") "Schemes"
                 , TypedHtml.ul [ TA.class "list-disc space-y-1.5 pl-5" ]
                     [ TypedHtml.li []
                         [ TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ]
@@ -123,7 +123,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Easing curves"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Easing curves") "Easing curves"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "Six --md-sys-motion-easing-* cubic-beziers. The emphasized set drives prominent transitions; the standard set drives small, utility-focused ones. Each has an accelerate (entering) and decelerate (exiting) variant." ]
@@ -138,7 +138,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Durations"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Durations") "Durations"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "Sixteen --md-sys-motion-duration-* steps in four bands. Short for small utility transitions, medium for traversing part of the screen, long for expressive moves, extra-long for ambient motion." ]
@@ -163,7 +163,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Springs"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Springs") "Springs"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "M3 Expressive replaces some easings with springs: a duration paired with an overshooting curve. Spatial springs move layout and position; effects springs animate visual properties like color and opacity." ]

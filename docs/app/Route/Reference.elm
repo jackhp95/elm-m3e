@@ -139,7 +139,7 @@ view app _ =
         ( barrel, componentModules ) =
             splitBarrel app.data
     in
-    View.fromElement "elm-m3e · component reference"
+    View.fromElement "Full API reference"
         (Doc.pane
             [ pageHeading
             , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]

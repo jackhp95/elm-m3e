@@ -93,7 +93,7 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Supporting pane · elm-m3e" screen
+    View.fromElement "Supporting pane" screen
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the

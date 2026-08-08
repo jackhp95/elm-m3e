@@ -124,7 +124,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Color · elm-m3e"
+    View.fromElement "Color"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -134,7 +134,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Container pairings"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Container pairings") "Container pairings"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "Each accent comes as a bold role and a lower-emphasis container, and every role carries a paired on-* color for legible content. The swatch text is painted with that on-color, so if the label is readable the pairing is correct." ]
@@ -145,21 +145,21 @@ view _ _ =
                     )
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Surface roles"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Surface roles") "Surface roles"
                 , Doc.showcase
                     (TypedHtml.div [ TA.class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" ]
                         (List.map swatch surfaces)
                     )
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Dynamic color"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Dynamic color") "Dynamic color"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Forced colors"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Forced colors") "Forced colors"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]

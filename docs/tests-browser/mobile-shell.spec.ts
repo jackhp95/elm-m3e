@@ -25,6 +25,10 @@ const LONG_ROUTE = "/reference";
 test.use({ viewport: MOBILE });
 
 test("mobile shell: content scrolls in a bounded inner region (nothing clipped)", async ({ page }) => {
+  // `/reference` renders every component's full API in one page (5000+
+  // `m3e-card` custom elements to upgrade) -- a cold context can take longer
+  // than the default 30s timeout just to load and hydrate it.
+  test.setTimeout(60_000);
   await page.goto(LONG_ROUTE);
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 

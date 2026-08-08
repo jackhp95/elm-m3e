@@ -142,7 +142,7 @@ hero =
 highlights : Int -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 highlights componentCount =
     TypedHtml.section [ TA.class "space-y-6" ]
-        [ Doc.sectionHeading "Why elm-m3e"
+        [ Doc.sectionHeadingWithId (Doc.slugify "Why elm-m3e") "Why elm-m3e"
         , TypedHtml.div [ TA.class "grid gap-4 sm:grid-cols-3" ]
             [ highlightCard "verified"
                 "Type-safe slots"
@@ -175,7 +175,7 @@ highlightCard iconName cardTitle cardBody =
 statusGrid : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 statusGrid =
     TypedHtml.section [ TA.class "space-y-3" ]
-        [ Doc.sectionHeading "Status"
+        [ Doc.sectionHeadingWithId (Doc.slugify "Status") "Status"
         , TypedHtml.div [ TA.class "max-w-2xl" ]
             [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                 [ M3e.text "Prerelease — breaking changes are embraced while the API settles. Every example in these docs is round-tripped against the real components; the "

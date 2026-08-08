@@ -61,7 +61,7 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Glossary · elm-m3e"
+    View.fromElement "Glossary"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-8" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

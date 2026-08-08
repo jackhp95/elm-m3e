@@ -94,7 +94,7 @@ emailField =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Composition, not injection · elm-m3e"
+    View.fromElement "Composition, not injection"
         (Doc.pane
             [ TypedHtml.div [ TypedHtml.Attributes.class "space-y-12" ]
                 [ TypedHtml.section [ TypedHtml.Attributes.class "space-y-4" ]

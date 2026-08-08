@@ -20,6 +20,12 @@ import { expect, test } from "@playwright/test";
 const DRAWER = "#docs-drawer";
 const TREE = "#docs-drawer [slot='start']";
 const TOC = "#docs-drawer [slot='end']";
+// The tree/TOC panels are each wrapped in an `m3e-content-pane` too, and
+// Playwright's CSS engine pierces the drawer container's own shadow root for
+// `>` as well (matching its internal `.start`/`.content`/`.scrim`/`.end`
+// layout divs as if they were direct children) -- the `overflow-y-auto`
+// class is unique to `Shared.drawerShell`'s own plain content wrapper div.
+const MAIN_SCROLL_REGION = "#docs-drawer > div.overflow-y-auto";
 
 const hamburger = (page: import("@playwright/test").Page) =>
   page.getByRole("button", { name: "Toggle navigation" });
@@ -116,12 +122,12 @@ test("on mobile, opening the TOC closes the tree and the hamburger reopens it on
 });
 
 /**
- * Chrome budget: the rail is 96px and each drawer panel is 280px
- * (`--m3e-drawer-container-width`, narrowed from the library's 360px default in
- * `Shared.drawerShell`). With no minimum content width and nothing gating the
- * TOC, the pre-fix shell put 96 + 360 + 360 = 816px of chrome on screen at
- * every width >= 768, leaving 144-208px of content at a 960-1024px viewport --
- * one word per line, code blocks clipped.
+ * Chrome budget: the rail is compact (~96px) by default and each drawer panel
+ * is 224px (`--m3e-drawer-container-width`, narrowed from the library's 360px
+ * default in `Shared.drawerShell`). With no minimum content width and nothing
+ * gating the TOC, the pre-fix shell put 96 + 360 + 360 = 816px of chrome on
+ * screen at every width >= 768, leaving 144-208px of content at a
+ * 960-1024px viewport -- one word per line, code blocks clipped.
  */
 for (const width of [960, 1024, 1280, 1440]) {
   test(`the content column stays readable at ${width}px`, async ({ page }) => {
@@ -132,8 +138,7 @@ for (const width of [960, 1024, 1280, 1440]) {
     await expect(page.locator("#docs-app-bar")).toBeVisible();
 
     const contentWidth = await page
-      .locator("#main-content m3e-content-pane")
-      .first()
+      .locator(MAIN_SCROLL_REGION)
       .evaluate((el) => el.getBoundingClientRect().width);
 
     expect(contentWidth).toBeGreaterThanOrEqual(500);
@@ -148,6 +153,10 @@ for (const width of [960, 1024, 1280, 1440]) {
 test("the mobile bottom nav bar does not occlude the end of the page content", async ({
   page,
 }) => {
+  // `/reference` renders every component's full API in one page (5000+
+  // `m3e-card` custom elements to upgrade) -- a cold context can take longer
+  // than the default 30s timeout just to load and hydrate it.
+  test.setTimeout(60_000);
   await page.setViewportSize({ width: 411, height: 761 });
   await page.goto("/reference");
 

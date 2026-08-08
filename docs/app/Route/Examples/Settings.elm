@@ -169,7 +169,7 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    View.fromElement "Settings · elm-m3e" (screen model)
+    View.fromElement "Settings" (screen model)
 
 
 {-| The full-viewport shell: a desktop nav rail beside a main column, with a

@@ -140,7 +140,7 @@ view app _ model =
             else
                 [ overview app.data ]
     in
-    View.fromElement "All components · elm-m3e"
+    View.fromElement "All components"
         (M3e.mapMsg PagesMsg.fromMsg
             (Doc.pane
                 [ TypedHtml.div [ TA.class "space-y-12" ] (heading :: content) ]

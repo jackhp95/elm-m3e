@@ -1,4 +1,7 @@
-module Doc exposing (Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, sectionHeadingWithId, showcase, userlandNote)
+module Doc exposing
+    ( Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, showcase, userlandNote
+    , slugify
+    )
 
 {-| Shared documentation-rendering helpers, lifted from the Styles/GettingStarted
 routes so per-component Usage pages can reuse them.
@@ -14,7 +17,8 @@ Every one of those helpers returns an `Element` with **free** phantom rows,
 because `M3e.Unsafe.fromHtml` asserts nothing about what it wraps — so they drop
 into any slot, and no caller has to name a kind row to receive one.
 
-@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeading, sectionHeadingWithId, showcase, userlandNote
+@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, showcase, userlandNote
+@docs slugify
 
 -}
 
@@ -156,7 +160,7 @@ route hands to `View.fromElement` at its root.
 -}
 pane : List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg) -> Element (M3e.ContentPane.Is s) freeAdm msg
 pane items =
-    M3e.contentPane [] items
+    M3e.contentPane [ TA.class "mx-auto max-w-5xl" ] items
 
 
 {-| A page's `<h1>`: display-small heading.
@@ -171,22 +175,14 @@ pageHeading s =
         [ M3e.text s ]
 
 
-{-| A section's `<h2>`: headline-small heading.
--}
-sectionHeading : String -> Element (M3e.Heading.Is s) admittedBy msg
-sectionHeading s =
-    M3e.heading
-        [ M3e.Heading.variant Value.headline
-        , M3e.Heading.size Value.small
-        , M3e.Attributes.level 2
-        ]
-        [ M3e.text s ]
+{-| A section's `<h2>`: headline-small heading, carrying an `id` so it has a
+stable, bookmarkable anchor. `Shared.tocPanel`'s `m3e-toc` auto-discovers
+every heading on the page at render time, but falls back to a random `guid()`
+for any heading with no `id` -- pairing with `Doc.slugify` here keeps the
+anchor stable across renders:
 
+    Doc.sectionHeadingWithId (Doc.slugify "Container pairings") "Container pairings"
 
-{-| Like `sectionHeading`, but carries an `id` so a `View.toc` jump-link
-(`href="#id"`) has something to land on. A sibling function, not a changed
-signature on `sectionHeading` — 37 existing call sites across 12 files don't
-need to change for the ~handful of headings that opt into a TOC.
 -}
 sectionHeadingWithId : String -> String -> Element (M3e.Heading.Is s) admittedBy msg
 sectionHeadingWithId id s =
@@ -197,6 +193,31 @@ sectionHeadingWithId id s =
         , M3e.Attributes.id id
         ]
         [ M3e.text s ]
+
+
+{-| Derive a stable `id` from a heading's own display text -- lowercase,
+non-alphanumeric runs collapsed to a single hyphen, so "Container pairings"
+becomes "container-pairings" and "Invalid states don't compile" becomes
+"invalid-states-don-t-compile". Used everywhere a `sectionHeadingWithId` id
+is needed, so the id is computed from the SAME string the heading displays --
+never a second, independently hand-typed literal that could quietly drift
+from the visible text.
+-}
+slugify : String -> String
+slugify text =
+    text
+        |> String.toLower
+        |> String.map
+            (\c ->
+                if Char.isAlphaNum c then
+                    c
+
+                else
+                    '-'
+            )
+        |> String.split "-"
+        |> List.filter (not << String.isEmpty)
+        |> String.join "-"
 
 
 {-| The chapter recap box: a "Recap" overline over rendered markdown, in a

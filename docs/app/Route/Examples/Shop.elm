@@ -150,7 +150,7 @@ view _ _ model =
             else
                 List.filter (\p -> p.category == model.category) products
     in
-    View.fromElement "Shop · elm-m3e"
+    View.fromElement "Shop"
         (TypedHtml.div
             [ TA.class "bg-surface text-on-surface flex min-h-screen w-full" ]
             [ navRail model

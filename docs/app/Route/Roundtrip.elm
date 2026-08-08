@@ -255,7 +255,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
-    View.fromElement "Round-trip report · elm-m3e"
+    View.fromElement "Round-trip report"
         (Doc.pane
             [ pageHeading
             , TypedHtml.div [ TA.class "mt-2 max-w-2xl" ]

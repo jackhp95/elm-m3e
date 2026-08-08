@@ -151,7 +151,7 @@ pageHeading =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Shape · elm-m3e"
+    View.fromElement "Shape"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-3" ]
                 [ pageHeading
@@ -161,7 +161,7 @@ view _ _ =
                     ]
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Corner-radius scale"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Corner-radius scale") "Corner-radius scale"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "Nine canonical sizes from none through extra-extra-large, plus full (a pill). Each swatch is a primary-container surface clipped with the matching rounded-md-corner-* utility; the caption is the token's rem value." ]
@@ -172,7 +172,7 @@ view _ _ =
                     )
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Named shapes"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Named shapes") "Named shapes"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "M3e.shape clips a filled tile to a named shape via Shape.name Value tokens — the same clip-path set Material uses for expressive surfaces." ]
@@ -181,7 +181,7 @@ view _ _ =
                     (TypedHtml.div [ TA.class "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6" ] namedShapes)
                 ]
             , TypedHtml.section [ TA.class "space-y-3" ]
-                [ Doc.sectionHeading "Shape morphing"
+                [ Doc.sectionHeadingWithId (Doc.slugify "Shape morphing") "Shape morphing"
                 , TypedHtml.div [ TA.class "max-w-2xl" ]
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "The defining M3 Expressive interaction: a shape animates between two states rather than snapping. Buttons carry a full set of morph tokens for exactly this — a round or square resting shape and a distinct pressed shape it springs to and back from." ]

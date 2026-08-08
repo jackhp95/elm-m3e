@@ -86,7 +86,7 @@ savedButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Invalid states don't compile · elm-m3e"
+    View.fromElement "Invalid states don't compile"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

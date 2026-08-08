@@ -193,7 +193,7 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    View.fromElement "Mail · elm-m3e" (M3e.mapMsg PagesMsg.fromMsg (screen model))
+    View.fromElement "Mail" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
 {-| The whole screen: full-viewport shell painted onto the base `surface`, with

@@ -30,6 +30,17 @@ import { expect, test } from "@playwright/test";
 const DOCS_SHELL = "m3e-theme > div.h-dvh.flex.flex-row";
 const MAIN_COLUMN = `${DOCS_SHELL} > div.flex.flex-1.flex-col`;
 
+// `#docs-drawer` slots the tree (`slot="start"`) and TOC (`slot="end"`) panels
+// beside the page's own content. The tree/TOC panels are each wrapped in an
+// `m3e-content-pane`, so `#docs-drawer m3e-content-pane` alone is ambiguous,
+// and Playwright's CSS engine pierces the drawer container's own shadow root
+// for `>` too (matching its internal `.start`/`.content`/`.scrim`/`.end`
+// layout divs as if they were direct children), so `div:not([slot])` alone
+// is ALSO ambiguous. The `overflow-y-auto` class is unique to
+// `Shared.drawerShell`'s own plain wrapper div -- the one bounded scroll
+// region.
+const MAIN_SCROLL_REGION = "#docs-drawer > div.overflow-y-auto";
+
 // A `/examples/*` route whose content is taller than the viewport, so the
 // "content is reachable" assertion is meaningful rather than vacuous.
 const TALL_EXAMPLE = "/examples/shop";
@@ -54,10 +65,7 @@ test("the docs shell is a fixed-viewport flex row (rail | main column) with one 
   await expect(mainColumn).toHaveCSS("display", "flex");
   await expect(mainColumn).toHaveCSS("flex-direction", "column");
 
-  await expect(page.locator("#main-content m3e-content-pane").first()).toHaveCSS(
-    "overflow-y",
-    "auto",
-  );
+  await expect(page.locator(MAIN_SCROLL_REGION)).toHaveCSS("overflow-y", "auto");
 });
 
 test("a full-viewport example route skips the docs shell entirely", async ({ page }) => {
@@ -102,12 +110,9 @@ test("a component page composes rail, tree, content, and TOC together", async ({
     page.locator("#docs-drawer [slot='start']").getByRole("link", { name: "Button", exact: true }),
   ).toBeVisible();
 
-  // Content: the page's own heading renders in the content pane.
+  // Content: the page's own heading renders in the main scroll region.
   await expect(
-    page
-      .locator("#main-content m3e-content-pane")
-      .first()
-      .getByRole("heading", { name: "Button" }),
+    page.locator(MAIN_SCROLL_REGION).getByRole("heading", { name: "Button" }),
   ).toBeVisible();
 
   // TOC: pinned open on desktop (no toggle button needed — see toc.spec.ts),

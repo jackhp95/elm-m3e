@@ -84,7 +84,7 @@ helpButton =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Accessibility you can't forget · elm-m3e"
+    View.fromElement "Accessibility you can't forget"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-12" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

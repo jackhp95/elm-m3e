@@ -148,7 +148,7 @@ destinations =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    View.fromElement "Feed · elm-m3e" (M3e.mapMsg PagesMsg.fromMsg (screen model))
+    View.fromElement "Feed" (M3e.mapMsg PagesMsg.fromMsg (screen model))
 
 
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the

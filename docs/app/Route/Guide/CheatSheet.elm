@@ -72,7 +72,7 @@ card title items =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    View.fromElement "Cheat sheet · elm-m3e"
+    View.fromElement "Cheat sheet"
         (Doc.pane
             [ TypedHtml.div [ TA.class "space-y-10" ]
                 [ TypedHtml.section [ TA.class "space-y-4" ]

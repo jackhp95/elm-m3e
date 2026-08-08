@@ -1,18 +1,18 @@
-module M3e.StateLayer exposing
+module M3e.SelectionIndicator exposing
     ( view, build, toElement
     , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-    , disableHover, disabled, enablePressed, for
-    , withClass, withDisableHover, withDisabled, withEnablePressed, withFor, withId, withSlot, withStyle
+    , bounce, centered, disabled, for, selected, defaultSelected
+    , withBounce, withCentered, withClass, withDisabled, withFor, withId, withSelected, withSlot, withStyle
     )
 
-{-| The `m3e-state-layer` component — strict per-component surface.
+{-| The `m3e-selection-indicator` component — strict per-component surface.
 
-Provides focus and hover state layer treatment for an interactive element.
+Provides selection, focus, and hover state layer treatment for an interactive element that supports selection.
 
 @docs view, build, toElement
 @docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
-@docs disableHover, disabled, enablePressed, for
-@docs withClass, withDisableHover, withDisabled, withEnablePressed, withFor, withId, withSlot, withStyle
+@docs bounce, centered, disabled, for, selected, defaultSelected
+@docs withBounce, withCentered, withClass, withDisabled, withFor, withId, withSelected, withSlot, withStyle
 
 -}
 
@@ -26,21 +26,22 @@ import M3e.Html as H
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
-{-| The kind row `m3e-state-layer` produces (open — composes into any slot naming it).
+{-| The kind row `m3e-selection-indicator` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | stateLayer : Brand }
+    { s | selectionIndicator : Brand }
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disableHover : Supported
+    { bounce : Supported
+    , centered : Supported
+    , class : Supported
     , disabled : Supported
-    , enablePressed : Supported
     , for : Supported
     , id : Supported
+    , selected : Supported
     , slot : Supported
     , style : Supported
     }
@@ -49,7 +50,7 @@ type alias Attrs =
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | stateLayer : Ctx }
+    { childAdm | selectionIndicator : Ctx }
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -59,14 +60,21 @@ view :
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
 view =
-    H.stateLayer
+    H.selectionIndicator
 
 
-{-| See `M3e.Attributes.disableHover`.
+{-| See `M3e.Attributes.bounce`.
 -}
-disableHover : Bool -> Attr { c | disableHover : Supported } msg
-disableHover =
-    A.disableHover
+bounce : Bool -> Attr { c | bounce : Supported } msg
+bounce =
+    A.bounce
+
+
+{-| See `M3e.Attributes.centered`.
+-}
+centered : Bool -> Attr { c | centered : Supported } msg
+centered =
+    A.centered
 
 
 {-| See `M3e.Attributes.disabled`.
@@ -76,18 +84,25 @@ disabled =
     A.disabled
 
 
-{-| See `M3e.Attributes.enablePressed`.
--}
-enablePressed : Bool -> Attr { c | enablePressed : Supported } msg
-enablePressed =
-    A.enablePressed
-
-
 {-| See `M3e.Attributes.for`.
 -}
 for : String -> Attr { c | for : Supported } msg
 for =
     A.for
+
+
+{-| See `M3e.Attributes.selected`.
+-}
+selected : Bool -> Attr { c | selected : Supported } msg
+selected =
+    A.selected
+
+
+{-| See `M3e.Attributes.defaultSelected`.
+-}
+defaultSelected : Bool -> Attr { c | selected : Supported } msg
+defaultSelected =
+    A.defaultSelected
 
 
 {-| The pipe-builder: capabilities are consumed Available→Used, so writing
@@ -101,12 +116,13 @@ type alias Builder attrCaps slotCaps msg =
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disableHover : Available
+    { bounce : Available
+    , centered : Available
+    , class : Available
     , disabled : Available
-    , enablePressed : Available
     , for : Available
     , id : Available
+    , selected : Available
     , slot : Available
     , style : Available
     }
@@ -122,7 +138,7 @@ type alias SlotCaps =
 -}
 build : Builder AttrCaps SlotCaps msg
 build =
-    B.init "m3e-state-layer" [] []
+    B.init "m3e-selection-indicator" [] []
 
 
 {-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
@@ -160,11 +176,18 @@ withStyle property value_ =
     B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disableHover` — consumes its capability (write-once).
+{-| Pipe form of `bounce` — consumes its capability (write-once).
 -}
-withDisableHover : Bool -> Builder { a | disableHover : Available } slotCaps msg -> Builder { a | disableHover : Used } slotCaps msg
-withDisableHover value_ =
-    B.withAttribute (A.disableHover value_)
+withBounce : Bool -> Builder { a | bounce : Available } slotCaps msg -> Builder { a | bounce : Used } slotCaps msg
+withBounce value_ =
+    B.withAttribute (A.bounce value_)
+
+
+{-| Pipe form of `centered` — consumes its capability (write-once).
+-}
+withCentered : Bool -> Builder { a | centered : Available } slotCaps msg -> Builder { a | centered : Used } slotCaps msg
+withCentered value_ =
+    B.withAttribute (A.centered value_)
 
 
 {-| Pipe form of `disabled` — consumes its capability (write-once).
@@ -174,15 +197,15 @@ withDisabled value_ =
     B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `enablePressed` — consumes its capability (write-once).
--}
-withEnablePressed : Bool -> Builder { a | enablePressed : Available } slotCaps msg -> Builder { a | enablePressed : Used } slotCaps msg
-withEnablePressed value_ =
-    B.withAttribute (A.enablePressed value_)
-
-
 {-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg -> Builder { a | for : Used } slotCaps msg
 withFor value_ =
     B.withAttribute (A.for value_)
+
+
+{-| Pipe form of `selected` — consumes its capability (write-once).
+-}
+withSelected : Bool -> Builder { a | selected : Available } slotCaps msg -> Builder { a | selected : Used } slotCaps msg
+withSelected value_ =
+    B.withAttribute (A.selected value_)

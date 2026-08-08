@@ -175,7 +175,7 @@ activity =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ _ =
-    View.fromElement "Aperture Analytics · elm-m3e"
+    View.fromElement "Aperture Analytics"
         (TypedHtml.div
             [ TA.class "bg-surface text-on-surface flex flex-col min-h-screen w-full" ]
             [ appBar
