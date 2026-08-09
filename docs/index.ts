@@ -32,6 +32,32 @@ import "./style.css";
 // and before the first Lit update cycle), so the first `change` from <m3e-theme>
 // is never missed. `capture: true` so it fires before other listeners in case
 // any sibling handler calls stopPropagation.
+//
+// ─── Override-clobber fix (bug #3 in this family) ──────────────────────────
+//
+// ROOT CAUSE: `<m3e-theme>` fires a NEW `change` event any time one of its
+// reactive attributes (`scheme`, `contrast`, `color`/seed) is set, and Lit
+// processes attribute changes asynchronously (its own microtask-batched
+// update cycle) — so that `change` event lands strictly AFTER whatever
+// synchronous JS ran when the attribute was set. Elm's `ApplyPreset` and
+// `ThemeStateLoaded` handlers both set `scheme`/`contrast`/`color` AND call
+// `setCssOverride` for `--md-sys-color-*` overrides in the SAME `Cmd.batch` —
+// the port call runs synchronously and lands first, but the deferred
+// `change` event fires a tick later and this listener's blind copy-from-
+// adopted-stylesheet used to stomp every `--md-sys-color-*` property,
+// including the one Elm just explicitly overrode. That's why a manual
+// Color-accordion override survives *within* a session (no attribute change
+// accompanies it) but not across a reload, and why OLED's baked-in override
+// never lands at all (`ApplyPreset` always pairs `scheme` with overrides).
+//
+// FIX: track which `--md-sys-color-*` properties currently have an active
+// Elm-driven override (via `overriddenColorProperties`, updated by the
+// `setCssOverride` port handler below) and skip those specific properties
+// when copying from the adopted stylesheet. `<m3e-theme>`'s own computed
+// palette still wins for every non-overridden role; overridden roles are
+// now immune to the safety-net/change-listener re-sync race.
+const overriddenColorProperties = new Set<string>();
+
 function _applyThemeInlineStyles(): void {
   for (const sheet of document.adoptedStyleSheets) {
     const rule = sheet.cssRules[0] as CSSStyleRule | undefined;
@@ -39,7 +65,7 @@ function _applyThemeInlineStyles(): void {
       const { style } = rule;
       for (let i = 0; i < style.length; i++) {
         const prop = style.item(i);
-        if (prop.startsWith("--md-sys-color-")) {
+        if (prop.startsWith("--md-sys-color-") && !overriddenColorProperties.has(prop)) {
           document.documentElement.style.setProperty(prop, style.getPropertyValue(prop));
         }
       }
@@ -151,11 +177,22 @@ const config: ElmPagesInit = {
     // One raw `--{property}: {value}` write via inline style on <html> — used
     // for every color-role override and every computed typescale/shape token
     // that Elm cannot express as an `Ir.attribute`.
+    //
+    // Also maintains `overriddenColorProperties` (see the comment above
+    // `_applyThemeInlineStyles`): a "" value means the override was cleared
+    // (ResetColorOverride / ResetAll / a preset switch that no longer covers
+    // this property), so `<m3e-theme>`'s own computed palette should resume
+    // winning for it on the next `change` event.
     app?.ports?.setCssOverride?.subscribe(({ property, value }) => {
+      const fullProp = `--${property}`;
       if (value === "") {
-        document.documentElement.style.removeProperty(`--${property}`);
+        document.documentElement.style.removeProperty(fullProp);
+        overriddenColorProperties.delete(fullProp);
       } else {
-        document.documentElement.style.setProperty(`--${property}`, value);
+        document.documentElement.style.setProperty(fullProp, value);
+        if (fullProp.startsWith("--md-sys-color-")) {
+          overriddenColorProperties.add(fullProp);
+        }
       }
     });
 
