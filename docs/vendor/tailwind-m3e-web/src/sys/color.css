@@ -7,12 +7,12 @@
  *     calc to fill missing tones per the M3 spec tone assignments.
  *   - --md-sys-color-* — the canonical M3 system color roles read by m3e
  *     web components in their shadow DOM. CSS custom properties inherit
- *     through shadow boundaries, so setting them on :root makes them
+ *     through shadow boundaries, so setting them on html makes them
  *     available to every m3e component.
  *
  *
  * M3 spec tone assignments for color roles:
- *   Light: primary=40, on-primary=100, container=90, on-container=10
+ *   Light: primary=40, on-primary=100, container=90, on-container=30
  *   Dark:  primary=80, on-primary=20,  container=30, on-container=90
  *
  * M3 spec tone assignments for surfaces:
@@ -26,7 +26,13 @@
  * These are filled in via oklch(from …) relative color calc.
  */
 
-:root {
+/* html (not :root) — <m3e-theme> writes its dynamic color roles to
+   `html { ... }` via document.adoptedStyleSheets. `:root` is a pseudo-class
+   (specificity 0,0,1,0) and strictly outranks `html` (type selector 0,0,0,1),
+   so a `:root` block would permanently win over <m3e-theme>'s adopted-sheet
+   writes. Using `html` equalises specificity; adopted sheets then win by
+   source-order (they apply after regular document stylesheets). */
+html {
   /* Declare support for both schemes; production apps can override to
      "light" via inline style on <html> to disable the dark-mode toggle. */
   color-scheme: light dark;
@@ -96,15 +102,24 @@
   );
   --on-background: light-dark(var(--md-ref-palette-neutral-10), var(--md-ref-palette-neutral-90));
 
-  --shadow: rgba(0, 0, 0, 0.15);
-  --scrim: rgba(0, 0, 0, 0.32);
+  /* M3 spec + @m3e/web define shadow and scrim as opaque black (neutral tone 0)
+     in BOTH schemes; the alpha is applied at the usage site (elevation() mixes
+     the shadow colour with `transparent`; scrims set their own opacity). Keeping
+     these opaque — rather than baking in an alpha here — (a) matches the m3e
+     default this file bridges to (elevation.css falls back to #000000), (b) lets
+     the elevation umbra/penumbra/ambient color-mix ratios resolve correctly
+     instead of being multiplied by a second 0.15/0.32 alpha, and (c) makes the
+     Tailwind colour-opacity modifier (`bg-scrim/50`, `bg-scrim/32`) behave as
+     users expect. */
+  --shadow: #000000;
+  --scrim: #000000;
 
   /* ════════════════════════════════════════════════════════════
      M3E BRIDGES — --md-sys-color-* read by m3e web components
 
      Each role references its same-named spec palette (M3 spec semantics).
      Roles follow the M3 spec tone ladder: 40/80 for primary, 100/20 for
-     on-primary, 90/30 for container, 10/90 for on-container.
+     on-primary, 90/30 for container, 30/90 for on-container.
      ════════════════════════════════════════════════════════════ */
 
   /* Primary */
@@ -121,7 +136,7 @@
     var(--md-ref-palette-primary-30)
   );
   --md-sys-color-on-primary-container: light-dark(
-    var(--md-ref-palette-primary-10),
+    var(--md-ref-palette-primary-30),
     var(--md-ref-palette-primary-90)
   );
 
@@ -139,7 +154,7 @@
     var(--md-ref-palette-secondary-30)
   );
   --md-sys-color-on-secondary-container: light-dark(
-    var(--md-ref-palette-secondary-10),
+    var(--md-ref-palette-secondary-30),
     var(--md-ref-palette-secondary-90)
   );
 
@@ -157,7 +172,7 @@
     var(--md-ref-palette-tertiary-30)
   );
   --md-sys-color-on-tertiary-container: light-dark(
-    var(--md-ref-palette-tertiary-10),
+    var(--md-ref-palette-tertiary-30),
     var(--md-ref-palette-tertiary-90)
   );
 
@@ -172,7 +187,7 @@
     var(--md-ref-palette-error-30)
   );
   --md-sys-color-on-error-container: light-dark(
-    var(--md-ref-palette-error-10),
+    var(--md-ref-palette-error-30),
     var(--md-ref-palette-error-90)
   );
 
