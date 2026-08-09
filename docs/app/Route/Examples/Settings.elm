@@ -14,6 +14,7 @@ shape all come from the kit; Tailwind is used only for layout.
 -}
 
 import BackendTask
+import Doc
 import Effect exposing (Effect)
 import ExampleNav
 import Head
@@ -332,7 +333,7 @@ whose `ListItem` rows are separated by `Divider`s.
 sectionCard : String -> List (Row msg) -> Element (TypedHtml.Grouping.DivIs s) admOut_ msg
 sectionCard heading rows =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
-        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text heading ]
+        [ Doc.sectionLabelCaps heading
         , TypedHtml.div
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize rows)
@@ -352,7 +353,7 @@ drill-in row for managing the account.
 accountCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 accountCard =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
-        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Account" ]
+        [ Doc.sectionLabelCaps "Account"
         , TypedHtml.div
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize

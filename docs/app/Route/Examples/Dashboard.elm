@@ -15,6 +15,7 @@ and responsive visibility. Static screen (no local state).
 -}
 
 import BackendTask
+import Doc
 import Effect exposing (Effect)
 import ExampleNav
 import Head
@@ -396,7 +397,7 @@ mainContent =
 pageHeader : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 pageHeader =
     TypedHtml.div [ TA.class "flex flex-col gap-1" ]
-        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text "Overview" ]
+        [ Doc.sectionLabelCaps "Overview"
         , M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] [ M3e.text "Good morning, Jack" ]
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Here is how your business is doing today." ]
         ]
