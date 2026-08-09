@@ -1,22 +1,39 @@
-module Theme.Sections.Shared exposing (numberStepper, stepperControls)
+module Theme.Sections.Shared exposing (modeSegmented, numberStepper, stepperControls)
 
 {-| Widgets shared by the Typography and Shape accordion sections — both
 drive a `Theme.Scale.ScaleConfig` through the same Linear/Modular/Bump/Power
 mode-dependent set of numeric steppers, differing only in which `Msg`
 constructor wraps the resulting `Theme.TypeScaleParam` (`SetTypeScaleParam`
 for Typography, `SetShapeScaleParam` for Shape — both share the same
-`Theme.TypeScaleParam` type).
+`Theme.TypeScaleParam` type). Both also drive the same Linear/Modular/Bump/Power
+mode segmented control, differing only in which `Msg` constructor wraps the
+resulting `Theme.Scale.ScaleMode`.
 -}
 
 import M3e exposing (Element)
 import M3e.Icon
+import M3e.Kind
 import Theme exposing (TypeScaleParam)
-import Theme.Scale as Scale exposing (ScaleConfig)
+import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
 import TypedHtml.Events
 import TypedHtml.Grouping
+
+
+{-| A `Theme.segmented` control (the shared segmented-button helper also used
+for the Scheme control in `Theme.elm`) — its `ButtonSegment`s already carry
+their own accessible name from the visible label text, matching the rest of
+the app's convention for this control shape.
+-}
+modeSegmented : (ScaleMode -> Theme.Msg) -> ScaleMode -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Theme.Msg
+modeSegmented toMsg current =
+    Theme.segmented
+        (List.map
+            (\mode -> ( Scale.modeToString mode |> Theme.capitalize, mode == current, toMsg mode ))
+            [ Scale.Linear, Scale.Modular, Scale.Bump, Scale.Power ]
+        )
 
 
 {-| Only the fields relevant to the active mode are meaningfully editable —

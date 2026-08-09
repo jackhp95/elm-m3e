@@ -6,9 +6,8 @@ steppers, and a live 15-token size preview (`Theme.Tokens.typescaleTokens`).
 -}
 
 import M3e exposing (Element)
-import M3e.Kind
 import Theme exposing (Msg(..))
-import Theme.Scale as Scale exposing (ScaleMode)
+import Theme.Scale as Scale
 import Theme.Sections.Shared as Shared
 import Theme.Tokens as Tokens
 import TypedHtml
@@ -23,7 +22,7 @@ view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
         [ fontSelect "Display font" "display-font" model.displayFont SetDisplayFont
         , fontSelect "Body font" "body-font" model.bodyFont SetBodyFont
-        , modeSegmented model.typeScale.mode
+        , Shared.modeSegmented SetTypeScaleMode model.typeScale.mode
         , Shared.stepperControls SetTypeScaleParam model.typeScale
         , preview model
         ]
@@ -59,20 +58,6 @@ fontSelect labelText idSuffix current toMsg =
                 availableFonts
             )
         ]
-
-
-{-| A `Theme.segmented` control (the shared segmented-button helper also used
-for the Scheme control in `Theme.elm`) — its `ButtonSegment`s already carry
-their own accessible name from the visible label text, matching the rest of
-the app's convention for this control shape.
--}
-modeSegmented : ScaleMode -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-modeSegmented current =
-    Theme.segmented
-        (List.map
-            (\mode -> ( Scale.modeToString mode |> Theme.capitalize, mode == current, SetTypeScaleMode mode ))
-            [ Scale.Linear, Scale.Modular, Scale.Bump, Scale.Power ]
-        )
 
 
 preview : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg

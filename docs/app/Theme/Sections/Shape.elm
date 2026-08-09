@@ -9,9 +9,7 @@ reference site, rather than live-computed like Typography's).
 -}
 
 import M3e exposing (Element)
-import M3e.Kind
 import Theme exposing (Msg(..))
-import Theme.Scale as Scale
 import Theme.Sections.Shared as Shared
 import TypedHtml
 import TypedHtml.Attributes
@@ -21,23 +19,10 @@ import TypedHtml.Grouping
 view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
-        [ modeSegmented model.shapeScale.mode
+        [ Shared.modeSegmented SetShapeScaleMode model.shapeScale.mode
         , Shared.stepperControls SetShapeScaleParam model.shapeScale
         , staticPreview
         ]
-
-
-{-| Same `Theme.segmented` reuse pattern as Typography's `modeSegmented` —
-its `ButtonSegment`s carry their own accessible name from the visible label
-text.
--}
-modeSegmented : Scale.ScaleMode -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-modeSegmented current =
-    Theme.segmented
-        (List.map
-            (\mode -> ( Scale.modeToString mode |> Theme.capitalize, mode == current, SetShapeScaleMode mode ))
-            [ Scale.Linear, Scale.Modular, Scale.Bump, Scale.Power ]
-        )
 
 
 {-| Static preview — six swatches labeled None/XS/S/M/L/XL/Full-ish, matching
