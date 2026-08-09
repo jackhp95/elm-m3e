@@ -9,6 +9,81 @@ import "../js/raw-html.js";
 import "../js/slide-panels.js";
 import "./style.css";
 
+// ─── Cascade-specificity fix ────────────────────────────────────────────────
+//
+// ROOT CAUSE: vendor static CSS uses `:root { --md-sys-color-* }` (specificity
+// 0,1,0). @m3e/web's <m3e-theme> adopted stylesheet uses `html { --md-sys-color-* }`
+// (specificity 0,0,1). Pseudo-class `:root` BEATS type-selector `html`, so the
+// static vendor palette silently wins every time — color/contrast attribute
+// changes on <m3e-theme> recompute the adopted-sheet values correctly but are
+// never visible in getComputedStyle.
+//
+// The CSS-layer fix (wrapping vendor :root in @layer) is the right approach per
+// spec, but Tailwind v4 / LightningCSS strips all @layer annotations from
+// non-entry imported files AND normalizes :where(:root) back to :root, making
+// any pure-CSS fix impossible without forking the build pipeline.
+//
+// JS FIX: after every <m3e-theme> `change` event (fired post-_apply()), copy
+// the computed --md-sys-color-* values from the adopted stylesheet to inline
+// styles on <html>. Inline styles have specificity (1,0,0,0) — always beats
+// any selector in any author stylesheet.
+//
+// LISTENER PLACEMENT: registered at module-evaluation time (before Elm renders
+// and before the first Lit update cycle), so the first `change` from <m3e-theme>
+// is never missed. `capture: true` so it fires before other listeners in case
+// any sibling handler calls stopPropagation.
+//
+// ─── Override-clobber fix (bug #3 in this family) ──────────────────────────
+//
+// ROOT CAUSE: `<m3e-theme>` fires a NEW `change` event any time one of its
+// reactive attributes (`scheme`, `contrast`, `color`/seed) is set, and Lit
+// processes attribute changes asynchronously (its own microtask-batched
+// update cycle) — so that `change` event lands strictly AFTER whatever
+// synchronous JS ran when the attribute was set. Elm's `ApplyPreset` and
+// `ThemeStateLoaded` handlers both set `scheme`/`contrast`/`color` AND call
+// `setCssOverride` for `--md-sys-color-*` overrides in the SAME `Cmd.batch` —
+// the port call runs synchronously and lands first, but the deferred
+// `change` event fires a tick later and this listener's blind copy-from-
+// adopted-stylesheet used to stomp every `--md-sys-color-*` property,
+// including the one Elm just explicitly overrode. That's why a manual
+// Color-accordion override survives *within* a session (no attribute change
+// accompanies it) but not across a reload, and why OLED's baked-in override
+// never lands at all (`ApplyPreset` always pairs `scheme` with overrides).
+//
+// FIX: track which `--md-sys-color-*` properties currently have an active
+// Elm-driven override (via `overriddenColorProperties`, updated by the
+// `setCssOverride` port handler below) and skip those specific properties
+// when copying from the adopted stylesheet. `<m3e-theme>`'s own computed
+// palette still wins for every non-overridden role; overridden roles are
+// now immune to the safety-net/change-listener re-sync race.
+const overriddenColorProperties = new Set<string>();
+
+function _applyThemeInlineStyles(): void {
+  for (const sheet of document.adoptedStyleSheets) {
+    const rule = sheet.cssRules[0] as CSSStyleRule | undefined;
+    if (rule?.selectorText === "html") {
+      const { style } = rule;
+      for (let i = 0; i < style.length; i++) {
+        const prop = style.item(i);
+        if (prop.startsWith("--md-sys-color-") && !overriddenColorProperties.has(prop)) {
+          document.documentElement.style.setProperty(prop, style.getPropertyValue(prop));
+        }
+      }
+      return;
+    }
+  }
+}
+document.addEventListener(
+  "change",
+  (e) => {
+    if ((e.target as Element | null)?.tagName === "M3E-THEME") {
+      _applyThemeInlineStyles();
+    }
+  },
+  true,
+);
+// ─────────────────────────────────────────────────────────────────────────────
+
 type ElmPagesInit = {
   load: (elmLoaded: Promise<unknown>) => Promise<void>;
   flags: unknown;
@@ -65,11 +140,18 @@ function mountFeedbackFab(): void {
   document.head.appendChild(script);
 }
 
+const THEME_STORAGE_KEY = "m3e-theme-state";
+
 const config: ElmPagesInit = {
   load: async function (elmLoaded) {
     const app = (await elmLoaded) as {
       ports?: {
-        storeScheme?: { subscribe: (cb: (v: string) => void) => void };
+        storeThemeState?: { subscribe: (cb: (v: unknown) => void) => void };
+        readThemeState?: { send: (v: unknown) => void };
+        setCssOverride?: {
+          subscribe: (cb: (v: { property: string; value: string }) => void) => void;
+        };
+        setFaviconColor?: { subscribe: (cb: (v: string) => void) => void };
         onOpenSearchRequested?: { send: (v: null) => void };
       };
     };
@@ -81,14 +163,45 @@ const config: ElmPagesInit = {
     document
       .getElementById("elm-pages-announcer")
       ?.setAttribute("aria-live", "polite");
-    // Persist the chosen color scheme so it survives reloads (read back as a
-    // flag in Shared.init).
-    app?.ports?.storeScheme?.subscribe((scheme: string) => {
+
+    // Persist the whole theme-editor state blob so it survives reloads (read
+    // back on boot via `readThemeState` below).
+    app?.ports?.storeThemeState?.subscribe((state: unknown) => {
       try {
-        window.localStorage.setItem("m3e-scheme", scheme);
+        window.localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(state));
       } catch (_) {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
+    });
+
+    // One raw `--{property}: {value}` write via inline style on <html> — used
+    // for every color-role override and every computed typescale/shape token
+    // that Elm cannot express as an `Ir.attribute`.
+    //
+    // Also maintains `overriddenColorProperties` (see the comment above
+    // `_applyThemeInlineStyles`): a "" value means the override was cleared
+    // (ResetColorOverride / ResetAll / a preset switch that no longer covers
+    // this property), so `<m3e-theme>`'s own computed palette should resume
+    // winning for it on the next `change` event.
+    app?.ports?.setCssOverride?.subscribe(({ property, value }) => {
+      const fullProp = `--${property}`;
+      if (value === "") {
+        document.documentElement.style.removeProperty(fullProp);
+        overriddenColorProperties.delete(fullProp);
+      } else {
+        document.documentElement.style.setProperty(fullProp, value);
+        if (fullProp.startsWith("--md-sys-color-")) {
+          overriddenColorProperties.add(fullProp);
+        }
+      }
+    });
+
+    // Favicon live-recolor: the real rewrite mechanism belongs to a separate
+    // spec/plan (specs/2026-08-08-tangram-logo-design.md,
+    // plans/2026-08-08-tangram-logo.md) — this port fires regardless, but
+    // this handler is intentionally a no-op placeholder until that work lands.
+    app?.ports?.setFaviconColor?.subscribe((_hex: string) => {
+      // Intentional no-op — see comment above.
     });
 
     // Cmd/Ctrl+K opens search from anywhere. Chrome and Edge bind that
@@ -116,20 +229,44 @@ const config: ElmPagesInit = {
     if (import.meta.env.DEV) {
       mountFeedbackFab();
     }
+
+    // (The MutationObserver + requestUpdate() shim that lived here was removed.
+    //  It was added under commit eb30e90b based on a wrong diagnosis — the
+    //  element was always recomputing correctly. The real fix is the inline-style
+    //  sync via the `change` event listener registered at module-init above.)
+
+    // Safety-net initial sync: defer past the microtask queue so Lit's first
+    // update cycle (which fills the adopted stylesheet) has completed before we
+    // read from it. setTimeout(0) runs after ALL pending microtasks drain — the
+    // `change` event listener above handles all subsequent updates.
+    await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    _applyThemeInlineStyles();
+
+    // Boot: send back whatever was persisted (or null if absent/private mode
+    // / corrupt). `Theme.Ports.decoder` falls back to defaults on a failed
+    // decode, so a null/garbage payload here is handled entirely Elm-side.
+    //
+    // MUST run after the safety-net `_applyThemeInlineStyles()` call above:
+    // that call unconditionally overwrites every `--md-sys-color-*` inline
+    // style from the adopted stylesheet's freshly-computed defaults. Sending
+    // `readThemeState` earlier let Elm's `ThemeStateLoaded` replay of
+    // persisted `colorOverrides` win the JS statement order but then get
+    // clobbered by this safety net a tick later — the override was applied
+    // and then silently erased before the user ever saw it.
+    try {
+      const raw = window.localStorage.getItem(THEME_STORAGE_KEY);
+      app?.ports?.readThemeState?.send(raw ? JSON.parse(raw) : null);
+    } catch (_) {
+      app?.ports?.readThemeState?.send(null);
+    }
   },
   flags: function () {
     // `width` picks the initial drawer mode (side vs over) before
-    // Browser.Events.onResize takes over; `scheme` restores the persisted
-    // color scheme (Shared.init defaults to "auto" — follow the OS).
-    let scheme: string | null = null;
-    try {
-      scheme = window.localStorage.getItem("m3e-scheme");
-    } catch (_) {
-      /* ignore */
-    }
+    // Browser.Events.onResize takes over. The persisted color scheme is no
+    // longer a flag — Theme now boots from the `readThemeState` port
+    // subscription instead (see `load` above).
     return {
       width: typeof window !== "undefined" ? window.innerWidth : 1024,
-      scheme,
     };
   },
 };

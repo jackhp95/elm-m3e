@@ -1,17 +1,10 @@
-port module Ports exposing (onOpenSearchRequested, storeScheme)
+port module Ports exposing (onOpenSearchRequested)
 
 {-| Client-side ports for the docs app. Wired to the browser in `index.ts`.
 
-@docs onOpenSearchRequested, storeScheme
+@docs onOpenSearchRequested
 
 -}
-
-
-{-| Persist the chosen color scheme (`"auto"` | `"light"` | `"dark"`) to
-`localStorage` so it survives reloads. `index.ts` subscribes and writes it; the
-saved value is read back as a flag and applied in `Shared.init`.
--}
-port storeScheme : String -> Cmd msg
 
 
 {-| Fired when the user presses Cmd/Ctrl+K anywhere in the app. `index.ts`
