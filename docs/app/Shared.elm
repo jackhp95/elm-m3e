@@ -41,6 +41,7 @@ import Doc.Data
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
+import HtmlIr.Element
 import Http
 import Json.Decode as Decode
 import M3e exposing (Element)
@@ -51,7 +52,6 @@ import M3e.BottomSheetTrigger
 import M3e.DrawerContainer
 import M3e.Events
 import M3e.Fab
-import M3e.FormField
 import M3e.Icon
 import M3e.IconButton
 import M3e.Kind
@@ -67,6 +67,12 @@ import Pages.PageUrl exposing (PageUrl)
 import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
+import Theme
+import Theme.Sections.Advanced
+import Theme.Sections.Appearance
+import Theme.Sections.Color
+import Theme.Sections.Shape
+import Theme.Sections.Typography
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
@@ -97,10 +103,7 @@ type alias Model =
     { treeOpen : Bool
     , tocOpen : Bool
     , viewportWidth : Int
-    , scheme : Value Value.Scheme
-    , seed : String
-    , contrast : Value Value.Contrast
-    , density : Float
+    , theme : Theme.Model
     , dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , searchOpen : Bool
     , searchQuery : String
@@ -318,10 +321,7 @@ type Msg
     | CloseSearch
     | SetSearchQuery String
     | GotSearchIndex (Result Http.Error (List SearchEntry))
-    | SetScheme (Value Value.Scheme)
-    | SetSeed String
-    | SetContrast (Value Value.Contrast)
-    | SetDensity Float
+    | ThemeMsg Theme.Msg
     | SetDirection (TypedHtml.Values.Value TypedHtml.Values.Dir)
 
 
@@ -347,10 +347,7 @@ init flags _ =
     ( { treeOpen = treePinsOpen width
       , tocOpen = tocPinsOpen width
       , viewportWidth = width
-      , scheme = schemeFromFlags flags
-      , seed = "#6750A4"
-      , contrast = Value.standard
-      , density = 0
+      , theme = Theme.init
       , dir = TypedHtml.Values.ltr
       , searchOpen = False
       , searchQuery = ""
@@ -431,26 +428,6 @@ initialViewportWidth flags =
 
         Pages.Flags.PreRenderFlags ->
             1024
-
-
-{-| The initial color scheme: the value persisted in `localStorage` (passed by
-`index.ts` as `flags.scheme`), else **auto** — follow the OS light/dark setting.
-
-The string↔token conversion is generated (`M3e.Values.schemeFromString`), so the
-persisted strings and the DOM attribute values cannot drift apart.
-
--}
-schemeFromFlags : Pages.Flags.Flags -> Value Value.Scheme
-schemeFromFlags flags =
-    case flags of
-        Pages.Flags.BrowserFlags raw ->
-            Decode.decodeValue (Decode.field "scheme" Decode.string) raw
-                |> Result.toMaybe
-                |> Maybe.andThen Value.schemeFromString
-                |> Maybe.withDefault Value.auto
-
-        Pages.Flags.PreRenderFlags ->
-            Value.auto
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -551,19 +528,12 @@ update msg model =
         GotSearchIndex result ->
             ( { model | searchIndex = Just result }, Effect.none )
 
-        SetScheme scheme ->
-            ( { model | scheme = scheme }
-            , Effect.fromCmd (Ports.storeScheme (Value.toString scheme))
-            )
-
-        SetSeed seed ->
-            ( { model | seed = seed }, Effect.none )
-
-        SetContrast contrast ->
-            ( { model | contrast = contrast }, Effect.none )
-
-        SetDensity density ->
-            ( { model | density = density }, Effect.none )
+        ThemeMsg themeMsg ->
+            let
+                ( newTheme, themeCmd ) =
+                    Theme.update themeMsg model.theme
+            in
+            ( { model | theme = newTheme }, Effect.fromCmd (Cmd.map ThemeMsg themeCmd) )
 
         SetDirection dir ->
             ( { model | dir = dir }, Effect.none )
@@ -586,6 +556,7 @@ subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions path _ =
     Sub.batch
         [ Browser.Events.onResize (\w _ -> ViewportResized w)
+        , Sub.map ThemeMsg Theme.subscriptions
         , if hasDocsShell path then
             Ports.onOpenSearchRequested (\_ -> OpenSearch)
 
@@ -630,10 +601,11 @@ view sharedData page model toMsg pageView =
     { title = breadcrumbTitle page.path (View.title pageView)
     , body =
         [ M3e.theme
-            [ M3e.Theme.color model.seed
-            , M3e.Theme.scheme model.scheme
-            , M3e.Theme.contrast model.contrast
-            , M3e.Theme.density model.density
+            [ M3e.Theme.color model.theme.seed
+            , M3e.Theme.scheme model.theme.scheme
+            , M3e.Theme.contrast model.theme.contrast
+            , M3e.Theme.density model.theme.density
+            , M3e.Theme.motion model.theme.motion
             , TypedHtml.Attributes.dir model.dir
 
             -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
@@ -642,7 +614,7 @@ view sharedData page model toMsg pageView =
             -- CSS custom property directly — `style` uses `node.style[key]=…` which
             -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
             -- so it goes through a Tailwind arbitrary-property CLASS instead.
-            , TypedHtml.Attributes.class (densityClass model.density)
+            , TypedHtml.Attributes.class (densityClass model.theme.density)
             ]
             -- `dir` is admissible directly on the `m3e-theme` host because `dir` is
             -- part of the open-row `_globals` axis (elm-cem, elm-typed-html), so the
@@ -819,13 +791,19 @@ settingsSheetContent model =
         , TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         , Aria.role Aria.complementary
         ]
-        [ seedColorInput model
-        , controlLabel "Color scheme"
-        , schemeSegmented model
-        , controlLabel "Contrast"
-        , contrastSegmented model
-        , controlLabel "Density"
-        , densitySegmented model
+        [ Theme.view
+            { dir = model.dir
+            , onSetDirection = SetDirection
+            , sections =
+                { color = Theme.Sections.Color.view model.theme |> HtmlIr.Element.map ThemeMsg
+                , typography = Theme.Sections.Typography.view model.theme |> HtmlIr.Element.map ThemeMsg
+                , shape = Theme.Sections.Shape.view model.theme |> HtmlIr.Element.map ThemeMsg
+                , appearance = Theme.Sections.Appearance.view model.theme |> HtmlIr.Element.map ThemeMsg
+                , advanced = Theme.Sections.Advanced.view model.theme |> HtmlIr.Element.map ThemeMsg
+                }
+            }
+            model.theme
+            ThemeMsg
         , controlLabel "Directionality"
         , directionSegmented model
         ]
@@ -854,123 +832,6 @@ segmented segments =
         )
 
 
-{-| Upper-case the first character. Enum wire strings are lower-case; the settings
-controls display them title-cased.
--}
-capitalize : String -> String
-capitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s
-
-
-{-| These controls compare tokens with `==`. A `Value` is opaque over a `String`, so
-the comparison is on the underlying wire string — meaning tokens from DIFFERENT enums
-that share a string would compare equal. Safe here because each control only ever
-compares a field against its own enum's values.
--}
-schemeSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-schemeSegmented model =
-    segmented
-        (Value.schemeValues
-            |> List.sortBy schemeOrder
-            |> List.map (\v -> ( schemeLabel v, model.scheme == v, SetScheme v ))
-        )
-
-
-{-| Display order — the neutral option sits between the two poles, which is why this
-is not the generated list's alphabetical order. A value we have not placed sorts last
-rather than disappearing.
--}
-schemeOrder : Value Value.Scheme -> Int
-schemeOrder v =
-    case Value.toString v of
-        "light" ->
-            0
-
-        "auto" ->
-            1
-
-        "dark" ->
-            2
-
-        _ ->
-            3
-
-
-{-| Editorial labels: `auto` reads as "System". Anything the manifest gains that we
-have not named falls back to its wire string, so a new value shows up VISIBLY
-mislabelled rather than silently missing from the drawer.
--}
-schemeLabel : Value Value.Scheme -> String
-schemeLabel v =
-    case Value.toString v of
-        "auto" ->
-            "System"
-
-        other ->
-            capitalize other
-
-
-contrastSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-contrastSegmented model =
-    segmented
-        (Value.contrastValues
-            |> List.sortBy contrastOrder
-            |> List.map (\v -> ( capitalize (Value.toString v), model.contrast == v, SetContrast v ))
-        )
-
-
-{-| Display order — ascending intensity, which alphabetical order does not give.
--}
-contrastOrder : Value Value.Contrast -> Int
-contrastOrder v =
-    case Value.toString v of
-        "standard" ->
-            0
-
-        "medium" ->
-            1
-
-        "high" ->
-            2
-
-        _ ->
-            3
-
-
-{-| The source-color control, dogfooding the composition-text-field pattern
-(`/guide/composition-text-field`): an outlined `FormField` whose label and typed
-native `<input type=color>` are wired into one accessible control by a single
-shared id (`"seed-color"`), with the live hex shown as the field hint.
-`onInput` is the typed `TypedHtml.Events.onInput`.
--}
-seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
-seedColorInput model =
-    M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ M3e.FormField.label
-            (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ M3e.text "Source color" ])
-        , M3e.FormField.hint
-            (M3e.heading
-                [ M3e.Attributes.variant Value.label
-                , M3e.Attributes.size Value.small
-                , TypedHtml.Attributes.class "text-on-surface-variant"
-                ]
-                [ M3e.text model.seed ]
-            )
-        , TypedHtml.input
-            [ TypedHtml.Attributes.id "seed-color"
-            , TypedHtml.Attributes.type_ "color"
-            , TypedHtml.Attributes.value model.seed
-            , TypedHtml.Events.onInput SetSeed
-            ]
-            []
-        ]
-
-
 {-| Drive `--md-sys-density-scale` via a Tailwind arbitrary-property class — Elm
 cannot set a CSS custom property directly. The three class strings are literals
 so Tailwind's scanner (`@source "./app"` in style.css) emits all three rules.
@@ -985,16 +846,6 @@ densityClass d =
 
     else
         "[--md-sys-density-scale:0]"
-
-
-densitySegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-densitySegmented model =
-    segmented
-        [ ( "0", model.density == 0, SetDensity 0 )
-        , ( "-1", model.density == -1, SetDensity -1 )
-        , ( "-2", model.density == -2, SetDensity -2 )
-        , ( "-3", model.density == -3, SetDensity -3 )
-        ]
 
 
 directionSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
