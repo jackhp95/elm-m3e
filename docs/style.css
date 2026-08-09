@@ -406,3 +406,12 @@
     transition: opacity 180ms ease-out;
   }
 }
+
+/* The tangram nav-rail-toggle mark mirrors horizontally under RTL, so the
+   visual direction of the "this closes it" affordance still matches the
+   actual close direction. Native `:dir()` pseudo-class — no Elm branching,
+   `dir` already flows onto the document via Shared.elm's `dir` model field.
+   See specs/2026-08-08-tangram-logo-design.md's "RTL mirror" section. */
+:dir(rtl) .tangram-mark {
+  transform: scaleX(-1);
+}
