@@ -773,15 +773,18 @@ settingsBottomSheet model =
         [ settingsSheetContent model ]
 
 
-{-| The theme controls, rendered into the settings bottom sheet. Built from
-library components in the Element world: each control is an `M3e.heading`
-label + a control (segmented buttons, or a [`FormField`](M3e-FormField) for
-the seed color). The container keeps the typed `role="complementary"`
+{-| The theme controls, rendered into the settings bottom sheet. `Theme.view`
+lays out the drawer shell and delegates each section (color, typography,
+shape, appearance, advanced) to its own `Theme.Sections.*` module; `Shared`
+only wires those section views together and handles direction, which is not
+part of `Theme.Model`. The container keeps the typed `role="complementary"`
 landmark via `Aria.role`.
 
 All our richer controls are kept (scheme, contrast, seed color, density,
-direction); only their LOCATION moved, first from the old Card popover into
-an end drawer, and now from that end drawer into this bottom sheet.
+direction); their LOCATION moved, first from the old Card popover into an
+end drawer, then from that end drawer into this bottom sheet, and finally
+their CONTROL logic moved out of `Shared` into the `Theme` module and its
+per-section `Theme.Sections.*` views.
 
 -}
 settingsSheetContent : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
