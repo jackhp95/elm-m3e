@@ -825,13 +825,13 @@ sectionsAccordion :
     , advanced : Element cs adm msg
     }
     -> Element { s | accordion : M3e.Kind.Brand } admittedBy msg
-sectionsAccordion sections =
+sectionsAccordion themeSections =
     M3e.accordion []
-        [ sectionPanel "Color" sections.color
-        , sectionPanel "Typography" sections.typography
-        , sectionPanel "Shape" sections.shape
-        , sectionPanel "Appearance" sections.appearance
-        , sectionPanel "Advanced" sections.advanced
+        [ sectionPanel "Color" themeSections.color
+        , sectionPanel "Typography" themeSections.typography
+        , sectionPanel "Shape" themeSections.shape
+        , sectionPanel "Appearance" themeSections.appearance
+        , sectionPanel "Advanced" themeSections.advanced
         ]
 
 
