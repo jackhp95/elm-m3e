@@ -175,7 +175,7 @@ exampleBlock model ( index, ex ) =
             Dict.get index model.surfaces |> Maybe.withDefault (defaultSurfaceFor ex)
     in
     TypedHtml.div [ TA.class "space-y-3" ]
-        [ TypedHtml.p [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text ex.title ]
+        [ TypedHtml.p [ TA.class "max-w-2xl text-body-md text-on-surface-variant" ] [ M3e.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
         , surfaceTabs index surface ex
         , Doc.Slider.slidingPanels
@@ -321,17 +321,26 @@ record/pipeline surface to enforce, so the translator emitted no distinct form.
 We surface that fact rather than hiding the tab (a hidden tab reads as "this
 surface doesn't apply", which is the wrong lesson — it applies, it's just a no-op
 here).
+
+Wrapped with the same `overflow-x-auto p-4` treatment as `Doc.codeBlock` so that
+the paragraph does not overflow on mobile when this panel is the inactive (inert)
+panel in a `Doc.Slider.slidingPanels` stack.
+
 -}
 identicalSurfaceNote : String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 identicalSurfaceNote surface =
-    Doc.message
-        (surface
-            ++ " is identical to the M3e tab for this example — its content has no required slots or attributes for the "
-            ++ surface
-            ++ " surface to enforce, so it would be a hollow duplicate of M3e. Reach for "
-            ++ surface
-            ++ " on an example whose composition it can hold a guarantee over."
-        )
+    TypedHtml.div [ TA.class "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4" ]
+        [ TypedHtml.p [ TA.class "text-body-md leading-relaxed text-on-surface" ]
+            [ M3e.text
+                (surface
+                    ++ " is identical to the M3e tab for this example — its content has no required slots or attributes for the "
+                    ++ surface
+                    ++ " surface to enforce, so it would be a hollow duplicate of M3e. Reach for "
+                    ++ surface
+                    ++ " on an example whose composition it can hold a guarantee over."
+                )
+            ]
+        ]
 
 
 {-| Group indexed examples by `.section`, preserving first-seen order of both
