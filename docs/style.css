@@ -407,6 +407,20 @@
   }
 }
 
+/* Size the tangram mark from the icon-button's own icon font-size token so
+   it renders identically in BOTH the default and `selected` slots. The
+   m3e-icon-button sizes a bare slotted <svg> via a `::slotted(svg)` width
+   rule, but `M3e.IconButton.selected` wraps its content in a <span slot>,
+   so the selected-slot svg is a *descendant* of the slotted node and never
+   matches `::slotted(svg)` — it collapsed to 0×0 (the icon vanished on
+   expand). Both slots inherit the icon container's font-size (1.5rem at
+   `size=small`), so `1em` gives exact parity with the default slot without
+   hardcoding a pixel size. Layout-only, docs-scoped. */
+.tangram-mark {
+  width: 1em;
+  height: 1em;
+}
+
 /* The tangram nav-rail-toggle mark mirrors horizontally under RTL, so the
    visual direction of the "this closes it" affordance still matches the
    actual close direction. Native `:dir()` pseudo-class — no Elm branching,
