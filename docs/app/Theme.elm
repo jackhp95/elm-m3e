@@ -566,18 +566,26 @@ curatedSwatchColors =
     ]
 
 
-{-| Round swatch button. The fill color is set via a Tailwind arbitrary-value
-class (`[background-color:#hex]`) — same convention as `Shared.densityClass`,
-which sets `--md-sys-density-scale` the same way because Elm cannot set CSS
-properties/values directly. No `\#` escaping is needed here (unlike some
-arbitrary-VARIANT syntaxes); a literal `#` inside `[...]` works as-is.
+{-| Round swatch button. The fill color is set via a genuine inline `style`
+attribute (`TypedHtml.Attributes.style "background-color" hex`), NOT a
+Tailwind arbitrary-value class. Tailwind v4's JIT content-scanner only
+generates CSS for class strings that appear complete and literal in source;
+a runtime-concatenated `"[background-color:" ++ hex ++ "]"` class never
+appears as a literal anywhere, so Tailwind emitted zero rules for any of the
+20 curated colors (swatches rendered fully transparent). `background-color`
+is an ordinary CSS property, so the `style`/`styleList` inline-style escape
+hatch works here — unlike `Shared.densityClass`, which sets the CSS
+_custom property_ `--md-sys-density-scale` and must stay on the
+Tailwind-arbitrary-class convention because inline styles don't reliably
+support custom properties in this codebase's style-dict encoding.
 -}
 swatch : Model -> String -> Element (TypedHtml.Button.Is s) admittedBy Msg
 swatch model hex =
     TypedHtml.button
         [ TypedHtml.Events.onClick (SetSeed hex)
         , Aria.label ("Set seed color to " ++ hex)
-        , TypedHtml.Attributes.class ("size-8 rounded-full border-2 [background-color:" ++ hex ++ "]")
+        , TypedHtml.Attributes.class "size-8 rounded-full border-2"
+        , TypedHtml.Attributes.style "background-color" hex
         , TypedHtml.Attributes.class
             (if model.seed == hex then
                 "border-primary"
