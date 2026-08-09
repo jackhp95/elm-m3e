@@ -277,7 +277,7 @@ surfaceLegend : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 surfaceLegend =
     TypedHtml.section
         [ TA.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
-        [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "What the form names mean" ]
+        [ TypedHtml.p [ TA.class "text-label-lg tracking-wide text-primary" ] [ M3e.text "What the form names mean" ]
         , TypedHtml.div [ TA.class "text-on-surface-variant" ] [ Doc.markdown surfaceLegendText ]
         ]
 

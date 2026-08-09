@@ -253,7 +253,7 @@ apiGroup members ( label, roles ) =
         group ->
             Just
                 (TypedHtml.div [ TA.class "space-y-3" ]
-                    [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text label ]
+                    [ Doc.sectionLabel label
                     , M3e.card [ M3e.Attributes.variant Value.outlined ]
                         [ M3e.Card.content (M3e.list [] (List.map memberRow group)) ]
                     ]

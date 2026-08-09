@@ -1,5 +1,5 @@
 module Doc exposing
-    ( Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, showcase, userlandNote
+    ( Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, sectionLabel, showcase, userlandNote
     , slugify
     )
 
@@ -17,7 +17,7 @@ Every one of those helpers returns an `Element` with **free** phantom rows,
 because `M3e.Unsafe.fromHtml` asserts nothing about what it wraps — so they drop
 into any slot, and no caller has to name a kind row to receive one.
 
-@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, showcase, userlandNote
+@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, sectionLabel, showcase, userlandNote
 @docs slugify
 
 -}
@@ -229,6 +229,16 @@ recapBox md =
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "Recap" ]
         , TypedHtml.div [ TA.class "text-on-surface-variant" ] [ markdown md ]
         ]
+
+
+{-| A sentence-case section label (label-lg, tracking-wide, on-surface-variant).
+Use for overline labels that introduce API sections or content groups.
+No uppercase — M3 permits uppercase only for very short labels (≤20 chars);
+long dynamic labels can exceed that, so this helper always uses sentence case.
+-}
+sectionLabel : String -> Element (TypedHtml.Grouping.PIs s) adm_ msg
+sectionLabel s =
+    TypedHtml.p [ TA.class "text-label-lg tracking-wide text-on-surface-variant" ] [ M3e.text s ]
 
 
 markdownBody : String -> List (Html msg)

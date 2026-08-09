@@ -124,7 +124,7 @@ hero =
             , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/guide/reference" ] [ M3e.text "Browse the API reference" ]
             ]
         , TypedHtml.div [ TA.class "space-y-2 pt-4" ]
-            [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text "Live theme — try the ⚙ settings in the app bar" ]
+            [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.medium, TA.class "text-on-surface-variant" ] [ M3e.text "Live theme — try the ⚙ settings in the app bar" ]
             , TypedHtml.div [ TA.class "flex items-center gap-3" ]
                 [ M3e.avatar [ Aria.label "Sample avatar" ] [ TypedHtml.Img.img [ TypedHtml.Img.src "/avatar-sample.svg" ] [] ]
                 , TypedHtml.div [ TA.class "flex gap-3" ]
