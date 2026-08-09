@@ -6,7 +6,6 @@ import Head
 import MimeType
 import Pages.Url
 import SiteConfig exposing (SiteConfig)
-import UrlPath
 
 
 config : SiteConfig
@@ -25,8 +24,13 @@ head : BackendTask FatalError (List Head.Tag)
 head =
     [ Head.metaName "viewport" (Head.raw "width=device-width,initial-scale=1")
     , Head.sitemapLink "/sitemap.xml"
-    , -- Custom brand favicon (the expressive-triad mark in public/favicon.svg),
-      -- served same-origin — no external icon fetch.
-      Head.icon [] (MimeType.OtherImage "svg+xml") (Pages.Url.fromPath (UrlPath.join [ "favicon.svg" ]))
+    , -- Custom brand favicon (the tangram mark in public/favicon.svg). Uses a
+      -- root-relative href (`Pages.Url.external "/favicon.svg"`) rather than
+      -- `Pages.Url.fromPath`, which would absolutize against `canonicalUrl`
+      -- (the prod origin) and make every environment — local dev, Netlify
+      -- deploy previews, forks — fetch prod's favicon instead of its own. A
+      -- `<link rel="icon">` must be same-origin; only OG/social images (which
+      -- these routes emit separately) need the absolute canonical form.
+      Head.icon [] (MimeType.OtherImage "svg+xml") (Pages.Url.external "/favicon.svg")
     ]
         |> BackendTask.succeed
