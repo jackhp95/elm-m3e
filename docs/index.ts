@@ -114,11 +114,18 @@ function mountFeedbackFab(): void {
   document.head.appendChild(script);
 }
 
+const THEME_STORAGE_KEY = "m3e-theme-state";
+
 const config: ElmPagesInit = {
   load: async function (elmLoaded) {
     const app = (await elmLoaded) as {
       ports?: {
-        storeScheme?: { subscribe: (cb: (v: string) => void) => void };
+        storeThemeState?: { subscribe: (cb: (v: unknown) => void) => void };
+        readThemeState?: { send: (v: unknown) => void };
+        setCssOverride?: {
+          subscribe: (cb: (v: { property: string; value: string }) => void) => void;
+        };
+        setFaviconColor?: { subscribe: (cb: (v: string) => void) => void };
         onOpenSearchRequested?: { send: (v: null) => void };
       };
     };
@@ -130,14 +137,44 @@ const config: ElmPagesInit = {
     document
       .getElementById("elm-pages-announcer")
       ?.setAttribute("aria-live", "polite");
-    // Persist the chosen color scheme so it survives reloads (read back as a
-    // flag in Shared.init).
-    app?.ports?.storeScheme?.subscribe((scheme: string) => {
+
+    // Persist the whole theme-editor state blob so it survives reloads (read
+    // back on boot via `readThemeState` below).
+    app?.ports?.storeThemeState?.subscribe((state: unknown) => {
       try {
-        window.localStorage.setItem("m3e-scheme", scheme);
+        window.localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(state));
       } catch (_) {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
+    });
+
+    // Boot: send back whatever was persisted (or null if absent/private mode
+    // / corrupt). `Theme.Ports.decoder` falls back to defaults on a failed
+    // decode, so a null/garbage payload here is handled entirely Elm-side.
+    try {
+      const raw = window.localStorage.getItem(THEME_STORAGE_KEY);
+      app?.ports?.readThemeState?.send(raw ? JSON.parse(raw) : null);
+    } catch (_) {
+      app?.ports?.readThemeState?.send(null);
+    }
+
+    // One raw `--{property}: {value}` write via inline style on <html> — used
+    // for every color-role override and every computed typescale/shape token
+    // that Elm cannot express as an `Ir.attribute`.
+    app?.ports?.setCssOverride?.subscribe(({ property, value }) => {
+      if (value === "") {
+        document.documentElement.style.removeProperty(`--${property}`);
+      } else {
+        document.documentElement.style.setProperty(`--${property}`, value);
+      }
+    });
+
+    // Favicon live-recolor: the real rewrite mechanism belongs to a separate
+    // spec/plan (specs/2026-08-08-tangram-logo-design.md,
+    // plans/2026-08-08-tangram-logo.md) — this port fires regardless, but
+    // this handler is intentionally a no-op placeholder until that work lands.
+    app?.ports?.setFaviconColor?.subscribe((_hex: string) => {
+      // Intentional no-op — see comment above.
     });
 
     // Cmd/Ctrl+K opens search from anywhere. Chrome and Edge bind that
@@ -180,17 +217,11 @@ const config: ElmPagesInit = {
   },
   flags: function () {
     // `width` picks the initial drawer mode (side vs over) before
-    // Browser.Events.onResize takes over; `scheme` restores the persisted
-    // color scheme (Shared.init defaults to "auto" — follow the OS).
-    let scheme: string | null = null;
-    try {
-      scheme = window.localStorage.getItem("m3e-scheme");
-    } catch (_) {
-      /* ignore */
-    }
+    // Browser.Events.onResize takes over. The persisted color scheme is no
+    // longer a flag — Theme now boots from the `readThemeState` port
+    // subscription instead (see `load` above).
     return {
       width: typeof window !== "undefined" ? window.innerWidth : 1024,
-      scheme,
     };
   },
 };
