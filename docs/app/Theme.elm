@@ -4,14 +4,11 @@ import Dict exposing (Dict)
 import HtmlIr.Element
 import Json.Decode as Decode
 import M3e exposing (Element)
-import M3e.Accordion
 import M3e.Attributes
 import M3e.Button
 import M3e.Events
-import M3e.ExpansionPanel
 import M3e.FormField
 import M3e.Kind
-import M3e.Unsafe
 import M3e.Values as Value exposing (Value)
 import Theme.Ports
 import Theme.Presets exposing (Preset)
@@ -80,7 +77,6 @@ type Msg
     | SetColorOverride String String
     | ResetColorOverride String
     | SetCssOverride String String
-    | ResetCssOverride String
     | ApplyPreset Preset
     | ThemeStateLoaded Decode.Value
     | ResetAll
@@ -98,22 +94,22 @@ type TypeScaleParam
 
 
 setScaleParam : TypeScaleParam -> Float -> ScaleConfig -> ScaleConfig
-setScaleParam param value_ config =
+setScaleParam param value config =
     case param of
         Factor ->
-            { config | factor = value_ }
+            { config | factor = value }
 
         Ratio ->
-            { config | ratio = value_ }
+            { config | ratio = value }
 
         Base ->
-            { config | base = value_ }
+            { config | base = value }
 
         Bump ->
-            { config | bump = value_ }
+            { config | bump = value }
 
         Exponent ->
-            { config | exponent = value_ }
+            { config | exponent = value }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -143,50 +139,51 @@ update msg model =
 
         SetTypeScaleMode mode ->
             let
+                newModel : Model
                 newModel =
                     { model | typeScale = setScaleMode mode model.typeScale }
             in
             persist newModel |> andPushTypeScale newModel
 
-        SetTypeScaleParam param value_ ->
+        SetTypeScaleParam param value ->
             let
+                newModel : Model
                 newModel =
-                    { model | typeScale = setScaleParam param value_ model.typeScale }
+                    { model | typeScale = setScaleParam param value model.typeScale }
             in
             persist newModel |> andPushTypeScale newModel
 
         SetShapeScaleMode mode ->
             let
+                newModel : Model
                 newModel =
                     { model | shapeScale = setScaleMode mode model.shapeScale }
             in
             persist newModel |> andPushShapeScale newModel
 
-        SetShapeScaleParam param value_ ->
+        SetShapeScaleParam param value ->
             let
+                newModel : Model
                 newModel =
-                    { model | shapeScale = setScaleParam param value_ model.shapeScale }
+                    { model | shapeScale = setScaleParam param value model.shapeScale }
             in
             persist newModel |> andPushShapeScale newModel
 
-        SetColorOverride cssVar value_ ->
-            persist { model | colorOverrides = Dict.insert cssVar value_ model.colorOverrides }
-                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value_ })
+        SetColorOverride cssVar value ->
+            persist { model | colorOverrides = Dict.insert cssVar value model.colorOverrides }
+                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value })
 
         ResetColorOverride cssVar ->
             persist { model | colorOverrides = Dict.remove cssVar model.colorOverrides }
                 |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = "" })
 
-        SetCssOverride cssVar value_ ->
-            persist { model | cssOverrides = Dict.insert cssVar value_ model.cssOverrides }
-                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value_ })
-
-        ResetCssOverride cssVar ->
-            persist { model | cssOverrides = Dict.remove cssVar model.cssOverrides }
-                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = "" })
+        SetCssOverride cssVar value ->
+            persist { model | cssOverrides = Dict.insert cssVar value model.cssOverrides }
+                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value })
 
         ApplyPreset preset ->
             let
+                newModel : Model
                 newModel =
                     { model
                         | scheme = preset.scheme
@@ -209,10 +206,11 @@ update msg model =
                 )
             )
 
-        ThemeStateLoaded value_ ->
-            case Decode.decodeValue Theme.Ports.decoder value_ of
+        ThemeStateLoaded value ->
+            case Decode.decodeValue Theme.Ports.decoder value of
                 Ok decoded ->
                     let
+                        loaded : Model
                         loaded =
                             fromPersisted decoded
                     in
@@ -393,7 +391,7 @@ exposed here because `Theme.Sections.*` (later tasks) need it for the
 Contrast/Motion segmented controls too.
 -}
 segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-segmented segments_ =
+segmented segments =
     M3e.segmentedButton []
         (List.map
             (\( lbl, isChecked, msg ) ->
@@ -401,7 +399,7 @@ segmented segments_ =
                     [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
                     [ M3e.text lbl ]
             )
-            segments_
+            segments
         )
 
 
@@ -610,18 +608,12 @@ here.
 view :
     { dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , onSetDirection : TypedHtml.Values.Value TypedHtml.Values.Dir -> msg
-    , sections :
-        { color : Element (TypedHtml.Grouping.DivIs cs) admittedBy msg
-        , typography : Element (TypedHtml.Grouping.DivIs cs) admittedBy msg
-        , shape : Element (TypedHtml.Grouping.DivIs cs) admittedBy msg
-        , appearance : Element (TypedHtml.Grouping.DivIs cs) admittedBy msg
-        , advanced : Element (TypedHtml.Grouping.DivIs cs) admittedBy msg
-        }
+    , sectionsEl : Element cs admittedBy msg
     }
     -> Model
     -> (Msg -> msg)
     -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
-view { sections } model toMsg =
+view { sectionsEl } model toMsg =
     TypedHtml.div
         [ TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
@@ -629,52 +621,13 @@ view { sections } model toMsg =
         , schemeSegmented model |> HtmlIr.Element.map toMsg
         , presetGallery model |> HtmlIr.Element.map toMsg
         , swatchStrip model |> HtmlIr.Element.map toMsg
-        , sectionsAccordion sections
-        , resetAllButton model |> HtmlIr.Element.map toMsg
+        , sectionsEl
+        , resetAllButton |> HtmlIr.Element.map toMsg
         ]
 
 
-{-| The 5 theme-editor sections, collapsed by default (`M3e.ExpansionPanel`
-has no `open` attribute set here, and it defaults closed — see
-`src/M3e/ExpansionPanel.elm`), each in its own `M3e.expansionPanel` inside one
-`M3e.accordion`.
-
-No type annotation: the `sections` argument's 5 fields and this function's own
-output element must each stay independently polymorphic in `admittedBy`
-(different concerns — the input elements' admission context vs. the accordion
-element's own). An explicit signature naming both with the same type variable
-over-constrains them and breaks unification at the call site in `view`; leaving
-this uninferred (Elm still generalizes it fully at the top level) is the
-correct fix here, verified against the compiler.
-
--}
-sectionsAccordion sections =
-    M3e.accordion []
-        [ sectionPanel "Color" sections.color
-        , sectionPanel "Typography" sections.typography
-        , sectionPanel "Shape" sections.shape
-        , sectionPanel "Appearance" sections.appearance
-        , sectionPanel "Advanced" sections.advanced
-        ]
-
-
-{-| One accordion entry: a header (plain text label) plus the section's body.
-The body is a bare `div`-kinded `Element` (each `Theme.Sections.*.view`
-returns `TypedHtml.Grouping.DivIs`), while `M3e.ExpansionPanel.el`'s header
-and children share a single `childAccepts` type variable — so `M3e.Unsafe.recast`
-re-kinds the body to the free rows that variable unifies to at each call site.
-This is the sanctioned escape hatch (see `src/M3e/Unsafe.elm`) for exactly this
-"wrap already-built content into a slot it wasn't originally typed for" case.
--}
-sectionPanel label body =
-    M3e.ExpansionPanel.el
-        { header = M3e.expansionHeader [] [ M3e.text label ] |> M3e.Unsafe.recast }
-        []
-        [ M3e.Unsafe.recast body ]
-
-
-resetAllButton : Model -> Element (M3e.Button.Is s) admittedBy Msg
-resetAllButton _ =
+resetAllButton : Element (M3e.Button.Is s) admittedBy Msg
+resetAllButton =
     M3e.button
         [ TypedHtml.Events.onClick ResetAll ]
         [ M3e.text "Reset all" ]

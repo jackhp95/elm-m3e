@@ -52,6 +52,7 @@ import M3e.BottomSheet
 import M3e.BottomSheetTrigger
 import M3e.DrawerContainer
 import M3e.Events
+import M3e.ExpansionPanel
 import M3e.Fab
 import M3e.Icon
 import M3e.IconButton
@@ -796,6 +797,44 @@ settingsBottomSheet model =
         [ settingsSheetContent model ]
 
 
+{-| One accordion entry: a header (plain text label) plus the section's body.
+`M3e.Unsafe.recast` re-kinds both the header and body to the free rows that
+`M3e.ExpansionPanel.el`'s `childAccepts` type variable unifies to. This is the
+sanctioned escape hatch (see `src/M3e/Unsafe.elm`) for exactly this
+"wrap already-built content into a slot it wasn't originally typed for" case.
+Lives here (allow-listed) rather than in `Theme.elm` (not allow-listed) per the
+`NoUnsafeImportOutsideAllowed` fence.
+-}
+sectionPanel : String -> Element cs adm msg -> Element { s | expansionPanel : M3e.Kind.Brand } admittedBy msg
+sectionPanel label body =
+    M3e.ExpansionPanel.el
+        { header = M3e.expansionHeader [] [ M3e.text label ] |> M3e.Unsafe.recast }
+        []
+        [ M3e.Unsafe.recast body ]
+
+
+{-| The 5 theme-editor sections wrapped in an accordion. Assembles the
+`sectionsEl` passed to `Theme.view`. Lives here (allow-listed) because
+`sectionPanel` needs `M3e.Unsafe.recast`.
+-}
+sectionsAccordion :
+    { color : Element cs adm msg
+    , typography : Element cs adm msg
+    , shape : Element cs adm msg
+    , appearance : Element cs adm msg
+    , advanced : Element cs adm msg
+    }
+    -> Element { s | accordion : M3e.Kind.Brand } admittedBy msg
+sectionsAccordion sections =
+    M3e.accordion []
+        [ sectionPanel "Color" sections.color
+        , sectionPanel "Typography" sections.typography
+        , sectionPanel "Shape" sections.shape
+        , sectionPanel "Appearance" sections.appearance
+        , sectionPanel "Advanced" sections.advanced
+        ]
+
+
 {-| The theme controls, rendered into the settings bottom sheet. `Theme.view`
 lays out the drawer shell and delegates each section (color, typography,
 shape, appearance, advanced) to its own `Theme.Sections.*` module; `Shared`
@@ -820,13 +859,14 @@ settingsSheetContent model =
         [ Theme.view
             { dir = model.dir
             , onSetDirection = SetDirection
-            , sections =
-                { color = Theme.Sections.Color.view model.theme |> HtmlIr.Element.map ThemeMsg
-                , typography = Theme.Sections.Typography.view model.theme |> HtmlIr.Element.map ThemeMsg
-                , shape = Theme.Sections.Shape.view model.theme |> HtmlIr.Element.map ThemeMsg
-                , appearance = Theme.Sections.Appearance.view model.theme |> HtmlIr.Element.map ThemeMsg
-                , advanced = Theme.Sections.Advanced.view model.theme |> HtmlIr.Element.map ThemeMsg
-                }
+            , sectionsEl =
+                sectionsAccordion
+                    { color = Theme.Sections.Color.view model.theme |> HtmlIr.Element.map ThemeMsg
+                    , typography = Theme.Sections.Typography.view model.theme |> HtmlIr.Element.map ThemeMsg
+                    , shape = Theme.Sections.Shape.view model.theme |> HtmlIr.Element.map ThemeMsg
+                    , appearance = Theme.Sections.Appearance.view model.theme |> HtmlIr.Element.map ThemeMsg
+                    , advanced = Theme.Sections.Advanced.view model.theme |> HtmlIr.Element.map ThemeMsg
+                    }
             }
             model.theme
             ThemeMsg
