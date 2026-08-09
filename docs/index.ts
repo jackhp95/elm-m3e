@@ -148,16 +148,6 @@ const config: ElmPagesInit = {
       }
     });
 
-    // Boot: send back whatever was persisted (or null if absent/private mode
-    // / corrupt). `Theme.Ports.decoder` falls back to defaults on a failed
-    // decode, so a null/garbage payload here is handled entirely Elm-side.
-    try {
-      const raw = window.localStorage.getItem(THEME_STORAGE_KEY);
-      app?.ports?.readThemeState?.send(raw ? JSON.parse(raw) : null);
-    } catch (_) {
-      app?.ports?.readThemeState?.send(null);
-    }
-
     // One raw `--{property}: {value}` write via inline style on <html> — used
     // for every color-role override and every computed typescale/shape token
     // that Elm cannot express as an `Ir.attribute`.
@@ -214,6 +204,24 @@ const config: ElmPagesInit = {
     // `change` event listener above handles all subsequent updates.
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
     _applyThemeInlineStyles();
+
+    // Boot: send back whatever was persisted (or null if absent/private mode
+    // / corrupt). `Theme.Ports.decoder` falls back to defaults on a failed
+    // decode, so a null/garbage payload here is handled entirely Elm-side.
+    //
+    // MUST run after the safety-net `_applyThemeInlineStyles()` call above:
+    // that call unconditionally overwrites every `--md-sys-color-*` inline
+    // style from the adopted stylesheet's freshly-computed defaults. Sending
+    // `readThemeState` earlier let Elm's `ThemeStateLoaded` replay of
+    // persisted `colorOverrides` win the JS statement order but then get
+    // clobbered by this safety net a tick later — the override was applied
+    // and then silently erased before the user ever saw it.
+    try {
+      const raw = window.localStorage.getItem(THEME_STORAGE_KEY);
+      app?.ports?.readThemeState?.send(raw ? JSON.parse(raw) : null);
+    } catch (_) {
+      app?.ports?.readThemeState?.send(null);
+    }
   },
   flags: function () {
     // `width` picks the initial drawer mode (side vs over) before

@@ -214,7 +214,13 @@ update msg model =
                         loaded =
                             fromPersisted decoded
                     in
-                    ( loaded, Cmd.batch (pushTypeScaleCmds loaded ++ pushShapeScaleCmds loaded) )
+                    ( loaded
+                    , Cmd.batch
+                        (pushTypeScaleCmds loaded
+                            ++ pushShapeScaleCmds loaded
+                            ++ pushOverrideCmds loaded
+                        )
+                    )
 
                 Err _ ->
                     ( model, Cmd.none )
@@ -301,6 +307,12 @@ pushShapeScaleCmds model =
                     , value = String.fromFloat (Scale.compute model.shapeScale token) ++ "rem"
                     }
             )
+
+
+pushOverrideCmds : Model -> List (Cmd Msg)
+pushOverrideCmds model =
+    (Dict.toList model.colorOverrides ++ Dict.toList model.cssOverrides)
+        |> List.map (\( k, v ) -> Theme.Ports.setCssOverride { property = k, value = v })
 
 
 andPushTypeScale : Model -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
