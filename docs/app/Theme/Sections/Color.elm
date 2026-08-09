@@ -10,7 +10,6 @@ import Dict
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Icon
-import M3e.IconButton
 import Theme exposing (Msg(..))
 import Theme.Tokens as Tokens exposing (ColorToken)
 import TypedHtml
@@ -38,14 +37,13 @@ groupView model ( groupName, tokens ) =
 tokenRow : Theme.Model -> ColorToken -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 tokenRow model token =
     let
-        current : Maybe String
-        current =
-            Dict.get token.cssVar model.colorOverrides
-    in
-    let
         inputId : String
         inputId =
             "color-" ++ token.cssVar
+
+        current : Maybe String
+        current =
+            Dict.get token.cssVar model.colorOverrides
 
         resetLabel : String
         resetLabel =

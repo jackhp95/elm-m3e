@@ -36,7 +36,7 @@ contrastSegmented model =
 {-| Display order — ascending intensity, which alphabetical order does not
 give. Ported verbatim from Shared.elm's `contrastOrder`.
 -}
-contrastOrder : Value.Value Value.Contrast -> Int
+contrastOrder : Value Value.Contrast -> Int
 contrastOrder v =
     case Value.toString v of
         "standard" ->

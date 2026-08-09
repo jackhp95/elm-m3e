@@ -65,17 +65,17 @@ stepperControls toMsg config =
 
 
 numberStepper : String -> Float -> Float -> (Float -> msg) -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
-numberStepper labelText current step_ toMsg =
+numberStepper labelText current step toMsg =
     TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-1" ]
         [ M3e.text labelText
         , M3e.iconButton
-            [ TypedHtml.Events.onClick (toMsg (current - step_))
+            [ TypedHtml.Events.onClick (toMsg (current - step))
             , Aria.label ("Decrease " ++ labelText)
             ]
             [ M3e.icon [ M3e.Icon.name "remove" ] [] ]
         , M3e.text (String.fromFloat current)
         , M3e.iconButton
-            [ TypedHtml.Events.onClick (toMsg (current + step_))
+            [ TypedHtml.Events.onClick (toMsg (current + step))
             , Aria.label ("Increase " ++ labelText)
             ]
             [ M3e.icon [ M3e.Icon.name "add" ] [] ]
