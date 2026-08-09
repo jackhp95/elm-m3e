@@ -45,7 +45,7 @@ const DEFAULT_SEED = "#6750A4";
 
 const PATHS = [
   "m0 0 566 566H0z",
-  "m0 0 566 566H0zM566 0v535L299 267.973z",
+  "M566 0v535L299 267.973z",
 ];
 
 export function resolvePrimaryHex(seedHex) {

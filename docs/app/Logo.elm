@@ -60,6 +60,6 @@ view colors =
             , SvgAttr.class "tangram-mark"
             ]
             [ Svg.path [ SvgAttr.fill colors.big, SvgAttr.d "m0 0 566 566H0z" ] []
-            , Svg.path [ SvgAttr.fill colors.small, SvgAttr.d "m0 0 566 566H0zM566 0v535L299 267.973z" ] []
+            , Svg.path [ SvgAttr.fill colors.small, SvgAttr.d "M566 0v535L299 267.973z" ] []
             ]
         )
