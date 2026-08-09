@@ -13,6 +13,7 @@ built for single-color icon-font-style glyphs, not two independently
 fillable paths. Not a generalized `M3e.Logo` library component — this stays
 docs-app-scoped per the spec's non-goal (revisit if a second consumer
 wants it).
+
 -}
 
 import HtmlIr.Element exposing (Element)
