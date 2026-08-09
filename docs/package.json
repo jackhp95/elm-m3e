@@ -6,7 +6,7 @@
     "gen": "run-s gen:vendor gen:icons gen:brand-images gen:reference gen:examples-config gen:examples-surfaces gen:examples-barrel gen:examples gen:samples",
     "gen:vendor": "node scripts/vendor-foundation.mjs",
     "gen:icons": "node scripts/icons-gen/icons-to-js.mjs",
-    "gen:brand-images": "node scripts/icons-gen/brand-images.mjs",
+    "gen:brand-images": "node scripts/icons-gen/brand-images.mjs && node scripts/icons-gen/tangram-favicon.mjs",
     "gen:reference": "node scripts/extract-reference.mjs",
     "gen:examples-config": "node scripts/examples-gen/examples-to-elm.mjs",
     "gen:examples-surfaces": "node scripts/examples-gen/gen-record-build.mjs",
