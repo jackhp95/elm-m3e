@@ -14,6 +14,7 @@ import M3e.IconButton
 import Theme exposing (Msg(..))
 import Theme.Tokens as Tokens exposing (ColorToken)
 import TypedHtml
+import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
 import TypedHtml.Events
 import TypedHtml.Grouping
@@ -41,16 +42,31 @@ tokenRow model token =
         current =
             Dict.get token.cssVar model.colorOverrides
     in
+    let
+        inputId : String
+        inputId =
+            "color-" ++ token.cssVar
+
+        resetLabel : String
+        resetLabel =
+            if current == Nothing then
+                "Reset " ++ token.role ++ " (no override set)"
+
+            else
+                "Reset " ++ token.role
+    in
     TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-2" ]
-        [ TypedHtml.label [] [ M3e.text token.role ]
+        [ TypedHtml.label [ TypedHtml.Attributes.for inputId ] [ M3e.text token.role ]
         , TypedHtml.input
-            [ TypedHtml.Attributes.type_ "color"
+            [ TypedHtml.Attributes.id inputId
+            , TypedHtml.Attributes.type_ "color"
             , TypedHtml.Attributes.value (Maybe.withDefault "#000000" current)
             , TypedHtml.Events.onInput (SetColorOverride token.cssVar)
             ]
             []
         , M3e.iconButton
             [ M3e.Attributes.disabled (current == Nothing)
+            , Aria.label resetLabel
             , TypedHtml.Events.onClick (ResetColorOverride token.cssVar)
             ]
             [ M3e.icon [ M3e.Icon.name "restart_alt" ] [] ]
