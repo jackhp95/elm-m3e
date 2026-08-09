@@ -6,13 +6,12 @@ steppers, and a live 15-token size preview (`Theme.Tokens.typescaleTokens`).
 -}
 
 import M3e exposing (Element)
-import M3e.Icon
 import M3e.Kind
 import Theme exposing (Msg(..))
-import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
+import Theme.Scale as Scale exposing (ScaleMode)
+import Theme.Sections.Shared as Shared
 import Theme.Tokens as Tokens
 import TypedHtml
-import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
 import TypedHtml.Events
 import TypedHtml.Grouping
@@ -25,7 +24,7 @@ view model =
         [ fontSelect "Display font" "display-font" model.displayFont SetDisplayFont
         , fontSelect "Body font" "body-font" model.bodyFont SetBodyFont
         , modeSegmented model.typeScale.mode
-        , stepperControls model.typeScale
+        , Shared.stepperControls SetTypeScaleParam model.typeScale
         , preview model
         ]
 
@@ -74,52 +73,6 @@ modeSegmented current =
             (\mode -> ( Scale.modeToString mode |> Theme.capitalize, mode == current, SetTypeScaleMode mode ))
             [ Scale.Linear, Scale.Modular, Scale.Bump, Scale.Power ]
         )
-
-
-{-| Only the fields relevant to the active mode are meaningfully editable —
-Linear uses `factor`, Modular uses `ratio`+`base`, Bump uses `bump`, Power
-uses `exponent`+`base`.
--}
-stepperControls : ScaleConfig -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-stepperControls config =
-    case config.mode of
-        Scale.Linear ->
-            TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
-                [ numberStepper "Factor" config.factor 0.05 (SetTypeScaleParam Theme.Factor) ]
-
-        Scale.Modular ->
-            TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
-                [ numberStepper "Ratio" config.ratio 0.01 (SetTypeScaleParam Theme.Ratio)
-                , numberStepper "Base (rem)" config.base 0.05 (SetTypeScaleParam Theme.Base)
-                ]
-
-        Scale.Bump ->
-            TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
-                [ numberStepper "Bump (rem)" config.bump 0.05 (SetTypeScaleParam Theme.Bump) ]
-
-        Scale.Power ->
-            TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
-                [ numberStepper "Exponent" config.exponent 0.05 (SetTypeScaleParam Theme.Exponent)
-                , numberStepper "Base (rem)" config.base 0.05 (SetTypeScaleParam Theme.Base)
-                ]
-
-
-numberStepper : String -> Float -> Float -> (Float -> Msg) -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-numberStepper labelText current step_ toMsg =
-    TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-1" ]
-        [ M3e.text labelText
-        , M3e.iconButton
-            [ TypedHtml.Events.onClick (toMsg (current - step_))
-            , Aria.label ("Decrease " ++ labelText)
-            ]
-            [ M3e.icon [ M3e.Icon.name "remove" ] [] ]
-        , M3e.text (String.fromFloat current)
-        , M3e.iconButton
-            [ TypedHtml.Events.onClick (toMsg (current + step_))
-            , Aria.label ("Increase " ++ labelText)
-            ]
-            [ M3e.icon [ M3e.Icon.name "add" ] [] ]
-        ]
 
 
 preview : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
