@@ -38,13 +38,14 @@ defaultColors =
     { small = "var(--md-sys-color-primary)", big = "var(--md-sys-color-primary)" }
 
 
-{-| Expanded/open nav-rail state: small triangle inverts to
-`inverse-surface`, big triangle to `inverse-primary`, accenting the
-"this closes it" affordance.
+{-| Expanded/open nav-rail state: the smaller triangle takes the
+`on-surface` color while the larger triangle stays brand-primary (same as
+`defaultColors`), per the original spec — expanded distinguishes the two
+triangles by color, it does not recolor both.
 -}
 invertedColors : Colors
 invertedColors =
-    { small = "var(--md-sys-color-inverse-surface)", big = "var(--md-sys-color-inverse-primary)" }
+    { small = "var(--md-sys-color-on-surface)", big = "var(--md-sys-color-primary)" }
 
 
 {-| `Element accepts admittedBy msg` via `M3e.Unsafe.fromHtml` — its FREE
