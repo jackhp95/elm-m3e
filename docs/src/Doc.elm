@@ -1,5 +1,5 @@
 module Doc exposing
-    ( Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, sectionLabel, showcase, userlandNote
+    ( Lang(..), anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, sectionLabel, sectionLabelCaps, showcase, userlandNote
     , slugify
     )
 
@@ -17,7 +17,7 @@ Every one of those helpers returns an `Element` with **free** phantom rows,
 because `M3e.Unsafe.fromHtml` asserts nothing about what it wraps — so they drop
 into any slot, and no caller has to name a kind row to receive one.
 
-@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, sectionLabel, showcase, userlandNote
+@docs Lang, anchorPill, codeBlock, elmSignature, markdown, message, pageHeading, pane, preBlock, rawPreview, recapBox, sectionHeadingWithId, sectionLabel, sectionLabelCaps, showcase, userlandNote
 @docs slugify
 
 -}
@@ -239,6 +239,14 @@ long dynamic labels can exceed that, so this helper always uses sentence case.
 sectionLabel : String -> Element (TypedHtml.Grouping.PIs s) adm_ msg
 sectionLabel s =
     TypedHtml.p [ TA.class "text-label-lg tracking-wide text-on-surface-variant" ] [ M3e.text s ]
+
+
+{-| Same as [`sectionLabel`](#sectionLabel) but all-caps, for the short (≤20 char)
+overline labels in the example apps where the M3 uppercase overline is intentional.
+-}
+sectionLabelCaps : String -> Element (TypedHtml.Grouping.PIs s) adm_ msg
+sectionLabelCaps s =
+    TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-on-surface-variant" ] [ M3e.text s ]
 
 
 markdownBody : String -> List (Html msg)
