@@ -2,6 +2,7 @@ module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, init, seg
 
 import Dict exposing (Dict)
 import HtmlIr.Element
+import HtmlIr.Kind
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.Attributes
@@ -608,7 +609,7 @@ here.
 view :
     { dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , onSetDirection : TypedHtml.Values.Value TypedHtml.Values.Dir -> msg
-    , sectionsEl : Element cs admittedBy msg
+    , sectionsEl : Element { cs | formField : M3e.Kind.Brand, segmentedButton : M3e.Kind.Brand, sharedFlow : HtmlIr.Kind.Shared, button : M3e.Kind.Brand } (TypedHtml.Grouping.DivChildAdmittedBy sectionAdm) msg
     }
     -> Model
     -> (Msg -> msg)

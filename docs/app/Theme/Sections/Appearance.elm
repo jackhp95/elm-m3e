@@ -2,7 +2,7 @@ module Theme.Sections.Appearance exposing (view)
 
 import M3e exposing (Element)
 import M3e.Kind
-import M3e.Values as Value
+import M3e.Values as Value exposing (Value)
 import Theme exposing (Msg(..))
 import TypedHtml
 import TypedHtml.Attributes
