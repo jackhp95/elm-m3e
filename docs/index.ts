@@ -2,7 +2,10 @@
 // through elm-pages' Vite client pipeline (content-hashed; <link>/<script>
 // injected automatically) — not hand-linked static assets. These are
 // side-effect imports: registering the <m3e-*> elements and pulling in the CSS.
-import "@m3e/web/all";
+//
+// NOTE: @m3e/web/all is intentionally NOT imported here as a static import.
+// A dynamic import below allows m3eSettleGuard() to install whenDefined()
+// listeners BEFORE element definitions run. See comment on m3eSettleGuard.
 import "./gen/icons.js";
 import "../js/avt-snackbar.js";
 import "../js/raw-html.js";
@@ -83,6 +86,71 @@ document.addEventListener(
   true,
 );
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─── FOUC batch-settle guard ─────────────────────────────────────────────────
+//
+// @m3e/web/all defines 130+ custom elements. With a STATIC import the defines
+// run before any module-body code, so a guard set here would find elements
+// already defined and resolve the whenDefined promises immediately — no benefit.
+//
+// Using a DYNAMIC import instead lets us:
+//  1. Set html[data-m3e-settling] BEFORE @m3e/web/all registers any elements.
+//  2. Register customElements.whenDefined() listeners while tags are still
+//     :not(:defined), so each promise fires exactly when its type is registered.
+//  3. Remove the attribute only after all types AND their first Lit render
+//     (updateComplete) have settled — preventing a flash of unstyled shadow-DOM
+//     that would otherwise appear between :defined firing and Lit's first paint.
+//
+// The dynamic @m3e/web/all chunk is preloaded by the <link rel="modulepreload">
+// that Vite emits, so network latency is identical to the static-import approach;
+// the only change is the order of execution relative to the guard setup.
+//
+// style.css adds `html[data-m3e-settling] :where(:not(:defined)) { transition: none }`
+// so per-element transitions are suppressed while the batch is unsettled. When
+// @m3e/web/all defines all types in one synchronous block all elements start
+// their 180ms fade-in at the same frame boundary (atomic reveal).
+//
+// ORDERING: The theme change-listener above is registered synchronously before
+// this guard and before the dynamic import call. <m3e-theme> cannot fire a
+// `change` event until it is defined (which requires the dynamic import to have
+// resolved), so the listener is categorically registered in time.
+// ─────────────────────────────────────────────────────────────────────────────
+function m3eSettleGuard(): void {
+  // Collect m3e-* tag names present in the pre-rendered HTML. Because @m3e/web/all
+  // hasn't run yet (dynamic import below), every tag is currently :not(:defined).
+  const tags = [
+    ...new Set(
+      [...document.querySelectorAll("*")]
+        .map((el) => el.localName)
+        .filter((name) => name.startsWith("m3e-"))
+    ),
+  ];
+  if (tags.length === 0) return;
+
+  document.documentElement.dataset.m3eSettling = "";
+
+  Promise.all(
+    tags.map(async (tag) => {
+      await customElements.whenDefined(tag);
+      // Wait for Lit's first render on one instance of this element type so its
+      // shadow DOM is ready before it transitions from opacity 0 to 1.
+      const el = document.querySelector(tag);
+      if (el && "updateComplete" in el) {
+        await (el as Element & { updateComplete?: Promise<boolean> }).updateComplete;
+      }
+    })
+  ).then(() => {
+    delete document.documentElement.dataset.m3eSettling;
+  });
+}
+
+m3eSettleGuard();
+
+// Fire-and-forget: start loading @m3e/web/all immediately. Vite preloads the
+// chunk via <link rel="modulepreload"> so it is already in the browser cache
+// by the time this dynamic import runs; it resolves the whenDefined() promises
+// registered above as each element type is defined.
+void import("@m3e/web/all");
 
 type ElmPagesInit = {
   load: (elmLoaded: Promise<unknown>) => Promise<void>;

@@ -407,6 +407,19 @@
   }
 }
 
+/* Batch-settle guard — see m3eSettleGuard() in index.ts.
+   While html[data-m3e-settling] is present, suppress per-element fade-in
+   transitions so undefined elements don't reveal one-by-one if some types
+   happen to define before others. Once @m3e/web/all defines all types in a
+   single synchronous block they all start their 180ms fade-in at the same
+   frame boundary (atomic reveal). The guard drops after every element's first
+   Lit render (updateComplete), at which point shadow DOM is ready.
+   Specificity (0,1,1) beats the :where(:defined) transition rule at (0,0,0)
+   so transition:none wins while settling is in progress. */
+html[data-m3e-settling] :where(:not(:defined)) {
+  transition: none;
+}
+
 /* Size the tangram mark from the icon-button's own icon font-size token so
    it renders identically in BOTH the default and `selected` slots. The
    m3e-icon-button sizes a bare slotted <svg> via a `::slotted(svg)` width
