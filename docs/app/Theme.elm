@@ -18,7 +18,9 @@ import Theme.Presets exposing (Preset)
 import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
 import Theme.Tokens
 import TypedHtml
+import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
+import TypedHtml.Button
 import TypedHtml.Events
 import TypedHtml.Grouping
 import TypedHtml.Values
@@ -495,6 +497,98 @@ seedColorInput model =
         ]
 
 
+{-| A grid of cards, one per `Theme.Presets.presets` entry, each a button
+that fires `ApplyPreset preset` on click — replacing scheme/seed/contrast/
+fonts/color-overrides all at once. Visually indicates the currently active
+preset (`model.activePresetId`) via filled vs outlined variant.
+-}
+presetGallery : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+presetGallery model =
+    TypedHtml.div
+        [ TypedHtml.Attributes.class "grid grid-cols-2 gap-2" ]
+        (List.map (presetCard model) Theme.Presets.presets)
+
+
+presetCard : Model -> Preset -> Element (M3e.Button.Is s) admittedBy Msg
+presetCard model preset =
+    M3e.button
+        [ TypedHtml.Events.onClick (ApplyPreset preset)
+        , Aria.label ("Apply " ++ preset.name ++ " theme")
+        , M3e.Attributes.variant
+            (if model.activePresetId == Just preset.id then
+                Value.filled
+
+             else
+                Value.outlined
+            )
+        ]
+        [ M3e.text preset.name ]
+
+
+{-| A compact strip of curated seed colors — a faster alternative to a full
+preset: clicking a swatch fires `SetSeed hex` only, leaving scheme/contrast/
+fonts untouched (unlike `presetCard`, which applies a whole preset).
+-}
+swatchStrip : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+swatchStrip model =
+    TypedHtml.div
+        [ TypedHtml.Attributes.class "flex flex-wrap gap-1" ]
+        (List.map (swatch model) curatedSwatchColors)
+
+
+{-| ~20 curated hex colors for the quick-picker, chosen for hue spread across
+the Material color wheel. Visual reference: beercss.com's `#themes3` popover
+(a compact 2-row grid of ~20 round swatches). Exact hex values are a
+design/visual call — a reasonable starting set, not pixel-matched.
+-}
+curatedSwatchColors : List String
+curatedSwatchColors =
+    [ "#6750A4"
+    , "#B3261E"
+    , "#7D5260"
+    , "#006A6A"
+    , "#984061"
+    , "#8C4A2F"
+    , "#5C6BC0"
+    , "#00897B"
+    , "#43A047"
+    , "#FB8C00"
+    , "#D81B60"
+    , "#5E35B1"
+    , "#3949AB"
+    , "#00ACC1"
+    , "#7CB342"
+    , "#FDD835"
+    , "#F4511E"
+    , "#6D4C41"
+    , "#546E7A"
+    , "#8E24AA"
+    ]
+
+
+{-| Round swatch button. The fill color is set via a Tailwind arbitrary-value
+class (`[background-color:#hex]`) — same convention as `Shared.densityClass`,
+which sets `--md-sys-density-scale` the same way because Elm cannot set CSS
+properties/values directly. No `\#` escaping is needed here (unlike some
+arbitrary-VARIANT syntaxes); a literal `#` inside `[...]` works as-is.
+-}
+swatch : Model -> String -> Element (TypedHtml.Button.Is s) admittedBy Msg
+swatch model hex =
+    TypedHtml.button
+        [ TypedHtml.Events.onClick (SetSeed hex)
+        , Aria.label ("Set seed color to " ++ hex)
+        , TypedHtml.Attributes.class ("size-8 rounded-full border-2 [background-color:" ++ hex ++ "]")
+        , TypedHtml.Attributes.class
+            (if model.seed == hex then
+                "border-primary"
+
+             else
+                "border-transparent"
+            )
+        ]
+        []
+
+
 {-| `sections` is threaded in rather than imported here because each
 `Theme.Sections.*` module imports `Theme` (for `Model`/`Msg`, per the note on
 `Msg` above) — if `Theme.elm` also imported the section modules to build
@@ -524,10 +618,10 @@ view { sections } model toMsg =
         [ TypedHtml.Attributes.id "settings-sheet-content"
         , TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
-        [ -- Preset gallery and swatch strip are added in a LATER task — this
-          -- is a placeholder for now, matching the plan's staged approach.
-          seedColorInput model |> HtmlIr.Element.map toMsg
+        [ seedColorInput model |> HtmlIr.Element.map toMsg
         , schemeSegmented model |> HtmlIr.Element.map toMsg
+        , presetGallery model |> HtmlIr.Element.map toMsg
+        , swatchStrip model |> HtmlIr.Element.map toMsg
         , sectionsAccordion sections
         , resetAllButton model |> HtmlIr.Element.map toMsg
         ]
