@@ -43,6 +43,7 @@ import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Http
 import Json.Decode as Decode
+import Logo
 import M3e exposing (Element)
 import M3e.AppBar
 import M3e.Attributes
@@ -1661,8 +1662,8 @@ docsNavRail toMsg path =
             , M3e.IconButton.toggle True
             , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
             ]
-            [ M3e.icon [ M3e.Icon.name "menu" ] []
-            , M3e.IconButton.selected (M3e.icon [ M3e.Icon.name "menu_open" ] [])
+            [ Logo.view Logo.defaultColors
+            , M3e.IconButton.selected (Logo.view Logo.invertedColors)
             , M3e.navRailToggle [ M3e.NavRailToggle.for "nav-rail" ] []
             ]
             :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
