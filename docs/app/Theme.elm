@@ -623,8 +623,7 @@ view :
     -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 view { sections } model toMsg =
     TypedHtml.div
-        [ TypedHtml.Attributes.id "settings-sheet-content"
-        , TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
+        [ TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
         [ seedColorInput model |> HtmlIr.Element.map toMsg
         , schemeSegmented model |> HtmlIr.Element.map toMsg

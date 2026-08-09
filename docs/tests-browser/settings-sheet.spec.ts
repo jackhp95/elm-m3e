@@ -139,7 +139,18 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
   await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Settings" }).click();
 
-  await page.getByRole("button", { name: "Color" }).first().click();
+  // `.last()`, not `.first()`: the accordion header renders both a slotted
+  // light-DOM `m3e-expansion-header` (role="button", inert on its own) and
+  // the panel's shadow-DOM accessible toggle (also role="button", the one
+  // actually wired to open/close state) -- Playwright's accessibility tree
+  // exposes both. For every other section in this file the slotted copy
+  // happens to sort after the shadow toggle, so `.first()` hits the real
+  // one; for "Color" specifically (first item in the accordion) it sorts
+  // before it, so `.first()` clicks the inert copy and the panel never
+  // opens. Verified live: `.first()` leaves `hasAttribute("open") === false`
+  // in this case; `.last()` opens it. Not a component bug worth chasing
+  // further here -- just a locator-ambiguity trap in this specific markup.
+  await page.getByRole("button", { name: "Color" }).last().click();
   const primaryInput = page.locator("#color-md-sys-color-primary");
   await primaryInput.fill("#ff0000");
 
