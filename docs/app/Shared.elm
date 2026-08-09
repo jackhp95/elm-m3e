@@ -62,6 +62,7 @@ import M3e.NavRailToggle
 import M3e.SearchView
 import M3e.Theme
 import M3e.Toc
+import M3e.Unsafe
 import M3e.Values as Value exposing (Value)
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -1662,8 +1663,8 @@ docsNavRail toMsg path =
             , M3e.IconButton.toggle True
             , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
             ]
-            [ Logo.view Logo.defaultColors
-            , M3e.IconButton.selected (Logo.view Logo.invertedColors)
+            [ M3e.Unsafe.fromHtml (Logo.view Logo.defaultColors)
+            , M3e.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
             , M3e.navRailToggle [ M3e.NavRailToggle.for "nav-rail" ] []
             ]
             :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
