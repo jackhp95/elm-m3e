@@ -51,10 +51,16 @@ test("the settings bottom sheet closes on an outside click", async ({ page }) =>
  * also (separately, pre-existing) duplicated in the light DOM -- the sheet
  * wraps its real content div in an outer `role="complementary"` div that
  * carries the same id (see the friction log for Task 16) -- so any locator
- * that isn't scoped by a leaf id/role+unique-name pair needs `.first()` to
- * avoid a Playwright strict-mode violation; this test only ever targets
- * unique leaf elements (`m3e-theme`, a uniquely-named radio), so it doesn't
- * need to.
+ * scoped to that id needs disambiguating. The `.first()` calls on the
+ * "Appearance"/"Color" accordion-header locators below are for a distinct,
+ * separate reason, though: `m3e-expansion-header` renders two
+ * `role="button"` nodes with the same accessible name -- one on a
+ * `slot="header"` element and one on the header wrapper itself -- confirmed
+ * by removing `.first()` and reproducing a Playwright strict-mode failure
+ * ("resolved to 2 elements") (see the friction log for Task 16); it is not
+ * caused by the `#settings-sheet-content` duplicate id. This test only ever
+ * targets unique leaf elements (`m3e-theme`, a uniquely-named radio), so it
+ * doesn't need `.first()`.
  *
  * This is the test that would have caught the original contrast/seed
  * reactivity bug (Task 1) -- it asserts an actual computed-style change,
