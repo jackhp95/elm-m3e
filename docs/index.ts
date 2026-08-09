@@ -129,7 +129,7 @@ function m3eSettleGuard(): void {
 
   document.documentElement.dataset.m3eSettling = "";
 
-  Promise.all(
+  const settlePromise = Promise.all(
     tags.map(async (tag) => {
       await customElements.whenDefined(tag);
       // Wait for Lit's first render on one instance of this element type so its
@@ -139,7 +139,18 @@ function m3eSettleGuard(): void {
         await (el as Element & { updateComplete?: Promise<boolean> }).updateComplete;
       }
     })
-  ).then(() => {
+  );
+
+  // 8 s fallback: @m3e/web/all defines all types in one synchronous block, so
+  // the only real bottleneck is chunk download. Even on slow 3G (~1 Mbps) the
+  // Vite-preloaded chunk lands well within 8 s; if it never arrives (404, network
+  // failure) we release the page rather than hiding it forever. On timeout,
+  // already-defined elements fade in normally via :where(:defined); anything
+  // still :not(:defined) stays opacity:0 per the base CSS rule — correct, since
+  // raw unstyled custom-element HTML would look broken.
+  const timeoutPromise = new Promise<void>((resolve) => setTimeout(resolve, 8000));
+
+  void Promise.race([settlePromise, timeoutPromise]).then(() => {
     delete document.documentElement.dataset.m3eSettling;
   });
 }
