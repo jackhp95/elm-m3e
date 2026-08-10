@@ -23,32 +23,26 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.FocusRing
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-focus-ring` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | focusRing : Brand }
+    M3e.Internal.Types.FocusRing.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , for : Supported
-    , id : Supported
-    , inward : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.FocusRing.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | focusRing : Ctx }
+    M3e.Internal.Types.FocusRing.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -87,20 +81,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.FocusRing.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , for : Available
-    , id : Available
-    , inward : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.FocusRing.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

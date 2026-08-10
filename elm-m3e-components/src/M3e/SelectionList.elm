@@ -30,54 +30,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.SelectionList
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-selection-list` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | selectionList : Brand }
+    M3e.Internal.Types.SelectionList.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , hideSelectionIndicator : Supported
-    , id : Supported
-    , multi : Supported
-    , name : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.SelectionList.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { divider : Brand
-    , expandableListItem : Brand
-    , listOption : Brand
-    }
+    M3e.Internal.Types.SelectionList.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | selectionList : Ctx }
+    M3e.Internal.Types.SelectionList.ChildAdmittedBy childAdm
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { segmented : Supported
-    , standard : Supported
-    }
+    M3e.Internal.Types.SelectionList.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -160,25 +144,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.SelectionList.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , hideSelectionIndicator : Available
-    , id : Available
-    , multi : Available
-    , name : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.SelectionList.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

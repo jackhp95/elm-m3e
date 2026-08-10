@@ -26,36 +26,32 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Breadcrumb
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-breadcrumb` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | breadcrumb : Brand }
+    M3e.Internal.Types.Breadcrumb.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , slot : Supported
-    , style : Supported
-    , wrap : Supported
-    }
+    M3e.Internal.Types.Breadcrumb.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { breadcrumbItem : Brand }
+    M3e.Internal.Types.Breadcrumb.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | breadcrumb : Ctx }
+    M3e.Internal.Types.Breadcrumb.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -108,25 +104,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Breadcrumb.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , slot : Available
-    , style : Available
-    , wrap : Available
-    }
+    M3e.Internal.Types.Breadcrumb.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { separator : Available
-    }
+    M3e.Internal.Types.Breadcrumb.SlotCaps
 
 
 {-| Seed the pipe-builder.

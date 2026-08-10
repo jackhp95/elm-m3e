@@ -30,75 +30,56 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Paginator
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-paginator` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | paginator : Brand }
+    M3e.Internal.Types.Paginator.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , firstPageLabel : Supported
-    , hidePageSize : Supported
-    , id : Supported
-    , itemsPerPageLabel : Supported
-    , lastPageLabel : Supported
-    , length : Supported
-    , nextPageLabel : Supported
-    , onPage : Supported
-    , pageIndex : Supported
-    , pageSize : Supported
-    , pageSizeVariant : Supported
-    , pageSizes : Supported
-    , previousPageLabel : Supported
-    , showFirstLastButtons : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Paginator.Attrs
 
 
 {-| The kinds the `first-page-icon` slot admits.
 -}
 type alias FirstPageIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Paginator.FirstPageIconSlot
 
 
 {-| The kinds the `last-page-icon` slot admits.
 -}
 type alias LastPageIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Paginator.LastPageIconSlot
 
 
 {-| The kinds the `next-page-icon` slot admits.
 -}
 type alias NextPageIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Paginator.NextPageIconSlot
 
 
 {-| The kinds the `previous-page-icon` slot admits.
 -}
 type alias PreviousPageIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Paginator.PreviousPageIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | paginator : Ctx }
+    M3e.Internal.Types.Paginator.ChildAdmittedBy childAdm
 
 
 {-| The `pageSizeVariant` values valid on this component (compile-tight narrowing).
 -}
 type alias PageSizeVariant =
-    { filled : Supported
-    , outlined : Supported
-    }
+    M3e.Internal.Types.Paginator.PageSizeVariant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -246,41 +227,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Paginator.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , firstPageLabel : Available
-    , hidePageSize : Available
-    , id : Available
-    , itemsPerPageLabel : Available
-    , lastPageLabel : Available
-    , length : Available
-    , nextPageLabel : Available
-    , onPage : Available
-    , pageIndex : Available
-    , pageSize : Available
-    , pageSizeVariant : Available
-    , pageSizes : Available
-    , previousPageLabel : Available
-    , showFirstLastButtons : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Paginator.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { firstPageIcon : Available
-    , lastPageIcon : Available
-    , nextPageIcon : Available
-    , previousPageIcon : Available
-    }
+    M3e.Internal.Types.Paginator.SlotCaps
 
 
 {-| Seed the pipe-builder.

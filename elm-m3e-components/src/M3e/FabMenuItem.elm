@@ -26,41 +26,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.FabMenuItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-fab-menu-item` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | fabMenuItem : Brand }
+    M3e.Internal.Types.FabMenuItem.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , download : Supported
-    , href : Supported
-    , id : Supported
-    , onClick : Supported
-    , rel : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    }
+    M3e.Internal.Types.FabMenuItem.Attrs
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.FabMenuItem.IconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | fabMenuItem : Ctx }
+    M3e.Internal.Types.FabMenuItem.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -140,30 +131,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.FabMenuItem.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , download : Available
-    , href : Available
-    , id : Available
-    , onClick : Available
-    , rel : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    }
+    M3e.Internal.Types.FabMenuItem.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    }
+    M3e.Internal.Types.FabMenuItem.SlotCaps
 
 
 {-| Seed the pipe-builder.

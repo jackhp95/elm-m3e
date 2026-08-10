@@ -28,71 +28,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.DateInput
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-date-input` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | dateInput : Brand }
+    M3e.Internal.Types.DateInput.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , dayLabel : Supported
-    , disabled : Supported
-    , hourLabel : Supported
-    , id : Supported
-    , maxDate : Supported
-    , maxTime : Supported
-    , minDate : Supported
-    , minTime : Supported
-    , minuteLabel : Supported
-    , monthLabel : Supported
-    , name : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , onInvalid : Supported
-    , periodLabel : Supported
-    , readonly : Supported
-    , required : Supported
-    , secondLabel : Supported
-    , showSeconds : Supported
-    , slot : Supported
-    , style : Supported
-    , timeFormat : Supported
-    , type_ : Supported
-    , validationmessages : Supported
-    , value : Supported
-    , yearLabel : Supported
-    }
+    M3e.Internal.Types.DateInput.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | dateInput : Ctx }
+    M3e.Internal.Types.DateInput.ChildAdmittedBy childAdm
 
 
 {-| The `timeFormat` values valid on this component (compile-tight narrowing).
 -}
 type alias TimeFormat =
-    { value12 : Supported
-    , value24 : Supported
-    , auto : Supported
-    }
+    M3e.Internal.Types.DateInput.TimeFormat
 
 
 {-| The `type_` values valid on this component (compile-tight narrowing).
 -}
 type alias Type =
-    { date : Supported
-    , datetime : Supported
-    , time : Supported
-    }
+    M3e.Internal.Types.DateInput.Type
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -285,41 +252,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.DateInput.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , dayLabel : Available
-    , disabled : Available
-    , hourLabel : Available
-    , id : Available
-    , maxDate : Available
-    , maxTime : Available
-    , minDate : Available
-    , minTime : Available
-    , minuteLabel : Available
-    , monthLabel : Available
-    , name : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , onInvalid : Available
-    , periodLabel : Available
-    , readonly : Available
-    , required : Available
-    , secondLabel : Available
-    , showSeconds : Available
-    , slot : Available
-    , style : Available
-    , timeFormat : Available
-    , type_ : Available
-    , validationmessages : Available
-    , value : Available
-    , yearLabel : Available
-    }
+    M3e.Internal.Types.DateInput.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

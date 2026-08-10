@@ -28,81 +28,56 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.AppBar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-app-bar` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | appBar : Brand }
+    M3e.Internal.Types.AppBar.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { centered : Supported
-    , class : Supported
-    , for : Supported
-    , id : Supported
-    , size : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.AppBar.Attrs
 
 
 {-| The kinds the `leading` slot admits.
 -}
 type alias LeadingSlot =
-    { button : Brand
-    , iconButton : Brand
-    , sharedIcon : Shared
-    }
+    M3e.Internal.Types.AppBar.LeadingSlot
 
 
 {-| The kinds the `subtitle` slot admits.
 -}
 type alias SubtitleSlot =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.AppBar.SubtitleSlot
 
 
 {-| The kinds the `title` slot admits.
 -}
 type alias TitleSlot =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.AppBar.TitleSlot
 
 
 {-| The kinds the `trailing` slot admits.
 -}
 type alias TrailingSlot =
-    { button : Brand
-    , iconButton : Brand
-    , searchBar : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    }
+    M3e.Internal.Types.AppBar.TrailingSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | appBar : Ctx }
+    M3e.Internal.Types.AppBar.ChildAdmittedBy childAdm
 
 
 {-| The `size` values valid on this component (compile-tight narrowing).
 -}
 type alias Size =
-    { large : Supported
-    , medium : Supported
-    , small : Supported
-    }
+    M3e.Internal.Types.AppBar.Size
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -189,30 +164,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.AppBar.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { centered : Available
-    , class : Available
-    , for : Available
-    , id : Available
-    , size : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.AppBar.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { leadingIcon : Available
-    , subtitle : Available
-    , title : Available
-    , trailingIcon : Available
-    }
+    M3e.Internal.Types.AppBar.SlotCaps
 
 
 {-| Seed the pipe-builder.

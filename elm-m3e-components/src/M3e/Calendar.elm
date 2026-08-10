@@ -30,52 +30,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Calendar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-calendar` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | calendar : Brand }
+    M3e.Internal.Types.Calendar.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , date : Supported
-    , id : Supported
-    , maxDate : Supported
-    , minDate : Supported
-    , nextMonthLabel : Supported
-    , nextMultiYearLabel : Supported
-    , nextYearLabel : Supported
-    , onChange : Supported
-    , previousMonthLabel : Supported
-    , previousMultiYearLabel : Supported
-    , previousYearLabel : Supported
-    , rangeEnd : Supported
-    , rangeStart : Supported
-    , slot : Supported
-    , startAt : Supported
-    , startView : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Calendar.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | calendar : Ctx }
+    M3e.Internal.Types.Calendar.ChildAdmittedBy childAdm
 
 
 {-| The `startView` values valid on this component (compile-tight narrowing).
 -}
 type alias StartView =
-    { month : Supported
-    , multiYear : Supported
-    , year : Supported
-    }
+    M3e.Internal.Types.Calendar.StartView
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -199,38 +179,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Calendar.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , date : Available
-    , id : Available
-    , maxDate : Available
-    , minDate : Available
-    , nextMonthLabel : Available
-    , nextMultiYearLabel : Available
-    , nextYearLabel : Available
-    , onChange : Available
-    , previousMonthLabel : Available
-    , previousMultiYearLabel : Available
-    , previousYearLabel : Available
-    , rangeEnd : Available
-    , rangeStart : Available
-    , slot : Available
-    , startAt : Available
-    , startView : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Calendar.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { header : Available
-    }
+    M3e.Internal.Types.Calendar.SlotCaps
 
 
 {-| Seed the pipe-builder.

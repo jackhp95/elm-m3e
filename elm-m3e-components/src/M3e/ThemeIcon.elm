@@ -26,56 +26,38 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.ThemeIcon
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-theme-icon` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | themeIcon : Brand }
+    M3e.Internal.Types.ThemeIcon.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , color : Supported
-    , id : Supported
-    , scheme : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.ThemeIcon.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | themeIcon : Ctx }
+    M3e.Internal.Types.ThemeIcon.ChildAdmittedBy childAdm
 
 
 {-| The `scheme` values valid on this component (compile-tight narrowing).
 -}
 type alias Scheme =
-    { auto : Supported
-    , dark : Supported
-    , light : Supported
-    }
+    M3e.Internal.Types.ThemeIcon.Scheme
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { content : Supported
-    , expressive : Supported
-    , fidelity : Supported
-    , fruitSalad : Supported
-    , monochrome : Supported
-    , neutral : Supported
-    , rainbow : Supported
-    , tonalSpot : Supported
-    , vibrant : Supported
-    }
+    M3e.Internal.Types.ThemeIcon.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -114,20 +96,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ThemeIcon.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , color : Available
-    , id : Available
-    , scheme : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.ThemeIcon.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

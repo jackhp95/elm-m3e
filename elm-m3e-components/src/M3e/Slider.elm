@@ -29,50 +29,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Slider
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-slider` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | slider : Brand }
+    M3e.Internal.Types.Slider.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , discrete : Supported
-    , id : Supported
-    , labelled : Supported
-    , max : Supported
-    , min : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , size : Supported
-    , slot : Supported
-    , step : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Slider.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | slider : Ctx }
+    M3e.Internal.Types.Slider.ChildAdmittedBy childAdm
 
 
 {-| The `size` values valid on this component (compile-tight narrowing).
 -}
 type alias Size =
-    { extraLarge : Supported
-    , extraSmall : Supported
-    , large : Supported
-    , medium : Supported
-    , small : Supported
-    }
+    M3e.Internal.Types.Slider.Size
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -183,27 +165,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Slider.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , discrete : Available
-    , id : Available
-    , labelled : Available
-    , max : Available
-    , min : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , size : Available
-    , slot : Available
-    , step : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Slider.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

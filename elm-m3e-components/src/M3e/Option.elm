@@ -28,52 +28,38 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Option
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-option` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | option : Brand }
+    M3e.Internal.Types.Option.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disableHighlight : Supported
-    , disabled : Supported
-    , highlightMode : Supported
-    , id : Supported
-    , selected : Supported
-    , slot : Supported
-    , style : Supported
-    , term : Supported
-    , value : Supported
-    }
+    M3e.Internal.Types.Option.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Option.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | option : Ctx }
+    M3e.Internal.Types.Option.ChildAdmittedBy childAdm
 
 
 {-| The `highlightMode` values valid on this component (compile-tight narrowing).
 -}
 type alias HighlightMode =
-    { contains : Supported
-    , endsWith : Supported
-    , startsWith : Supported
-    }
+    M3e.Internal.Types.Option.HighlightMode
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -167,23 +153,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Option.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disableHighlight : Available
-    , disabled : Available
-    , highlightMode : Available
-    , id : Available
-    , selected : Available
-    , slot : Available
-    , style : Available
-    , term : Available
-    , value : Available
-    }
+    M3e.Internal.Types.Option.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

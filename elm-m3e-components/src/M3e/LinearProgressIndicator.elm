@@ -27,52 +27,38 @@ import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.LinearProgressIndicator
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-linear-progress-indicator` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | linearProgressIndicator : Brand }
+    M3e.Internal.Types.LinearProgressIndicator.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { bufferValue : Supported
-    , class : Supported
-    , id : Supported
-    , max : Supported
-    , mode : Supported
-    , slot : Supported
-    , style : Supported
-    , value : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.LinearProgressIndicator.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | linearProgressIndicator : Ctx }
+    M3e.Internal.Types.LinearProgressIndicator.ChildAdmittedBy childAdm
 
 
 {-| The `mode` values valid on this component (compile-tight narrowing).
 -}
 type alias Mode =
-    { buffer : Supported
-    , determinate : Supported
-    , indeterminate : Supported
-    , query : Supported
-    }
+    M3e.Internal.Types.LinearProgressIndicator.Mode
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { flat : Supported
-    , wavy : Supported
-    }
+    M3e.Internal.Types.LinearProgressIndicator.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -135,22 +121,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.LinearProgressIndicator.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { bufferValue : Available
-    , class : Available
-    , id : Available
-    , max : Available
-    , mode : Available
-    , slot : Available
-    , style : Available
-    , value : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.LinearProgressIndicator.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

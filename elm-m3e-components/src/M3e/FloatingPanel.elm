@@ -29,42 +29,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.FloatingPanel
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-floating-panel` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | floatingPanel : Brand }
+    M3e.Internal.Types.FloatingPanel.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { anchorOffset : Supported
-    , class : Supported
-    , fitAnchorWidth : Supported
-    , id : Supported
-    , onBeforetoggle : Supported
-    , onToggle : Supported
-    , scrollStrategy : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.FloatingPanel.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | floatingPanel : Ctx }
+    M3e.Internal.Types.FloatingPanel.ChildAdmittedBy childAdm
 
 
 {-| The `scrollStrategy` values valid on this component (compile-tight narrowing).
 -}
 type alias ScrollStrategy =
-    { hide : Supported
-    , reposition : Supported
-    }
+    M3e.Internal.Types.FloatingPanel.ScrollStrategy
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -129,22 +119,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.FloatingPanel.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { anchorOffset : Available
-    , class : Available
-    , fitAnchorWidth : Available
-    , id : Available
-    , onBeforetoggle : Available
-    , onToggle : Available
-    , scrollStrategy : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.FloatingPanel.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

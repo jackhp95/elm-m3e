@@ -29,98 +29,74 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.SearchView
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-search-view` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | searchView : Brand }
+    M3e.Internal.Types.SearchView.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , clearLabel : Supported
-    , closeLabel : Supported
-    , contained : Supported
-    , hideSearchIcon : Supported
-    , id : Supported
-    , mode : Supported
-    , onBeforetoggle : Supported
-    , onClear : Supported
-    , onQuery : Supported
-    , onToggle : Supported
-    , open : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.SearchView.Attrs
 
 
 {-| The kinds the `clear-icon` slot admits.
 -}
 type alias ClearIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.SearchView.ClearIconSlot
 
 
 {-| The kinds the `close-icon` slot admits.
 -}
 type alias CloseIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.SearchView.CloseIconSlot
 
 
 {-| The kinds the `closed-leading` slot admits.
 -}
 type alias ClosedLeadingSlot =
-    { iconButton : Brand
-    , sharedIcon : Shared
-    }
+    M3e.Internal.Types.SearchView.ClosedLeadingSlot
 
 
 {-| The kinds the `closed-trailing` slot admits.
 -}
 type alias ClosedTrailingSlot =
-    { iconButton : Brand
-    , sharedIcon : Shared
-    }
+    M3e.Internal.Types.SearchView.ClosedTrailingSlot
 
 
 {-| The kinds the `open-leading` slot admits.
 -}
 type alias OpenLeadingSlot =
-    { iconButton : Brand
-    , sharedIcon : Shared
-    }
+    M3e.Internal.Types.SearchView.OpenLeadingSlot
 
 
 {-| The kinds the `open-trailing` slot admits.
 -}
 type alias OpenTrailingSlot =
-    { iconButton : Brand
-    , sharedIcon : Shared
-    }
+    M3e.Internal.Types.SearchView.OpenTrailingSlot
 
 
 {-| The kinds the `search-icon` slot admits.
 -}
 type alias SearchIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.SearchView.SearchIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | searchView : Ctx }
+    M3e.Internal.Types.SearchView.ChildAdmittedBy childAdm
 
 
 {-| The `mode` values valid on this component (compile-tight narrowing).
 -}
 type alias Mode =
-    { auto : Supported
-    , docked : Supported
-    , fullscreen : Supported
-    }
+    M3e.Internal.Types.SearchView.Mode
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -295,37 +271,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.SearchView.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , clearLabel : Available
-    , closeLabel : Available
-    , contained : Available
-    , hideSearchIcon : Available
-    , id : Available
-    , mode : Available
-    , onBeforetoggle : Available
-    , onClear : Available
-    , onQuery : Available
-    , onToggle : Available
-    , open : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.SearchView.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { clearIcon : Available
-    , closeIcon : Available
-    , input : Available
-    , searchIcon : Available
-    }
+    M3e.Internal.Types.SearchView.SlotCaps
 
 
 {-| Seed the pipe-builder.

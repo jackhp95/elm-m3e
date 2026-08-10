@@ -26,71 +26,32 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Shape
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-shape` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | shape : Brand }
+    M3e.Internal.Types.Shape.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , name : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Shape.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | shape : Ctx }
+    M3e.Internal.Types.Shape.ChildAdmittedBy childAdm
 
 
 {-| The `name` values valid on this component (compile-tight narrowing).
 -}
 type alias Name =
-    { value12SidedCookie : Supported
-    , value4LeafClover : Supported
-    , value4SidedCookie : Supported
-    , value6SidedCookie : Supported
-    , value7SidedCookie : Supported
-    , value8LeafClover : Supported
-    , value9SidedCookie : Supported
-    , arch : Supported
-    , arrow : Supported
-    , boom : Supported
-    , bun : Supported
-    , burst : Supported
-    , circle : Supported
-    , diamond : Supported
-    , fan : Supported
-    , flower : Supported
-    , gem : Supported
-    , ghostIsh : Supported
-    , heart : Supported
-    , hexagon : Supported
-    , oval : Supported
-    , pentagon : Supported
-    , pill : Supported
-    , pixelCircle : Supported
-    , pixelTriangle : Supported
-    , puffy : Supported
-    , puffyDiamond : Supported
-    , semicircle : Supported
-    , slanted : Supported
-    , softBoom : Supported
-    , softBurst : Supported
-    , square : Supported
-    , sunny : Supported
-    , triangle : Supported
-    , verySunny : Supported
-    }
+    M3e.Internal.Types.Shape.Name
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -127,18 +88,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Shape.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , name : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Shape.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

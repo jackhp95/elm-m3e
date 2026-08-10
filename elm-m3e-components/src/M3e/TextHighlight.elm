@@ -29,43 +29,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.TextHighlight
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-text-highlight` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | textHighlight : Brand }
+    M3e.Internal.Types.TextHighlight.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { caseSensitive : Supported
-    , class : Supported
-    , disabled : Supported
-    , id : Supported
-    , mode : Supported
-    , onHighlight : Supported
-    , slot : Supported
-    , style : Supported
-    , term : Supported
-    }
+    M3e.Internal.Types.TextHighlight.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | textHighlight : Ctx }
+    M3e.Internal.Types.TextHighlight.ChildAdmittedBy childAdm
 
 
 {-| The `mode` values valid on this component (compile-tight narrowing).
 -}
 type alias Mode =
-    { contains : Supported
-    , endsWith : Supported
-    , startsWith : Supported
-    }
+    M3e.Internal.Types.TextHighlight.Mode
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -130,22 +119,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.TextHighlight.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { caseSensitive : Available
-    , class : Available
-    , disabled : Available
-    , id : Available
-    , mode : Available
-    , onHighlight : Available
-    , slot : Available
-    , style : Available
-    , term : Available
-    }
+    M3e.Internal.Types.TextHighlight.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

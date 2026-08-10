@@ -30,6 +30,7 @@ import M3e.Action as Ac
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Button as Component
+import M3e.Internal.Types.Button
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
 
@@ -37,67 +38,67 @@ import M3e.Values
 {-| The kind this element produces — a `Brand` that marks the phantom row.
 -}
 type alias Is s =
-    Component.Is s
+    M3e.Internal.Types.Button.Is s
 
 
 {-| The pipe-builder, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg kind =
-    B.Builder Component.Attrs attrCaps slotCaps (Component.Is kind) msg
+    M3e.Internal.Types.Button.Builder attrCaps slotCaps msg kind
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    Component.AttrCaps
+    M3e.Internal.Types.Button.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    Component.SlotCaps
+    M3e.Internal.Types.Button.SlotCaps
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    Component.ChildAdmittedBy childAdm
+    M3e.Internal.Types.Button.ChildAdmittedBy childAdm
 
 
 {-| The behaviours this component's required action admits.
 -}
 type alias ActionCaps =
-    Component.ActionCaps
+    M3e.Internal.Types.Button.ActionCaps
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    Component.Content
+    M3e.Internal.Types.Button.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    Component.IconSlot
+    M3e.Internal.Types.Button.IconSlot
 
 
 {-| The kinds the `selected` slot admits.
 -}
 type alias SelectedSlot =
-    Component.SelectedSlot
+    M3e.Internal.Types.Button.SelectedSlot
 
 
 {-| The kinds the `selected-icon` slot admits.
 -}
 type alias SelectedIconSlot =
-    Component.SelectedIconSlot
+    M3e.Internal.Types.Button.SelectedIconSlot
 
 
 {-| The kinds the `trailing-icon` slot admits.
 -}
 type alias TrailingIconSlot =
-    Component.TrailingIconSlot
+    M3e.Internal.Types.Button.TrailingIconSlot
 
 
 {-| Seed the pipe-builder with required content (and action).

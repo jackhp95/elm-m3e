@@ -28,63 +28,44 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Badge
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-badge` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | badge : Brand }
+    M3e.Internal.Types.Badge.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , for : Supported
-    , id : Supported
-    , position : Supported
-    , size : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Badge.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Badge.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | badge : Ctx }
+    M3e.Internal.Types.Badge.ChildAdmittedBy childAdm
 
 
 {-| The `position` values valid on this component (compile-tight narrowing).
 -}
 type alias Position =
-    { above : Supported
-    , aboveAfter : Supported
-    , aboveBefore : Supported
-    , after : Supported
-    , before : Supported
-    , below : Supported
-    , belowAfter : Supported
-    , belowBefore : Supported
-    }
+    M3e.Internal.Types.Badge.Position
 
 
 {-| The `size` values valid on this component (compile-tight narrowing).
 -}
 type alias Size =
-    { large : Supported
-    , medium : Supported
-    , small : Supported
-    }
+    M3e.Internal.Types.Badge.Size
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -132,20 +113,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Badge.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , for : Available
-    , id : Available
-    , position : Available
-    , size : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Badge.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

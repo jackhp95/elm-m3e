@@ -23,43 +23,38 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Optgroup
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-optgroup` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | optgroup : Brand }
+    M3e.Internal.Types.Optgroup.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Optgroup.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { option : Brand }
+    M3e.Internal.Types.Optgroup.Content
 
 
 {-| The kinds the `label` slot admits.
 -}
 type alias LabelSlot =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Optgroup.LabelSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | optgroup : Ctx }
+    M3e.Internal.Types.Optgroup.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -94,24 +89,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Optgroup.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Optgroup.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { label : Available
-    }
+    M3e.Internal.Types.Optgroup.SlotCaps
 
 
 {-| Seed the pipe-builder.

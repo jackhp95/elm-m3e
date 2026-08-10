@@ -26,77 +26,62 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.TreeItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-tree-item` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | treeItem : Brand }
+    M3e.Internal.Types.TreeItem.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , id : Supported
-    , indeterminate : Supported
-    , onClick : Supported
-    , onClosed : Supported
-    , onClosing : Supported
-    , onOpened : Supported
-    , onOpening : Supported
-    , open : Supported
-    , selected : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.TreeItem.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { treeItem : Brand }
+    M3e.Internal.Types.TreeItem.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.TreeItem.IconSlot
 
 
 {-| The kinds the `label` slot admits.
 -}
 type alias LabelSlot =
-    { heading : Brand
-    , sharedLink : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.TreeItem.LabelSlot
 
 
 {-| The kinds the `open-toggle-icon` slot admits.
 -}
 type alias OpenToggleIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.TreeItem.OpenToggleIconSlot
 
 
 {-| The kinds the `selected-icon` slot admits.
 -}
 type alias SelectedIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.TreeItem.SelectedIconSlot
 
 
 {-| The kinds the `toggle-icon` slot admits.
 -}
 type alias ToggleIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.TreeItem.ToggleIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | treeItem : Ctx }
+    M3e.Internal.Types.TreeItem.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -244,37 +229,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.TreeItem.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , id : Available
-    , indeterminate : Available
-    , onClick : Available
-    , onClosed : Available
-    , onClosing : Available
-    , onOpened : Available
-    , onOpening : Available
-    , open : Available
-    , selected : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.TreeItem.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    , label : Available
-    , openToggleIcon : Available
-    , selectedIcon : Available
-    , toggleIcon : Available
-    }
+    M3e.Internal.Types.TreeItem.SlotCaps
 
 
 {-| Seed the pipe-builder.

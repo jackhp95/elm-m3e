@@ -26,52 +26,44 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.MenuItemRadio
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-menu-item-radio` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | menuItemRadio : Brand }
+    M3e.Internal.Types.MenuItemRadio.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { checked : Supported
-    , class : Supported
-    , disabled : Supported
-    , id : Supported
-    , onClick : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.MenuItemRadio.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.MenuItemRadio.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.MenuItemRadio.IconSlot
 
 
 {-| The kinds the `trailing-icon` slot admits.
 -}
 type alias TrailingIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.MenuItemRadio.TrailingIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | menuItemRadio : Ctx }
+    M3e.Internal.Types.MenuItemRadio.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -142,28 +134,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.MenuItemRadio.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { checked : Available
-    , class : Available
-    , disabled : Available
-    , id : Available
-    , onClick : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.MenuItemRadio.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    , trailingIcon : Available
-    }
+    M3e.Internal.Types.MenuItemRadio.SlotCaps
 
 
 {-| Seed the pipe-builder.

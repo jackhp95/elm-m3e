@@ -29,71 +29,50 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.OptionPanel
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-option-panel` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | optionPanel : Brand }
+    M3e.Internal.Types.OptionPanel.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { anchorOffset : Supported
-    , class : Supported
-    , fitAnchorWidth : Supported
-    , id : Supported
-    , onBeforetoggle : Supported
-    , onToggle : Supported
-    , scrollStrategy : Supported
-    , slot : Supported
-    , state : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.OptionPanel.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { divider : Brand
-    , optgroup : Brand
-    , option : Brand
-    }
+    M3e.Internal.Types.OptionPanel.Content
 
 
 {-| The kinds the `loading` slot admits.
 -}
 type alias LoadingSlot =
-    { circularProgressIndicator : Brand
-    , heading : Brand
-    , loadingIndicator : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.OptionPanel.LoadingSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | optionPanel : Ctx }
+    M3e.Internal.Types.OptionPanel.ChildAdmittedBy childAdm
 
 
 {-| The `scrollStrategy` values valid on this component (compile-tight narrowing).
 -}
 type alias ScrollStrategy =
-    { hide : Supported
-    , reposition : Supported
-    }
+    M3e.Internal.Types.OptionPanel.ScrollStrategy
 
 
 {-| The `state` values valid on this component (compile-tight narrowing).
 -}
 type alias State =
-    { content : Supported
-    , loading : Supported
-    , noData : Supported
-    }
+    M3e.Internal.Types.OptionPanel.State
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -178,30 +157,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.OptionPanel.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { anchorOffset : Available
-    , class : Available
-    , fitAnchorWidth : Available
-    , id : Available
-    , onBeforetoggle : Available
-    , onToggle : Available
-    , scrollStrategy : Available
-    , slot : Available
-    , state : Available
-    , style : Available
-    }
+    M3e.Internal.Types.OptionPanel.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { noData : Available
-    }
+    M3e.Internal.Types.OptionPanel.SlotCaps
 
 
 {-| Seed the pipe-builder.

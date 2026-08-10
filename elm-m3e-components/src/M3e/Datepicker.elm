@@ -28,71 +28,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Datepicker
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-datepicker` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | datepicker : Brand }
+    M3e.Internal.Types.Datepicker.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , clearLabel : Supported
-    , clearable : Supported
-    , confirmLabel : Supported
-    , date : Supported
-    , dismissLabel : Supported
-    , for : Supported
-    , id : Supported
-    , label : Supported
-    , maxDate : Supported
-    , minDate : Supported
-    , nextMonthLabel : Supported
-    , nextMultiYearLabel : Supported
-    , nextYearLabel : Supported
-    , onBeforetoggle : Supported
-    , onChange : Supported
-    , onToggle : Supported
-    , previousMonthLabel : Supported
-    , previousMultiYearLabel : Supported
-    , previousYearLabel : Supported
-    , range : Supported
-    , rangeEnd : Supported
-    , rangeStart : Supported
-    , slot : Supported
-    , startAt : Supported
-    , startView : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.Datepicker.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | datepicker : Ctx }
+    M3e.Internal.Types.Datepicker.ChildAdmittedBy childAdm
 
 
 {-| The `startView` values valid on this component (compile-tight narrowing).
 -}
 type alias StartView =
-    { month : Supported
-    , multiYear : Supported
-    , year : Supported
-    }
+    M3e.Internal.Types.Datepicker.StartView
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { auto : Supported
-    , docked : Supported
-    , modal : Supported
-    }
+    M3e.Internal.Types.Datepicker.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -278,41 +245,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Datepicker.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , clearLabel : Available
-    , clearable : Available
-    , confirmLabel : Available
-    , date : Available
-    , dismissLabel : Available
-    , for : Available
-    , id : Available
-    , label : Available
-    , maxDate : Available
-    , minDate : Available
-    , nextMonthLabel : Available
-    , nextMultiYearLabel : Available
-    , nextYearLabel : Available
-    , onBeforetoggle : Available
-    , onChange : Available
-    , onToggle : Available
-    , previousMonthLabel : Available
-    , previousMultiYearLabel : Available
-    , previousYearLabel : Available
-    , range : Available
-    , rangeEnd : Available
-    , rangeStart : Available
-    , slot : Available
-    , startAt : Available
-    , startView : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.Datepicker.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

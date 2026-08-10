@@ -26,68 +26,44 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.MenuItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-menu-item` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | menuItem : Brand }
+    M3e.Internal.Types.MenuItem.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , download : Supported
-    , href : Supported
-    , id : Supported
-    , onClick : Supported
-    , rel : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    }
+    M3e.Internal.Types.MenuItem.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { bottomSheetAction : Brand
-    , bottomSheetTrigger : Brand
-    , datepickerToggle : Brand
-    , dialogAction : Brand
-    , dialogTrigger : Brand
-    , drawerToggle : Brand
-    , fabMenuTrigger : Brand
-    , heading : Brand
-    , menuTrigger : Brand
-    , navRailToggle : Brand
-    , richTooltipAction : Brand
-    , sharedText : Shared
-    , stepperPrevious : Brand
-    , stepperReset : Brand
-    , timepickerToggle : Brand
-    }
+    M3e.Internal.Types.MenuItem.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.MenuItem.IconSlot
 
 
 {-| The kinds the `trailing-icon` slot admits.
 -}
 type alias TrailingIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.MenuItem.TrailingIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | menuItem : Ctx }
+    M3e.Internal.Types.MenuItem.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -172,31 +148,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.MenuItem.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , download : Available
-    , href : Available
-    , id : Available
-    , onClick : Available
-    , rel : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    }
+    M3e.Internal.Types.MenuItem.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    , trailingIcon : Available
-    }
+    M3e.Internal.Types.MenuItem.SlotCaps
 
 
 {-| Seed the pipe-builder.

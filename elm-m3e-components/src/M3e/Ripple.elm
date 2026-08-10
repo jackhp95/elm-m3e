@@ -23,34 +23,26 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Ripple
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-ripple` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | ripple : Brand }
+    M3e.Internal.Types.Ripple.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { centered : Supported
-    , class : Supported
-    , disabled : Supported
-    , for : Supported
-    , id : Supported
-    , radius : Supported
-    , slot : Supported
-    , style : Supported
-    , unbounded : Supported
-    }
+    M3e.Internal.Types.Ripple.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | ripple : Ctx }
+    M3e.Internal.Types.Ripple.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -103,22 +95,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Ripple.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { centered : Available
-    , class : Available
-    , disabled : Available
-    , for : Available
-    , id : Available
-    , radius : Available
-    , slot : Available
-    , style : Available
-    , unbounded : Available
-    }
+    M3e.Internal.Types.Ripple.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

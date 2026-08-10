@@ -26,83 +26,56 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.ExpandableListItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-expandable-list-item` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | expandableListItem : Brand }
+    M3e.Internal.Types.ExpandableListItem.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , id : Supported
-    , onClosed : Supported
-    , onClosing : Supported
-    , onOpened : Supported
-    , onOpening : Supported
-    , open : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.ExpandableListItem.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ExpandableListItem.Content
 
 
 {-| The kinds the `leading` slot admits.
 -}
 type alias LeadingSlot =
-    { avatar : Brand
-    , heading : Brand
-    , sharedFlow : Shared
-    , sharedIcon : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ExpandableListItem.LeadingSlot
 
 
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ExpandableListItem.OverlineSlot
 
 
 {-| The kinds the `supporting-text` slot admits.
 -}
 type alias SupportingTextSlot =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ExpandableListItem.SupportingTextSlot
 
 
 {-| The kinds the `toggle-icon` slot admits.
 -}
 type alias ToggleIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.ExpandableListItem.ToggleIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | expandableListItem : Ctx }
+    M3e.Internal.Types.ExpandableListItem.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -211,34 +184,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ExpandableListItem.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , id : Available
-    , onClosed : Available
-    , onClosing : Available
-    , onOpened : Available
-    , onOpening : Available
-    , open : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.ExpandableListItem.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { items : Available
-    , leading : Available
-    , overline : Available
-    , supportingText : Available
-    , toggleIcon : Available
-    }
+    M3e.Internal.Types.ExpandableListItem.SlotCaps
 
 
 {-| Seed the pipe-builder.

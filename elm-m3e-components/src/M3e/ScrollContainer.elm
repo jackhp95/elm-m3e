@@ -28,41 +28,32 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.ScrollContainer
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-scroll-container` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | scrollContainer : Brand }
+    M3e.Internal.Types.ScrollContainer.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , dividers : Supported
-    , id : Supported
-    , slot : Supported
-    , style : Supported
-    , thin : Supported
-    }
+    M3e.Internal.Types.ScrollContainer.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | scrollContainer : Ctx }
+    M3e.Internal.Types.ScrollContainer.ChildAdmittedBy childAdm
 
 
 {-| The `dividers` values valid on this component (compile-tight narrowing).
 -}
 type alias Dividers =
-    { above : Supported
-    , aboveBelow : Supported
-    , below : Supported
-    , none : Supported
-    }
+    M3e.Internal.Types.ScrollContainer.Dividers
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -106,19 +97,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ScrollContainer.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , dividers : Available
-    , id : Available
-    , slot : Available
-    , style : Available
-    , thin : Available
-    }
+    M3e.Internal.Types.ScrollContainer.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

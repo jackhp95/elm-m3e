@@ -27,37 +27,26 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.RadioGroup
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-radio-group` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | radioGroup : Brand }
+    M3e.Internal.Types.RadioGroup.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { ariaInvalid : Supported
-    , class : Supported
-    , disabled : Supported
-    , id : Supported
-    , name : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , required : Supported
-    , slot : Supported
-    , style : Supported
-    , validationmessages : Supported
-    }
+    M3e.Internal.Types.RadioGroup.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | radioGroup : Ctx }
+    M3e.Internal.Types.RadioGroup.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -154,25 +143,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.RadioGroup.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { ariaInvalid : Available
-    , class : Available
-    , disabled : Available
-    , id : Available
-    , name : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , required : Available
-    , slot : Available
-    , style : Available
-    , validationmessages : Available
-    }
+    M3e.Internal.Types.RadioGroup.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

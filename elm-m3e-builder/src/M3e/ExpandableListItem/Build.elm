@@ -28,67 +28,68 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.ExpandableListItem as Component
+import M3e.Internal.Types.ExpandableListItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind this element produces — a `Brand` that marks the phantom row.
 -}
 type alias Is s =
-    Component.Is s
+    M3e.Internal.Types.ExpandableListItem.Is s
 
 
 {-| The pipe-builder, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg kind =
-    B.Builder Component.Attrs attrCaps slotCaps (Component.Is kind) msg
+    M3e.Internal.Types.ExpandableListItem.Builder attrCaps slotCaps msg kind
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    Component.AttrCaps
+    M3e.Internal.Types.ExpandableListItem.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    Component.SlotCaps
+    M3e.Internal.Types.ExpandableListItem.SlotCaps
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    Component.ChildAdmittedBy childAdm
+    M3e.Internal.Types.ExpandableListItem.ChildAdmittedBy childAdm
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    Component.Content
+    M3e.Internal.Types.ExpandableListItem.Content
 
 
 {-| The kinds the `leading` slot admits.
 -}
 type alias LeadingSlot =
-    Component.LeadingSlot
+    M3e.Internal.Types.ExpandableListItem.LeadingSlot
 
 
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
-    Component.OverlineSlot
+    M3e.Internal.Types.ExpandableListItem.OverlineSlot
 
 
 {-| The kinds the `supporting-text` slot admits.
 -}
 type alias SupportingTextSlot =
-    Component.SupportingTextSlot
+    M3e.Internal.Types.ExpandableListItem.SupportingTextSlot
 
 
 {-| The kinds the `toggle-icon` slot admits.
 -}
 type alias ToggleIconSlot =
-    Component.ToggleIconSlot
+    M3e.Internal.Types.ExpandableListItem.ToggleIconSlot
 
 
 {-| Seed the pipe-builder.

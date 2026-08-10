@@ -26,38 +26,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Tree
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-tree` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | tree : Brand }
+    M3e.Internal.Types.Tree.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { cascade : Supported
-    , class : Supported
-    , id : Supported
-    , multi : Supported
-    , onChange : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Tree.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { treeItem : Brand }
+    M3e.Internal.Types.Tree.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | tree : Ctx }
+    M3e.Internal.Types.Tree.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -105,20 +99,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Tree.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { cascade : Available
-    , class : Available
-    , id : Available
-    , multi : Available
-    , onChange : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Tree.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

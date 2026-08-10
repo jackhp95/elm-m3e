@@ -31,115 +31,68 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Fab
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-fab` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | fab : Brand }
+    M3e.Internal.Types.Fab.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , disabledInteractive : Supported
-    , download : Supported
-    , extended : Supported
-    , href : Supported
-    , id : Supported
-    , lowered : Supported
-    , name : Supported
-    , onClick : Supported
-    , rel : Supported
-    , size : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    , type_ : Supported
-    , value : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.Fab.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Fab.Content
 
 
 {-| The kinds the `close-icon` slot admits.
 -}
 type alias CloseIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Fab.CloseIconSlot
 
 
 {-| The kinds the `label` slot admits.
 -}
 type alias LabelSlot =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Fab.LabelSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | fab : Ctx }
+    M3e.Internal.Types.Fab.ChildAdmittedBy childAdm
 
 
 {-| The `size` values valid on this component (compile-tight narrowing).
 -}
 type alias Size =
-    { large : Supported
-    , medium : Supported
-    , small : Supported
-    }
+    M3e.Internal.Types.Fab.Size
 
 
 {-| The `type_` values valid on this component (compile-tight narrowing).
 -}
 type alias Type =
-    { button : Supported
-    , reset : Supported
-    , submit : Supported
-    }
+    M3e.Internal.Types.Fab.Type
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { primary : Supported
-    , primaryContainer : Supported
-    , secondary : Supported
-    , secondaryContainer : Supported
-    , surface : Supported
-    , tertiary : Supported
-    , tertiaryContainer : Supported
-    }
+    M3e.Internal.Types.Fab.Variant
 
 
 {-| The behaviours this component's required action admits (see `M3e.Action`).
 -}
 type alias ActionCaps =
-    { bottomSheetAction : Supported
-    , bottomSheetTrigger : Supported
-    , click : Supported
-    , datepickerToggle : Supported
-    , dialogAction : Supported
-    , dialogTrigger : Supported
-    , drawerToggle : Supported
-    , fabMenuTrigger : Supported
-    , link : Supported
-    , menuTrigger : Supported
-    , navRailToggle : Supported
-    , richTooltipAction : Supported
-    , stepperPrevious : Supported
-    , stepperReset : Supported
-    , timepickerToggle : Supported
-    }
+    M3e.Internal.Types.Fab.ActionCaps
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -306,39 +259,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Fab.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , disabledInteractive : Available
-    , download : Available
-    , extended : Available
-    , href : Available
-    , id : Available
-    , lowered : Available
-    , name : Available
-    , onClick : Available
-    , rel : Available
-    , size : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    , type_ : Available
-    , value : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.Fab.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { closeIcon : Available
-    , label : Available
-    }
+    M3e.Internal.Types.Fab.SlotCaps
 
 
 {-| Seed the pipe-builder.

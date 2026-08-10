@@ -25,47 +25,38 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Toc
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-toc` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | toc : Brand }
+    M3e.Internal.Types.Toc.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , for : Supported
-    , id : Supported
-    , maxDepth : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Toc.Attrs
 
 
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Toc.OverlineSlot
 
 
 {-| The kinds the `title` slot admits.
 -}
 type alias TitleSlot =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Toc.TitleSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | toc : Ctx }
+    M3e.Internal.Types.Toc.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -125,27 +116,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Toc.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , for : Available
-    , id : Available
-    , maxDepth : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Toc.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { overline : Available
-    , title : Available
-    }
+    M3e.Internal.Types.Toc.SlotCaps
 
 
 {-| Seed the pipe-builder.

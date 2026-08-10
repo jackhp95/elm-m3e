@@ -29,64 +29,50 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.ExpansionHeader
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-expansion-header` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | expansionHeader : Brand }
+    M3e.Internal.Types.ExpansionHeader.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , hideToggle : Supported
-    , id : Supported
-    , onClick : Supported
-    , slot : Supported
-    , style : Supported
-    , toggleDirection : Supported
-    , togglePosition : Supported
-    }
+    M3e.Internal.Types.ExpansionHeader.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ExpansionHeader.Content
 
 
 {-| The kinds the `toggle-icon` slot admits.
 -}
 type alias ToggleIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.ExpansionHeader.ToggleIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | expansionHeader : Ctx }
+    M3e.Internal.Types.ExpansionHeader.ChildAdmittedBy childAdm
 
 
 {-| The `toggleDirection` values valid on this component (compile-tight narrowing).
 -}
 type alias ToggleDirection =
-    { horizontal : Supported
-    , vertical : Supported
-    }
+    M3e.Internal.Types.ExpansionHeader.ToggleDirection
 
 
 {-| The `togglePosition` values valid on this component (compile-tight narrowing).
 -}
 type alias TogglePosition =
-    { after : Supported
-    , before : Supported
-    }
+    M3e.Internal.Types.ExpansionHeader.TogglePosition
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -156,29 +142,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ExpansionHeader.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , hideToggle : Available
-    , id : Available
-    , onClick : Available
-    , slot : Available
-    , style : Available
-    , toggleDirection : Available
-    , togglePosition : Available
-    }
+    M3e.Internal.Types.ExpansionHeader.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { toggleIcon : Available
-    }
+    M3e.Internal.Types.ExpansionHeader.SlotCaps
 
 
 {-| Seed the pipe-builder.

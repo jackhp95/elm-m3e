@@ -27,67 +27,44 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.TimepickerDial
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-timepicker-dial` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | timepickerDial : Brand }
+    M3e.Internal.Types.TimepickerDial.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , format : Supported
-    , hour : Supported
-    , id : Supported
-    , maxTime : Supported
-    , minTime : Supported
-    , minute : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , onViewChange : Supported
-    , period : Supported
-    , second : Supported
-    , showSeconds : Supported
-    , slot : Supported
-    , style : Supported
-    , viewAttr : Supported
-    }
+    M3e.Internal.Types.TimepickerDial.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | timepickerDial : Ctx }
+    M3e.Internal.Types.TimepickerDial.ChildAdmittedBy childAdm
 
 
 {-| The `format` values valid on this component (compile-tight narrowing).
 -}
 type alias Format =
-    { value12 : Supported
-    , value24 : Supported
-    , auto : Supported
-    }
+    M3e.Internal.Types.TimepickerDial.Format
 
 
 {-| The `period` values valid on this component (compile-tight narrowing).
 -}
 type alias Period =
-    { am : Supported
-    , pm : Supported
-    }
+    M3e.Internal.Types.TimepickerDial.Period
 
 
 {-| The `viewAttr` values valid on this component (compile-tight narrowing).
 -}
 type alias ViewAttr =
-    { hour : Supported
-    , minute : Supported
-    , second : Supported
-    }
+    M3e.Internal.Types.TimepickerDial.ViewAttr
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -189,29 +166,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.TimepickerDial.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , format : Available
-    , hour : Available
-    , id : Available
-    , maxTime : Available
-    , minTime : Available
-    , minute : Available
-    , onChange : Available
-    , onInput : Available
-    , onViewChange : Available
-    , period : Available
-    , second : Available
-    , showSeconds : Available
-    , slot : Available
-    , style : Available
-    , viewAttr : Available
-    }
+    M3e.Internal.Types.TimepickerDial.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

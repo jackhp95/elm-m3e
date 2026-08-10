@@ -27,6 +27,7 @@ import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Icon
 import M3e.Kind exposing (Available, Ctx, Used)
 
 
@@ -34,47 +35,31 @@ import M3e.Kind exposing (Available, Ctx, Used)
 into any library's opted-in slot.
 -}
 type alias Is s =
-    { s | sharedIcon : Shared }
+    M3e.Internal.Types.Icon.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , filled : Supported
-    , grade : Supported
-    , id : Supported
-    , name : Supported
-    , opticalSize : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    , weight : Supported
-    }
+    M3e.Internal.Types.Icon.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | icon : Ctx }
+    M3e.Internal.Types.Icon.ChildAdmittedBy childAdm
 
 
 {-| The `grade` values valid on this component (compile-tight narrowing).
 -}
 type alias Grade =
-    { high : Supported
-    , low : Supported
-    , medium : Supported
-    }
+    M3e.Internal.Types.Icon.Grade
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { outlined : Supported
-    , rounded : Supported
-    , sharp : Supported
-    }
+    M3e.Internal.Types.Icon.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -134,23 +119,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Icon.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , filled : Available
-    , grade : Available
-    , id : Available
-    , name : Available
-    , opticalSize : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    , weight : Available
-    }
+    M3e.Internal.Types.Icon.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

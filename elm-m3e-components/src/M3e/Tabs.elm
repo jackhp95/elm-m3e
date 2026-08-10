@@ -29,87 +29,68 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Tabs
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-tabs` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | tabs : Brand }
+    M3e.Internal.Types.Tabs.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disablePagination : Supported
-    , headerPosition : Supported
-    , id : Supported
-    , nextPageLabel : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , previousPageLabel : Supported
-    , slot : Supported
-    , stretch : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.Tabs.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { tab : Brand }
+    M3e.Internal.Types.Tabs.Content
 
 
 {-| The kinds the `next-icon` slot admits.
 -}
 type alias NextIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Tabs.NextIconSlot
 
 
 {-| The kinds the `panel` slot admits.
 -}
 type alias PanelSlot =
-    { tabPanel : Brand }
+    M3e.Internal.Types.Tabs.PanelSlot
 
 
 {-| The kinds the `prev-icon` slot admits.
 -}
 type alias PrevIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Tabs.PrevIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | tabs : Ctx }
+    M3e.Internal.Types.Tabs.ChildAdmittedBy childAdm
 
 
 {-| The `disablePagination` values valid on this component (compile-tight narrowing).
 -}
 type alias DisablePagination =
-    { auto : Supported
-    , false : Supported
-    , true : Supported
-    }
+    M3e.Internal.Types.Tabs.DisablePagination
 
 
 {-| The `headerPosition` values valid on this component (compile-tight narrowing).
 -}
 type alias HeaderPosition =
-    { after : Supported
-    , before : Supported
-    }
+    M3e.Internal.Types.Tabs.HeaderPosition
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { primary : Supported
-    , secondary : Supported
-    }
+    M3e.Internal.Types.Tabs.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -223,34 +204,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Tabs.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disablePagination : Available
-    , headerPosition : Available
-    , id : Available
-    , nextPageLabel : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , previousPageLabel : Available
-    , slot : Available
-    , stretch : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.Tabs.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { nextIcon : Available
-    , prevIcon : Available
-    }
+    M3e.Internal.Types.Tabs.SlotCaps
 
 
 {-| Seed the pipe-builder.

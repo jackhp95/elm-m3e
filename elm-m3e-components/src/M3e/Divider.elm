@@ -23,33 +23,26 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Divider
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-divider` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | divider : Brand }
+    M3e.Internal.Types.Divider.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , inset : Supported
-    , insetEnd : Supported
-    , insetStart : Supported
-    , slot : Supported
-    , style : Supported
-    , vertical : Supported
-    }
+    M3e.Internal.Types.Divider.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | divider : Ctx }
+    M3e.Internal.Types.Divider.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -95,21 +88,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Divider.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , inset : Available
-    , insetEnd : Available
-    , insetStart : Available
-    , slot : Available
-    , style : Available
-    , vertical : Available
-    }
+    M3e.Internal.Types.Divider.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

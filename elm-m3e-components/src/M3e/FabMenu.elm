@@ -29,49 +29,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.FabMenu
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-fab-menu` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | fabMenu : Brand }
+    M3e.Internal.Types.FabMenu.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , onBeforetoggle : Supported
-    , onToggle : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.FabMenu.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { fabMenuItem : Brand
-    , menuItem : Brand
-    }
+    M3e.Internal.Types.FabMenu.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | fabMenu : Ctx }
+    M3e.Internal.Types.FabMenu.ChildAdmittedBy childAdm
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { primary : Supported
-    , secondary : Supported
-    , tertiary : Supported
-    }
+    M3e.Internal.Types.FabMenu.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -119,20 +108,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.FabMenu.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , onBeforetoggle : Available
-    , onToggle : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.FabMenu.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

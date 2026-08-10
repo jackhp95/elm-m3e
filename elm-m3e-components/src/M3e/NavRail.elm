@@ -29,51 +29,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.NavRail
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-nav-rail` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | navRail : Brand }
+    M3e.Internal.Types.NavRail.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , mode : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.NavRail.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { fab : Brand
-    , iconButton : Brand
-    , navItem : Brand
-    }
+    M3e.Internal.Types.NavRail.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | navRail : Ctx }
+    M3e.Internal.Types.NavRail.ChildAdmittedBy childAdm
 
 
 {-| The `mode` values valid on this component (compile-tight narrowing).
 -}
 type alias Mode =
-    { auto : Supported
-    , compact : Supported
-    , expanded : Supported
-    }
+    M3e.Internal.Types.NavRail.Mode
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -128,21 +115,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.NavRail.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , mode : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.NavRail.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

@@ -28,49 +28,38 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Toolbar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-toolbar` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | toolbar : Brand }
+    M3e.Internal.Types.Toolbar.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , elevated : Supported
-    , id : Supported
-    , shape : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    , vertical : Supported
-    }
+    M3e.Internal.Types.Toolbar.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | toolbar : Ctx }
+    M3e.Internal.Types.Toolbar.ChildAdmittedBy childAdm
 
 
 {-| The `shape` values valid on this component (compile-tight narrowing).
 -}
 type alias Shape =
-    { rounded : Supported
-    , square : Supported
-    }
+    M3e.Internal.Types.Toolbar.Shape
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { standard : Supported
-    , vibrant : Supported
-    }
+    M3e.Internal.Types.Toolbar.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -128,21 +117,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Toolbar.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , elevated : Available
-    , id : Available
-    , shape : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    , vertical : Available
-    }
+    M3e.Internal.Types.Toolbar.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

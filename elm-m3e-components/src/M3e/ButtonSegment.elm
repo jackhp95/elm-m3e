@@ -26,50 +26,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.ButtonSegment
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-button-segment` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | buttonSegment : Brand }
+    M3e.Internal.Types.ButtonSegment.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { checked : Supported
-    , class : Supported
-    , disabled : Supported
-    , id : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onClick : Supported
-    , onInput : Supported
-    , slot : Supported
-    , style : Supported
-    , value : Supported
-    }
+    M3e.Internal.Types.ButtonSegment.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ButtonSegment.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.ButtonSegment.IconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | buttonSegment : Ctx }
+    M3e.Internal.Types.ButtonSegment.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -167,31 +155,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ButtonSegment.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { checked : Available
-    , class : Available
-    , disabled : Available
-    , id : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onClick : Available
-    , onInput : Available
-    , slot : Available
-    , style : Available
-    , value : Available
-    }
+    M3e.Internal.Types.ButtonSegment.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    }
+    M3e.Internal.Types.ButtonSegment.SlotCaps
 
 
 {-| Seed the pipe-builder.

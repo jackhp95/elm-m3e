@@ -30,69 +30,44 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Card
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-card` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | card : Brand }
+    M3e.Internal.Types.Card.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { actionable : Supported
-    , class : Supported
-    , disabled : Supported
-    , disabledInteractive : Supported
-    , download : Supported
-    , href : Supported
-    , id : Supported
-    , inline : Supported
-    , name : Supported
-    , onClick : Supported
-    , orientation : Supported
-    , rel : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    , type_ : Supported
-    , value : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.Card.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | card : Ctx }
+    M3e.Internal.Types.Card.ChildAdmittedBy childAdm
 
 
 {-| The `orientation` values valid on this component (compile-tight narrowing).
 -}
 type alias Orientation =
-    { horizontal : Supported
-    , vertical : Supported
-    }
+    M3e.Internal.Types.Card.Orientation
 
 
 {-| The `type_` values valid on this component (compile-tight narrowing).
 -}
 type alias Type =
-    { button : Supported
-    , reset : Supported
-    , submit : Supported
-    }
+    M3e.Internal.Types.Card.Type
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { elevated : Supported
-    , filled : Supported
-    , outlined : Supported
-    }
+    M3e.Internal.Types.Card.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -260,41 +235,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Card.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { actionable : Available
-    , class : Available
-    , disabled : Available
-    , disabledInteractive : Available
-    , download : Available
-    , href : Available
-    , id : Available
-    , inline : Available
-    , name : Available
-    , onClick : Available
-    , orientation : Available
-    , rel : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    , type_ : Available
-    , value : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.Card.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { actions : Available
-    , content : Available
-    , footer : Available
-    , header : Available
-    }
+    M3e.Internal.Types.Card.SlotCaps
 
 
 {-| Seed the pipe-builder.

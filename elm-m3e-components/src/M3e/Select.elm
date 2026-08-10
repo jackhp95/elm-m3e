@@ -28,54 +28,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Select
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-select` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | select : Brand }
+    M3e.Internal.Types.Select.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , hideSelectionIndicator : Supported
-    , id : Supported
-    , multi : Supported
-    , name : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , onToggle : Supported
-    , panelClass : Supported
-    , required : Supported
-    , slot : Supported
-    , style : Supported
-    , validationmessages : Supported
-    }
+    M3e.Internal.Types.Select.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { optgroup : Brand
-    , option : Brand
-    }
+    M3e.Internal.Types.Select.Content
 
 
 {-| The kinds the `arrow` slot admits.
 -}
 type alias ArrowSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Select.ArrowSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | select : Ctx }
+    M3e.Internal.Types.Select.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -206,36 +190,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Select.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , hideSelectionIndicator : Available
-    , id : Available
-    , multi : Available
-    , name : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , onToggle : Available
-    , panelClass : Available
-    , required : Available
-    , slot : Available
-    , style : Available
-    , validationmessages : Available
-    }
+    M3e.Internal.Types.Select.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { arrow : Available
-    , value : Available
-    }
+    M3e.Internal.Types.Select.SlotCaps
 
 
 {-| Seed the pipe-builder.

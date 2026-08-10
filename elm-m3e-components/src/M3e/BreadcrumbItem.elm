@@ -29,64 +29,44 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.BreadcrumbItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-breadcrumb-item` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | breadcrumbItem : Brand }
+    M3e.Internal.Types.BreadcrumbItem.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , current : Supported
-    , disabled : Supported
-    , download : Supported
-    , href : Supported
-    , id : Supported
-    , itemLabel : Supported
-    , onClick : Supported
-    , rel : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    }
+    M3e.Internal.Types.BreadcrumbItem.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedIcon : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.BreadcrumbItem.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.BreadcrumbItem.IconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | breadcrumbItem : Ctx }
+    M3e.Internal.Types.BreadcrumbItem.ChildAdmittedBy childAdm
 
 
 {-| The `current` values valid on this component (compile-tight narrowing).
 -}
 type alias Current =
-    { date : Supported
-    , location : Supported
-    , page : Supported
-    , step : Supported
-    , time : Supported
-    , true : Supported
-    }
+    M3e.Internal.Types.BreadcrumbItem.Current
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -177,32 +157,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.BreadcrumbItem.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , current : Available
-    , disabled : Available
-    , download : Available
-    , href : Available
-    , id : Available
-    , itemLabel : Available
-    , onClick : Available
-    , rel : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    }
+    M3e.Internal.Types.BreadcrumbItem.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    }
+    M3e.Internal.Types.BreadcrumbItem.SlotCaps
 
 
 {-| Seed the pipe-builder.

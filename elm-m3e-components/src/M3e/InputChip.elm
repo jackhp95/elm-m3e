@@ -29,71 +29,56 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.InputChip
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-input-chip` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | inputChip : Brand }
+    M3e.Internal.Types.InputChip.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , disabledInteractive : Supported
-    , id : Supported
-    , onClick : Supported
-    , onRemove : Supported
-    , removable : Supported
-    , removeLabel : Supported
-    , slot : Supported
-    , style : Supported
-    , value : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.InputChip.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.InputChip.Content
 
 
 {-| The kinds the `avatar` slot admits.
 -}
 type alias AvatarSlot =
-    { avatar : Brand }
+    M3e.Internal.Types.InputChip.AvatarSlot
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.InputChip.IconSlot
 
 
 {-| The kinds the `remove-icon` slot admits.
 -}
 type alias RemoveIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.InputChip.RemoveIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | inputChip : Ctx }
+    M3e.Internal.Types.InputChip.ChildAdmittedBy childAdm
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { elevated : Supported
-    , outlined : Supported
-    }
+    M3e.Internal.Types.InputChip.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -218,34 +203,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.InputChip.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , disabledInteractive : Available
-    , id : Available
-    , onClick : Available
-    , onRemove : Available
-    , removable : Available
-    , removeLabel : Available
-    , slot : Available
-    , style : Available
-    , value : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.InputChip.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { avatar : Available
-    , icon : Available
-    , removeIcon : Available
-    }
+    M3e.Internal.Types.InputChip.SlotCaps
 
 
 {-| Seed the pipe-builder.

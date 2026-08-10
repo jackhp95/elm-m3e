@@ -26,43 +26,44 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.FilterChipSet as Component
+import M3e.Internal.Types.FilterChipSet
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind this element produces — a `Brand` that marks the phantom row.
 -}
 type alias Is s =
-    Component.Is s
+    M3e.Internal.Types.FilterChipSet.Is s
 
 
 {-| The pipe-builder, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg kind =
-    B.Builder Component.Attrs attrCaps slotCaps (Component.Is kind) msg
+    M3e.Internal.Types.FilterChipSet.Builder attrCaps slotCaps msg kind
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    Component.AttrCaps
+    M3e.Internal.Types.FilterChipSet.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    Component.SlotCaps
+    {}
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    Component.ChildAdmittedBy childAdm
+    M3e.Internal.Types.FilterChipSet.ChildAdmittedBy childAdm
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    Component.Content
+    M3e.Internal.Types.FilterChipSet.Content
 
 
 {-| Seed the pipe-builder.

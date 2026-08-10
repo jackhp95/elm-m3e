@@ -31,144 +31,74 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.IconButton
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-icon-button` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | iconButton : Brand }
+    M3e.Internal.Types.IconButton.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , disabledInteractive : Supported
-    , download : Supported
-    , href : Supported
-    , id : Supported
-    , name : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onClick : Supported
-    , onInput : Supported
-    , rel : Supported
-    , selected : Supported
-    , shape : Supported
-    , size : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    , toggle : Supported
-    , type_ : Supported
-    , value : Supported
-    , variant : Supported
-    , width : Supported
-    }
+    M3e.Internal.Types.IconButton.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { bottomSheetAction : Brand
-    , bottomSheetTrigger : Brand
-    , datepickerToggle : Brand
-    , dialogAction : Brand
-    , dialogTrigger : Brand
-    , drawerToggle : Brand
-    , fabMenuTrigger : Brand
-    , menuTrigger : Brand
-    , navRailToggle : Brand
-    , richTooltipAction : Brand
-    , sharedIcon : Shared
-    , stepperNext : Brand
-    , stepperPrevious : Brand
-    , stepperReset : Brand
-    , timepickerToggle : Brand
-    }
+    M3e.Internal.Types.IconButton.Content
 
 
 {-| The kinds the `selected` slot admits.
 -}
 type alias SelectedSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.IconButton.SelectedSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | iconButton : Ctx }
+    M3e.Internal.Types.IconButton.ChildAdmittedBy childAdm
 
 
 {-| The `shape` values valid on this component (compile-tight narrowing).
 -}
 type alias Shape =
-    { rounded : Supported
-    , square : Supported
-    }
+    M3e.Internal.Types.IconButton.Shape
 
 
 {-| The `size` values valid on this component (compile-tight narrowing).
 -}
 type alias Size =
-    { extraLarge : Supported
-    , extraSmall : Supported
-    , large : Supported
-    , medium : Supported
-    , small : Supported
-    }
+    M3e.Internal.Types.IconButton.Size
 
 
 {-| The `type_` values valid on this component (compile-tight narrowing).
 -}
 type alias Type =
-    { button : Supported
-    , reset : Supported
-    , submit : Supported
-    }
+    M3e.Internal.Types.IconButton.Type
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { filled : Supported
-    , outlined : Supported
-    , standard : Supported
-    , tonal : Supported
-    }
+    M3e.Internal.Types.IconButton.Variant
 
 
 {-| The `width` values valid on this component (compile-tight narrowing).
 -}
 type alias Width =
-    { default : Supported
-    , narrow : Supported
-    , wide : Supported
-    }
+    M3e.Internal.Types.IconButton.Width
 
 
 {-| The behaviours this component's required action admits (see `M3e.Action`).
 -}
 type alias ActionCaps =
-    { bottomSheetAction : Supported
-    , bottomSheetTrigger : Supported
-    , click : Supported
-    , datepickerToggle : Supported
-    , dialogAction : Supported
-    , dialogTrigger : Supported
-    , drawerToggle : Supported
-    , fabMenuTrigger : Supported
-    , link : Supported
-    , menuTrigger : Supported
-    , navRailToggle : Supported
-    , richTooltipAction : Supported
-    , stepperNext : Supported
-    , stepperPrevious : Supported
-    , stepperReset : Supported
-    , timepickerToggle : Supported
-    }
+    M3e.Internal.Types.IconButton.ActionCaps
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -356,43 +286,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.IconButton.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , disabledInteractive : Available
-    , download : Available
-    , href : Available
-    , id : Available
-    , name : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onClick : Available
-    , onInput : Available
-    , rel : Available
-    , selected : Available
-    , shape : Available
-    , size : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    , toggle : Available
-    , type_ : Available
-    , value : Available
-    , variant : Available
-    , width : Available
-    }
+    M3e.Internal.Types.IconButton.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { selected : Available
-    }
+    M3e.Internal.Types.IconButton.SlotCaps
 
 
 {-| Seed the pipe-builder.

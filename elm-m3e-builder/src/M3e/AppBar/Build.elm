@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.AppBar as Component
 import M3e.Attributes as A
 import M3e.Build.Internal as B
+import M3e.Internal.Types.AppBar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
 
@@ -36,55 +37,55 @@ import M3e.Values
 {-| The kind this element produces — a `Brand` that marks the phantom row.
 -}
 type alias Is s =
-    Component.Is s
+    M3e.Internal.Types.AppBar.Is s
 
 
 {-| The pipe-builder, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg kind =
-    B.Builder Component.Attrs attrCaps slotCaps (Component.Is kind) msg
+    M3e.Internal.Types.AppBar.Builder attrCaps slotCaps msg kind
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    Component.AttrCaps
+    M3e.Internal.Types.AppBar.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    Component.SlotCaps
+    M3e.Internal.Types.AppBar.SlotCaps
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    Component.ChildAdmittedBy childAdm
+    M3e.Internal.Types.AppBar.ChildAdmittedBy childAdm
 
 
 {-| The kinds the `leading` slot admits.
 -}
 type alias LeadingSlot =
-    Component.LeadingSlot
+    M3e.Internal.Types.AppBar.LeadingSlot
 
 
 {-| The kinds the `subtitle` slot admits.
 -}
 type alias SubtitleSlot =
-    Component.SubtitleSlot
+    M3e.Internal.Types.AppBar.SubtitleSlot
 
 
 {-| The kinds the `title` slot admits.
 -}
 type alias TitleSlot =
-    Component.TitleSlot
+    M3e.Internal.Types.AppBar.TitleSlot
 
 
 {-| The kinds the `trailing` slot admits.
 -}
 type alias TrailingSlot =
-    Component.TrailingSlot
+    M3e.Internal.Types.AppBar.TrailingSlot
 
 
 {-| Seed the pipe-builder.

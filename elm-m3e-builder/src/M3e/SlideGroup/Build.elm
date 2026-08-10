@@ -27,6 +27,7 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
+import M3e.Internal.Types.SlideGroup
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.SlideGroup as Component
 
@@ -34,43 +35,43 @@ import M3e.SlideGroup as Component
 {-| The kind this element produces — a `Brand` that marks the phantom row.
 -}
 type alias Is s =
-    Component.Is s
+    M3e.Internal.Types.SlideGroup.Is s
 
 
 {-| The pipe-builder, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg kind =
-    B.Builder Component.Attrs attrCaps slotCaps (Component.Is kind) msg
+    M3e.Internal.Types.SlideGroup.Builder attrCaps slotCaps msg kind
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    Component.AttrCaps
+    M3e.Internal.Types.SlideGroup.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    Component.SlotCaps
+    M3e.Internal.Types.SlideGroup.SlotCaps
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    Component.ChildAdmittedBy childAdm
+    M3e.Internal.Types.SlideGroup.ChildAdmittedBy childAdm
 
 
 {-| The kinds the `next-icon` slot admits.
 -}
 type alias NextIconSlot =
-    Component.NextIconSlot
+    M3e.Internal.Types.SlideGroup.NextIconSlot
 
 
 {-| The kinds the `prev-icon` slot admits.
 -}
 type alias PrevIconSlot =
-    Component.PrevIconSlot
+    M3e.Internal.Types.SlideGroup.PrevIconSlot
 
 
 {-| Seed the pipe-builder.

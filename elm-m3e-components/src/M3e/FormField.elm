@@ -28,58 +28,44 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.FormField
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-form-field` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | formField : Brand }
+    M3e.Internal.Types.FormField.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , floatLabel : Supported
-    , hideRequiredMarker : Supported
-    , hideSubscript : Supported
-    , id : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.FormField.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | formField : Ctx }
+    M3e.Internal.Types.FormField.ChildAdmittedBy childAdm
 
 
 {-| The `floatLabel` values valid on this component (compile-tight narrowing).
 -}
 type alias FloatLabel =
-    { always : Supported
-    , auto : Supported
-    }
+    M3e.Internal.Types.FormField.FloatLabel
 
 
 {-| The `hideSubscript` values valid on this component (compile-tight narrowing).
 -}
 type alias HideSubscript =
-    { always : Supported
-    , auto : Supported
-    , never : Supported
-    }
+    M3e.Internal.Types.FormField.HideSubscript
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { filled : Supported
-    , outlined : Supported
-    }
+    M3e.Internal.Types.FormField.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -193,34 +179,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.FormField.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , floatLabel : Available
-    , hideRequiredMarker : Available
-    , hideSubscript : Available
-    , id : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.FormField.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { error : Available
-    , hint : Available
-    , label : Available
-    , prefix : Available
-    , prefixText : Available
-    , suffix : Available
-    , suffixText : Available
-    }
+    M3e.Internal.Types.FormField.SlotCaps
 
 
 {-| Seed the pipe-builder.

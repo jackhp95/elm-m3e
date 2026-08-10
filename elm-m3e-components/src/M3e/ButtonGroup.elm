@@ -28,59 +28,44 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.ButtonGroup
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-button-group` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | buttonGroup : Brand }
+    M3e.Internal.Types.ButtonGroup.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , multi : Supported
-    , size : Supported
-    , slot : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.ButtonGroup.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { button : Brand
-    , iconButton : Brand
-    }
+    M3e.Internal.Types.ButtonGroup.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | buttonGroup : Ctx }
+    M3e.Internal.Types.ButtonGroup.ChildAdmittedBy childAdm
 
 
 {-| The `size` values valid on this component (compile-tight narrowing).
 -}
 type alias Size =
-    { extraLarge : Supported
-    , extraSmall : Supported
-    , large : Supported
-    , medium : Supported
-    , small : Supported
-    }
+    M3e.Internal.Types.ButtonGroup.Size
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { connected : Supported
-    , standard : Supported
-    }
+    M3e.Internal.Types.ButtonGroup.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -128,20 +113,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ButtonGroup.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , multi : Available
-    , size : Available
-    , slot : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.ButtonGroup.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

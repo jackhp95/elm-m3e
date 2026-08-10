@@ -29,73 +29,56 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Stepper
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-stepper` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | stepper : Brand }
+    M3e.Internal.Types.Stepper.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , headerPosition : Supported
-    , id : Supported
-    , labelPosition : Supported
-    , linear : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onInput : Supported
-    , orientation : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Stepper.Attrs
 
 
 {-| The kinds the `panel` slot admits.
 -}
 type alias PanelSlot =
-    { stepPanel : Brand }
+    M3e.Internal.Types.Stepper.PanelSlot
 
 
 {-| The kinds the `step` slot admits.
 -}
 type alias StepSlot =
-    { step : Brand }
+    M3e.Internal.Types.Stepper.StepSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | stepper : Ctx }
+    M3e.Internal.Types.Stepper.ChildAdmittedBy childAdm
 
 
 {-| The `headerPosition` values valid on this component (compile-tight narrowing).
 -}
 type alias HeaderPosition =
-    { above : Supported
-    , below : Supported
-    }
+    M3e.Internal.Types.Stepper.HeaderPosition
 
 
 {-| The `labelPosition` values valid on this component (compile-tight narrowing).
 -}
 type alias LabelPosition =
-    { below : Supported
-    , end : Supported
-    }
+    M3e.Internal.Types.Stepper.LabelPosition
 
 
 {-| The `orientation` values valid on this component (compile-tight narrowing).
 -}
 type alias Orientation =
-    { auto : Supported
-    , horizontal : Supported
-    , vertical : Supported
-    }
+    M3e.Internal.Types.Stepper.Orientation
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -178,24 +161,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Stepper.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , headerPosition : Available
-    , id : Available
-    , labelPosition : Available
-    , linear : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , orientation : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Stepper.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

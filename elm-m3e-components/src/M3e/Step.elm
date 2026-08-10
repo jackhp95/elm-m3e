@@ -26,88 +26,68 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Step
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-step` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | step : Brand }
+    M3e.Internal.Types.Step.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , completed : Supported
-    , disabled : Supported
-    , editable : Supported
-    , for : Supported
-    , id : Supported
-    , invalid : Supported
-    , onBeforeinput : Supported
-    , onChange : Supported
-    , onClick : Supported
-    , onInput : Supported
-    , optional : Supported
-    , selected : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Step.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Step.Content
 
 
 {-| The kinds the `done-icon` slot admits.
 -}
 type alias DoneIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Step.DoneIconSlot
 
 
 {-| The kinds the `edit-icon` slot admits.
 -}
 type alias EditIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Step.EditIconSlot
 
 
 {-| The kinds the `error` slot admits.
 -}
 type alias ErrorSlot =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Step.ErrorSlot
 
 
 {-| The kinds the `error-icon` slot admits.
 -}
 type alias ErrorIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Step.ErrorIconSlot
 
 
 {-| The kinds the `hint` slot admits.
 -}
 type alias HintSlot =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Step.HintSlot
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Step.IconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | step : Ctx }
+    M3e.Internal.Types.Step.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -277,40 +257,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Step.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , completed : Available
-    , disabled : Available
-    , editable : Available
-    , for : Available
-    , id : Available
-    , invalid : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onClick : Available
-    , onInput : Available
-    , optional : Available
-    , selected : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Step.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { doneIcon : Available
-    , editIcon : Available
-    , error : Available
-    , errorIcon : Available
-    , hint : Available
-    , icon : Available
-    }
+    M3e.Internal.Types.Step.SlotCaps
 
 
 {-| Seed the pipe-builder.

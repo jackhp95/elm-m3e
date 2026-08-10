@@ -29,78 +29,50 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Theme
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-theme` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | theme : Brand }
+    M3e.Internal.Types.Theme.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , color : Supported
-    , contrast : Supported
-    , density : Supported
-    , id : Supported
-    , motion : Supported
-    , onChange : Supported
-    , scheme : Supported
-    , slot : Supported
-    , strongFocus : Supported
-    , style : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.Theme.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | theme : Ctx }
+    M3e.Internal.Types.Theme.ChildAdmittedBy childAdm
 
 
 {-| The `contrast` values valid on this component (compile-tight narrowing).
 -}
 type alias Contrast =
-    { high : Supported
-    , medium : Supported
-    , standard : Supported
-    }
+    M3e.Internal.Types.Theme.Contrast
 
 
 {-| The `motion` values valid on this component (compile-tight narrowing).
 -}
 type alias Motion =
-    { expressive : Supported
-    , standard : Supported
-    }
+    M3e.Internal.Types.Theme.Motion
 
 
 {-| The `scheme` values valid on this component (compile-tight narrowing).
 -}
 type alias Scheme =
-    { auto : Supported
-    , dark : Supported
-    , light : Supported
-    }
+    M3e.Internal.Types.Theme.Scheme
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { content : Supported
-    , expressive : Supported
-    , fidelity : Supported
-    , fruitSalad : Supported
-    , monochrome : Supported
-    , neutral : Supported
-    , rainbow : Supported
-    , tonalSpot : Supported
-    , vibrant : Supported
-    }
+    M3e.Internal.Types.Theme.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -186,25 +158,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Theme.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , color : Available
-    , contrast : Available
-    , density : Available
-    , id : Available
-    , motion : Available
-    , onChange : Available
-    , scheme : Available
-    , slot : Available
-    , strongFocus : Available
-    , style : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.Theme.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

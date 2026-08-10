@@ -28,51 +28,38 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Skeleton
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-skeleton` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | skeleton : Brand }
+    M3e.Internal.Types.Skeleton.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { animation : Supported
-    , class : Supported
-    , id : Supported
-    , loaded : Supported
-    , shape : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Skeleton.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | skeleton : Ctx }
+    M3e.Internal.Types.Skeleton.ChildAdmittedBy childAdm
 
 
 {-| The `animation` values valid on this component (compile-tight narrowing).
 -}
 type alias Animation =
-    { none : Supported
-    , pulse : Supported
-    , wave : Supported
-    }
+    M3e.Internal.Types.Skeleton.Animation
 
 
 {-| The `shape` values valid on this component (compile-tight narrowing).
 -}
 type alias Shape =
-    { auto : Supported
-    , circular : Supported
-    , rounded : Supported
-    , square : Supported
-    }
+    M3e.Internal.Types.Skeleton.Shape
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is
@@ -123,20 +110,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Skeleton.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { animation : Available
-    , class : Available
-    , id : Available
-    , loaded : Available
-    , shape : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Skeleton.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.

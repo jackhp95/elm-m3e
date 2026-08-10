@@ -24,92 +24,56 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.ListItemButton
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-list-item-button` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | listItemButton : Brand }
+    M3e.Internal.Types.ListItemButton.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , download : Supported
-    , href : Supported
-    , id : Supported
-    , onClick : Supported
-    , rel : Supported
-    , slot : Supported
-    , style : Supported
-    , target : Supported
-    }
+    M3e.Internal.Types.ListItemButton.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ListItemButton.Content
 
 
 {-| The kinds the `leading` slot admits.
 -}
 type alias LeadingSlot =
-    { avatar : Brand
-    , heading : Brand
-    , sharedFlow : Shared
-    , sharedIcon : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ListItemButton.LeadingSlot
 
 
 {-| The kinds the `overline` slot admits.
 -}
 type alias OverlineSlot =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ListItemButton.OverlineSlot
 
 
 {-| The kinds the `supporting-text` slot admits.
 -}
 type alias SupportingTextSlot =
-    { heading : Brand
-    , sharedFlow : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.ListItemButton.SupportingTextSlot
 
 
 {-| The kinds the `trailing` slot admits.
 -}
 type alias TrailingSlot =
-    { avatar : Brand
-    , checkbox : Brand
-    , heading : Brand
-    , radio : Brand
-    , sharedFlow : Shared
-    , sharedIcon : Shared
-    , sharedPhrasing : Shared
-    , sharedText : Shared
-    , switch : Brand
-    }
+    M3e.Internal.Types.ListItemButton.TrailingSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | listItemButton : Ctx }
+    M3e.Internal.Types.ListItemButton.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -210,33 +174,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.ListItemButton.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , download : Available
-    , href : Available
-    , id : Available
-    , onClick : Available
-    , rel : Available
-    , slot : Available
-    , style : Available
-    , target : Available
-    }
+    M3e.Internal.Types.ListItemButton.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { leading : Available
-    , overline : Available
-    , supportingText : Available
-    , trailing : Available
-    }
+    M3e.Internal.Types.ListItemButton.SlotCaps
 
 
 {-| Seed the pipe-builder.

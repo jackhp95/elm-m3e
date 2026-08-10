@@ -27,41 +27,32 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.InputChipSet
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-input-chip-set` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | inputChipSet : Brand }
+    M3e.Internal.Types.InputChipSet.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , disabled : Supported
-    , id : Supported
-    , name : Supported
-    , onChange : Supported
-    , required : Supported
-    , slot : Supported
-    , style : Supported
-    , validationmessages : Supported
-    , vertical : Supported
-    }
+    M3e.Internal.Types.InputChipSet.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { inputChip : Brand }
+    M3e.Internal.Types.InputChipSet.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | inputChipSet : Ctx }
+    M3e.Internal.Types.InputChipSet.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -138,30 +129,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.InputChipSet.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , id : Available
-    , name : Available
-    , onChange : Available
-    , required : Available
-    , slot : Available
-    , style : Available
-    , validationmessages : Available
-    , vertical : Available
-    }
+    M3e.Internal.Types.InputChipSet.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { input : Available
-    }
+    M3e.Internal.Types.InputChipSet.SlotCaps
 
 
 {-| Seed the pipe-builder.

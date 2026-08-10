@@ -29,63 +29,38 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.Autocomplete
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-autocomplete` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | autocomplete : Brand }
+    M3e.Internal.Types.Autocomplete.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { autoActivate : Supported
-    , caseSensitive : Supported
-    , class : Supported
-    , filter : Supported
-    , for : Supported
-    , hideLoading : Supported
-    , hideNoData : Supported
-    , hideSelectionIndicator : Supported
-    , id : Supported
-    , loading : Supported
-    , loadingLabel : Supported
-    , noDataLabel : Supported
-    , onChange : Supported
-    , onQuery : Supported
-    , onToggle : Supported
-    , panelClass : Supported
-    , required : Supported
-    , resultsLabel : Supported
-    , slot : Supported
-    , style : Supported
-    }
+    M3e.Internal.Types.Autocomplete.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { optgroup : Brand
-    , option : Brand
-    }
+    M3e.Internal.Types.Autocomplete.Content
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | autocomplete : Ctx }
+    M3e.Internal.Types.Autocomplete.ChildAdmittedBy childAdm
 
 
 {-| The `filter` values valid on this component (compile-tight narrowing).
 -}
 type alias Filter =
-    { contains : Supported
-    , endsWith : Supported
-    , none : Supported
-    , startsWith : Supported
-    }
+    M3e.Internal.Types.Autocomplete.Filter
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -233,41 +208,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Autocomplete.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { autoActivate : Available
-    , caseSensitive : Available
-    , class : Available
-    , filter : Available
-    , for : Available
-    , hideLoading : Available
-    , hideNoData : Available
-    , hideSelectionIndicator : Available
-    , id : Available
-    , loading : Available
-    , loadingLabel : Available
-    , noDataLabel : Available
-    , onChange : Available
-    , onQuery : Available
-    , onToggle : Available
-    , panelClass : Available
-    , required : Available
-    , resultsLabel : Available
-    , slot : Available
-    , style : Available
-    }
+    M3e.Internal.Types.Autocomplete.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { loading : Available
-    , noData : Available
-    }
+    M3e.Internal.Types.Autocomplete.SlotCaps
 
 
 {-| Seed the pipe-builder.

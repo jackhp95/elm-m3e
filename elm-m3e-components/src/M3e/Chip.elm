@@ -28,59 +28,50 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Html as H
+import M3e.Internal.Types.Chip
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-chip` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | chip : Brand }
+    M3e.Internal.Types.Chip.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { class : Supported
-    , id : Supported
-    , slot : Supported
-    , style : Supported
-    , value : Supported
-    , variant : Supported
-    }
+    M3e.Internal.Types.Chip.Attrs
 
 
 {-| The kinds the default slot admits.
 -}
 type alias Content =
-    { heading : Brand
-    , sharedText : Shared
-    }
+    M3e.Internal.Types.Chip.Content
 
 
 {-| The kinds the `icon` slot admits.
 -}
 type alias IconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Chip.IconSlot
 
 
 {-| The kinds the `trailing-icon` slot admits.
 -}
 type alias TrailingIconSlot =
-    { sharedIcon : Shared }
+    M3e.Internal.Types.Chip.TrailingIconSlot
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | chip : Ctx }
+    M3e.Internal.Types.Chip.ChildAdmittedBy childAdm
 
 
 {-| The `variant` values valid on this component (compile-tight narrowing).
 -}
 type alias Variant =
-    { elevated : Supported
-    , outlined : Supported
-    }
+    M3e.Internal.Types.Chip.Variant
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -155,27 +146,19 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.Chip.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { class : Available
-    , id : Available
-    , slot : Available
-    , style : Available
-    , value : Available
-    , variant : Available
-    }
+    M3e.Internal.Types.Chip.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
 -}
 type alias SlotCaps =
-    { icon : Available
-    , trailingIcon : Available
-    }
+    M3e.Internal.Types.Chip.SlotCaps
 
 
 {-| Seed the pipe-builder.

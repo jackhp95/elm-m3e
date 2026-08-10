@@ -24,39 +24,26 @@ import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
+import M3e.Internal.Types.MonthView
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| The kind row `m3e-month-view` produces (open — composes into any slot naming it).
 -}
 type alias Is s =
-    { s | monthView : Brand }
+    M3e.Internal.Types.MonthView.Is s
 
 
 {-| The closed attribute-capability row.
 -}
 type alias Attrs =
-    { active : Supported
-    , activeDate : Supported
-    , class : Supported
-    , date : Supported
-    , id : Supported
-    , maxDate : Supported
-    , minDate : Supported
-    , onActiveChange : Supported
-    , onChange : Supported
-    , rangeEnd : Supported
-    , rangeStart : Supported
-    , slot : Supported
-    , style : Supported
-    , today : Supported
-    }
+    M3e.Internal.Types.MonthView.Attrs
 
 
 {-| The context demand this container injects into each child's admittedBy row.
 -}
 type alias ChildAdmittedBy childAdm =
-    { childAdm | monthView : Ctx }
+    M3e.Internal.Types.MonthView.ChildAdmittedBy childAdm
 
 
 {-| Standard constructor: `[attributes] [children]`.
@@ -144,27 +131,13 @@ a singular attribute or slot twice is unwritable. Aliases the shared builder in
 `Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
 -}
 type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
+    M3e.Internal.Types.MonthView.Builder attrCaps slotCaps msg s
 
 
 {-| Every attribute/event capability, still writable.
 -}
 type alias AttrCaps =
-    { active : Available
-    , activeDate : Available
-    , class : Available
-    , date : Available
-    , id : Available
-    , maxDate : Available
-    , minDate : Available
-    , onActiveChange : Available
-    , onChange : Available
-    , rangeEnd : Available
-    , rangeStart : Available
-    , slot : Available
-    , style : Available
-    , today : Available
-    }
+    M3e.Internal.Types.MonthView.AttrCaps
 
 
 {-| Every singular named-slot capability, still writable.
