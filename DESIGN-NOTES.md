@@ -6,22 +6,14 @@ Three open questions from §3.1 of the consolidation plan, now locked:
 
 ### Q1. Does `elm-m3e-components` expose a convenience barrel?
 
-**Yes — `M3e.Components`.** A single import that lists every component constructor
-(`foo = M3e.Foo.view`), matching the elm/html feel: `import M3e.Components` gives
-you one-import access to all 122+ component constructors without forcing individual
-per-component imports. Users choose among three import tiers:
+**No (SUPERSEDED 2026-08-10, Jack → 2a worker).** An earlier draft said "Yes — `M3e.Components`". Jack ruled it **redundant**: the thin-core `M3e.elm` already delegates every `foo = M3e.Foo.view`, and a second identical delegation in `elm-m3e-components` is the same thing one directory over. The import tiers are therefore two, not three:
 
 ```
 import M3e                          -- generic combos only (Element, text, toHtml, Attributes, Kind, Values)
-import M3e.Components               -- all component constructors, one import
 import M3e.Button                   -- per-component strict surface (narrowed values, builder, required content)
 ```
 
-The barrel lives in `elm-m3e-components` (it's component-shaped, not generic).
-Each entry is a thin delegation `foo = M3e.Foo.view`, exactly like today's
-`src/M3e.elm` constructors but without re-exporting any per-component types — the
-caller who needs to *name* `ButtonIs` imports `M3e.Build` (the builder package's
-annotation-skin), not the barrel.
+The barrel role stays with the thin core; no `M3e.Components` module is emitted.
 
 ### Q2. Does the thin `M3e` core re-export anything component-shaped?
 
@@ -38,10 +30,13 @@ as-is. `M3e.Kind` and `M3e.Values` stay as-is. The generic `M3e` module keeps
 
 ### Q3. Does the builder package want a flat `M3e.Build` alias-skin?
 
-**Yes — `M3e.Build` as a thin annotation-skin.** A single module re-exporting
-every per-component `Is` type alias (e.g. `type alias ButtonIs s = M3e.Button.Build.Is s`)
-so that a caller who only needs to *name* a component's phantom type in an explicit
-annotation can import just `M3e.Build`:
+**Yes — scope confirmed 2026-08-10 (Jack → 2a worker).** `M3e.Build` is a thin annotation-skin:
+re-export **ONE `Is` alias per component** — `type alias <Component>Is s = M3e.<Component>.Build.Is s`
+(e.g. `ButtonIs`, `CardIs`) — **and nothing else per-component** (Jack: "we don't want
+to re-export everything. We only want to re-export the relevant types for that specific
+component"). The shared generic surface (`Builder`, `toElement`) stays too. A caller who
+only needs to *name* a component's phantom type in an explicit annotation imports just
+`M3e.Build`:
 
 ```elm
 import M3e.Build exposing (ButtonIs)
