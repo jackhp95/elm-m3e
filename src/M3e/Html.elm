@@ -1,6 +1,6 @@
 module M3e.Html exposing
     ( accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionIndicator, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
-    , Element, Attr, Node, toHtml, toNode, mapMsg, mapNode
+    , Element, Attr, Node, toHtml, toNode, mapMsg, mapNode, keyed, lazy, lazy2, lazy3, lazy4, lazy5, lazy6, lazy7, lazy8
     )
 
 {-| The loose, elm/html-like producer layer: one open-rowed constructor
@@ -14,7 +14,7 @@ published package can write type annotations without importing
 `HtmlIr.*` directly.
 
 @docs accordion, actionList, appBar, assistChip, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, button, buttonGroup, buttonSegment, calendar, card, checkbox, chip, chipSet, circularProgressIndicator, collapsible, contentPane, dateInput, datepicker, datepickerToggle, dialog, dialogAction, dialogTrigger, divider, drawerContainer, drawerToggle, elevation, expandableListItem, expansionHeader, expansionPanel, fab, fabMenu, fabMenuItem, fabMenuTrigger, filterChip, filterChipSet, floatingPanel, focusRing, focusTrap, formField, heading, icon, iconButton, inputChip, inputChipSet, linearProgressIndicator, list, listAction, listItem, listItemButton, listOption, loadingIndicator, menu, menuItem, menuItemCheckbox, menuItemGroup, menuItemRadio, menuTrigger, monthView, multiYearView, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, optgroup, option, optionPanel, paginator, pseudoCheckbox, pseudoRadio, radio, radioGroup, richTooltip, richTooltipAction, ripple, scrollContainer, searchBar, searchView, segmentedButton, select, selectionIndicator, selectionList, shape, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, stateLayer, step, stepPanel, stepper, stepperNext, stepperPrevious, stepperReset, suggestionChip, switch, tab, tabPanel, tabs, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, timepicker, timepickerDial, timepickerInput, timepickerInputPeriodToggle, timepickerToggle, toc, tocItem, toolbar, tooltip, tree, treeItem, yearView
-@docs Element, Attr, Node, toHtml, toNode, mapMsg, mapNode
+@docs Element, Attr, Node, toHtml, toNode, mapMsg, mapNode, keyed, lazy, lazy2, lazy3, lazy4, lazy5, lazy6, lazy7, lazy8
 
 -}
 
@@ -1499,3 +1499,66 @@ mapMsg =
 mapNode : (a -> b) -> Node a -> Node b
 mapNode =
     HtmlIr.Node.map
+
+
+{-| A keyed node — like `node` but children carry diff keys for VirtualDom's keyed-node diffing. Lists that reorder/insert/remove keep their children's state and animation. Each child is a `(String, Node msg)` pair.
+-}
+keyed : String -> List (Attr attrs msg) -> List ( String, Node msg ) -> Node msg
+keyed tag attrs children =
+    HtmlIr.Node.keyedNode tag attrs children
+
+
+{-| A lazily-rendered subtree — Elm's `VirtualDom.lazy` memoizes rendered output by reference-equality of the function and argument. **Stable top-level function required** — an inline lambda allocates a fresh closure each render and silently never memoizes. The body returns `Html.Html msg`, not [`Element`](#Element); see type signature.
+-}
+lazy : (a -> Html.Html msg) -> a -> Node msg
+lazy f a =
+    HtmlIr.Node.lazy f a
+
+
+{-| 2-argument variant of [`lazy`](#lazy).
+-}
+lazy2 : (a -> b -> Html.Html msg) -> a -> b -> Node msg
+lazy2 f a b =
+    HtmlIr.Node.lazy2 f a b
+
+
+{-| 3-argument variant of [`lazy`](#lazy).
+-}
+lazy3 : (a -> b -> c -> Html.Html msg) -> a -> b -> c -> Node msg
+lazy3 f a b c =
+    HtmlIr.Node.lazy3 f a b c
+
+
+{-| 4-argument variant of [`lazy`](#lazy).
+-}
+lazy4 : (a -> b -> c -> d -> Html.Html msg) -> a -> b -> c -> d -> Node msg
+lazy4 f a b c d =
+    HtmlIr.Node.lazy4 f a b c d
+
+
+{-| 5-argument variant of [`lazy`](#lazy).
+-}
+lazy5 : (a -> b -> c -> d -> e -> Html.Html msg) -> a -> b -> c -> d -> e -> Node msg
+lazy5 f a b c d e =
+    HtmlIr.Node.lazy5 f a b c d e
+
+
+{-| 6-argument variant of [`lazy`](#lazy). Note type params skip `f` to match the underlying `VirtualDom.lazy6` convention.
+-}
+lazy6 : (a -> b -> c -> d -> e -> g -> Html.Html msg) -> a -> b -> c -> d -> e -> g -> Node msg
+lazy6 f a b c d e g =
+    HtmlIr.Node.lazy6 f a b c d e g
+
+
+{-| 7-argument variant of [`lazy`](#lazy).
+-}
+lazy7 : (a -> b -> c -> d -> e -> g -> h -> Html.Html msg) -> a -> b -> c -> d -> e -> g -> h -> Node msg
+lazy7 f a b c d e g h =
+    HtmlIr.Node.lazy7 f a b c d e g h
+
+
+{-| 8-argument variant of [`lazy`](#lazy).
+-}
+lazy8 : (a -> b -> c -> d -> e -> g -> h -> i -> Html.Html msg) -> a -> b -> c -> d -> e -> g -> h -> i -> Node msg
+lazy8 f a b c d e g h i =
+    HtmlIr.Node.lazy8 f a b c d e g h i
