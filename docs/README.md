@@ -14,13 +14,10 @@ pnpm run dev             # elm-pages dev, serves on http://localhost:1234
 
 `elm-pages dev` proxies through Vite, which watches your `.elm` source.
 
-> **First-run prerequisite — run `gen` before `elm-review` or the dev server.**
-> A fresh checkout/worktree has no `.elm-pages/` (it is gitignored). `elm-review`
-> and compiling any route depend on that codegen output, so a fresh tree must run
-> `pnpm run gen:reference && pnpm run gen:pages` (or `elm-pages gen` directly) **first** —
-> otherwise you get cryptic type errors instead of an obvious "missing codegen"
-> message. Note that `elm-pages gen` prints nothing on success, so the `gen`
-> script echoes a one-line confirmation.
+> **Fresh checkout note.** The repo now **commits** `.elm-pages/` so VS Code /
+> Elm LSP can open docs routes immediately. You still need to re-run
+> `pnpm run gen:pages` after route-shape changes so the committed codegen stays in
+> sync.
 >
 > Re-run `pnpm run gen:pages` after changing any route's `Model`/`Msg`: those changes
 > staleness-invalidate `.elm-pages/`, and a forgotten re-gen surfaces later as a

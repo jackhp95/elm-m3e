@@ -28,6 +28,15 @@ surface). They are intentionally committed. Please do not delete or prune them a
 npm ci        # installs elm, elm-format, elm-test (root dev deps)
 ```
 
+### Editor/LSP note
+
+The repo root stays a package `elm.json`, but `src/elm.json` is a nested
+application used so Elm LSP / VS Code can analyze `src/` against a buildable
+project. Likewise, `tests/elm.json` points at the committed
+`docs/vendor/elm-foundation` copy instead of requiring sibling checkouts of the
+foundation repos. If you change the docs route graph, re-run `pnpm run gen:pages`
+in `docs/` and commit the refreshed `.elm-pages/` output too.
+
 ## Verify — the same gates CI runs
 
 CI (`.github/workflows/ci.yml`) has three jobs. To reproduce them locally:
