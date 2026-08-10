@@ -200,7 +200,8 @@ update msg model =
                             |> List.map (\( k, v ) -> Theme.Ports.setCssOverride { property = k, value = v })
                        )
                     ++ [ storeState newModel
-                       , loadFontCmd preset
+                       , loadFontCmd (fontsOf newModel)
+                       , setIconVariantCmd newModel
                        ]
                 )
             )
@@ -218,6 +219,9 @@ update msg model =
                         (pushTypeScaleCmds loaded
                             ++ pushShapeScaleCmds loaded
                             ++ pushOverrideCmds loaded
+                            ++ [ loadFontCmd (fontsOf loaded)
+                               , setIconVariantCmd loaded
+                               ]
                         )
                     )
 
@@ -253,16 +257,34 @@ applyPresetToModel preset model =
     }
 
 
-{-| Fire the `loadFonts` port for a preset's display + body fonts.
+{-| Fire the `loadFonts` port for a display + body font pair. Takes just the two
+font names (not a whole `Preset`) so both `ApplyPreset` (from a preset) and
+`ThemeStateLoaded` (from the restored model, which has no preset) can share it.
 -}
-loadFontCmd : Preset -> Cmd Msg
-loadFontCmd preset =
-    case Theme.Fonts.googleFontsUrl [ preset.displayFont, preset.bodyFont ] of
+loadFontCmd : { displayFont : String, bodyFont : String } -> Cmd Msg
+loadFontCmd fonts =
+    case Theme.Fonts.googleFontsUrl [ fonts.displayFont, fonts.bodyFont ] of
         Just url ->
             Theme.Ports.loadFonts url
 
         Nothing ->
             Cmd.none
+
+
+{-| The display/body font pair carried by a model, in the shape `loadFontCmd`
+expects.
+-}
+fontsOf : Model -> { displayFont : String, bodyFont : String }
+fontsOf model =
+    { displayFont = model.displayFont, bodyFont = model.bodyFont }
+
+
+{-| Fire the `setIconVariant` port with the model's active icon style, switching
+every `<m3e-icon>` in the app to that Material Symbols optical variant (§D4).
+-}
+setIconVariantCmd : Model -> Cmd Msg
+setIconVariantCmd model =
+    Theme.Ports.setIconVariant (Theme.Icons.toString model.iconStyle)
 
 
 persist : Model -> ( Model, Cmd Msg )
@@ -281,6 +303,7 @@ storeState model =
             , motion = Value.toString model.motion
             , displayFont = model.displayFont
             , bodyFont = model.bodyFont
+            , iconStyle = Theme.Icons.toString model.iconStyle
             , typeScaleMode = Scale.modeToString model.typeScale.mode
             , typeScaleFactor = model.typeScale.factor
             , typeScaleRatio = model.typeScale.ratio
@@ -363,6 +386,7 @@ fromPersisted :
     , motion : String
     , displayFont : String
     , bodyFont : String
+    , iconStyle : String
     , typeScaleMode : String
     , typeScaleFactor : Float
     , typeScaleRatio : Float
@@ -388,7 +412,7 @@ fromPersisted decoded =
     , motion = Value.motionFromString decoded.motion |> Maybe.withDefault Value.standard
     , displayFont = decoded.displayFont
     , bodyFont = decoded.bodyFont
-    , iconStyle = Theme.Icons.defaultStyle
+    , iconStyle = Theme.Icons.fromString decoded.iconStyle
     , typeScale =
         { mode = Scale.modeFromString decoded.typeScaleMode |> Maybe.withDefault Scale.Linear
         , factor = decoded.typeScaleFactor

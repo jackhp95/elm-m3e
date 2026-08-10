@@ -1,7 +1,7 @@
 port module Theme.Ports exposing
     ( storeThemeState, readThemeState
     , setCssOverride, setFaviconColor
-    , loadFonts, requestPreset, onPresetRequested
+    , loadFonts, loadSpecimenFonts, setIconVariant, requestPreset, onPresetRequested
     , encode, decoder
     )
 
@@ -10,7 +10,7 @@ port module Theme.Ports exposing
 
 @docs storeThemeState, readThemeState
 @docs setCssOverride, setFaviconColor
-@docs loadFonts, requestPreset, onPresetRequested
+@docs loadFonts, loadSpecimenFonts, setIconVariant, requestPreset, onPresetRequested
 @docs encode, decoder
 
 -}
@@ -58,6 +58,27 @@ its `href` to the given URL. When the URL is `""`, the link is removed.
 port loadFonts : String -> Cmd msg
 
 
+{-| Inject a set of `<link rel="stylesheet">`s (one per URL) for the theme reel's
+per-card specimen fonts (§D6). Unlike `loadFonts`, which owns a single global
+`<link id="m3e-theme-font">` and replaces its href, this loads MANY subset
+stylesheets at once — one per preset's specimen glyphs — so every reel card can
+render its own display/body font simultaneously. `index.ts` injects each under a
+`m3e-specimen-font` class, deduped by href, and is idempotent across re-sends.
+-}
+port loadSpecimenFonts : List String -> Cmd msg
+
+
+{-| Set the `variant` attribute (`"outlined" | "rounded" | "sharp"`) on EVERY
+`<m3e-icon>` in the document, and keep newly-rendered icons in sync via a
+MutationObserver installed on first call (§D4). `m3e-icon` selects its Material
+Symbols font purely from its own `variant` attribute — there is no CSS custom
+property or `<m3e-theme>` cascade for it (verified against `@m3e/web/dist/icon.js`)
+— so a single global sweep + observer is the one-seam way to switch the whole
+app's icon style without threading `variant` through every icon call site.
+-}
+port setIconVariant : String -> Cmd msg
+
+
 {-| Fired by a page (e.g. `Welcome.elm`) when the user picks a preset in
 the reel. The page cannot hold `Theme.Model` or send `Shared.Msg` directly
 (an import cycle), so it emits a preset id string over this port instead.
@@ -85,6 +106,7 @@ encode :
     , motion : String
     , displayFont : String
     , bodyFont : String
+    , iconStyle : String
     , typeScaleMode : String
     , typeScaleFactor : Float
     , typeScaleRatio : Float
@@ -111,6 +133,7 @@ encode state =
         , ( "motion", Encode.string state.motion )
         , ( "displayFont", Encode.string state.displayFont )
         , ( "bodyFont", Encode.string state.bodyFont )
+        , ( "iconStyle", Encode.string state.iconStyle )
         , ( "typeScaleMode", Encode.string state.typeScaleMode )
         , ( "typeScaleFactor", Encode.float state.typeScaleFactor )
         , ( "typeScaleRatio", Encode.float state.typeScaleRatio )
@@ -142,6 +165,18 @@ andMap =
     Decode.map2 (|>)
 
 
+{-| A string field that may be absent from an older persisted blob. Falls back
+to `default` when the key is missing (or present but not a string), so adding a
+field to the persisted contract never invalidates blobs written before it.
+-}
+optionalField : String -> String -> Decoder String
+optionalField key default =
+    Decode.oneOf
+        [ Decode.field key Decode.string
+        , Decode.succeed default
+        ]
+
+
 {-| Decoder for the persisted blob. Keep in sync with `encode` above and
 with `Theme.Model`'s field list (a later task, Theme.elm).
 -}
@@ -154,6 +189,7 @@ decoder :
         , motion : String
         , displayFont : String
         , bodyFont : String
+        , iconStyle : String
         , typeScaleMode : String
         , typeScaleFactor : Float
         , typeScaleRatio : Float
@@ -172,7 +208,7 @@ decoder :
         }
 decoder =
     Decode.succeed
-        (\scheme seed contrast density motion displayFont bodyFont typeScaleMode typeScaleFactor typeScaleRatio typeScaleBase typeScaleBump typeScaleExponent shapeScaleMode shapeScaleFactor shapeScaleRatio shapeScaleBase shapeScaleBump shapeScaleExponent colorOverrides cssOverrides activePresetId ->
+        (\scheme seed contrast density motion displayFont bodyFont iconStyle typeScaleMode typeScaleFactor typeScaleRatio typeScaleBase typeScaleBump typeScaleExponent shapeScaleMode shapeScaleFactor shapeScaleRatio shapeScaleBase shapeScaleBump shapeScaleExponent colorOverrides cssOverrides activePresetId ->
             { scheme = scheme
             , seed = seed
             , contrast = contrast
@@ -180,6 +216,7 @@ decoder =
             , motion = motion
             , displayFont = displayFont
             , bodyFont = bodyFont
+            , iconStyle = iconStyle
             , typeScaleMode = typeScaleMode
             , typeScaleFactor = typeScaleFactor
             , typeScaleRatio = typeScaleRatio
@@ -204,6 +241,11 @@ decoder =
         |> andMap (Decode.field "motion" Decode.string)
         |> andMap (Decode.field "displayFont" Decode.string)
         |> andMap (Decode.field "bodyFont" Decode.string)
+        -- `iconStyle` was added after the first persisted blobs shipped, so an
+        -- older stored blob won't have the field. Default it to "outlined"
+        -- (the app default) rather than failing the whole decode, which would
+        -- discard every other persisted setting alongside it.
+        |> andMap (optionalField "iconStyle" "outlined")
         |> andMap (Decode.field "typeScaleMode" Decode.string)
         |> andMap (Decode.field "typeScaleFactor" Decode.float)
         |> andMap (Decode.field "typeScaleRatio" Decode.float)
