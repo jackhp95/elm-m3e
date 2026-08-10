@@ -82,10 +82,6 @@ toElement =
     B.toElement
 
 
-{-| Alias for [`toElement`](#toElement) — close and convert to an element.
--}
-
-
 {-| Pipe form of a default-slot child (repeatable) — accepts a builder directly.
 -}
 withChild :

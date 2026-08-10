@@ -72,10 +72,6 @@ toElement =
     B.toElement
 
 
-{-| Alias for [`toElement`](#toElement) — close and convert to an element.
--}
-
-
 {-| Pipe form of `class` — re-exported from `M3e.PseudoCheckbox`.
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind

@@ -12,8 +12,7 @@
             "elm/core": "1.0.5",
             "elm/html": "1.0.1",
             "elm/json": "1.1.4",
-            "elm/virtual-dom": "1.0.5",
-            "jackhp95/elm-cem-facts": "1.0.0"
+            "elm/virtual-dom": "1.0.5"
         },
         "indirect": {}
     },

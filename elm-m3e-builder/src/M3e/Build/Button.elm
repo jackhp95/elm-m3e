@@ -118,10 +118,6 @@ toElement =
     B.toElement
 
 
-{-| Alias for [`toElement`](#toElement) — close and convert to an element.
--}
-
-
 {-| Place a builder-built element into the named `icon` slot — calls `B.toElement` internally.
 -}
 icon :

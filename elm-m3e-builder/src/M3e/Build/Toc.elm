@@ -88,10 +88,6 @@ toElement =
     B.toElement
 
 
-{-| Alias for [`toElement`](#toElement) — close and convert to an element.
--}
-
-
 {-| Place a builder-built element into the named `overline` slot — calls `B.toElement` internally.
 -}
 overline :
