@@ -51,24 +51,20 @@ function measurePackage(pkgDirName) {
   }
 
   // Patch: in builder modules, add {-|-} before `type alias Content` defs that lack doc comments.
-  // The elm-m3e-builder/M3e/*/Build.elm files have one undocced type alias: Content.
+  // The elm-m3e-builder/M3e/Build/*.elm files have one undocced type alias: Content.
   // Adding a doc comment to the temp copy is harmless.
-  const builderDir = path.join(mSrc, "M3e");
-  if (fs.existsSync(builderDir)) {
-    const patchDirs = fs.readdirSync(builderDir, { withFileTypes: true });
-    for (const d of patchDirs) {
-      if (!d.isDirectory()) continue;
-      const buildDir = path.join(builderDir, d.name, "Build.elm");
-      if (!fs.existsSync(buildDir)) continue;
-      let content = fs.readFileSync(buildDir, "utf8");
-      // Check if Content has a doc comment by looking for `type alias Content =`
-      // preceded by anything that's not a doc comment closer or an empty line
+  const buildDir = path.join(mSrc, "M3e", "Build");
+  if (fs.existsSync(buildDir)) {
+    const buildFiles = fs.readdirSync(buildDir, { withFileTypes: true });
+    for (const f of buildFiles) {
+      if (!f.isFile() || !f.name.endsWith(".elm")) continue;
+      const fpath = path.join(buildDir, f.name);
+      let content = fs.readFileSync(fpath, "utf8");
       const lines = content.split("\n");
       let changed = false;
       for (let i = 0; i < lines.length; i++) {
         const trimmed = lines[i].trimStart();
         if (trimmed === "type alias Content =") {
-          // Check preceding non-empty lines for a doc comment
           let hasDoc = false;
           for (let j = i - 1; j >= Math.max(0, i - 10); j--) {
             const tl = lines[j].trim();
@@ -78,13 +74,13 @@ function measurePackage(pkgDirName) {
           }
           if (!hasDoc) {
             lines.splice(i, 0, "{-|-}");
-            i++; // skip the line we just added
+            i++;
             changed = true;
           }
         }
       }
       if (changed) {
-        fs.writeFileSync(buildDir, lines.join("\n"), "utf8");
+        fs.writeFileSync(fpath, lines.join("\n"), "utf8");
       }
     }
   }

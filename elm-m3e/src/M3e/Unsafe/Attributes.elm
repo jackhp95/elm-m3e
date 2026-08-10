@@ -1,8 +1,4 @@
-module M3e.Unsafe.Attributes exposing
-    ( fromHtmlAttribute
-    , recastAttr, recastAttrAll
-    , customAttribute
-    )
+module M3e.Unsafe.Attributes exposing (customAttribute, fromHtmlAttribute, recastAttr, recastAttrAll)
 
 {-| The attribute-side twins of [`M3e.Unsafe`](M3e-Unsafe): lift a raw
 `Html.Attribute`, re-kind an existing `Attr`, or set an attribute this library

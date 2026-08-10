@@ -5,9 +5,10 @@ shows short qualified references instead of expanded record rows.
 -}
 
 import HtmlIr.Kind exposing (Supported)
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import HtmlIr.Value as Val exposing (Value)
 import M3e.Build.Internal as B
-import M3e.Kind exposing (Available, Brand, Ctx, Used)
+
 
 
 type alias Is s =

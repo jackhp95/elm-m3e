@@ -13,7 +13,7 @@ import HtmlIr.Element exposing (Element)
 import M3e exposing (text)
 import M3e.Action exposing (onClick)
 import M3e.Build exposing (ButtonIs)
-import M3e.Button.Build as Button
+import M3e.Build.Button as Button
 
 
 type Msg

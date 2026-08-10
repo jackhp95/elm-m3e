@@ -195,7 +195,6 @@ centered value_ =
 {-| Whether the element is checked. (default: `false`)
 
 Sets the LIVE DOM property `checked`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultChecked`.
-
 -}
 checked : Bool -> Attr { c | checked : Supported } msg
 checked value_ =
@@ -1236,7 +1235,7 @@ required value_ =
         Ir.none
 
 
-{-| The text announced when available options change for the current term. (default: `(count) =>`${count} options\`\`)
+{-| The text announced when available options change for the current term. (default: `(count) => `${count} options``)
 -}
 resultsLabel : String -> Attr { c | resultsLabel : Supported } msg
 resultsLabel =
@@ -1280,7 +1279,6 @@ secondary value_ =
 Sets the LIVE DOM property `selected`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultSelected`.
 
 CAVEAT — this setter cannot RESYNC. `elm/virtual-dom` only re-forces an unchanged controlled property for the names `value` and `checked`; `selected` is compared by identity, so re-rendering the same model value after the user has changed it through the element's own UI will NOT push it back to the DOM. Keep the model in sync with a `change` handler.
-
 -}
 selected : Bool -> Attr { c | selected : Supported } msg
 selected value_ =
@@ -1474,7 +1472,6 @@ validationmessages =
 {-| A string representing the value of the switch. (default: `"on"`)
 
 Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
-
 -}
 value : String -> Attr { c | value : Supported } msg
 value value_ =

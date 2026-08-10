@@ -12,9 +12,9 @@ import HtmlIr.Element exposing (Element)
 import M3e exposing (text)
 import M3e.Action exposing (onClick)
 import M3e.Build exposing (ButtonIs, CardIs)
-import M3e.Button.Build as Button
-import M3e.Card.Build as Card
-import M3e.Icon.Build as Icon
+import M3e.Build.Button as Button
+import M3e.Build.Card as Card
+import M3e.Build.Icon as Icon
 import M3e.Values as Value
 
 

@@ -1,9 +1,4 @@
-module M3e.Unsafe exposing
-    ( fromHtml
-    , fromNode
-    , recast, recastAll
-    , customElement
-    )
+module M3e.Unsafe exposing (customElement, fromHtml, fromNode, recast, recastAll)
 
 {-| THE loud legacy-interop escapes: wrap raw `Html` as an `Element`,
 re-assert rows on an erased `Node`, re-kind an existing `Element`, or forge
