@@ -1,0 +1,263 @@
+module M3e.AppBar.Build exposing
+    ( build, toElement, view
+    , Builder, AttrCaps, SlotCaps, Is, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
+    , withCentered, withClass, withFor, withId, withSize, withSlot, withStyle
+    , leading, leadingIcon, subtitle, title, trailing, trailingIcon
+    , withLeadingIcon, withSubtitle, withTitle, withTrailingIcon, withLeading, withTrailing
+    )
+
+{-| The builder module for `m3e-app-bar` — seed, pipe, and close.
+
+This module provides everything you need to BUILD with `AppBar`
+using the pipe-builder pattern. Slot placers and slot pipes accept builders
+directly — no `.toElement` needed at the call site.
+
+For the standard `[attrs] [children]` constructor, use `M3e.AppBar.view`.
+
+@docs build, toElement, view
+@docs Builder, AttrCaps, SlotCaps, Is, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
+@docs withCentered, withClass, withFor, withId, withSize, withSlot, withStyle
+@docs leading, leadingIcon, subtitle, title, trailing, trailingIcon
+@docs withLeadingIcon, withSubtitle, withTitle, withTrailingIcon, withLeading, withTrailing
+
+-}
+
+import HtmlIr.Element as El exposing (Element)
+import HtmlIr.Internal as Ir
+import HtmlIr.Kind exposing (Shared, Supported)
+import HtmlIr.Value as Val exposing (Value)
+import M3e.AppBar as Component
+import M3e.Attributes as A
+import M3e.Build.Internal as B
+import M3e.Kind exposing (Available, Brand, Ctx, Used)
+import M3e.Values
+
+
+{-| The kind this element produces — a `Brand` that marks the phantom row.
+-}
+type alias Is s =
+    Component.Is s
+
+
+{-| The pipe-builder, closed over this component's `Attrs` row and `Is s` kind.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    B.Builder Component.Attrs attrCaps slotCaps (Component.Is kind) msg
+
+
+{-| Every attribute/event capability, still writable.
+-}
+type alias AttrCaps =
+    Component.AttrCaps
+
+
+{-| Every singular named-slot capability, still writable.
+-}
+type alias SlotCaps =
+    Component.SlotCaps
+
+
+{-| The context demand this container injects into each child's admittedBy row.
+-}
+type alias ChildAdmittedBy childAdm =
+    Component.ChildAdmittedBy childAdm
+
+
+type alias LeadingSlot =
+    Component.LeadingSlot
+
+
+type alias SubtitleSlot =
+    Component.SubtitleSlot
+
+
+type alias TitleSlot =
+    Component.TitleSlot
+
+
+type alias TrailingSlot =
+    Component.TrailingSlot
+
+
+{-| Seed the pipe-builder.
+-}
+build : Builder AttrCaps SlotCaps msg kind
+build =
+    B.init "m3e-app-bar" [] []
+
+
+{-| Close the pipe-builder.
+-}
+toElement : Builder attrCaps slotCaps msg kind -> Element (Component.Is kind) admittedBy msg
+toElement =
+    B.toElement
+
+
+{-| Alias for [`toElement`](#toElement) — close and convert to an element.
+-}
+view : Builder attrCaps slotCaps msg kind -> Element (Component.Is kind) admittedBy msg
+view =
+    B.toElement
+
+
+{-| Place a builder-built element into the named `leading` slot — calls `B.toElement` internally.
+-}
+leading :
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingSlot msg
+    -> Element free freeAdmittedBy msg
+leading builder =
+    Component.leading (B.toElement builder)
+
+
+{-| Place a builder-built element into the named `leading-icon` slot — calls `B.toElement` internally.
+-}
+leadingIcon :
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
+    -> Element free freeAdmittedBy msg
+leadingIcon builder =
+    Component.leadingIcon (B.toElement builder)
+
+
+{-| Place a builder-built element into the named `subtitle` slot — calls `B.toElement` internally.
+-}
+subtitle :
+    B.Builder childRow childAttrCaps childSlotCaps Component.SubtitleSlot msg
+    -> Element free freeAdmittedBy msg
+subtitle builder =
+    Component.subtitle (B.toElement builder)
+
+
+{-| Place a builder-built element into the named `title` slot — calls `B.toElement` internally.
+-}
+title :
+    B.Builder childRow childAttrCaps childSlotCaps Component.TitleSlot msg
+    -> Element free freeAdmittedBy msg
+title builder =
+    Component.title (B.toElement builder)
+
+
+{-| Place a builder-built element into the named `trailing` slot — calls `B.toElement` internally.
+-}
+trailing :
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingSlot msg
+    -> Element free freeAdmittedBy msg
+trailing builder =
+    Component.trailing (B.toElement builder)
+
+
+{-| Place a builder-built element into the named `trailing-icon` slot — calls `B.toElement` internally.
+-}
+trailingIcon :
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
+    -> Element free freeAdmittedBy msg
+trailingIcon builder =
+    Component.trailingIcon (B.toElement builder)
+
+
+{-| Pipe form of the `leading-icon` slot — accepts a builder directly (no `.toElement`).
+-}
+withLeadingIcon :
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
+    -> Builder attrCaps { s | leadingIcon : Available } msg kind
+    -> Builder attrCaps { s | leadingIcon : Used } msg kind
+withLeadingIcon slotBuilder builder_ =
+    B.withChild (El.toNode (Component.leadingIcon (B.toElement slotBuilder))) builder_
+
+
+{-| Pipe form of the `subtitle` slot — accepts a builder directly (no `.toElement`).
+-}
+withSubtitle :
+    B.Builder childRow childAttrCaps childSlotCaps Component.SubtitleSlot msg
+    -> Builder attrCaps { s | subtitle : Available } msg kind
+    -> Builder attrCaps { s | subtitle : Used } msg kind
+withSubtitle slotBuilder builder_ =
+    B.withChild (El.toNode (Component.subtitle (B.toElement slotBuilder))) builder_
+
+
+{-| Pipe form of the `title` slot — accepts a builder directly (no `.toElement`).
+-}
+withTitle :
+    B.Builder childRow childAttrCaps childSlotCaps Component.TitleSlot msg
+    -> Builder attrCaps { s | title : Available } msg kind
+    -> Builder attrCaps { s | title : Used } msg kind
+withTitle slotBuilder builder_ =
+    B.withChild (El.toNode (Component.title (B.toElement slotBuilder))) builder_
+
+
+{-| Pipe form of the `trailing-icon` slot — accepts a builder directly (no `.toElement`).
+-}
+withTrailingIcon :
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
+    -> Builder attrCaps { s | trailingIcon : Available } msg kind
+    -> Builder attrCaps { s | trailingIcon : Used } msg kind
+withTrailingIcon slotBuilder builder_ =
+    B.withChild (El.toNode (Component.trailingIcon (B.toElement slotBuilder))) builder_
+
+
+{-| Pipe form of the `leading` slot (repeatable) — accepts a builder directly.
+-}
+withLeading :
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingSlot msg
+    -> Builder attrCaps slotCaps msg kind
+    -> Builder attrCaps slotCaps msg kind
+withLeading slotBuilder builder_ =
+    B.withChild (El.toNode (Component.leading (B.toElement slotBuilder))) builder_
+
+
+{-| Pipe form of the `trailing` slot (repeatable) — accepts a builder directly.
+-}
+withTrailing :
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingSlot msg
+    -> Builder attrCaps slotCaps msg kind
+    -> Builder attrCaps slotCaps msg kind
+withTrailing slotBuilder builder_ =
+    B.withChild (El.toNode (Component.trailing (B.toElement slotBuilder))) builder_
+
+
+{-| Pipe form of `class` — re-exported from `M3e.AppBar`.
+-}
+withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
+withClass =
+    Component.withClass
+
+
+{-| Pipe form of `id` — re-exported from `M3e.AppBar`.
+-}
+withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
+withId =
+    Component.withId
+
+
+{-| Pipe form of `slot` — re-exported from `M3e.AppBar`.
+-}
+withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
+withSlot =
+    Component.withSlot
+
+
+{-| Pipe form of `style` — re-exported from `M3e.AppBar`.
+-}
+withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
+withStyle =
+    Component.withStyle
+
+
+{-| Pipe form of `centered` — re-exported from `M3e.AppBar`.
+-}
+withCentered : Bool -> Builder { a | centered : Available } slotCaps msg kind -> Builder { a | centered : Used } slotCaps msg kind
+withCentered =
+    Component.withCentered
+
+
+{-| Pipe form of `for` — re-exported from `M3e.AppBar`.
+-}
+withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
+withFor =
+    Component.withFor
+
+
+{-| Pipe form of `size` — re-exported from `M3e.AppBar`.
+-}
+withSize : Value Component.Size -> Builder { a | size : Available } slotCaps msg kind -> Builder { a | size : Used } slotCaps msg kind
+withSize =
+    Component.withSize
