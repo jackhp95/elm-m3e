@@ -17,19 +17,6 @@ type alias Preset =
     }
 
 
-{-| Ported from `2026.jackhpeterson.com`'s `src/lib/themes.ts` (22 presets).
-That source has no per-preset `scheme`/`contrast` field (those are separate
-Appearance controls there) — this port adds them, defaulting to
-`Value.auto`/`Value.standard` unless a preset's name/intent obviously
-implies otherwise (documented per-preset below where that happens).
-`traits`, `iconStyle`, and `palette` from the source are dropped — out of
-scope per this feature's non-goals. Each `cssOverrides` entry's key is
-prefixed `md-sys-color-` to match this repo's cssVar naming convention
-(see `Theme.Tokens.ColorToken.cssVar`), transcribed from the source's
-`colorOverrides` object.
--}
-
-
 {-| Look up a preset by its `id` string. Returns `Nothing` for unknown ids.
 Used by `Shared.elm` to resolve the preset id from the `onPresetRequested` port.
 -}
@@ -38,6 +25,17 @@ byId id =
     presets |> List.filter (\p -> p.id == id) |> List.head
 
 
+{-| Ported from `2026.jackhpeterson.com`'s `src/lib/themes.ts` (22 presets).
+That source has no per-preset `scheme`/`contrast` field (those are separate
+Appearance controls there) — this port adds them, defaulting to
+`Value.auto`/`Value.standard` unless a preset's name/intent obviously
+implies otherwise (documented per-preset below where that happens).
+`traits` and `palette` from the source are dropped — out of scope per this
+feature's non-goals. `iconStyle` defaults to `Outlined` for all presets.
+Each `cssOverrides` entry's key is prefixed `md-sys-color-` to match this
+repo's cssVar naming convention (see `Theme.Tokens.ColorToken.cssVar`),
+transcribed from the source's `colorOverrides` object.
+-}
 presets : List Preset
 presets =
     [ { id = "material"

@@ -71,6 +71,8 @@ import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import Theme
+import Theme.Ports
+import Theme.Presets
 import Theme.Sections.Advanced
 import Theme.Sections.Appearance
 import Theme.Sections.Color
@@ -326,6 +328,7 @@ type Msg
     | GotSearchIndex (Result Http.Error (List SearchEntry))
     | ThemeMsg Theme.Msg
     | SetDirection (TypedHtml.Values.Value TypedHtml.Values.Dir)
+    | PresetRequested String
 
 
 init :
@@ -541,6 +544,18 @@ update msg model =
         SetDirection dir ->
             ( { model | dir = dir }, Effect.none )
 
+        PresetRequested id ->
+            case Theme.Presets.byId id of
+                Just preset ->
+                    let
+                        ( newTheme, themeCmd ) =
+                            Theme.update (Theme.ApplyPreset preset) model.theme
+                    in
+                    ( { model | theme = newTheme }, Effect.fromCmd (Cmd.map ThemeMsg themeCmd) )
+
+                Nothing ->
+                    ( model, Effect.none )
+
 
 {-| Watch viewport width so `resizeTo` can re-pin the tree (and, past
 `tocPinBreakpointPx`, the TOC) when the user crosses back up from a narrow
@@ -560,6 +575,7 @@ subscriptions path _ =
     Sub.batch
         [ Browser.Events.onResize (\w _ -> ViewportResized w)
         , Sub.map ThemeMsg Theme.subscriptions
+        , Theme.Ports.onPresetRequested PresetRequested
         , if hasDocsShell path then
             Ports.onOpenSearchRequested (\_ -> OpenSearch)
 

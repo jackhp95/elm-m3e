@@ -15,6 +15,7 @@ import Theme.Fonts
 import Theme.Icons exposing (IconStyle)
 import Theme.Ports
 import Theme.Presets exposing (Preset)
+import Theme.Reel
 import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
 import Theme.Tokens
 import TypedHtml
@@ -525,37 +526,9 @@ seedColorInput model =
         ]
 
 
-{-| A grid of cards, one per `Theme.Presets.presets` entry, each a button
-that fires `ApplyPreset preset` on click — replacing scheme/seed/contrast/
-fonts/color-overrides all at once. Visually indicates the currently active
-preset (`model.activePresetId`) via filled vs outlined variant.
--}
-presetGallery : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-presetGallery model =
-    TypedHtml.div
-        [ TypedHtml.Attributes.class "grid grid-cols-2 gap-2" ]
-        (List.map (presetCard model) Theme.Presets.presets)
-
-
-presetCard : Model -> Preset -> Element (M3e.Button.Is s) admittedBy Msg
-presetCard model preset =
-    M3e.button
-        [ TypedHtml.Events.onClick (ApplyPreset preset)
-        , Aria.label ("Apply " ++ preset.name ++ " theme")
-        , M3e.Attributes.variant
-            (if model.activePresetId == Just preset.id then
-                Value.filled
-
-             else
-                Value.outlined
-            )
-        ]
-        [ M3e.text preset.name ]
-
-
 {-| A compact strip of curated seed colors — a faster alternative to a full
 preset: clicking a swatch fires `SetSeed hex` only, leaving scheme/contrast/
-fonts untouched (unlike `presetCard`, which applies a whole preset).
+fonts untouched (unlike the reel's preset apply, which applies a whole preset).
 -}
 swatchStrip : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 swatchStrip model =
@@ -649,7 +622,11 @@ view { sectionsEl } model toMsg =
         ]
         [ seedColorInput model |> HtmlIr.Element.map toMsg
         , schemeSegmented model |> HtmlIr.Element.map toMsg
-        , presetGallery model |> HtmlIr.Element.map toMsg
+        , Theme.Reel.view
+            { presets = Theme.Presets.presets
+            , activeId = model.activePresetId
+            , onPick = \preset -> toMsg (ApplyPreset preset)
+            }
         , swatchStrip model |> HtmlIr.Element.map toMsg
         , sectionsEl
         , resetAllButton |> HtmlIr.Element.map toMsg
