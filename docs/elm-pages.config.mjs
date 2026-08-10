@@ -21,27 +21,46 @@ export default {
     // the <link>/<script> injected automatically. No hand-linked static files.
     // Material Symbols Outlined is self-hosted via the @font-face in style.css.
     //
-    // T1 — prod theme flash: synchronous inline script reads localStorage
-    // ["m3e-theme-state"] before Elm/index.ts execute and pre-applies the
-    // saved scheme/contrast/color to <m3e-theme> + cssOverrides to <html>.
-    // Shape mirrors Theme.Ports.encoder/decoder exactly — do NOT diverge.
-    // Falls back to data attributes on <html> if <m3e-theme> is absent from
-    // the SSR snapshot (should not happen, but resilient either way).
+    // T1 — prod theme flash: synchronous inline <head> script reads
+    // localStorage["m3e-theme-state"] before Elm/index.ts execute and
+    // pre-applies the saved scheme/contrast/color to <m3e-theme> + cssOverrides
+    // to <html>. Shape mirrors Theme.Ports.encoder/decoder exactly — do NOT
+    // diverge.
+    //
+    // The <m3e-theme> element is server-rendered as a child of <body>, i.e. it
+    // is parsed AFTER this <head> script runs — so a plain querySelector here
+    // returns null and cannot pre-apply scheme/contrast/color. We therefore
+    // install a MutationObserver on <html> that fires the instant the element
+    // is inserted during parsing (a microtask, before first paint) and stamps
+    // the attributes onto it, then disconnects. This lands the saved scheme
+    // before Lit upgrades the element and before paint, so there is no flash of
+    // the default (light/#6750A4) theme. cssOverrides target <html>, which
+    // always exists, so they apply synchronously.
     const themeHeadScript = /* js */ `(function(){try{
   var raw=localStorage.getItem("m3e-theme-state");
   if(!raw)return;
   var s=JSON.parse(raw);
   if(typeof s!=="object"||s===null)return;
-  var th=document.querySelector("m3e-theme");
-  if(th){
+  function apply(th){
     if(typeof s.scheme==="string")th.setAttribute("scheme",s.scheme);
     if(typeof s.contrast==="string")th.setAttribute("contrast",s.contrast);
     if(typeof s.seed==="string")th.setAttribute("color",s.seed);
+  }
+  var existing=document.querySelector("m3e-theme");
+  if(existing){
+    apply(existing);
   } else {
-    var d=document.documentElement.dataset;
-    if(typeof s.scheme==="string")d.m3eScheme=s.scheme;
-    if(typeof s.contrast==="string")d.m3eContrast=s.contrast;
-    if(typeof s.seed==="string")d.m3eColor=s.seed;
+    var obs=new MutationObserver(function(){
+      var th=document.querySelector("m3e-theme");
+      if(th){obs.disconnect();apply(th);}
+    });
+    obs.observe(document.documentElement,{childList:true,subtree:true});
+    // Safety net: stop observing once the document is fully parsed.
+    document.addEventListener("DOMContentLoaded",function(){
+      var th=document.querySelector("m3e-theme");
+      if(th)apply(th);
+      obs.disconnect();
+    });
   }
   if(s.cssOverrides&&typeof s.cssOverrides==="object"){
     var ov=Array.isArray(s.cssOverrides)?s.cssOverrides:Object.entries(s.cssOverrides);
