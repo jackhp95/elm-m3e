@@ -3,9 +3,25 @@
 // injected automatically) — not hand-linked static assets. These are
 // side-effect imports: registering the <m3e-*> elements and pulling in the CSS.
 //
-// NOTE: @m3e/web/all is intentionally NOT imported here as a static import.
-// A dynamic import below allows m3eSettleGuard() to install whenDefined()
-// listeners BEFORE element definitions run. See comment on m3eSettleGuard.
+// NOTE: @m3e/web/all is intentionally NOT imported here as a static import in
+// production. A dynamic import below allows m3eSettleGuard() to install
+// whenDefined() listeners BEFORE element definitions run. See the comment on
+// m3eSettleGuard for the full rationale.
+//
+// T2 — dev FOUC parity: in dev, Vite serves assets lazily (no modulepreload),
+// so the dynamic @m3e/web/all chunk arrives AFTER elm-pages paints a new route
+// on HMR navigation — `:where(:not(:defined))` hides elements → visible blink.
+// Prod is fine because Vite emits a <link rel="modulepreload"> that races ahead
+// of the route paint.
+//
+// Fix: eagerly static-import @m3e/web/all in dev mode only. ES static imports
+// are hoisted to module evaluation time — before any module body runs — so
+// elements are always defined before m3eSettleGuard() even calls whenDefined().
+// This means whenDefined() promises resolve synchronously (already defined),
+// the settle guard clears on the next microtask, and there is no FOUC.
+// Prod is unaffected (import.meta.env.DEV is false → dead-code-eliminated).
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+if (import.meta.env.DEV) await import("@m3e/web/all");
 import "./gen/icons.js";
 import "../js/avt-snackbar.js";
 import "../js/raw-html.js";
