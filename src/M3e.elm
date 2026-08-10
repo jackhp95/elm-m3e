@@ -1519,54 +1519,54 @@ keyed tag attrs children =
 {-| A lazily-rendered subtree — Elm's `VirtualDom.lazy` memoizes rendered output by reference-equality of the function and argument. **Stable top-level function required** — an inline lambda allocates a fresh closure each render and silently never memoizes. The body returns `Html.Html msg`, not [`Element`](#Element); see type signature.
 -}
 lazy : (a -> Html.Html msg) -> a -> Node msg
-lazy f a =
-    HtmlIr.Node.lazy f a
+lazy func arg =
+    HtmlIr.Node.lazy func arg
 
 
 {-| 2-argument variant of [`lazy`](#lazy).
 -}
 lazy2 : (a -> b -> Html.Html msg) -> a -> b -> Node msg
-lazy2 f a b =
-    HtmlIr.Node.lazy2 f a b
+lazy2 func arg1 arg2 =
+    HtmlIr.Node.lazy2 func arg1 arg2
 
 
 {-| 3-argument variant of [`lazy`](#lazy).
 -}
 lazy3 : (a -> b -> c -> Html.Html msg) -> a -> b -> c -> Node msg
-lazy3 f a b c =
-    HtmlIr.Node.lazy3 f a b c
+lazy3 func arg1 arg2 arg3 =
+    HtmlIr.Node.lazy3 func arg1 arg2 arg3
 
 
 {-| 4-argument variant of [`lazy`](#lazy).
 -}
 lazy4 : (a -> b -> c -> d -> Html.Html msg) -> a -> b -> c -> d -> Node msg
-lazy4 f a b c d =
-    HtmlIr.Node.lazy4 f a b c d
+lazy4 func arg1 arg2 arg3 arg4 =
+    HtmlIr.Node.lazy4 func arg1 arg2 arg3 arg4
 
 
 {-| 5-argument variant of [`lazy`](#lazy).
 -}
 lazy5 : (a -> b -> c -> d -> e -> Html.Html msg) -> a -> b -> c -> d -> e -> Node msg
-lazy5 f a b c d e =
-    HtmlIr.Node.lazy5 f a b c d e
+lazy5 func arg1 arg2 arg3 arg4 arg5 =
+    HtmlIr.Node.lazy5 func arg1 arg2 arg3 arg4 arg5
 
 
 {-| 6-argument variant of [`lazy`](#lazy). Note type params skip `f` to match the underlying `VirtualDom.lazy6` convention.
 -}
 lazy6 : (a -> b -> c -> d -> e -> g -> Html.Html msg) -> a -> b -> c -> d -> e -> g -> Node msg
-lazy6 f a b c d e g =
-    HtmlIr.Node.lazy6 f a b c d e g
+lazy6 func arg1 arg2 arg3 arg4 arg5 arg6 =
+    HtmlIr.Node.lazy6 func arg1 arg2 arg3 arg4 arg5 arg6
 
 
 {-| 7-argument variant of [`lazy`](#lazy).
 -}
 lazy7 : (a -> b -> c -> d -> e -> g -> h -> Html.Html msg) -> a -> b -> c -> d -> e -> g -> h -> Node msg
-lazy7 f a b c d e g h =
-    HtmlIr.Node.lazy7 f a b c d e g h
+lazy7 func arg1 arg2 arg3 arg4 arg5 arg6 arg7 =
+    HtmlIr.Node.lazy7 func arg1 arg2 arg3 arg4 arg5 arg6 arg7
 
 
 {-| 8-argument variant of [`lazy`](#lazy).
 -}
 lazy8 : (a -> b -> c -> d -> e -> g -> h -> i -> Html.Html msg) -> a -> b -> c -> d -> e -> g -> h -> i -> Node msg
-lazy8 f a b c d e g h i =
-    HtmlIr.Node.lazy8 f a b c d e g h i
+lazy8 func arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 =
+    HtmlIr.Node.lazy8 func arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8
