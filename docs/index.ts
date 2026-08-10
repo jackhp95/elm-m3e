@@ -247,6 +247,9 @@ const config: ElmPagesInit = {
           subscribe: (cb: (v: { property: string; value: string }) => void) => void;
         };
         setFaviconColor?: { subscribe: (cb: (v: string) => void) => void };
+        loadFonts?: { subscribe: (cb: (v: string) => void) => void };
+        requestPreset?: { subscribe: (cb: (v: string) => void) => void };
+        onPresetRequested?: { send: (v: string) => void };
         onOpenSearchRequested?: { send: (v: null) => void };
       };
     };
@@ -297,6 +300,34 @@ const config: ElmPagesInit = {
     // this handler is intentionally a no-op placeholder until that work lands.
     app?.ports?.setFaviconColor?.subscribe((_hex: string) => {
       // Intentional no-op — see comment above.
+    });
+
+    // Inject or replace the Google Fonts stylesheet for the active theme's
+    // display + body fonts. Finds or creates a <link id="m3e-theme-font">
+    // element in <head>. An empty string removes the link entirely.
+    app?.ports?.loadFonts?.subscribe((url: string) => {
+      if (url === "") {
+        document.getElementById("m3e-theme-font")?.remove();
+        return;
+      }
+      let link = document.getElementById("m3e-theme-font") as HTMLLinkElement | null;
+      if (!link) {
+        link = document.createElement("link");
+        link.id = "m3e-theme-font";
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+      }
+      link.href = url;
+    });
+
+    // Page → Shared preset bridge. A page (e.g. Welcome.elm) fires
+    // `requestPreset presetId` when the user picks a card in the reel.
+    // This handler echoes the id back via `onPresetRequested`, where Shared.elm
+    // subscribes and resolves the id to a full Preset via Theme.Presets.byId.
+    // The round-trip through JS is the sanctioned decoupling mechanism (no
+    // page→shared channel exists in elm-pages without an import cycle).
+    app?.ports?.requestPreset?.subscribe((id: string) => {
+      app?.ports?.onPresetRequested?.send(id);
     });
 
     // Cmd/Ctrl+K opens search from anywhere. Chrome and Edge bind that

@@ -1,4 +1,4 @@
-module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, init, segmented, subscriptions, update, view)
+module Theme exposing (Model, Msg(..), TypeScaleParam(..), applyPresetToModel, capitalize, init, segmented, subscriptions, update, view)
 
 import Dict exposing (Dict)
 import HtmlIr.Element
@@ -11,6 +11,8 @@ import M3e.Events
 import M3e.FormField
 import M3e.Kind
 import M3e.Values as Value exposing (Value)
+import Theme.Fonts
+import Theme.Icons exposing (IconStyle)
 import Theme.Ports
 import Theme.Presets exposing (Preset)
 import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
@@ -32,6 +34,7 @@ type alias Model =
     , motion : Value Value.Motion
     , displayFont : String
     , bodyFont : String
+    , iconStyle : IconStyle
     , typeScale : ScaleConfig
     , shapeScale : ScaleConfig
     , colorOverrides : Dict String String
@@ -49,6 +52,7 @@ init =
     , motion = Value.standard
     , displayFont = "Roboto"
     , bodyFont = "Roboto"
+    , iconStyle = Theme.Icons.defaultStyle
     , typeScale = Scale.defaultConfig
     , shapeScale = Scale.defaultConfig
     , colorOverrides = Dict.empty
@@ -186,16 +190,7 @@ update msg model =
             let
                 newModel : Model
                 newModel =
-                    { model
-                        | scheme = preset.scheme
-                        , seed = preset.seedColor
-                        , contrast = preset.contrast
-                        , displayFont = preset.displayFont
-                        , bodyFont = preset.bodyFont
-                        , colorOverrides = Dict.fromList preset.cssOverrides
-                        , cssOverrides = Dict.empty
-                        , activePresetId = Just preset.id
-                    }
+                    applyPresetToModel preset model
             in
             ( newModel
             , Cmd.batch
@@ -203,7 +198,9 @@ update msg model =
                     :: (preset.cssOverrides
                             |> List.map (\( k, v ) -> Theme.Ports.setCssOverride { property = k, value = v })
                        )
-                    ++ [ storeState newModel ]
+                    ++ [ storeState newModel
+                       , loadFontCmd preset
+                       ]
                 )
             )
 
@@ -234,6 +231,37 @@ update msg model =
                             (Dict.toList model.colorOverrides ++ Dict.toList model.cssOverrides)
                         )
                     )
+
+
+{-| Apply a preset's fields to the model — the single, pure source of truth for
+preset application. Both `ApplyPreset` (direct) and the `onPresetRequested` port
+bridge in `Shared.elm` resolve to this function, ensuring they stay in sync.
+-}
+applyPresetToModel : Preset -> Model -> Model
+applyPresetToModel preset model =
+    { model
+        | scheme = preset.scheme
+        , seed = preset.seedColor
+        , contrast = preset.contrast
+        , displayFont = preset.displayFont
+        , bodyFont = preset.bodyFont
+        , iconStyle = preset.iconStyle
+        , colorOverrides = Dict.fromList preset.cssOverrides
+        , cssOverrides = Dict.empty
+        , activePresetId = Just preset.id
+    }
+
+
+{-| Fire the `loadFonts` port for a preset's display + body fonts.
+-}
+loadFontCmd : Preset -> Cmd Msg
+loadFontCmd preset =
+    case Theme.Fonts.googleFontsUrl [ preset.displayFont, preset.bodyFont ] of
+        Just url ->
+            Theme.Ports.loadFonts url
+
+        Nothing ->
+            Cmd.none
 
 
 persist : Model -> ( Model, Cmd Msg )
@@ -359,6 +387,7 @@ fromPersisted decoded =
     , motion = Value.motionFromString decoded.motion |> Maybe.withDefault Value.standard
     , displayFont = decoded.displayFont
     , bodyFont = decoded.bodyFont
+    , iconStyle = Theme.Icons.defaultStyle
     , typeScale =
         { mode = Scale.modeFromString decoded.typeScaleMode |> Maybe.withDefault Scale.Linear
         , factor = decoded.typeScaleFactor

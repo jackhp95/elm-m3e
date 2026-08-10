@@ -1,6 +1,7 @@
-module Theme.Presets exposing (Preset, presets)
+module Theme.Presets exposing (Preset, byId, presets)
 
 import M3e.Values as Value exposing (Value)
+import Theme.Icons exposing (IconStyle)
 
 
 type alias Preset =
@@ -11,6 +12,7 @@ type alias Preset =
     , contrast : Value Value.Contrast
     , displayFont : String
     , bodyFont : String
+    , iconStyle : IconStyle
     , cssOverrides : List ( String, String )
     }
 
@@ -26,6 +28,16 @@ prefixed `md-sys-color-` to match this repo's cssVar naming convention
 (see `Theme.Tokens.ColorToken.cssVar`), transcribed from the source's
 `colorOverrides` object.
 -}
+
+
+{-| Look up a preset by its `id` string. Returns `Nothing` for unknown ids.
+Used by `Shared.elm` to resolve the preset id from the `onPresetRequested` port.
+-}
+byId : String -> Maybe Preset
+byId id =
+    presets |> List.filter (\p -> p.id == id) |> List.head
+
+
 presets : List Preset
 presets =
     [ { id = "material"
@@ -35,6 +47,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Fraunces"
       , bodyFont = "Manrope"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "agent"
@@ -44,6 +57,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "JetBrains Mono"
       , bodyFont = "Inter"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "fieldnote"
@@ -53,6 +67,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Fraunces"
       , bodyFont = "Sora"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "geometric"
@@ -62,6 +77,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Space Grotesk"
       , bodyFont = "DM Sans"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "harbor"
@@ -71,6 +87,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Cormorant Garamond"
       , bodyFont = "Inter"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "editorial"
@@ -80,6 +97,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Playfair Display"
       , bodyFont = "Lora"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "candy-pop"
@@ -89,6 +107,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Fredoka"
       , bodyFont = "DM Sans"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "bauhaus"
@@ -98,6 +117,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Anton"
       , bodyFont = "Work Sans"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "moss"
@@ -107,6 +127,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Caudex"
       , bodyFont = "Manrope"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "risograph"
@@ -116,6 +137,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Syne"
       , bodyFont = "IBM Plex Sans"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "studio"
@@ -125,6 +147,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "EB Garamond"
       , bodyFont = "Inter"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "atlas"
@@ -134,6 +157,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Bebas Neue"
       , bodyFont = "Inter"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "citrus"
@@ -143,6 +167,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Fraunces"
       , bodyFont = "Poppins"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "howler"
@@ -152,6 +177,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Bungee"
       , bodyFont = "Outfit"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "gallery"
@@ -161,6 +187,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Cormorant Garamond"
       , bodyFont = "Hanken Grotesk"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "handbook"
@@ -170,6 +197,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Libre Caslon Text"
       , bodyFont = "Source Sans 3"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "broadcast"
@@ -179,6 +207,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Archivo Black"
       , bodyFont = "Archivo"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "dispatch"
@@ -188,6 +217,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "DM Sans"
       , bodyFont = "DM Sans"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "console"
@@ -197,6 +227,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "DM Mono"
       , bodyFont = "DM Mono"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "platform"
@@ -206,6 +237,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Albert Sans"
       , bodyFont = "Albert Sans"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , { id = "sunny"
@@ -215,6 +247,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Epilogue"
       , bodyFont = "Epilogue"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides = []
       }
     , -- "OLED" is named for the OLED-black display aesthetic (source `traits: ["oled"]`
@@ -227,6 +260,7 @@ presets =
       , contrast = Value.high
       , displayFont = "Space Grotesk"
       , bodyFont = "Inter"
+      , iconStyle = Theme.Icons.Outlined
       , cssOverrides =
             [ ( "md-sys-color-surface", "#000000" )
             , ( "md-sys-color-surface-dim", "#000000" )

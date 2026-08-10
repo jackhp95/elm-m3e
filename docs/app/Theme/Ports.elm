@@ -1,6 +1,7 @@
 port module Theme.Ports exposing
     ( storeThemeState, readThemeState
     , setCssOverride, setFaviconColor
+    , loadFonts, requestPreset, onPresetRequested
     , encode, decoder
     )
 
@@ -9,6 +10,7 @@ port module Theme.Ports exposing
 
 @docs storeThemeState, readThemeState
 @docs setCssOverride, setFaviconColor
+@docs loadFonts, requestPreset, onPresetRequested
 @docs encode, decoder
 
 -}
@@ -47,6 +49,28 @@ tangram-logo spec (specs/2026-08-08-tangram-logo-design.md, not this task's
 concern to implement the JS side of — just declare the port).
 -}
 port setFaviconColor : String -> Cmd msg
+
+
+{-| Inject (or replace) a `<link rel="stylesheet">` to load a Google Fonts
+stylesheet. `index.ts` finds or creates a `<link id="m3e-theme-font">` and sets
+its `href` to the given URL. When the URL is `""`, the link is removed.
+-}
+port loadFonts : String -> Cmd msg
+
+
+{-| Fired by a page (e.g. `Welcome.elm`) when the user picks a preset in
+the reel. The page cannot hold `Theme.Model` or send `Shared.Msg` directly
+(an import cycle), so it emits a preset id string over this port instead.
+`index.ts` echoes the id back through `onPresetRequested`.
+-}
+port requestPreset : String -> Cmd msg
+
+
+{-| The subscription `Shared.elm` uses to receive preset ids requested by any
+page. Maps the received id through `Theme.Presets.byId` to recover the full
+`Preset`, then dispatches `ThemeMsg (ApplyPreset preset)`. An unknown id no-ops.
+-}
+port onPresetRequested : (String -> msg) -> Sub msg
 
 
 {-| Encoder for the persisted blob. Keep in sync with `decoder` below and
