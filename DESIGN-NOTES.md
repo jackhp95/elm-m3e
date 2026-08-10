@@ -17,13 +17,9 @@ The barrel role stays with the thin core; no `M3e.Components` module is emitted.
 
 ### Q2. Does the thin `M3e` core re-export anything component-shaped?
 
-**No.** The thin core stays strictly generic — the four modules listed in §3.1
-(`M3e` with `Element`/`text`/`toHtml`/`mapMsg`/`mapNode`, `M3e.Attributes`,
-`M3e.Kind`, `M3e.Values`). No per-component type alias, no per-component
-constructor. This is the invariant that fixes the type leak: `import M3e` never
-forces you to import a component module just to annotate a value.
+**No — the thin core is the elm/html-style barrel and owns ALL generic modules** (superseded on package roles 2026-08-10, Jack): `elm-m3e` exposes the generic namespace `M3e`, `M3e.Attributes`, **`M3e.Events`**, **`M3e.Action`**, **`M3e.Coerce`**, **`M3e.Unsafe`**, `M3e.Unsafe.Attributes`, **`M3e.Html`**, `M3e.Kind`, `M3e.Values`. It stays strictly generic — zero per-component type references (the type-leak invariant). `elm-m3e-components` holds per-component modules + the generated `M3e.Review.Facts`; `elm-m3e-builder` holds per-component `M3e.<Component>.Build`. Note: the three packages are named by what they gate for a *page author* — `elm-m3e` (elm/html feel), `elm-m3e-components` (fully-encompassed per-component surface), `elm-m3e-builder` (builder pattern). Support modules (`Events`/`Action`/`Unsafe`/`Coerce`/`Html`) are generic and live in the thin core; each component module re-aliases/re-exports the subset it needs on its own surface.
 
-`M3e.Attributes` is already component-agnostic (confimed in plan §1.2); it stays
+`M3e.Attributes` is already component-agnostic (confirmed in plan §1.2); it stays
 as-is. `M3e.Kind` and `M3e.Values` stay as-is. The generic `M3e` module keeps
 `text`, the substrate re-exports (`Element`, `Attr`, `Node`, `toHtml`, `toNode`,
 `mapMsg`, `mapNode`), and — in Phase 1 — the Lazy/Keyed surface.
@@ -130,17 +126,28 @@ to emit the split layout, the root `elm.json` will either become a development-o
 config using `source-directories` to include all three packages' `src/` trees, or
 be removed and replaced by per-package workflows.
 
+### Post-emission package routing (REGENERATION CRITICAL, 2026-08-10)
+
+The elm-cem generator emits a **single flat `<Lib>` layout** (`--output=src`). The
+three-package split is applied as a deterministic POST-EMISSION routing step, NOT
+inside `Emit.elm`. To regenerate without losing the package boundaries:
+
+1. Regenerate into a temp/flat dir (or the root `src/`) as today.
+2. Route each module by its role:
+   - **`elm-m3e` (thin core, `elm-m3e/src`):** `M3e`, `M3e.Attributes`, `M3e.Events`, `M3e.Action`, `M3e.Coerce`, `M3e.Unsafe`, `M3e.Unsafe.Attributes`, `M3e.Html`, `M3e.Kind`, `M3e.Values`.
+   - **`elm-m3e-components` (`elm-m3e-components/src`):** every `M3e.<Component>` (view/el/setters/strong types) + `M3e.Review.Facts`.
+   - **`elm-m3e-builder` (`elm-m3e-builder/src`):** `M3e.Build`, `M3e.Build.Internal` (UNEXPOSED), every `M3e.<Component>.Build`.
+3. `M3e.Build.Internal` stays ABSENT from `elm-m3e-builder`'s `exposed-modules`.
+4. Update each package's `elm.json` `exposed-modules` from the routed file tree.
+
+Implementation note: a future Phase should codify this routing as a script or
+generator flag so regen-drift doesn't silently collapse the split.
+
 ---
 
 ## Friction log reference
 
-- `M3e.Action`, `M3e.Coerce`, `M3e.Events`, `M3e.Unsafe`, and `M3e.Html` are in
-  the current root `exposed-modules` but are NOT in any skeleton `elm.json` yet.
-  They are support modules, not pure generic-core or per-component-view. Their
-  placement will be resolved in Phase 2 (generator emission): `M3e.Events` likely
-  stays in the thin core (it's component-agnostic), `M3e.Unsafe`/`M3e.Coerce`
-  land where the generator puts them. Documented here so Phase 2 has a clear
-  starting point.
+- ~~`M3e.Action`, `M3e.Coerce`, `M3e.Events`, `M3e.Unsafe`, `M3e.Html` placement pending~~ **RESOLVED 2026-08-10** — all five + `M3e.Unsafe.Attributes` live in the thin core `elm-m3e` (first two bullets above + Q2). They are generic; per-component modules re-alias what they need.
 - The builder package currently lists only 3 `exposed-modules` (sketch). When the
   generator emits, it will list all `M3e.<Component>.Build` modules (122+) plus
-  `M3e.Build`.
+  `M3e.Build`. *(2a emitted 132 builder modules — done.)*
