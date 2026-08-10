@@ -297,6 +297,6 @@ withShowFirstLastButtons =
 
 {-| Pipe form of `onPage` — re-exported from `M3e.Paginator`.
 -}
-withOnPage : msg -> Builder { a | onPage : Available } slotCaps msg kind -> Builder { a | onPage : Used } slotCaps msg kind
+withOnPage : (String -> msg) -> Builder { a | onPage : Available } slotCaps msg kind -> Builder { a | onPage : Used } slotCaps msg kind
 withOnPage =
     Component.withOnPage

@@ -257,7 +257,7 @@ withVariant =
 
 {-| Pipe form of `onChange` — re-exported from `M3e.Datepicker`.
 -}
-withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
+withOnChange : (String -> msg) -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
 withOnChange =
     Component.withOnChange
 

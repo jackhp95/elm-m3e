@@ -161,6 +161,6 @@ withOnBeforetoggle =
 
 {-| Pipe form of `onToggle` — re-exported from `M3e.Menu`.
 -}
-withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
+withOnToggle : (String -> msg) -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
 withOnToggle =
     Component.withOnToggle
