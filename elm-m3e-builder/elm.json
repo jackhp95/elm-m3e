@@ -1,0 +1,23 @@
+{
+    "type": "package",
+    "name": "jackhp95/elm-m3e-builder",
+    "summary": "Material 3 Expressive — per-component builder modules (M3e.Button.Build, M3e.Card.Build, ...) plus M3e.Build annotation-skin",
+    "license": "BSD-3-Clause",
+    "version": "1.0.0",
+    "exposed-modules": [
+        "M3e.Build",
+        "M3e.Button.Build",
+        "M3e.Card.Build"
+    ],
+    "elm-version": "0.19.0 <= v < 0.20.0",
+    "dependencies": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-html-intermediate-representation": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-components": "1.0.0 <= v < 2.0.0"
+    },
+    "test-dependencies": {}
+}
