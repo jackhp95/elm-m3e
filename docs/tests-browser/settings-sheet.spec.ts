@@ -72,7 +72,9 @@ test("changing contrast and seed color produce an observable style change", asyn
   await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Settings" }).click();
 
-  const themeHost = page.locator("m3e-theme");
+  // `.first()` — the reel in the drawer now has 22 nested `<m3e-theme>` cards
+  // plus the root; `.first()` targets the outermost root element specifically.
+  const themeHost = page.locator("m3e-theme").first();
   const before = await themeHost.evaluate((el) =>
     getComputedStyle(el).getPropertyValue("--md-sys-color-primary").trim()
   );
