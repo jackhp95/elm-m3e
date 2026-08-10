@@ -1,4 +1,4 @@
-module Theme.Fonts exposing (googleFontsUrl, specimenSubsetUrl)
+module Theme.Fonts exposing (googleFontsUrl, specimenSubsetUrl, specimenSubsetUrls)
 
 {-| Google Fonts helpers for the theme reel and global font application.
 
@@ -16,7 +16,7 @@ Specimen subsetting (§D6 of the plan): each reel card loads only the glyphs
 it displays ("Aa" + the preset name) by adding `&text=` to the Google Fonts
 URL. All 22 cards can load simultaneously at negligible payload cost.
 
-@docs googleFontsUrl, specimenSubsetUrl
+@docs googleFontsUrl, specimenSubsetUrl, specimenSubsetUrls
 
 -}
 
@@ -102,6 +102,35 @@ specimenSubsetUrl preset =
             ++ encodeText specimenText
             ++ "&display=swap"
         )
+
+
+{-| Every reel card's specimen-subset URL, deduped. One `<link>` per card loads
+only that card's display + body glyphs ("Aa" + the preset name), so all 22 cards
+render in their own fonts at negligible total payload (§D6). Duplicate URLs
+(presets sharing the same font pair AND name-glyph set — rare, but possible)
+collapse to one so the injector never adds the same stylesheet twice.
+-}
+specimenSubsetUrls : List Preset -> List String
+specimenSubsetUrls presets =
+    presets
+        |> List.filterMap specimenSubsetUrl
+        |> dedupe
+
+
+{-| Order-preserving dedupe (no `comparable` constraint needed for `List String`,
+but written generically-shaped so intent is clear).
+-}
+dedupe : List String -> List String
+dedupe =
+    List.foldl
+        (\x acc ->
+            if List.member x acc then
+                acc
+
+            else
+                acc ++ [ x ]
+        )
+        []
 
 
 {-| Encode a font family name for a Google Fonts URL: spaces become `+`.

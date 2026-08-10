@@ -71,6 +71,7 @@ import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import Theme
+import Theme.Fonts
 import Theme.Ports
 import Theme.Presets
 import Theme.Sections.Advanced
@@ -359,7 +360,16 @@ init flags _ =
       , searchQuery = ""
       , searchIndex = Nothing
       }
-    , Effect.none
+      -- Load every reel card's specimen-subset webfont once at boot (§D6). The
+      -- reel appears in both the settings drawer AND the Welcome page, and Shared
+      -- hosts the whole app shell above both, so this is the single seam that
+      -- serves both placements without making the pure `Theme.Reel` view impure.
+      -- Each card sets its own inline `font-family`; this loads the font FILES so
+      -- those families resolve instead of falling back to sans-serif.
+    , Effect.fromCmd
+        (Theme.Ports.loadSpecimenFonts
+            (Theme.Fonts.specimenSubsetUrls Theme.Presets.presets)
+        )
     )
 
 
