@@ -61,10 +61,14 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `overline` slot admits.
+-}
 type alias OverlineSlot =
     Component.OverlineSlot
 
 
+{-| The kinds the `title` slot admits.
+-}
 type alias TitleSlot =
     Component.TitleSlot
 

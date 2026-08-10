@@ -63,18 +63,26 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `first-page-icon` slot admits.
+-}
 type alias FirstPageIconSlot =
     Component.FirstPageIconSlot
 
 
+{-| The kinds the `last-page-icon` slot admits.
+-}
 type alias LastPageIconSlot =
     Component.LastPageIconSlot
 
 
+{-| The kinds the `next-page-icon` slot admits.
+-}
 type alias NextPageIconSlot =
     Component.NextPageIconSlot
 
 
+{-| The kinds the `previous-page-icon` slot admits.
+-}
 type alias PreviousPageIconSlot =
     Component.PreviousPageIconSlot
 

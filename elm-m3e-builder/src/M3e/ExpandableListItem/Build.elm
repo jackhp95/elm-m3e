@@ -61,22 +61,32 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the default slot admits.
+-}
 type alias Content =
     Component.Content
 
 
+{-| The kinds the `leading` slot admits.
+-}
 type alias LeadingSlot =
     Component.LeadingSlot
 
 
+{-| The kinds the `overline` slot admits.
+-}
 type alias OverlineSlot =
     Component.OverlineSlot
 
 
+{-| The kinds the `supporting-text` slot admits.
+-}
 type alias SupportingTextSlot =
     Component.SupportingTextSlot
 
 
+{-| The kinds the `toggle-icon` slot admits.
+-}
 type alias ToggleIconSlot =
     Component.ToggleIconSlot
 

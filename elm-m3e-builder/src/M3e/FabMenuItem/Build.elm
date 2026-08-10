@@ -61,6 +61,8 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `icon` slot admits.
+-}
 type alias IconSlot =
     Component.IconSlot
 

@@ -70,10 +70,14 @@ type alias ActionCaps =
     Component.ActionCaps
 
 
+{-| The kinds the default slot admits.
+-}
 type alias Content =
     Component.Content
 
 
+{-| The kinds the `icon` slot admits.
+-}
 type alias IconSlot =
     Component.IconSlot
 

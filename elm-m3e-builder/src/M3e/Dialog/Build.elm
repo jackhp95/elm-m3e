@@ -61,10 +61,14 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `close-icon` slot admits.
+-}
 type alias CloseIconSlot =
     Component.CloseIconSlot
 
 
+{-| The kinds the `header` slot admits.
+-}
 type alias HeaderSlot =
     Component.HeaderSlot
 

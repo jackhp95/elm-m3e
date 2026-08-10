@@ -63,6 +63,8 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `toggle-icon` slot admits.
+-}
 type alias ToggleIconSlot =
     Component.ToggleIconSlot
 

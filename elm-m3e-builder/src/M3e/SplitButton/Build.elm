@@ -63,10 +63,14 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `leading-button` slot admits.
+-}
 type alias LeadingButtonSlot =
     Component.LeadingButtonSlot
 
 
+{-| The kinds the `trailing-button` slot admits.
+-}
 type alias TrailingButtonSlot =
     Component.TrailingButtonSlot
 

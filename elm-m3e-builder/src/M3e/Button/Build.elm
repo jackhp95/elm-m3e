@@ -70,22 +70,32 @@ type alias ActionCaps =
     Component.ActionCaps
 
 
+{-| The kinds the default slot admits.
+-}
 type alias Content =
     Component.Content
 
 
+{-| The kinds the `icon` slot admits.
+-}
 type alias IconSlot =
     Component.IconSlot
 
 
+{-| The kinds the `selected` slot admits.
+-}
 type alias SelectedSlot =
     Component.SelectedSlot
 
 
+{-| The kinds the `selected-icon` slot admits.
+-}
 type alias SelectedIconSlot =
     Component.SelectedIconSlot
 
 
+{-| The kinds the `trailing-icon` slot admits.
+-}
 type alias TrailingIconSlot =
     Component.TrailingIconSlot
 

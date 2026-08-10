@@ -1,7 +1,7 @@
 {
     "type": "package",
     "name": "jackhp95/elm-m3e-builder",
-    "summary": "Material 3 Expressive — per-component builder modules (M3e.Button.Build, M3e.Card.Build, ...) plus M3e.Build annotation-skin",
+    "summary": "M3e builder modules - per-component Build pattern plus annotation skin",
     "license": "BSD-3-Clause",
     "version": "1.0.0",
     "exposed-modules": [

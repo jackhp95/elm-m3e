@@ -61,10 +61,14 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `next-icon` slot admits.
+-}
 type alias NextIconSlot =
     Component.NextIconSlot
 
 
+{-| The kinds the `prev-icon` slot admits.
+-}
 type alias PrevIconSlot =
     Component.PrevIconSlot
 

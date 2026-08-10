@@ -63,10 +63,14 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `panel` slot admits.
+-}
 type alias PanelSlot =
     Component.PanelSlot
 
 
+{-| The kinds the `step` slot admits.
+-}
 type alias StepSlot =
     Component.StepSlot
 

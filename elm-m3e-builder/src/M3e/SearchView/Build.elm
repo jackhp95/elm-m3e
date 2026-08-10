@@ -63,30 +63,44 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `clear-icon` slot admits.
+-}
 type alias ClearIconSlot =
     Component.ClearIconSlot
 
 
+{-| The kinds the `close-icon` slot admits.
+-}
 type alias CloseIconSlot =
     Component.CloseIconSlot
 
 
+{-| The kinds the `closed-leading` slot admits.
+-}
 type alias ClosedLeadingSlot =
     Component.ClosedLeadingSlot
 
 
+{-| The kinds the `closed-trailing` slot admits.
+-}
 type alias ClosedTrailingSlot =
     Component.ClosedTrailingSlot
 
 
+{-| The kinds the `open-leading` slot admits.
+-}
 type alias OpenLeadingSlot =
     Component.OpenLeadingSlot
 
 
+{-| The kinds the `open-trailing` slot admits.
+-}
 type alias OpenTrailingSlot =
     Component.OpenTrailingSlot
 
 
+{-| The kinds the `search-icon` slot admits.
+-}
 type alias SearchIconSlot =
     Component.SearchIconSlot
 

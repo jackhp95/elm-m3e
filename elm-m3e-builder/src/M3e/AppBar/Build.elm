@@ -63,18 +63,26 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the `leading` slot admits.
+-}
 type alias LeadingSlot =
     Component.LeadingSlot
 
 
+{-| The kinds the `subtitle` slot admits.
+-}
 type alias SubtitleSlot =
     Component.SubtitleSlot
 
 
+{-| The kinds the `title` slot admits.
+-}
 type alias TitleSlot =
     Component.TitleSlot
 
 
+{-| The kinds the `trailing` slot admits.
+-}
 type alias TrailingSlot =
     Component.TrailingSlot
 

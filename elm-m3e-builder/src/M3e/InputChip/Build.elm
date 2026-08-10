@@ -63,18 +63,26 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the default slot admits.
+-}
 type alias Content =
     Component.Content
 
 
+{-| The kinds the `avatar` slot admits.
+-}
 type alias AvatarSlot =
     Component.AvatarSlot
 
 
+{-| The kinds the `icon` slot admits.
+-}
 type alias IconSlot =
     Component.IconSlot
 
 
+{-| The kinds the `remove-icon` slot admits.
+-}
 type alias RemoveIconSlot =
     Component.RemoveIconSlot
 

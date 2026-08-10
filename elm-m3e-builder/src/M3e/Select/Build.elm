@@ -61,10 +61,14 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the default slot admits.
+-}
 type alias Content =
     Component.Content
 
 
+{-| The kinds the `arrow` slot admits.
+-}
 type alias ArrowSlot =
     Component.ArrowSlot
 

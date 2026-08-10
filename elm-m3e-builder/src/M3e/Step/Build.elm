@@ -61,30 +61,44 @@ type alias ChildAdmittedBy childAdm =
     Component.ChildAdmittedBy childAdm
 
 
+{-| The kinds the default slot admits.
+-}
 type alias Content =
     Component.Content
 
 
+{-| The kinds the `done-icon` slot admits.
+-}
 type alias DoneIconSlot =
     Component.DoneIconSlot
 
 
+{-| The kinds the `edit-icon` slot admits.
+-}
 type alias EditIconSlot =
     Component.EditIconSlot
 
 
+{-| The kinds the `error` slot admits.
+-}
 type alias ErrorSlot =
     Component.ErrorSlot
 
 
+{-| The kinds the `error-icon` slot admits.
+-}
 type alias ErrorIconSlot =
     Component.ErrorIconSlot
 
 
+{-| The kinds the `hint` slot admits.
+-}
 type alias HintSlot =
     Component.HintSlot
 
 
+{-| The kinds the `icon` slot admits.
+-}
 type alias IconSlot =
     Component.IconSlot
 
