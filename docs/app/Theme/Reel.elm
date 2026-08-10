@@ -125,7 +125,7 @@ theme wrapper fills the button.
 -}
 cardThemeWrapper : Preset -> Element (M3e.Theme.Is s) admittedBy msg
 cardThemeWrapper preset =
-    M3e.Theme.view
+    M3e.theme
         [ M3e.Theme.color preset.seedColor
         , M3e.Theme.scheme preset.scheme
         , M3e.Theme.contrast preset.contrast

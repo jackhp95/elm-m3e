@@ -72,6 +72,7 @@ config =
         , "Doc"
         , "Shared"
         , "View"
+        , "Theme.Reel"
         , "Route.Examples.Shop"
         , "Route.Guide"
         ]

@@ -27600,9 +27600,10 @@ var $author$project$M3e$Html$theme = F2(
 				A2($elm$core$List$map, $author$project$HtmlIr$Element$toNode, children)));
 	});
 var $author$project$M3e$Theme$view = $author$project$M3e$Html$theme;
+var $author$project$M3e$theme = $author$project$M3e$Theme$view;
 var $author$project$Theme$Reel$cardThemeWrapper = function (preset) {
 	return A2(
-		$author$project$M3e$Theme$view,
+		$author$project$M3e$theme,
 		_List_fromArray(
 			[
 				$author$project$M3e$Theme$color(preset.y1),
@@ -45016,7 +45017,6 @@ var $author$project$Shared$skipLink = A2(
 		[
 			$author$project$M3e$text('Skip to main content')
 		]));
-var $author$project$M3e$theme = $author$project$M3e$Theme$view;
 var $author$project$View$title = function (_v0) {
 	var view = _v0;
 	return view.we;

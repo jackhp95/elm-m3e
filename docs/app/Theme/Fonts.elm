@@ -1,4 +1,4 @@
-module Theme.Fonts exposing (googleFontsUrl, specimenSubsetUrl, specimenSubsetUrls)
+module Theme.Fonts exposing (googleFontsUrl, specimenSubsetUrls)
 
 {-| Google Fonts helpers for the theme reel and global font application.
 
@@ -16,7 +16,7 @@ Specimen subsetting (§D6 of the plan): each reel card loads only the glyphs
 it displays ("Aa" + the preset name) by adding `&text=` to the Google Fonts
 URL. All 22 cards can load simultaneously at negligible payload cost.
 
-@docs googleFontsUrl, specimenSubsetUrl, specimenSubsetUrls
+@docs googleFontsUrl, specimenSubsetUrls
 
 -}
 

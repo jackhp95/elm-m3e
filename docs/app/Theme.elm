@@ -1,4 +1,4 @@
-module Theme exposing (Model, Msg(..), TypeScaleParam(..), applyPresetToModel, capitalize, init, segmented, subscriptions, update, view)
+module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, init, segmented, subscriptions, update, view)
 
 import Dict exposing (Dict)
 import HtmlIr.Element
