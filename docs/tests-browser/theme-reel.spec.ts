@@ -96,6 +96,75 @@ test("selected card shows aria-pressed=true at 411×761", async ({ page }) => {
   await expect(materialCard).toHaveAttribute("aria-pressed", "false");
 });
 
+test("reel cards render each theme's specimen fonts (D6) at 411×761", async ({
+  page,
+}) => {
+  const mainContent = page.locator("#main-content");
+
+  // The "Material" card's specimen "A" is set inline to the display font
+  // (Fraunces). The card name + specimen carry inline font-family per preset.
+  const materialCard = mainContent.getByRole("button", {
+    name: "Apply Material theme",
+  });
+  await materialCard.scrollIntoViewIfNeeded();
+
+  // The name div carries an inline font-family referencing the display font.
+  // Only the name/specimen spans set `style="font-family:…"`, so filter on the
+  // presence of that inline style rather than on text (which matches ancestors).
+  const nameFontFamily = await materialCard
+    .locator("[style*='font-family']")
+    .first()
+    .evaluate((el) => (el as HTMLElement).style.fontFamily);
+  expect(nameFontFamily.toLowerCase()).toContain("fraunces");
+
+  // Two different presets must carry DIFFERENT specimen fonts (not all uniform
+  // sans-serif) — proves per-card fonts are wired, not a global fallback.
+  const geometricCard = mainContent.getByRole("button", {
+    name: "Apply Geometric theme",
+  });
+  await geometricCard.scrollIntoViewIfNeeded();
+  const geoFontFamily = await geometricCard
+    .locator("[style*='font-family']")
+    .first()
+    .evaluate((el) => (el as HTMLElement).style.fontFamily);
+  expect(geoFontFamily.toLowerCase()).toContain("space grotesk");
+  expect(geoFontFamily).not.toBe(nameFontFamily);
+
+  // The specimen-subset stylesheets are injected at boot (§D6): at least one
+  // <link class="m3e-specimen-font"> must be present in <head>.
+  const specimenLinks = await page
+    .locator("head link.m3e-specimen-font")
+    .count();
+  expect(specimenLinks).toBeGreaterThan(0);
+});
+
+test("selecting a preset switches the app icon variant (D4) at 411×761", async ({
+  page,
+}) => {
+  const mainContent = page.locator("#main-content");
+
+  // Select "Material" (iconStyle = outlined) first, then a Sharp preset.
+  const materialCard = mainContent.getByRole("button", {
+    name: "Apply Material theme",
+  });
+  await materialCard.scrollIntoViewIfNeeded();
+  await materialCard.click();
+
+  // App-bar icons are <m3e-icon>; after an Outlined preset they carry
+  // variant="outlined".
+  const appBarIcon = page.locator("#docs-app-bar m3e-icon").first();
+  await expect(appBarIcon).toHaveAttribute("variant", "outlined");
+
+  // Now pick "Agent" (iconStyle = sharp) — the same icons must switch to sharp.
+  const agentCard = mainContent.getByRole("button", {
+    name: "Apply Agent theme",
+  });
+  await agentCard.scrollIntoViewIfNeeded();
+  await agentCard.click();
+
+  await expect(appBarIcon).toHaveAttribute("variant", "sharp");
+});
+
 test("reel can be scrolled horizontally at 411×761", async ({ page }) => {
   // The reel container is a flex overflow-x-auto div.
   // Scope to #main-content to avoid strict-mode ambiguity with the drawer.

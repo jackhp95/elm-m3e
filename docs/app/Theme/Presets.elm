@@ -31,7 +31,10 @@ Appearance controls there) — this port adds them, defaulting to
 `Value.auto`/`Value.standard` unless a preset's name/intent obviously
 implies otherwise (documented per-preset below where that happens).
 `traits` and `palette` from the source are dropped — out of scope per this
-feature's non-goals. `iconStyle` defaults to `Outlined` for all presets.
+feature's non-goals. `iconStyle` is re-transcribed per-preset from the source's
+own `iconStyle` field (outlined | rounded | sharp). The source's `"sunny"`
+preset uses `"emoji"`, an exotic icon set deferred by D4 (non-goals); it maps to
+`Outlined` here (the sanctioned fallback) rather than vendoring an emoji set.
 Each `cssOverrides` entry's key is prefixed `md-sys-color-` to match this
 repo's cssVar naming convention (see `Theme.Tokens.ColorToken.cssVar`),
 transcribed from the source's `colorOverrides` object.
@@ -55,7 +58,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "JetBrains Mono"
       , bodyFont = "Inter"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "fieldnote"
@@ -75,7 +78,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Space Grotesk"
       , bodyFont = "DM Sans"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "harbor"
@@ -85,7 +88,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Cormorant Garamond"
       , bodyFont = "Inter"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Rounded
       , cssOverrides = []
       }
     , { id = "editorial"
@@ -105,7 +108,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Fredoka"
       , bodyFont = "DM Sans"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Rounded
       , cssOverrides = []
       }
     , { id = "bauhaus"
@@ -115,7 +118,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Anton"
       , bodyFont = "Work Sans"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "moss"
@@ -125,7 +128,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Caudex"
       , bodyFont = "Manrope"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Rounded
       , cssOverrides = []
       }
     , { id = "risograph"
@@ -135,7 +138,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Syne"
       , bodyFont = "IBM Plex Sans"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "studio"
@@ -155,7 +158,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Bebas Neue"
       , bodyFont = "Inter"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "citrus"
@@ -165,7 +168,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Fraunces"
       , bodyFont = "Poppins"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Rounded
       , cssOverrides = []
       }
     , { id = "howler"
@@ -175,7 +178,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Bungee"
       , bodyFont = "Outfit"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "gallery"
@@ -205,7 +208,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "Archivo Black"
       , bodyFont = "Archivo"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Rounded
       , cssOverrides = []
       }
     , { id = "dispatch"
@@ -215,7 +218,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "DM Sans"
       , bodyFont = "DM Sans"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "console"
@@ -225,7 +228,7 @@ presets =
       , contrast = Value.standard
       , displayFont = "DM Mono"
       , bodyFont = "DM Mono"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Sharp
       , cssOverrides = []
       }
     , { id = "platform"
@@ -235,10 +238,12 @@ presets =
       , contrast = Value.standard
       , displayFont = "Albert Sans"
       , bodyFont = "Albert Sans"
-      , iconStyle = Theme.Icons.Outlined
+      , iconStyle = Theme.Icons.Rounded
       , cssOverrides = []
       }
-    , { id = "sunny"
+    , -- Source `iconStyle` is "emoji" — an exotic icon set deferred by D4
+      -- (non-goals). Mapped to Outlined here rather than vendoring an emoji set.
+      { id = "sunny"
       , name = "Sunny"
       , seedColor = "#ff7300"
       , scheme = Value.auto

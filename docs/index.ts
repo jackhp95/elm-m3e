@@ -28,6 +28,27 @@ import "../js/raw-html.js";
 import "../js/slide-panels.js";
 import "./style.css";
 
+// ─── Material Symbols Rounded + Sharp (for the theme reel's icon-variant switch) ─
+//
+// style.css self-hosts only "Material Symbols Outlined" (the app default). The
+// theme reel (§D4) can switch the whole app's icons to Rounded or Sharp via each
+// <m3e-icon>'s `variant` attribute — but m3e-icon selects the font purely by
+// font-family, so those two families must actually be loaded or the glyphs fall
+// back to the outlined face (or raw ligature text). These aren't bundled in
+// public/, so they load from Google Fonts. `display=block` matches the
+// self-hosted @font-face so a variant switch never flashes ligature text.
+// Injected once at module-eval time (before Elm renders) so a variant switch on
+// boot-from-persisted has the font ready. Idempotent via the id guard.
+(function loadExtraSymbolFonts() {
+  if (document.getElementById("m3e-symbol-fonts-extra")) return;
+  const link = document.createElement("link");
+  link.id = "m3e-symbol-fonts-extra";
+  link.rel = "stylesheet";
+  link.href =
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block";
+  document.head.appendChild(link);
+})();
+
 // ─── Cascade-specificity fix ────────────────────────────────────────────────
 //
 // ROOT CAUSE: vendor static CSS uses `:root { --md-sys-color-* }` (specificity
@@ -248,6 +269,8 @@ const config: ElmPagesInit = {
         };
         setFaviconColor?: { subscribe: (cb: (v: string) => void) => void };
         loadFonts?: { subscribe: (cb: (v: string) => void) => void };
+        loadSpecimenFonts?: { subscribe: (cb: (v: string[]) => void) => void };
+        setIconVariant?: { subscribe: (cb: (v: string) => void) => void };
         requestPreset?: { subscribe: (cb: (v: string) => void) => void };
         onPresetRequested?: { send: (v: string) => void };
         onOpenSearchRequested?: { send: (v: null) => void };
@@ -318,6 +341,71 @@ const config: ElmPagesInit = {
         document.head.appendChild(link);
       }
       link.href = url;
+    });
+
+    // Inject the theme reel's per-card specimen-subset stylesheets (§D6). Unlike
+    // loadFonts (one global <link>), the reel needs MANY subset stylesheets loaded
+    // at once — one per preset's "Aa"+name glyphs — so every card renders in its
+    // own display/body font. Each is added as a <link class="m3e-specimen-font">,
+    // deduped by href, and this handler is idempotent: a re-send never duplicates
+    // an already-present link (Shared fires it once at boot, but re-sends are safe).
+    app?.ports?.loadSpecimenFonts?.subscribe((urls: string[]) => {
+      const existing = new Set(
+        [...document.querySelectorAll("link.m3e-specimen-font")].map(
+          (l) => (l as HTMLLinkElement).href,
+        ),
+      );
+      for (const url of urls) {
+        if (!url) continue;
+        // Compare against the browser-resolved absolute href to dedupe reliably.
+        const probe = document.createElement("a");
+        probe.href = url;
+        if (existing.has(probe.href)) continue;
+        const link = document.createElement("link");
+        link.className = "m3e-specimen-font";
+        link.rel = "stylesheet";
+        link.href = url;
+        document.head.appendChild(link);
+        existing.add(probe.href);
+      }
+    });
+
+    // Global icon-variant switch (§D4). m3e-icon picks its Material Symbols font
+    // purely from its own `variant` attribute — there is no CSS custom property
+    // or <m3e-theme> cascade for it — so switching the whole app's icon style
+    // means setting `variant` on every <m3e-icon>. This sweeps all present icons
+    // and installs a MutationObserver (once) so icons rendered later (route
+    // changes, drawer opens, lazily-defined elements) inherit the current style.
+    let currentIconVariant = "outlined";
+    let iconObserver: MutationObserver | null = null;
+    const applyIconVariant = (root: ParentNode): void => {
+      for (const icon of root.querySelectorAll("m3e-icon")) {
+        if (icon.getAttribute("variant") !== currentIconVariant) {
+          icon.setAttribute("variant", currentIconVariant);
+        }
+      }
+    };
+    app?.ports?.setIconVariant?.subscribe((variant: string) => {
+      currentIconVariant = variant;
+      applyIconVariant(document);
+      if (!iconObserver) {
+        iconObserver = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            for (const node of m.addedNodes) {
+              if (node.nodeType !== Node.ELEMENT_NODE) continue;
+              const el = node as Element;
+              if (el.localName === "m3e-icon") {
+                if (el.getAttribute("variant") !== currentIconVariant) {
+                  el.setAttribute("variant", currentIconVariant);
+                }
+              } else {
+                applyIconVariant(el);
+              }
+            }
+          }
+        });
+        iconObserver.observe(document.body, { childList: true, subtree: true });
+      }
     });
 
     // Page → Shared preset bridge. A page (e.g. Welcome.elm) fires
