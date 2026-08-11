@@ -58,7 +58,12 @@ init =
     , shapeScale = Scale.defaultConfig
     , colorOverrides = Dict.empty
     , cssOverrides = Dict.empty
-    , activePresetId = Nothing
+
+    -- The stock state IS the "Default" preset (`Theme.Presets`): every field
+    -- above equals that preset's, so the Default card reads as active out of the
+    -- box. `ResetAll` restores `init`, so it re-selects Default too. Any manual
+    -- theme edit (`SetSeed`, `SetScheme`, …) clears this back to `Nothing`.
+    , activePresetId = Just "default"
     }
 
 

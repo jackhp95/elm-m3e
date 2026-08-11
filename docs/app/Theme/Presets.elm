@@ -41,7 +41,27 @@ transcribed from the source's `colorOverrides` object.
 -}
 presets : List Preset
 presets =
-    [ { id = "material"
+    [ -- The stock Material Design baseline — first card in the reel. Its every
+      -- field mirrors `Theme.init` (the app's out-of-the-box state): the seed is
+      -- `#6750A4`, which is ALSO `<m3e-theme>`'s own documented default `color`
+      -- (see the theme CEM / `theme.js` — `color` defaults to "#6750A4"), so the
+      -- derived palette is the true stock M3 baseline; `auto`/`standard`; Roboto
+      -- for both fonts; the default (Outlined) icon style; and no css overrides.
+      -- Selecting it returns the app to `Theme.init` (`applyPresetToModel` sets
+      -- `seed`/`scheme`/`contrast`/fonts/`iconStyle` from these and clears
+      -- overrides), and `Theme.init` sets `activePresetId` so the Default card
+      -- reads as active whenever the app is in its stock state.
+      { id = "default"
+      , name = "Default"
+      , seedColor = "#6750A4"
+      , scheme = Value.auto
+      , contrast = Value.standard
+      , displayFont = "Roboto"
+      , bodyFont = "Roboto"
+      , iconStyle = Theme.Icons.Outlined
+      , cssOverrides = []
+      }
+    , { id = "material"
       , name = "Material"
       , seedColor = "#6750A4"
       , scheme = Value.auto
