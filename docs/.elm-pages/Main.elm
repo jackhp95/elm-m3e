@@ -69,6 +69,7 @@ import Route.Guide.TheLayers
 import Route.Guide.Theming
 import Route.Guide.ToolingRefactors
 import Route.Guide.Troubleshooting
+import Route.Index
 import Route.Styles.Color
 import Route.Styles.Density
 import Route.Styles.Elevation
@@ -146,6 +147,7 @@ type PageModel
     | ModelComponents__Name_ Route.Components.Name_.Model
     | ModelExamples Route.Examples.Model
     | ModelGuide Route.Guide.Model
+    | ModelIndex Route.Index.Model
     | ModelErrorPage____ ErrorPage.Model
     | NotFound
 
@@ -192,6 +194,7 @@ type Msg
     | MsgComponents__Name_ Route.Components.Name_.Msg
     | MsgExamples Route.Examples.Msg
     | MsgGuide Route.Guide.Msg
+    | MsgIndex Route.Index.Msg
     | MsgGlobal Shared.Msg
     | OnPageChange
         { protocol : Url.Protocol
@@ -249,6 +252,7 @@ type PageData
     | DataComponents__Name_ Route.Components.Name_.Data
     | DataExamples Route.Examples.Data
     | DataGuide Route.Guide.Data
+    | DataIndex Route.Index.Data
     | Data404NotFoundPage____
     | DataErrorPage____ ErrorPage.ErrorPage
 
@@ -300,6 +304,7 @@ type ActionData
     | ActionDataComponents__Name_ Route.Components.Name_.ActionData
     | ActionDataExamples Route.Examples.ActionData
     | ActionDataGuide Route.Guide.ActionData
+    | ActionDataIndex Route.Index.ActionData
 
 
 config =
@@ -638,6 +643,11 @@ dataForRoute requestPayload maybeRoute =
                     BackendTask.map
                         (Server.Response.map DataGuide)
                         (Route.Guide.route.data requestPayload {})
+            
+                Route.Index ->
+                    BackendTask.map
+                        (Server.Response.map DataIndex)
+                        (Route.Index.route.data requestPayload {})
 
 
 toTriple : a -> b -> c -> ( a, b, c )
@@ -910,6 +920,11 @@ action requestPayload maybeRoute =
                     BackendTask.map
                         (Server.Response.map ActionDataGuide)
                         (Route.Guide.route.action requestPayload {})
+            
+                Route.Index ->
+                    BackendTask.map
+                        (Server.Response.map ActionDataIndex)
+                        (Route.Index.route.action requestPayload {})
 
 
 fooFn :
@@ -1540,6 +1555,21 @@ templateSubscriptions route path model =
                     
                         _ ->
                             Sub.none
+            
+                Route.Index ->
+                    case model.page of
+                        ModelIndex templateModel ->
+                            Sub.map
+                                MsgIndex
+                                (Route.Index.route.subscriptions
+                                     {}
+                                     path
+                                     templateModel
+                                     model.global
+                                )
+                    
+                        _ ->
+                            Sub.none
 
 
 onActionData : ActionData -> Maybe Msg
@@ -1776,6 +1806,11 @@ onActionData actionData =
             Maybe.map
                 (\mapUnpack -> MsgGuide (mapUnpack thisActionData))
                 Route.Guide.route.onAction
+    
+        ActionDataIndex thisActionData ->
+            Maybe.map
+                (\mapUnpack -> MsgIndex (mapUnpack thisActionData))
+                Route.Index.route.onAction
 
 
 byteEncodePageData : PageData -> Bytes.Encode.Encoder
@@ -1906,6 +1941,9 @@ byteEncodePageData pageData =
     
         DataGuide thisPageData ->
             Route.Guide.w3_encode_Data thisPageData
+    
+        DataIndex thisPageData ->
+            Route.Index.w3_encode_Data thisPageData
 
 
 byteDecodePageData : Maybe Route.Route -> Bytes.Decode.Decoder PageData
@@ -2111,6 +2149,9 @@ byteDecodePageData maybeRoute =
             
                 Route.Guide ->
                     Bytes.Decode.map DataGuide Route.Guide.w3_decode_Data
+            
+                Route.Index ->
+                    Bytes.Decode.map DataIndex Route.Index.w3_decode_Data
 
 
 apiPatterns : ApiRoute.ApiRoute ApiRoute.Response
@@ -3489,6 +3530,39 @@ init currentGlobalModel userFlags sharedData pageData actionData maybePagePath =
                                      , submit =
                                          Pages.Fetcher.submit
                                              Route.Guide.w3_decode_ActionData
+                                     , navigation = Nothing
+                                     , concurrentSubmissions = Dict.empty
+                                     , pageFormState = Dict.empty
+                                     }
+                                )
+                    
+                        ( Route.Index, DataIndex thisPageData ) ->
+                            Tuple.mapBoth
+                                ModelIndex
+                                (Effect.map MsgIndex)
+                                (Route.Index.route.init
+                                     sharedModel
+                                     { data = thisPageData
+                                     , sharedData = sharedData
+                                     , action =
+                                         Maybe.andThen
+                                             (\andThenUnpack ->
+                                                  case andThenUnpack of
+                                                      ActionDataIndex thisActionData ->
+                                                          Just thisActionData
+                                                  
+                                                      _ ->
+                                                          Nothing
+                                             )
+                                             actionData
+                                     , routeParams = {}
+                                     , path =
+                                         (Tuple.second justRouteAndPath).path
+                                     , url =
+                                         Maybe.andThen .pageUrl maybePagePath
+                                     , submit =
+                                         Pages.Fetcher.submit
+                                             Route.Index.w3_decode_ActionData
                                      , navigation = Nothing
                                      , concurrentSubmissions = Dict.empty
                                      , pageFormState = Dict.empty
@@ -6270,6 +6344,73 @@ update pageFormState concurrentSubmissions navigation sharedData pageData naviga
             
                 _ ->
                     ( model, Effect.none )
+    
+        MsgIndex msg_ ->
+            case
+                ( model.page
+                , pageData
+                , Maybe.map3
+                    toTriple
+                    (Maybe.andThen .metadata model.current)
+                    (Maybe.andThen .pageUrl model.current)
+                    (Maybe.map .path model.current)
+                )
+            of
+                ( ModelIndex pageModel, DataIndex thisPageData, Just ( Route.Index, pageUrl, justPage ) ) ->
+                    let
+                        ( updatedPageModel, pageCmd, globalModelAndCmd ) =
+                            fooFn
+                                ModelIndex
+                                MsgIndex
+                                model
+                                (Route.Index.route.update
+                                     { data = thisPageData
+                                     , sharedData = sharedData
+                                     , action = Nothing
+                                     , routeParams = {}
+                                     , path = justPage.path
+                                     , url = Just pageUrl
+                                     , submit =
+                                         \options ->
+                                             Pages.Fetcher.submit
+                                                 Route.Index.w3_decode_ActionData
+                                                 options
+                                     , navigation = navigation
+                                     , concurrentSubmissions =
+                                         Dict.map
+                                             (\mapUnpack ->
+                                                  Pages.ConcurrentSubmission.map
+                                                      (\mapUnpack0 ->
+                                                           case mapUnpack0 of
+                                                               ActionDataIndex justActionData ->
+                                                                   Just
+                                                                       justActionData
+                                                           
+                                                               _ ->
+                                                                   Nothing
+                                                      )
+                                             )
+                                             concurrentSubmissions
+                                     , pageFormState = pageFormState
+                                     }
+                                     msg_
+                                     pageModel
+                                     model.global
+                                )
+                        
+                        ( newGlobalModel, newGlobalCmd ) =
+                            globalModelAndCmd
+                    in
+                    ( { model
+                        | page = updatedPageModel
+                        , global = newGlobalModel
+                      }
+                    , Effect.batch
+                        [ pageCmd, Effect.map MsgGlobal newGlobalCmd ]
+                    )
+            
+                _ ->
+                    ( model, Effect.none )
 
 
 view :
@@ -8505,6 +8646,60 @@ view pageFormState concurrentSubmissions navigation page maybePageUrl globalData
             , head = []
             }
     
+        ( Just Route.Index, DataIndex data ) ->
+            let
+                actionDataOrNothing thisActionData =
+                    case thisActionData of
+                        ActionDataIndex justActionData ->
+                            Just justActionData
+                    
+                        _ ->
+                            Nothing
+            in
+            { view =
+                \model ->
+                    case model.page of
+                        ModelIndex subModel ->
+                            Shared.template.view
+                                globalData
+                                page
+                                model.global
+                                (\myMsg -> PagesMsg.fromMsg (MsgGlobal myMsg))
+                                (View.map
+                                     (PagesMsg.map MsgIndex)
+                                     (Route.Index.route.view
+                                          model.global
+                                          subModel
+                                          { data = data
+                                          , sharedData = globalData
+                                          , routeParams = {}
+                                          , action =
+                                              Maybe.andThen
+                                                  actionDataOrNothing
+                                                  actionData
+                                          , path = page.path
+                                          , url = maybePageUrl
+                                          , submit =
+                                              Pages.Fetcher.submit
+                                                  Route.Index.w3_decode_ActionData
+                                          , navigation = navigation
+                                          , concurrentSubmissions =
+                                              Dict.map
+                                                  (\mapUnpack ->
+                                                       Pages.ConcurrentSubmission.map
+                                                           actionDataOrNothing
+                                                  )
+                                                  concurrentSubmissions
+                                          , pageFormState = pageFormState
+                                          }
+                                     )
+                                )
+                    
+                        _ ->
+                            modelMismatchView
+            , head = []
+            }
+    
         _ ->
             { view =
                 \_ ->
@@ -8723,6 +8918,9 @@ routePatterns =
                                  , { pathPattern = "/guide"
                                    , kind = Route.Guide.route.kind
                                    }
+                                 , { pathPattern = "/"
+                                   , kind = Route.Index.route.kind
+                                   }
                                  ]
                             )
                        )
@@ -8905,6 +9103,9 @@ getStaticRoutes =
              , BackendTask.map
                  (List.map (\_ -> Route.Guide))
                  Route.Guide.route.staticRoutes
+             , BackendTask.map
+                 (List.map (\_ -> Route.Index))
+                 Route.Index.route.staticRoutes
              ]
         )
 
@@ -9554,6 +9755,20 @@ handleRoute maybeRoute =
                         }
                         (\param -> [])
                         {}
+            
+                Route.Index ->
+                    Route.Index.route.handleRoute
+                        { moduleName = [ "Index" ]
+                        , routePattern =
+                            { segments =
+                                [ Pages.Internal.RoutePattern.StaticSegment
+                                    "index"
+                                ]
+                            , ending = Nothing
+                            }
+                        }
+                        (\param -> [])
+                        {}
 
 
 encodeActionData : ActionData -> Bytes.Encode.Encoder
@@ -9682,6 +9897,9 @@ encodeActionData actionData =
     
         ActionDataGuide thisActionData ->
             Route.Guide.w3_encode_ActionData thisActionData
+    
+        ActionDataIndex thisActionData ->
+            Route.Index.w3_encode_ActionData thisActionData
 
 
 subscriptions : Maybe Route.Route -> UrlPath.UrlPath -> Model -> Sub.Sub Msg
@@ -9906,43 +10124,43 @@ encodePageDataForClient pageData =
     
         DataStyles__Color thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 35
+                [ Bytes.Encode.unsignedInt8 36
                 , Route.Styles.Color.w3_encode_Data thisPageData
                 ]
     
         DataStyles__Density thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 36
+                [ Bytes.Encode.unsignedInt8 37
                 , Route.Styles.Density.w3_encode_Data thisPageData
                 ]
     
         DataStyles__Elevation thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 37
+                [ Bytes.Encode.unsignedInt8 38
                 , Route.Styles.Elevation.w3_encode_Data thisPageData
                 ]
     
         DataStyles__Motion thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 38
+                [ Bytes.Encode.unsignedInt8 39
                 , Route.Styles.Motion.w3_encode_Data thisPageData
                 ]
     
         DataStyles__Shape thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 39
+                [ Bytes.Encode.unsignedInt8 40
                 , Route.Styles.Shape.w3_encode_Data thisPageData
                 ]
     
         DataStyles__StateLayers thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 40
+                [ Bytes.Encode.unsignedInt8 41
                 , Route.Styles.StateLayers.w3_encode_Data thisPageData
                 ]
     
         DataStyles__Typography thisPageData ->
             Lamdera.Wire3.encodeSequenceWithoutLength
-                [ Bytes.Encode.unsignedInt8 41
+                [ Bytes.Encode.unsignedInt8 42
                 , Route.Styles.Typography.w3_encode_Data thisPageData
                 ]
     
@@ -9962,6 +10180,12 @@ encodePageDataForClient pageData =
             Lamdera.Wire3.encodeSequenceWithoutLength
                 [ Bytes.Encode.unsignedInt8 16
                 , Route.Guide.w3_encode_Data thisPageData
+                ]
+    
+        DataIndex thisPageData ->
+            Lamdera.Wire3.encodeSequenceWithoutLength
+                [ Bytes.Encode.unsignedInt8 35
+                , Route.Index.w3_encode_Data thisPageData
                 ]
     
         Data404NotFoundPage____ ->
@@ -10220,6 +10444,9 @@ routePatterns3 =
       , ending = Nothing
       }
     , { segments = [ Pages.Internal.RoutePattern.StaticSegment "guide" ]
+      , ending = Nothing
+      }
+    , { segments = [ Pages.Internal.RoutePattern.StaticSegment "index" ]
       , ending = Nothing
       }
     ]

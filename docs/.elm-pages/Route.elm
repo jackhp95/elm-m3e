@@ -57,6 +57,7 @@ type Route
     | Components__Name_ { name : String }
     | Examples
     | Guide
+    | Index
 
 
 {-| . -}
@@ -182,6 +183,9 @@ segmentsToRoute segments =
 
     [ "guide" ] ->
         Just Guide
+
+    [] ->
+        Just Index
 
     _ ->
         Nothing
@@ -323,6 +327,9 @@ routeToPath route =
          
              Guide ->
                  [ [ "guide" ] ]
+         
+             Index ->
+                 [ [] ]
         )
 
 
