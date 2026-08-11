@@ -160,7 +160,7 @@ route hands to `View.fromElement` at its root.
 -}
 pane : List (Element childAccepts (M3e.Component.ContentPane.ChildAdmittedBy childAdm) msg) -> Element (M3e.Component.ContentPane.Is s) freeAdm msg
 pane items =
-    M3e.contentPane [ TA.class "mx-auto max-w-5xl" ] items
+    M3e.contentPane [ TA.class "mx-auto max-w-5xl space-y-12" ] items
 
 
 {-| A page's `<h1>`: display-small heading.

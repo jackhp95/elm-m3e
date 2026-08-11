@@ -2207,7 +2207,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 		flagDecoder,
 		args,
 		impl.A,
-		impl.x,
+		impl.w,
 		impl.B,
 		function() { return function() {} }
 	);
@@ -4470,7 +4470,7 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 		flagDecoder,
 		args,
 		impl.A,
-		impl.x,
+		impl.w,
 		impl.B,
 		function(sendToApp, initialModel) {
 			var view = impl.c;
@@ -4506,7 +4506,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		flagDecoder,
 		args,
 		impl.A,
-		impl.x,
+		impl.w,
 		impl.B,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.u7 && impl.u7(sendToApp)
@@ -4616,7 +4616,7 @@ key['elm-hot-nav-key'] = true;
 			return A3(impl.A, flags, _Browser_getUrl(), key);
 		},
 		c: impl.c,
-		x: impl.x,
+		w: impl.w,
 		B: impl.B
 	});
 }
@@ -5266,11 +5266,11 @@ var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
 var $author$project$Main$DataErrorPage____ = function (a) {
-	return {$: 41, a: a};
+	return {$: 42, a: a};
 };
 var $elm$core$Maybe$Nothing = {$: 1};
 var $author$project$Main$OnPageChange = function (a) {
-	return {$: 41, a: a};
+	return {$: 42, a: a};
 };
 var $author$project$Main$ActionDataComponents__All = function (a) {
 	return {$: 0, a: a};
@@ -5370,6 +5370,9 @@ var $author$project$Main$ActionDataGuide__ToolingRefactors = function (a) {
 };
 var $author$project$Main$ActionDataGuide__Troubleshooting = function (a) {
 	return {$: 29, a: a};
+};
+var $author$project$Main$ActionDataIndex = function (a) {
+	return {$: 40, a: a};
 };
 var $author$project$Main$ActionDataStyles__Color = function (a) {
 	return {$: 30, a: a};
@@ -5499,21 +5502,21 @@ var $author$project$RouteBuilder$buildWithLocalState$ = function (config, builde
 		ov: record.ov,
 		xx: record.xx,
 		C: record.C,
-		z: record.z,
+		y: record.y,
 		A: F2(
 			function (shared, app) {
 				return A2(config.A, app, shared);
 			}),
 		sn: record.sn,
-		G: $elm$core$Maybe$Nothing,
-		I: record.I,
+		F: $elm$core$Maybe$Nothing,
+		H: record.H,
 		B: F4(
 			function (routeParams, path, model, sharedModel) {
 				return A4(config.B, routeParams, path, sharedModel, model);
 			}),
-		x: F4(
+		w: F4(
 			function (app, msg, model, sharedModel) {
-				var _v1 = A4(config.x, app, sharedModel, msg, model);
+				var _v1 = A4(config.w, app, sharedModel, msg, model);
 				var updatedModel = _v1.a;
 				var cmd = _v1.b;
 				return _Utils_Tuple3(updatedModel, cmd, $elm$core$Maybe$Nothing);
@@ -9281,7 +9284,7 @@ var $dillonkearns$elm_pages$Server$Response$render = function (data) {
 		data);
 };
 var $author$project$RouteBuilder$single = function (_v0) {
-	var head = _v0.z;
+	var head = _v0.y;
 	var data = _v0.xx;
 	return {
 		ov: F2(
@@ -9297,10 +9300,10 @@ var $author$project$RouteBuilder$single = function (_v0) {
 			function (_v5, _v6, _v7) {
 				return $dillonkearns$elm_pages$BackendTask$succeed($elm$core$Maybe$Nothing);
 			}),
-		z: head,
+		y: head,
 		sn: 'static',
 		nT: false,
-		I: $dillonkearns$elm_pages$BackendTask$succeed(
+		H: $dillonkearns$elm_pages$BackendTask$succeed(
 			_List_fromArray(
 				[
 					{}
@@ -9702,7 +9705,7 @@ var $author$project$Doc$pane = function (items) {
 		$author$project$M3e$contentPane,
 		_List_fromArray(
 			[
-				$author$project$TypedHtml$Attributes$class('mx-auto max-w-5xl')
+				$author$project$TypedHtml$Attributes$class('mx-auto max-w-5xl space-y-12')
 			]),
 		items);
 };
@@ -12600,9 +12603,9 @@ var $author$project$Route$Components$All$view$ = function (app, _v0, model) {
 };
 var $author$project$Route$Components$All$view = F3($author$project$Route$Components$All$view$);
 var $author$project$Route$Components$All$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Components$All$init, B: $author$project$Route$Components$All$subscriptions, x: $author$project$Route$Components$All$update, c: $author$project$Route$Components$All$view},
+	{A: $author$project$Route$Components$All$init, B: $author$project$Route$Components$All$subscriptions, w: $author$project$Route$Components$All$update, c: $author$project$Route$Components$All$view},
 	$author$project$RouteBuilder$single(
-		{xx: $author$project$Route$Components$All$data, z: $author$project$Route$Components$All$head}));
+		{xx: $author$project$Route$Components$All$data, y: $author$project$Route$Components$All$head}));
 var $author$project$Route$Components$Name_$Data$ = function (component, usage, exampleUsage) {
 	return {mD: component, mT: exampleUsage, bJ: usage};
 };
@@ -12688,7 +12691,7 @@ var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$NotPrerendered$ = func
 var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$NotPrerendered = F2($dillonkearns$elm_pages$Pages$Internal$NotFoundReason$NotPrerendered$);
 var $author$project$RouteBuilder$preRender = function (_v0) {
 	var pages = _v0.Bg;
-	var head = _v0.z;
+	var head = _v0.y;
 	var data = _v0.xx;
 	return {
 		ov: F2(
@@ -12710,17 +12713,17 @@ var $author$project$RouteBuilder$preRender = function (_v0) {
 							$dillonkearns$elm_pages$Pages$Internal$NotFoundReason$NotPrerendered$(
 								{
 									AU: toRecord(routeParams),
-									F: moduleContext.F,
-									H: moduleContext.H
+									E: moduleContext.E,
+									G: moduleContext.G
 								},
 								$elm$core$List$map$(toRecord, allRoutes)));
 					},
 					pages);
 			}),
-		z: head,
+		y: head,
 		sn: 'prerender',
 		nT: false,
-		I: pages
+		H: pages
 	};
 };
 var $author$project$Route$Components$Name_$subscriptions$ = function (_v0, _v1, _v2, _v3) {
@@ -21009,9 +21012,9 @@ var $author$project$Route$Components$Name_$view$ = function (app, _v0, model) {
 };
 var $author$project$Route$Components$Name_$view = F3($author$project$Route$Components$Name_$view$);
 var $author$project$Route$Components$Name_$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Components$Name_$init, B: $author$project$Route$Components$Name_$subscriptions, x: $author$project$Route$Components$Name_$update, c: $author$project$Route$Components$Name_$view},
+	{A: $author$project$Route$Components$Name_$init, B: $author$project$Route$Components$Name_$subscriptions, w: $author$project$Route$Components$Name_$update, c: $author$project$Route$Components$Name_$view},
 	$author$project$RouteBuilder$preRender(
-		{xx: $author$project$Route$Components$Name_$data, z: $author$project$Route$Components$Name_$head, Bg: $author$project$Route$Components$Name_$pages}));
+		{xx: $author$project$Route$Components$Name_$data, y: $author$project$Route$Components$Name_$head, Bg: $author$project$Route$Components$Name_$pages}));
 var $author$project$RouteBuilder$buildNoState$ = function (_v0, builderState) {
 	var view = _v0.c;
 	var record = builderState;
@@ -21019,7 +21022,7 @@ var $author$project$RouteBuilder$buildNoState$ = function (_v0, builderState) {
 		ov: record.ov,
 		xx: record.xx,
 		C: record.C,
-		z: record.z,
+		y: record.y,
 		A: F2(
 			function (_v2, _v3) {
 				return _Utils_Tuple2(
@@ -21027,13 +21030,13 @@ var $author$project$RouteBuilder$buildNoState$ = function (_v0, builderState) {
 					$author$project$Effect$none);
 			}),
 		sn: record.sn,
-		G: $elm$core$Maybe$Nothing,
-		I: record.I,
+		F: $elm$core$Maybe$Nothing,
+		H: record.H,
 		B: F4(
 			function (_v4, _v5, _v6, _v7) {
 				return $elm$core$Platform$Sub$none;
 			}),
-		x: F4(
+		w: F4(
 			function (_v8, _v9, _v10, _v11) {
 				return _Utils_Tuple3(
 					{},
@@ -21232,7 +21235,7 @@ var $author$project$Route$Examples$route = $author$project$RouteBuilder$buildNoS
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$head
+			y: $author$project$Route$Examples$head
 		}));
 var $author$project$Route$Examples$Dashboard$head = function (_v0) {
 	return _List_Nil;
@@ -22177,12 +22180,12 @@ var $author$project$Route$Examples$Dashboard$view$ = function (_v0, _v1, _v2) {
 };
 var $author$project$Route$Examples$Dashboard$view = F3($author$project$Route$Examples$Dashboard$view$);
 var $author$project$Route$Examples$Dashboard$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$Dashboard$init, B: $author$project$Route$Examples$Dashboard$subscriptions, x: $author$project$Route$Examples$Dashboard$update, c: $author$project$Route$Examples$Dashboard$view},
+	{A: $author$project$Route$Examples$Dashboard$init, B: $author$project$Route$Examples$Dashboard$subscriptions, w: $author$project$Route$Examples$Dashboard$update, c: $author$project$Route$Examples$Dashboard$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$Dashboard$head
+			y: $author$project$Route$Examples$Dashboard$head
 		}));
 var $author$project$Route$Examples$Feed$head = function (_v0) {
 	return _List_Nil;
@@ -22483,12 +22486,12 @@ var $author$project$Route$Examples$Feed$view$ = function (_v0, _v1, model) {
 };
 var $author$project$Route$Examples$Feed$view = F3($author$project$Route$Examples$Feed$view$);
 var $author$project$Route$Examples$Feed$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$Feed$init, B: $author$project$Route$Examples$Feed$subscriptions, x: $author$project$Route$Examples$Feed$update, c: $author$project$Route$Examples$Feed$view},
+	{A: $author$project$Route$Examples$Feed$init, B: $author$project$Route$Examples$Feed$subscriptions, w: $author$project$Route$Examples$Feed$update, c: $author$project$Route$Examples$Feed$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$Feed$head
+			y: $author$project$Route$Examples$Feed$head
 		}));
 var $author$project$Route$Examples$ListDetail$head = function (_v0) {
 	return _List_Nil;
@@ -22833,12 +22836,12 @@ var $author$project$Route$Examples$ListDetail$view$ = function (_v0, _v1, model)
 };
 var $author$project$Route$Examples$ListDetail$view = F3($author$project$Route$Examples$ListDetail$view$);
 var $author$project$Route$Examples$ListDetail$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$ListDetail$init, B: $author$project$Route$Examples$ListDetail$subscriptions, x: $author$project$Route$Examples$ListDetail$update, c: $author$project$Route$Examples$ListDetail$view},
+	{A: $author$project$Route$Examples$ListDetail$init, B: $author$project$Route$Examples$ListDetail$subscriptions, w: $author$project$Route$Examples$ListDetail$update, c: $author$project$Route$Examples$ListDetail$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$ListDetail$head
+			y: $author$project$Route$Examples$ListDetail$head
 		}));
 var $author$project$Route$Examples$Mail$head = function (_v0) {
 	return _List_Nil;
@@ -23513,12 +23516,12 @@ var $author$project$Route$Examples$Mail$view$ = function (_v0, _v1, model) {
 };
 var $author$project$Route$Examples$Mail$view = F3($author$project$Route$Examples$Mail$view$);
 var $author$project$Route$Examples$Mail$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$Mail$init, B: $author$project$Route$Examples$Mail$subscriptions, x: $author$project$Route$Examples$Mail$update, c: $author$project$Route$Examples$Mail$view},
+	{A: $author$project$Route$Examples$Mail$init, B: $author$project$Route$Examples$Mail$subscriptions, w: $author$project$Route$Examples$Mail$update, c: $author$project$Route$Examples$Mail$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$Mail$head
+			y: $author$project$Route$Examples$Mail$head
 		}));
 var $author$project$Route$Examples$Settings$head = function (_v0) {
 	return _List_Nil;
@@ -24132,12 +24135,12 @@ var $author$project$Route$Examples$Settings$view$ = function (_v0, _v1, model) {
 };
 var $author$project$Route$Examples$Settings$view = F3($author$project$Route$Examples$Settings$view$);
 var $author$project$Route$Examples$Settings$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$Settings$init, B: $author$project$Route$Examples$Settings$subscriptions, x: $author$project$Route$Examples$Settings$update, c: $author$project$Route$Examples$Settings$view},
+	{A: $author$project$Route$Examples$Settings$init, B: $author$project$Route$Examples$Settings$subscriptions, w: $author$project$Route$Examples$Settings$update, c: $author$project$Route$Examples$Settings$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$Settings$head
+			y: $author$project$Route$Examples$Settings$head
 		}));
 var $author$project$Route$Examples$Shop$head = function (_v0) {
 	return _List_Nil;
@@ -24702,12 +24705,12 @@ var $author$project$Route$Examples$Shop$view$ = function (_v0, _v1, model) {
 };
 var $author$project$Route$Examples$Shop$view = F3($author$project$Route$Examples$Shop$view$);
 var $author$project$Route$Examples$Shop$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$Shop$init, B: $author$project$Route$Examples$Shop$subscriptions, x: $author$project$Route$Examples$Shop$update, c: $author$project$Route$Examples$Shop$view},
+	{A: $author$project$Route$Examples$Shop$init, B: $author$project$Route$Examples$Shop$subscriptions, w: $author$project$Route$Examples$Shop$update, c: $author$project$Route$Examples$Shop$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$Shop$head
+			y: $author$project$Route$Examples$Shop$head
 		}));
 var $author$project$Route$Examples$SupportingPane$head = function (_v0) {
 	return _List_Nil;
@@ -25123,7 +25126,7 @@ var $author$project$Route$Examples$SupportingPane$route = $author$project$RouteB
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$SupportingPane$head
+			y: $author$project$Route$Examples$SupportingPane$head
 		}));
 var $author$project$Route$Examples$Travel$head = function (_v0) {
 	return _List_Nil;
@@ -25675,12 +25678,12 @@ var $author$project$Route$Examples$Travel$view$ = function (_v0, _v1, model) {
 };
 var $author$project$Route$Examples$Travel$view = F3($author$project$Route$Examples$Travel$view$);
 var $author$project$Route$Examples$Travel$route = $author$project$RouteBuilder$buildWithLocalState$(
-	{A: $author$project$Route$Examples$Travel$init, B: $author$project$Route$Examples$Travel$subscriptions, x: $author$project$Route$Examples$Travel$update, c: $author$project$Route$Examples$Travel$view},
+	{A: $author$project$Route$Examples$Travel$init, B: $author$project$Route$Examples$Travel$subscriptions, w: $author$project$Route$Examples$Travel$update, c: $author$project$Route$Examples$Travel$view},
 	$author$project$RouteBuilder$single(
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Examples$Travel$head
+			y: $author$project$Route$Examples$Travel$head
 		}));
 var $author$project$Route$GettingStarted$BrowserSupport$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -25883,7 +25886,7 @@ var $author$project$Route$GettingStarted$BrowserSupport$route = $author$project$
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$GettingStarted$BrowserSupport$head
+			y: $author$project$Route$GettingStarted$BrowserSupport$head
 		}));
 var $author$project$Route$GettingStarted$Installation$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -26125,7 +26128,7 @@ var $author$project$Route$GettingStarted$Installation$route = $author$project$Ro
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$GettingStarted$Installation$head
+			y: $author$project$Route$GettingStarted$Installation$head
 		}));
 var $author$project$Route$GettingStarted$Welcome$data = $dillonkearns$elm_pages$BackendTask$map$(
 	function (components) {
@@ -26722,11 +26725,11 @@ var $author$project$Route$GettingStarted$Welcome$route = $author$project$RouteBu
 			function (_v0, _v1, _v2, _v3) {
 				return $elm$core$Platform$Sub$none;
 			}),
-		x: $author$project$Route$GettingStarted$Welcome$update,
+		w: $author$project$Route$GettingStarted$Welcome$update,
 		c: $author$project$Route$GettingStarted$Welcome$view
 	},
 	$author$project$RouteBuilder$single(
-		{xx: $author$project$Route$GettingStarted$Welcome$data, z: $author$project$Route$GettingStarted$Welcome$head}));
+		{xx: $author$project$Route$GettingStarted$Welcome$data, y: $author$project$Route$GettingStarted$Welcome$head}));
 var $author$project$Route$Guide$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
 		$dillonkearns$elm_pages$Head$Seo$summary(
@@ -26869,7 +26872,7 @@ var $author$project$Route$Guide$route = $author$project$RouteBuilder$buildNoStat
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$head
+			y: $author$project$Route$Guide$head
 		}));
 var $author$project$Route$Guide$Accessibility$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27082,7 +27085,7 @@ var $author$project$Route$Guide$Accessibility$route = $author$project$RouteBuild
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Accessibility$head
+			y: $author$project$Route$Guide$Accessibility$head
 		}));
 var $author$project$Route$Guide$AccessibleByConstruction$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27198,7 +27201,7 @@ var $author$project$Route$Guide$AccessibleByConstruction$route = $author$project
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$AccessibleByConstruction$head
+			y: $author$project$Route$Guide$AccessibleByConstruction$head
 		}));
 var $author$project$Route$Guide$CheatSheet$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27329,7 +27332,7 @@ var $author$project$Route$Guide$CheatSheet$route = $author$project$RouteBuilder$
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$CheatSheet$head
+			y: $author$project$Route$Guide$CheatSheet$head
 		}));
 var $author$project$Route$Guide$CompositionTextField$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27492,7 +27495,7 @@ var $author$project$Route$Guide$CompositionTextField$route = $author$project$Rou
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$CompositionTextField$head
+			y: $author$project$Route$Guide$CompositionTextField$head
 		}));
 var $author$project$Route$Guide$FirstComponent$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27608,7 +27611,7 @@ var $author$project$Route$Guide$FirstComponent$route = $author$project$RouteBuil
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$FirstComponent$head
+			y: $author$project$Route$Guide$FirstComponent$head
 		}));
 var $author$project$Route$Guide$GeneratedAndInspectable$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27712,7 +27715,7 @@ var $author$project$Route$Guide$GeneratedAndInspectable$route = $author$project$
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$GeneratedAndInspectable$head
+			y: $author$project$Route$Guide$GeneratedAndInspectable$head
 		}));
 var $author$project$Route$Guide$Glossary$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -27790,7 +27793,7 @@ var $author$project$Route$Guide$Glossary$route = $author$project$RouteBuilder$bu
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Glossary$head
+			y: $author$project$Route$Guide$Glossary$head
 		}));
 var $author$project$Route$Guide$HowWeProveIt$headlineSurface = 'top';
 var $author$project$Route$Guide$HowWeProveIt$dataDecoder = $elm$json$Json$Decode$at$(
@@ -27933,7 +27936,7 @@ var $author$project$Route$Guide$HowWeProveIt$view = F2($author$project$Route$Gui
 var $author$project$Route$Guide$HowWeProveIt$route = $author$project$RouteBuilder$buildNoState$(
 	{c: $author$project$Route$Guide$HowWeProveIt$view},
 	$author$project$RouteBuilder$single(
-		{xx: $author$project$Route$Guide$HowWeProveIt$data, z: $author$project$Route$Guide$HowWeProveIt$head}));
+		{xx: $author$project$Route$Guide$HowWeProveIt$data, y: $author$project$Route$Guide$HowWeProveIt$head}));
 var $author$project$Route$Guide$InvalidStates$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
 		$dillonkearns$elm_pages$Head$Seo$summary(
@@ -28056,7 +28059,7 @@ var $author$project$Route$Guide$InvalidStates$route = $author$project$RouteBuild
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$InvalidStates$head
+			y: $author$project$Route$Guide$InvalidStates$head
 		}));
 var $author$project$Route$Guide$Motion$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -28201,10 +28204,10 @@ var $author$project$Route$Guide$Motion$route = $author$project$RouteBuilder$buil
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Motion$head
+			y: $author$project$Route$Guide$Motion$head
 		}));
 var $author$project$Route$Guide$Reference$Component$ = function (name, moduleName, slug, overview, members) {
-	return {sP: members, F: moduleName, il: name, tP: overview, vm: slug};
+	return {sP: members, E: moduleName, il: name, tP: overview, vm: slug};
 };
 var $author$project$Route$Guide$Reference$Component = F5($author$project$Route$Guide$Reference$Component$);
 var $author$project$Route$Guide$Reference$Member$ = function (name, kind, signature, doc, role) {
@@ -28433,7 +28436,7 @@ var $author$project$Route$Guide$Reference$barrelBlock = function (c) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$M3e$text(c.F)
+										$author$project$M3e$text(c.E)
 									])),
 								$author$project$M3e$text('  · the barrel')
 							]))
@@ -28494,7 +28497,7 @@ var $author$project$Route$Guide$Reference$componentBlock = function (c) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$M3e$text(c.F)
+										$author$project$M3e$text(c.E)
 									]))
 							]))
 					])),
@@ -28539,12 +28542,12 @@ var $author$project$Route$Guide$Reference$splitBarrel = function (components) {
 		$elm$core$List$head(
 			$elm$core$List$filter$(
 				function (c) {
-					return c.F === 'M3e';
+					return c.E === 'M3e';
 				},
 				components)),
 		$elm$core$List$filter$(
 			function (c) {
-				return c.F !== 'M3e';
+				return c.E !== 'M3e';
 			},
 			components));
 };
@@ -28638,7 +28641,7 @@ var $author$project$Route$Guide$Reference$view = F2($author$project$Route$Guide$
 var $author$project$Route$Guide$Reference$route = $author$project$RouteBuilder$buildNoState$(
 	{c: $author$project$Route$Guide$Reference$view},
 	$author$project$RouteBuilder$single(
-		{xx: $author$project$Route$Guide$Reference$data, z: $author$project$Route$Guide$Reference$head}));
+		{xx: $author$project$Route$Guide$Reference$data, y: $author$project$Route$Guide$Reference$head}));
 var $author$project$Route$Guide$Roundtrip$Data$ = function (perSurface, cells) {
 	return {my: cells, nn: perSurface};
 };
@@ -29128,7 +29131,7 @@ var $author$project$Route$Guide$Roundtrip$view = F2($author$project$Route$Guide$
 var $author$project$Route$Guide$Roundtrip$route = $author$project$RouteBuilder$buildNoState$(
 	{c: $author$project$Route$Guide$Roundtrip$view},
 	$author$project$RouteBuilder$single(
-		{xx: $author$project$Route$Guide$Roundtrip$data, z: $author$project$Route$Guide$Roundtrip$head}));
+		{xx: $author$project$Route$Guide$Roundtrip$data, y: $author$project$Route$Guide$Roundtrip$head}));
 var $author$project$Route$Guide$Seams$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
 		$dillonkearns$elm_pages$Head$Seo$summary(
@@ -29462,7 +29465,7 @@ var $author$project$Route$Guide$Seams$route = $author$project$RouteBuilder$build
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Seams$head
+			y: $author$project$Route$Guide$Seams$head
 		}));
 var $author$project$Route$Guide$Strictness$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -29587,7 +29590,7 @@ var $author$project$Route$Guide$Strictness$route = $author$project$RouteBuilder$
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Strictness$head
+			y: $author$project$Route$Guide$Strictness$head
 		}));
 var $author$project$Route$Guide$TheLayers$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -29704,7 +29707,7 @@ var $author$project$Route$Guide$TheLayers$route = $author$project$RouteBuilder$b
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$TheLayers$head
+			y: $author$project$Route$Guide$TheLayers$head
 		}));
 var $author$project$Route$Guide$Theming$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -29859,7 +29862,7 @@ var $author$project$Route$Guide$Theming$route = $author$project$RouteBuilder$bui
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Theming$head
+			y: $author$project$Route$Guide$Theming$head
 		}));
 var $author$project$Route$Guide$ToolingRefactors$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -29960,7 +29963,7 @@ var $author$project$Route$Guide$ToolingRefactors$route = $author$project$RouteBu
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$ToolingRefactors$head
+			y: $author$project$Route$Guide$ToolingRefactors$head
 		}));
 var $author$project$Route$Guide$Troubleshooting$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -30069,7 +30072,171 @@ var $author$project$Route$Guide$Troubleshooting$route = $author$project$RouteBui
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Guide$Troubleshooting$head
+			y: $author$project$Route$Guide$Troubleshooting$head
+		}));
+var $dillonkearns$elm_pages$Head$Stripped = function (a) {
+	return {$: 3, a: a};
+};
+var $elm_community$list_extra$List$Extra$find$ = function (predicate, list) {
+	find:
+	while (true) {
+		if (!list.b) {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var first = list.a;
+			var rest = list.b;
+			if (predicate(first)) {
+				return $elm$core$Maybe$Just(first);
+			} else {
+				var $temp$list = rest;
+				list = $temp$list;
+				continue find;
+			}
+		}
+	}
+};
+var $elm_community$list_extra$List$Extra$find = F2($elm_community$list_extra$List$Extra$find$);
+var $dillonkearns$elm_pages$Head$matchesRegex$ = function (regex, string) {
+	return A2(
+		$elm$regex$Regex$contains,
+		$elm$core$Maybe$withDefault$(
+			$elm$regex$Regex$never,
+			A2(
+				$elm$regex$Regex$fromStringWith,
+				{z0: true, A$: true},
+				regex)),
+		string);
+};
+var $dillonkearns$elm_pages$Head$matchesRegex = F2($dillonkearns$elm_pages$Head$matchesRegex$);
+var $dillonkearns$elm_pages$Head$matchesKeyword$ = function (regex, string) {
+	return $dillonkearns$elm_pages$Head$matchesRegex$('^\\s*' + (regex + '\\s*$'), string);
+};
+var $dillonkearns$elm_pages$Head$matchesKeyword = F2($dillonkearns$elm_pages$Head$matchesKeyword$);
+var $dillonkearns$elm_pages$Head$matchesOneKeyword$ = function (keywords, string) {
+	return $elm$core$List$any$(
+		function (keyword) {
+			return $dillonkearns$elm_pages$Head$matchesKeyword$(keyword, string);
+		},
+		keywords);
+};
+var $dillonkearns$elm_pages$Head$matchesOneKeyword = F2($dillonkearns$elm_pages$Head$matchesOneKeyword$);
+var $dillonkearns$elm_pages$Head$nonLoadingNode$ = function (nodeName, attributes) {
+	var relTag = $elm$core$Maybe$map$(
+		$elm$core$Tuple$second,
+		$elm_community$list_extra$List$Extra$find$(
+			function (_v3) {
+				var key = _v3.a;
+				return key === 'rel';
+			},
+			attributes));
+	var isPreloadDirective = function () {
+		if ((!relTag.$) && (!relTag.a.$)) {
+			var rel = relTag.a.a;
+			var isLinkTag = $dillonkearns$elm_pages$Head$matchesKeyword$('link', nodeName);
+			return isLinkTag && $dillonkearns$elm_pages$Head$matchesOneKeyword$(
+				_List_fromArray(
+					['preload', 'modulepreload', 'preconnect', 'dns-prefetch', 'stylesheet']),
+				rel);
+		} else {
+			return false;
+		}
+	}();
+	return ($dillonkearns$elm_pages$Head$matchesKeyword$('script', nodeName) || isPreloadDirective) ? $dillonkearns$elm_pages$Head$Stripped(
+		'<' + (nodeName + (' ' + ($elm$core$String$join$(
+			' ',
+			$elm$core$List$map$(
+				function (_v0) {
+					var name = _v0.a;
+					var value = _v0.b;
+					return name + ('=\"' + (function () {
+						if (!value.$) {
+							var rawValue = value.a;
+							return rawValue;
+						} else {
+							return '<internals>';
+						}
+					}() + '\"'));
+				},
+				attributes)) + ' />')))) : $dillonkearns$elm_pages$Head$node$(nodeName, attributes);
+};
+var $dillonkearns$elm_pages$Head$nonLoadingNode = F2($dillonkearns$elm_pages$Head$nonLoadingNode$);
+var $author$project$Route$Index$head = function (_v0) {
+	return A2(
+		$elm$core$List$cons,
+		$dillonkearns$elm_pages$Head$nonLoadingNode$(
+			'meta',
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'http-equiv',
+					$dillonkearns$elm_pages$Head$raw('refresh')),
+					_Utils_Tuple2(
+					'content',
+					$dillonkearns$elm_pages$Head$raw('0;url=/getting-started/welcome'))
+				])),
+		$dillonkearns$elm_pages$Head$Seo$website(
+			$dillonkearns$elm_pages$Head$Seo$summary(
+				{
+					z$: $elm$core$Maybe$Nothing,
+					Ad: 'Type-safe Material 3 Expressive web components for Elm.',
+					AG: {
+						zO: 'elm-m3e',
+						Ae: $elm$core$Maybe$Just(
+							{AB: 630, kV: 1200}),
+						AV: $elm$core$Maybe$Just(
+							$danyx23$elm_mimetype$MimeType$Image($danyx23$elm_mimetype$MimeType$Png)),
+						i: $dillonkearns$elm_pages$Pages$Url$fromPath(
+							$dillonkearns$elm_pages$UrlPath$join(
+								_List_fromArray(
+									['og-card.png'])))
+					},
+					AS: $elm$core$Maybe$Nothing,
+					BN: 'elm-m3e',
+					we: 'elm-m3e'
+				})));
+};
+var $author$project$Route$Index$view$ = function (_v0, _v1) {
+	return $author$project$View$fromElement$(
+		'elm-m3e',
+		A2(
+			$author$project$TypedHtml$div,
+			_List_fromArray(
+				[
+					$author$project$TypedHtml$Attributes$class('flex flex-col items-center justify-center gap-4 p-8')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$TypedHtml$p,
+					_List_fromArray(
+						[
+							$author$project$TypedHtml$Attributes$class('text-body-lg text-on-surface-variant')
+						]),
+					_List_fromArray(
+						[
+							$author$project$M3e$text('Redirecting to Welcome…')
+						])),
+					A2(
+					$author$project$M3e$button,
+					_List_fromArray(
+						[
+							$author$project$M3e$Button$variant($author$project$M3e$Values$filled),
+							$author$project$M3e$Button$href('/getting-started/welcome')
+						]),
+					_List_fromArray(
+						[
+							$author$project$M3e$text('Go to Welcome')
+						]))
+				])));
+};
+var $author$project$Route$Index$view = F2($author$project$Route$Index$view$);
+var $author$project$Route$Index$route = $author$project$RouteBuilder$buildNoState$(
+	{c: $author$project$Route$Index$view},
+	$author$project$RouteBuilder$single(
+		{
+			xx: $dillonkearns$elm_pages$BackendTask$succeed(
+				{}),
+			y: $author$project$Route$Index$head
 		}));
 var $author$project$Route$Styles$Color$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -30361,7 +30528,7 @@ var $author$project$Route$Styles$Color$route = $author$project$RouteBuilder$buil
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$Color$head
+			y: $author$project$Route$Styles$Color$head
 		}));
 var $author$project$Route$Styles$Density$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -30523,7 +30690,7 @@ var $author$project$Route$Styles$Density$route = $author$project$RouteBuilder$bu
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$Density$head
+			y: $author$project$Route$Styles$Density$head
 		}));
 var $author$project$Route$Styles$Elevation$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -30727,7 +30894,7 @@ var $author$project$Route$Styles$Elevation$route = $author$project$RouteBuilder$
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$Elevation$head
+			y: $author$project$Route$Styles$Elevation$head
 		}));
 var $author$project$Route$Styles$Motion$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -31067,7 +31234,7 @@ var $author$project$Route$Styles$Motion$route = $author$project$RouteBuilder$bui
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$Motion$head
+			y: $author$project$Route$Styles$Motion$head
 		}));
 var $author$project$Route$Styles$Shape$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -31492,7 +31659,7 @@ var $author$project$Route$Styles$Shape$route = $author$project$RouteBuilder$buil
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$Shape$head
+			y: $author$project$Route$Styles$Shape$head
 		}));
 var $author$project$Route$Styles$StateLayers$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -31753,7 +31920,7 @@ var $author$project$Route$Styles$StateLayers$route = $author$project$RouteBuilde
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$StateLayers$head
+			y: $author$project$Route$Styles$StateLayers$head
 		}));
 var $author$project$Route$Styles$Typography$head = function (_v0) {
 	return $dillonkearns$elm_pages$Head$Seo$website(
@@ -32130,7 +32297,7 @@ var $author$project$Route$Styles$Typography$route = $author$project$RouteBuilder
 		{
 			xx: $dillonkearns$elm_pages$BackendTask$succeed(
 				{}),
-			z: $author$project$Route$Styles$Typography$head
+			y: $author$project$Route$Styles$Typography$head
 		}));
 var $author$project$Main$action$ = function (requestPayload, maybeRoute) {
 	if (maybeRoute.$ === 1) {
@@ -32410,11 +32577,18 @@ var $author$project$Main$action$ = function (requestPayload, maybeRoute) {
 						$author$project$Route$Examples$route.ov,
 						requestPayload,
 						{}));
-			default:
+			case 39:
 				return $dillonkearns$elm_pages$BackendTask$map$(
 					$dillonkearns$elm_pages$Server$Response$map($author$project$Main$ActionDataGuide),
 					A2(
 						$author$project$Route$Guide$route.ov,
+						requestPayload,
+						{}));
+			default:
+				return $dillonkearns$elm_pages$BackendTask$map$(
+					$dillonkearns$elm_pages$Server$Response$map($author$project$Main$ActionDataIndex),
+					A2(
+						$author$project$Route$Index$route.ov,
 						requestPayload,
 						{}));
 		}
@@ -33661,7 +33835,7 @@ var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id'
 var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$moduleName = function (moduleContext) {
 	return $elm$core$String$join$(
 		'/',
-		A2($elm$core$List$cons, 'src', moduleContext.F)) + '.elm';
+		A2($elm$core$List$cons, 'src', moduleContext.E)) + '.elm';
 };
 var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$recordToString = function (fields) {
 	return '{ ' + ($elm$core$String$join$(
@@ -33968,7 +34142,7 @@ var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$document$ = function (
 									_List_Nil,
 									_List_fromArray(
 										[
-											$dillonkearns$elm_pages$Pages$Internal$RoutePattern$view(moduleContext.H)
+											$dillonkearns$elm_pages$Pages$Internal$RoutePattern$view(moduleContext.G)
 										])),
 									A2($elm$html$Html$br, _List_Nil, _List_Nil),
 									A2($elm$html$Html$br, _List_Nil, _List_Nil),
@@ -34097,7 +34271,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$withUserMsg$ = function (con
 	if (!_v1.$) {
 		var pageData = _v1.a;
 		var _v2 = A8(
-			config.x,
+			config.w,
 			model.g,
 			$dillonkearns$elm_pages$Pages$Internal$Platform$toFetcherState(model.au),
 			$elm$core$Maybe$map$($elm$core$Tuple$second, model.at),
@@ -34136,7 +34310,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$loadDataAndUpdateUrl$ = func
 		var previousPageData = _v1.a;
 		var onActionMsg = $elm$core$Maybe$andThen$(config.yE, newActionData);
 		var _v2 = A8(
-			config.x,
+			config.w,
 			model.g,
 			$dillonkearns$elm_pages$Pages$Internal$Platform$toFetcherState(model.au),
 			$elm$core$Maybe$map$($elm$core$Tuple$second, model.at),
@@ -34214,7 +34388,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$performUserMsg$ = function (
 	if (!_v1.$) {
 		var pageData = _v1.a;
 		var _v2 = A8(
-			config.x,
+			config.w,
 			model.g,
 			$dillonkearns$elm_pages$Pages$Internal$Platform$toFetcherState(model.au),
 			$elm$core$Maybe$map$($elm$core$Tuple$second, model.at),
@@ -34780,7 +34954,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$update$ = function (config, 
 						var _v26 = stayingOnSamePath ? _Utils_Tuple2(previousPageData.ap, $dillonkearns$elm_pages$Pages$Internal$Platform$NoEffect) : $elm$core$Tuple$mapSecond$(
 							$dillonkearns$elm_pages$Pages$Internal$Platform$UserCmd,
 							A8(
-								config.x,
+								config.w,
 								model.g,
 								$dillonkearns$elm_pages$Pages$Internal$Platform$toFetcherState(model.au),
 								$elm$core$Maybe$map$($elm$core$Tuple$second, model.at),
@@ -35050,7 +35224,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$update$ = function (config, 
 									var _v41 = stayingOnSamePath ? _Utils_Tuple2(previousPageData.ap, $dillonkearns$elm_pages$Pages$Internal$Platform$NoEffect) : $elm$core$Tuple$mapSecond$(
 										$dillonkearns$elm_pages$Pages$Internal$Platform$UserCmd,
 										A8(
-											config.x,
+											config.w,
 											model.g,
 											$dillonkearns$elm_pages$Pages$Internal$Platform$toFetcherState(model.au),
 											$elm$core$Maybe$map$($elm$core$Tuple$second, model.at),
@@ -35122,7 +35296,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$update$ = function (config, 
 									var _v45 = stayingOnSamePath_ ? _Utils_Tuple2(previousPageData.ap, $dillonkearns$elm_pages$Pages$Internal$Platform$NoEffect) : $elm$core$Tuple$mapSecond$(
 										$dillonkearns$elm_pages$Pages$Internal$Platform$UserCmd,
 										A8(
-											config.x,
+											config.w,
 											model.g,
 											$dillonkearns$elm_pages$Pages$Internal$Platform$toFetcherState(model.au),
 											$elm$core$Maybe$map$($elm$core$Tuple$second, model.at),
@@ -35439,7 +35613,7 @@ var $dillonkearns$elm_pages$Pages$Internal$Platform$application = function (conf
 							]));
 				}
 			},
-			x: F2(
+			w: F2(
 				function (msg, model) {
 					return $elm$core$Tuple$mapSecond$(
 						A2($dillonkearns$elm_pages$Pages$Internal$Platform$perform, config, model),
@@ -35553,6 +35727,9 @@ var $author$project$Main$DataGuide__ToolingRefactors = function (a) {
 var $author$project$Main$DataGuide__Troubleshooting = function (a) {
 	return {$: 29, a: a};
 };
+var $author$project$Main$DataIndex = function (a) {
+	return {$: 40, a: a};
+};
 var $author$project$Main$DataStyles__Color = function (a) {
 	return {$: 30, a: a};
 };
@@ -35601,7 +35778,8 @@ var $elm$bytes$Bytes$Decode$float64 = function (endianness) {
 	return _Bytes_read_f64(!endianness);
 };
 var $lamdera$codecs$Lamdera$Wire3$decodeFloat64 = $elm$bytes$Bytes$Decode$float64($lamdera$codecs$Lamdera$Wire3$endianness);
-var $lamdera$codecs$Lamdera$Wire3$identityFloatToInt = $elm$core$Basics$floor;
+var $elm$core$Basics$isInfinite = _Basics_isInfinite;
+var $elm$core$Basics$isNaN = _Basics_isNaN;
 var $lamdera$codecs$Lamdera$Wire3$intDivBy$ = function (b, a) {
 	var v = a / b;
 	return (v < 0) ? (-$elm$core$Basics$floor(-v)) : $elm$core$Basics$floor(v);
@@ -35649,7 +35827,12 @@ var $lamdera$codecs$Lamdera$Wire3$decodeInt64 = function () {
 									F4(
 										function (b0, b1, b2, b3) {
 											return (((((b0 * 256) + b1) * 256) + b2) * 256) + b3;
-										}))))))) : $elm$bytes$Bytes$Decode$map$($lamdera$codecs$Lamdera$Wire3$identityFloatToInt, $lamdera$codecs$Lamdera$Wire3$decodeFloat64)))));
+										}))))))) : $elm$bytes$Bytes$Decode$andThen$(
+				function (n1) {
+					return ($elm$core$Basics$isNaN(n1) || $elm$core$Basics$isInfinite(n1)) ? $elm$bytes$Bytes$Decode$fail : $elm$bytes$Bytes$Decode$succeed(
+						$elm$core$Basics$floor(n1));
+				},
+				$lamdera$codecs$Lamdera$Wire3$decodeFloat64)))));
 		},
 		$elm$bytes$Bytes$Decode$unsignedInt8);
 }();
@@ -35890,7 +36073,7 @@ var $author$project$Route$Guide$Reference$w3_decode_Component = $lamdera$codecs$
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode(
 						F5(
 							function (members0, moduleName0, name0, overview0, slug0) {
-								return {sP: members0, F: moduleName0, il: name0, tP: overview0, vm: slug0};
+								return {sP: members0, E: moduleName0, il: name0, tP: overview0, vm: slug0};
 							})))))));
 var $author$project$Route$Guide$Reference$w3_decode_Data = $lamdera$codecs$Lamdera$Wire3$decodeList($author$project$Route$Guide$Reference$w3_decode_Component);
 var $lamdera$codecs$Lamdera$Wire3$decodeBool = $elm$bytes$Bytes$Decode$andThen$(
@@ -35990,6 +36173,8 @@ var $author$project$Route$Guide$ToolingRefactors$w3_decode_Data = $lamdera$codec
 	{});
 var $author$project$Route$Guide$Troubleshooting$w3_decode_Data = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
 	{});
+var $author$project$Route$Index$w3_decode_Data = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
+	{});
 var $author$project$Route$Styles$Color$w3_decode_Data = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
 	{});
 var $author$project$Route$Styles$Density$w3_decode_Data = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
@@ -36088,8 +36273,10 @@ var $author$project$Main$byteDecodePageData = function (maybeRoute) {
 				return $elm$bytes$Bytes$Decode$map$($author$project$Main$DataComponents__Name_, $author$project$Route$Components$Name_$w3_decode_Data);
 			case 38:
 				return $elm$bytes$Bytes$Decode$map$($author$project$Main$DataExamples, $author$project$Route$Examples$w3_decode_Data);
-			default:
+			case 39:
 				return $elm$bytes$Bytes$Decode$map$($author$project$Main$DataGuide, $author$project$Route$Guide$w3_decode_Data);
+			default:
+				return $elm$bytes$Bytes$Decode$map$($author$project$Main$DataIndex, $author$project$Route$Index$w3_decode_Data);
 		}
 	}
 };
@@ -36407,7 +36594,7 @@ var $author$project$Route$Guide$Reference$w3_encode_Component = function (w3_rec
 		_List_fromArray(
 			[
 				$lamdera$codecs$Lamdera$Wire3$encodeList$($author$project$Route$Guide$Reference$w3_encode_Member, w3_rec_var0.sP),
-				$lamdera$codecs$Lamdera$Wire3$encodeString(w3_rec_var0.F),
+				$lamdera$codecs$Lamdera$Wire3$encodeString(w3_rec_var0.E),
 				$lamdera$codecs$Lamdera$Wire3$encodeString(w3_rec_var0.il),
 				$lamdera$codecs$Lamdera$Wire3$encodeString(w3_rec_var0.tP),
 				$lamdera$codecs$Lamdera$Wire3$encodeString(w3_rec_var0.vm)
@@ -36482,6 +36669,9 @@ var $author$project$Route$Guide$ToolingRefactors$w3_encode_Data = function (w3_r
 var $author$project$Route$Guide$Troubleshooting$w3_encode_Data = function (w3_rec_var0) {
 	return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(_List_Nil);
 };
+var $author$project$Route$Index$w3_encode_Data = function (w3_rec_var0) {
+	return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(_List_Nil);
+};
 var $author$project$Route$Styles$Color$w3_encode_Data = function (w3_rec_var0) {
 	return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(_List_Nil);
 };
@@ -36518,10 +36708,10 @@ var $author$project$ErrorPage$w3_encode_ErrorPage = function (w3v) {
 };
 var $author$project$Main$byteEncodePageData = function (pageData) {
 	switch (pageData.$) {
-		case 41:
+		case 42:
 			var thisPageData = pageData.a;
 			return $author$project$ErrorPage$w3_encode_ErrorPage(thisPageData);
-		case 40:
+		case 41:
 			return $elm$bytes$Bytes$Encode$unsignedInt8(0);
 		case 0:
 			var thisPageData = pageData.a;
@@ -36640,12 +36830,15 @@ var $author$project$Main$byteEncodePageData = function (pageData) {
 		case 38:
 			var thisPageData = pageData.a;
 			return $author$project$Route$Examples$w3_encode_Data(thisPageData);
-		default:
+		case 39:
 			var thisPageData = pageData.a;
 			return $author$project$Route$Guide$w3_encode_Data(thisPageData);
+		default:
+			var thisPageData = pageData.a;
+			return $author$project$Route$Index$w3_encode_Data(thisPageData);
 	}
 };
-var $author$project$Main$Data404NotFoundPage____ = {$: 40};
+var $author$project$Main$Data404NotFoundPage____ = {$: 41};
 var $dillonkearns$elm_pages$Server$Response$mapError$ = function (mapFn, pageServerResponse) {
 	switch (pageServerResponse.$) {
 		case 0:
@@ -36968,11 +37161,18 @@ var $author$project$Main$dataForRoute$ = function (requestPayload, maybeRoute) {
 						$author$project$Route$Examples$route.xx,
 						requestPayload,
 						{}));
-			default:
+			case 39:
 				return $dillonkearns$elm_pages$BackendTask$map$(
 					$dillonkearns$elm_pages$Server$Response$map($author$project$Main$DataGuide),
 					A2(
 						$author$project$Route$Guide$route.xx,
+						requestPayload,
+						{}));
+			default:
+				return $dillonkearns$elm_pages$BackendTask$map$(
+					$dillonkearns$elm_pages$Server$Response$map($author$project$Main$DataIndex),
+					A2(
+						$author$project$Route$Index$route.xx,
 						requestPayload,
 						{}));
 		}
@@ -37063,6 +37263,8 @@ var $author$project$Route$Guide$Theming$w3_decode_ActionData = $lamdera$codecs$L
 var $author$project$Route$Guide$ToolingRefactors$w3_decode_ActionData = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
 	{});
 var $author$project$Route$Guide$Troubleshooting$w3_decode_ActionData = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
+	{});
+var $author$project$Route$Index$w3_decode_ActionData = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
 	{});
 var $author$project$Route$Styles$Color$w3_decode_ActionData = $lamdera$codecs$Lamdera$Wire3$succeedDecode(
 	{});
@@ -37216,29 +37418,33 @@ var $author$project$Main$w3_decode_ActionData = A2(
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataGuide__Troubleshooting));
 			case 33:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
+					$author$project$Route$Index$w3_decode_ActionData,
+					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataIndex));
+			case 34:
+				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Color$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__Color));
-			case 34:
+			case 35:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Density$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__Density));
-			case 35:
+			case 36:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Elevation$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__Elevation));
-			case 36:
+			case 37:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Motion$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__Motion));
-			case 37:
+			case 38:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Shape$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__Shape));
-			case 38:
+			case 39:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$StateLayers$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__StateLayers));
-			case 39:
+			case 40:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Typography$w3_decode_ActionData,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$ActionDataStyles__Typography));
@@ -37427,29 +37633,33 @@ var $author$project$Main$w3_decode_PageData = A2(
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataGuide__Troubleshooting));
 			case 35:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
+					$author$project$Route$Index$w3_decode_Data,
+					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataIndex));
+			case 36:
+				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Color$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__Color));
-			case 36:
+			case 37:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Density$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__Density));
-			case 37:
+			case 38:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Elevation$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__Elevation));
-			case 38:
+			case 39:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Motion$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__Motion));
-			case 39:
+			case 40:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Shape$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__Shape));
-			case 40:
+			case 41:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$StateLayers$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__StateLayers));
-			case 41:
+			case 42:
 				return $lamdera$codecs$Lamdera$Wire3$andMapDecode$(
 					$author$project$Route$Styles$Typography$w3_decode_Data,
 					$lamdera$codecs$Lamdera$Wire3$succeedDecode($author$project$Main$DataStyles__Typography));
@@ -37548,7 +37758,7 @@ var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$w3_decode_ModuleContex
 			$lamdera$codecs$Lamdera$Wire3$succeedDecode(
 				F3(
 					function (matchedRouteParams0, moduleName0, routePattern0) {
-						return {AU: matchedRouteParams0, F: moduleName0, H: routePattern0};
+						return {AU: matchedRouteParams0, E: moduleName0, G: routePattern0};
 					})))));
 var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$w3_decode_NotFoundReason = A2(
 	$lamdera$codecs$Lamdera$Wire3$andThenDecode,
@@ -37725,6 +37935,9 @@ var $author$project$Route$Guide$ToolingRefactors$w3_encode_ActionData = function
 var $author$project$Route$Guide$Troubleshooting$w3_encode_ActionData = function (w3_rec_var0) {
 	return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(_List_Nil);
 };
+var $author$project$Route$Index$w3_encode_ActionData = function (w3_rec_var0) {
+	return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(_List_Nil);
+};
 var $author$project$Route$Styles$Color$w3_encode_ActionData = function (w3_rec_var0) {
 	return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(_List_Nil);
 };
@@ -37865,9 +38078,12 @@ var $author$project$Main$encodeActionData = function (actionData) {
 		case 38:
 			var thisActionData = actionData.a;
 			return $author$project$Route$Examples$w3_encode_ActionData(thisActionData);
-		default:
+		case 39:
 			var thisActionData = actionData.a;
 			return $author$project$Route$Guide$w3_encode_ActionData(thisActionData);
+		default:
+			var thisActionData = actionData.a;
+			return $author$project$Route$Index$w3_encode_ActionData(thisActionData);
 	}
 };
 var $author$project$Main$w3_encode_ActionData = function (w3v) {
@@ -38136,12 +38352,20 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 						$elm$bytes$Bytes$Encode$unsignedInt8(32),
 						$author$project$Route$Guide$Troubleshooting$w3_encode_ActionData(v0)
 					]));
-		case 30:
+		case 40:
 			var v0 = w3v.a;
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
 						$elm$bytes$Bytes$Encode$unsignedInt8(33),
+						$author$project$Route$Index$w3_encode_ActionData(v0)
+					]));
+		case 30:
+			var v0 = w3v.a;
+			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
+				_List_fromArray(
+					[
+						$elm$bytes$Bytes$Encode$unsignedInt8(34),
 						$author$project$Route$Styles$Color$w3_encode_ActionData(v0)
 					]));
 		case 31:
@@ -38149,7 +38373,7 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(34),
+						$elm$bytes$Bytes$Encode$unsignedInt8(35),
 						$author$project$Route$Styles$Density$w3_encode_ActionData(v0)
 					]));
 		case 32:
@@ -38157,7 +38381,7 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(35),
+						$elm$bytes$Bytes$Encode$unsignedInt8(36),
 						$author$project$Route$Styles$Elevation$w3_encode_ActionData(v0)
 					]));
 		case 33:
@@ -38165,7 +38389,7 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(36),
+						$elm$bytes$Bytes$Encode$unsignedInt8(37),
 						$author$project$Route$Styles$Motion$w3_encode_ActionData(v0)
 					]));
 		case 34:
@@ -38173,7 +38397,7 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(37),
+						$elm$bytes$Bytes$Encode$unsignedInt8(38),
 						$author$project$Route$Styles$Shape$w3_encode_ActionData(v0)
 					]));
 		case 35:
@@ -38181,7 +38405,7 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(38),
+						$elm$bytes$Bytes$Encode$unsignedInt8(39),
 						$author$project$Route$Styles$StateLayers$w3_encode_ActionData(v0)
 					]));
 		default:
@@ -38189,7 +38413,7 @@ var $author$project$Main$w3_encode_ActionData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(39),
+						$elm$bytes$Bytes$Encode$unsignedInt8(40),
 						$author$project$Route$Styles$Typography$w3_encode_ActionData(v0)
 					]));
 	}
@@ -38212,7 +38436,7 @@ var $author$project$Shared$w3_encode_Data = function (w3_rec_var0) {
 };
 var $author$project$Main$w3_encode_PageData = function (w3v) {
 	switch (w3v.$) {
-		case 40:
+		case 41:
 			return $elm$bytes$Bytes$Encode$unsignedInt8(0);
 		case 0:
 			var v0 = w3v.a;
@@ -38230,7 +38454,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 						$elm$bytes$Bytes$Encode$unsignedInt8(2),
 						$author$project$Route$Components$Name_$w3_encode_Data(v0)
 					]));
-		case 41:
+		case 42:
 			var v0 = w3v.a;
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
@@ -38486,12 +38710,20 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 						$elm$bytes$Bytes$Encode$unsignedInt8(34),
 						$author$project$Route$Guide$Troubleshooting$w3_encode_Data(v0)
 					]));
-		case 30:
+		case 40:
 			var v0 = w3v.a;
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
 						$elm$bytes$Bytes$Encode$unsignedInt8(35),
+						$author$project$Route$Index$w3_encode_Data(v0)
+					]));
+		case 30:
+			var v0 = w3v.a;
+			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
+				_List_fromArray(
+					[
+						$elm$bytes$Bytes$Encode$unsignedInt8(36),
 						$author$project$Route$Styles$Color$w3_encode_Data(v0)
 					]));
 		case 31:
@@ -38499,7 +38731,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(36),
+						$elm$bytes$Bytes$Encode$unsignedInt8(37),
 						$author$project$Route$Styles$Density$w3_encode_Data(v0)
 					]));
 		case 32:
@@ -38507,7 +38739,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(37),
+						$elm$bytes$Bytes$Encode$unsignedInt8(38),
 						$author$project$Route$Styles$Elevation$w3_encode_Data(v0)
 					]));
 		case 33:
@@ -38515,7 +38747,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(38),
+						$elm$bytes$Bytes$Encode$unsignedInt8(39),
 						$author$project$Route$Styles$Motion$w3_encode_Data(v0)
 					]));
 		case 34:
@@ -38523,7 +38755,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(39),
+						$elm$bytes$Bytes$Encode$unsignedInt8(40),
 						$author$project$Route$Styles$Shape$w3_encode_Data(v0)
 					]));
 		case 35:
@@ -38531,7 +38763,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(40),
+						$elm$bytes$Bytes$Encode$unsignedInt8(41),
 						$author$project$Route$Styles$StateLayers$w3_encode_Data(v0)
 					]));
 		default:
@@ -38539,7 +38771,7 @@ var $author$project$Main$w3_encode_PageData = function (w3v) {
 			return $lamdera$codecs$Lamdera$Wire3$encodeSequenceWithoutLength(
 				_List_fromArray(
 					[
-						$elm$bytes$Bytes$Encode$unsignedInt8(41),
+						$elm$bytes$Bytes$Encode$unsignedInt8(42),
 						$author$project$Route$Styles$Typography$w3_encode_Data(v0)
 					]));
 	}
@@ -38594,8 +38826,8 @@ var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$w3_encode_ModuleContex
 		_List_fromArray(
 			[
 				$dillonkearns$elm_pages$Pages$Internal$NotFoundReason$w3_encode_Record(w3_rec_var0.AU),
-				$lamdera$codecs$Lamdera$Wire3$encodeList$($lamdera$codecs$Lamdera$Wire3$encodeString, w3_rec_var0.F),
-				$dillonkearns$elm_pages$Pages$Internal$RoutePattern$w3_encode_RoutePattern(w3_rec_var0.H)
+				$lamdera$codecs$Lamdera$Wire3$encodeList$($lamdera$codecs$Lamdera$Wire3$encodeString, w3_rec_var0.E),
+				$dillonkearns$elm_pages$Pages$Internal$RoutePattern$w3_encode_RoutePattern(w3_rec_var0.G)
 			]));
 };
 var $dillonkearns$elm_pages$Pages$Internal$NotFoundReason$w3_encode_NotFoundReason = function (w3v) {
@@ -38706,9 +38938,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Components$All$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Components', 'All']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38725,9 +38957,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$Dashboard$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'Dashboard']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38744,9 +38976,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$Feed$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'Feed']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38763,9 +38995,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$ListDetail$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'ListDetail']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38782,9 +39014,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$Mail$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'Mail']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38801,9 +39033,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$Settings$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'Settings']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38820,9 +39052,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$Shop$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'Shop']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38839,9 +39071,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$SupportingPane$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'SupportingPane']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38858,9 +39090,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$Travel$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples', 'Travel']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38877,9 +39109,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$GettingStarted$BrowserSupport$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['GettingStarted', 'BrowserSupport']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38896,9 +39128,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$GettingStarted$Installation$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['GettingStarted', 'Installation']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38915,9 +39147,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$GettingStarted$Welcome$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['GettingStarted', 'Welcome']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38934,9 +39166,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Accessibility$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Accessibility']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38953,9 +39185,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$AccessibleByConstruction$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'AccessibleByConstruction']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38972,9 +39204,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$CheatSheet$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'CheatSheet']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -38991,9 +39223,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$CompositionTextField$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'CompositionTextField']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39010,9 +39242,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$FirstComponent$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'FirstComponent']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39029,9 +39261,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$GeneratedAndInspectable$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'GeneratedAndInspectable']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39048,9 +39280,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Glossary$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Glossary']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39067,9 +39299,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$HowWeProveIt$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'HowWeProveIt']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39086,9 +39318,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$InvalidStates$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'InvalidStates']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39105,9 +39337,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Motion$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Motion']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39124,9 +39356,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Reference$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Reference']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39143,9 +39375,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Roundtrip$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Roundtrip']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39162,9 +39394,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Seams$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Seams']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39181,9 +39413,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Strictness$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Strictness']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39200,9 +39432,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$TheLayers$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'TheLayers']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39219,9 +39451,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Theming$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Theming']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39238,9 +39470,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$ToolingRefactors$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'ToolingRefactors']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39257,9 +39489,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Guide$Troubleshooting$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide', 'Troubleshooting']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39276,9 +39508,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$Color$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'Color']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39295,9 +39527,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$Density$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'Density']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39314,9 +39546,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$Elevation$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'Elevation']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39333,9 +39565,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$Motion$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'Motion']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39352,9 +39584,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$Shape$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'Shape']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39371,9 +39603,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$StateLayers$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'StateLayers']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39390,9 +39622,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Styles$Typography$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Styles', 'Typography']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39410,9 +39642,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Components$Name_$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Components', 'Name_']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39434,9 +39666,9 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 				return A3(
 					$author$project$Route$Examples$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Examples']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
@@ -39448,17 +39680,35 @@ var $author$project$Main$handleRoute = function (maybeRoute) {
 						return _List_Nil;
 					},
 					{});
-			default:
+			case 39:
 				return A3(
 					$author$project$Route$Guide$route.C,
 					{
-						F: _List_fromArray(
+						E: _List_fromArray(
 							['Guide']),
-						H: {
+						G: {
 							m: $elm$core$Maybe$Nothing,
 							n: _List_fromArray(
 								[
 									$dillonkearns$elm_pages$Pages$Internal$RoutePattern$StaticSegment('guide')
+								])
+						}
+					},
+					function (param) {
+						return _List_Nil;
+					},
+					{});
+			default:
+				return A3(
+					$author$project$Route$Index$route.C,
+					{
+						E: _List_fromArray(
+							['Index']),
+						G: {
+							m: $elm$core$Maybe$Nothing,
+							n: _List_fromArray(
+								[
+									$dillonkearns$elm_pages$Pages$Internal$RoutePattern$StaticSegment('index')
 								])
 						}
 					},
@@ -39570,6 +39820,9 @@ var $author$project$Main$ModelGuide__ToolingRefactors = function (a) {
 var $author$project$Main$ModelGuide__Troubleshooting = function (a) {
 	return {$: 29, a: a};
 };
+var $author$project$Main$ModelIndex = function (a) {
+	return {$: 40, a: a};
+};
 var $author$project$Main$ModelStyles__Color = function (a) {
 	return {$: 30, a: a};
 };
@@ -39634,7 +39887,7 @@ var $author$project$Main$MsgGettingStarted__Welcome = function (a) {
 	return {$: 11, a: a};
 };
 var $author$project$Main$MsgGlobal = function (a) {
-	return {$: 40, a: a};
+	return {$: 41, a: a};
 };
 var $author$project$Main$MsgGuide = function (a) {
 	return {$: 39, a: a};
@@ -39693,6 +39946,9 @@ var $author$project$Main$MsgGuide__ToolingRefactors = function (a) {
 var $author$project$Main$MsgGuide__Troubleshooting = function (a) {
 	return {$: 29, a: a};
 };
+var $author$project$Main$MsgIndex = function (a) {
+	return {$: 40, a: a};
+};
 var $author$project$Main$MsgStyles__Color = function (a) {
 	return {$: 30, a: a};
 };
@@ -39719,10 +39975,10 @@ var $author$project$Effect$Batch = function (a) {
 };
 var $author$project$Effect$batch = $author$project$Effect$Batch;
 var $author$project$Main$ModelErrorPage____ = function (a) {
-	return {$: 40, a: a};
+	return {$: 41, a: a};
 };
 var $author$project$Main$MsgErrorPage____ = function (a) {
-	return {$: 42, a: a};
+	return {$: 43, a: a};
 };
 var $author$project$ErrorPage$init = function (_v0) {
 	return _Utils_Tuple2(
@@ -39805,7 +40061,7 @@ var $author$project$Main$initErrorPage = function (pageData) {
 		$author$project$Effect$map($author$project$Main$MsgErrorPage____),
 		$author$project$ErrorPage$init(
 			function () {
-				if (pageData.$ === 41) {
+				if (pageData.$ === 42) {
 					var errorPage = pageData.a;
 					return errorPage;
 				} else {
@@ -43731,7 +43987,7 @@ var $author$project$Shared$template = {
 			return $author$project$Shared$PageChanged;
 		}),
 	B: $author$project$Shared$subscriptions,
-	x: $author$project$Shared$update,
+	w: $author$project$Shared$update,
 	c: $author$project$Shared$view
 };
 var $author$project$Main$init$ = function (currentGlobalModel, userFlags, sharedData, pageData, actionData, maybePagePath) {
@@ -43762,7 +44018,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 		} else {
 			var justRouteAndPath = _v2.a;
 			var _v3 = _Utils_Tuple2(justRouteAndPath.a, pageData);
-			_v3$40:
+			_v3$41:
 			while (true) {
 				switch (_v3.a.$) {
 					case 0:
@@ -43801,7 +44057,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 1:
 						if (_v3.b.$ === 1) {
@@ -43839,7 +44095,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 2:
 						if (_v3.b.$ === 2) {
@@ -43877,7 +44133,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 3:
 						if (_v3.b.$ === 3) {
@@ -43915,7 +44171,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 4:
 						if (_v3.b.$ === 4) {
@@ -43953,7 +44209,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 5:
 						if (_v3.b.$ === 5) {
@@ -43991,7 +44247,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 6:
 						if (_v3.b.$ === 6) {
@@ -44029,7 +44285,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 7:
 						if (_v3.b.$ === 7) {
@@ -44067,7 +44323,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 8:
 						if (_v3.b.$ === 8) {
@@ -44105,7 +44361,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 9:
 						if (_v3.b.$ === 9) {
@@ -44143,7 +44399,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 10:
 						if (_v3.b.$ === 10) {
@@ -44181,7 +44437,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 11:
 						if (_v3.b.$ === 11) {
@@ -44219,7 +44475,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 12:
 						if (_v3.b.$ === 12) {
@@ -44257,7 +44513,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 13:
 						if (_v3.b.$ === 13) {
@@ -44295,7 +44551,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 14:
 						if (_v3.b.$ === 14) {
@@ -44333,7 +44589,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 15:
 						if (_v3.b.$ === 15) {
@@ -44371,7 +44627,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 16:
 						if (_v3.b.$ === 16) {
@@ -44409,7 +44665,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 17:
 						if (_v3.b.$ === 17) {
@@ -44447,7 +44703,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 18:
 						if (_v3.b.$ === 18) {
@@ -44485,7 +44741,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 19:
 						if (_v3.b.$ === 19) {
@@ -44523,7 +44779,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 20:
 						if (_v3.b.$ === 20) {
@@ -44561,7 +44817,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 21:
 						if (_v3.b.$ === 21) {
@@ -44599,7 +44855,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 22:
 						if (_v3.b.$ === 22) {
@@ -44637,7 +44893,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 23:
 						if (_v3.b.$ === 23) {
@@ -44675,7 +44931,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 24:
 						if (_v3.b.$ === 24) {
@@ -44713,7 +44969,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 25:
 						if (_v3.b.$ === 25) {
@@ -44751,7 +45007,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 26:
 						if (_v3.b.$ === 26) {
@@ -44789,7 +45045,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 27:
 						if (_v3.b.$ === 27) {
@@ -44827,7 +45083,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 28:
 						if (_v3.b.$ === 28) {
@@ -44865,7 +45121,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 29:
 						if (_v3.b.$ === 29) {
@@ -44903,7 +45159,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 30:
 						if (_v3.b.$ === 30) {
@@ -44941,7 +45197,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 31:
 						if (_v3.b.$ === 31) {
@@ -44979,7 +45235,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 32:
 						if (_v3.b.$ === 32) {
@@ -45017,7 +45273,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 33:
 						if (_v3.b.$ === 33) {
@@ -45055,7 +45311,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 34:
 						if (_v3.b.$ === 34) {
@@ -45093,7 +45349,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 35:
 						if (_v3.b.$ === 35) {
@@ -45131,7 +45387,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 36:
 						if (_v3.b.$ === 36) {
@@ -45169,7 +45425,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 37:
 						if (_v3.b.$ === 37) {
@@ -45207,7 +45463,7 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
 					case 38:
 						if (_v3.b.$ === 38) {
@@ -45245,9 +45501,9 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
 						}
-					default:
+					case 39:
 						if (_v3.b.$ === 39) {
 							var _v81 = _v3.a;
 							var thisPageData = _v3.b.a;
@@ -45283,7 +45539,45 @@ var $author$project$Main$init$ = function (currentGlobalModel, userFlags, shared
 											maybePagePath)
 									}));
 						} else {
-							break _v3$40;
+							break _v3$41;
+						}
+					default:
+						if (_v3.b.$ === 40) {
+							var _v83 = _v3.a;
+							var thisPageData = _v3.b.a;
+							return $elm$core$Tuple$mapBoth$(
+								$author$project$Main$ModelIndex,
+								$author$project$Effect$map($author$project$Main$MsgIndex),
+								A2(
+									$author$project$Route$Index$route.A,
+									sharedModel,
+									{
+										ov: $elm$core$Maybe$andThen$(
+											function (andThenUnpack) {
+												if (andThenUnpack.$ === 40) {
+													var thisActionData = andThenUnpack.a;
+													return $elm$core$Maybe$Just(thisActionData);
+												} else {
+													return $elm$core$Maybe$Nothing;
+												}
+											},
+											actionData),
+										e: $elm$core$Dict$empty,
+										xx: thisPageData,
+										f: $elm$core$Maybe$Nothing,
+										g: $elm$core$Dict$empty,
+										a: justRouteAndPath.b.a,
+										h: {},
+										d: sharedData,
+										BO: $dillonkearns$elm_pages$Pages$Fetcher$submit($author$project$Route$Index$w3_decode_ActionData),
+										i: $elm$core$Maybe$andThen$(
+											function ($) {
+												return $.l;
+											},
+											maybePagePath)
+									}));
+						} else {
+							break _v3$41;
 						}
 				}
 			}
@@ -45312,7 +45606,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgComponents__All(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Components$All$route.G);
+				$author$project$Route$Components$All$route.F);
 		case 1:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45320,7 +45614,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__Dashboard(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$Dashboard$route.G);
+				$author$project$Route$Examples$Dashboard$route.F);
 		case 2:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45328,7 +45622,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__Feed(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$Feed$route.G);
+				$author$project$Route$Examples$Feed$route.F);
 		case 3:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45336,7 +45630,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__ListDetail(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$ListDetail$route.G);
+				$author$project$Route$Examples$ListDetail$route.F);
 		case 4:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45344,7 +45638,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__Mail(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$Mail$route.G);
+				$author$project$Route$Examples$Mail$route.F);
 		case 5:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45352,7 +45646,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__Settings(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$Settings$route.G);
+				$author$project$Route$Examples$Settings$route.F);
 		case 6:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45360,7 +45654,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__Shop(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$Shop$route.G);
+				$author$project$Route$Examples$Shop$route.F);
 		case 7:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45368,7 +45662,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__SupportingPane(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$SupportingPane$route.G);
+				$author$project$Route$Examples$SupportingPane$route.F);
 		case 8:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45376,7 +45670,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples__Travel(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$Travel$route.G);
+				$author$project$Route$Examples$Travel$route.F);
 		case 9:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45384,7 +45678,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGettingStarted__BrowserSupport(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$GettingStarted$BrowserSupport$route.G);
+				$author$project$Route$GettingStarted$BrowserSupport$route.F);
 		case 10:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45392,7 +45686,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGettingStarted__Installation(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$GettingStarted$Installation$route.G);
+				$author$project$Route$GettingStarted$Installation$route.F);
 		case 11:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45400,7 +45694,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGettingStarted__Welcome(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$GettingStarted$Welcome$route.G);
+				$author$project$Route$GettingStarted$Welcome$route.F);
 		case 12:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45408,7 +45702,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Accessibility(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Accessibility$route.G);
+				$author$project$Route$Guide$Accessibility$route.F);
 		case 13:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45416,7 +45710,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__AccessibleByConstruction(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$AccessibleByConstruction$route.G);
+				$author$project$Route$Guide$AccessibleByConstruction$route.F);
 		case 14:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45424,7 +45718,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__CheatSheet(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$CheatSheet$route.G);
+				$author$project$Route$Guide$CheatSheet$route.F);
 		case 15:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45432,7 +45726,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__CompositionTextField(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$CompositionTextField$route.G);
+				$author$project$Route$Guide$CompositionTextField$route.F);
 		case 16:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45440,7 +45734,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__FirstComponent(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$FirstComponent$route.G);
+				$author$project$Route$Guide$FirstComponent$route.F);
 		case 17:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45448,7 +45742,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__GeneratedAndInspectable(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$GeneratedAndInspectable$route.G);
+				$author$project$Route$Guide$GeneratedAndInspectable$route.F);
 		case 18:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45456,7 +45750,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Glossary(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Glossary$route.G);
+				$author$project$Route$Guide$Glossary$route.F);
 		case 19:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45464,7 +45758,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__HowWeProveIt(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$HowWeProveIt$route.G);
+				$author$project$Route$Guide$HowWeProveIt$route.F);
 		case 20:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45472,7 +45766,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__InvalidStates(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$InvalidStates$route.G);
+				$author$project$Route$Guide$InvalidStates$route.F);
 		case 21:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45480,7 +45774,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Motion(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Motion$route.G);
+				$author$project$Route$Guide$Motion$route.F);
 		case 22:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45488,7 +45782,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Reference(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Reference$route.G);
+				$author$project$Route$Guide$Reference$route.F);
 		case 23:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45496,7 +45790,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Roundtrip(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Roundtrip$route.G);
+				$author$project$Route$Guide$Roundtrip$route.F);
 		case 24:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45504,7 +45798,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Seams(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Seams$route.G);
+				$author$project$Route$Guide$Seams$route.F);
 		case 25:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45512,7 +45806,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Strictness(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Strictness$route.G);
+				$author$project$Route$Guide$Strictness$route.F);
 		case 26:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45520,7 +45814,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__TheLayers(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$TheLayers$route.G);
+				$author$project$Route$Guide$TheLayers$route.F);
 		case 27:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45528,7 +45822,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Theming(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Theming$route.G);
+				$author$project$Route$Guide$Theming$route.F);
 		case 28:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45536,7 +45830,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__ToolingRefactors(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$ToolingRefactors$route.G);
+				$author$project$Route$Guide$ToolingRefactors$route.F);
 		case 29:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45544,7 +45838,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgGuide__Troubleshooting(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$Troubleshooting$route.G);
+				$author$project$Route$Guide$Troubleshooting$route.F);
 		case 30:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45552,7 +45846,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__Color(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$Color$route.G);
+				$author$project$Route$Styles$Color$route.F);
 		case 31:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45560,7 +45854,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__Density(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$Density$route.G);
+				$author$project$Route$Styles$Density$route.F);
 		case 32:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45568,7 +45862,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__Elevation(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$Elevation$route.G);
+				$author$project$Route$Styles$Elevation$route.F);
 		case 33:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45576,7 +45870,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__Motion(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$Motion$route.G);
+				$author$project$Route$Styles$Motion$route.F);
 		case 34:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45584,7 +45878,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__Shape(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$Shape$route.G);
+				$author$project$Route$Styles$Shape$route.F);
 		case 35:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45592,7 +45886,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__StateLayers(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$StateLayers$route.G);
+				$author$project$Route$Styles$StateLayers$route.F);
 		case 36:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45600,7 +45894,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgStyles__Typography(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Styles$Typography$route.G);
+				$author$project$Route$Styles$Typography$route.F);
 		case 37:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45608,7 +45902,7 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgComponents__Name_(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Components$Name_$route.G);
+				$author$project$Route$Components$Name_$route.F);
 		case 38:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
@@ -45616,15 +45910,23 @@ var $author$project$Main$onActionData = function (actionData) {
 					return $author$project$Main$MsgExamples(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Examples$route.G);
-		default:
+				$author$project$Route$Examples$route.F);
+		case 39:
 			var thisActionData = actionData.a;
 			return $elm$core$Maybe$map$(
 				function (mapUnpack) {
 					return $author$project$Main$MsgGuide(
 						mapUnpack(thisActionData));
 				},
-				$author$project$Route$Guide$route.G);
+				$author$project$Route$Guide$route.F);
+		default:
+			var thisActionData = actionData.a;
+			return $elm$core$Maybe$map$(
+				function (mapUnpack) {
+					return $author$project$Main$MsgIndex(
+						mapUnpack(thisActionData));
+				},
+				$author$project$Route$Index$route.F);
 	}
 };
 var $author$project$Main$pageDataFromJs = _Platform_incomingPort('pageDataFromJs', $lamdera$codecs$Lamdera$Wire3$decodeBytes_);
@@ -45976,6 +46278,13 @@ var $author$project$Main$routePatterns3 = _List_fromArray(
 			[
 				$dillonkearns$elm_pages$Pages$Internal$RoutePattern$StaticSegment('guide')
 			])
+	},
+		{
+		m: $elm$core$Maybe$Nothing,
+		n: _List_fromArray(
+			[
+				$dillonkearns$elm_pages$Pages$Internal$RoutePattern$StaticSegment('index')
+			])
 	}
 	]);
 var $author$project$Route$routeToPath = function (route) {
@@ -46219,12 +46528,15 @@ var $author$project$Route$routeToPath = function (route) {
 							_List_fromArray(
 							['examples'])
 						]);
-				default:
+				case 39:
 					return _List_fromArray(
 						[
 							_List_fromArray(
 							['guide'])
 						]);
+				default:
+					return _List_fromArray(
+						[_List_Nil]);
 			}
 		}());
 };
@@ -46876,7 +47188,7 @@ var $author$project$Main$templateSubscriptions$ = function (route, path, model) 
 				} else {
 					return $elm$core$Platform$Sub$none;
 				}
-			default:
+			case 39:
 				var _v41 = model.tQ;
 				if (_v41.$ === 39) {
 					var templateModel = _v41.a;
@@ -46885,6 +47197,22 @@ var $author$project$Main$templateSubscriptions$ = function (route, path, model) 
 						$author$project$Main$MsgGuide,
 						A4(
 							$author$project$Route$Guide$route.B,
+							{},
+							path,
+							templateModel,
+							model.b));
+				} else {
+					return $elm$core$Platform$Sub$none;
+				}
+			default:
+				var _v42 = model.tQ;
+				if (_v42.$ === 40) {
+					var templateModel = _v42.a;
+					return A2(
+						$elm$core$Platform$Sub$map,
+						$author$project$Main$MsgIndex,
+						A4(
+							$author$project$Route$Index$route.B,
 							{},
 							path,
 							templateModel,
@@ -46947,7 +47275,7 @@ var $author$project$Main$fooFn$ = function (wrapModel, wrapMsg, model, triple) {
 				return _Utils_Tuple2(model.b, $author$project$Effect$none);
 			} else {
 				var sharedMsg = c.a;
-				return A2($author$project$Shared$template.x, sharedMsg, model.b);
+				return A2($author$project$Shared$template.w, sharedMsg, model.b);
 			}
 		}());
 };
@@ -47006,11 +47334,11 @@ var $author$project$ErrorPage$update$ = function (_v0, _v1, model) {
 var $author$project$ErrorPage$update = F3($author$project$ErrorPage$update$);
 var $author$project$Main$update$ = function (pageFormState, concurrentSubmissions, navigation, sharedData, pageData, navigationKey, msg, model) {
 	switch (msg.$) {
-		case 42:
+		case 43:
 			var msg_ = msg.a;
 			var _v1 = function () {
 				var _v2 = _Utils_Tuple2(model.tQ, pageData);
-				if ((_v2.a.$ === 40) && (_v2.b.$ === 41)) {
+				if ((_v2.a.$ === 41) && (_v2.b.$ === 42)) {
 					var pageModel = _v2.a.a;
 					var thisPageData = _v2.b.a;
 					return $elm$core$Tuple$mapBoth$(
@@ -47028,9 +47356,9 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					model,
 					{tQ: updatedPageModel}),
 				pageCmd);
-		case 40:
+		case 41:
 			var msg_ = msg.a;
-			var _v3 = A2($author$project$Shared$template.x, msg_, model.b);
+			var _v3 = A2($author$project$Shared$template.w, msg_, model.b);
 			var sharedModel = _v3.a;
 			var globalCmd = _v3.b;
 			return _Utils_Tuple2(
@@ -47038,7 +47366,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					model,
 					{b: sharedModel}),
 				$author$project$Effect$map$($author$project$Main$MsgGlobal, globalCmd));
-		case 41:
+		case 42:
 			var record = msg.a;
 			var _v4 = $author$project$Main$init$(
 				$elm$core$Maybe$Just(model.b),
@@ -47070,7 +47398,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 			} else {
 				var thingy = _v5.a;
 				var _v6 = A2(
-					$author$project$Shared$template.x,
+					$author$project$Shared$template.w,
 					thingy(
 						{cA: record.cA, a: record.a, uo: record.uo}),
 					model.b);
@@ -47121,7 +47449,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgComponents__All,
 					model,
 					A4(
-						$author$project$Route$Components$All$route.x,
+						$author$project$Route$Components$All$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47204,7 +47532,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__Dashboard,
 					model,
 					A4(
-						$author$project$Route$Examples$Dashboard$route.x,
+						$author$project$Route$Examples$Dashboard$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47287,7 +47615,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__Feed,
 					model,
 					A4(
-						$author$project$Route$Examples$Feed$route.x,
+						$author$project$Route$Examples$Feed$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47370,7 +47698,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__ListDetail,
 					model,
 					A4(
-						$author$project$Route$Examples$ListDetail$route.x,
+						$author$project$Route$Examples$ListDetail$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47453,7 +47781,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__Mail,
 					model,
 					A4(
-						$author$project$Route$Examples$Mail$route.x,
+						$author$project$Route$Examples$Mail$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47536,7 +47864,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__Settings,
 					model,
 					A4(
-						$author$project$Route$Examples$Settings$route.x,
+						$author$project$Route$Examples$Settings$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47619,7 +47947,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__Shop,
 					model,
 					A4(
-						$author$project$Route$Examples$Shop$route.x,
+						$author$project$Route$Examples$Shop$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47702,7 +48030,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__SupportingPane,
 					model,
 					A4(
-						$author$project$Route$Examples$SupportingPane$route.x,
+						$author$project$Route$Examples$SupportingPane$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47785,7 +48113,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples__Travel,
 					model,
 					A4(
-						$author$project$Route$Examples$Travel$route.x,
+						$author$project$Route$Examples$Travel$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47868,7 +48196,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGettingStarted__BrowserSupport,
 					model,
 					A4(
-						$author$project$Route$GettingStarted$BrowserSupport$route.x,
+						$author$project$Route$GettingStarted$BrowserSupport$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -47951,7 +48279,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGettingStarted__Installation,
 					model,
 					A4(
-						$author$project$Route$GettingStarted$Installation$route.x,
+						$author$project$Route$GettingStarted$Installation$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48034,7 +48362,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGettingStarted__Welcome,
 					model,
 					A4(
-						$author$project$Route$GettingStarted$Welcome$route.x,
+						$author$project$Route$GettingStarted$Welcome$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48117,7 +48445,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Accessibility,
 					model,
 					A4(
-						$author$project$Route$Guide$Accessibility$route.x,
+						$author$project$Route$Guide$Accessibility$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48200,7 +48528,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__AccessibleByConstruction,
 					model,
 					A4(
-						$author$project$Route$Guide$AccessibleByConstruction$route.x,
+						$author$project$Route$Guide$AccessibleByConstruction$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48283,7 +48611,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__CheatSheet,
 					model,
 					A4(
-						$author$project$Route$Guide$CheatSheet$route.x,
+						$author$project$Route$Guide$CheatSheet$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48366,7 +48694,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__CompositionTextField,
 					model,
 					A4(
-						$author$project$Route$Guide$CompositionTextField$route.x,
+						$author$project$Route$Guide$CompositionTextField$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48449,7 +48777,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__FirstComponent,
 					model,
 					A4(
-						$author$project$Route$Guide$FirstComponent$route.x,
+						$author$project$Route$Guide$FirstComponent$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48532,7 +48860,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__GeneratedAndInspectable,
 					model,
 					A4(
-						$author$project$Route$Guide$GeneratedAndInspectable$route.x,
+						$author$project$Route$Guide$GeneratedAndInspectable$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48615,7 +48943,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Glossary,
 					model,
 					A4(
-						$author$project$Route$Guide$Glossary$route.x,
+						$author$project$Route$Guide$Glossary$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48698,7 +49026,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__HowWeProveIt,
 					model,
 					A4(
-						$author$project$Route$Guide$HowWeProveIt$route.x,
+						$author$project$Route$Guide$HowWeProveIt$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48781,7 +49109,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__InvalidStates,
 					model,
 					A4(
-						$author$project$Route$Guide$InvalidStates$route.x,
+						$author$project$Route$Guide$InvalidStates$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48864,7 +49192,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Motion,
 					model,
 					A4(
-						$author$project$Route$Guide$Motion$route.x,
+						$author$project$Route$Guide$Motion$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -48947,7 +49275,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Reference,
 					model,
 					A4(
-						$author$project$Route$Guide$Reference$route.x,
+						$author$project$Route$Guide$Reference$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49030,7 +49358,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Roundtrip,
 					model,
 					A4(
-						$author$project$Route$Guide$Roundtrip$route.x,
+						$author$project$Route$Guide$Roundtrip$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49113,7 +49441,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Seams,
 					model,
 					A4(
-						$author$project$Route$Guide$Seams$route.x,
+						$author$project$Route$Guide$Seams$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49196,7 +49524,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Strictness,
 					model,
 					A4(
-						$author$project$Route$Guide$Strictness$route.x,
+						$author$project$Route$Guide$Strictness$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49279,7 +49607,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__TheLayers,
 					model,
 					A4(
-						$author$project$Route$Guide$TheLayers$route.x,
+						$author$project$Route$Guide$TheLayers$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49362,7 +49690,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Theming,
 					model,
 					A4(
-						$author$project$Route$Guide$Theming$route.x,
+						$author$project$Route$Guide$Theming$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49445,7 +49773,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__ToolingRefactors,
 					model,
 					A4(
-						$author$project$Route$Guide$ToolingRefactors$route.x,
+						$author$project$Route$Guide$ToolingRefactors$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49528,7 +49856,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide__Troubleshooting,
 					model,
 					A4(
-						$author$project$Route$Guide$Troubleshooting$route.x,
+						$author$project$Route$Guide$Troubleshooting$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49611,7 +49939,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__Color,
 					model,
 					A4(
-						$author$project$Route$Styles$Color$route.x,
+						$author$project$Route$Styles$Color$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49694,7 +50022,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__Density,
 					model,
 					A4(
-						$author$project$Route$Styles$Density$route.x,
+						$author$project$Route$Styles$Density$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49777,7 +50105,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__Elevation,
 					model,
 					A4(
-						$author$project$Route$Styles$Elevation$route.x,
+						$author$project$Route$Styles$Elevation$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49860,7 +50188,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__Motion,
 					model,
 					A4(
-						$author$project$Route$Styles$Motion$route.x,
+						$author$project$Route$Styles$Motion$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -49943,7 +50271,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__Shape,
 					model,
 					A4(
-						$author$project$Route$Styles$Shape$route.x,
+						$author$project$Route$Styles$Shape$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -50026,7 +50354,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__StateLayers,
 					model,
 					A4(
-						$author$project$Route$Styles$StateLayers$route.x,
+						$author$project$Route$Styles$StateLayers$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -50109,7 +50437,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgStyles__Typography,
 					model,
 					A4(
-						$author$project$Route$Styles$Typography$route.x,
+						$author$project$Route$Styles$Typography$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -50192,7 +50520,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgComponents__Name_,
 					model,
 					A4(
-						$author$project$Route$Components$Name_$route.x,
+						$author$project$Route$Components$Name_$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -50275,7 +50603,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgExamples,
 					model,
 					A4(
-						$author$project$Route$Examples$route.x,
+						$author$project$Route$Examples$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -50324,7 +50652,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 			} else {
 				return _Utils_Tuple2(model, $author$project$Effect$none);
 			}
-		default:
+		case 39:
 			var msg_ = msg.a;
 			var _v240 = _Utils_Tuple3(
 				model.tQ,
@@ -50358,7 +50686,7 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 					$author$project$Main$MsgGuide,
 					model,
 					A4(
-						$author$project$Route$Guide$route.x,
+						$author$project$Route$Guide$route.w,
 						{
 							ov: $elm$core$Maybe$Nothing,
 							e: $elm$core$Dict$map$(
@@ -50394,6 +50722,89 @@ var $author$project$Main$update$ = function (pageFormState, concurrentSubmission
 				var _v245 = globalModelAndCmd;
 				var newGlobalModel = _v245.a;
 				var newGlobalCmd = _v245.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{b: newGlobalModel, tQ: updatedPageModel}),
+					$author$project$Effect$batch(
+						_List_fromArray(
+							[
+								pageCmd,
+								$author$project$Effect$map$($author$project$Main$MsgGlobal, newGlobalCmd)
+							])));
+			} else {
+				return _Utils_Tuple2(model, $author$project$Effect$none);
+			}
+		default:
+			var msg_ = msg.a;
+			var _v246 = _Utils_Tuple3(
+				model.tQ,
+				pageData,
+				$elm$core$Maybe$map3$(
+					$author$project$Main$toTriple,
+					$elm$core$Maybe$andThen$(
+						function ($) {
+							return $.v;
+						},
+						model.gd),
+					$elm$core$Maybe$andThen$(
+						function ($) {
+							return $.l;
+						},
+						model.gd),
+					$elm$core$Maybe$map$(
+						function ($) {
+							return $.a;
+						},
+						model.gd)));
+			if ((((_v246.a.$ === 40) && (_v246.b.$ === 40)) && (!_v246.c.$)) && (_v246.c.a.a.$ === 40)) {
+				var pageModel = _v246.a.a;
+				var thisPageData = _v246.b.a;
+				var _v247 = _v246.c.a;
+				var _v248 = _v247.a;
+				var pageUrl = _v247.b;
+				var justPage = _v247.c;
+				var _v249 = $author$project$Main$fooFn$(
+					$author$project$Main$ModelIndex,
+					$author$project$Main$MsgIndex,
+					model,
+					A4(
+						$author$project$Route$Index$route.w,
+						{
+							ov: $elm$core$Maybe$Nothing,
+							e: $elm$core$Dict$map$(
+								function (mapUnpack) {
+									return $dillonkearns$elm_pages$Pages$ConcurrentSubmission$map(
+										function (mapUnpack0) {
+											if (mapUnpack0.$ === 40) {
+												var justActionData = mapUnpack0.a;
+												return $elm$core$Maybe$Just(justActionData);
+											} else {
+												return $elm$core$Maybe$Nothing;
+											}
+										});
+								},
+								concurrentSubmissions),
+							xx: thisPageData,
+							f: navigation,
+							g: pageFormState,
+							a: justPage.a,
+							h: {},
+							d: sharedData,
+							BO: function (options) {
+								return $dillonkearns$elm_pages$Pages$Fetcher$submit$($author$project$Route$Index$w3_decode_ActionData, options);
+							},
+							i: $elm$core$Maybe$Just(pageUrl)
+						},
+						msg_,
+						pageModel,
+						model.b));
+				var updatedPageModel = _v249.a;
+				var pageCmd = _v249.b;
+				var globalModelAndCmd = _v249.c;
+				var _v251 = globalModelAndCmd;
+				var newGlobalModel = _v251.a;
+				var newGlobalCmd = _v251.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
@@ -50445,6 +50856,7 @@ var $author$project$Route$Guide__TheLayers = {$: 26};
 var $author$project$Route$Guide__Theming = {$: 27};
 var $author$project$Route$Guide__ToolingRefactors = {$: 28};
 var $author$project$Route$Guide__Troubleshooting = {$: 29};
+var $author$project$Route$Index = {$: 40};
 var $author$project$Route$Styles__Color = {$: 30};
 var $author$project$Route$Styles__Density = {$: 31};
 var $author$project$Route$Styles__Elevation = {$: 32};
@@ -50453,7 +50865,7 @@ var $author$project$Route$Styles__Shape = {$: 34};
 var $author$project$Route$Styles__StateLayers = {$: 35};
 var $author$project$Route$Styles__Typography = {$: 36};
 var $author$project$Route$segmentsToRoute = function (segments) {
-	_v0$40:
+	_v0$41:
 	while (true) {
 		if (segments.b) {
 			if (segments.b.b) {
@@ -50486,7 +50898,7 @@ var $author$project$Route$segmentsToRoute = function (segments) {
 									var _v9 = segments.b;
 									return $elm$core$Maybe$Just($author$project$Route$Examples__Travel);
 								default:
-									break _v0$40;
+									break _v0$41;
 							}
 						case 'getting-started':
 							switch (segments.b.a) {
@@ -50500,7 +50912,7 @@ var $author$project$Route$segmentsToRoute = function (segments) {
 									var _v12 = segments.b;
 									return $elm$core$Maybe$Just($author$project$Route$GettingStarted__Welcome);
 								default:
-									break _v0$40;
+									break _v0$41;
 							}
 						case 'guide':
 							switch (segments.b.a) {
@@ -50559,7 +50971,7 @@ var $author$project$Route$segmentsToRoute = function (segments) {
 									var _v30 = segments.b;
 									return $elm$core$Maybe$Just($author$project$Route$Guide__Troubleshooting);
 								default:
-									break _v0$40;
+									break _v0$41;
 							}
 						case 'styles':
 							switch (segments.b.a) {
@@ -50585,7 +50997,7 @@ var $author$project$Route$segmentsToRoute = function (segments) {
 									var _v37 = segments.b;
 									return $elm$core$Maybe$Just($author$project$Route$Styles__Typography);
 								default:
-									break _v0$40;
+									break _v0$41;
 							}
 						case 'components':
 							if (segments.b.a === 'all') {
@@ -50599,10 +51011,10 @@ var $author$project$Route$segmentsToRoute = function (segments) {
 										{il: name}));
 							}
 						default:
-							break _v0$40;
+							break _v0$41;
 					}
 				} else {
-					break _v0$40;
+					break _v0$41;
 				}
 			} else {
 				switch (segments.a) {
@@ -50611,11 +51023,11 @@ var $author$project$Route$segmentsToRoute = function (segments) {
 					case 'guide':
 						return $elm$core$Maybe$Just($author$project$Route$Guide);
 					default:
-						break _v0$40;
+						break _v0$41;
 				}
 			}
 		} else {
-			break _v0$40;
+			return $elm$core$Maybe$Just($author$project$Route$Index);
 		}
 	}
 	return $elm$core$Maybe$Nothing;
@@ -50718,38 +51130,86 @@ var $author$project$Main$modelMismatchView = {
 		]),
 	we: 'Model mismatch'
 };
+var $author$project$ErrorPage$notFoundView = $author$project$View$fromElement$(
+	'Page Not Found',
+	$author$project$Doc$pane(
+		_List_fromArray(
+			[
+				A2(
+				$author$project$TypedHtml$section,
+				_List_fromArray(
+					[
+						$author$project$TypedHtml$Attributes$class('space-y-6')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$author$project$M3e$heading,
+						_List_fromArray(
+							[
+								$author$project$M3e$Heading$variant($author$project$M3e$Values$display),
+								$author$project$M3e$Heading$size($author$project$M3e$Values$small),
+								$author$project$M3e$Attributes$level(1)
+							]),
+						_List_fromArray(
+							[
+								$author$project$M3e$text('Page not found')
+							])),
+						A2(
+						$author$project$TypedHtml$p,
+						_List_fromArray(
+							[
+								$author$project$TypedHtml$Attributes$class('text-body-lg text-on-surface-variant max-w-md')
+							]),
+						_List_fromArray(
+							[
+								$author$project$M3e$text('The page you’re looking for doesn’t exist or has moved.')
+							])),
+						A2(
+						$author$project$TypedHtml$div,
+						_List_fromArray(
+							[
+								$author$project$TypedHtml$Attributes$class('flex flex-wrap gap-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$author$project$M3e$button,
+								_List_fromArray(
+									[
+										$author$project$M3e$Button$variant($author$project$M3e$Values$filled),
+										$author$project$M3e$Button$href('/getting-started/welcome')
+									]),
+								_List_fromArray(
+									[
+										$author$project$M3e$text('Go to Welcome')
+									]))
+							]))
+					]))
+			])));
 var $author$project$ErrorPage$view$ = function (error, _v0) {
-	return $author$project$View$fromElement$(
-		function () {
-			if (!error.$) {
-				return 'Page Not Found';
-			} else {
-				return 'Unexpected Error';
-			}
-		}(),
-		$author$project$Doc$message(
-			function () {
-				if (!error.$) {
-					return 'Page not found. Maybe try another URL?';
-				} else {
-					var string = error.a;
-					return 'Something went wrong.\n' + string;
-				}
-			}()));
+	if (!error.$) {
+		return $author$project$ErrorPage$notFoundView;
+	} else {
+		var string = error.a;
+		return $author$project$View$fromElement$(
+			'Unexpected Error',
+			$author$project$Doc$message('Something went wrong.\n' + string));
+	}
 };
 var $author$project$ErrorPage$view = F2($author$project$ErrorPage$view$);
 var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions, navigation, page, maybePageUrl, globalData, pageData, actionData) {
 	var _v0 = _Utils_Tuple2(page.uJ, pageData);
-	_v0$42:
+	_v0$43:
 	while (true) {
 		switch (_v0.b.$) {
-			case 41:
+			case 42:
 				var data = _v0.b.a;
 				return {
-					z: _List_Nil,
+					y: _List_Nil,
 					c: function (model) {
 						var _v1 = model.tQ;
-						if (_v1.$ === 40) {
+						if (_v1.$ === 41) {
 							var subModel = _v1.a;
 							return A5(
 								$author$project$Shared$template.c,
@@ -50771,13 +51231,13 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					}
 				};
-			case 40:
+			case 41:
 				var _v2 = _v0.b;
 				return {
-					z: _List_Nil,
+					y: _List_Nil,
 					c: function (model) {
 						var _v3 = model.tQ;
-						if (_v3.$ === 40) {
+						if (_v3.$ === 41) {
 							var subModel = _v3.a;
 							return A5(
 								$author$project$Shared$template.c,
@@ -50812,7 +51272,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v5 = model.tQ;
 							if (!_v5.$) {
@@ -50854,7 +51314,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 1:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 1)) {
@@ -50869,7 +51329,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v8 = model.tQ;
 							if (_v8.$ === 1) {
@@ -50911,7 +51371,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 2:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 2)) {
@@ -50926,7 +51386,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v11 = model.tQ;
 							if (_v11.$ === 2) {
@@ -50968,7 +51428,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 3:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 3)) {
@@ -50983,7 +51443,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v14 = model.tQ;
 							if (_v14.$ === 3) {
@@ -51025,7 +51485,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 4:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 4)) {
@@ -51040,7 +51500,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v17 = model.tQ;
 							if (_v17.$ === 4) {
@@ -51082,7 +51542,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 5:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 5)) {
@@ -51097,7 +51557,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v20 = model.tQ;
 							if (_v20.$ === 5) {
@@ -51139,7 +51599,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 6:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 6)) {
@@ -51154,7 +51614,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v23 = model.tQ;
 							if (_v23.$ === 6) {
@@ -51196,7 +51656,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 7:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 7)) {
@@ -51211,7 +51671,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v26 = model.tQ;
 							if (_v26.$ === 7) {
@@ -51253,7 +51713,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 8:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 8)) {
@@ -51268,7 +51728,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v29 = model.tQ;
 							if (_v29.$ === 8) {
@@ -51310,7 +51770,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 9:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 9)) {
@@ -51325,7 +51785,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v32 = model.tQ;
 							if (_v32.$ === 9) {
@@ -51367,7 +51827,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 10:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 10)) {
@@ -51382,7 +51842,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v35 = model.tQ;
 							if (_v35.$ === 10) {
@@ -51424,7 +51884,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 11:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 11)) {
@@ -51439,7 +51899,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v38 = model.tQ;
 							if (_v38.$ === 11) {
@@ -51481,7 +51941,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 12:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 12)) {
@@ -51496,7 +51956,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v41 = model.tQ;
 							if (_v41.$ === 12) {
@@ -51538,7 +51998,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 13:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 13)) {
@@ -51553,7 +52013,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v44 = model.tQ;
 							if (_v44.$ === 13) {
@@ -51595,7 +52055,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 14:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 14)) {
@@ -51610,7 +52070,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v47 = model.tQ;
 							if (_v47.$ === 14) {
@@ -51652,7 +52112,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 15:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 15)) {
@@ -51667,7 +52127,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v50 = model.tQ;
 							if (_v50.$ === 15) {
@@ -51709,7 +52169,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 16:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 16)) {
@@ -51724,7 +52184,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v53 = model.tQ;
 							if (_v53.$ === 16) {
@@ -51766,7 +52226,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 17:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 17)) {
@@ -51781,7 +52241,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v56 = model.tQ;
 							if (_v56.$ === 17) {
@@ -51823,7 +52283,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 18:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 18)) {
@@ -51838,7 +52298,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v59 = model.tQ;
 							if (_v59.$ === 18) {
@@ -51880,7 +52340,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 19:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 19)) {
@@ -51895,7 +52355,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v62 = model.tQ;
 							if (_v62.$ === 19) {
@@ -51937,7 +52397,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 20:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 20)) {
@@ -51952,7 +52412,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v65 = model.tQ;
 							if (_v65.$ === 20) {
@@ -51994,7 +52454,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 21:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 21)) {
@@ -52009,7 +52469,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v68 = model.tQ;
 							if (_v68.$ === 21) {
@@ -52051,7 +52511,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 22:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 22)) {
@@ -52066,7 +52526,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v71 = model.tQ;
 							if (_v71.$ === 22) {
@@ -52108,7 +52568,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 23:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 23)) {
@@ -52123,7 +52583,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v74 = model.tQ;
 							if (_v74.$ === 23) {
@@ -52165,7 +52625,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 24:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 24)) {
@@ -52180,7 +52640,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v77 = model.tQ;
 							if (_v77.$ === 24) {
@@ -52222,7 +52682,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 25:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 25)) {
@@ -52237,7 +52697,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v80 = model.tQ;
 							if (_v80.$ === 25) {
@@ -52279,7 +52739,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 26:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 26)) {
@@ -52294,7 +52754,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v83 = model.tQ;
 							if (_v83.$ === 26) {
@@ -52336,7 +52796,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 27:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 27)) {
@@ -52351,7 +52811,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v86 = model.tQ;
 							if (_v86.$ === 27) {
@@ -52393,7 +52853,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 28:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 28)) {
@@ -52408,7 +52868,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v89 = model.tQ;
 							if (_v89.$ === 28) {
@@ -52450,7 +52910,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 29:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 29)) {
@@ -52465,7 +52925,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v92 = model.tQ;
 							if (_v92.$ === 29) {
@@ -52507,7 +52967,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 30:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 30)) {
@@ -52522,7 +52982,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v95 = model.tQ;
 							if (_v95.$ === 30) {
@@ -52564,7 +53024,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 31:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 31)) {
@@ -52579,7 +53039,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v98 = model.tQ;
 							if (_v98.$ === 31) {
@@ -52621,7 +53081,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 32:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 32)) {
@@ -52636,7 +53096,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v101 = model.tQ;
 							if (_v101.$ === 32) {
@@ -52678,7 +53138,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 33:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 33)) {
@@ -52693,7 +53153,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v104 = model.tQ;
 							if (_v104.$ === 33) {
@@ -52735,7 +53195,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 34:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 34)) {
@@ -52750,7 +53210,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v107 = model.tQ;
 							if (_v107.$ === 34) {
@@ -52792,7 +53252,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 35:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 35)) {
@@ -52807,7 +53267,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v110 = model.tQ;
 							if (_v110.$ === 35) {
@@ -52849,7 +53309,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 36:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 36)) {
@@ -52864,7 +53324,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v113 = model.tQ;
 							if (_v113.$ === 36) {
@@ -52906,7 +53366,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 37:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 37)) {
@@ -52921,7 +53381,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v115 = model.tQ;
 							if (_v115.$ === 37) {
@@ -52963,7 +53423,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
 			case 38:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 38)) {
@@ -52978,7 +53438,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v118 = model.tQ;
 							if (_v118.$ === 38) {
@@ -53020,9 +53480,9 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
 				}
-			default:
+			case 39:
 				if ((!_v0.a.$) && (_v0.a.a.$ === 39)) {
 					var _v120 = _v0.a.a;
 					var data = _v0.b.a;
@@ -53035,7 +53495,7 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 					return {
-						z: _List_Nil,
+						y: _List_Nil,
 						c: function (model) {
 							var _v121 = model.tQ;
 							if (_v121.$ === 39) {
@@ -53077,13 +53537,70 @@ var $author$project$Main$view$ = function (pageFormState, concurrentSubmissions,
 						}
 					};
 				} else {
-					break _v0$42;
+					break _v0$43;
+				}
+			default:
+				if ((!_v0.a.$) && (_v0.a.a.$ === 40)) {
+					var _v123 = _v0.a.a;
+					var data = _v0.b.a;
+					var actionDataOrNothing = function (thisActionData) {
+						if (thisActionData.$ === 40) {
+							var justActionData = thisActionData.a;
+							return $elm$core$Maybe$Just(justActionData);
+						} else {
+							return $elm$core$Maybe$Nothing;
+						}
+					};
+					return {
+						y: _List_Nil,
+						c: function (model) {
+							var _v124 = model.tQ;
+							if (_v124.$ === 40) {
+								var subModel = _v124.a;
+								return A5(
+									$author$project$Shared$template.c,
+									globalData,
+									page,
+									model.b,
+									function (myMsg) {
+										return $dillonkearns$elm_pages$PagesMsg$fromMsg(
+											$author$project$Main$MsgGlobal(myMsg));
+									},
+									$author$project$View$map$(
+										$dillonkearns$elm_pages$PagesMsg$map($author$project$Main$MsgIndex),
+										A3(
+											$author$project$Route$Index$route.c,
+											model.b,
+											subModel,
+											{
+												ov: $elm$core$Maybe$andThen$(actionDataOrNothing, actionData),
+												e: $elm$core$Dict$map$(
+													function (mapUnpack) {
+														return $dillonkearns$elm_pages$Pages$ConcurrentSubmission$map(actionDataOrNothing);
+													},
+													concurrentSubmissions),
+												xx: data,
+												f: navigation,
+												g: pageFormState,
+												a: page.a,
+												h: {},
+												d: globalData,
+												BO: $dillonkearns$elm_pages$Pages$Fetcher$submit($author$project$Route$Index$w3_decode_ActionData),
+												i: maybePageUrl
+											})));
+							} else {
+								return $author$project$Main$modelMismatchView;
+							}
+						}
+					};
+				} else {
+					break _v0$43;
 				}
 		}
 	}
 	return {
-		z: _List_Nil,
-		c: function (_v123) {
+		y: _List_Nil,
+		c: function (_v126) {
 			return {
 				k5: _List_fromArray(
 					[
@@ -53145,7 +53662,7 @@ var $author$project$Main$main = $dillonkearns$elm_pages$Pages$Internal$Platform$
 		za: $elm$core$Maybe$Nothing,
 		B: $author$project$Main$subscriptions,
 		zi: $author$project$Main$toJsPort,
-		x: $author$project$Main$update,
+		w: $author$project$Main$update,
 		zx: $author$project$Route$urlToRoute,
 		c: $author$project$Main$view
 	});
