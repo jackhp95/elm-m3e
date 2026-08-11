@@ -14,12 +14,14 @@ Anatomy of one card (all m3e components; Tailwind is layout-only):
     </m3e-theme>
 
 Colours are derived live from the nested `<m3e-theme>`: the role avatars are
-painted DIRECTLY from `--md-sys-color-<role>` tokens (via a `m3e-avatar-color-[…]`
-arbitrary utility), which the nested theme re-declares for its subtree, and the
-card's own surface derives from the same nested palette through the shadow
-boundary (CSS custom properties inherit into shadow DOM). No hex is painted by
-hand. (The Tailwind bridge `--color-<role>` token is NOT used for this — it is
-declared once at `:root`, so a nested theme can't change it; see `cardRoleStrip`.)
+painted DIRECTLY from `--md-sys-color-<role>` tokens by setting each avatar's own
+`--m3e-avatar-color` custom property inline, which the nested theme re-declares
+for its subtree, and the card's own surface derives from the same nested palette
+through the shadow boundary (CSS custom properties inherit into shadow DOM). No
+hex is painted by hand. (The Tailwind `m3e-avatar-color-[…]` arbitrary utility is
+NOT used — an arbitrary `var(…)` value fails its `[color]` type-check and emits
+no rule; and the bridge `--color-<role>` token is `:root`-computed so a nested
+theme can't change it. See `cardRoleStrip`.)
 
 `m3e-card` (with `actionable`) is the interactive element: it dispatches a
 standard `click` event (`bubbles: true`, `composed: true`) that Elm's
@@ -215,33 +217,51 @@ cardSpecimen preset =
 
 {-| A strip of 4 role-derived swatches, each a blank `m3e-avatar` painted
 DIRECTLY from a `--md-sys-color-<role>` token. The nested `<m3e-theme>`
-re-declares those tokens for its subtree, so painting from them resolves to
-this card's own live palette — the "themes work by inheritance" demo.
+re-declares those tokens for its subtree (it writes the whole
+`:host { --md-sys-color-*: … }` block — see `theme.js`), so painting from them
+resolves to this card's own live palette — the "themes work by inheritance"
+demo.
 
-Note the tokens are `--md-sys-color-*`, NOT the Tailwind bridge `--color-*`:
-`--color-primary` is declared once at `:root` (as `var(--md-sys-color-primary)`)
-and is computed there, so it inherits a fixed root value and a nested theme
-never changes it. Referencing `--md-sys-color-primary` directly, on the avatar,
-resolves against the nearest `<m3e-theme>` instead.
+The avatar's background is its own `--m3e-avatar-color` custom property (its
+shadow `.base` reads `background-color: var(--m3e-avatar-color, …)`; the default
+is `primaryContainer`). We set that property DIRECTLY via an inline `style`
+declaration: `--m3e-avatar-color: var(--md-sys-color-<role>)`. Because the
+avatar host lives inside the card's nested `<m3e-theme>`, `--md-sys-color-<role>`
+resolves to that card's palette, and the custom property inherits through the
+avatar's shadow boundary to `.base`.
+
+Why NOT the `m3e-avatar-color-[…]` utility (the previous approach): the Tailwind
+utility is `--m3e-avatar-color: --value([color], --color-*)`, and an arbitrary
+`[var(--md-sys-color-…)]` value does NOT satisfy the `[color]` data-type check,
+so the utility emits NO rule at all — every dot fell back to the avatar's default
+`primaryContainer`, rendering all four identical. The named form
+(`m3e-avatar-color-primary`) DOES emit but reads the `:root`-computed bridge
+token `--color-primary`, which never re-derives under a nested theme. Setting
+`--m3e-avatar-color` from the sys token via `style` sidesteps both traps: the IR
+`style` path emits real CSS custom properties (unlike elm/html's kernel, which
+drops `--x`).
 
 -}
 cardRoleStrip : Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 cardRoleStrip =
     TypedHtml.div
         [ TA.class "flex gap-1 mt-0.5" ]
-        [ roleAvatar "m3e-avatar-color-[var(--md-sys-color-primary)]"
-        , roleAvatar "m3e-avatar-color-[var(--md-sys-color-secondary)]"
-        , roleAvatar "m3e-avatar-color-[var(--md-sys-color-tertiary)]"
-        , roleAvatar "m3e-avatar-color-[var(--md-sys-color-surface-container-highest)]"
+        [ roleAvatar "primary"
+        , roleAvatar "secondary"
+        , roleAvatar "tertiary"
+        , roleAvatar "surface-container-highest"
         ]
 
 
-{-| One blank role swatch: a small circular `m3e-avatar` whose background is set
-to a role token via the vendored utility class. `m3e-avatar-size-*` keeps it a
+{-| One blank role swatch: a small circular `m3e-avatar` whose background is the
+given `--md-sys-color-<role>` token, applied by setting the avatar's own
+`--m3e-avatar-color` custom property inline. `m3e-avatar-size-*` keeps it a
 compact dot; the colour derives from the nearest `<m3e-theme>`.
 -}
 roleAvatar : String -> Element (M3e.Avatar.Is s) admittedBy msg
-roleAvatar colorUtility =
+roleAvatar role =
     M3e.avatar
-        [ MA.class ("m3e-avatar-size-[0.875rem] " ++ colorUtility) ]
+        [ MA.class "m3e-avatar-size-[0.875rem]"
+        , MA.style "--m3e-avatar-color" ("var(--md-sys-color-" ++ role ++ ")")
+        ]
         []

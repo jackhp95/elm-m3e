@@ -575,8 +575,10 @@ schemeLabel v =
 {-| The drawer's color controls, all real m3e components: a row of blank
 `m3e-avatar`s, one per curated seed color, each painted by its OWN nested
 `<m3e-theme>` (seeded with that hex) so the swatch shows the color's live-derived
-primary — never a hand-painted hex. The first option is the source-color picker
-(`sourceColorOption`). A small `m3e-heading` labels the row.
+primary — never a hand-painted hex. Each swatch sets the avatar's
+`--m3e-avatar-color` custom property to `var(--md-sys-color-primary)`, which
+resolves against that swatch's nested theme. The first option is the
+source-color picker (`sourceColorOption`). A small `m3e-heading` labels the row.
 -}
 colorOptions : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 colorOptions model =
@@ -607,7 +609,10 @@ sourceColorOption model =
         [ TypedHtml.div []
             [ M3e.theme [ M3e.Theme.color model.seed ]
                 [ M3e.avatar
-                    [ M3e.Attributes.class "m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-label-color-[var(--md-sys-color-on-primary)] m3e-avatar-size-[2rem]" ]
+                    [ M3e.Attributes.class "m3e-avatar-size-[2rem]"
+                    , M3e.Attributes.style "--m3e-avatar-color" "var(--md-sys-color-primary)"
+                    , M3e.Attributes.style "--m3e-avatar-label-color" "var(--md-sys-color-on-primary)"
+                    ]
                     [ M3e.icon [ M3e.Icon.name "colorize", M3e.Attributes.class "text-base" ] [] ]
                 ]
             ]
@@ -650,7 +655,9 @@ colorAvatar model hex =
         [ TypedHtml.div []
             [ M3e.theme [ M3e.Theme.color hex ]
                 [ M3e.avatar
-                    [ M3e.Attributes.class "m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-size-[2rem]" ]
+                    [ M3e.Attributes.class "m3e-avatar-size-[2rem]"
+                    , M3e.Attributes.style "--m3e-avatar-color" "var(--md-sys-color-primary)"
+                    ]
                     []
                 ]
             ]
