@@ -1,7 +1,7 @@
 {
   "name": "elm-m3e",
   "version": "0.1.0",
-  "description": "M3e.* \u2014 type-safe Make-Impossible-States-Impossible Elm layer over the @m3e/web Material 3 Expressive web components (introspectable IR + phantom-typed slots).",
+  "description": "M3e.* — type-safe Make-Impossible-States-Impossible Elm layer over the @m3e/web Material 3 Expressive web components (introspectable IR + phantom-typed slots).",
   "license": "BSD-3-Clause",
   "private": true,
   "type": "module",
@@ -36,7 +36,7 @@
     "format": "node_modules/.bin/elm-format --yes docs/app docs/src review/src",
     "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
-    "postinstall": "npm run hooks:install",
+    "postinstall": "npm run hooks:install && node scripts/fix-native-bins.mjs",
     "check:spike": "cd tests/spike && ../../node_modules/.bin/elm make app/ApiConsolidation.elm --output=/dev/null && ../../node_modules/.bin/elm make app/AnnotationOnly.elm --output=/dev/null && ! ../../node_modules/.bin/elm make bad/WrongKindBuilderIntoIconSlot.elm --output=/dev/null 2>/dev/null"
   },
   "devDependencies": {
