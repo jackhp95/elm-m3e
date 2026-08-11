@@ -92,50 +92,50 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Badge`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Badge`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Badge`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Badge`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.Badge`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `position` — re-exported from `M3e.Badge`.
+{-| Pipe form of `position` — consumes its capability (write-once).
 -}
 withPosition : Value Component.Position -> Builder { a | position : Available } slotCaps msg kind -> Builder { a | position : Used } slotCaps msg kind
-withPosition =
-    Component.withPosition
+withPosition value_ =
+    B.withAttribute (Component.position value_)
 
 
-{-| Pipe form of `size` — re-exported from `M3e.Badge`.
+{-| Pipe form of `size` — consumes its capability (write-once).
 -}
 withSize : Value Component.Size -> Builder { a | size : Available } slotCaps msg kind -> Builder { a | size : Used } slotCaps msg kind
-withSize =
-    Component.withSize
+withSize value_ =
+    B.withAttribute (Component.size value_)

@@ -105,7 +105,7 @@ toElement =
 {-| Place a builder-built element into the named `leading` slot — calls `B.toElement` internally.
 -}
 leading :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LeadingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingSlot msg
     -> Element free freeAdmittedBy msg
 leading builder =
     Component.leading (B.toElement builder)
@@ -114,7 +114,7 @@ leading builder =
 {-| Place a builder-built element into the named `leading-icon` slot — calls `B.toElement` internally.
 -}
 leadingIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 leadingIcon builder =
     Component.leadingIcon (B.toElement builder)
@@ -123,7 +123,7 @@ leadingIcon builder =
 {-| Place a builder-built element into the named `subtitle` slot — calls `B.toElement` internally.
 -}
 subtitle :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.SubtitleSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.SubtitleSlot msg
     -> Element free freeAdmittedBy msg
 subtitle builder =
     Component.subtitle (B.toElement builder)
@@ -132,7 +132,7 @@ subtitle builder =
 {-| Place a builder-built element into the named `title` slot — calls `B.toElement` internally.
 -}
 title :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TitleSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TitleSlot msg
     -> Element free freeAdmittedBy msg
 title builder =
     Component.title (B.toElement builder)
@@ -141,7 +141,7 @@ title builder =
 {-| Place a builder-built element into the named `trailing` slot — calls `B.toElement` internally.
 -}
 trailing :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingSlot msg
     -> Element free freeAdmittedBy msg
 trailing builder =
     Component.trailing (B.toElement builder)
@@ -150,7 +150,7 @@ trailing builder =
 {-| Place a builder-built element into the named `trailing-icon` slot — calls `B.toElement` internally.
 -}
 trailingIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 trailingIcon builder =
     Component.trailingIcon (B.toElement builder)
@@ -159,7 +159,7 @@ trailingIcon builder =
 {-| Pipe form of the `leading-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withLeadingIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | leadingIcon : Available } msg kind
     -> Builder attrCaps { s | leadingIcon : Used } msg kind
 withLeadingIcon slotBuilder builder_ =
@@ -169,7 +169,7 @@ withLeadingIcon slotBuilder builder_ =
 {-| Pipe form of the `subtitle` slot — accepts a builder directly (no `.toElement`).
 -}
 withSubtitle :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.SubtitleSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.SubtitleSlot msg
     -> Builder attrCaps { s | subtitle : Available } msg kind
     -> Builder attrCaps { s | subtitle : Used } msg kind
 withSubtitle slotBuilder builder_ =
@@ -179,7 +179,7 @@ withSubtitle slotBuilder builder_ =
 {-| Pipe form of the `title` slot — accepts a builder directly (no `.toElement`).
 -}
 withTitle :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TitleSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TitleSlot msg
     -> Builder attrCaps { s | title : Available } msg kind
     -> Builder attrCaps { s | title : Used } msg kind
 withTitle slotBuilder builder_ =
@@ -189,7 +189,7 @@ withTitle slotBuilder builder_ =
 {-| Pipe form of the `trailing-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withTrailingIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | trailingIcon : Available } msg kind
     -> Builder attrCaps { s | trailingIcon : Used } msg kind
 withTrailingIcon slotBuilder builder_ =
@@ -199,7 +199,7 @@ withTrailingIcon slotBuilder builder_ =
 {-| Pipe form of the `leading` slot (repeatable) — accepts a builder directly.
 -}
 withLeading :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LeadingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingSlot msg
     -> Builder attrCaps slotCaps msg kind
     -> Builder attrCaps slotCaps msg kind
 withLeading slotBuilder builder_ =
@@ -209,57 +209,57 @@ withLeading slotBuilder builder_ =
 {-| Pipe form of the `trailing` slot (repeatable) — accepts a builder directly.
 -}
 withTrailing :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingSlot msg
     -> Builder attrCaps slotCaps msg kind
     -> Builder attrCaps slotCaps msg kind
 withTrailing slotBuilder builder_ =
     B.withChild (El.toNode (Component.trailing (B.toElement slotBuilder))) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `centered` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `centered` — consumes its capability (write-once).
 -}
 withCentered : Bool -> Builder { a | centered : Available } slotCaps msg kind -> Builder { a | centered : Used } slotCaps msg kind
-withCentered =
-    Component.withCentered
+withCentered value_ =
+    B.withAttribute (A.centered value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `size` — re-exported from `M3e.AppBar`.
+{-| Pipe form of `size` — consumes its capability (write-once).
 -}
 withSize : Value Component.Size -> Builder { a | size : Available } slotCaps msg kind -> Builder { a | size : Used } slotCaps msg kind
-withSize =
-    Component.withSize
+withSize value_ =
+    B.withAttribute (Component.size value_)

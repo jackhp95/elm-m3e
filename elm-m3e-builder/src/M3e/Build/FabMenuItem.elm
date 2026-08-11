@@ -28,6 +28,7 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.FabMenuItem as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.FabMenuItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -85,7 +86,7 @@ toElement =
 {-| Place a builder-built element into the named `icon` slot — calls `B.toElement` internally.
 -}
 icon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.IconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.IconSlot msg
     -> Element free freeAdmittedBy msg
 icon builder =
     Component.icon (B.toElement builder)
@@ -94,7 +95,7 @@ icon builder =
 {-| Pipe form of the `icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.IconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.IconSlot msg
     -> Builder attrCaps { s | icon : Available } msg kind
     -> Builder attrCaps { s | icon : Used } msg kind
 withIcon slotBuilder builder_ =
@@ -111,71 +112,71 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `download` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `download` — consumes its capability (write-once).
 -}
 withDownload : String -> Builder { a | download : Available } slotCaps msg kind -> Builder { a | download : Used } slotCaps msg kind
-withDownload =
-    Component.withDownload
+withDownload value_ =
+    B.withAttribute (A.download value_)
 
 
-{-| Pipe form of `href` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `href` — consumes its capability (write-once).
 -}
 withHref : String -> Builder { a | href : Available } slotCaps msg kind -> Builder { a | href : Used } slotCaps msg kind
-withHref =
-    Component.withHref
+withHref value_ =
+    B.withAttribute (A.href value_)
 
 
-{-| Pipe form of `rel` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `rel` — consumes its capability (write-once).
 -}
 withRel : String -> Builder { a | rel : Available } slotCaps msg kind -> Builder { a | rel : Used } slotCaps msg kind
-withRel =
-    Component.withRel
+withRel value_ =
+    B.withAttribute (A.rel value_)
 
 
-{-| Pipe form of `target` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `target` — consumes its capability (write-once).
 -}
 withTarget : String -> Builder { a | target : Available } slotCaps msg kind -> Builder { a | target : Used } slotCaps msg kind
-withTarget =
-    Component.withTarget
+withTarget value_ =
+    B.withAttribute (A.target value_)
 
 
-{-| Pipe form of `onClick` — re-exported from `M3e.FabMenuItem`.
+{-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick =
-    Component.withOnClick
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)

@@ -71,10 +71,10 @@ type alias Content =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-option" ([]) [ El.toNode required_.content ]
+    B.init "m3e-option" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -94,71 +94,71 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Option`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Option`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Option`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Option`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disableHighlight` — re-exported from `M3e.Option`.
+{-| Pipe form of `disableHighlight` — consumes its capability (write-once).
 -}
 withDisableHighlight : Bool -> Builder { a | disableHighlight : Available } slotCaps msg kind -> Builder { a | disableHighlight : Used } slotCaps msg kind
-withDisableHighlight =
-    Component.withDisableHighlight
+withDisableHighlight value_ =
+    B.withAttribute (A.disableHighlight value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.Option`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `highlightMode` — re-exported from `M3e.Option`.
+{-| Pipe form of `highlightMode` — consumes its capability (write-once).
 -}
 withHighlightMode : Value Component.HighlightMode -> Builder { a | highlightMode : Available } slotCaps msg kind -> Builder { a | highlightMode : Used } slotCaps msg kind
-withHighlightMode =
-    Component.withHighlightMode
+withHighlightMode value_ =
+    B.withAttribute (Component.highlightMode value_)
 
 
-{-| Pipe form of `selected` — re-exported from `M3e.Option`.
+{-| Pipe form of `selected` — consumes its capability (write-once).
 -}
 withSelected : Bool -> Builder { a | selected : Available } slotCaps msg kind -> Builder { a | selected : Used } slotCaps msg kind
-withSelected =
-    Component.withSelected
+withSelected value_ =
+    B.withAttribute (A.selected value_)
 
 
-{-| Pipe form of `term` — re-exported from `M3e.Option`.
+{-| Pipe form of `term` — consumes its capability (write-once).
 -}
 withTerm : String -> Builder { a | term : Available } slotCaps msg kind -> Builder { a | term : Used } slotCaps msg kind
-withTerm =
-    Component.withTerm
+withTerm value_ =
+    B.withAttribute (A.term value_)
 
 
-{-| Pipe form of `value` — re-exported from `M3e.Option`.
+{-| Pipe form of `value` — consumes its capability (write-once).
 -}
 withValue : String -> Builder { a | value : Available } slotCaps msg kind -> Builder { a | value : Used } slotCaps msg kind
-withValue =
-    Component.withValue
+withValue value_ =
+    B.withAttribute (A.value value_)

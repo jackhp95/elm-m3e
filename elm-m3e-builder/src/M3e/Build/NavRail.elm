@@ -27,6 +27,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.NavRail as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.NavRail
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -92,57 +93,57 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `mode` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `mode` — consumes its capability (write-once).
 -}
 withMode : Value Component.Mode -> Builder { a | mode : Available } slotCaps msg kind -> Builder { a | mode : Used } slotCaps msg kind
-withMode =
-    Component.withMode
+withMode value_ =
+    B.withAttribute (Component.mode value_)
 
 
-{-| Pipe form of `onBeforeinput` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput =
-    Component.withOnBeforeinput
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
-{-| Pipe form of `onInput` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput =
-    Component.withOnInput
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.NavRail`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)

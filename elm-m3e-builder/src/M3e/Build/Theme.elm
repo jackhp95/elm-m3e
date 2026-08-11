@@ -27,6 +27,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Theme as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Theme
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -86,85 +87,85 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Theme`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Theme`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Theme`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Theme`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `color` — re-exported from `M3e.Theme`.
+{-| Pipe form of `color` — consumes its capability (write-once).
 -}
 withColor : String -> Builder { a | color : Available } slotCaps msg kind -> Builder { a | color : Used } slotCaps msg kind
-withColor =
-    Component.withColor
+withColor value_ =
+    B.withAttribute (A.color value_)
 
 
-{-| Pipe form of `contrast` — re-exported from `M3e.Theme`.
+{-| Pipe form of `contrast` — consumes its capability (write-once).
 -}
 withContrast : Value Component.Contrast -> Builder { a | contrast : Available } slotCaps msg kind -> Builder { a | contrast : Used } slotCaps msg kind
-withContrast =
-    Component.withContrast
+withContrast value_ =
+    B.withAttribute (Component.contrast value_)
 
 
-{-| Pipe form of `density` — re-exported from `M3e.Theme`.
+{-| Pipe form of `density` — consumes its capability (write-once).
 -}
 withDensity : Float -> Builder { a | density : Available } slotCaps msg kind -> Builder { a | density : Used } slotCaps msg kind
-withDensity =
-    Component.withDensity
+withDensity value_ =
+    B.withAttribute (A.density value_)
 
 
-{-| Pipe form of `motion` — re-exported from `M3e.Theme`.
+{-| Pipe form of `motion` — consumes its capability (write-once).
 -}
 withMotion : Value Component.Motion -> Builder { a | motion : Available } slotCaps msg kind -> Builder { a | motion : Used } slotCaps msg kind
-withMotion =
-    Component.withMotion
+withMotion value_ =
+    B.withAttribute (Component.motion value_)
 
 
-{-| Pipe form of `scheme` — re-exported from `M3e.Theme`.
+{-| Pipe form of `scheme` — consumes its capability (write-once).
 -}
 withScheme : Value Component.Scheme -> Builder { a | scheme : Available } slotCaps msg kind -> Builder { a | scheme : Used } slotCaps msg kind
-withScheme =
-    Component.withScheme
+withScheme value_ =
+    B.withAttribute (Component.scheme value_)
 
 
-{-| Pipe form of `strongFocus` — re-exported from `M3e.Theme`.
+{-| Pipe form of `strongFocus` — consumes its capability (write-once).
 -}
 withStrongFocus : Bool -> Builder { a | strongFocus : Available } slotCaps msg kind -> Builder { a | strongFocus : Used } slotCaps msg kind
-withStrongFocus =
-    Component.withStrongFocus
+withStrongFocus value_ =
+    B.withAttribute (A.strongFocus value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.Theme`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.Theme`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)

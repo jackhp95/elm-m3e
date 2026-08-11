@@ -24,6 +24,7 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
+import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.CircularProgressIndicator as Component
@@ -86,57 +87,57 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `indeterminate` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `indeterminate` — consumes its capability (write-once).
 -}
 withIndeterminate : Bool -> Builder { a | indeterminate : Available } slotCaps msg kind -> Builder { a | indeterminate : Used } slotCaps msg kind
-withIndeterminate =
-    Component.withIndeterminate
+withIndeterminate value_ =
+    B.withAttribute (A.indeterminate value_)
 
 
-{-| Pipe form of `max` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `max` — consumes its capability (write-once).
 -}
 withMax : Float -> Builder { a | max : Available } slotCaps msg kind -> Builder { a | max : Used } slotCaps msg kind
-withMax =
-    Component.withMax
+withMax value_ =
+    B.withAttribute (A.max value_)
 
 
-{-| Pipe form of `value` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `value` — consumes its capability (write-once).
 -}
 withValue : Float -> Builder { a | value : Available } slotCaps msg kind -> Builder { a | value : Used } slotCaps msg kind
-withValue =
-    Component.withValue
+withValue value_ =
+    B.withAttribute (Ir.property "value" (Json.Encode.float value_))
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.CircularProgressIndicator`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)

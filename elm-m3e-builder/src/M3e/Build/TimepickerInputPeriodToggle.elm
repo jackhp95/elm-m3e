@@ -22,9 +22,11 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
+import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.TimepickerInputPeriodToggle as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.TimepickerInputPeriodToggle
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -74,50 +76,50 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `orientation` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `orientation` — consumes its capability (write-once).
 -}
 withOrientation : String -> Builder { a | orientation : Available } slotCaps msg kind -> Builder { a | orientation : Used } slotCaps msg kind
-withOrientation =
-    Component.withOrientation
+withOrientation value_ =
+    B.withAttribute (Ir.attribute "orientation" value_)
 
 
-{-| Pipe form of `period` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `period` — consumes its capability (write-once).
 -}
 withPeriod : Value Component.Period -> Builder { a | period : Available } slotCaps msg kind -> Builder { a | period : Used } slotCaps msg kind
-withPeriod =
-    Component.withPeriod
+withPeriod value_ =
+    B.withAttribute (Component.period value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.TimepickerInputPeriodToggle`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)

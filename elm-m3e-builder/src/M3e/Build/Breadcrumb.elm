@@ -71,10 +71,10 @@ type alias Content =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-breadcrumb" ([]) [ El.toNode required_.content ]
+    B.init "m3e-breadcrumb" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -87,7 +87,7 @@ toElement =
 {-| Place a builder-built element into the named `separator` slot — calls `B.toElement` internally.
 -}
 separator :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 separator builder =
     Component.separator (B.toElement builder)
@@ -96,7 +96,7 @@ separator builder =
 {-| Pipe form of the `separator` slot — accepts a builder directly (no `.toElement`).
 -}
 withSeparator :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | separator : Available } msg kind
     -> Builder attrCaps { s | separator : Used } msg kind
 withSeparator slotBuilder builder_ =
@@ -113,36 +113,36 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Breadcrumb`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Breadcrumb`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Breadcrumb`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Breadcrumb`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `wrap` — re-exported from `M3e.Breadcrumb`.
+{-| Pipe form of `wrap` — consumes its capability (write-once).
 -}
 withWrap : Bool -> Builder { a | wrap : Available } slotCaps msg kind -> Builder { a | wrap : Used } slotCaps msg kind
-withWrap =
-    Component.withWrap
+withWrap value_ =
+    B.withAttribute (A.wrap value_)

@@ -71,10 +71,10 @@ type alias Content =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-heading" ([]) [ El.toNode required_.content ]
+    B.init "m3e-heading" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -94,64 +94,64 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Heading`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Heading`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Heading`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Heading`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `emphasized` — re-exported from `M3e.Heading`.
+{-| Pipe form of `emphasized` — consumes its capability (write-once).
 -}
 withEmphasized : Bool -> Builder { a | emphasized : Available } slotCaps msg kind -> Builder { a | emphasized : Used } slotCaps msg kind
-withEmphasized =
-    Component.withEmphasized
+withEmphasized value_ =
+    B.withAttribute (A.emphasized value_)
 
 
-{-| Pipe form of `level` — re-exported from `M3e.Heading`.
+{-| Pipe form of `level` — consumes its capability (write-once).
 -}
 withLevel : Int -> Builder { a | level : Available } slotCaps msg kind -> Builder { a | level : Used } slotCaps msg kind
-withLevel =
-    Component.withLevel
+withLevel value_ =
+    B.withAttribute (A.level value_)
 
 
-{-| Pipe form of `size` — re-exported from `M3e.Heading`.
+{-| Pipe form of `size` — consumes its capability (write-once).
 -}
 withSize : Value Component.Size -> Builder { a | size : Available } slotCaps msg kind -> Builder { a | size : Used } slotCaps msg kind
-withSize =
-    Component.withSize
+withSize value_ =
+    B.withAttribute (Component.size value_)
 
 
-{-| Pipe form of `tocIgnore` — re-exported from `M3e.Heading`.
+{-| Pipe form of `tocIgnore` — consumes its capability (write-once).
 -}
 withTocIgnore : Bool -> Builder { a | tocIgnore : Available } slotCaps msg kind -> Builder { a | tocIgnore : Used } slotCaps msg kind
-withTocIgnore =
-    Component.withTocIgnore
+withTocIgnore value_ =
+    B.withAttribute (A.tocIgnore value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.Heading`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)

@@ -72,64 +72,64 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `bounce` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `bounce` — consumes its capability (write-once).
 -}
 withBounce : Bool -> Builder { a | bounce : Available } slotCaps msg kind -> Builder { a | bounce : Used } slotCaps msg kind
-withBounce =
-    Component.withBounce
+withBounce value_ =
+    B.withAttribute (A.bounce value_)
 
 
-{-| Pipe form of `centered` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `centered` — consumes its capability (write-once).
 -}
 withCentered : Bool -> Builder { a | centered : Available } slotCaps msg kind -> Builder { a | centered : Used } slotCaps msg kind
-withCentered =
-    Component.withCentered
+withCentered value_ =
+    B.withAttribute (A.centered value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `selected` — re-exported from `M3e.SelectionIndicator`.
+{-| Pipe form of `selected` — consumes its capability (write-once).
 -}
 withSelected : Bool -> Builder { a | selected : Available } slotCaps msg kind -> Builder { a | selected : Used } slotCaps msg kind
-withSelected =
-    Component.withSelected
+withSelected value_ =
+    B.withAttribute (A.selected value_)

@@ -91,7 +91,7 @@ toElement =
 {-| Place a builder-built element into the named `overline` slot — calls `B.toElement` internally.
 -}
 overline :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.OverlineSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.OverlineSlot msg
     -> Element free freeAdmittedBy msg
 overline builder =
     Component.overline (B.toElement builder)
@@ -100,7 +100,7 @@ overline builder =
 {-| Place a builder-built element into the named `title` slot — calls `B.toElement` internally.
 -}
 title :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TitleSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TitleSlot msg
     -> Element free freeAdmittedBy msg
 title builder =
     Component.title (B.toElement builder)
@@ -109,7 +109,7 @@ title builder =
 {-| Pipe form of the `overline` slot — accepts a builder directly (no `.toElement`).
 -}
 withOverline :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.OverlineSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.OverlineSlot msg
     -> Builder attrCaps { s | overline : Available } msg kind
     -> Builder attrCaps { s | overline : Used } msg kind
 withOverline slotBuilder builder_ =
@@ -119,7 +119,7 @@ withOverline slotBuilder builder_ =
 {-| Pipe form of the `title` slot — accepts a builder directly (no `.toElement`).
 -}
 withTitle :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TitleSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TitleSlot msg
     -> Builder attrCaps { s | title : Available } msg kind
     -> Builder attrCaps { s | title : Used } msg kind
 withTitle slotBuilder builder_ =
@@ -136,43 +136,43 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Toc`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Toc`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Toc`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Toc`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.Toc`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `maxDepth` — re-exported from `M3e.Toc`.
+{-| Pipe form of `maxDepth` — consumes its capability (write-once).
 -}
 withMaxDepth : Float -> Builder { a | maxDepth : Available } slotCaps msg kind -> Builder { a | maxDepth : Used } slotCaps msg kind
-withMaxDepth =
-    Component.withMaxDepth
+withMaxDepth value_ =
+    B.withAttribute (A.maxDepth value_)

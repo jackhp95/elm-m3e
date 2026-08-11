@@ -1,22 +1,20 @@
 module M3e.Component.BreadcrumbItemButton exposing
-    ( view, build, toElement
-    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view
+    , Is, Attrs, Content, ChildAdmittedBy
     , Current, current
     , disabled, download, href, rel, target, onClick
     , child
-    , withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withId, withOnClick, withRel, withSlot, withStyle, withTarget
     )
 
 {-| The `m3e-breadcrumb-item-button` component — strict per-component surface.
 
 
 
-@docs view, build, toElement
-@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view
+@docs Is, Attrs, Content, ChildAdmittedBy
 @docs Current, current
 @docs disabled, download, href, rel, target, onClick
 @docs child
-@docs withChild, withClass, withCurrent, withDisabled, withDownload, withHref, withId, withOnClick, withRel, withSlot, withStyle, withTarget
 
 -}
 
@@ -26,7 +24,6 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
 import M3e.Internal.Types.BreadcrumbItemButton
@@ -129,121 +126,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.BreadcrumbItemButton.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.BreadcrumbItemButton.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    {}
-
-
-{-| Seed the pipe-builder.
--}
-build : Builder AttrCaps SlotCaps msg kind
-build =
-    B.init "m3e-breadcrumb-item-button" [] []
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `current` — consumes its capability (write-once).
--}
-withCurrent : Value Current -> Builder { a | current : Available } slotCaps msg kind -> Builder { a | current : Used } slotCaps msg kind
-withCurrent value_ =
-    B.withAttribute (current value_)
-
-
-{-| Pipe form of `disabled` — consumes its capability (write-once).
--}
-withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled value_ =
-    B.withAttribute (A.disabled value_)
-
-
-{-| Pipe form of `download` — consumes its capability (write-once).
--}
-withDownload : String -> Builder { a | download : Available } slotCaps msg kind -> Builder { a | download : Used } slotCaps msg kind
-withDownload value_ =
-    B.withAttribute (A.download value_)
-
-
-{-| Pipe form of `href` — consumes its capability (write-once).
--}
-withHref : String -> Builder { a | href : Available } slotCaps msg kind -> Builder { a | href : Used } slotCaps msg kind
-withHref value_ =
-    B.withAttribute (A.href value_)
-
-
-{-| Pipe form of `rel` — consumes its capability (write-once).
--}
-withRel : String -> Builder { a | rel : Available } slotCaps msg kind -> Builder { a | rel : Used } slotCaps msg kind
-withRel value_ =
-    B.withAttribute (A.rel value_)
-
-
-{-| Pipe form of `target` — consumes its capability (write-once).
--}
-withTarget : String -> Builder { a | target : Available } slotCaps msg kind -> Builder { a | target : Used } slotCaps msg kind
-withTarget value_ =
-    B.withAttribute (A.target value_)
-
-
-{-| Pipe form of `onClick` — consumes its capability (write-once).
--}
-withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick value_ =
-    B.withAttribute (Ev.onClick value_)
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

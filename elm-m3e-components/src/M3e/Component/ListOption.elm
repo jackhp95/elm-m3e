@@ -1,20 +1,18 @@
 module M3e.Component.ListOption exposing
-    ( view, build, toElement
-    , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view
+    , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy
     , disabled, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
     , leading, overline, supportingText, trailing, child
-    , withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
     )
 
 {-| The `m3e-list-option` component — strict per-component surface.
 
 A selectable option in a list.
 
-@docs view, build, toElement
-@docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view
+@docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy
 @docs disabled, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs leading, overline, supportingText, trailing, child
-@docs withChild, withClass, withDisabled, withId, withLeading, withOnBeforeinput, withOnChange, withOnClick, withOnInput, withOverline, withSelected, withSlot, withStyle, withSupportingText, withTrailing, withValue
 
 -}
 
@@ -23,7 +21,6 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
 import M3e.Internal.Types.ListOption
@@ -190,149 +187,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.ListOption.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.ListOption.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    M3e.Internal.Types.ListOption.SlotCaps
-
-
-{-| Seed the pipe-builder.
--}
-build : Builder AttrCaps SlotCaps msg kind
-build =
-    B.init "m3e-list-option" [] []
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `disabled` — consumes its capability (write-once).
--}
-withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled value_ =
-    B.withAttribute (A.disabled value_)
-
-
-{-| Pipe form of `selected` — consumes its capability (write-once).
--}
-withSelected : Bool -> Builder { a | selected : Available } slotCaps msg kind -> Builder { a | selected : Used } slotCaps msg kind
-withSelected value_ =
-    B.withAttribute (A.selected value_)
-
-
-{-| Pipe form of `value` — consumes its capability (write-once).
--}
-withValue : String -> Builder { a | value : Available } slotCaps msg kind -> Builder { a | value : Used } slotCaps msg kind
-withValue value_ =
-    B.withAttribute (A.value value_)
-
-
-{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
--}
-withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput value_ =
-    B.withAttribute (Ev.onBeforeinput value_)
-
-
-{-| Pipe form of `onInput` — consumes its capability (write-once).
--}
-withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput value_ =
-    B.withAttribute (Ev.onInput value_)
-
-
-{-| Pipe form of `onChange` — consumes its capability (write-once).
--}
-withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange value_ =
-    B.withAttribute (Ev.onChange value_)
-
-
-{-| Pipe form of `onClick` — consumes its capability (write-once).
--}
-withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick value_ =
-    B.withAttribute (Ev.onClick value_)
-
-
-{-| Pipe form of the `leading` slot — consumes its capability (write-once).
--}
-withLeading : Element LeadingSlot admittedBy msg -> Builder attrCaps { s | leading : Available } msg kind -> Builder attrCaps { s | leading : Used } msg kind
-withLeading element =
-    B.withChild (El.toNode (leading element))
-
-
-{-| Pipe form of the `overline` slot — consumes its capability (write-once).
--}
-withOverline : Element OverlineSlot admittedBy msg -> Builder attrCaps { s | overline : Available } msg kind -> Builder attrCaps { s | overline : Used } msg kind
-withOverline element =
-    B.withChild (El.toNode (overline element))
-
-
-{-| Pipe form of the `supporting-text` slot — consumes its capability (write-once).
--}
-withSupportingText : Element SupportingTextSlot admittedBy msg -> Builder attrCaps { s | supportingText : Available } msg kind -> Builder attrCaps { s | supportingText : Used } msg kind
-withSupportingText element =
-    B.withChild (El.toNode (supportingText element))
-
-
-{-| Pipe form of the `trailing` slot — consumes its capability (write-once).
--}
-withTrailing : Element TrailingSlot admittedBy msg -> Builder attrCaps { s | trailing : Available } msg kind -> Builder attrCaps { s | trailing : Used } msg kind
-withTrailing element =
-    B.withChild (El.toNode (trailing element))
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

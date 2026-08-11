@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.ExpansionPanel as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.ExpansionPanel
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -73,10 +74,10 @@ type alias ToggleIconSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { header : Element (childAccepts) (Component.ChildAdmittedBy childAdm) msg }
+    { header : Element childAccepts (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-expansion-panel" ([]) [ El.toNode (Component.header required_.header) ]
+    B.init "m3e-expansion-panel" [] [ El.toNode (Component.header required_.header) ]
 
 
 {-| Close the pipe-builder.
@@ -89,7 +90,7 @@ toElement =
 {-| Place a builder-built element into the named `actions` slot — calls `B.toElement` internally.
 -}
 actions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 actions builder =
     Component.actions (B.toElement builder)
@@ -98,7 +99,7 @@ actions builder =
 {-| Place a builder-built element into the named `header` slot — calls `B.toElement` internally.
 -}
 header :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 header builder =
     Component.header (B.toElement builder)
@@ -107,7 +108,7 @@ header builder =
 {-| Place a builder-built element into the named `toggle-icon` slot — calls `B.toElement` internally.
 -}
 toggleIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ToggleIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ToggleIconSlot msg
     -> Element free freeAdmittedBy msg
 toggleIcon builder =
     Component.toggleIcon (B.toElement builder)
@@ -116,7 +117,7 @@ toggleIcon builder =
 {-| Pipe form of the `header` slot — accepts a builder directly (no `.toElement`).
 -}
 withHeader :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | header : Available } msg kind
     -> Builder attrCaps { s | header : Used } msg kind
 withHeader slotBuilder builder_ =
@@ -126,7 +127,7 @@ withHeader slotBuilder builder_ =
 {-| Pipe form of the `toggle-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withToggleIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ToggleIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ToggleIconSlot msg
     -> Builder attrCaps { s | toggleIcon : Available } msg kind
     -> Builder attrCaps { s | toggleIcon : Used } msg kind
 withToggleIcon slotBuilder builder_ =
@@ -136,7 +137,7 @@ withToggleIcon slotBuilder builder_ =
 {-| Pipe form of the `actions` slot (repeatable) — accepts a builder directly.
 -}
 withActions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps slotCaps msg kind
     -> Builder attrCaps slotCaps msg kind
 withActions slotBuilder builder_ =
@@ -153,92 +154,92 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `hideToggle` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `hideToggle` — consumes its capability (write-once).
 -}
 withHideToggle : Bool -> Builder { a | hideToggle : Available } slotCaps msg kind -> Builder { a | hideToggle : Used } slotCaps msg kind
-withHideToggle =
-    Component.withHideToggle
+withHideToggle value_ =
+    B.withAttribute (A.hideToggle value_)
 
 
-{-| Pipe form of `open` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `open` — consumes its capability (write-once).
 -}
 withOpen : Bool -> Builder { a | open : Available } slotCaps msg kind -> Builder { a | open : Used } slotCaps msg kind
-withOpen =
-    Component.withOpen
+withOpen value_ =
+    B.withAttribute (A.open value_)
 
 
-{-| Pipe form of `toggleDirection` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `toggleDirection` — consumes its capability (write-once).
 -}
 withToggleDirection : Value Component.ToggleDirection -> Builder { a | toggleDirection : Available } slotCaps msg kind -> Builder { a | toggleDirection : Used } slotCaps msg kind
-withToggleDirection =
-    Component.withToggleDirection
+withToggleDirection value_ =
+    B.withAttribute (Component.toggleDirection value_)
 
 
-{-| Pipe form of `togglePosition` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `togglePosition` — consumes its capability (write-once).
 -}
 withTogglePosition : Value Component.TogglePosition -> Builder { a | togglePosition : Available } slotCaps msg kind -> Builder { a | togglePosition : Used } slotCaps msg kind
-withTogglePosition =
-    Component.withTogglePosition
+withTogglePosition value_ =
+    B.withAttribute (Component.togglePosition value_)
 
 
-{-| Pipe form of `onOpening` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `onOpening` — consumes its capability (write-once).
 -}
 withOnOpening : msg -> Builder { a | onOpening : Available } slotCaps msg kind -> Builder { a | onOpening : Used } slotCaps msg kind
-withOnOpening =
-    Component.withOnOpening
+withOnOpening value_ =
+    B.withAttribute (Ev.onOpening value_)
 
 
-{-| Pipe form of `onOpened` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `onOpened` — consumes its capability (write-once).
 -}
 withOnOpened : msg -> Builder { a | onOpened : Available } slotCaps msg kind -> Builder { a | onOpened : Used } slotCaps msg kind
-withOnOpened =
-    Component.withOnOpened
+withOnOpened value_ =
+    B.withAttribute (Ev.onOpened value_)
 
 
-{-| Pipe form of `onClosing` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `onClosing` — consumes its capability (write-once).
 -}
 withOnClosing : msg -> Builder { a | onClosing : Available } slotCaps msg kind -> Builder { a | onClosing : Used } slotCaps msg kind
-withOnClosing =
-    Component.withOnClosing
+withOnClosing value_ =
+    B.withAttribute (Ev.onClosing value_)
 
 
-{-| Pipe form of `onClosed` — re-exported from `M3e.ExpansionPanel`.
+{-| Pipe form of `onClosed` — consumes its capability (write-once).
 -}
 withOnClosed : msg -> Builder { a | onClosed : Available } slotCaps msg kind -> Builder { a | onClosed : Used } slotCaps msg kind
-withOnClosed =
-    Component.withOnClosed
+withOnClosed value_ =
+    B.withAttribute (Ev.onClosed value_)

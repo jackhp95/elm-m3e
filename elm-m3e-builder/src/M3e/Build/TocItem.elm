@@ -26,6 +26,7 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.TocItem as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.TocItem
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -69,10 +70,10 @@ type alias Content =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-toc-item" ([]) [ El.toNode required_.content ]
+    B.init "m3e-toc-item" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -92,50 +93,50 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `selected` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `selected` — consumes its capability (write-once).
 -}
 withSelected : Bool -> Builder { a | selected : Available } slotCaps msg kind -> Builder { a | selected : Used } slotCaps msg kind
-withSelected =
-    Component.withSelected
+withSelected value_ =
+    B.withAttribute (A.selected value_)
 
 
-{-| Pipe form of `onClick` — re-exported from `M3e.TocItem`.
+{-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick =
-    Component.withOnClick
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)

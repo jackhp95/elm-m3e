@@ -1,22 +1,20 @@
 module M3e.Component.ScrollContainer exposing
-    ( view, build, toElement
-    , Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view
+    , Is, Attrs, ChildAdmittedBy
     , Dividers, dividers
     , thin
     , child
-    , withChild, withClass, withDividers, withId, withSlot, withStyle, withThin
     )
 
 {-| The `m3e-scroll-container` component — strict per-component surface.
 
 A vertically oriented content container which presents dividers above and below content when scrolled.
 
-@docs view, build, toElement
-@docs Is, Attrs, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view
+@docs Is, Attrs, ChildAdmittedBy
 @docs Dividers, dividers
 @docs thin
 @docs child
-@docs withChild, withClass, withDividers, withId, withSlot, withStyle, withThin
 
 -}
 
@@ -26,7 +24,6 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Html as H
 import M3e.Internal.Types.ScrollContainer
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
@@ -90,86 +87,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.ScrollContainer.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.ScrollContainer.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    {}
-
-
-{-| Seed the pipe-builder.
--}
-build : Builder AttrCaps SlotCaps msg kind
-build =
-    B.init "m3e-scroll-container" [] []
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `dividers` — consumes its capability (write-once).
--}
-withDividers : Value Dividers -> Builder { a | dividers : Available } slotCaps msg kind -> Builder { a | dividers : Used } slotCaps msg kind
-withDividers value_ =
-    B.withAttribute (dividers value_)
-
-
-{-| Pipe form of `thin` — consumes its capability (write-once).
--}
-withThin : Bool -> Builder { a | thin : Available } slotCaps msg kind -> Builder { a | thin : Used } slotCaps msg kind
-withThin value_ =
-    B.withAttribute (A.thin value_)
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

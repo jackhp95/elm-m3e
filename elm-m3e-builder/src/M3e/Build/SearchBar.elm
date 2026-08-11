@@ -28,6 +28,7 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.SearchBar as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.SearchBar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -83,10 +84,10 @@ type alias TrailingSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { input : Element (childAccepts) (Component.ChildAdmittedBy childAdm) msg }
+    { input : Element childAccepts (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-search-bar" ([]) [ El.toNode (Component.input required_.input) ]
+    B.init "m3e-search-bar" [] [ El.toNode (Component.input required_.input) ]
 
 
 {-| Close the pipe-builder.
@@ -99,7 +100,7 @@ toElement =
 {-| Place a builder-built element into the named `clear-icon` slot — calls `B.toElement` internally.
 -}
 clearIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ClearIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ClearIconSlot msg
     -> Element free freeAdmittedBy msg
 clearIcon builder =
     Component.clearIcon (B.toElement builder)
@@ -108,7 +109,7 @@ clearIcon builder =
 {-| Place a builder-built element into the named `input` slot — calls `B.toElement` internally.
 -}
 input :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 input builder =
     Component.input (B.toElement builder)
@@ -117,7 +118,7 @@ input builder =
 {-| Place a builder-built element into the named `leading` slot — calls `B.toElement` internally.
 -}
 leading :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LeadingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingSlot msg
     -> Element free freeAdmittedBy msg
 leading builder =
     Component.leading (B.toElement builder)
@@ -126,7 +127,7 @@ leading builder =
 {-| Place a builder-built element into the named `trailing` slot — calls `B.toElement` internally.
 -}
 trailing :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingSlot msg
     -> Element free freeAdmittedBy msg
 trailing builder =
     Component.trailing (B.toElement builder)
@@ -135,7 +136,7 @@ trailing builder =
 {-| Pipe form of the `clear-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withClearIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ClearIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ClearIconSlot msg
     -> Builder attrCaps { s | clearIcon : Available } msg kind
     -> Builder attrCaps { s | clearIcon : Used } msg kind
 withClearIcon slotBuilder builder_ =
@@ -145,7 +146,7 @@ withClearIcon slotBuilder builder_ =
 {-| Pipe form of the `input` slot — accepts a builder directly (no `.toElement`).
 -}
 withInput :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | input : Available } msg kind
     -> Builder attrCaps { s | input : Used } msg kind
 withInput slotBuilder builder_ =
@@ -155,7 +156,7 @@ withInput slotBuilder builder_ =
 {-| Pipe form of the `leading` slot (repeatable) — accepts a builder directly.
 -}
 withLeading :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LeadingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingSlot msg
     -> Builder attrCaps slotCaps msg kind
     -> Builder attrCaps slotCaps msg kind
 withLeading slotBuilder builder_ =
@@ -165,57 +166,57 @@ withLeading slotBuilder builder_ =
 {-| Pipe form of the `trailing` slot (repeatable) — accepts a builder directly.
 -}
 withTrailing :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingSlot msg
     -> Builder attrCaps slotCaps msg kind
     -> Builder attrCaps slotCaps msg kind
 withTrailing slotBuilder builder_ =
     B.withChild (El.toNode (Component.trailing (B.toElement slotBuilder))) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `clearLabel` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `clearLabel` — consumes its capability (write-once).
 -}
 withClearLabel : String -> Builder { a | clearLabel : Available } slotCaps msg kind -> Builder { a | clearLabel : Used } slotCaps msg kind
-withClearLabel =
-    Component.withClearLabel
+withClearLabel value_ =
+    B.withAttribute (A.clearLabel value_)
 
 
-{-| Pipe form of `clearable` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `clearable` — consumes its capability (write-once).
 -}
 withClearable : Bool -> Builder { a | clearable : Available } slotCaps msg kind -> Builder { a | clearable : Used } slotCaps msg kind
-withClearable =
-    Component.withClearable
+withClearable value_ =
+    B.withAttribute (A.clearable value_)
 
 
-{-| Pipe form of `onClear` — re-exported from `M3e.SearchBar`.
+{-| Pipe form of `onClear` — consumes its capability (write-once).
 -}
 withOnClear : msg -> Builder { a | onClear : Available } slotCaps msg kind -> Builder { a | onClear : Used } slotCaps msg kind
-withOnClear =
-    Component.withOnClear
+withOnClear value_ =
+    B.withAttribute (Ev.onClear value_)

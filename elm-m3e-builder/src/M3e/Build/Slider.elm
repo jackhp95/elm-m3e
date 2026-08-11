@@ -27,6 +27,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Slider as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Slider
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -65,10 +66,10 @@ type alias ChildAdmittedBy childAdm =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (childAccepts) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element childAccepts (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-slider" ([]) [ El.toNode required_.content ]
+    B.init "m3e-slider" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -88,99 +89,99 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Slider`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Slider`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Slider`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Slider`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.Slider`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `discrete` — re-exported from `M3e.Slider`.
+{-| Pipe form of `discrete` — consumes its capability (write-once).
 -}
 withDiscrete : Bool -> Builder { a | discrete : Available } slotCaps msg kind -> Builder { a | discrete : Used } slotCaps msg kind
-withDiscrete =
-    Component.withDiscrete
+withDiscrete value_ =
+    B.withAttribute (A.discrete value_)
 
 
-{-| Pipe form of `labelled` — re-exported from `M3e.Slider`.
+{-| Pipe form of `labelled` — consumes its capability (write-once).
 -}
 withLabelled : Bool -> Builder { a | labelled : Available } slotCaps msg kind -> Builder { a | labelled : Used } slotCaps msg kind
-withLabelled =
-    Component.withLabelled
+withLabelled value_ =
+    B.withAttribute (A.labelled value_)
 
 
-{-| Pipe form of `max` — re-exported from `M3e.Slider`.
+{-| Pipe form of `max` — consumes its capability (write-once).
 -}
 withMax : Float -> Builder { a | max : Available } slotCaps msg kind -> Builder { a | max : Used } slotCaps msg kind
-withMax =
-    Component.withMax
+withMax value_ =
+    B.withAttribute (A.max value_)
 
 
-{-| Pipe form of `min` — re-exported from `M3e.Slider`.
+{-| Pipe form of `min` — consumes its capability (write-once).
 -}
 withMin : Float -> Builder { a | min : Available } slotCaps msg kind -> Builder { a | min : Used } slotCaps msg kind
-withMin =
-    Component.withMin
+withMin value_ =
+    B.withAttribute (A.min value_)
 
 
-{-| Pipe form of `size` — re-exported from `M3e.Slider`.
+{-| Pipe form of `size` — consumes its capability (write-once).
 -}
 withSize : Value Component.Size -> Builder { a | size : Available } slotCaps msg kind -> Builder { a | size : Used } slotCaps msg kind
-withSize =
-    Component.withSize
+withSize value_ =
+    B.withAttribute (Component.size value_)
 
 
-{-| Pipe form of `step` — re-exported from `M3e.Slider`.
+{-| Pipe form of `step` — consumes its capability (write-once).
 -}
 withStep : Float -> Builder { a | step : Available } slotCaps msg kind -> Builder { a | step : Used } slotCaps msg kind
-withStep =
-    Component.withStep
+withStep value_ =
+    B.withAttribute (A.step value_)
 
 
-{-| Pipe form of `onBeforeinput` — re-exported from `M3e.Slider`.
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput =
-    Component.withOnBeforeinput
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
-{-| Pipe form of `onInput` — re-exported from `M3e.Slider`.
+{-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput =
-    Component.withOnInput
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.Slider`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)

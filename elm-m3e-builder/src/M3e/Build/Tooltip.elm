@@ -71,10 +71,10 @@ type alias Content =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-tooltip" ([]) [ El.toNode required_.content ]
+    B.init "m3e-tooltip" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -94,71 +94,71 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `hideDelay` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `hideDelay` — consumes its capability (write-once).
 -}
 withHideDelay : Float -> Builder { a | hideDelay : Available } slotCaps msg kind -> Builder { a | hideDelay : Used } slotCaps msg kind
-withHideDelay =
-    Component.withHideDelay
+withHideDelay value_ =
+    B.withAttribute (A.hideDelay value_)
 
 
-{-| Pipe form of `position` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `position` — consumes its capability (write-once).
 -}
 withPosition : Value Component.Position -> Builder { a | position : Available } slotCaps msg kind -> Builder { a | position : Used } slotCaps msg kind
-withPosition =
-    Component.withPosition
+withPosition value_ =
+    B.withAttribute (Component.position value_)
 
 
-{-| Pipe form of `showDelay` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `showDelay` — consumes its capability (write-once).
 -}
 withShowDelay : Float -> Builder { a | showDelay : Available } slotCaps msg kind -> Builder { a | showDelay : Used } slotCaps msg kind
-withShowDelay =
-    Component.withShowDelay
+withShowDelay value_ =
+    B.withAttribute (A.showDelay value_)
 
 
-{-| Pipe form of `touchGestures` — re-exported from `M3e.Tooltip`.
+{-| Pipe form of `touchGestures` — consumes its capability (write-once).
 -}
 withTouchGestures : Value Component.TouchGestures -> Builder { a | touchGestures : Available } slotCaps msg kind -> Builder { a | touchGestures : Used } slotCaps msg kind
-withTouchGestures =
-    Component.withTouchGestures
+withTouchGestures value_ =
+    B.withAttribute (Component.touchGestures value_)

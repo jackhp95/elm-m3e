@@ -91,7 +91,7 @@ toElement =
 {-| Place a builder-built element into the named `next-icon` slot — calls `B.toElement` internally.
 -}
 nextIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.NextIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.NextIconSlot msg
     -> Element free freeAdmittedBy msg
 nextIcon builder =
     Component.nextIcon (B.toElement builder)
@@ -100,7 +100,7 @@ nextIcon builder =
 {-| Place a builder-built element into the named `prev-icon` slot — calls `B.toElement` internally.
 -}
 prevIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.PrevIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.PrevIconSlot msg
     -> Element free freeAdmittedBy msg
 prevIcon builder =
     Component.prevIcon (B.toElement builder)
@@ -109,7 +109,7 @@ prevIcon builder =
 {-| Pipe form of the `next-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withNextIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.NextIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.NextIconSlot msg
     -> Builder attrCaps { s | nextIcon : Available } msg kind
     -> Builder attrCaps { s | nextIcon : Used } msg kind
 withNextIcon slotBuilder builder_ =
@@ -119,7 +119,7 @@ withNextIcon slotBuilder builder_ =
 {-| Pipe form of the `prev-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withPrevIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.PrevIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.PrevIconSlot msg
     -> Builder attrCaps { s | prevIcon : Available } msg kind
     -> Builder attrCaps { s | prevIcon : Used } msg kind
 withPrevIcon slotBuilder builder_ =
@@ -136,64 +136,64 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `nextPageLabel` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
 -}
 withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg kind -> Builder { a | nextPageLabel : Used } slotCaps msg kind
-withNextPageLabel =
-    Component.withNextPageLabel
+withNextPageLabel value_ =
+    B.withAttribute (A.nextPageLabel value_)
 
 
-{-| Pipe form of `previousPageLabel` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
 -}
 withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg kind -> Builder { a | previousPageLabel : Used } slotCaps msg kind
-withPreviousPageLabel =
-    Component.withPreviousPageLabel
+withPreviousPageLabel value_ =
+    B.withAttribute (A.previousPageLabel value_)
 
 
-{-| Pipe form of `threshold` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `threshold` — consumes its capability (write-once).
 -}
 withThreshold : Float -> Builder { a | threshold : Available } slotCaps msg kind -> Builder { a | threshold : Used } slotCaps msg kind
-withThreshold =
-    Component.withThreshold
+withThreshold value_ =
+    B.withAttribute (A.threshold value_)
 
 
-{-| Pipe form of `vertical` — re-exported from `M3e.SlideGroup`.
+{-| Pipe form of `vertical` — consumes its capability (write-once).
 -}
 withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg kind -> Builder { a | vertical : Used } slotCaps msg kind
-withVertical =
-    Component.withVertical
+withVertical value_ =
+    B.withAttribute (A.vertical value_)

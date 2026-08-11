@@ -22,6 +22,7 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
+import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Icon as Component
@@ -74,71 +75,71 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Icon`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Icon`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Icon`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Icon`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `filled` — re-exported from `M3e.Icon`.
+{-| Pipe form of `filled` — consumes its capability (write-once).
 -}
 withFilled : Bool -> Builder { a | filled : Available } slotCaps msg kind -> Builder { a | filled : Used } slotCaps msg kind
-withFilled =
-    Component.withFilled
+withFilled value_ =
+    B.withAttribute (A.filled value_)
 
 
-{-| Pipe form of `grade` — re-exported from `M3e.Icon`.
+{-| Pipe form of `grade` — consumes its capability (write-once).
 -}
 withGrade : Value Component.Grade -> Builder { a | grade : Available } slotCaps msg kind -> Builder { a | grade : Used } slotCaps msg kind
-withGrade =
-    Component.withGrade
+withGrade value_ =
+    B.withAttribute (Component.grade value_)
 
 
-{-| Pipe form of `name` — re-exported from `M3e.Icon`.
+{-| Pipe form of `name` — consumes its capability (write-once).
 -}
 withName : String -> Builder { a | name : Available } slotCaps msg kind -> Builder { a | name : Used } slotCaps msg kind
-withName =
-    Component.withName
+withName value_ =
+    B.withAttribute (Ir.attribute "name" value_)
 
 
-{-| Pipe form of `opticalSize` — re-exported from `M3e.Icon`.
+{-| Pipe form of `opticalSize` — consumes its capability (write-once).
 -}
 withOpticalSize : Float -> Builder { a | opticalSize : Available } slotCaps msg kind -> Builder { a | opticalSize : Used } slotCaps msg kind
-withOpticalSize =
-    Component.withOpticalSize
+withOpticalSize value_ =
+    B.withAttribute (A.opticalSize value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.Icon`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)
 
 
-{-| Pipe form of `weight` — re-exported from `M3e.Icon`.
+{-| Pipe form of `weight` — consumes its capability (write-once).
 -}
 withWeight : Int -> Builder { a | weight : Available } slotCaps msg kind -> Builder { a | weight : Used } slotCaps msg kind
-withWeight =
-    Component.withWeight
+withWeight value_ =
+    B.withAttribute (A.weight value_)

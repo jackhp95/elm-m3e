@@ -28,6 +28,7 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Step as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Step
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -107,10 +108,10 @@ type alias IconSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-step" ([]) [ El.toNode required_.content ]
+    B.init "m3e-step" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -123,7 +124,7 @@ toElement =
 {-| Place a builder-built element into the named `done-icon` slot — calls `B.toElement` internally.
 -}
 doneIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.DoneIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.DoneIconSlot msg
     -> Element free freeAdmittedBy msg
 doneIcon builder =
     Component.doneIcon (B.toElement builder)
@@ -132,7 +133,7 @@ doneIcon builder =
 {-| Place a builder-built element into the named `edit-icon` slot — calls `B.toElement` internally.
 -}
 editIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.EditIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.EditIconSlot msg
     -> Element free freeAdmittedBy msg
 editIcon builder =
     Component.editIcon (B.toElement builder)
@@ -141,7 +142,7 @@ editIcon builder =
 {-| Place a builder-built element into the named `error` slot — calls `B.toElement` internally.
 -}
 error :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ErrorSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ErrorSlot msg
     -> Element free freeAdmittedBy msg
 error builder =
     Component.error (B.toElement builder)
@@ -150,7 +151,7 @@ error builder =
 {-| Place a builder-built element into the named `error-icon` slot — calls `B.toElement` internally.
 -}
 errorIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ErrorIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ErrorIconSlot msg
     -> Element free freeAdmittedBy msg
 errorIcon builder =
     Component.errorIcon (B.toElement builder)
@@ -159,7 +160,7 @@ errorIcon builder =
 {-| Place a builder-built element into the named `hint` slot — calls `B.toElement` internally.
 -}
 hint :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.HintSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.HintSlot msg
     -> Element free freeAdmittedBy msg
 hint builder =
     Component.hint (B.toElement builder)
@@ -168,7 +169,7 @@ hint builder =
 {-| Place a builder-built element into the named `icon` slot — calls `B.toElement` internally.
 -}
 icon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.IconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.IconSlot msg
     -> Element free freeAdmittedBy msg
 icon builder =
     Component.icon (B.toElement builder)
@@ -177,7 +178,7 @@ icon builder =
 {-| Pipe form of the `done-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withDoneIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.DoneIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.DoneIconSlot msg
     -> Builder attrCaps { s | doneIcon : Available } msg kind
     -> Builder attrCaps { s | doneIcon : Used } msg kind
 withDoneIcon slotBuilder builder_ =
@@ -187,7 +188,7 @@ withDoneIcon slotBuilder builder_ =
 {-| Pipe form of the `edit-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withEditIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.EditIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.EditIconSlot msg
     -> Builder attrCaps { s | editIcon : Available } msg kind
     -> Builder attrCaps { s | editIcon : Used } msg kind
 withEditIcon slotBuilder builder_ =
@@ -197,7 +198,7 @@ withEditIcon slotBuilder builder_ =
 {-| Pipe form of the `error` slot — accepts a builder directly (no `.toElement`).
 -}
 withError :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ErrorSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ErrorSlot msg
     -> Builder attrCaps { s | error : Available } msg kind
     -> Builder attrCaps { s | error : Used } msg kind
 withError slotBuilder builder_ =
@@ -207,7 +208,7 @@ withError slotBuilder builder_ =
 {-| Pipe form of the `error-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withErrorIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.ErrorIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.ErrorIconSlot msg
     -> Builder attrCaps { s | errorIcon : Available } msg kind
     -> Builder attrCaps { s | errorIcon : Used } msg kind
 withErrorIcon slotBuilder builder_ =
@@ -217,7 +218,7 @@ withErrorIcon slotBuilder builder_ =
 {-| Pipe form of the `hint` slot — accepts a builder directly (no `.toElement`).
 -}
 withHint :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.HintSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.HintSlot msg
     -> Builder attrCaps { s | hint : Available } msg kind
     -> Builder attrCaps { s | hint : Used } msg kind
 withHint slotBuilder builder_ =
@@ -227,7 +228,7 @@ withHint slotBuilder builder_ =
 {-| Pipe form of the `icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.IconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.IconSlot msg
     -> Builder attrCaps { s | icon : Available } msg kind
     -> Builder attrCaps { s | icon : Used } msg kind
 withIcon slotBuilder builder_ =
@@ -244,106 +245,106 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Step`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Step`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Step`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Step`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `completed` — re-exported from `M3e.Step`.
+{-| Pipe form of `completed` — consumes its capability (write-once).
 -}
 withCompleted : Bool -> Builder { a | completed : Available } slotCaps msg kind -> Builder { a | completed : Used } slotCaps msg kind
-withCompleted =
-    Component.withCompleted
+withCompleted value_ =
+    B.withAttribute (A.completed value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.Step`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `editable` — re-exported from `M3e.Step`.
+{-| Pipe form of `editable` — consumes its capability (write-once).
 -}
 withEditable : Bool -> Builder { a | editable : Available } slotCaps msg kind -> Builder { a | editable : Used } slotCaps msg kind
-withEditable =
-    Component.withEditable
+withEditable value_ =
+    B.withAttribute (A.editable value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.Step`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `invalid` — re-exported from `M3e.Step`.
+{-| Pipe form of `invalid` — consumes its capability (write-once).
 -}
 withInvalid : Bool -> Builder { a | invalid : Available } slotCaps msg kind -> Builder { a | invalid : Used } slotCaps msg kind
-withInvalid =
-    Component.withInvalid
+withInvalid value_ =
+    B.withAttribute (A.invalid value_)
 
 
-{-| Pipe form of `optional` — re-exported from `M3e.Step`.
+{-| Pipe form of `optional` — consumes its capability (write-once).
 -}
 withOptional : Bool -> Builder { a | optional : Available } slotCaps msg kind -> Builder { a | optional : Used } slotCaps msg kind
-withOptional =
-    Component.withOptional
+withOptional value_ =
+    B.withAttribute (A.optional value_)
 
 
-{-| Pipe form of `selected` — re-exported from `M3e.Step`.
+{-| Pipe form of `selected` — consumes its capability (write-once).
 -}
 withSelected : Bool -> Builder { a | selected : Available } slotCaps msg kind -> Builder { a | selected : Used } slotCaps msg kind
-withSelected =
-    Component.withSelected
+withSelected value_ =
+    B.withAttribute (A.selected value_)
 
 
-{-| Pipe form of `onBeforeinput` — re-exported from `M3e.Step`.
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput =
-    Component.withOnBeforeinput
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
-{-| Pipe form of `onInput` — re-exported from `M3e.Step`.
+{-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput =
-    Component.withOnInput
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.Step`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
-{-| Pipe form of `onClick` — re-exported from `M3e.Step`.
+{-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick =
-    Component.withOnClick
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)

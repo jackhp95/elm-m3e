@@ -86,50 +86,50 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `animation` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `animation` — consumes its capability (write-once).
 -}
 withAnimation : Value Component.Animation -> Builder { a | animation : Available } slotCaps msg kind -> Builder { a | animation : Used } slotCaps msg kind
-withAnimation =
-    Component.withAnimation
+withAnimation value_ =
+    B.withAttribute (Component.animation value_)
 
 
-{-| Pipe form of `loaded` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `loaded` — consumes its capability (write-once).
 -}
 withLoaded : Bool -> Builder { a | loaded : Available } slotCaps msg kind -> Builder { a | loaded : Used } slotCaps msg kind
-withLoaded =
-    Component.withLoaded
+withLoaded value_ =
+    B.withAttribute (A.loaded value_)
 
 
-{-| Pipe form of `shape` — re-exported from `M3e.Skeleton`.
+{-| Pipe form of `shape` — consumes its capability (write-once).
 -}
 withShape : Value Component.Shape -> Builder { a | shape : Available } slotCaps msg kind -> Builder { a | shape : Used } slotCaps msg kind
-withShape =
-    Component.withShape
+withShape value_ =
+    B.withAttribute (Component.shape value_)

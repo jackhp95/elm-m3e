@@ -25,6 +25,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Timepicker as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Timepicker
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -74,183 +75,183 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `confirmLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `confirmLabel` — consumes its capability (write-once).
 -}
 withConfirmLabel : String -> Builder { a | confirmLabel : Available } slotCaps msg kind -> Builder { a | confirmLabel : Used } slotCaps msg kind
-withConfirmLabel =
-    Component.withConfirmLabel
+withConfirmLabel value_ =
+    B.withAttribute (A.confirmLabel value_)
 
 
-{-| Pipe form of `date` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `date` — consumes its capability (write-once).
 -}
 withDate : String -> Builder { a | date : Available } slotCaps msg kind -> Builder { a | date : Used } slotCaps msg kind
-withDate =
-    Component.withDate
+withDate value_ =
+    B.withAttribute (A.date value_)
 
 
-{-| Pipe form of `dialLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `dialLabel` — consumes its capability (write-once).
 -}
 withDialLabel : String -> Builder { a | dialLabel : Available } slotCaps msg kind -> Builder { a | dialLabel : Used } slotCaps msg kind
-withDialLabel =
-    Component.withDialLabel
+withDialLabel value_ =
+    B.withAttribute (A.dialLabel value_)
 
 
-{-| Pipe form of `dismissLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `dismissLabel` — consumes its capability (write-once).
 -}
 withDismissLabel : String -> Builder { a | dismissLabel : Available } slotCaps msg kind -> Builder { a | dismissLabel : Used } slotCaps msg kind
-withDismissLabel =
-    Component.withDismissLabel
+withDismissLabel value_ =
+    B.withAttribute (A.dismissLabel value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `format` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `format` — consumes its capability (write-once).
 -}
 withFormat : Value Component.Format -> Builder { a | format : Available } slotCaps msg kind -> Builder { a | format : Used } slotCaps msg kind
-withFormat =
-    Component.withFormat
+withFormat value_ =
+    B.withAttribute (Component.format value_)
 
 
-{-| Pipe form of `hideModeToggle` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `hideModeToggle` — consumes its capability (write-once).
 -}
 withHideModeToggle : Bool -> Builder { a | hideModeToggle : Available } slotCaps msg kind -> Builder { a | hideModeToggle : Used } slotCaps msg kind
-withHideModeToggle =
-    Component.withHideModeToggle
+withHideModeToggle value_ =
+    B.withAttribute (A.hideModeToggle value_)
 
 
-{-| Pipe form of `hourLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `hourLabel` — consumes its capability (write-once).
 -}
 withHourLabel : String -> Builder { a | hourLabel : Available } slotCaps msg kind -> Builder { a | hourLabel : Used } slotCaps msg kind
-withHourLabel =
-    Component.withHourLabel
+withHourLabel value_ =
+    B.withAttribute (A.hourLabel value_)
 
 
-{-| Pipe form of `inputLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `inputLabel` — consumes its capability (write-once).
 -}
 withInputLabel : String -> Builder { a | inputLabel : Available } slotCaps msg kind -> Builder { a | inputLabel : Used } slotCaps msg kind
-withInputLabel =
-    Component.withInputLabel
+withInputLabel value_ =
+    B.withAttribute (A.inputLabel value_)
 
 
-{-| Pipe form of `maxTime` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `maxTime` — consumes its capability (write-once).
 -}
 withMaxTime : String -> Builder { a | maxTime : Available } slotCaps msg kind -> Builder { a | maxTime : Used } slotCaps msg kind
-withMaxTime =
-    Component.withMaxTime
+withMaxTime value_ =
+    B.withAttribute (A.maxTime value_)
 
 
-{-| Pipe form of `minTime` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `minTime` — consumes its capability (write-once).
 -}
 withMinTime : String -> Builder { a | minTime : Available } slotCaps msg kind -> Builder { a | minTime : Used } slotCaps msg kind
-withMinTime =
-    Component.withMinTime
+withMinTime value_ =
+    B.withAttribute (A.minTime value_)
 
 
-{-| Pipe form of `minuteLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `minuteLabel` — consumes its capability (write-once).
 -}
 withMinuteLabel : String -> Builder { a | minuteLabel : Available } slotCaps msg kind -> Builder { a | minuteLabel : Used } slotCaps msg kind
-withMinuteLabel =
-    Component.withMinuteLabel
+withMinuteLabel value_ =
+    B.withAttribute (A.minuteLabel value_)
 
 
-{-| Pipe form of `mode` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `mode` — consumes its capability (write-once).
 -}
 withMode : Value Component.Mode -> Builder { a | mode : Available } slotCaps msg kind -> Builder { a | mode : Used } slotCaps msg kind
-withMode =
-    Component.withMode
+withMode value_ =
+    B.withAttribute (Component.mode value_)
 
 
-{-| Pipe form of `modeToggleLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `modeToggleLabel` — consumes its capability (write-once).
 -}
 withModeToggleLabel : String -> Builder { a | modeToggleLabel : Available } slotCaps msg kind -> Builder { a | modeToggleLabel : Used } slotCaps msg kind
-withModeToggleLabel =
-    Component.withModeToggleLabel
+withModeToggleLabel value_ =
+    B.withAttribute (A.modeToggleLabel value_)
 
 
-{-| Pipe form of `orientation` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `orientation` — consumes its capability (write-once).
 -}
 withOrientation : Value Component.Orientation -> Builder { a | orientation : Available } slotCaps msg kind -> Builder { a | orientation : Used } slotCaps msg kind
-withOrientation =
-    Component.withOrientation
+withOrientation value_ =
+    B.withAttribute (Component.orientation value_)
 
 
-{-| Pipe form of `periodToggleLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `periodToggleLabel` — consumes its capability (write-once).
 -}
 withPeriodToggleLabel : String -> Builder { a | periodToggleLabel : Available } slotCaps msg kind -> Builder { a | periodToggleLabel : Used } slotCaps msg kind
-withPeriodToggleLabel =
-    Component.withPeriodToggleLabel
+withPeriodToggleLabel value_ =
+    B.withAttribute (A.periodToggleLabel value_)
 
 
-{-| Pipe form of `secondLabel` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `secondLabel` — consumes its capability (write-once).
 -}
 withSecondLabel : String -> Builder { a | secondLabel : Available } slotCaps msg kind -> Builder { a | secondLabel : Used } slotCaps msg kind
-withSecondLabel =
-    Component.withSecondLabel
+withSecondLabel value_ =
+    B.withAttribute (A.secondLabel value_)
 
 
-{-| Pipe form of `showSeconds` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `showSeconds` — consumes its capability (write-once).
 -}
 withShowSeconds : Bool -> Builder { a | showSeconds : Available } slotCaps msg kind -> Builder { a | showSeconds : Used } slotCaps msg kind
-withShowSeconds =
-    Component.withShowSeconds
+withShowSeconds value_ =
+    B.withAttribute (A.showSeconds value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
-{-| Pipe form of `onBeforetoggle` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg kind -> Builder { a | onBeforetoggle : Used } slotCaps msg kind
-withOnBeforetoggle =
-    Component.withOnBeforetoggle
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
-{-| Pipe form of `onToggle` — re-exported from `M3e.Timepicker`.
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle =
-    Component.withOnToggle
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)

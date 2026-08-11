@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Calendar as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Calendar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -81,7 +82,7 @@ toElement =
 {-| Place a builder-built element into the named `header` slot — calls `B.toElement` internally.
 -}
 header :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 header builder =
     Component.header (B.toElement builder)
@@ -90,134 +91,134 @@ header builder =
 {-| Pipe form of the `header` slot — accepts a builder directly (no `.toElement`).
 -}
 withHeader :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | header : Available } msg kind
     -> Builder attrCaps { s | header : Used } msg kind
 withHeader slotBuilder builder_ =
     B.withChild (El.toNode (Component.header (B.toElement slotBuilder))) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `date` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `date` — consumes its capability (write-once).
 -}
 withDate : String -> Builder { a | date : Available } slotCaps msg kind -> Builder { a | date : Used } slotCaps msg kind
-withDate =
-    Component.withDate
+withDate value_ =
+    B.withAttribute (A.date value_)
 
 
-{-| Pipe form of `maxDate` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `maxDate` — consumes its capability (write-once).
 -}
 withMaxDate : String -> Builder { a | maxDate : Available } slotCaps msg kind -> Builder { a | maxDate : Used } slotCaps msg kind
-withMaxDate =
-    Component.withMaxDate
+withMaxDate value_ =
+    B.withAttribute (A.maxDate value_)
 
 
-{-| Pipe form of `minDate` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `minDate` — consumes its capability (write-once).
 -}
 withMinDate : String -> Builder { a | minDate : Available } slotCaps msg kind -> Builder { a | minDate : Used } slotCaps msg kind
-withMinDate =
-    Component.withMinDate
+withMinDate value_ =
+    B.withAttribute (A.minDate value_)
 
 
-{-| Pipe form of `nextMonthLabel` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `nextMonthLabel` — consumes its capability (write-once).
 -}
 withNextMonthLabel : String -> Builder { a | nextMonthLabel : Available } slotCaps msg kind -> Builder { a | nextMonthLabel : Used } slotCaps msg kind
-withNextMonthLabel =
-    Component.withNextMonthLabel
+withNextMonthLabel value_ =
+    B.withAttribute (A.nextMonthLabel value_)
 
 
-{-| Pipe form of `nextMultiYearLabel` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `nextMultiYearLabel` — consumes its capability (write-once).
 -}
 withNextMultiYearLabel : String -> Builder { a | nextMultiYearLabel : Available } slotCaps msg kind -> Builder { a | nextMultiYearLabel : Used } slotCaps msg kind
-withNextMultiYearLabel =
-    Component.withNextMultiYearLabel
+withNextMultiYearLabel value_ =
+    B.withAttribute (A.nextMultiYearLabel value_)
 
 
-{-| Pipe form of `nextYearLabel` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `nextYearLabel` — consumes its capability (write-once).
 -}
 withNextYearLabel : String -> Builder { a | nextYearLabel : Available } slotCaps msg kind -> Builder { a | nextYearLabel : Used } slotCaps msg kind
-withNextYearLabel =
-    Component.withNextYearLabel
+withNextYearLabel value_ =
+    B.withAttribute (A.nextYearLabel value_)
 
 
-{-| Pipe form of `previousMonthLabel` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `previousMonthLabel` — consumes its capability (write-once).
 -}
 withPreviousMonthLabel : String -> Builder { a | previousMonthLabel : Available } slotCaps msg kind -> Builder { a | previousMonthLabel : Used } slotCaps msg kind
-withPreviousMonthLabel =
-    Component.withPreviousMonthLabel
+withPreviousMonthLabel value_ =
+    B.withAttribute (A.previousMonthLabel value_)
 
 
-{-| Pipe form of `previousMultiYearLabel` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `previousMultiYearLabel` — consumes its capability (write-once).
 -}
 withPreviousMultiYearLabel : String -> Builder { a | previousMultiYearLabel : Available } slotCaps msg kind -> Builder { a | previousMultiYearLabel : Used } slotCaps msg kind
-withPreviousMultiYearLabel =
-    Component.withPreviousMultiYearLabel
+withPreviousMultiYearLabel value_ =
+    B.withAttribute (A.previousMultiYearLabel value_)
 
 
-{-| Pipe form of `previousYearLabel` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `previousYearLabel` — consumes its capability (write-once).
 -}
 withPreviousYearLabel : String -> Builder { a | previousYearLabel : Available } slotCaps msg kind -> Builder { a | previousYearLabel : Used } slotCaps msg kind
-withPreviousYearLabel =
-    Component.withPreviousYearLabel
+withPreviousYearLabel value_ =
+    B.withAttribute (A.previousYearLabel value_)
 
 
-{-| Pipe form of `rangeEnd` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `rangeEnd` — consumes its capability (write-once).
 -}
 withRangeEnd : String -> Builder { a | rangeEnd : Available } slotCaps msg kind -> Builder { a | rangeEnd : Used } slotCaps msg kind
-withRangeEnd =
-    Component.withRangeEnd
+withRangeEnd value_ =
+    B.withAttribute (A.rangeEnd value_)
 
 
-{-| Pipe form of `rangeStart` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `rangeStart` — consumes its capability (write-once).
 -}
 withRangeStart : String -> Builder { a | rangeStart : Available } slotCaps msg kind -> Builder { a | rangeStart : Used } slotCaps msg kind
-withRangeStart =
-    Component.withRangeStart
+withRangeStart value_ =
+    B.withAttribute (A.rangeStart value_)
 
 
-{-| Pipe form of `startAt` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `startAt` — consumes its capability (write-once).
 -}
 withStartAt : String -> Builder { a | startAt : Available } slotCaps msg kind -> Builder { a | startAt : Used } slotCaps msg kind
-withStartAt =
-    Component.withStartAt
+withStartAt value_ =
+    B.withAttribute (A.startAt value_)
 
 
-{-| Pipe form of `startView` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `startView` — consumes its capability (write-once).
 -}
 withStartView : Value Component.StartView -> Builder { a | startView : Available } slotCaps msg kind -> Builder { a | startView : Used } slotCaps msg kind
-withStartView =
-    Component.withStartView
+withStartView value_ =
+    B.withAttribute (Component.startView value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.Calendar`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : (String -> msg) -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Component.onChange value_)

@@ -28,6 +28,7 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.BottomSheet as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.BottomSheet
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -79,7 +80,7 @@ toElement =
 {-| Place a builder-built element into the named `header` slot — calls `B.toElement` internally.
 -}
 header :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 header builder =
     Component.header (B.toElement builder)
@@ -88,7 +89,7 @@ header builder =
 {-| Pipe form of the `header` slot — accepts a builder directly (no `.toElement`).
 -}
 withHeader :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | header : Available } msg kind
     -> Builder attrCaps { s | header : Used } msg kind
 withHeader slotBuilder builder_ =
@@ -105,127 +106,127 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `detent` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `detent` — consumes its capability (write-once).
 -}
 withDetent : Float -> Builder { a | detent : Available } slotCaps msg kind -> Builder { a | detent : Used } slotCaps msg kind
-withDetent =
-    Component.withDetent
+withDetent value_ =
+    B.withAttribute (A.detent value_)
 
 
-{-| Pipe form of `detents` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `detents` — consumes its capability (write-once).
 -}
 withDetents : String -> Builder { a | detents : Available } slotCaps msg kind -> Builder { a | detents : Used } slotCaps msg kind
-withDetents =
-    Component.withDetents
+withDetents value_ =
+    B.withAttribute (A.detents value_)
 
 
-{-| Pipe form of `handle` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `handle` — consumes its capability (write-once).
 -}
 withHandle : Bool -> Builder { a | handle : Available } slotCaps msg kind -> Builder { a | handle : Used } slotCaps msg kind
-withHandle =
-    Component.withHandle
+withHandle value_ =
+    B.withAttribute (A.handle value_)
 
 
-{-| Pipe form of `handleLabel` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `handleLabel` — consumes its capability (write-once).
 -}
 withHandleLabel : String -> Builder { a | handleLabel : Available } slotCaps msg kind -> Builder { a | handleLabel : Used } slotCaps msg kind
-withHandleLabel =
-    Component.withHandleLabel
+withHandleLabel value_ =
+    B.withAttribute (A.handleLabel value_)
 
 
-{-| Pipe form of `hideFriction` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `hideFriction` — consumes its capability (write-once).
 -}
 withHideFriction : Float -> Builder { a | hideFriction : Available } slotCaps msg kind -> Builder { a | hideFriction : Used } slotCaps msg kind
-withHideFriction =
-    Component.withHideFriction
+withHideFriction value_ =
+    B.withAttribute (A.hideFriction value_)
 
 
-{-| Pipe form of `hideable` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `hideable` — consumes its capability (write-once).
 -}
 withHideable : Bool -> Builder { a | hideable : Available } slotCaps msg kind -> Builder { a | hideable : Used } slotCaps msg kind
-withHideable =
-    Component.withHideable
+withHideable value_ =
+    B.withAttribute (A.hideable value_)
 
 
-{-| Pipe form of `modal` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `modal` — consumes its capability (write-once).
 -}
 withModal : Bool -> Builder { a | modal : Available } slotCaps msg kind -> Builder { a | modal : Used } slotCaps msg kind
-withModal =
-    Component.withModal
+withModal value_ =
+    B.withAttribute (A.modal value_)
 
 
-{-| Pipe form of `open` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `open` — consumes its capability (write-once).
 -}
 withOpen : Bool -> Builder { a | open : Available } slotCaps msg kind -> Builder { a | open : Used } slotCaps msg kind
-withOpen =
-    Component.withOpen
+withOpen value_ =
+    B.withAttribute (A.open value_)
 
 
-{-| Pipe form of `overshootLimit` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `overshootLimit` — consumes its capability (write-once).
 -}
 withOvershootLimit : Float -> Builder { a | overshootLimit : Available } slotCaps msg kind -> Builder { a | overshootLimit : Used } slotCaps msg kind
-withOvershootLimit =
-    Component.withOvershootLimit
+withOvershootLimit value_ =
+    B.withAttribute (A.overshootLimit value_)
 
 
-{-| Pipe form of `onOpening` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `onOpening` — consumes its capability (write-once).
 -}
 withOnOpening : msg -> Builder { a | onOpening : Available } slotCaps msg kind -> Builder { a | onOpening : Used } slotCaps msg kind
-withOnOpening =
-    Component.withOnOpening
+withOnOpening value_ =
+    B.withAttribute (Ev.onOpening value_)
 
 
-{-| Pipe form of `onClosing` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `onClosing` — consumes its capability (write-once).
 -}
 withOnClosing : msg -> Builder { a | onClosing : Available } slotCaps msg kind -> Builder { a | onClosing : Used } slotCaps msg kind
-withOnClosing =
-    Component.withOnClosing
+withOnClosing value_ =
+    B.withAttribute (Ev.onClosing value_)
 
 
-{-| Pipe form of `onCancel` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `onCancel` — consumes its capability (write-once).
 -}
 withOnCancel : msg -> Builder { a | onCancel : Available } slotCaps msg kind -> Builder { a | onCancel : Used } slotCaps msg kind
-withOnCancel =
-    Component.withOnCancel
+withOnCancel value_ =
+    B.withAttribute (Ev.onCancel value_)
 
 
-{-| Pipe form of `onOpened` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `onOpened` — consumes its capability (write-once).
 -}
 withOnOpened : msg -> Builder { a | onOpened : Available } slotCaps msg kind -> Builder { a | onOpened : Used } slotCaps msg kind
-withOnOpened =
-    Component.withOnOpened
+withOnOpened value_ =
+    B.withAttribute (Ev.onOpened value_)
 
 
-{-| Pipe form of `onClosed` — re-exported from `M3e.BottomSheet`.
+{-| Pipe form of `onClosed` — consumes its capability (write-once).
 -}
 withOnClosed : msg -> Builder { a | onClosed : Available } slotCaps msg kind -> Builder { a | onClosed : Used } slotCaps msg kind
-withOnClosed =
-    Component.withOnClosed
+withOnClosed value_ =
+    B.withAttribute (Ev.onClosed value_)

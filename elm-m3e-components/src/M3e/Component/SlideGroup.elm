@@ -1,20 +1,18 @@
 module M3e.Component.SlideGroup exposing
-    ( view, build, toElement
-    , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view
+    , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy
     , disabled, nextPageLabel, previousPageLabel, threshold, vertical
     , nextIcon, prevIcon, child
-    , withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
     )
 
 {-| The `m3e-slide-group` component — strict per-component surface.
 
 Presents pagination controls used to scroll overflowing content.
 
-@docs view, build, toElement
-@docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view
+@docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy
 @docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIcon, prevIcon, child
-@docs withChild, withClass, withDisabled, withId, withNextIcon, withNextPageLabel, withPrevIcon, withPreviousPageLabel, withSlot, withStyle, withThreshold, withVertical
 
 -}
 
@@ -23,7 +21,6 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Html as H
 import M3e.Internal.Types.SlideGroup
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
@@ -130,121 +127,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.SlideGroup.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.SlideGroup.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    M3e.Internal.Types.SlideGroup.SlotCaps
-
-
-{-| Seed the pipe-builder.
--}
-build : Builder AttrCaps SlotCaps msg kind
-build =
-    B.init "m3e-slide-group" [] []
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `disabled` — consumes its capability (write-once).
--}
-withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled value_ =
-    B.withAttribute (A.disabled value_)
-
-
-{-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
--}
-withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg kind -> Builder { a | nextPageLabel : Used } slotCaps msg kind
-withNextPageLabel value_ =
-    B.withAttribute (A.nextPageLabel value_)
-
-
-{-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
--}
-withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg kind -> Builder { a | previousPageLabel : Used } slotCaps msg kind
-withPreviousPageLabel value_ =
-    B.withAttribute (A.previousPageLabel value_)
-
-
-{-| Pipe form of `threshold` — consumes its capability (write-once).
--}
-withThreshold : Float -> Builder { a | threshold : Available } slotCaps msg kind -> Builder { a | threshold : Used } slotCaps msg kind
-withThreshold value_ =
-    B.withAttribute (A.threshold value_)
-
-
-{-| Pipe form of `vertical` — consumes its capability (write-once).
--}
-withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg kind -> Builder { a | vertical : Used } slotCaps msg kind
-withVertical value_ =
-    B.withAttribute (A.vertical value_)
-
-
-{-| Pipe form of the `next-icon` slot — consumes its capability (write-once).
--}
-withNextIcon : Element NextIconSlot admittedBy msg -> Builder attrCaps { s | nextIcon : Available } msg kind -> Builder attrCaps { s | nextIcon : Used } msg kind
-withNextIcon element =
-    B.withChild (El.toNode (nextIcon element))
-
-
-{-| Pipe form of the `prev-icon` slot — consumes its capability (write-once).
--}
-withPrevIcon : Element PrevIconSlot admittedBy msg -> Builder attrCaps { s | prevIcon : Available } msg kind -> Builder attrCaps { s | prevIcon : Used } msg kind
-withPrevIcon element =
-    B.withChild (El.toNode (prevIcon element))
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

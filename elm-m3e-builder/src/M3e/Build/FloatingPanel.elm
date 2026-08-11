@@ -27,6 +27,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.FloatingPanel as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.FloatingPanel
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -86,64 +87,64 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `anchorOffset` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `anchorOffset` — consumes its capability (write-once).
 -}
 withAnchorOffset : Float -> Builder { a | anchorOffset : Available } slotCaps msg kind -> Builder { a | anchorOffset : Used } slotCaps msg kind
-withAnchorOffset =
-    Component.withAnchorOffset
+withAnchorOffset value_ =
+    B.withAttribute (A.anchorOffset value_)
 
 
-{-| Pipe form of `fitAnchorWidth` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `fitAnchorWidth` — consumes its capability (write-once).
 -}
 withFitAnchorWidth : Bool -> Builder { a | fitAnchorWidth : Available } slotCaps msg kind -> Builder { a | fitAnchorWidth : Used } slotCaps msg kind
-withFitAnchorWidth =
-    Component.withFitAnchorWidth
+withFitAnchorWidth value_ =
+    B.withAttribute (A.fitAnchorWidth value_)
 
 
-{-| Pipe form of `scrollStrategy` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `scrollStrategy` — consumes its capability (write-once).
 -}
 withScrollStrategy : Value Component.ScrollStrategy -> Builder { a | scrollStrategy : Available } slotCaps msg kind -> Builder { a | scrollStrategy : Used } slotCaps msg kind
-withScrollStrategy =
-    Component.withScrollStrategy
+withScrollStrategy value_ =
+    B.withAttribute (Component.scrollStrategy value_)
 
 
-{-| Pipe form of `onBeforetoggle` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg kind -> Builder { a | onBeforetoggle : Used } slotCaps msg kind
-withOnBeforetoggle =
-    Component.withOnBeforetoggle
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
-{-| Pipe form of `onToggle` — re-exported from `M3e.FloatingPanel`.
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle =
-    Component.withOnToggle
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)

@@ -1,5 +1,6 @@
 module M3e.Build exposing
-    ( Builder, toElement
+    ( Builder
+    , toElement
     , AccordionIs, ActionListIs, AppBarIs, AssistChipIs, AutocompleteIs, AvatarIs, BadgeIs, BottomSheetIs, BottomSheetActionIs, BottomSheetTriggerIs, BreadcrumbIs, BreadcrumbItemIs, BreadcrumbItemButtonIs, ButtonIs, ButtonGroupIs, ButtonSegmentIs, CalendarIs, CardIs, CheckboxIs, ChipIs, ChipSetIs, CircularProgressIndicatorIs, CollapsibleIs, ContentPaneIs, DateInputIs, DatepickerIs, DatepickerToggleIs, DialogIs, DialogActionIs, DialogTriggerIs, DividerIs, DrawerContainerIs, DrawerToggleIs, ElevationIs, ExpandableListItemIs, ExpansionHeaderIs, ExpansionPanelIs, FabIs, FabMenuIs, FabMenuItemIs, FabMenuTriggerIs, FilterChipIs, FilterChipSetIs, FloatingPanelIs, FocusRingIs, FocusTrapIs, FormFieldIs, HeadingIs, IconIs, IconButtonIs, InputChipIs, InputChipSetIs, LinearProgressIndicatorIs, ListIs, ListActionIs, ListItemIs, ListItemButtonIs, ListOptionIs, LoadingIndicatorIs, MenuIs, MenuItemIs, MenuItemCheckboxIs, MenuItemGroupIs, MenuItemRadioIs, MenuTriggerIs, MonthViewIs, MultiYearViewIs, NavBarIs, NavItemIs, NavMenuIs, NavMenuItemIs, NavMenuItemGroupIs, NavRailIs, NavRailToggleIs, OptgroupIs, OptionIs, OptionPanelIs, PaginatorIs, PseudoCheckboxIs, PseudoRadioIs, RadioIs, RadioGroupIs, RichTooltipIs, RichTooltipActionIs, RippleIs, ScrollContainerIs, SearchBarIs, SearchViewIs, SegmentedButtonIs, SelectIs, SelectionIndicatorIs, SelectionListIs, ShapeIs, SkeletonIs, SlideIs, SlideGroupIs, SliderIs, SliderThumbIs, SnackbarIs, SplitButtonIs, SplitPaneIs, StateLayerIs, StepIs, StepPanelIs, StepperIs, StepperNextIs, StepperPreviousIs, StepperResetIs, SuggestionChipIs, SwitchIs, TabIs, TabPanelIs, TabsIs, TextHighlightIs, TextOverflowIs, TextareaAutosizeIs, ThemeIs, ThemeIconIs, TimepickerIs, TimepickerDialIs, TimepickerInputIs, TimepickerInputPeriodToggleIs, TimepickerToggleIs, TocIs, TocItemIs, ToolbarIs, TooltipIs, TreeIs, TreeItemIs, YearViewIs
     )
 
@@ -19,7 +20,6 @@ type without importing the component or its builder module.
 -}
 
 import HtmlIr.Element exposing (Element)
-import M3e.Build.Internal as Internal
 import M3e.Build.Accordion
 import M3e.Build.ActionList
 import M3e.Build.AppBar
@@ -72,6 +72,7 @@ import M3e.Build.Icon
 import M3e.Build.IconButton
 import M3e.Build.InputChip
 import M3e.Build.InputChipSet
+import M3e.Build.Internal as Internal
 import M3e.Build.LinearProgressIndicator
 import M3e.Build.List
 import M3e.Build.ListAction

@@ -1,22 +1,20 @@
 module M3e.Component.Menu exposing
-    ( view, build, toElement
-    , Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view
+    , Is, Attrs, Content, ChildAdmittedBy
     , PositionX, positionX, PositionY, positionY, Variant, variant
     , submenu, onBeforetoggle, onToggle
     , child
-    , withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withPositionX, withPositionY, withSlot, withStyle, withSubmenu, withVariant
     )
 
 {-| The `m3e-menu` component — strict per-component surface.
 
 Presents a list of choices on a temporary surface.
 
-@docs view, build, toElement
-@docs Is, Attrs, Content, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view
+@docs Is, Attrs, Content, ChildAdmittedBy
 @docs PositionX, positionX, PositionY, positionY, Variant, variant
 @docs submenu, onBeforetoggle, onToggle
 @docs child
-@docs withChild, withClass, withId, withOnBeforetoggle, withOnToggle, withPositionX, withPositionY, withSlot, withStyle, withSubmenu, withVariant
 
 -}
 
@@ -27,7 +25,6 @@ import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
 import Json.Decode
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
 import M3e.Internal.Types.Menu
@@ -135,114 +132,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.Menu.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.Menu.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    {}
-
-
-{-| Seed the pipe-builder.
--}
-build : Builder AttrCaps SlotCaps msg kind
-build =
-    B.init "m3e-menu" [] []
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `positionX` — consumes its capability (write-once).
--}
-withPositionX : Value PositionX -> Builder { a | positionX : Available } slotCaps msg kind -> Builder { a | positionX : Used } slotCaps msg kind
-withPositionX value_ =
-    B.withAttribute (positionX value_)
-
-
-{-| Pipe form of `positionY` — consumes its capability (write-once).
--}
-withPositionY : Value PositionY -> Builder { a | positionY : Available } slotCaps msg kind -> Builder { a | positionY : Used } slotCaps msg kind
-withPositionY value_ =
-    B.withAttribute (positionY value_)
-
-
-{-| Pipe form of `submenu` — consumes its capability (write-once).
--}
-withSubmenu : Bool -> Builder { a | submenu : Available } slotCaps msg kind -> Builder { a | submenu : Used } slotCaps msg kind
-withSubmenu value_ =
-    B.withAttribute (A.submenu value_)
-
-
-{-| Pipe form of `variant` — consumes its capability (write-once).
--}
-withVariant : Value Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant value_ =
-    B.withAttribute (variant value_)
-
-
-{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
--}
-withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg kind -> Builder { a | onBeforetoggle : Used } slotCaps msg kind
-withOnBeforetoggle value_ =
-    B.withAttribute (Ev.onBeforetoggle value_)
-
-
-{-| Pipe form of `onToggle` — consumes its capability (write-once).
--}
-withOnToggle : (String -> msg) -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle value_ =
-    B.withAttribute (onToggle value_)
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

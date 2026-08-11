@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Autocomplete as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Autocomplete
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -87,7 +88,7 @@ toElement =
 {-| Place a builder-built element into the named `loading` slot — calls `B.toElement` internally.
 -}
 loading :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 loading builder =
     Component.loading (B.toElement builder)
@@ -96,7 +97,7 @@ loading builder =
 {-| Place a builder-built element into the named `no-data` slot — calls `B.toElement` internally.
 -}
 noData :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 noData builder =
     Component.noData (B.toElement builder)
@@ -105,7 +106,7 @@ noData builder =
 {-| Pipe form of the `loading` slot — accepts a builder directly (no `.toElement`).
 -}
 withLoadingSlot :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | loading : Available } msg kind
     -> Builder attrCaps { s | loading : Used } msg kind
 withLoadingSlot slotBuilder builder_ =
@@ -115,7 +116,7 @@ withLoadingSlot slotBuilder builder_ =
 {-| Pipe form of the `no-data` slot — accepts a builder directly (no `.toElement`).
 -}
 withNoData :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | noData : Available } msg kind
     -> Builder attrCaps { s | noData : Used } msg kind
 withNoData slotBuilder builder_ =
@@ -132,141 +133,141 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `autoActivate` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `autoActivate` — consumes its capability (write-once).
 -}
 withAutoActivate : Bool -> Builder { a | autoActivate : Available } slotCaps msg kind -> Builder { a | autoActivate : Used } slotCaps msg kind
-withAutoActivate =
-    Component.withAutoActivate
+withAutoActivate value_ =
+    B.withAttribute (A.autoActivate value_)
 
 
-{-| Pipe form of `caseSensitive` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `caseSensitive` — consumes its capability (write-once).
 -}
 withCaseSensitive : Bool -> Builder { a | caseSensitive : Available } slotCaps msg kind -> Builder { a | caseSensitive : Used } slotCaps msg kind
-withCaseSensitive =
-    Component.withCaseSensitive
+withCaseSensitive value_ =
+    B.withAttribute (A.caseSensitive value_)
 
 
-{-| Pipe form of `filter` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `filter` — consumes its capability (write-once).
 -}
 withFilter : Value Component.Filter -> Builder { a | filter : Available } slotCaps msg kind -> Builder { a | filter : Used } slotCaps msg kind
-withFilter =
-    Component.withFilter
+withFilter value_ =
+    B.withAttribute (Component.filter value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `hideLoading` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `hideLoading` — consumes its capability (write-once).
 -}
 withHideLoading : Bool -> Builder { a | hideLoading : Available } slotCaps msg kind -> Builder { a | hideLoading : Used } slotCaps msg kind
-withHideLoading =
-    Component.withHideLoading
+withHideLoading value_ =
+    B.withAttribute (A.hideLoading value_)
 
 
-{-| Pipe form of `hideNoData` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `hideNoData` — consumes its capability (write-once).
 -}
 withHideNoData : Bool -> Builder { a | hideNoData : Available } slotCaps msg kind -> Builder { a | hideNoData : Used } slotCaps msg kind
-withHideNoData =
-    Component.withHideNoData
+withHideNoData value_ =
+    B.withAttribute (A.hideNoData value_)
 
 
-{-| Pipe form of `hideSelectionIndicator` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
 -}
 withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg kind -> Builder { a | hideSelectionIndicator : Used } slotCaps msg kind
-withHideSelectionIndicator =
-    Component.withHideSelectionIndicator
+withHideSelectionIndicator value_ =
+    B.withAttribute (A.hideSelectionIndicator value_)
 
 
-{-| Pipe form of `loading` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `loading` — consumes its capability (write-once).
 -}
 withLoading : Bool -> Builder { a | loading : Available } slotCaps msg kind -> Builder { a | loading : Used } slotCaps msg kind
-withLoading =
-    Component.withLoading
+withLoading value_ =
+    B.withAttribute (A.loading value_)
 
 
-{-| Pipe form of `loadingLabel` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `loadingLabel` — consumes its capability (write-once).
 -}
 withLoadingLabel : String -> Builder { a | loadingLabel : Available } slotCaps msg kind -> Builder { a | loadingLabel : Used } slotCaps msg kind
-withLoadingLabel =
-    Component.withLoadingLabel
+withLoadingLabel value_ =
+    B.withAttribute (A.loadingLabel value_)
 
 
-{-| Pipe form of `noDataLabel` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `noDataLabel` — consumes its capability (write-once).
 -}
 withNoDataLabel : String -> Builder { a | noDataLabel : Available } slotCaps msg kind -> Builder { a | noDataLabel : Used } slotCaps msg kind
-withNoDataLabel =
-    Component.withNoDataLabel
+withNoDataLabel value_ =
+    B.withAttribute (A.noDataLabel value_)
 
 
-{-| Pipe form of `panelClass` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `panelClass` — consumes its capability (write-once).
 -}
 withPanelClass : String -> Builder { a | panelClass : Available } slotCaps msg kind -> Builder { a | panelClass : Used } slotCaps msg kind
-withPanelClass =
-    Component.withPanelClass
+withPanelClass value_ =
+    B.withAttribute (A.panelClass value_)
 
 
-{-| Pipe form of `required` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `required` — consumes its capability (write-once).
 -}
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg kind -> Builder { a | required : Used } slotCaps msg kind
-withRequired =
-    Component.withRequired
+withRequired value_ =
+    B.withAttribute (A.required value_)
 
 
-{-| Pipe form of `resultsLabel` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `resultsLabel` — consumes its capability (write-once).
 -}
 withResultsLabel : String -> Builder { a | resultsLabel : Available } slotCaps msg kind -> Builder { a | resultsLabel : Used } slotCaps msg kind
-withResultsLabel =
-    Component.withResultsLabel
+withResultsLabel value_ =
+    B.withAttribute (A.resultsLabel value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
-{-| Pipe form of `onQuery` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `onQuery` — consumes its capability (write-once).
 -}
 withOnQuery : msg -> Builder { a | onQuery : Available } slotCaps msg kind -> Builder { a | onQuery : Used } slotCaps msg kind
-withOnQuery =
-    Component.withOnQuery
+withOnQuery value_ =
+    B.withAttribute (Ev.onQuery value_)
 
 
-{-| Pipe form of `onToggle` — re-exported from `M3e.Autocomplete`.
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle =
-    Component.withOnToggle
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)

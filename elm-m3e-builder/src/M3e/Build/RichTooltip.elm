@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.RichTooltip as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.RichTooltip
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -79,10 +80,10 @@ type alias SubheadSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-rich-tooltip" ([]) [ El.toNode required_.content ]
+    B.init "m3e-rich-tooltip" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -95,7 +96,7 @@ toElement =
 {-| Place a builder-built element into the named `actions` slot — calls `B.toElement` internally.
 -}
 actions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 actions builder =
     Component.actions (B.toElement builder)
@@ -104,7 +105,7 @@ actions builder =
 {-| Place a builder-built element into the named `subhead` slot — calls `B.toElement` internally.
 -}
 subhead :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.SubheadSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.SubheadSlot msg
     -> Element free freeAdmittedBy msg
 subhead builder =
     Component.subhead (B.toElement builder)
@@ -113,7 +114,7 @@ subhead builder =
 {-| Pipe form of the `actions` slot — accepts a builder directly (no `.toElement`).
 -}
 withActions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | actions : Available } msg kind
     -> Builder attrCaps { s | actions : Used } msg kind
 withActions slotBuilder builder_ =
@@ -123,7 +124,7 @@ withActions slotBuilder builder_ =
 {-| Pipe form of the `subhead` slot — accepts a builder directly (no `.toElement`).
 -}
 withSubhead :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.SubheadSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.SubheadSlot msg
     -> Builder attrCaps { s | subhead : Available } msg kind
     -> Builder attrCaps { s | subhead : Used } msg kind
 withSubhead slotBuilder builder_ =
@@ -140,85 +141,85 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `for` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `for` — consumes its capability (write-once).
 -}
 withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
-withFor =
-    Component.withFor
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
-{-| Pipe form of `hideDelay` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `hideDelay` — consumes its capability (write-once).
 -}
 withHideDelay : Float -> Builder { a | hideDelay : Available } slotCaps msg kind -> Builder { a | hideDelay : Used } slotCaps msg kind
-withHideDelay =
-    Component.withHideDelay
+withHideDelay value_ =
+    B.withAttribute (A.hideDelay value_)
 
 
-{-| Pipe form of `position` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `position` — consumes its capability (write-once).
 -}
 withPosition : Value Component.Position -> Builder { a | position : Available } slotCaps msg kind -> Builder { a | position : Used } slotCaps msg kind
-withPosition =
-    Component.withPosition
+withPosition value_ =
+    B.withAttribute (Component.position value_)
 
 
-{-| Pipe form of `showDelay` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `showDelay` — consumes its capability (write-once).
 -}
 withShowDelay : Float -> Builder { a | showDelay : Available } slotCaps msg kind -> Builder { a | showDelay : Used } slotCaps msg kind
-withShowDelay =
-    Component.withShowDelay
+withShowDelay value_ =
+    B.withAttribute (A.showDelay value_)
 
 
-{-| Pipe form of `touchGestures` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `touchGestures` — consumes its capability (write-once).
 -}
 withTouchGestures : Value Component.TouchGestures -> Builder { a | touchGestures : Available } slotCaps msg kind -> Builder { a | touchGestures : Used } slotCaps msg kind
-withTouchGestures =
-    Component.withTouchGestures
+withTouchGestures value_ =
+    B.withAttribute (Component.touchGestures value_)
 
 
-{-| Pipe form of `onBeforetoggle` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg kind -> Builder { a | onBeforetoggle : Used } slotCaps msg kind
-withOnBeforetoggle =
-    Component.withOnBeforetoggle
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
-{-| Pipe form of `onToggle` — re-exported from `M3e.RichTooltip`.
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle =
-    Component.withOnToggle
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)

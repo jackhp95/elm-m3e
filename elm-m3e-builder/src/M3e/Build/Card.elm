@@ -26,9 +26,11 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
+import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Card as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Card
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -81,7 +83,7 @@ toElement =
 {-| Place a builder-built element into the named `actions` slot — calls `B.toElement` internally.
 -}
 actions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 actions builder =
     Component.actions (B.toElement builder)
@@ -90,7 +92,7 @@ actions builder =
 {-| Place a builder-built element into the named `content` slot — calls `B.toElement` internally.
 -}
 content :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 content builder =
     Component.content (B.toElement builder)
@@ -99,7 +101,7 @@ content builder =
 {-| Place a builder-built element into the named `footer` slot — calls `B.toElement` internally.
 -}
 footer :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 footer builder =
     Component.footer (B.toElement builder)
@@ -108,7 +110,7 @@ footer builder =
 {-| Place a builder-built element into the named `header` slot — calls `B.toElement` internally.
 -}
 header :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 header builder =
     Component.header (B.toElement builder)
@@ -117,7 +119,7 @@ header builder =
 {-| Pipe form of the `actions` slot — accepts a builder directly (no `.toElement`).
 -}
 withActions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | actions : Available } msg kind
     -> Builder attrCaps { s | actions : Used } msg kind
 withActions slotBuilder builder_ =
@@ -127,7 +129,7 @@ withActions slotBuilder builder_ =
 {-| Pipe form of the `content` slot — accepts a builder directly (no `.toElement`).
 -}
 withContent :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | content : Available } msg kind
     -> Builder attrCaps { s | content : Used } msg kind
 withContent slotBuilder builder_ =
@@ -137,7 +139,7 @@ withContent slotBuilder builder_ =
 {-| Pipe form of the `footer` slot — accepts a builder directly (no `.toElement`).
 -}
 withFooter :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | footer : Available } msg kind
     -> Builder attrCaps { s | footer : Used } msg kind
 withFooter slotBuilder builder_ =
@@ -147,7 +149,7 @@ withFooter slotBuilder builder_ =
 {-| Pipe form of the `header` slot — accepts a builder directly (no `.toElement`).
 -}
 withHeader :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | header : Available } msg kind
     -> Builder attrCaps { s | header : Used } msg kind
 withHeader slotBuilder builder_ =
@@ -164,127 +166,127 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Card`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Card`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Card`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Card`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `actionable` — re-exported from `M3e.Card`.
+{-| Pipe form of `actionable` — consumes its capability (write-once).
 -}
 withActionable : Bool -> Builder { a | actionable : Available } slotCaps msg kind -> Builder { a | actionable : Used } slotCaps msg kind
-withActionable =
-    Component.withActionable
+withActionable value_ =
+    B.withAttribute (A.actionable value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.Card`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `disabledInteractive` — re-exported from `M3e.Card`.
+{-| Pipe form of `disabledInteractive` — consumes its capability (write-once).
 -}
 withDisabledInteractive : Bool -> Builder { a | disabledInteractive : Available } slotCaps msg kind -> Builder { a | disabledInteractive : Used } slotCaps msg kind
-withDisabledInteractive =
-    Component.withDisabledInteractive
+withDisabledInteractive value_ =
+    B.withAttribute (A.disabledInteractive value_)
 
 
-{-| Pipe form of `download` — re-exported from `M3e.Card`.
+{-| Pipe form of `download` — consumes its capability (write-once).
 -}
 withDownload : String -> Builder { a | download : Available } slotCaps msg kind -> Builder { a | download : Used } slotCaps msg kind
-withDownload =
-    Component.withDownload
+withDownload value_ =
+    B.withAttribute (A.download value_)
 
 
-{-| Pipe form of `href` — re-exported from `M3e.Card`.
+{-| Pipe form of `href` — consumes its capability (write-once).
 -}
 withHref : String -> Builder { a | href : Available } slotCaps msg kind -> Builder { a | href : Used } slotCaps msg kind
-withHref =
-    Component.withHref
+withHref value_ =
+    B.withAttribute (A.href value_)
 
 
-{-| Pipe form of `inline` — re-exported from `M3e.Card`.
+{-| Pipe form of `inline` — consumes its capability (write-once).
 -}
 withInline : Bool -> Builder { a | inline : Available } slotCaps msg kind -> Builder { a | inline : Used } slotCaps msg kind
-withInline =
-    Component.withInline
+withInline value_ =
+    B.withAttribute (A.inline value_)
 
 
-{-| Pipe form of `name` — re-exported from `M3e.Card`.
+{-| Pipe form of `name` — consumes its capability (write-once).
 -}
 withName : String -> Builder { a | name : Available } slotCaps msg kind -> Builder { a | name : Used } slotCaps msg kind
-withName =
-    Component.withName
+withName value_ =
+    B.withAttribute (Ir.attribute "name" value_)
 
 
-{-| Pipe form of `orientation` — re-exported from `M3e.Card`.
+{-| Pipe form of `orientation` — consumes its capability (write-once).
 -}
 withOrientation : Value Component.Orientation -> Builder { a | orientation : Available } slotCaps msg kind -> Builder { a | orientation : Used } slotCaps msg kind
-withOrientation =
-    Component.withOrientation
+withOrientation value_ =
+    B.withAttribute (Component.orientation value_)
 
 
-{-| Pipe form of `rel` — re-exported from `M3e.Card`.
+{-| Pipe form of `rel` — consumes its capability (write-once).
 -}
 withRel : String -> Builder { a | rel : Available } slotCaps msg kind -> Builder { a | rel : Used } slotCaps msg kind
-withRel =
-    Component.withRel
+withRel value_ =
+    B.withAttribute (A.rel value_)
 
 
-{-| Pipe form of `target` — re-exported from `M3e.Card`.
+{-| Pipe form of `target` — consumes its capability (write-once).
 -}
 withTarget : String -> Builder { a | target : Available } slotCaps msg kind -> Builder { a | target : Used } slotCaps msg kind
-withTarget =
-    Component.withTarget
+withTarget value_ =
+    B.withAttribute (A.target value_)
 
 
-{-| Pipe form of `type_` — re-exported from `M3e.Card`.
+{-| Pipe form of `type_` — consumes its capability (write-once).
 -}
 withType : Value Component.Type -> Builder { a | type_ : Available } slotCaps msg kind -> Builder { a | type_ : Used } slotCaps msg kind
-withType =
-    Component.withType
+withType value_ =
+    B.withAttribute (Component.type_ value_)
 
 
-{-| Pipe form of `value` — re-exported from `M3e.Card`.
+{-| Pipe form of `value` — consumes its capability (write-once).
 -}
 withValue : String -> Builder { a | value : Available } slotCaps msg kind -> Builder { a | value : Used } slotCaps msg kind
-withValue =
-    Component.withValue
+withValue value_ =
+    B.withAttribute (A.value value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.Card`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)
 
 
-{-| Pipe form of `onClick` — re-exported from `M3e.Card`.
+{-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick =
-    Component.withOnClick
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)

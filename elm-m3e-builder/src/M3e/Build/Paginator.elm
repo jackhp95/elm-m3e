@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Paginator as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Paginator
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -105,7 +106,7 @@ toElement =
 {-| Place a builder-built element into the named `first-page-icon` slot — calls `B.toElement` internally.
 -}
 firstPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.FirstPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.FirstPageIconSlot msg
     -> Element free freeAdmittedBy msg
 firstPageIcon builder =
     Component.firstPageIcon (B.toElement builder)
@@ -114,7 +115,7 @@ firstPageIcon builder =
 {-| Place a builder-built element into the named `last-page-icon` slot — calls `B.toElement` internally.
 -}
 lastPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LastPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LastPageIconSlot msg
     -> Element free freeAdmittedBy msg
 lastPageIcon builder =
     Component.lastPageIcon (B.toElement builder)
@@ -123,7 +124,7 @@ lastPageIcon builder =
 {-| Place a builder-built element into the named `next-page-icon` slot — calls `B.toElement` internally.
 -}
 nextPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.NextPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.NextPageIconSlot msg
     -> Element free freeAdmittedBy msg
 nextPageIcon builder =
     Component.nextPageIcon (B.toElement builder)
@@ -132,7 +133,7 @@ nextPageIcon builder =
 {-| Place a builder-built element into the named `previous-page-icon` slot — calls `B.toElement` internally.
 -}
 previousPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.PreviousPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.PreviousPageIconSlot msg
     -> Element free freeAdmittedBy msg
 previousPageIcon builder =
     Component.previousPageIcon (B.toElement builder)
@@ -141,7 +142,7 @@ previousPageIcon builder =
 {-| Pipe form of the `first-page-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withFirstPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.FirstPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.FirstPageIconSlot msg
     -> Builder attrCaps { s | firstPageIcon : Available } msg kind
     -> Builder attrCaps { s | firstPageIcon : Used } msg kind
 withFirstPageIcon slotBuilder builder_ =
@@ -151,7 +152,7 @@ withFirstPageIcon slotBuilder builder_ =
 {-| Pipe form of the `last-page-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withLastPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LastPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LastPageIconSlot msg
     -> Builder attrCaps { s | lastPageIcon : Available } msg kind
     -> Builder attrCaps { s | lastPageIcon : Used } msg kind
 withLastPageIcon slotBuilder builder_ =
@@ -161,7 +162,7 @@ withLastPageIcon slotBuilder builder_ =
 {-| Pipe form of the `next-page-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withNextPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.NextPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.NextPageIconSlot msg
     -> Builder attrCaps { s | nextPageIcon : Available } msg kind
     -> Builder attrCaps { s | nextPageIcon : Used } msg kind
 withNextPageIcon slotBuilder builder_ =
@@ -171,134 +172,134 @@ withNextPageIcon slotBuilder builder_ =
 {-| Pipe form of the `previous-page-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withPreviousPageIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.PreviousPageIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.PreviousPageIconSlot msg
     -> Builder attrCaps { s | previousPageIcon : Available } msg kind
     -> Builder attrCaps { s | previousPageIcon : Used } msg kind
 withPreviousPageIcon slotBuilder builder_ =
     B.withChild (El.toNode (Component.previousPageIcon (B.toElement slotBuilder))) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `firstPageLabel` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `firstPageLabel` — consumes its capability (write-once).
 -}
 withFirstPageLabel : String -> Builder { a | firstPageLabel : Available } slotCaps msg kind -> Builder { a | firstPageLabel : Used } slotCaps msg kind
-withFirstPageLabel =
-    Component.withFirstPageLabel
+withFirstPageLabel value_ =
+    B.withAttribute (A.firstPageLabel value_)
 
 
-{-| Pipe form of `hidePageSize` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `hidePageSize` — consumes its capability (write-once).
 -}
 withHidePageSize : Bool -> Builder { a | hidePageSize : Available } slotCaps msg kind -> Builder { a | hidePageSize : Used } slotCaps msg kind
-withHidePageSize =
-    Component.withHidePageSize
+withHidePageSize value_ =
+    B.withAttribute (A.hidePageSize value_)
 
 
-{-| Pipe form of `itemsPerPageLabel` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `itemsPerPageLabel` — consumes its capability (write-once).
 -}
 withItemsPerPageLabel : String -> Builder { a | itemsPerPageLabel : Available } slotCaps msg kind -> Builder { a | itemsPerPageLabel : Used } slotCaps msg kind
-withItemsPerPageLabel =
-    Component.withItemsPerPageLabel
+withItemsPerPageLabel value_ =
+    B.withAttribute (A.itemsPerPageLabel value_)
 
 
-{-| Pipe form of `lastPageLabel` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `lastPageLabel` — consumes its capability (write-once).
 -}
 withLastPageLabel : String -> Builder { a | lastPageLabel : Available } slotCaps msg kind -> Builder { a | lastPageLabel : Used } slotCaps msg kind
-withLastPageLabel =
-    Component.withLastPageLabel
+withLastPageLabel value_ =
+    B.withAttribute (A.lastPageLabel value_)
 
 
-{-| Pipe form of `length` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `length` — consumes its capability (write-once).
 -}
 withLength : Float -> Builder { a | length : Available } slotCaps msg kind -> Builder { a | length : Used } slotCaps msg kind
-withLength =
-    Component.withLength
+withLength value_ =
+    B.withAttribute (A.length value_)
 
 
-{-| Pipe form of `nextPageLabel` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `nextPageLabel` — consumes its capability (write-once).
 -}
 withNextPageLabel : String -> Builder { a | nextPageLabel : Available } slotCaps msg kind -> Builder { a | nextPageLabel : Used } slotCaps msg kind
-withNextPageLabel =
-    Component.withNextPageLabel
+withNextPageLabel value_ =
+    B.withAttribute (A.nextPageLabel value_)
 
 
-{-| Pipe form of `pageIndex` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `pageIndex` — consumes its capability (write-once).
 -}
 withPageIndex : Float -> Builder { a | pageIndex : Available } slotCaps msg kind -> Builder { a | pageIndex : Used } slotCaps msg kind
-withPageIndex =
-    Component.withPageIndex
+withPageIndex value_ =
+    B.withAttribute (A.pageIndex value_)
 
 
-{-| Pipe form of `pageSize` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `pageSize` — consumes its capability (write-once).
 -}
 withPageSize : String -> Builder { a | pageSize : Available } slotCaps msg kind -> Builder { a | pageSize : Used } slotCaps msg kind
-withPageSize =
-    Component.withPageSize
+withPageSize value_ =
+    B.withAttribute (A.pageSize value_)
 
 
-{-| Pipe form of `pageSizeVariant` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `pageSizeVariant` — consumes its capability (write-once).
 -}
 withPageSizeVariant : Value Component.PageSizeVariant -> Builder { a | pageSizeVariant : Available } slotCaps msg kind -> Builder { a | pageSizeVariant : Used } slotCaps msg kind
-withPageSizeVariant =
-    Component.withPageSizeVariant
+withPageSizeVariant value_ =
+    B.withAttribute (Component.pageSizeVariant value_)
 
 
-{-| Pipe form of `pageSizes` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `pageSizes` — consumes its capability (write-once).
 -}
 withPageSizes : String -> Builder { a | pageSizes : Available } slotCaps msg kind -> Builder { a | pageSizes : Used } slotCaps msg kind
-withPageSizes =
-    Component.withPageSizes
+withPageSizes value_ =
+    B.withAttribute (A.pageSizes value_)
 
 
-{-| Pipe form of `previousPageLabel` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `previousPageLabel` — consumes its capability (write-once).
 -}
 withPreviousPageLabel : String -> Builder { a | previousPageLabel : Available } slotCaps msg kind -> Builder { a | previousPageLabel : Used } slotCaps msg kind
-withPreviousPageLabel =
-    Component.withPreviousPageLabel
+withPreviousPageLabel value_ =
+    B.withAttribute (A.previousPageLabel value_)
 
 
-{-| Pipe form of `showFirstLastButtons` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `showFirstLastButtons` — consumes its capability (write-once).
 -}
 withShowFirstLastButtons : Bool -> Builder { a | showFirstLastButtons : Available } slotCaps msg kind -> Builder { a | showFirstLastButtons : Used } slotCaps msg kind
-withShowFirstLastButtons =
-    Component.withShowFirstLastButtons
+withShowFirstLastButtons value_ =
+    B.withAttribute (A.showFirstLastButtons value_)
 
 
-{-| Pipe form of `onPage` — re-exported from `M3e.Paginator`.
+{-| Pipe form of `onPage` — consumes its capability (write-once).
 -}
 withOnPage : (String -> msg) -> Builder { a | onPage : Available } slotCaps msg kind -> Builder { a | onPage : Used } slotCaps msg kind
-withOnPage =
-    Component.withOnPage
+withOnPage value_ =
+    B.withAttribute (Component.onPage value_)

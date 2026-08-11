@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.DrawerContainer as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.DrawerContainer
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -81,7 +82,7 @@ toElement =
 {-| Place a builder-built element into the named `end` slot — calls `B.toElement` internally.
 -}
 end :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 end builder =
     Component.end (B.toElement builder)
@@ -90,7 +91,7 @@ end builder =
 {-| Place a builder-built element into the named `start` slot — calls `B.toElement` internally.
 -}
 start :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 start builder =
     Component.start (B.toElement builder)
@@ -99,7 +100,7 @@ start builder =
 {-| Pipe form of the `end` slot — accepts a builder directly (no `.toElement`).
 -}
 withEndSlot :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | end : Available } msg kind
     -> Builder attrCaps { s | end : Used } msg kind
 withEndSlot slotBuilder builder_ =
@@ -109,7 +110,7 @@ withEndSlot slotBuilder builder_ =
 {-| Pipe form of the `start` slot — accepts a builder directly (no `.toElement`).
 -}
 withStartSlot :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | start : Available } msg kind
     -> Builder attrCaps { s | start : Used } msg kind
 withStartSlot slotBuilder builder_ =
@@ -126,78 +127,78 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `end` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `end` — consumes its capability (write-once).
 -}
 withEnd : Bool -> Builder { a | end : Available } slotCaps msg kind -> Builder { a | end : Used } slotCaps msg kind
-withEnd =
-    Component.withEnd
+withEnd value_ =
+    B.withAttribute (A.end value_)
 
 
-{-| Pipe form of `endDivider` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `endDivider` — consumes its capability (write-once).
 -}
 withEndDivider : Bool -> Builder { a | endDivider : Available } slotCaps msg kind -> Builder { a | endDivider : Used } slotCaps msg kind
-withEndDivider =
-    Component.withEndDivider
+withEndDivider value_ =
+    B.withAttribute (A.endDivider value_)
 
 
-{-| Pipe form of `endMode` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `endMode` — consumes its capability (write-once).
 -}
 withEndMode : Value Component.EndMode -> Builder { a | endMode : Available } slotCaps msg kind -> Builder { a | endMode : Used } slotCaps msg kind
-withEndMode =
-    Component.withEndMode
+withEndMode value_ =
+    B.withAttribute (Component.endMode value_)
 
 
-{-| Pipe form of `start` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `start` — consumes its capability (write-once).
 -}
 withStart : Bool -> Builder { a | start : Available } slotCaps msg kind -> Builder { a | start : Used } slotCaps msg kind
-withStart =
-    Component.withStart
+withStart value_ =
+    B.withAttribute (A.start value_)
 
 
-{-| Pipe form of `startDivider` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `startDivider` — consumes its capability (write-once).
 -}
 withStartDivider : Bool -> Builder { a | startDivider : Available } slotCaps msg kind -> Builder { a | startDivider : Used } slotCaps msg kind
-withStartDivider =
-    Component.withStartDivider
+withStartDivider value_ =
+    B.withAttribute (A.startDivider value_)
 
 
-{-| Pipe form of `startMode` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `startMode` — consumes its capability (write-once).
 -}
 withStartMode : Value Component.StartMode -> Builder { a | startMode : Available } slotCaps msg kind -> Builder { a | startMode : Used } slotCaps msg kind
-withStartMode =
-    Component.withStartMode
+withStartMode value_ =
+    B.withAttribute (Component.startMode value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.DrawerContainer`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)

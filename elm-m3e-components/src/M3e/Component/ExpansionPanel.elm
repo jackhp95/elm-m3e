@@ -1,22 +1,20 @@
 module M3e.Component.ExpansionPanel exposing
-    ( view, el, build, toElement
-    , Is, Attrs, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view, el
+    , Is, Attrs, ToggleIconSlot, ChildAdmittedBy
     , ToggleDirection, toggleDirection, TogglePosition, togglePosition
     , disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
     , actions, header, toggleIcon, child
-    , withActions, withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
     )
 
 {-| The `m3e-expansion-panel` component — strict per-component surface.
 
 An expandable details-summary view.
 
-@docs view, el, build, toElement
-@docs Is, Attrs, ToggleIconSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view, el
+@docs Is, Attrs, ToggleIconSlot, ChildAdmittedBy
 @docs ToggleDirection, toggleDirection, TogglePosition, togglePosition
 @docs disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
 @docs actions, header, toggleIcon, child
-@docs withActions, withChild, withClass, withDisabled, withHeader, withHideToggle, withId, withOnClosed, withOnClosing, withOnOpened, withOnOpening, withOpen, withSlot, withStyle, withToggleDirection, withToggleIcon, withTogglePosition
 
 -}
 
@@ -26,7 +24,6 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
 import M3e.Internal.Types.ExpansionPanel
@@ -187,158 +184,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.ExpansionPanel.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.ExpansionPanel.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    M3e.Internal.Types.ExpansionPanel.SlotCaps
-
-
-{-| Seed the pipe-builder.
--}
-build :
-    { header : Element childAccepts (ChildAdmittedBy childAdm) msg }
-    -> Builder AttrCaps SlotCaps msg kind
-build required_ =
-    B.init "m3e-expansion-panel" ([]) [ El.toNode (header required_.header) ]
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `disabled` — consumes its capability (write-once).
--}
-withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled value_ =
-    B.withAttribute (A.disabled value_)
-
-
-{-| Pipe form of `hideToggle` — consumes its capability (write-once).
--}
-withHideToggle : Bool -> Builder { a | hideToggle : Available } slotCaps msg kind -> Builder { a | hideToggle : Used } slotCaps msg kind
-withHideToggle value_ =
-    B.withAttribute (A.hideToggle value_)
-
-
-{-| Pipe form of `open` — consumes its capability (write-once).
--}
-withOpen : Bool -> Builder { a | open : Available } slotCaps msg kind -> Builder { a | open : Used } slotCaps msg kind
-withOpen value_ =
-    B.withAttribute (A.open value_)
-
-
-{-| Pipe form of `toggleDirection` — consumes its capability (write-once).
--}
-withToggleDirection : Value ToggleDirection -> Builder { a | toggleDirection : Available } slotCaps msg kind -> Builder { a | toggleDirection : Used } slotCaps msg kind
-withToggleDirection value_ =
-    B.withAttribute (toggleDirection value_)
-
-
-{-| Pipe form of `togglePosition` — consumes its capability (write-once).
--}
-withTogglePosition : Value TogglePosition -> Builder { a | togglePosition : Available } slotCaps msg kind -> Builder { a | togglePosition : Used } slotCaps msg kind
-withTogglePosition value_ =
-    B.withAttribute (togglePosition value_)
-
-
-{-| Pipe form of `onOpening` — consumes its capability (write-once).
--}
-withOnOpening : msg -> Builder { a | onOpening : Available } slotCaps msg kind -> Builder { a | onOpening : Used } slotCaps msg kind
-withOnOpening value_ =
-    B.withAttribute (Ev.onOpening value_)
-
-
-{-| Pipe form of `onOpened` — consumes its capability (write-once).
--}
-withOnOpened : msg -> Builder { a | onOpened : Available } slotCaps msg kind -> Builder { a | onOpened : Used } slotCaps msg kind
-withOnOpened value_ =
-    B.withAttribute (Ev.onOpened value_)
-
-
-{-| Pipe form of `onClosing` — consumes its capability (write-once).
--}
-withOnClosing : msg -> Builder { a | onClosing : Available } slotCaps msg kind -> Builder { a | onClosing : Used } slotCaps msg kind
-withOnClosing value_ =
-    B.withAttribute (Ev.onClosing value_)
-
-
-{-| Pipe form of `onClosed` — consumes its capability (write-once).
--}
-withOnClosed : msg -> Builder { a | onClosed : Available } slotCaps msg kind -> Builder { a | onClosed : Used } slotCaps msg kind
-withOnClosed value_ =
-    B.withAttribute (Ev.onClosed value_)
-
-
-{-| Pipe form of the `header` slot — consumes its capability (write-once).
--}
-withHeader : Element childAccepts admittedBy msg -> Builder attrCaps { s | header : Available } msg kind -> Builder attrCaps { s | header : Used } msg kind
-withHeader element =
-    B.withChild (El.toNode (header element))
-
-
-{-| Pipe form of the `toggle-icon` slot — consumes its capability (write-once).
--}
-withToggleIcon : Element ToggleIconSlot admittedBy msg -> Builder attrCaps { s | toggleIcon : Available } msg kind -> Builder attrCaps { s | toggleIcon : Used } msg kind
-withToggleIcon element =
-    B.withChild (El.toNode (toggleIcon element))
-
-
-{-| Pipe form of the `actions` slot — appends into the child list (repeatable, like `withChild`).
--}
-withActions : Element childAccepts admittedBy msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withActions element =
-    B.withChild (El.toNode (actions element))
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element childAccepts (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

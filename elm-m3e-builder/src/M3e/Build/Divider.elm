@@ -72,57 +72,57 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Divider`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Divider`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Divider`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Divider`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `inset` — re-exported from `M3e.Divider`.
+{-| Pipe form of `inset` — consumes its capability (write-once).
 -}
 withInset : Bool -> Builder { a | inset : Available } slotCaps msg kind -> Builder { a | inset : Used } slotCaps msg kind
-withInset =
-    Component.withInset
+withInset value_ =
+    B.withAttribute (A.inset value_)
 
 
-{-| Pipe form of `insetEnd` — re-exported from `M3e.Divider`.
+{-| Pipe form of `insetEnd` — consumes its capability (write-once).
 -}
 withInsetEnd : Bool -> Builder { a | insetEnd : Available } slotCaps msg kind -> Builder { a | insetEnd : Used } slotCaps msg kind
-withInsetEnd =
-    Component.withInsetEnd
+withInsetEnd value_ =
+    B.withAttribute (A.insetEnd value_)
 
 
-{-| Pipe form of `insetStart` — re-exported from `M3e.Divider`.
+{-| Pipe form of `insetStart` — consumes its capability (write-once).
 -}
 withInsetStart : Bool -> Builder { a | insetStart : Available } slotCaps msg kind -> Builder { a | insetStart : Used } slotCaps msg kind
-withInsetStart =
-    Component.withInsetStart
+withInsetStart value_ =
+    B.withAttribute (A.insetStart value_)
 
 
-{-| Pipe form of `vertical` — re-exported from `M3e.Divider`.
+{-| Pipe form of `vertical` — consumes its capability (write-once).
 -}
 withVertical : Bool -> Builder { a | vertical : Available } slotCaps msg kind -> Builder { a | vertical : Used } slotCaps msg kind
-withVertical =
-    Component.withVertical
+withVertical value_ =
+    B.withAttribute (A.vertical value_)

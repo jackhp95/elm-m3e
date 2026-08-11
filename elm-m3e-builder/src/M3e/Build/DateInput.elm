@@ -22,9 +22,11 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
+import Json.Encode
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.DateInput as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.DateInput
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -74,197 +76,197 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `dayLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `dayLabel` — consumes its capability (write-once).
 -}
 withDayLabel : String -> Builder { a | dayLabel : Available } slotCaps msg kind -> Builder { a | dayLabel : Used } slotCaps msg kind
-withDayLabel =
-    Component.withDayLabel
+withDayLabel value_ =
+    B.withAttribute (A.dayLabel value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `hourLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `hourLabel` — consumes its capability (write-once).
 -}
 withHourLabel : String -> Builder { a | hourLabel : Available } slotCaps msg kind -> Builder { a | hourLabel : Used } slotCaps msg kind
-withHourLabel =
-    Component.withHourLabel
+withHourLabel value_ =
+    B.withAttribute (A.hourLabel value_)
 
 
-{-| Pipe form of `maxDate` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `maxDate` — consumes its capability (write-once).
 -}
 withMaxDate : String -> Builder { a | maxDate : Available } slotCaps msg kind -> Builder { a | maxDate : Used } slotCaps msg kind
-withMaxDate =
-    Component.withMaxDate
+withMaxDate value_ =
+    B.withAttribute (A.maxDate value_)
 
 
-{-| Pipe form of `maxTime` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `maxTime` — consumes its capability (write-once).
 -}
 withMaxTime : String -> Builder { a | maxTime : Available } slotCaps msg kind -> Builder { a | maxTime : Used } slotCaps msg kind
-withMaxTime =
-    Component.withMaxTime
+withMaxTime value_ =
+    B.withAttribute (A.maxTime value_)
 
 
-{-| Pipe form of `minDate` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `minDate` — consumes its capability (write-once).
 -}
 withMinDate : String -> Builder { a | minDate : Available } slotCaps msg kind -> Builder { a | minDate : Used } slotCaps msg kind
-withMinDate =
-    Component.withMinDate
+withMinDate value_ =
+    B.withAttribute (A.minDate value_)
 
 
-{-| Pipe form of `minTime` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `minTime` — consumes its capability (write-once).
 -}
 withMinTime : String -> Builder { a | minTime : Available } slotCaps msg kind -> Builder { a | minTime : Used } slotCaps msg kind
-withMinTime =
-    Component.withMinTime
+withMinTime value_ =
+    B.withAttribute (A.minTime value_)
 
 
-{-| Pipe form of `minuteLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `minuteLabel` — consumes its capability (write-once).
 -}
 withMinuteLabel : String -> Builder { a | minuteLabel : Available } slotCaps msg kind -> Builder { a | minuteLabel : Used } slotCaps msg kind
-withMinuteLabel =
-    Component.withMinuteLabel
+withMinuteLabel value_ =
+    B.withAttribute (A.minuteLabel value_)
 
 
-{-| Pipe form of `monthLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `monthLabel` — consumes its capability (write-once).
 -}
 withMonthLabel : String -> Builder { a | monthLabel : Available } slotCaps msg kind -> Builder { a | monthLabel : Used } slotCaps msg kind
-withMonthLabel =
-    Component.withMonthLabel
+withMonthLabel value_ =
+    B.withAttribute (A.monthLabel value_)
 
 
-{-| Pipe form of `name` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `name` — consumes its capability (write-once).
 -}
 withName : String -> Builder { a | name : Available } slotCaps msg kind -> Builder { a | name : Used } slotCaps msg kind
-withName =
-    Component.withName
+withName value_ =
+    B.withAttribute (Ir.attribute "name" value_)
 
 
-{-| Pipe form of `periodLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `periodLabel` — consumes its capability (write-once).
 -}
 withPeriodLabel : String -> Builder { a | periodLabel : Available } slotCaps msg kind -> Builder { a | periodLabel : Used } slotCaps msg kind
-withPeriodLabel =
-    Component.withPeriodLabel
+withPeriodLabel value_ =
+    B.withAttribute (A.periodLabel value_)
 
 
-{-| Pipe form of `readonly` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `readonly` — consumes its capability (write-once).
 -}
 withReadonly : Bool -> Builder { a | readonly : Available } slotCaps msg kind -> Builder { a | readonly : Used } slotCaps msg kind
-withReadonly =
-    Component.withReadonly
+withReadonly value_ =
+    B.withAttribute (A.readonly value_)
 
 
-{-| Pipe form of `required` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `required` — consumes its capability (write-once).
 -}
 withRequired : Bool -> Builder { a | required : Available } slotCaps msg kind -> Builder { a | required : Used } slotCaps msg kind
-withRequired =
-    Component.withRequired
+withRequired value_ =
+    B.withAttribute (A.required value_)
 
 
-{-| Pipe form of `secondLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `secondLabel` — consumes its capability (write-once).
 -}
 withSecondLabel : String -> Builder { a | secondLabel : Available } slotCaps msg kind -> Builder { a | secondLabel : Used } slotCaps msg kind
-withSecondLabel =
-    Component.withSecondLabel
+withSecondLabel value_ =
+    B.withAttribute (A.secondLabel value_)
 
 
-{-| Pipe form of `showSeconds` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `showSeconds` — consumes its capability (write-once).
 -}
 withShowSeconds : Bool -> Builder { a | showSeconds : Available } slotCaps msg kind -> Builder { a | showSeconds : Used } slotCaps msg kind
-withShowSeconds =
-    Component.withShowSeconds
+withShowSeconds value_ =
+    B.withAttribute (A.showSeconds value_)
 
 
-{-| Pipe form of `timeFormat` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `timeFormat` — consumes its capability (write-once).
 -}
 withTimeFormat : Value Component.TimeFormat -> Builder { a | timeFormat : Available } slotCaps msg kind -> Builder { a | timeFormat : Used } slotCaps msg kind
-withTimeFormat =
-    Component.withTimeFormat
+withTimeFormat value_ =
+    B.withAttribute (Component.timeFormat value_)
 
 
-{-| Pipe form of `type_` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `type_` — consumes its capability (write-once).
 -}
 withType : Value Component.Type -> Builder { a | type_ : Available } slotCaps msg kind -> Builder { a | type_ : Used } slotCaps msg kind
-withType =
-    Component.withType
+withType value_ =
+    B.withAttribute (Component.type_ value_)
 
 
-{-| Pipe form of `validationmessages` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `validationmessages` — consumes its capability (write-once).
 -}
 withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg kind -> Builder { a | validationmessages : Used } slotCaps msg kind
-withValidationmessages =
-    Component.withValidationmessages
+withValidationmessages value_ =
+    B.withAttribute (A.validationmessages value_)
 
 
-{-| Pipe form of `value` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `value` — consumes its capability (write-once).
 -}
 withValue : String -> Builder { a | value : Available } slotCaps msg kind -> Builder { a | value : Used } slotCaps msg kind
-withValue =
-    Component.withValue
+withValue value_ =
+    B.withAttribute (A.value value_)
 
 
-{-| Pipe form of `yearLabel` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `yearLabel` — consumes its capability (write-once).
 -}
 withYearLabel : String -> Builder { a | yearLabel : Available } slotCaps msg kind -> Builder { a | yearLabel : Used } slotCaps msg kind
-withYearLabel =
-    Component.withYearLabel
+withYearLabel value_ =
+    B.withAttribute (A.yearLabel value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
-{-| Pipe form of `onBeforeinput` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput =
-    Component.withOnBeforeinput
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
-{-| Pipe form of `onInput` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput =
-    Component.withOnInput
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
-{-| Pipe form of `onInvalid` — re-exported from `M3e.DateInput`.
+{-| Pipe form of `onInvalid` — consumes its capability (write-once).
 -}
 withOnInvalid : msg -> Builder { a | onInvalid : Available } slotCaps msg kind -> Builder { a | onInvalid : Used } slotCaps msg kind
-withOnInvalid =
-    Component.withOnInvalid
+withOnInvalid value_ =
+    B.withAttribute (Ev.onInvalid value_)

@@ -91,7 +91,7 @@ toElement =
 {-| Place a builder-built element into the named `label` slot — calls `B.toElement` internally.
 -}
 label :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LabelSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LabelSlot msg
     -> Element free freeAdmittedBy msg
 label builder =
     Component.label (B.toElement builder)
@@ -100,7 +100,7 @@ label builder =
 {-| Pipe form of the `label` slot — accepts a builder directly (no `.toElement`).
 -}
 withLabel :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LabelSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LabelSlot msg
     -> Builder attrCaps { s | label : Available } msg kind
     -> Builder attrCaps { s | label : Used } msg kind
 withLabel slotBuilder builder_ =
@@ -117,29 +117,29 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Optgroup`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Optgroup`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Optgroup`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Optgroup`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)

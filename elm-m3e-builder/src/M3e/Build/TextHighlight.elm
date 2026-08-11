@@ -27,6 +27,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.TextHighlight as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.TextHighlight
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -86,64 +87,64 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `caseSensitive` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `caseSensitive` — consumes its capability (write-once).
 -}
 withCaseSensitive : Bool -> Builder { a | caseSensitive : Available } slotCaps msg kind -> Builder { a | caseSensitive : Used } slotCaps msg kind
-withCaseSensitive =
-    Component.withCaseSensitive
+withCaseSensitive value_ =
+    B.withAttribute (A.caseSensitive value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `mode` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `mode` — consumes its capability (write-once).
 -}
 withMode : Value Component.Mode -> Builder { a | mode : Available } slotCaps msg kind -> Builder { a | mode : Used } slotCaps msg kind
-withMode =
-    Component.withMode
+withMode value_ =
+    B.withAttribute (Component.mode value_)
 
 
-{-| Pipe form of `term` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `term` — consumes its capability (write-once).
 -}
 withTerm : String -> Builder { a | term : Available } slotCaps msg kind -> Builder { a | term : Used } slotCaps msg kind
-withTerm =
-    Component.withTerm
+withTerm value_ =
+    B.withAttribute (A.term value_)
 
 
-{-| Pipe form of `onHighlight` — re-exported from `M3e.TextHighlight`.
+{-| Pipe form of `onHighlight` — consumes its capability (write-once).
 -}
 withOnHighlight : msg -> Builder { a | onHighlight : Available } slotCaps msg kind -> Builder { a | onHighlight : Used } slotCaps msg kind
-withOnHighlight =
-    Component.withOnHighlight
+withOnHighlight value_ =
+    B.withAttribute (Ev.onHighlight value_)

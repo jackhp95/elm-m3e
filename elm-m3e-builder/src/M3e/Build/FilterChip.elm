@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.FilterChip as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.FilterChip
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -85,10 +86,10 @@ type alias TrailingIconSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-filter-chip" ([]) [ El.toNode required_.content ]
+    B.init "m3e-filter-chip" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -101,7 +102,7 @@ toElement =
 {-| Place a builder-built element into the named `icon` slot — calls `B.toElement` internally.
 -}
 icon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.IconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.IconSlot msg
     -> Element free freeAdmittedBy msg
 icon builder =
     Component.icon (B.toElement builder)
@@ -110,7 +111,7 @@ icon builder =
 {-| Place a builder-built element into the named `trailing-icon` slot — calls `B.toElement` internally.
 -}
 trailingIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingIconSlot msg
     -> Element free freeAdmittedBy msg
 trailingIcon builder =
     Component.trailingIcon (B.toElement builder)
@@ -119,7 +120,7 @@ trailingIcon builder =
 {-| Pipe form of the `icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.IconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.IconSlot msg
     -> Builder attrCaps { s | icon : Available } msg kind
     -> Builder attrCaps { s | icon : Used } msg kind
 withIcon slotBuilder builder_ =
@@ -129,7 +130,7 @@ withIcon slotBuilder builder_ =
 {-| Pipe form of the `trailing-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withTrailingIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingIconSlot msg
     -> Builder attrCaps { s | trailingIcon : Available } msg kind
     -> Builder attrCaps { s | trailingIcon : Used } msg kind
 withTrailingIcon slotBuilder builder_ =
@@ -146,92 +147,92 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `disabled` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `disabled` — consumes its capability (write-once).
 -}
 withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled =
-    Component.withDisabled
+withDisabled value_ =
+    B.withAttribute (A.disabled value_)
 
 
-{-| Pipe form of `disabledInteractive` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `disabledInteractive` — consumes its capability (write-once).
 -}
 withDisabledInteractive : Bool -> Builder { a | disabledInteractive : Available } slotCaps msg kind -> Builder { a | disabledInteractive : Used } slotCaps msg kind
-withDisabledInteractive =
-    Component.withDisabledInteractive
+withDisabledInteractive value_ =
+    B.withAttribute (A.disabledInteractive value_)
 
 
-{-| Pipe form of `selected` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `selected` — consumes its capability (write-once).
 -}
 withSelected : Bool -> Builder { a | selected : Available } slotCaps msg kind -> Builder { a | selected : Used } slotCaps msg kind
-withSelected =
-    Component.withSelected
+withSelected value_ =
+    B.withAttribute (A.selected value_)
 
 
-{-| Pipe form of `value` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `value` — consumes its capability (write-once).
 -}
 withValue : String -> Builder { a | value : Available } slotCaps msg kind -> Builder { a | value : Used } slotCaps msg kind
-withValue =
-    Component.withValue
+withValue value_ =
+    B.withAttribute (A.value value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)
 
 
-{-| Pipe form of `onBeforeinput` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
 -}
 withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput =
-    Component.withOnBeforeinput
+withOnBeforeinput value_ =
+    B.withAttribute (Ev.onBeforeinput value_)
 
 
-{-| Pipe form of `onInput` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `onInput` — consumes its capability (write-once).
 -}
 withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput =
-    Component.withOnInput
+withOnInput value_ =
+    B.withAttribute (Ev.onInput value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
-{-| Pipe form of `onClick` — re-exported from `M3e.FilterChip`.
+{-| Pipe form of `onClick` — consumes its capability (write-once).
 -}
 withOnClick : msg -> Builder { a | onClick : Available } slotCaps msg kind -> Builder { a | onClick : Used } slotCaps msg kind
-withOnClick =
-    Component.withOnClick
+withOnClick value_ =
+    B.withAttribute (Ev.onClick value_)

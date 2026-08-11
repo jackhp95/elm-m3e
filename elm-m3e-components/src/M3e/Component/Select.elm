@@ -1,20 +1,18 @@
 module M3e.Component.Select exposing
-    ( view, el, build, toElement
-    , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+    ( view, el
+    , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
     , disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
     , arrow, value, child
-    , withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValidationmessages, withValue
     )
 
 {-| The `m3e-select` component — strict per-component surface.
 
 A form control that allows users to select a value from a set of predefined options.
 
-@docs view, el, build, toElement
-@docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy, Builder, AttrCaps, SlotCaps
+@docs view, el
+@docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
 @docs disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value, child
-@docs withArrow, withChild, withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValidationmessages, withValue
 
 -}
 
@@ -25,7 +23,6 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import Json.Decode
 import Json.Encode
 import M3e.Attributes as A
-import M3e.Build.Internal as B
 import M3e.Events as Ev
 import M3e.Html as H
 import M3e.Internal.Types.Select
@@ -183,165 +180,3 @@ child list). The list-form sibling of the builder's `withChild`.
 child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
 child element =
     Ir.fromNode (El.toNode element)
-
-
-{-| The pipe-builder: capabilities are consumed Available→Used, so writing
-a singular attribute or slot twice is unwritable. Aliases the shared builder in
-`Build.Internal`, closed over this component's `Attrs` row and `Is s` kind.
--}
-type alias Builder attrCaps slotCaps msg s =
-    M3e.Internal.Types.Select.Builder attrCaps slotCaps msg s
-
-
-{-| Every attribute/event capability, still writable.
--}
-type alias AttrCaps =
-    M3e.Internal.Types.Select.AttrCaps
-
-
-{-| Every singular named-slot capability, still writable.
--}
-type alias SlotCaps =
-    M3e.Internal.Types.Select.SlotCaps
-
-
-{-| Seed the pipe-builder.
--}
-build :
-    { content : Element Content (ChildAdmittedBy childAdm) msg }
-    -> Builder AttrCaps SlotCaps msg kind
-build required_ =
-    B.init "m3e-select" ([]) [ El.toNode required_.content ]
-
-
-{-| Close the pipe-builder (`toElement` is defined once in `Build.Internal`).
--}
-toElement : Builder attrCaps slotCaps msg kind -> Element (Is kind) admittedBy msg
-toElement =
-    B.toElement
-
-
-{-| Pipe form of `class` — consumes its capability (write-once).
--}
-withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass value_ =
-    B.withAttribute (A.class value_)
-
-
-{-| Pipe form of `id` — consumes its capability (write-once).
--}
-withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId value_ =
-    B.withAttribute (A.id value_)
-
-
-{-| Pipe form of `slot` — consumes its capability (write-once).
--}
-withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot value_ =
-    B.withAttribute (A.slot value_)
-
-
-{-| Pipe form of `style` — consumes its capability (write-once).
--}
-withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle property value_ =
-    B.withAttribute (A.style property value_)
-
-
-{-| Pipe form of `disabled` — consumes its capability (write-once).
--}
-withDisabled : Bool -> Builder { a | disabled : Available } slotCaps msg kind -> Builder { a | disabled : Used } slotCaps msg kind
-withDisabled value_ =
-    B.withAttribute (A.disabled value_)
-
-
-{-| Pipe form of `hideSelectionIndicator` — consumes its capability (write-once).
--}
-withHideSelectionIndicator : Bool -> Builder { a | hideSelectionIndicator : Available } slotCaps msg kind -> Builder { a | hideSelectionIndicator : Used } slotCaps msg kind
-withHideSelectionIndicator value_ =
-    B.withAttribute (A.hideSelectionIndicator value_)
-
-
-{-| Pipe form of `multi` — consumes its capability (write-once).
--}
-withMulti : Bool -> Builder { a | multi : Available } slotCaps msg kind -> Builder { a | multi : Used } slotCaps msg kind
-withMulti value_ =
-    B.withAttribute (A.multi value_)
-
-
-{-| Pipe form of `name` — consumes its capability (write-once).
--}
-withName : String -> Builder { a | name : Available } slotCaps msg kind -> Builder { a | name : Used } slotCaps msg kind
-withName value_ =
-    B.withAttribute (Ir.attribute "name" value_)
-
-
-{-| Pipe form of `panelClass` — consumes its capability (write-once).
--}
-withPanelClass : String -> Builder { a | panelClass : Available } slotCaps msg kind -> Builder { a | panelClass : Used } slotCaps msg kind
-withPanelClass value_ =
-    B.withAttribute (A.panelClass value_)
-
-
-{-| Pipe form of `required` — consumes its capability (write-once).
--}
-withRequired : Bool -> Builder { a | required : Available } slotCaps msg kind -> Builder { a | required : Used } slotCaps msg kind
-withRequired value_ =
-    B.withAttribute (A.required value_)
-
-
-{-| Pipe form of `validationmessages` — consumes its capability (write-once).
--}
-withValidationmessages : String -> Builder { a | validationmessages : Available } slotCaps msg kind -> Builder { a | validationmessages : Used } slotCaps msg kind
-withValidationmessages value_ =
-    B.withAttribute (A.validationmessages value_)
-
-
-{-| Pipe form of `onChange` — consumes its capability (write-once).
--}
-withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange value_ =
-    B.withAttribute (Ev.onChange value_)
-
-
-{-| Pipe form of `onToggle` — consumes its capability (write-once).
--}
-withOnToggle : (String -> msg) -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle value_ =
-    B.withAttribute (onToggle value_)
-
-
-{-| Pipe form of `onBeforeinput` — consumes its capability (write-once).
--}
-withOnBeforeinput : msg -> Builder { a | onBeforeinput : Available } slotCaps msg kind -> Builder { a | onBeforeinput : Used } slotCaps msg kind
-withOnBeforeinput value_ =
-    B.withAttribute (Ev.onBeforeinput value_)
-
-
-{-| Pipe form of `onInput` — consumes its capability (write-once).
--}
-withOnInput : msg -> Builder { a | onInput : Available } slotCaps msg kind -> Builder { a | onInput : Used } slotCaps msg kind
-withOnInput value_ =
-    B.withAttribute (Ev.onInput value_)
-
-
-{-| Pipe form of the `arrow` slot — consumes its capability (write-once).
--}
-withArrow : Element ArrowSlot admittedBy msg -> Builder attrCaps { s | arrow : Available } msg kind -> Builder attrCaps { s | arrow : Used } msg kind
-withArrow element =
-    B.withChild (El.toNode (arrow element))
-
-
-{-| Pipe form of the `value` slot — consumes its capability (write-once).
--}
-withValue : Element childAccepts admittedBy msg -> Builder attrCaps { s | value : Available } msg kind -> Builder attrCaps { s | value : Used } msg kind
-withValue element =
-    B.withChild (El.toNode (value element))
-
-
-{-| Pipe form of a default-slot child (repeatable).
--}
-withChild : Element Content (ChildAdmittedBy childAdm) msg -> Builder attrCaps slotCaps msg kind -> Builder attrCaps slotCaps msg kind
-withChild element =
-    B.withChild (El.toNode element)

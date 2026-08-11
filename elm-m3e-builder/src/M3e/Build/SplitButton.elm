@@ -79,11 +79,12 @@ type alias TrailingButtonSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { leadingButton : Element (Component.LeadingButtonSlot) (Component.ChildAdmittedBy childAdm) msg
-    , trailingButton : Element (Component.TrailingButtonSlot) (Component.ChildAdmittedBy childAdm) msg }
+    { leadingButton : Element Component.LeadingButtonSlot (Component.ChildAdmittedBy childAdm) msg
+    , trailingButton : Element Component.TrailingButtonSlot (Component.ChildAdmittedBy childAdm) msg
+    }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-split-button" ([]) [ El.toNode (Component.leadingButton required_.leadingButton), El.toNode (Component.trailingButton required_.trailingButton) ]
+    B.init "m3e-split-button" [] [ El.toNode (Component.leadingButton required_.leadingButton), El.toNode (Component.trailingButton required_.trailingButton) ]
 
 
 {-| Close the pipe-builder.
@@ -96,7 +97,7 @@ toElement =
 {-| Place a builder-built element into the named `leading-button` slot — calls `B.toElement` internally.
 -}
 leadingButton :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LeadingButtonSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingButtonSlot msg
     -> Element free freeAdmittedBy msg
 leadingButton builder =
     Component.leadingButton (B.toElement builder)
@@ -105,7 +106,7 @@ leadingButton builder =
 {-| Place a builder-built element into the named `trailing-button` slot — calls `B.toElement` internally.
 -}
 trailingButton :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingButtonSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingButtonSlot msg
     -> Element free freeAdmittedBy msg
 trailingButton builder =
     Component.trailingButton (B.toElement builder)
@@ -114,7 +115,7 @@ trailingButton builder =
 {-| Pipe form of the `leading-button` slot — accepts a builder directly (no `.toElement`).
 -}
 withLeadingButton :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LeadingButtonSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LeadingButtonSlot msg
     -> Builder attrCaps { s | leadingButton : Available } msg kind
     -> Builder attrCaps { s | leadingButton : Used } msg kind
 withLeadingButton slotBuilder builder_ =
@@ -124,50 +125,50 @@ withLeadingButton slotBuilder builder_ =
 {-| Pipe form of the `trailing-button` slot — accepts a builder directly (no `.toElement`).
 -}
 withTrailingButton :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.TrailingButtonSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.TrailingButtonSlot msg
     -> Builder attrCaps { s | trailingButton : Available } msg kind
     -> Builder attrCaps { s | trailingButton : Used } msg kind
 withTrailingButton slotBuilder builder_ =
     B.withChild (El.toNode (Component.trailingButton (B.toElement slotBuilder))) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.SplitButton`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.SplitButton`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.SplitButton`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.SplitButton`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `size` — re-exported from `M3e.SplitButton`.
+{-| Pipe form of `size` — consumes its capability (write-once).
 -}
 withSize : Value Component.Size -> Builder { a | size : Available } slotCaps msg kind -> Builder { a | size : Used } slotCaps msg kind
-withSize =
-    Component.withSize
+withSize value_ =
+    B.withAttribute (Component.size value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.SplitButton`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)

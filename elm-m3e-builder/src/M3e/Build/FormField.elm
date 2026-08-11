@@ -81,7 +81,7 @@ toElement =
 {-| Place a builder-built element into the named `error` slot — calls `B.toElement` internally.
 -}
 error :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 error builder =
     Component.error (B.toElement builder)
@@ -90,7 +90,7 @@ error builder =
 {-| Place a builder-built element into the named `hint` slot — calls `B.toElement` internally.
 -}
 hint :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 hint builder =
     Component.hint (B.toElement builder)
@@ -99,7 +99,7 @@ hint builder =
 {-| Place a builder-built element into the named `label` slot — calls `B.toElement` internally.
 -}
 label :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 label builder =
     Component.label (B.toElement builder)
@@ -108,7 +108,7 @@ label builder =
 {-| Place a builder-built element into the named `prefix` slot — calls `B.toElement` internally.
 -}
 prefix :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 prefix builder =
     Component.prefix (B.toElement builder)
@@ -117,7 +117,7 @@ prefix builder =
 {-| Place a builder-built element into the named `prefix-text` slot — calls `B.toElement` internally.
 -}
 prefixText :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 prefixText builder =
     Component.prefixText (B.toElement builder)
@@ -126,7 +126,7 @@ prefixText builder =
 {-| Place a builder-built element into the named `suffix` slot — calls `B.toElement` internally.
 -}
 suffix :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 suffix builder =
     Component.suffix (B.toElement builder)
@@ -135,7 +135,7 @@ suffix builder =
 {-| Place a builder-built element into the named `suffix-text` slot — calls `B.toElement` internally.
 -}
 suffixText :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 suffixText builder =
     Component.suffixText (B.toElement builder)
@@ -144,7 +144,7 @@ suffixText builder =
 {-| Pipe form of the `error` slot — accepts a builder directly (no `.toElement`).
 -}
 withError :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | error : Available } msg kind
     -> Builder attrCaps { s | error : Used } msg kind
 withError slotBuilder builder_ =
@@ -154,7 +154,7 @@ withError slotBuilder builder_ =
 {-| Pipe form of the `hint` slot — accepts a builder directly (no `.toElement`).
 -}
 withHint :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | hint : Available } msg kind
     -> Builder attrCaps { s | hint : Used } msg kind
 withHint slotBuilder builder_ =
@@ -164,7 +164,7 @@ withHint slotBuilder builder_ =
 {-| Pipe form of the `label` slot — accepts a builder directly (no `.toElement`).
 -}
 withLabel :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | label : Available } msg kind
     -> Builder attrCaps { s | label : Used } msg kind
 withLabel slotBuilder builder_ =
@@ -174,7 +174,7 @@ withLabel slotBuilder builder_ =
 {-| Pipe form of the `prefix` slot — accepts a builder directly (no `.toElement`).
 -}
 withPrefix :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | prefix : Available } msg kind
     -> Builder attrCaps { s | prefix : Used } msg kind
 withPrefix slotBuilder builder_ =
@@ -184,7 +184,7 @@ withPrefix slotBuilder builder_ =
 {-| Pipe form of the `prefix-text` slot — accepts a builder directly (no `.toElement`).
 -}
 withPrefixText :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | prefixText : Available } msg kind
     -> Builder attrCaps { s | prefixText : Used } msg kind
 withPrefixText slotBuilder builder_ =
@@ -194,7 +194,7 @@ withPrefixText slotBuilder builder_ =
 {-| Pipe form of the `suffix` slot — accepts a builder directly (no `.toElement`).
 -}
 withSuffix :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | suffix : Available } msg kind
     -> Builder attrCaps { s | suffix : Used } msg kind
 withSuffix slotBuilder builder_ =
@@ -204,7 +204,7 @@ withSuffix slotBuilder builder_ =
 {-| Pipe form of the `suffix-text` slot — accepts a builder directly (no `.toElement`).
 -}
 withSuffixText :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | suffixText : Available } msg kind
     -> Builder attrCaps { s | suffixText : Used } msg kind
 withSuffixText slotBuilder builder_ =
@@ -221,57 +221,57 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.FormField`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.FormField`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.FormField`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.FormField`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `floatLabel` — re-exported from `M3e.FormField`.
+{-| Pipe form of `floatLabel` — consumes its capability (write-once).
 -}
 withFloatLabel : Value Component.FloatLabel -> Builder { a | floatLabel : Available } slotCaps msg kind -> Builder { a | floatLabel : Used } slotCaps msg kind
-withFloatLabel =
-    Component.withFloatLabel
+withFloatLabel value_ =
+    B.withAttribute (Component.floatLabel value_)
 
 
-{-| Pipe form of `hideRequiredMarker` — re-exported from `M3e.FormField`.
+{-| Pipe form of `hideRequiredMarker` — consumes its capability (write-once).
 -}
 withHideRequiredMarker : Bool -> Builder { a | hideRequiredMarker : Available } slotCaps msg kind -> Builder { a | hideRequiredMarker : Used } slotCaps msg kind
-withHideRequiredMarker =
-    Component.withHideRequiredMarker
+withHideRequiredMarker value_ =
+    B.withAttribute (A.hideRequiredMarker value_)
 
 
-{-| Pipe form of `hideSubscript` — re-exported from `M3e.FormField`.
+{-| Pipe form of `hideSubscript` — consumes its capability (write-once).
 -}
 withHideSubscript : Value Component.HideSubscript -> Builder { a | hideSubscript : Available } slotCaps msg kind -> Builder { a | hideSubscript : Used } slotCaps msg kind
-withHideSubscript =
-    Component.withHideSubscript
+withHideSubscript value_ =
+    B.withAttribute (Component.hideSubscript value_)
 
 
-{-| Pipe form of `variant` — re-exported from `M3e.FormField`.
+{-| Pipe form of `variant` — consumes its capability (write-once).
 -}
 withVariant : Value Component.Variant -> Builder { a | variant : Available } slotCaps msg kind -> Builder { a | variant : Used } slotCaps msg kind
-withVariant =
-    Component.withVariant
+withVariant value_ =
+    B.withAttribute (Component.variant value_)

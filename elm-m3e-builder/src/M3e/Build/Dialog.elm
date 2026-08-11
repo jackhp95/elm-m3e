@@ -28,6 +28,7 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Dialog as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Dialog
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -91,7 +92,7 @@ toElement =
 {-| Place a builder-built element into the named `actions` slot — calls `B.toElement` internally.
 -}
 actions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 actions builder =
     Component.actions (B.toElement builder)
@@ -100,7 +101,7 @@ actions builder =
 {-| Place a builder-built element into the named `close-icon` slot — calls `B.toElement` internally.
 -}
 closeIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.CloseIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.CloseIconSlot msg
     -> Element free freeAdmittedBy msg
 closeIcon builder =
     Component.closeIcon (B.toElement builder)
@@ -109,7 +110,7 @@ closeIcon builder =
 {-| Place a builder-built element into the named `header` slot — calls `B.toElement` internally.
 -}
 header :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.HeaderSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.HeaderSlot msg
     -> Element free freeAdmittedBy msg
 header builder =
     Component.header (B.toElement builder)
@@ -118,7 +119,7 @@ header builder =
 {-| Pipe form of the `actions` slot — accepts a builder directly (no `.toElement`).
 -}
 withActions :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | actions : Available } msg kind
     -> Builder attrCaps { s | actions : Used } msg kind
 withActions slotBuilder builder_ =
@@ -128,7 +129,7 @@ withActions slotBuilder builder_ =
 {-| Pipe form of the `close-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withCloseIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.CloseIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.CloseIconSlot msg
     -> Builder attrCaps { s | closeIcon : Available } msg kind
     -> Builder attrCaps { s | closeIcon : Used } msg kind
 withCloseIcon slotBuilder builder_ =
@@ -138,7 +139,7 @@ withCloseIcon slotBuilder builder_ =
 {-| Pipe form of the `header` slot — accepts a builder directly (no `.toElement`).
 -}
 withHeader :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.HeaderSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.HeaderSlot msg
     -> Builder attrCaps { s | header : Available } msg kind
     -> Builder attrCaps { s | header : Used } msg kind
 withHeader slotBuilder builder_ =
@@ -155,106 +156,106 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `alert` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `alert` — consumes its capability (write-once).
 -}
 withAlert : Bool -> Builder { a | alert : Available } slotCaps msg kind -> Builder { a | alert : Used } slotCaps msg kind
-withAlert =
-    Component.withAlert
+withAlert value_ =
+    B.withAttribute (A.alert value_)
 
 
-{-| Pipe form of `closeLabel` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `closeLabel` — consumes its capability (write-once).
 -}
 withCloseLabel : String -> Builder { a | closeLabel : Available } slotCaps msg kind -> Builder { a | closeLabel : Used } slotCaps msg kind
-withCloseLabel =
-    Component.withCloseLabel
+withCloseLabel value_ =
+    B.withAttribute (A.closeLabel value_)
 
 
-{-| Pipe form of `disableClose` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `disableClose` — consumes its capability (write-once).
 -}
 withDisableClose : Bool -> Builder { a | disableClose : Available } slotCaps msg kind -> Builder { a | disableClose : Used } slotCaps msg kind
-withDisableClose =
-    Component.withDisableClose
+withDisableClose value_ =
+    B.withAttribute (A.disableClose value_)
 
 
-{-| Pipe form of `dismissible` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `dismissible` — consumes its capability (write-once).
 -}
 withDismissible : Bool -> Builder { a | dismissible : Available } slotCaps msg kind -> Builder { a | dismissible : Used } slotCaps msg kind
-withDismissible =
-    Component.withDismissible
+withDismissible value_ =
+    B.withAttribute (A.dismissible value_)
 
 
-{-| Pipe form of `noFocusTrap` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `noFocusTrap` — consumes its capability (write-once).
 -}
 withNoFocusTrap : Bool -> Builder { a | noFocusTrap : Available } slotCaps msg kind -> Builder { a | noFocusTrap : Used } slotCaps msg kind
-withNoFocusTrap =
-    Component.withNoFocusTrap
+withNoFocusTrap value_ =
+    B.withAttribute (A.noFocusTrap value_)
 
 
-{-| Pipe form of `open` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `open` — consumes its capability (write-once).
 -}
 withOpen : Bool -> Builder { a | open : Available } slotCaps msg kind -> Builder { a | open : Used } slotCaps msg kind
-withOpen =
-    Component.withOpen
+withOpen value_ =
+    B.withAttribute (A.open value_)
 
 
-{-| Pipe form of `onOpening` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `onOpening` — consumes its capability (write-once).
 -}
 withOnOpening : msg -> Builder { a | onOpening : Available } slotCaps msg kind -> Builder { a | onOpening : Used } slotCaps msg kind
-withOnOpening =
-    Component.withOnOpening
+withOnOpening value_ =
+    B.withAttribute (Ev.onOpening value_)
 
 
-{-| Pipe form of `onOpened` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `onOpened` — consumes its capability (write-once).
 -}
 withOnOpened : msg -> Builder { a | onOpened : Available } slotCaps msg kind -> Builder { a | onOpened : Used } slotCaps msg kind
-withOnOpened =
-    Component.withOnOpened
+withOnOpened value_ =
+    B.withAttribute (Ev.onOpened value_)
 
 
-{-| Pipe form of `onClosing` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `onClosing` — consumes its capability (write-once).
 -}
 withOnClosing : msg -> Builder { a | onClosing : Available } slotCaps msg kind -> Builder { a | onClosing : Used } slotCaps msg kind
-withOnClosing =
-    Component.withOnClosing
+withOnClosing value_ =
+    B.withAttribute (Ev.onClosing value_)
 
 
-{-| Pipe form of `onClosed` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `onClosed` — consumes its capability (write-once).
 -}
 withOnClosed : msg -> Builder { a | onClosed : Available } slotCaps msg kind -> Builder { a | onClosed : Used } slotCaps msg kind
-withOnClosed =
-    Component.withOnClosed
+withOnClosed value_ =
+    B.withAttribute (Ev.onClosed value_)
 
 
-{-| Pipe form of `onCancel` — re-exported from `M3e.Dialog`.
+{-| Pipe form of `onCancel` — consumes its capability (write-once).
 -}
 withOnCancel : msg -> Builder { a | onCancel : Available } slotCaps msg kind -> Builder { a | onCancel : Used } slotCaps msg kind
-withOnCancel =
-    Component.withOnCancel
+withOnCancel value_ =
+    B.withAttribute (Ev.onCancel value_)

@@ -29,6 +29,7 @@ import HtmlIr.Value as Val exposing (Value)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.OptionPanel as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.OptionPanel
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
@@ -93,7 +94,7 @@ toElement =
 {-| Place a builder-built element into the named `loading` slot — calls `B.toElement` internally.
 -}
 loading :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LoadingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LoadingSlot msg
     -> Element free freeAdmittedBy msg
 loading builder =
     Component.loading (B.toElement builder)
@@ -102,7 +103,7 @@ loading builder =
 {-| Place a builder-built element into the named `no-data` slot — calls `B.toElement` internally.
 -}
 noData :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Element free freeAdmittedBy msg
 noData builder =
     Component.noData (B.toElement builder)
@@ -111,7 +112,7 @@ noData builder =
 {-| Pipe form of the `no-data` slot — accepts a builder directly (no `.toElement`).
 -}
 withNoData :
-    B.Builder childRow childAttrCaps childSlotCaps (childAccepts) msg
+    B.Builder childRow childAttrCaps childSlotCaps childAccepts msg
     -> Builder attrCaps { s | noData : Available } msg kind
     -> Builder attrCaps { s | noData : Used } msg kind
 withNoData slotBuilder builder_ =
@@ -121,7 +122,7 @@ withNoData slotBuilder builder_ =
 {-| Pipe form of the `loading` slot (repeatable) — accepts a builder directly.
 -}
 withLoading :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.LoadingSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.LoadingSlot msg
     -> Builder attrCaps slotCaps msg kind
     -> Builder attrCaps slotCaps msg kind
 withLoading slotBuilder builder_ =
@@ -138,71 +139,71 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `anchorOffset` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `anchorOffset` — consumes its capability (write-once).
 -}
 withAnchorOffset : Float -> Builder { a | anchorOffset : Available } slotCaps msg kind -> Builder { a | anchorOffset : Used } slotCaps msg kind
-withAnchorOffset =
-    Component.withAnchorOffset
+withAnchorOffset value_ =
+    B.withAttribute (A.anchorOffset value_)
 
 
-{-| Pipe form of `fitAnchorWidth` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `fitAnchorWidth` — consumes its capability (write-once).
 -}
 withFitAnchorWidth : Bool -> Builder { a | fitAnchorWidth : Available } slotCaps msg kind -> Builder { a | fitAnchorWidth : Used } slotCaps msg kind
-withFitAnchorWidth =
-    Component.withFitAnchorWidth
+withFitAnchorWidth value_ =
+    B.withAttribute (A.fitAnchorWidth value_)
 
 
-{-| Pipe form of `scrollStrategy` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `scrollStrategy` — consumes its capability (write-once).
 -}
 withScrollStrategy : Value Component.ScrollStrategy -> Builder { a | scrollStrategy : Available } slotCaps msg kind -> Builder { a | scrollStrategy : Used } slotCaps msg kind
-withScrollStrategy =
-    Component.withScrollStrategy
+withScrollStrategy value_ =
+    B.withAttribute (Component.scrollStrategy value_)
 
 
-{-| Pipe form of `state` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `state` — consumes its capability (write-once).
 -}
 withState : Value Component.State -> Builder { a | state : Available } slotCaps msg kind -> Builder { a | state : Used } slotCaps msg kind
-withState =
-    Component.withState
+withState value_ =
+    B.withAttribute (Component.state value_)
 
 
-{-| Pipe form of `onBeforetoggle` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg kind -> Builder { a | onBeforetoggle : Used } slotCaps msg kind
-withOnBeforetoggle =
-    Component.withOnBeforetoggle
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
-{-| Pipe form of `onToggle` — re-exported from `M3e.OptionPanel`.
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle =
-    Component.withOnToggle
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)

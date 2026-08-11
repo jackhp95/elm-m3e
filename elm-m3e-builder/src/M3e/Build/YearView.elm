@@ -24,6 +24,7 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.YearView as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.YearView
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -72,85 +73,85 @@ toElement =
     B.toElement
 
 
-{-| Pipe form of `class` — re-exported from `M3e.YearView`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.YearView`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.YearView`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.YearView`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `active` — re-exported from `M3e.YearView`.
+{-| Pipe form of `active` — consumes its capability (write-once).
 -}
 withActive : Bool -> Builder { a | active : Available } slotCaps msg kind -> Builder { a | active : Used } slotCaps msg kind
-withActive =
-    Component.withActive
+withActive value_ =
+    B.withAttribute (A.active value_)
 
 
-{-| Pipe form of `activeDate` — re-exported from `M3e.YearView`.
+{-| Pipe form of `activeDate` — consumes its capability (write-once).
 -}
 withActiveDate : String -> Builder { a | activeDate : Available } slotCaps msg kind -> Builder { a | activeDate : Used } slotCaps msg kind
-withActiveDate =
-    Component.withActiveDate
+withActiveDate value_ =
+    B.withAttribute (A.activeDate value_)
 
 
-{-| Pipe form of `date` — re-exported from `M3e.YearView`.
+{-| Pipe form of `date` — consumes its capability (write-once).
 -}
 withDate : String -> Builder { a | date : Available } slotCaps msg kind -> Builder { a | date : Used } slotCaps msg kind
-withDate =
-    Component.withDate
+withDate value_ =
+    B.withAttribute (A.date value_)
 
 
-{-| Pipe form of `maxDate` — re-exported from `M3e.YearView`.
+{-| Pipe form of `maxDate` — consumes its capability (write-once).
 -}
 withMaxDate : String -> Builder { a | maxDate : Available } slotCaps msg kind -> Builder { a | maxDate : Used } slotCaps msg kind
-withMaxDate =
-    Component.withMaxDate
+withMaxDate value_ =
+    B.withAttribute (A.maxDate value_)
 
 
-{-| Pipe form of `minDate` — re-exported from `M3e.YearView`.
+{-| Pipe form of `minDate` — consumes its capability (write-once).
 -}
 withMinDate : String -> Builder { a | minDate : Available } slotCaps msg kind -> Builder { a | minDate : Used } slotCaps msg kind
-withMinDate =
-    Component.withMinDate
+withMinDate value_ =
+    B.withAttribute (A.minDate value_)
 
 
-{-| Pipe form of `today` — re-exported from `M3e.YearView`.
+{-| Pipe form of `today` — consumes its capability (write-once).
 -}
 withToday : String -> Builder { a | today : Available } slotCaps msg kind -> Builder { a | today : Used } slotCaps msg kind
-withToday =
-    Component.withToday
+withToday value_ =
+    B.withAttribute (A.today value_)
 
 
-{-| Pipe form of `onChange` — re-exported from `M3e.YearView`.
+{-| Pipe form of `onChange` — consumes its capability (write-once).
 -}
 withOnChange : msg -> Builder { a | onChange : Available } slotCaps msg kind -> Builder { a | onChange : Used } slotCaps msg kind
-withOnChange =
-    Component.withOnChange
+withOnChange value_ =
+    B.withAttribute (Ev.onChange value_)
 
 
-{-| Pipe form of `onActiveChange` — re-exported from `M3e.YearView`.
+{-| Pipe form of `onActiveChange` — consumes its capability (write-once).
 -}
 withOnActiveChange : msg -> Builder { a | onActiveChange : Available } slotCaps msg kind -> Builder { a | onActiveChange : Used } slotCaps msg kind
-withOnActiveChange =
-    Component.withOnActiveChange
+withOnActiveChange value_ =
+    B.withAttribute (Ev.onActiveChange value_)

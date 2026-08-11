@@ -28,6 +28,7 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Build.Internal as B
 import M3e.Component.Snackbar as Component
+import M3e.Events as Ev
 import M3e.Internal.Types.Snackbar
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
@@ -77,10 +78,10 @@ type alias CloseIconSlot =
 {-| Seed the pipe-builder with required content (and action).
 -}
 build :
-    { content : Element (Component.Content) (Component.ChildAdmittedBy childAdm) msg }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-snackbar" ([]) [ El.toNode required_.content ]
+    B.init "m3e-snackbar" [] [ El.toNode required_.content ]
 
 
 {-| Close the pipe-builder.
@@ -93,7 +94,7 @@ toElement =
 {-| Place a builder-built element into the named `close-icon` slot — calls `B.toElement` internally.
 -}
 closeIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.CloseIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.CloseIconSlot msg
     -> Element free freeAdmittedBy msg
 closeIcon builder =
     Component.closeIcon (B.toElement builder)
@@ -102,7 +103,7 @@ closeIcon builder =
 {-| Pipe form of the `close-icon` slot — accepts a builder directly (no `.toElement`).
 -}
 withCloseIcon :
-    B.Builder childRow childAttrCaps childSlotCaps (Component.CloseIconSlot) msg
+    B.Builder childRow childAttrCaps childSlotCaps Component.CloseIconSlot msg
     -> Builder attrCaps { s | closeIcon : Available } msg kind
     -> Builder attrCaps { s | closeIcon : Used } msg kind
 withCloseIcon slotBuilder builder_ =
@@ -119,71 +120,71 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `action` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `action` — consumes its capability (write-once).
 -}
 withAction : String -> Builder { a | action : Available } slotCaps msg kind -> Builder { a | action : Used } slotCaps msg kind
-withAction =
-    Component.withAction
+withAction value_ =
+    B.withAttribute (A.action value_)
 
 
-{-| Pipe form of `closeLabel` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `closeLabel` — consumes its capability (write-once).
 -}
 withCloseLabel : String -> Builder { a | closeLabel : Available } slotCaps msg kind -> Builder { a | closeLabel : Used } slotCaps msg kind
-withCloseLabel =
-    Component.withCloseLabel
+withCloseLabel value_ =
+    B.withAttribute (A.closeLabel value_)
 
 
-{-| Pipe form of `dismissible` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `dismissible` — consumes its capability (write-once).
 -}
 withDismissible : Bool -> Builder { a | dismissible : Available } slotCaps msg kind -> Builder { a | dismissible : Used } slotCaps msg kind
-withDismissible =
-    Component.withDismissible
+withDismissible value_ =
+    B.withAttribute (A.dismissible value_)
 
 
-{-| Pipe form of `duration` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `duration` — consumes its capability (write-once).
 -}
 withDuration : Float -> Builder { a | duration : Available } slotCaps msg kind -> Builder { a | duration : Used } slotCaps msg kind
-withDuration =
-    Component.withDuration
+withDuration value_ =
+    B.withAttribute (A.duration value_)
 
 
-{-| Pipe form of `onBeforetoggle` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `onBeforetoggle` — consumes its capability (write-once).
 -}
 withOnBeforetoggle : msg -> Builder { a | onBeforetoggle : Available } slotCaps msg kind -> Builder { a | onBeforetoggle : Used } slotCaps msg kind
-withOnBeforetoggle =
-    Component.withOnBeforetoggle
+withOnBeforetoggle value_ =
+    B.withAttribute (Ev.onBeforetoggle value_)
 
 
-{-| Pipe form of `onToggle` — re-exported from `M3e.Snackbar`.
+{-| Pipe form of `onToggle` — consumes its capability (write-once).
 -}
 withOnToggle : msg -> Builder { a | onToggle : Available } slotCaps msg kind -> Builder { a | onToggle : Used } slotCaps msg kind
-withOnToggle =
-    Component.withOnToggle
+withOnToggle value_ =
+    B.withAttribute (Ev.onToggle value_)

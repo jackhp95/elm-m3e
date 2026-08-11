@@ -86,43 +86,43 @@ withChild childBuilder builder_ =
     B.withChild (El.toNode (B.toElement childBuilder)) builder_
 
 
-{-| Pipe form of `class` — re-exported from `M3e.ScrollContainer`.
+{-| Pipe form of `class` — consumes its capability (write-once).
 -}
 withClass : String -> Builder { a | class : Available } slotCaps msg kind -> Builder { a | class : Used } slotCaps msg kind
-withClass =
-    Component.withClass
+withClass value_ =
+    B.withAttribute (A.class value_)
 
 
-{-| Pipe form of `id` — re-exported from `M3e.ScrollContainer`.
+{-| Pipe form of `id` — consumes its capability (write-once).
 -}
 withId : String -> Builder { a | id : Available } slotCaps msg kind -> Builder { a | id : Used } slotCaps msg kind
-withId =
-    Component.withId
+withId value_ =
+    B.withAttribute (A.id value_)
 
 
-{-| Pipe form of `slot` — re-exported from `M3e.ScrollContainer`.
+{-| Pipe form of `slot` — consumes its capability (write-once).
 -}
 withSlot : String -> Builder { a | slot : Available } slotCaps msg kind -> Builder { a | slot : Used } slotCaps msg kind
-withSlot =
-    Component.withSlot
+withSlot value_ =
+    B.withAttribute (A.slot value_)
 
 
-{-| Pipe form of `style` — re-exported from `M3e.ScrollContainer`.
+{-| Pipe form of `style` — consumes its capability (write-once).
 -}
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
-withStyle =
-    Component.withStyle
+withStyle property value_ =
+    B.withAttribute (A.style property value_)
 
 
-{-| Pipe form of `dividers` — re-exported from `M3e.ScrollContainer`.
+{-| Pipe form of `dividers` — consumes its capability (write-once).
 -}
 withDividers : Value Component.Dividers -> Builder { a | dividers : Available } slotCaps msg kind -> Builder { a | dividers : Used } slotCaps msg kind
-withDividers =
-    Component.withDividers
+withDividers value_ =
+    B.withAttribute (Component.dividers value_)
 
 
-{-| Pipe form of `thin` — re-exported from `M3e.ScrollContainer`.
+{-| Pipe form of `thin` — consumes its capability (write-once).
 -}
 withThin : Bool -> Builder { a | thin : Available } slotCaps msg kind -> Builder { a | thin : Used } slotCaps msg kind
-withThin =
-    Component.withThin
+withThin value_ =
+    B.withAttribute (A.thin value_)
