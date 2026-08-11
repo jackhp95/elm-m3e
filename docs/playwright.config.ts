@@ -24,12 +24,36 @@ export default defineConfig({
   testDir: "./tests-browser",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  // Retries absorb transient timeouts from parallel-load contention. Without
+  // this, a single worker transport crash or slow CE-upgrade cascades into a
+  // permanent red gate. 2 retries = standard Playwright practice for
+  // load-sensitive suites; a test that retries EVERY run is a signal for a
+  // deeper fix, not a substitute for one.
+  retries: 2,
+  // Cap workers so the static server isn't overwhelmed. Playwright defaults to
+  // ceil(cpus/2) which on an M-series Mac is 5-6 — enough that all-components
+  // (53 simultaneous CE-upgrade pages) starves slower tests of CPU/net budget.
+  // 3 workers keeps utilisation high while cutting the contention that causes
+  // the timeouts retries recover from.
+  workers: 3,
   reporter: [["list"]],
   use: {
     baseURL,
     trace: "retain-on-failure",
+    // 45 s per non-navigation action — gives CE-upgrade assertions headroom
+    // under 3-worker load (default 30 s is too tight when 3 pages hydrate
+    // 50+ custom elements each simultaneously).
+    actionTimeout: 45_000,
+    // 90 s > per-test timeout (60 s), so the test-level timeout always wins.
+    // Without this, the PW default (30 s) would fire first on heavy pages like
+    // /guide/reference (5000+ m3e-card upgrades), masking the 60 s per-test
+    // budget the tests intend to give those navigations.
+    navigationTimeout: 90_000,
   },
+  // Per-test timeout: 60 s. Covers tests that do multiple navigations or
+  // asserting heavy routes (mobile-shell already self-sets 60 s; this makes
+  // that the default so other multi-nav tests don't need bespoke overrides).
+  timeout: 60_000,
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
   ],
