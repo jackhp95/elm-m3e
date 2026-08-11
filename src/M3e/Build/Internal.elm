@@ -22,11 +22,12 @@ import HtmlIr.Node exposing (Node)
 
 
 {-| The shared pipe-builder. `attrCaps`/`slotCaps` are phantom write-once
-capability rows; `row` is the host element's closed attribute row; `tag` is the
-custom-element tag closed over at `init`. Each component aliases this with its
-own `row` and exposes narrowed `withX` setters.
+capability rows; `row` is the host element's closed attribute row; `accepts` is
+the element-kind phantom produced on close; `tag` is the custom-element tag
+closed over at `init`. Each component aliases this with its own `row` and
+`accepts = (Is s)`, and exposes narrowed `withX` setters.
 -}
-type Builder row attrCaps slotCaps msg
+type Builder row attrCaps slotCaps accepts msg
     = Builder
         { tag : String
         , attrs : List (Attr row msg)
@@ -36,21 +37,21 @@ type Builder row attrCaps slotCaps msg
 
 {-| Seed a builder with its tag, initial attributes, and initial children.
 -}
-init : String -> List (Attr row msg) -> List (Node msg) -> Builder row attrCaps slotCaps msg
+init : String -> List (Attr row msg) -> List (Node msg) -> Builder row attrCaps slotCaps accepts msg
 init tag attrs children =
     Builder { tag = tag, attrs = attrs, children = children }
 
 
 {-| Prepend one attribute, advancing the attribute-capability row (phantom).
 -}
-withAttribute : Attr row msg -> Builder row attrCapsIn slotCaps msg -> Builder row attrCapsOut slotCaps msg
+withAttribute : Attr row msg -> Builder row attrCapsIn slotCaps accepts msg -> Builder row attrCapsOut slotCaps accepts msg
 withAttribute attr (Builder b) =
     Builder { b | attrs = attr :: b.attrs }
 
 
 {-| Prepend one child node, advancing the slot-capability row (phantom).
 -}
-withChild : Node msg -> Builder row attrCaps slotCapsIn msg -> Builder row attrCaps slotCapsOut msg
+withChild : Node msg -> Builder row attrCaps slotCapsIn accepts msg -> Builder row attrCaps slotCapsOut accepts msg
 withChild child (Builder b) =
     Builder { b | children = child :: b.children }
 
@@ -58,6 +59,6 @@ withChild child (Builder b) =
 {-| Close the builder into an element — defined ONCE for the brand. Attributes
 and children are reversed so they render in the order they were piped on.
 -}
-toElement : Builder row attrCaps slotCaps msg -> Element accepts admittedBy msg
+toElement : Builder row attrCaps slotCaps accepts msg -> Element accepts admittedBy msg
 toElement (Builder b) =
     Ir.fromNode (Ir.node b.tag (List.reverse b.attrs) (List.reverse b.children))

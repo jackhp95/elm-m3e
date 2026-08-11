@@ -45,6 +45,12 @@ function measurePackage(pkgDirName) {
   for (const pd of ALL_PKG_DIRS) {
     copyDir(path.join(ROOT, pd, "src"), mSrc, (rel, isDir) => isDir || rel.endsWith(".elm"));
   }
+  // Override with freshly-generated flat output from src/ if present (post-regen).
+  // elm-cem outputs a merged flat tree to src/; this supersedes the committed package dirs.
+  const flatSrc = path.join(ROOT, "src");
+  if (fs.existsSync(flatSrc)) {
+    copyDir(flatSrc, mSrc, (rel, isDir) => isDir || rel.endsWith(".elm"));
+  }
   copyDir(IR_SRC, mSrc, (rel, isDir) => isDir || rel.endsWith(".elm"));
   if (deps["jackhp95/elm-cem-facts"]) {
     copyDir(FACTS_SRC, mSrc, (rel, isDir) => isDir || rel.endsWith(".elm"));
