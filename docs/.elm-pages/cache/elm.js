@@ -26402,6 +26402,7 @@ var $author$project$M3e$Values$dark = $author$project$HtmlIr$Internal$token('dar
 var $author$project$M3e$Values$high = $author$project$HtmlIr$Internal$token('high');
 var $author$project$Theme$Presets$presets = _List_fromArray(
 	[
+		{a2: 'Roboto', gc: $author$project$M3e$Values$standard, a5: _List_Nil, a6: 'Roboto', cb: 0, r0: 'default', il: 'Default', jK: $author$project$M3e$Values$auto, y1: '#6750A4'},
 		{a2: 'Manrope', gc: $author$project$M3e$Values$standard, a5: _List_Nil, a6: 'Fraunces', cb: 0, r0: 'material', il: 'Material', jK: $author$project$M3e$Values$auto, y1: '#6750A4'},
 		{a2: 'Inter', gc: $author$project$M3e$Values$standard, a5: _List_Nil, a6: 'JetBrains Mono', cb: 2, r0: 'agent', il: 'Agent', jK: $author$project$M3e$Values$auto, y1: '#1b1bff'},
 		{a2: 'Sora', gc: $author$project$M3e$Values$standard, a5: _List_Nil, a6: 'Fraunces', cb: 0, r0: 'fieldnote', il: 'Fieldnote', jK: $author$project$M3e$Values$auto, y1: '#2d3a1f'},
@@ -26495,12 +26496,13 @@ var $author$project$Theme$Reel$cardName = function (preset) {
 					]))
 			]));
 };
-var $author$project$Theme$Reel$roleAvatar = function (colorUtility) {
+var $author$project$Theme$Reel$roleAvatar = function (role) {
 	return A2(
 		$author$project$M3e$avatar,
 		_List_fromArray(
 			[
-				$author$project$M3e$Attributes$class('m3e-avatar-size-[0.875rem] ' + colorUtility)
+				$author$project$M3e$Attributes$class('m3e-avatar-size-[0.875rem]'),
+				$author$project$M3e$Attributes$style$('--m3e-avatar-color', 'var(--md-sys-color-' + (role + ')'))
 			]),
 		_List_Nil);
 };
@@ -26512,10 +26514,10 @@ var $author$project$Theme$Reel$cardRoleStrip = A2(
 		]),
 	_List_fromArray(
 		[
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-primary)]'),
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-secondary)]'),
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-tertiary)]'),
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-surface-container-highest)]')
+			$author$project$Theme$Reel$roleAvatar('primary'),
+			$author$project$Theme$Reel$roleAvatar('secondary'),
+			$author$project$Theme$Reel$roleAvatar('tertiary'),
+			$author$project$Theme$Reel$roleAvatar('surface-container-highest')
 		]));
 var $author$project$Theme$Reel$cardSpecimen = function (preset) {
 	return A2(
@@ -39870,7 +39872,21 @@ var $author$project$Shared$data = $dillonkearns$elm_pages$BackendTask$map$(
 var $author$project$Theme$Scale$Linear = 0;
 var $author$project$Theme$Scale$defaultConfig = {mr: 1, k9: 0, ln: 1, lp: 1, id: 0, lX: 1.2};
 var $author$project$Theme$Icons$defaultStyle = 0;
-var $author$project$Theme$init = {zJ: $elm$core$Maybe$Nothing, a2: 'Roboto', a4: $elm$core$Dict$empty, gc: $author$project$M3e$Values$standard, a5: $elm$core$Dict$empty, gg: 0, a6: 'Roboto', cb: $author$project$Theme$Icons$defaultStyle, ig: $author$project$M3e$Values$standard, jK: $author$project$M3e$Values$auto, BI: '#6750A4', a_: $author$project$Theme$Scale$defaultConfig, a0: $author$project$Theme$Scale$defaultConfig};
+var $author$project$Theme$init = {
+	zJ: $elm$core$Maybe$Just('default'),
+	a2: 'Roboto',
+	a4: $elm$core$Dict$empty,
+	gc: $author$project$M3e$Values$standard,
+	a5: $elm$core$Dict$empty,
+	gg: 0,
+	a6: 'Roboto',
+	cb: $author$project$Theme$Icons$defaultStyle,
+	ig: $author$project$M3e$Values$standard,
+	jK: $author$project$M3e$Values$auto,
+	BI: '#6750A4',
+	a_: $author$project$Theme$Scale$defaultConfig,
+	a0: $author$project$Theme$Scale$defaultConfig
+};
 var $author$project$Shared$initialViewportWidth = function (flags) {
 	if (!flags.$) {
 		var raw = flags.a;
@@ -42410,7 +42426,8 @@ var $author$project$Theme$colorAvatar$ = function (model, hex) {
 								$author$project$M3e$avatar,
 								_List_fromArray(
 									[
-										$author$project$M3e$Attributes$class('m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-size-[2rem]')
+										$author$project$M3e$Attributes$class('m3e-avatar-size-[2rem]'),
+										$author$project$M3e$Attributes$style$('--m3e-avatar-color', 'var(--md-sys-color-primary)')
 									]),
 								_List_Nil)
 							]))
@@ -42476,7 +42493,9 @@ var $author$project$Theme$sourceColorOption = function (model) {
 								$author$project$M3e$avatar,
 								_List_fromArray(
 									[
-										$author$project$M3e$Attributes$class('m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-label-color-[var(--md-sys-color-on-primary)] m3e-avatar-size-[2rem]')
+										$author$project$M3e$Attributes$class('m3e-avatar-size-[2rem]'),
+										$author$project$M3e$Attributes$style$('--m3e-avatar-color', 'var(--md-sys-color-primary)'),
+										$author$project$M3e$Attributes$style$('--m3e-avatar-label-color', 'var(--md-sys-color-on-primary)')
 									]),
 								_List_fromArray(
 									[
