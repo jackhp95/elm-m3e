@@ -14,7 +14,8 @@ import { expect, test } from "@playwright/test";
  * specifically (and avoid strict-mode violations from the drawer's cards).
  *
  * This spec verifies at viewport 411×761 (the plan's required mobile viewport):
- *   1. The reel renders with 22 visible card buttons in the main content.
+ *   1. The reel renders with 23 visible card buttons in the main content
+ *      (the stock "Default" preset first, then 22 named presets).
  *   2. A card can be selected (click fires, card gets aria-pressed="true").
  *   3. Global re-theme happens (the root <m3e-theme>'s `color` attribute changes).
  *   4. The active state reflects the selection (aria-pressed stays "true" after render).
@@ -38,8 +39,8 @@ test("reel renders with multiple theme cards at 411×761", async ({ page }) => {
   const mainContent = page.locator("#main-content");
   const cards = mainContent.getByRole("button", { name: /Apply .* theme/ });
 
-  // 22 presets = 22 cards in the Welcome page reel.
-  await expect(cards).toHaveCount(22);
+  // 23 presets ("Default" + 22 named) = 23 cards in the Welcome page reel.
+  await expect(cards).toHaveCount(23);
 
   // The first card should be visible in the viewport.
   await expect(cards.first()).toBeVisible();
@@ -49,7 +50,7 @@ test("clicking a reel card globally re-themes the app at 411×761", async ({
   page,
 }) => {
   // Get the root <m3e-theme> element. `.first()` targets the outermost root;
-  // the page also has 22 nested card themes + 22 in the drawer.
+  // the page also has 23 nested card themes + 23 in the drawer.
   const rootTheme = page.locator("m3e-theme").first();
   const initialColor = await rootTheme.getAttribute("color");
 
@@ -177,7 +178,7 @@ test("reel can be scrolled horizontally at 411×761", async ({ page }) => {
     name: "Apply OLED theme",
   });
 
-  // OLED is the 22nd preset — scroll it into view.
+  // OLED is the last (23rd) preset — scroll it into view.
   await oledCard.scrollIntoViewIfNeeded();
   await expect(oledCard).toBeVisible();
 
