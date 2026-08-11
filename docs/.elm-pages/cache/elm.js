@@ -26446,20 +26446,6 @@ var $author$project$Theme$Presets$presets = _List_fromArray(
 		y1: '#a0a0b8'
 	}
 	]);
-var $author$project$TypedHtml$Events$onClick = function (msg) {
-	return $author$project$HtmlIr$Internal$on$(
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $author$project$TypedHtml$Aria$pressed = function (value_) {
-	return $author$project$HtmlIr$Internal$attribute$(
-		'aria-pressed',
-		$author$project$HtmlIr$Value$toString(value_));
-};
-var $author$project$M3e$Unsafe$recast = function (element) {
-	return $author$project$HtmlIr$Internal$fromNode(
-		$author$project$HtmlIr$Element$toNode(element));
-};
 var $author$project$M3e$Attributes$color = $author$project$HtmlIr$Internal$attribute('color');
 var $author$project$M3e$Theme$color = $author$project$M3e$Attributes$color;
 var $author$project$M3e$Theme$contrast = function (value_) {
@@ -26467,6 +26453,10 @@ var $author$project$M3e$Theme$contrast = function (value_) {
 		'contrast',
 		$author$project$HtmlIr$Value$toString(value_));
 };
+var $author$project$M3e$Attributes$actionable = function (value_) {
+	return value_ ? $author$project$HtmlIr$Internal$attribute$('actionable', '') : $author$project$HtmlIr$Internal$none;
+};
+var $author$project$M3e$Card$actionable = $author$project$M3e$Attributes$actionable;
 var $author$project$M3e$Attributes$class = $author$project$HtmlIr$Internal$attribute('class');
 var $author$project$Theme$Fonts$fontStack = function (name) {
 	return '\"' + (name + '\", system-ui, sans-serif');
@@ -26522,10 +26512,10 @@ var $author$project$Theme$Reel$cardRoleStrip = A2(
 		]),
 	_List_fromArray(
 		[
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-primary'),
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-secondary'),
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-tertiary'),
-			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-surface-container-highest')
+			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-primary)]'),
+			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-secondary)]'),
+			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-tertiary)]'),
+			$author$project$Theme$Reel$roleAvatar('m3e-avatar-color-[var(--md-sys-color-surface-container-highest)]')
 		]));
 var $author$project$Theme$Reel$cardSpecimen = function (preset) {
 	return A2(
@@ -26606,13 +26596,25 @@ var $author$project$Theme$Reel$cardBody$ = function (isActive, preset) {
 				])));
 };
 var $author$project$Theme$Reel$cardBody = F2($author$project$Theme$Reel$cardBody$);
-var $author$project$Theme$Reel$presetCard$ = function (isActive, preset) {
+var $author$project$M3e$Card$onClick = $author$project$M3e$Events$onClick;
+var $author$project$TypedHtml$Aria$pressed = function (value_) {
+	return $author$project$HtmlIr$Internal$attribute$(
+		'aria-pressed',
+		$author$project$HtmlIr$Value$toString(value_));
+};
+var $author$project$Theme$Reel$presetCard$ = function (config, isActive, preset) {
 	return A2(
 		$author$project$M3e$card,
 		_List_fromArray(
 			[
+				$author$project$M3e$Card$actionable(true),
+				$author$project$M3e$Card$onClick(
+				config.Ba(preset)),
 				$author$project$M3e$Card$variant(
 				isActive ? $author$project$M3e$Values$elevated : $author$project$M3e$Values$outlined),
+				$author$project$TypedHtml$Aria$pressed(
+				isActive ? $author$project$TypedHtml$Aria$true : $author$project$TypedHtml$Aria$false),
+				$author$project$TypedHtml$Aria$label('Apply ' + (preset.il + ' theme')),
 				$author$project$M3e$Attributes$class('w-full text-left m3e-card-padding-[0.625rem]')
 			]),
 		_List_fromArray(
@@ -26621,7 +26623,7 @@ var $author$project$Theme$Reel$presetCard$ = function (isActive, preset) {
 				$author$project$Theme$Reel$cardBody$(isActive, preset))
 			]));
 };
-var $author$project$Theme$Reel$presetCard = F2($author$project$Theme$Reel$presetCard$);
+var $author$project$Theme$Reel$presetCard = F3($author$project$Theme$Reel$presetCard$);
 var $author$project$M3e$Theme$scheme = function (value_) {
 	return $author$project$HtmlIr$Internal$attribute$(
 		'scheme',
@@ -26637,7 +26639,10 @@ var $author$project$M3e$Html$theme$ = function (attrs, children) {
 var $author$project$M3e$Html$theme = F2($author$project$M3e$Html$theme$);
 var $author$project$M3e$Theme$view = $author$project$M3e$Html$theme;
 var $author$project$M3e$theme = $author$project$M3e$Theme$view;
-var $author$project$Theme$Reel$themedCard$ = function (isActive, preset) {
+var $author$project$Theme$Reel$card$ = function (config, preset) {
+	var isActive = _Utils_eq(
+		config.zI,
+		$elm$core$Maybe$Just(preset.r0));
 	return A2(
 		$author$project$M3e$theme,
 		_List_fromArray(
@@ -26645,33 +26650,11 @@ var $author$project$Theme$Reel$themedCard$ = function (isActive, preset) {
 				$author$project$M3e$Theme$color(preset.y1),
 				$author$project$M3e$Theme$scheme(preset.jK),
 				$author$project$M3e$Theme$contrast(preset.gc),
-				$author$project$TypedHtml$Attributes$class('block w-full')
+				$author$project$TypedHtml$Attributes$class('block shrink-0 w-32 snap-start')
 			]),
 		_List_fromArray(
 			[
-				$author$project$Theme$Reel$presetCard$(isActive, preset)
-			]));
-};
-var $author$project$Theme$Reel$themedCard = F2($author$project$Theme$Reel$themedCard$);
-var $author$project$Theme$Reel$card$ = function (config, preset) {
-	var isActive = _Utils_eq(
-		config.zI,
-		$elm$core$Maybe$Just(preset.r0));
-	return A2(
-		$author$project$TypedHtml$button,
-		_List_fromArray(
-			[
-				$author$project$TypedHtml$Events$onClick(
-				config.Ba(preset)),
-				$author$project$TypedHtml$Aria$pressed(
-				isActive ? $author$project$TypedHtml$Aria$true : $author$project$TypedHtml$Aria$false),
-				$author$project$TypedHtml$Aria$label('Apply ' + (preset.il + ' theme')),
-				$author$project$TypedHtml$Attributes$class('block shrink-0 w-32 snap-start text-left')
-			]),
-		_List_fromArray(
-			[
-				$author$project$M3e$Unsafe$recast(
-				$author$project$Theme$Reel$themedCard$(isActive, preset))
+				$author$project$Theme$Reel$presetCard$(config, isActive, preset)
 			]));
 };
 var $author$project$Theme$Reel$card = F2($author$project$Theme$Reel$card$);
@@ -42046,6 +42029,11 @@ var $author$project$Shared$filterSearchEntries$ = function (query, entries) {
 };
 var $author$project$Shared$filterSearchEntries = F2($author$project$Shared$filterSearchEntries$);
 var $author$project$Shared$CloseSearch = {$: 7};
+var $author$project$TypedHtml$Events$onClick = function (msg) {
+	return $author$project$HtmlIr$Internal$on$(
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $author$project$Shared$searchResultLink = function (entry) {
 	return A2(
 		$author$project$TypedHtml$a,
@@ -42356,6 +42344,10 @@ var $author$project$M3e$Html$expansionHeader$ = function (attrs, children) {
 var $author$project$M3e$Html$expansionHeader = F2($author$project$M3e$Html$expansionHeader$);
 var $author$project$M3e$ExpansionHeader$view = $author$project$M3e$Html$expansionHeader;
 var $author$project$M3e$expansionHeader = $author$project$M3e$ExpansionHeader$view;
+var $author$project$M3e$Unsafe$recast = function (element) {
+	return $author$project$HtmlIr$Internal$fromNode(
+		$author$project$HtmlIr$Element$toNode(element));
+};
 var $author$project$Shared$sectionPanel$ = function (label, body) {
 	return $author$project$M3e$ExpansionPanel$el$(
 		{
@@ -42418,7 +42410,7 @@ var $author$project$Theme$colorAvatar$ = function (model, hex) {
 								$author$project$M3e$avatar,
 								_List_fromArray(
 									[
-										$author$project$M3e$Attributes$class('m3e-avatar-color-primary m3e-avatar-size-[2rem]')
+										$author$project$M3e$Attributes$class('m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-size-[2rem]')
 									]),
 								_List_Nil)
 							]))
@@ -42484,7 +42476,7 @@ var $author$project$Theme$sourceColorOption = function (model) {
 								$author$project$M3e$avatar,
 								_List_fromArray(
 									[
-										$author$project$M3e$Attributes$class('m3e-avatar-color-primary m3e-avatar-label-color-on-primary m3e-avatar-size-[2rem]')
+										$author$project$M3e$Attributes$class('m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-label-color-[var(--md-sys-color-on-primary)] m3e-avatar-size-[2rem]')
 									]),
 								_List_fromArray(
 									[

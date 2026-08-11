@@ -2,10 +2,12 @@ import { expect, test } from "@playwright/test";
 
 /**
  * The theme reel (`Theme.Reel.view`) appears on the Welcome page as a
- * horizontal-scrolling row of `<button>` cards, each wrapped in its own
- * nested `<m3e-theme>`. Clicking a card fires `PickTheme presetId` which
- * routes through `Theme.Ports.requestPreset` → the JS port bridge in
- * `index.ts` → `Shared.onPresetRequested` → `Theme.update (ApplyPreset preset)`.
+ * horizontal-scrolling row of `<m3e-card actionable>` elements, each wrapped in its
+ * own nested `<m3e-theme>`. Each card carries `role="button"` (set by the
+ * `actionable` attribute), `aria-label`, and `aria-pressed`. Clicking a card fires
+ * `M3e.Card.onClick` → `PickTheme presetId` which routes through
+ * `Theme.Ports.requestPreset` → the JS port bridge in `index.ts` →
+ * `Shared.onPresetRequested` → `Theme.update (ApplyPreset preset)`.
  *
  * Note: The reel also appears in the settings drawer (`#settings-sheet-content`),
  * so locators must be scoped to `#main-content` to target the Welcome page reel
@@ -13,7 +15,7 @@ import { expect, test } from "@playwright/test";
  *
  * This spec verifies at viewport 411×761 (the plan's required mobile viewport):
  *   1. The reel renders with 22 visible card buttons in the main content.
- *   2. A card can be selected (click fires, button gets aria-pressed="true").
+ *   2. A card can be selected (click fires, card gets aria-pressed="true").
  *   3. Global re-theme happens (the root <m3e-theme>'s `color` attribute changes).
  *   4. The active state reflects the selection (aria-pressed stays "true" after render).
  */

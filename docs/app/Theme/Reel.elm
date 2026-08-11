@@ -21,14 +21,11 @@ boundary (CSS custom properties inherit into shadow DOM). No hex is painted by
 hand. (The Tailwind bridge `--color-<role>` token is NOT used for this — it is
 declared once at `:root`, so a nested theme can't change it; see `cardRoleStrip`.)
 
-The card visual is an `m3e-card` (with all-m3e content), but the CLICK target is
-a native `<button>` wrapping it. `@m3e/web`'s `m3e-card` does not dispatch a
-synthetic event on activation and its bubbled native click is not observed by
-this codebase's Elm event binding (verified: `M3e.Card.onClick` never fires,
-while `m3e-icon-button`'s does) — so a native `<button>` is the reliable
-interactive element, exactly as the previous implementation used. `M3e.Unsafe.recast`
-places the branded, themed card into the button's phrasing-content slot
-(`Theme.Reel` is allow-listed for this in `review/src/CodegenReviewConfig.elm`).
+`m3e-card` (with `actionable`) is the interactive element: it dispatches a
+standard `click` event (`bubbles: true`, `composed: true`) that Elm's
+`Html.Events.on "click"` observes. The earlier native `<button>` wrapper was a
+workaround written before this was confirmed; this module now uses `M3e.Card.onClick`
+directly so the card itself is the click target — no `M3e.Unsafe` needed.
 
 This module is pure and `msg`-generic. Two placements share it:
 
@@ -53,15 +50,12 @@ import M3e.Card
 import M3e.Heading
 import M3e.Icon
 import M3e.Theme
-import M3e.Unsafe
 import M3e.Values as Value
 import Theme.Fonts
 import Theme.Presets exposing (Preset)
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
-import TypedHtml.Button
-import TypedHtml.Events
 import TypedHtml.Grouping
 
 
@@ -88,20 +82,44 @@ view config =
         (List.map (card config) config.presets)
 
 
-{-| One theme card. The native `<button>` is the interactive element (reliable
-keyboard focus + click → `onPick`); it carries zero visual chrome — the
-`m3e-card` inside fills it and provides the whole surface. `recast` drops the
-themed card into the button's phrasing slot.
+{-| One theme card. The `m3e-card` (with `actionable`) is the interactive
+element — `M3e.Card.onClick` fires on user click and dispatches `onPick`.
+`<m3e-theme>` scopes the live-derived palette to this card's preset, and carries
+the `snap-start` + sizing layout so the card fills its snap region.
 -}
-card : Config msg -> Preset -> Element (TypedHtml.Button.Is s) admittedBy msg
+card : Config msg -> Preset -> Element (M3e.Theme.Is s) admittedBy msg
 card config preset =
     let
         isActive : Bool
         isActive =
             config.activeId == Just preset.id
     in
-    TypedHtml.button
-        [ TypedHtml.Events.onClick (config.onPick preset)
+    M3e.theme
+        [ M3e.Theme.color preset.seedColor
+        , M3e.Theme.scheme preset.scheme
+        , M3e.Theme.contrast preset.contrast
+        , TA.class "block shrink-0 w-32 snap-start"
+        ]
+        [ presetCard config isActive preset ]
+
+
+{-| The `m3e-card` surface: `actionable` makes it the click target; `onClick`
+delivers the `onPick` message; `aria-pressed` + `aria-label` make it accessible.
+Selection state is expressed the M3 way — `elevated` when active, `outlined`
+otherwise — plus a `check_circle` badge.
+-}
+presetCard : Config msg -> Bool -> Preset -> Element (M3e.Card.Is s) admittedBy msg
+presetCard config isActive preset =
+    M3e.card
+        [ M3e.Card.actionable True
+        , M3e.Card.onClick (config.onPick preset)
+        , M3e.Card.variant
+            (if isActive then
+                Value.elevated
+
+             else
+                Value.outlined
+            )
         , Aria.pressed
             (if isActive then
                 Aria.true
@@ -110,40 +128,6 @@ card config preset =
                 Aria.false
             )
         , Aria.label ("Apply " ++ preset.name ++ " theme")
-        , TA.class "block shrink-0 w-32 snap-start text-left"
-        ]
-        [ M3e.Unsafe.recast (themedCard isActive preset) ]
-
-
-{-| The card visual: an `m3e-card` wrapped by an `<m3e-theme>` so it renders in
-its own live-derived palette. Selection state is expressed the M3 way — an
-`elevated` (lifted) card when active, `outlined` otherwise — plus a
-`check_circle` badge, never a hand-rolled border.
--}
-themedCard : Bool -> Preset -> Element (M3e.Theme.Is s) admittedBy msg
-themedCard isActive preset =
-    M3e.theme
-        [ M3e.Theme.color preset.seedColor
-        , M3e.Theme.scheme preset.scheme
-        , M3e.Theme.contrast preset.contrast
-        , TA.class "block w-full"
-        ]
-        [ presetCard isActive preset ]
-
-
-{-| The `m3e-card` surface itself (not interactive — the wrapping `<button>`
-handles clicks). Holds the all-m3e content in its padded `content` slot.
--}
-presetCard : Bool -> Preset -> Element (M3e.Card.Is s) admittedBy msg
-presetCard isActive preset =
-    M3e.card
-        [ M3e.Card.variant
-            (if isActive then
-                Value.elevated
-
-             else
-                Value.outlined
-            )
         , MA.class "w-full text-left m3e-card-padding-[0.625rem]"
         ]
         [ M3e.Card.content (cardBody isActive preset) ]
