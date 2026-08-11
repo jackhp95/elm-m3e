@@ -6,8 +6,8 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
-import M3e.Heading
+import M3e.Component.Card
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -73,7 +73,7 @@ font-size / line-height / weight from `--md-sys-typescale-*` (see
 `sys/typescale.css`). The demo dogfoods the producers: the exhibit _is_
 `M3e.heading` (display/headline/title/label) / `TypedHtml.span` (body).
 -}
-scale : List ( Element (M3e.Heading.Is { a | sharedPhrasing : TypedHtml.Kind.Shared }) admittedBy msg, String, String )
+scale : List ( Element (M3e.Component.Heading.Is { a | sharedPhrasing : TypedHtml.Kind.Shared }) admittedBy msg, String, String )
 scale =
     [ ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Display Large" ], "text-display-lg", "3.5625rem / 4rem · 400" )
     , ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Display Medium" ], "text-display-md", "2.8125rem / 3.25rem · 400" )
@@ -126,7 +126,7 @@ view _ _ =
                 [ Doc.sectionHeadingWithId (Doc.slugify "The scale, live") "The scale, live"
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
-                    [ M3e.Card.content
+                    [ M3e.Component.Card.content
                         (TypedHtml.div [ TA.class "flex flex-col px-2" ]
                             (List.intersperse (M3e.divider [] []) (List.map row scale))
                         )

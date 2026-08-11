@@ -16,12 +16,12 @@ import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.AppBar
-import M3e.Button
-import M3e.FormField
-import M3e.Icon
+import M3e.Component.AppBar
+import M3e.Component.Button
+import M3e.Component.FormField
+import M3e.Component.Icon
+import M3e.Component.NavMenuItem
 import M3e.Kind
-import M3e.NavMenuItem
 import M3e.Unsafe
 import M3e.Unsafe.Attributes
 import M3e.Values as Value
@@ -78,16 +78,16 @@ head _ =
 
 saveButton : Element { s | button : M3e.Kind.Brand } admittedBy msg
 saveButton =
-    M3e.button [ M3e.Button.variant Value.filled ]
-        [ M3e.Button.icon (M3e.icon [ M3e.Icon.name "save" ] [])
+    M3e.button [ M3e.Component.Button.variant Value.filled ]
+        [ M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "save" ] [])
         , M3e.text "Save"
         ]
 
 
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
 emailField =
-    M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ M3e.FormField.label
+    M3e.formField [ M3e.Component.FormField.variant Value.outlined ]
+        [ M3e.Component.FormField.label
             (TypedHtml.label [ TypedHtml.Attributes.for "email-field" ] [ M3e.text "Email address" ])
         , TypedHtml.input
             [ TypedHtml.Attributes.id "email-field"
@@ -155,10 +155,10 @@ linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
     -- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so a
     -- typed `TypedHtml.a` fills it directly — a nav item that IS an anchor. The
-    -- required-record form (`M3e.NavMenuItem.el`) enforces the required `label`.
+    -- required-record form (`M3e.Component.NavMenuItem.el`) enforces the required `label`.
     M3e.navMenu []
-        [ M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
-        , M3e.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
+        [ M3e.Component.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
+        , M3e.Component.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
         ]
 
 
@@ -181,8 +181,8 @@ htmlInSlot =
     -- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
     -- iconButton and badge INSIDE it are still checked against the div's content model.
     M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
-        [ M3e.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
-        , M3e.AppBar.trailing
+        [ M3e.Component.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
+        , M3e.Component.AppBar.trailing
             (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
                 [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
                 , M3e.badge [] [ M3e.text "3" ]
@@ -272,7 +272,7 @@ TypedHtml.span [] [ M3e.icon [ TA.name "star" ] [] ]         -- ✓ so is icon""
 
 crossBrand : String
 crossBrand =
-    """Slots that mean *"arbitrary content goes here"* say so in a vocabulary **both libraries speak**. `M3e.AppBar.trailing` declares the two WHATWG content categories, `shared:flow` and `shared:phrasing`, and `TypedHtml.div` produces `sharedFlow` — so a native wrapper drops straight into an M3e slot with no escape at all.
+    """Slots that mean *"arbitrary content goes here"* say so in a vocabulary **both libraries speak**. `M3e.Component.AppBar.trailing` declares the two WHATWG content categories, `shared:flow` and `shared:phrasing`, and `TypedHtml.div` produces `sharedFlow` — so a native wrapper drops straight into an M3e slot with no escape at all.
 
 The important half is what *stays* checked. `M3e.Unsafe.recast` would also have got the div in, by throwing away every row on the way; this keeps them. The div still has to be legal where it sits, and its children still have to be legal inside a div. You didn't buy admission by going blind."""
 

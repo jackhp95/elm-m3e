@@ -4,8 +4,8 @@ import Doc
 import Effect exposing (Effect)
 import M3e
 import M3e.Attributes
-import M3e.Button
-import M3e.Heading
+import M3e.Component.Button
+import M3e.Component.Heading
 import M3e.Values as Value
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -62,8 +62,8 @@ notFoundView =
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-6" ]
                 [ M3e.heading
-                    [ M3e.Heading.variant Value.display
-                    , M3e.Heading.size Value.small
+                    [ M3e.Component.Heading.variant Value.display
+                    , M3e.Component.Heading.size Value.small
                     , M3e.Attributes.level 1
                     ]
                     [ M3e.text "Page not found" ]
@@ -71,8 +71,8 @@ notFoundView =
                     [ M3e.text "The page you’re looking for doesn’t exist or has moved." ]
                 , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
                     [ M3e.button
-                        [ M3e.Button.variant Value.filled
-                        , M3e.Button.href "/getting-started/welcome"
+                        [ M3e.Component.Button.variant Value.filled
+                        , M3e.Component.Button.href "/getting-started/welcome"
                         ]
                         [ M3e.text "Go to Welcome" ]
                     ]

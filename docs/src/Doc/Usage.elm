@@ -15,8 +15,8 @@ import Doc.Slider
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Component.Heading
 import M3e.Events
-import M3e.Heading
 import M3e.Kind
 import M3e.Values as Value
 import TypedHtml
@@ -123,8 +123,8 @@ usageBlocks offset model examples =
         _ ->
             [ TypedHtml.div [ TA.class "space-y-6" ]
                 (M3e.heading
-                    [ M3e.Heading.variant Value.headline
-                    , M3e.Heading.size Value.small
+                    [ M3e.Component.Heading.variant Value.headline
+                    , M3e.Component.Heading.size Value.small
                     , M3e.Attributes.level 2
                     , M3e.Attributes.id (Doc.slugify "Usage")
                     ]
@@ -149,8 +149,8 @@ sectionBlock model ( sec, examples ) =
 
             else
                 [ M3e.heading
-                    [ M3e.Heading.variant Value.title
-                    , M3e.Heading.size Value.large
+                    [ M3e.Component.Heading.variant Value.title
+                    , M3e.Component.Heading.size Value.large
                     , M3e.Attributes.level 3
                     , M3e.Attributes.id (Doc.slugify sec)
                     ]

@@ -6,11 +6,11 @@ import HtmlIr.Kind
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Button
+import M3e.Component.Button
+import M3e.Component.Icon
+import M3e.Component.Theme
 import M3e.Events
-import M3e.Icon
 import M3e.Kind
-import M3e.Theme
 import M3e.Values as Value exposing (Value)
 import Theme.Fonts
 import Theme.Icons exposing (IconStyle)
@@ -612,13 +612,13 @@ sourceColorOption model =
     TypedHtml.div
         [ TypedHtml.Attributes.class "relative inline-flex rounded-full" ]
         [ TypedHtml.div []
-            [ M3e.theme [ M3e.Theme.color model.seed ]
+            [ M3e.theme [ M3e.Component.Theme.color model.seed ]
                 [ M3e.avatar
                     [ M3e.Attributes.class "m3e-avatar-size-[2rem]"
                     , M3e.Attributes.style "--m3e-avatar-color" "var(--md-sys-color-primary)"
                     , M3e.Attributes.style "--m3e-avatar-label-color" "var(--md-sys-color-on-primary)"
                     ]
-                    [ M3e.icon [ M3e.Icon.name "colorize", M3e.Attributes.class "text-base" ] [] ]
+                    [ M3e.icon [ M3e.Component.Icon.name "colorize", M3e.Attributes.class "text-base" ] [] ]
                 ]
             ]
         , TypedHtml.div [ TypedHtml.Attributes.class "absolute inset-0" ]
@@ -658,7 +658,7 @@ colorAvatar model hex =
             )
         ]
         [ TypedHtml.div []
-            [ M3e.theme [ M3e.Theme.color hex ]
+            [ M3e.theme [ M3e.Component.Theme.color hex ]
                 [ M3e.avatar
                     [ M3e.Attributes.class "m3e-avatar-size-[2rem]"
                     , M3e.Attributes.style "--m3e-avatar-color" "var(--md-sys-color-primary)"
@@ -741,7 +741,7 @@ view { sectionsEl } model toMsg =
         ]
 
 
-resetAllButton : Element (M3e.Button.Is s) admittedBy Msg
+resetAllButton : Element (M3e.Component.Button.Is s) admittedBy Msg
 resetAllButton =
     M3e.button
         [ TypedHtml.Events.onClick ResetAll ]

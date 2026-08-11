@@ -26,12 +26,12 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.AppBar
 import M3e.Attributes
+import M3e.Component.AppBar
+import M3e.Component.ListAction
+import M3e.Component.ListItem
+import M3e.Component.NavItem
 import M3e.Kind
-import M3e.ListAction
-import M3e.ListItem
-import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -202,7 +202,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.AppBar.title (M3e.text "Contacts") ]
+        [ M3e.Component.AppBar.title (M3e.text "Contacts") ]
 
 
 
@@ -250,11 +250,11 @@ contactRow selected index contact =
     in
     M3e.listAction
         [ TA.class rowSurface
-        , M3e.ListAction.onClick (SelectContact index)
+        , M3e.Component.ListAction.onClick (SelectContact index)
         ]
-        [ M3e.ListAction.leading (M3e.avatar [] [ M3e.text contact.initials ])
+        [ M3e.Component.ListAction.leading (M3e.avatar [] [ M3e.text contact.initials ])
         , M3e.text contact.name
-        , M3e.ListAction.supportingText (M3e.text contact.role)
+        , M3e.Component.ListAction.supportingText (M3e.text contact.role)
         ]
 
 
@@ -297,9 +297,9 @@ detailCard contact =
 fieldRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 fieldRow iconName label value =
     M3e.listItem []
-        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
-        , M3e.ListItem.supportingText (M3e.text value)
+        , M3e.Component.ListItem.supportingText (M3e.text value)
         ]
 
 
@@ -340,6 +340,6 @@ navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.
 navItem d =
     M3e.navItem
         [ M3e.Attributes.selected (d.label == "Contacts") ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.label
         ]

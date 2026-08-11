@@ -54,7 +54,7 @@ export const DEFAULT_ALIASES = {
   TA: "TypedHtml.Attributes",
   Aria: "TypedHtml.Aria",
   Value: "M3e.Values",
-  Theme: "M3e.Theme",
+  Theme: "M3e.Component.Theme",
 };
 
 /**

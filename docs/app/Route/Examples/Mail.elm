@@ -33,16 +33,16 @@ import ExampleNav
 import Head
 import Json.Decode as Decode
 import M3e exposing (Element)
-import M3e.AppBar
-import M3e.AssistChip
 import M3e.Attributes
-import M3e.DrawerContainer
+import M3e.Component.AppBar
+import M3e.Component.AssistChip
+import M3e.Component.DrawerContainer
+import M3e.Component.Fab
+import M3e.Component.ListAction
+import M3e.Component.NavItem
+import M3e.Component.SearchBar
 import M3e.Events
-import M3e.Fab
 import M3e.Kind
-import M3e.ListAction
-import M3e.NavItem
-import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -288,7 +288,7 @@ railItem : Int -> { icon : String, label : String } -> Element { s | navItem : M
 railItem index d =
     M3e.navItem
         [ M3e.Attributes.selected (index == 0) ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.label
         ]
 
@@ -316,7 +316,7 @@ barItem : Int -> { icon : String, label : String } -> Element { s | navItem : M3
 barItem index d =
     M3e.navItem
         [ M3e.Attributes.selected (index == 0) ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.label
         ]
 
@@ -328,9 +328,9 @@ barItem index d =
 topBar : Element { s | appBar : M3e.Kind.Brand } adm_ Msg
 topBar =
     M3e.appBar [ M3e.Attributes.size Value.medium ]
-        [ M3e.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
-        , M3e.AppBar.title (M3e.text "Mail")
-        , M3e.AppBar.trailing searchBar
+        [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
+        , M3e.Component.AppBar.title (M3e.text "Mail")
+        , M3e.Component.AppBar.trailing searchBar
         ]
 
 
@@ -338,14 +338,14 @@ searchBar : Element { s | searchBar : M3e.Kind.Brand } adm_ Msg
 searchBar =
     M3e.searchBar
         []
-        [ M3e.SearchBar.input
+        [ M3e.Component.SearchBar.input
             (TypedHtml.input
                 [ TA.placeholder "Search mail"
                 , TA.type_ "search"
                 ]
                 []
             )
-        , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
+        , M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
         ]
 
 
@@ -374,10 +374,10 @@ rather than pinned under the body -- so the footer is what you reach after
 reading the inbox, not a strip permanently spending viewport height.
 
 -}
-body : Model -> Element (M3e.DrawerContainer.Is s) adm_ Msg
+body : Model -> Element (M3e.Component.DrawerContainer.Is s) adm_ Msg
 body model =
     M3e.drawerContainer
-        [ M3e.DrawerContainer.endMode Value.auto
+        [ M3e.Component.DrawerContainer.endMode Value.auto
         , M3e.Attributes.end model.readerOpen
         , M3e.Events.onChangeWith drawerChangeDecoder
         , TA.class "flex-1 min-h-0 overflow-hidden"
@@ -388,7 +388,7 @@ body model =
             ]
         , [ readingPane (selectedMessage model) ]
             |> M3e.contentPane [ TA.class "h-full w-full overflow-y-auto md:w-[32rem]" ]
-            |> M3e.DrawerContainer.end
+            |> M3e.Component.DrawerContainer.end
         ]
 
 
@@ -469,13 +469,13 @@ messageRow selected index message =
     in
     M3e.listAction
         [ TA.class rowSurface
-        , M3e.ListAction.onClick (SelectMessage index)
+        , M3e.Component.ListAction.onClick (SelectMessage index)
         ]
-        [ M3e.ListAction.leading (M3e.avatar [] [ M3e.text message.initials ])
-        , M3e.ListAction.overline (M3e.text message.sender)
+        [ M3e.Component.ListAction.leading (M3e.avatar [] [ M3e.text message.initials ])
+        , M3e.Component.ListAction.overline (M3e.text message.sender)
         , M3e.text message.subject
-        , M3e.ListAction.supportingText (M3e.text message.snippet)
-        , M3e.ListAction.trailing
+        , M3e.Component.ListAction.supportingText (M3e.text message.snippet)
+        , M3e.Component.ListAction.trailing
             (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text message.time ])
         ]
 
@@ -512,7 +512,7 @@ labelChip name =
     M3e.assistChip
         []
         [ M3e.text name
-        , M3e.AssistChip.icon (M3e.icon [ TA.name "label" ] [])
+        , M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] [])
         ]
 
 
@@ -539,6 +539,6 @@ composeFab =
             , Aria.label "Compose"
             ]
             [ M3e.icon [ TA.name "edit" ] []
-            , M3e.Fab.label (M3e.text "Compose")
+            , M3e.Component.Fab.label (M3e.text "Compose")
             ]
         ]

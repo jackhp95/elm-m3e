@@ -141,7 +141,7 @@ cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
             , TypedHtml.section [ TA.class "space-y-3" ]
                 [ stepHeading "4. Wrap your app in a theme and render"
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                    [ M3e.text "M3e.Theme is an attribute-style element (not a builder): M3e.Theme.view takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
+                    [ M3e.text "M3e.Theme is an attribute-style element (not a builder): M3e.Component.Theme.view takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
                 , codeBlock Elm mainModule
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                     [ M3e.text "M3e.toHtml turns an M3e Element into elm/html, so Browser.sandbox can render it. Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
@@ -184,8 +184,8 @@ mainModule =
 import Browser
 import Html
 import M3e
-import M3e.Button as Button
-import M3e.Theme as Theme
+import M3e.Component.Button as Button
+import M3e.Component.Theme as Theme
 import M3e.Values as Value
 
 

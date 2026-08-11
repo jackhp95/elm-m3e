@@ -22,13 +22,13 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Attr, Element)
-import M3e.AppBar
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.AppBar
+import M3e.Component.Card
+import M3e.Component.Fab
+import M3e.Component.NavItem
 import M3e.Events
-import M3e.Fab
 import M3e.Kind
-import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -239,10 +239,10 @@ appBar : Model -> Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar model =
     M3e.appBar
         [ TA.class "px-2" ]
-        [ M3e.AppBar.leading (M3e.icon [ TA.name "storefront", M3e.Attributes.filled True, TA.class "text-primary" ] [])
-        , M3e.AppBar.title (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Maru Market" ])
-        , M3e.AppBar.trailing (iconAction "search")
-        , M3e.AppBar.trailing (cartAction model.cart)
+        [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "storefront", M3e.Attributes.filled True, TA.class "text-primary" ] [])
+        , M3e.Component.AppBar.title (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Maru Market" ])
+        , M3e.Component.AppBar.trailing (iconAction "search")
+        , M3e.Component.AppBar.trailing (cartAction model.cart)
         ]
 
 
@@ -336,7 +336,7 @@ navDestination current dest =
                     [ M3e.Attributes.selected False ]
     in
     M3e.navItem attrs
-        [ M3e.NavItem.icon (M3e.icon [ TA.name dest.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name dest.icon ] [])
         , M3e.text dest.label
         ]
 
@@ -393,14 +393,14 @@ productGrid shown =
 productCard : Product -> Element { s | card : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 productCard product =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
-        [ M3e.Card.header (media product)
-        , M3e.Card.content
+        [ M3e.Component.Card.header (media product)
+        , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-0.5 px-1" ]
                 [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text product.name ]
                 , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text product.category ]
                 ]
             )
-        , M3e.Card.actions
+        , M3e.Component.Card.actions
             (TypedHtml.div [ TA.class "flex w-full items-center justify-between px-1" ]
                 [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-primary" ] [ M3e.text product.price ]
                 , M3e.iconButton
@@ -429,7 +429,7 @@ checkoutFab =
             [ M3e.fab
                 [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Checkout" ]
                 [ M3e.icon [ TA.name "shopping_cart_checkout" ] []
-                , M3e.Fab.label (M3e.text "Checkout")
+                , M3e.Component.Fab.label (M3e.text "Checkout")
                 ]
             ]
         ]

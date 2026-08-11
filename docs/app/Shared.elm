@@ -46,23 +46,23 @@ import Http
 import Json.Decode as Decode
 import Logo
 import M3e exposing (Element)
-import M3e.AppBar
 import M3e.Attributes
-import M3e.BottomSheet
-import M3e.BottomSheetTrigger
-import M3e.DrawerContainer
+import M3e.Component.AppBar
+import M3e.Component.BottomSheet
+import M3e.Component.BottomSheetTrigger
+import M3e.Component.DrawerContainer
+import M3e.Component.ExpansionPanel
+import M3e.Component.Fab
+import M3e.Component.Icon
+import M3e.Component.IconButton
+import M3e.Component.NavItem
+import M3e.Component.NavMenuItem
+import M3e.Component.NavRailToggle
+import M3e.Component.SearchView
+import M3e.Component.Theme
+import M3e.Component.Toc
 import M3e.Events
-import M3e.ExpansionPanel
-import M3e.Fab
-import M3e.Icon
-import M3e.IconButton
 import M3e.Kind
-import M3e.NavItem
-import M3e.NavMenuItem
-import M3e.NavRailToggle
-import M3e.SearchView
-import M3e.Theme
-import M3e.Toc
 import M3e.Unsafe
 import M3e.Values as Value exposing (Value)
 import Pages.Flags
@@ -252,7 +252,7 @@ mode — the element's `willUpdate` then closes the overlay on a genuine mode
 CHANGE, which does route through `updated`/`toggle` and stays in sync.
 
 -}
-searchModeFor : Int -> Value M3e.SearchView.Mode
+searchModeFor : Int -> Value M3e.Component.SearchView.Mode
 searchModeFor width =
     if width < searchFullscreenBreakpointPx then
         Value.fullscreen
@@ -630,11 +630,11 @@ view sharedData page model toMsg pageView =
     { title = breadcrumbTitle page.path (View.title pageView)
     , body =
         [ M3e.theme
-            [ M3e.Theme.color model.theme.seed
-            , M3e.Theme.scheme model.theme.scheme
-            , M3e.Theme.contrast model.theme.contrast
-            , M3e.Theme.density model.theme.density
-            , M3e.Theme.motion model.theme.motion
+            [ M3e.Component.Theme.color model.theme.seed
+            , M3e.Component.Theme.scheme model.theme.scheme
+            , M3e.Component.Theme.contrast model.theme.contrast
+            , M3e.Component.Theme.density model.theme.density
+            , M3e.Component.Theme.motion model.theme.motion
             , TypedHtml.Attributes.dir model.dir
 
             -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
@@ -737,24 +737,24 @@ authority at every width, the button always does something visible: below
 collapses the pinned panel to give the content column its width back.
 
 -}
-appShellBar : UrlPath -> Element (M3e.AppBar.Is s) admittedBy Msg
+appShellBar : UrlPath -> Element (M3e.Component.AppBar.Is s) admittedBy Msg
 appShellBar path =
     M3e.appBar
-        [ M3e.AppBar.size Value.small
+        [ M3e.Component.AppBar.size Value.small
         , M3e.Attributes.id "docs-app-bar"
         ]
-        [ M3e.AppBar.leading
+        [ M3e.Component.AppBar.leading
             (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick ToggleTree ]
-                [ M3e.icon [ M3e.Icon.name "list" ] [] ]
+                [ M3e.icon [ M3e.Component.Icon.name "list" ] [] ]
             )
-        , M3e.AppBar.title (M3e.text (Maybe.withDefault "" (currentSectionLabel path)))
-        , M3e.AppBar.subtitle (M3e.text "elm-m3e — Material 3 Expressive for Elm")
-        , M3e.AppBar.trailing
+        , M3e.Component.AppBar.title (M3e.text (Maybe.withDefault "" (currentSectionLabel path)))
+        , M3e.Component.AppBar.subtitle (M3e.text "elm-m3e — Material 3 Expressive for Elm")
+        , M3e.Component.AppBar.trailing
             (M3e.iconButton [ Aria.label "On this page", M3e.Events.onClick ToggleToc ]
-                [ M3e.icon [ M3e.Icon.name "toc" ] [] ]
+                [ M3e.icon [ M3e.Component.Icon.name "toc" ] [] ]
             )
-        , M3e.AppBar.trailing githubLink
-        , M3e.AppBar.trailing settingsButton
+        , M3e.Component.AppBar.trailing githubLink
+        , M3e.Component.AppBar.trailing settingsButton
         ]
 
 
@@ -772,7 +772,7 @@ githubLink =
         , M3e.Attributes.target "_blank"
         , M3e.Attributes.rel "noreferrer noopener"
         ]
-        [ M3e.icon [ M3e.Icon.name "github" ] [] ]
+        [ M3e.icon [ M3e.Component.Icon.name "github" ] [] ]
 
 
 {-| The app-bar settings control: an icon button carrying a nested
@@ -787,8 +787,8 @@ settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
     M3e.iconButton
         [ Aria.label "Settings" ]
-        [ M3e.icon [ M3e.Icon.name "more_vert" ] []
-        , M3e.bottomSheetTrigger [ M3e.BottomSheetTrigger.for "settings-sheet" ] []
+        [ M3e.icon [ M3e.Component.Icon.name "more_vert" ] []
+        , M3e.bottomSheetTrigger [ M3e.Component.BottomSheetTrigger.for "settings-sheet" ] []
         ]
 
 
@@ -811,21 +811,21 @@ to sync a mirrored model field back afterward; the same way `docsNavRail`'s
 `m3e-nav-rail-toggle` owns the rail's expanded/compact width with no
 Elm-side counterpart either.
 -}
-settingsBottomSheet : Model -> Element (M3e.BottomSheet.Is s) admittedBy Msg
+settingsBottomSheet : Model -> Element (M3e.Component.BottomSheet.Is s) admittedBy Msg
 settingsBottomSheet model =
     M3e.bottomSheet
         [ M3e.Attributes.id "settings-sheet"
-        , M3e.BottomSheet.modal True
-        , M3e.BottomSheet.handle True
-        , M3e.BottomSheet.hideable True
-        , M3e.BottomSheet.detents "half full"
+        , M3e.Component.BottomSheet.modal True
+        , M3e.Component.BottomSheet.handle True
+        , M3e.Component.BottomSheet.hideable True
+        , M3e.Component.BottomSheet.detents "half full"
         ]
         [ settingsSheetContent model ]
 
 
 {-| One accordion entry: a header (plain text label) plus the section's body.
 `M3e.Unsafe.recast` re-kinds both the header and body to the free rows that
-`M3e.ExpansionPanel.el`'s `childAccepts` type variable unifies to. This is the
+`M3e.Component.ExpansionPanel.el`'s `childAccepts` type variable unifies to. This is the
 sanctioned escape hatch (see `src/M3e/Unsafe.elm`) for exactly this
 "wrap already-built content into a slot it wasn't originally typed for" case.
 Lives here (allow-listed) rather than in `Theme.elm` (not allow-listed) per the
@@ -833,7 +833,7 @@ Lives here (allow-listed) rather than in `Theme.elm` (not allow-listed) per the
 -}
 sectionPanel : String -> Element cs adm msg -> Element { s | expansionPanel : M3e.Kind.Brand } admittedBy msg
 sectionPanel label body =
-    M3e.ExpansionPanel.el
+    M3e.Component.ExpansionPanel.el
         { header = M3e.expansionHeader [] [ M3e.text label ] |> M3e.Unsafe.recast }
         []
         [ M3e.Unsafe.recast body ]
@@ -1004,12 +1004,12 @@ searchOverlay model =
     else
         M3e.searchView
             [ TypedHtml.Attributes.class "fixed inset-x-0 top-2 z-50 mx-auto w-full max-w-2xl"
-            , M3e.SearchView.mode (searchModeFor model.viewportWidth)
-            , M3e.SearchView.open True
+            , M3e.Component.SearchView.mode (searchModeFor model.viewportWidth)
+            , M3e.Component.SearchView.open True
             , M3e.Events.onQueryWith searchQueryDecoder
             , M3e.Events.onToggleWith searchToggleDecoder
             ]
-            [ M3e.SearchView.input
+            [ M3e.Component.SearchView.input
                 (TypedHtml.input
                     [ TypedHtml.Attributes.type_ "text"
                     , TypedHtml.Attributes.placeholder "Search..."
@@ -1239,9 +1239,9 @@ drawerShell toMsg model page components body =
         ]
         [ M3e.drawerContainer
             [ M3e.Attributes.id "docs-drawer"
-            , M3e.DrawerContainer.startMode Value.auto
+            , M3e.Component.DrawerContainer.startMode Value.auto
             , M3e.Attributes.start model.treeOpen
-            , M3e.DrawerContainer.endMode Value.auto
+            , M3e.Component.DrawerContainer.endMode Value.auto
             , M3e.Attributes.end model.tocOpen
             , M3e.Events.onChangeWith (Decode.map toMsg drawerChangeDecoder)
             , TypedHtml.Attributes.class "h-full w-full"
@@ -1249,13 +1249,13 @@ drawerShell toMsg model page components body =
             [ [ navMenu components page.path ]
                 |> M3e.contentPane
                     [ TypedHtml.Attributes.class "w-max m3e-content-pane-container-color-surface-container-low -ms-7" ]
-                |> M3e.DrawerContainer.start
+                |> M3e.Component.DrawerContainer.start
             , TypedHtml.div [ TypedHtml.Attributes.class "md:p-4 overflow-y-auto h-full" ]
                 body
             , [ tocPanel toMsg ]
                 |> M3e.contentPane
                     [ TypedHtml.Attributes.class "w-max m3e-content-pane-container-color-surface-container-low -me-7 *:me-11" ]
-                |> M3e.DrawerContainer.end
+                |> M3e.Component.DrawerContainer.end
             ]
         ]
 
@@ -1289,14 +1289,14 @@ where the panel is `side` and dismissing it would just be taking the TOC
 away from someone reading it.
 
 -}
-tocPanel : (Msg -> msg) -> Element (M3e.Toc.Is s) admittedBy msg
+tocPanel : (Msg -> msg) -> Element (M3e.Component.Toc.Is s) admittedBy msg
 tocPanel toMsg =
     M3e.toc
-        [ M3e.Toc.for "main-content"
-        , M3e.Toc.maxDepth 3
+        [ M3e.Component.Toc.for "main-content"
+        , M3e.Component.Toc.maxDepth 3
         , M3e.Events.delegate (M3e.Events.onClick (toMsg CloseToc))
         ]
-        [ M3e.Toc.title (M3e.text "On this page") ]
+        [ M3e.Component.Toc.title (M3e.text "On this page") ]
 
 
 {-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start`/
@@ -1413,7 +1413,7 @@ navLeaf : String -> ( String, String ) -> Element { s | navMenuItem : M3e.Kind.B
 navLeaf currentPath ( path, lbl ) =
     M3e.navMenuItem
         [ M3e.Attributes.selected (path == currentPath) ]
-        [ M3e.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) ]
+        [ M3e.Component.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) ]
 
 
 {-| The component-nav categories, in display order, each paired with its Material
@@ -1531,7 +1531,7 @@ railItem path section =
         [ M3e.Attributes.href section.href
         , M3e.Attributes.selected (sectionIsCurrent path section)
         ]
-        [ M3e.NavItem.icon (M3e.icon [ M3e.Icon.name section.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ M3e.Component.Icon.name section.icon ] [])
         , M3e.text section.label
         ]
 
@@ -1556,14 +1556,14 @@ searchFab : String -> msg -> Element { s | fab : M3e.Kind.Brand } admittedBy msg
 searchFab extraClasses openMsg =
     M3e.fab
         [ M3e.Attributes.size Value.small
-        , M3e.Fab.extended True
-        , M3e.Fab.variant Value.secondary
+        , M3e.Component.Fab.extended True
+        , M3e.Component.Fab.variant Value.secondary
         , M3e.Attributes.class extraClasses
         , Aria.label "Search"
         , M3e.Events.onClick openMsg
         ]
-        [ M3e.icon [ M3e.Icon.name "search" ] []
-        , M3e.Fab.label (M3e.text "Search")
+        [ M3e.icon [ M3e.Component.Icon.name "search" ] []
+        , M3e.Component.Fab.label (M3e.text "Search")
         ]
 
 
@@ -1580,12 +1580,12 @@ docsNavRail toMsg path =
         ]
         (M3e.iconButton
             [ Aria.label "Toggle rail width"
-            , M3e.IconButton.toggle True
+            , M3e.Component.IconButton.toggle True
             , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
             ]
             [ M3e.Unsafe.fromHtml (Logo.view Logo.defaultColors)
-            , M3e.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
-            , M3e.navRailToggle [ M3e.NavRailToggle.for "nav-rail" ] []
+            , M3e.Component.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
+            , M3e.navRailToggle [ M3e.Component.NavRailToggle.for "nav-rail" ] []
             ]
             :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
             :: List.map (railItem path) sections

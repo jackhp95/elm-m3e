@@ -15,8 +15,8 @@ import Head.Seo as Seo
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
-import M3e.Heading
+import M3e.Component.Card
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -246,8 +246,8 @@ rankedCells cells =
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
     M3e.heading
-        [ M3e.Heading.variant Value.display
-        , M3e.Heading.size Value.small
+        [ M3e.Component.Heading.variant Value.display
+        , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
         [ M3e.text "Round-trip report" ]
@@ -288,9 +288,9 @@ surfaceLegendText =
 
 | Row | What it is | Surface map |
 | --- | --- | --- |
-| **top** | `M3e.Button.view` — the standard form: typed, slot-safe, composes anywhere. | the standard `view` surface ([surface map](/guide/the-layers)) |
-| **record** | `M3e.Button.el { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the `el` surface ([surface map](/guide/the-layers)) |
-| **build** | `M3e.Button.build { … }` piped through `M3e.Button.toElement` — one-only setters unwritable twice, order-free. | the `build` surface ([surface map](/guide/the-layers)) |
+| **top** | `M3e.Component.Button.view` — the standard form: typed, slot-safe, composes anywhere. | the standard `view` surface ([surface map](/guide/the-layers)) |
+| **record** | `M3e.Component.Button.el { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the `el` surface ([surface map](/guide/the-layers)) |
+| **build** | `M3e.Build.Button.build { … }` piped through `M3e.Build.Button.toElement` — one-only setters unwritable twice, order-free. | the `build` surface ([surface map](/guide/the-layers)) |
 | **barrel** | `M3e.button` — one import that re-exports every component's `view`, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/guide/reference)) |
 
 These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value."""
@@ -311,8 +311,8 @@ summarySection perSurface =
 surfaceRow : ( String, SurfaceAgg ) -> Element { s | card : M3e.Kind.Brand } admittedBy msg
 surfaceRow ( name, agg ) =
     M3e.card
-        [ M3e.Card.variant Value.outlined ]
-        [ M3e.Card.content
+        [ M3e.Component.Card.variant Value.outlined ]
+        [ M3e.Component.Card.content
             (TypedHtml.div
                 [ TA.class "space-y-1" ]
                 [ TypedHtml.div
@@ -401,8 +401,8 @@ cellRow c =
                 "text-on-surface-variant"
     in
     M3e.card
-        [ M3e.Card.variant Value.outlined ]
-        [ M3e.Card.content
+        [ M3e.Component.Card.variant Value.outlined ]
+        [ M3e.Component.Card.content
             (TypedHtml.div
                 [ TA.class "space-y-1" ]
                 [ TypedHtml.div

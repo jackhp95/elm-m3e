@@ -18,9 +18,9 @@ import FatalError exposing (FatalError)
 import Head
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.Card
+import M3e.Component.ListItem
 import M3e.Kind
-import M3e.ListItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -120,7 +120,7 @@ view app _ model =
         component =
             app.data.component
     in
-    View.fromElement component.name
+    View.fromElement component.label
         (M3e.mapMsg PagesMsg.fromMsg
             (Doc.pane
                 [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
@@ -147,7 +147,7 @@ header component =
         (TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3" ]
             (M3e.heading
                 [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
-                [ M3e.text component.name ]
+                [ M3e.text component.label ]
                 :: categoryChip component.category
             )
             :: summaryBlock component.summary
@@ -255,7 +255,7 @@ apiGroup members ( label, roles ) =
                 (TypedHtml.div [ TA.class "space-y-3" ]
                     [ Doc.sectionLabel label
                     , M3e.card [ M3e.Attributes.variant Value.outlined ]
-                        [ M3e.Card.content (M3e.list [] (List.map memberRow group)) ]
+                        [ M3e.Component.Card.content (M3e.list [] (List.map memberRow group)) ]
                     ]
                 )
 
@@ -284,6 +284,6 @@ memberRow m =
                     []
 
                 else
-                    [ M3e.ListItem.supportingText (Doc.markdown m.doc) ]
+                    [ M3e.Component.ListItem.supportingText (Doc.markdown m.doc) ]
                )
         )

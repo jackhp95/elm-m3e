@@ -114,15 +114,15 @@ layersDiagram : String
 layersDiagram =
     """SURFACES — same typed value, different call shape (a horizontal choice)
   M3e.button …                     barrel: one import, every component's `view`
-  M3e.Button.view …                the standard/list form
-  M3e.Button.el { … } …            required-record form (the 29 with a required record)
-  M3e.Button.build { … } |> …      builder pipe, closed by M3e.Button.toElement
+  M3e.Component.Button.view …                the standard/list form
+  M3e.Component.Button.el { … } …            required-record form (the 29 with a required record)
+  M3e.Build.Button.build { … } |> …      builder pipe, closed by M3e.Build.Button.toElement
 
 LOOSENESS — opt out of the strict phantom rows, still in the IR
   M3e.Html.button …                the loose producer (open rows, no slot checking)
 
 ESCAPES — leave the typed tree (loud, greppable, lint-fenced)
-  M3e.Coerce.asButton …            config-blessed kind crossing
+  M3e.Component.Coerce.asButton …            config-blessed kind crossing
   M3e.Unsafe.fromHtml …            wrap raw elm/html; free rows, checks nothing
   M3e.Unsafe.recast …              re-kind an Element so it fits any slot
   M3e.Unsafe.customElement …       forge a custom-element tag as a slot-ready Element"""
@@ -139,15 +139,15 @@ descentCode =
 M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- component module: same output, component-scoped tighter types
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ M3e.text "Save" ]
+M3e.Component.Button.view [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form: the compiler demands the parts a button can't omit
-M3e.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
+M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe: a one-only setter is unwritable twice; order-free
-M3e.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
-    |> M3e.Button.withVariant Value.filled
-    |> M3e.Button.toElement"""
+M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
+    |> M3e.Build.Button.withVariant Value.filled
+    |> M3e.Build.Button.toElement"""
 
 
 tell : String

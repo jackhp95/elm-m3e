@@ -9,7 +9,7 @@ overridden"), a native color `<input>`, and a reset button.
 import Dict
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Icon
+import M3e.Component.Icon
 import Theme exposing (Msg(..))
 import Theme.Tokens as Tokens exposing (ColorToken)
 import TypedHtml
@@ -67,5 +67,5 @@ tokenRow model token =
             , Aria.label resetLabel
             , TypedHtml.Events.onClick (ResetColorOverride token.cssVar)
             ]
-            [ M3e.icon [ M3e.Icon.name "restart_alt" ] [] ]
+            [ M3e.icon [ M3e.Component.Icon.name "restart_alt" ] [] ]
         ]

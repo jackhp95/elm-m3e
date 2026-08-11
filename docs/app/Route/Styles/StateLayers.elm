@@ -12,7 +12,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.Card
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -124,7 +124,7 @@ view _ _ =
                 [ Doc.sectionHeadingWithId (Doc.slugify "The three opacities") "The three opacities"
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
-                    [ M3e.Card.content
+                    [ M3e.Component.Card.content
                         (TypedHtml.div [ TA.class "flex flex-col px-2" ]
                             (List.intersperse (M3e.divider [] []) (List.map stateRow states))
                         )
@@ -136,7 +136,7 @@ view _ _ =
                     [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                         [ M3e.text "These buttons carry real state layers. Hover one for the 8% overlay, Tab to it for the 10% focus overlay, or press and hold for the 10% pressed overlay." ]
                     ]
-                , M3e.card [ M3e.Attributes.variant Value.outlined ] [ M3e.Card.content demoButtons ]
+                , M3e.card [ M3e.Attributes.variant Value.outlined ] [ M3e.Component.Card.content demoButtons ]
                 ]
             ]
         )

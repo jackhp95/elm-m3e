@@ -115,7 +115,7 @@ shippedBody =
 
 shippedCode : String
 shippedCode =
-    """import M3e.Theme as Theme
+    """import M3e.Component.Theme as Theme
 
 Theme.view
     [ Theme.color model.seed

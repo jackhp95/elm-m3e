@@ -14,7 +14,7 @@ import Cem.Facts exposing (Facet(..), Fact)
 facts : List Fact
 facts =
     [ { component = "accordion"
-      , module_ = "M3e.Accordion"
+      , module_ = "M3e.Component.Accordion"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = [ "unnamed" ]
@@ -29,7 +29,7 @@ facts =
       , usesAction = False
       }
     , { component = "actionList"
-      , module_ = "M3e.ActionList"
+      , module_ = "M3e.Component.ActionList"
       , enums = [ ( "variant", [ "segmented", "standard" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -44,7 +44,7 @@ facts =
       , usesAction = False
       }
     , { component = "appBar"
-      , module_ = "M3e.AppBar"
+      , module_ = "M3e.Component.AppBar"
       , enums = [ ( "size", [ "large", "medium", "small" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "leading", "trailing" ]
@@ -59,7 +59,7 @@ facts =
       , usesAction = False
       }
     , { component = "assistChip"
-      , module_ = "M3e.AssistChip"
+      , module_ = "M3e.Component.AssistChip"
       , enums = [ ( "type_", [ "button", "reset", "submit" ] ), ( "variant", [ "elevated", "outlined" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -74,7 +74,7 @@ facts =
       , usesAction = False
       }
     , { component = "autocomplete"
-      , module_ = "M3e.Autocomplete"
+      , module_ = "M3e.Component.Autocomplete"
       , enums = [ ( "filter", [ "contains", "endsWith", "none", "startsWith" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -89,7 +89,7 @@ facts =
       , usesAction = False
       }
     , { component = "avatar"
-      , module_ = "M3e.Avatar"
+      , module_ = "M3e.Component.Avatar"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -104,7 +104,7 @@ facts =
       , usesAction = False
       }
     , { component = "badge"
-      , module_ = "M3e.Badge"
+      , module_ = "M3e.Component.Badge"
       , enums = [ ( "position", [ "above", "aboveAfter", "aboveBefore", "after", "before", "below", "belowAfter", "belowBefore" ] ), ( "size", [ "large", "medium", "small" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -119,7 +119,7 @@ facts =
       , usesAction = False
       }
     , { component = "bottomSheet"
-      , module_ = "M3e.BottomSheet"
+      , module_ = "M3e.Component.BottomSheet"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -134,7 +134,7 @@ facts =
       , usesAction = False
       }
     , { component = "bottomSheetAction"
-      , module_ = "M3e.BottomSheetAction"
+      , module_ = "M3e.Component.BottomSheetAction"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -149,7 +149,7 @@ facts =
       , usesAction = False
       }
     , { component = "bottomSheetTrigger"
-      , module_ = "M3e.BottomSheetTrigger"
+      , module_ = "M3e.Component.BottomSheetTrigger"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -164,7 +164,7 @@ facts =
       , usesAction = False
       }
     , { component = "breadcrumb"
-      , module_ = "M3e.Breadcrumb"
+      , module_ = "M3e.Component.Breadcrumb"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = [ "unnamed" ]
@@ -179,7 +179,7 @@ facts =
       , usesAction = False
       }
     , { component = "breadcrumbItem"
-      , module_ = "M3e.BreadcrumbItem"
+      , module_ = "M3e.Component.BreadcrumbItem"
       , enums = [ ( "current", [ "date", "location", "page", "step", "time", "true" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -194,7 +194,7 @@ facts =
       , usesAction = False
       }
     , { component = "breadcrumbItemButton"
-      , module_ = "M3e.BreadcrumbItemButton"
+      , module_ = "M3e.Component.BreadcrumbItemButton"
       , enums = [ ( "current", [ "date", "location", "page", "step", "time", "true" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -209,7 +209,7 @@ facts =
       , usesAction = False
       }
     , { component = "button"
-      , module_ = "M3e.Button"
+      , module_ = "M3e.Component.Button"
       , enums = [ ( "shape", [ "rounded", "square" ] ), ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ), ( "type_", [ "button", "reset", "submit" ] ), ( "variant", [ "elevated", "filled", "outlined", "text", "tonal" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -224,7 +224,7 @@ facts =
       , usesAction = True
       }
     , { component = "buttonGroup"
-      , module_ = "M3e.ButtonGroup"
+      , module_ = "M3e.Component.ButtonGroup"
       , enums = [ ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ), ( "variant", [ "connected", "standard" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -239,7 +239,7 @@ facts =
       , usesAction = False
       }
     , { component = "buttonSegment"
-      , module_ = "M3e.ButtonSegment"
+      , module_ = "M3e.Component.ButtonSegment"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -254,7 +254,7 @@ facts =
       , usesAction = False
       }
     , { component = "calendar"
-      , module_ = "M3e.Calendar"
+      , module_ = "M3e.Component.Calendar"
       , enums = [ ( "startView", [ "month", "multiYear", "year" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -269,7 +269,7 @@ facts =
       , usesAction = False
       }
     , { component = "card"
-      , module_ = "M3e.Card"
+      , module_ = "M3e.Component.Card"
       , enums = [ ( "orientation", [ "horizontal", "vertical" ] ), ( "type_", [ "button", "reset", "submit" ] ), ( "variant", [ "elevated", "filled", "outlined" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -284,7 +284,7 @@ facts =
       , usesAction = False
       }
     , { component = "checkbox"
-      , module_ = "M3e.Checkbox"
+      , module_ = "M3e.Component.Checkbox"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -299,7 +299,7 @@ facts =
       , usesAction = False
       }
     , { component = "chip"
-      , module_ = "M3e.Chip"
+      , module_ = "M3e.Component.Chip"
       , enums = [ ( "variant", [ "elevated", "outlined" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -314,7 +314,7 @@ facts =
       , usesAction = False
       }
     , { component = "chipSet"
-      , module_ = "M3e.ChipSet"
+      , module_ = "M3e.Component.ChipSet"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -329,7 +329,7 @@ facts =
       , usesAction = False
       }
     , { component = "circularProgressIndicator"
-      , module_ = "M3e.CircularProgressIndicator"
+      , module_ = "M3e.Component.CircularProgressIndicator"
       , enums = [ ( "variant", [ "flat", "wavy" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -344,7 +344,7 @@ facts =
       , usesAction = False
       }
     , { component = "collapsible"
-      , module_ = "M3e.Collapsible"
+      , module_ = "M3e.Component.Collapsible"
       , enums = [ ( "orientation", [ "both", "horizontal", "vertical" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -359,7 +359,7 @@ facts =
       , usesAction = False
       }
     , { component = "contentPane"
-      , module_ = "M3e.ContentPane"
+      , module_ = "M3e.Component.ContentPane"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -374,7 +374,7 @@ facts =
       , usesAction = False
       }
     , { component = "dateInput"
-      , module_ = "M3e.DateInput"
+      , module_ = "M3e.Component.DateInput"
       , enums = [ ( "timeFormat", [ "value12", "value24", "auto" ] ), ( "type_", [ "date", "datetime", "time" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -389,7 +389,7 @@ facts =
       , usesAction = False
       }
     , { component = "datepicker"
-      , module_ = "M3e.Datepicker"
+      , module_ = "M3e.Component.Datepicker"
       , enums = [ ( "startView", [ "month", "multiYear", "year" ] ), ( "variant", [ "auto", "docked", "modal" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -404,7 +404,7 @@ facts =
       , usesAction = False
       }
     , { component = "datepickerToggle"
-      , module_ = "M3e.DatepickerToggle"
+      , module_ = "M3e.Component.DatepickerToggle"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -419,7 +419,7 @@ facts =
       , usesAction = False
       }
     , { component = "dialog"
-      , module_ = "M3e.Dialog"
+      , module_ = "M3e.Component.Dialog"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -434,7 +434,7 @@ facts =
       , usesAction = False
       }
     , { component = "dialogAction"
-      , module_ = "M3e.DialogAction"
+      , module_ = "M3e.Component.DialogAction"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -449,7 +449,7 @@ facts =
       , usesAction = False
       }
     , { component = "dialogTrigger"
-      , module_ = "M3e.DialogTrigger"
+      , module_ = "M3e.Component.DialogTrigger"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -464,7 +464,7 @@ facts =
       , usesAction = False
       }
     , { component = "divider"
-      , module_ = "M3e.Divider"
+      , module_ = "M3e.Component.Divider"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -479,7 +479,7 @@ facts =
       , usesAction = False
       }
     , { component = "drawerContainer"
-      , module_ = "M3e.DrawerContainer"
+      , module_ = "M3e.Component.DrawerContainer"
       , enums = [ ( "endMode", [ "auto", "over", "push", "side" ] ), ( "startMode", [ "auto", "over", "push", "side" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -494,7 +494,7 @@ facts =
       , usesAction = False
       }
     , { component = "drawerToggle"
-      , module_ = "M3e.DrawerToggle"
+      , module_ = "M3e.Component.DrawerToggle"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -509,7 +509,7 @@ facts =
       , usesAction = False
       }
     , { component = "elevation"
-      , module_ = "M3e.Elevation"
+      , module_ = "M3e.Component.Elevation"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -524,7 +524,7 @@ facts =
       , usesAction = False
       }
     , { component = "expandableListItem"
-      , module_ = "M3e.ExpandableListItem"
+      , module_ = "M3e.Component.ExpandableListItem"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -539,7 +539,7 @@ facts =
       , usesAction = False
       }
     , { component = "expansionHeader"
-      , module_ = "M3e.ExpansionHeader"
+      , module_ = "M3e.Component.ExpansionHeader"
       , enums = [ ( "toggleDirection", [ "horizontal", "vertical" ] ), ( "togglePosition", [ "after", "before" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -554,7 +554,7 @@ facts =
       , usesAction = False
       }
     , { component = "expansionPanel"
-      , module_ = "M3e.ExpansionPanel"
+      , module_ = "M3e.Component.ExpansionPanel"
       , enums = [ ( "toggleDirection", [ "horizontal", "vertical" ] ), ( "togglePosition", [ "after", "before" ] ) ]
       , requiredSlots = [ "header" ]
       , multiSlots = [ "actions" ]
@@ -569,7 +569,7 @@ facts =
       , usesAction = False
       }
     , { component = "fab"
-      , module_ = "M3e.Fab"
+      , module_ = "M3e.Component.Fab"
       , enums = [ ( "size", [ "large", "medium", "small" ] ), ( "type_", [ "button", "reset", "submit" ] ), ( "variant", [ "primary", "primaryContainer", "secondary", "secondaryContainer", "surface", "tertiary", "tertiaryContainer" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -584,7 +584,7 @@ facts =
       , usesAction = True
       }
     , { component = "fabMenu"
-      , module_ = "M3e.FabMenu"
+      , module_ = "M3e.Component.FabMenu"
       , enums = [ ( "variant", [ "primary", "secondary", "tertiary" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -599,7 +599,7 @@ facts =
       , usesAction = False
       }
     , { component = "fabMenuItem"
-      , module_ = "M3e.FabMenuItem"
+      , module_ = "M3e.Component.FabMenuItem"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -614,7 +614,7 @@ facts =
       , usesAction = False
       }
     , { component = "fabMenuTrigger"
-      , module_ = "M3e.FabMenuTrigger"
+      , module_ = "M3e.Component.FabMenuTrigger"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -629,7 +629,7 @@ facts =
       , usesAction = False
       }
     , { component = "filterChip"
-      , module_ = "M3e.FilterChip"
+      , module_ = "M3e.Component.FilterChip"
       , enums = [ ( "variant", [ "elevated", "outlined" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -644,7 +644,7 @@ facts =
       , usesAction = False
       }
     , { component = "filterChipSet"
-      , module_ = "M3e.FilterChipSet"
+      , module_ = "M3e.Component.FilterChipSet"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -659,7 +659,7 @@ facts =
       , usesAction = False
       }
     , { component = "floatingPanel"
-      , module_ = "M3e.FloatingPanel"
+      , module_ = "M3e.Component.FloatingPanel"
       , enums = [ ( "scrollStrategy", [ "hide", "reposition" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -674,7 +674,7 @@ facts =
       , usesAction = False
       }
     , { component = "focusRing"
-      , module_ = "M3e.FocusRing"
+      , module_ = "M3e.Component.FocusRing"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -689,7 +689,7 @@ facts =
       , usesAction = False
       }
     , { component = "focusTrap"
-      , module_ = "M3e.FocusTrap"
+      , module_ = "M3e.Component.FocusTrap"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -704,7 +704,7 @@ facts =
       , usesAction = False
       }
     , { component = "formField"
-      , module_ = "M3e.FormField"
+      , module_ = "M3e.Component.FormField"
       , enums = [ ( "floatLabel", [ "always", "auto" ] ), ( "hideSubscript", [ "always", "auto", "never" ] ), ( "variant", [ "filled", "outlined" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -719,7 +719,7 @@ facts =
       , usesAction = False
       }
     , { component = "heading"
-      , module_ = "M3e.Heading"
+      , module_ = "M3e.Component.Heading"
       , enums = [ ( "size", [ "large", "medium", "small" ] ), ( "variant", [ "display", "headline", "label", "title" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -734,7 +734,7 @@ facts =
       , usesAction = False
       }
     , { component = "icon"
-      , module_ = "M3e.Icon"
+      , module_ = "M3e.Component.Icon"
       , enums = [ ( "grade", [ "high", "low", "medium" ] ), ( "variant", [ "outlined", "rounded", "sharp" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -749,7 +749,7 @@ facts =
       , usesAction = False
       }
     , { component = "iconButton"
-      , module_ = "M3e.IconButton"
+      , module_ = "M3e.Component.IconButton"
       , enums = [ ( "shape", [ "rounded", "square" ] ), ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ), ( "type_", [ "button", "reset", "submit" ] ), ( "variant", [ "filled", "outlined", "standard", "tonal" ] ), ( "width", [ "default", "narrow", "wide" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -764,7 +764,7 @@ facts =
       , usesAction = True
       }
     , { component = "inputChip"
-      , module_ = "M3e.InputChip"
+      , module_ = "M3e.Component.InputChip"
       , enums = [ ( "variant", [ "elevated", "outlined" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -779,7 +779,7 @@ facts =
       , usesAction = False
       }
     , { component = "inputChipSet"
-      , module_ = "M3e.InputChipSet"
+      , module_ = "M3e.Component.InputChipSet"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -794,7 +794,7 @@ facts =
       , usesAction = False
       }
     , { component = "linearProgressIndicator"
-      , module_ = "M3e.LinearProgressIndicator"
+      , module_ = "M3e.Component.LinearProgressIndicator"
       , enums = [ ( "mode", [ "buffer", "determinate", "indeterminate", "query" ] ), ( "variant", [ "flat", "wavy" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -809,7 +809,7 @@ facts =
       , usesAction = False
       }
     , { component = "list"
-      , module_ = "M3e.List"
+      , module_ = "M3e.Component.List"
       , enums = [ ( "variant", [ "segmented", "standard" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -824,7 +824,7 @@ facts =
       , usesAction = False
       }
     , { component = "listAction"
-      , module_ = "M3e.ListAction"
+      , module_ = "M3e.Component.ListAction"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -839,7 +839,7 @@ facts =
       , usesAction = False
       }
     , { component = "listItem"
-      , module_ = "M3e.ListItem"
+      , module_ = "M3e.Component.ListItem"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -854,7 +854,7 @@ facts =
       , usesAction = False
       }
     , { component = "listItemButton"
-      , module_ = "M3e.ListItemButton"
+      , module_ = "M3e.Component.ListItemButton"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -869,7 +869,7 @@ facts =
       , usesAction = False
       }
     , { component = "listOption"
-      , module_ = "M3e.ListOption"
+      , module_ = "M3e.Component.ListOption"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -884,7 +884,7 @@ facts =
       , usesAction = False
       }
     , { component = "loadingIndicator"
-      , module_ = "M3e.LoadingIndicator"
+      , module_ = "M3e.Component.LoadingIndicator"
       , enums = [ ( "variant", [ "contained", "uncontained" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -899,7 +899,7 @@ facts =
       , usesAction = False
       }
     , { component = "menu"
-      , module_ = "M3e.Menu"
+      , module_ = "M3e.Component.Menu"
       , enums = [ ( "positionX", [ "after", "before" ] ), ( "positionY", [ "above", "below" ] ), ( "variant", [ "standard", "vibrant" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -914,7 +914,7 @@ facts =
       , usesAction = False
       }
     , { component = "menuItem"
-      , module_ = "M3e.MenuItem"
+      , module_ = "M3e.Component.MenuItem"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -929,7 +929,7 @@ facts =
       , usesAction = False
       }
     , { component = "menuItemCheckbox"
-      , module_ = "M3e.MenuItemCheckbox"
+      , module_ = "M3e.Component.MenuItemCheckbox"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -944,7 +944,7 @@ facts =
       , usesAction = False
       }
     , { component = "menuItemGroup"
-      , module_ = "M3e.MenuItemGroup"
+      , module_ = "M3e.Component.MenuItemGroup"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -959,7 +959,7 @@ facts =
       , usesAction = False
       }
     , { component = "menuItemRadio"
-      , module_ = "M3e.MenuItemRadio"
+      , module_ = "M3e.Component.MenuItemRadio"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -974,7 +974,7 @@ facts =
       , usesAction = False
       }
     , { component = "menuTrigger"
-      , module_ = "M3e.MenuTrigger"
+      , module_ = "M3e.Component.MenuTrigger"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -989,7 +989,7 @@ facts =
       , usesAction = False
       }
     , { component = "monthView"
-      , module_ = "M3e.MonthView"
+      , module_ = "M3e.Component.MonthView"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1004,7 +1004,7 @@ facts =
       , usesAction = False
       }
     , { component = "multiYearView"
-      , module_ = "M3e.MultiYearView"
+      , module_ = "M3e.Component.MultiYearView"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1019,7 +1019,7 @@ facts =
       , usesAction = False
       }
     , { component = "navBar"
-      , module_ = "M3e.NavBar"
+      , module_ = "M3e.Component.NavBar"
       , enums = [ ( "mode", [ "auto", "compact", "expanded" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1034,7 +1034,7 @@ facts =
       , usesAction = False
       }
     , { component = "navItem"
-      , module_ = "M3e.NavItem"
+      , module_ = "M3e.Component.NavItem"
       , enums = [ ( "orientation", [ "horizontal", "vertical" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1049,7 +1049,7 @@ facts =
       , usesAction = False
       }
     , { component = "navMenu"
-      , module_ = "M3e.NavMenu"
+      , module_ = "M3e.Component.NavMenu"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1064,7 +1064,7 @@ facts =
       , usesAction = False
       }
     , { component = "navMenuItem"
-      , module_ = "M3e.NavMenuItem"
+      , module_ = "M3e.Component.NavMenuItem"
       , enums = []
       , requiredSlots = [ "label" ]
       , multiSlots = [ "unnamed" ]
@@ -1079,7 +1079,7 @@ facts =
       , usesAction = False
       }
     , { component = "navMenuItemGroup"
-      , module_ = "M3e.NavMenuItemGroup"
+      , module_ = "M3e.Component.NavMenuItemGroup"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1094,7 +1094,7 @@ facts =
       , usesAction = False
       }
     , { component = "navRail"
-      , module_ = "M3e.NavRail"
+      , module_ = "M3e.Component.NavRail"
       , enums = [ ( "mode", [ "auto", "compact", "expanded" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1109,7 +1109,7 @@ facts =
       , usesAction = False
       }
     , { component = "navRailToggle"
-      , module_ = "M3e.NavRailToggle"
+      , module_ = "M3e.Component.NavRailToggle"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1124,7 +1124,7 @@ facts =
       , usesAction = False
       }
     , { component = "optgroup"
-      , module_ = "M3e.Optgroup"
+      , module_ = "M3e.Component.Optgroup"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1139,7 +1139,7 @@ facts =
       , usesAction = False
       }
     , { component = "option"
-      , module_ = "M3e.Option"
+      , module_ = "M3e.Component.Option"
       , enums = [ ( "highlightMode", [ "contains", "endsWith", "startsWith" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1154,7 +1154,7 @@ facts =
       , usesAction = False
       }
     , { component = "optionPanel"
-      , module_ = "M3e.OptionPanel"
+      , module_ = "M3e.Component.OptionPanel"
       , enums = [ ( "scrollStrategy", [ "hide", "reposition" ] ), ( "state", [ "content", "loading", "noData" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed", "loading" ]
@@ -1169,7 +1169,7 @@ facts =
       , usesAction = False
       }
     , { component = "paginator"
-      , module_ = "M3e.Paginator"
+      , module_ = "M3e.Component.Paginator"
       , enums = [ ( "pageSizeVariant", [ "filled", "outlined" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1184,7 +1184,7 @@ facts =
       , usesAction = False
       }
     , { component = "pseudoCheckbox"
-      , module_ = "M3e.PseudoCheckbox"
+      , module_ = "M3e.Component.PseudoCheckbox"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1199,7 +1199,7 @@ facts =
       , usesAction = False
       }
     , { component = "pseudoRadio"
-      , module_ = "M3e.PseudoRadio"
+      , module_ = "M3e.Component.PseudoRadio"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1214,7 +1214,7 @@ facts =
       , usesAction = False
       }
     , { component = "radio"
-      , module_ = "M3e.Radio"
+      , module_ = "M3e.Component.Radio"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1229,7 +1229,7 @@ facts =
       , usesAction = False
       }
     , { component = "radioGroup"
-      , module_ = "M3e.RadioGroup"
+      , module_ = "M3e.Component.RadioGroup"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = [ "unnamed" ]
@@ -1244,7 +1244,7 @@ facts =
       , usesAction = False
       }
     , { component = "richTooltip"
-      , module_ = "M3e.RichTooltip"
+      , module_ = "M3e.Component.RichTooltip"
       , enums = [ ( "position", [ "above", "aboveAfter", "aboveBefore", "after", "before", "below", "belowAfter", "belowBefore" ] ), ( "touchGestures", [ "auto", "off", "on" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1259,7 +1259,7 @@ facts =
       , usesAction = False
       }
     , { component = "richTooltipAction"
-      , module_ = "M3e.RichTooltipAction"
+      , module_ = "M3e.Component.RichTooltipAction"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1274,7 +1274,7 @@ facts =
       , usesAction = False
       }
     , { component = "ripple"
-      , module_ = "M3e.Ripple"
+      , module_ = "M3e.Component.Ripple"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1289,7 +1289,7 @@ facts =
       , usesAction = False
       }
     , { component = "scrollContainer"
-      , module_ = "M3e.ScrollContainer"
+      , module_ = "M3e.Component.ScrollContainer"
       , enums = [ ( "dividers", [ "above", "aboveBelow", "below", "none" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1304,7 +1304,7 @@ facts =
       , usesAction = False
       }
     , { component = "searchBar"
-      , module_ = "M3e.SearchBar"
+      , module_ = "M3e.Component.SearchBar"
       , enums = []
       , requiredSlots = [ "input" ]
       , multiSlots = [ "leading", "trailing" ]
@@ -1319,7 +1319,7 @@ facts =
       , usesAction = False
       }
     , { component = "searchView"
-      , module_ = "M3e.SearchView"
+      , module_ = "M3e.Component.SearchView"
       , enums = [ ( "mode", [ "auto", "docked", "fullscreen" ] ) ]
       , requiredSlots = [ "input" ]
       , multiSlots = [ "unnamed", "closed-leading", "closed-trailing", "open-leading", "open-trailing" ]
@@ -1334,7 +1334,7 @@ facts =
       , usesAction = False
       }
     , { component = "segmentedButton"
-      , module_ = "M3e.SegmentedButton"
+      , module_ = "M3e.Component.SegmentedButton"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = [ "unnamed" ]
@@ -1349,7 +1349,7 @@ facts =
       , usesAction = False
       }
     , { component = "select"
-      , module_ = "M3e.Select"
+      , module_ = "M3e.Component.Select"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = [ "unnamed" ]
@@ -1364,7 +1364,7 @@ facts =
       , usesAction = False
       }
     , { component = "selectionIndicator"
-      , module_ = "M3e.SelectionIndicator"
+      , module_ = "M3e.Component.SelectionIndicator"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1379,7 +1379,7 @@ facts =
       , usesAction = False
       }
     , { component = "selectionList"
-      , module_ = "M3e.SelectionList"
+      , module_ = "M3e.Component.SelectionList"
       , enums = [ ( "variant", [ "segmented", "standard" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1394,7 +1394,7 @@ facts =
       , usesAction = False
       }
     , { component = "shape"
-      , module_ = "M3e.Shape"
+      , module_ = "M3e.Component.Shape"
       , enums = [ ( "name", [ "value12SidedCookie", "value4LeafClover", "value4SidedCookie", "value6SidedCookie", "value7SidedCookie", "value8LeafClover", "value9SidedCookie", "arch", "arrow", "boom", "bun", "burst", "circle", "diamond", "fan", "flower", "gem", "ghostIsh", "heart", "hexagon", "oval", "pentagon", "pill", "pixelCircle", "pixelTriangle", "puffy", "puffyDiamond", "semicircle", "slanted", "softBoom", "softBurst", "square", "sunny", "triangle", "verySunny" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1409,7 +1409,7 @@ facts =
       , usesAction = False
       }
     , { component = "skeleton"
-      , module_ = "M3e.Skeleton"
+      , module_ = "M3e.Component.Skeleton"
       , enums = [ ( "animation", [ "none", "pulse", "wave" ] ), ( "shape", [ "auto", "circular", "rounded", "square" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1424,7 +1424,7 @@ facts =
       , usesAction = False
       }
     , { component = "slide"
-      , module_ = "M3e.Slide"
+      , module_ = "M3e.Component.Slide"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1439,7 +1439,7 @@ facts =
       , usesAction = False
       }
     , { component = "slideGroup"
-      , module_ = "M3e.SlideGroup"
+      , module_ = "M3e.Component.SlideGroup"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1454,7 +1454,7 @@ facts =
       , usesAction = False
       }
     , { component = "slider"
-      , module_ = "M3e.Slider"
+      , module_ = "M3e.Component.Slider"
       , enums = [ ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = [ "unnamed" ]
@@ -1469,7 +1469,7 @@ facts =
       , usesAction = False
       }
     , { component = "sliderThumb"
-      , module_ = "M3e.SliderThumb"
+      , module_ = "M3e.Component.SliderThumb"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1484,7 +1484,7 @@ facts =
       , usesAction = False
       }
     , { component = "snackbar"
-      , module_ = "M3e.Snackbar"
+      , module_ = "M3e.Component.Snackbar"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1499,7 +1499,7 @@ facts =
       , usesAction = False
       }
     , { component = "splitButton"
-      , module_ = "M3e.SplitButton"
+      , module_ = "M3e.Component.SplitButton"
       , enums = [ ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ), ( "variant", [ "elevated", "filled", "outlined", "tonal" ] ) ]
       , requiredSlots = [ "leading-button", "trailing-button" ]
       , multiSlots = []
@@ -1514,7 +1514,7 @@ facts =
       , usesAction = False
       }
     , { component = "splitPane"
-      , module_ = "M3e.SplitPane"
+      , module_ = "M3e.Component.SplitPane"
       , enums = [ ( "orientation", [ "auto", "horizontal", "vertical" ] ) ]
       , requiredSlots = [ "end", "start" ]
       , multiSlots = []
@@ -1529,7 +1529,7 @@ facts =
       , usesAction = False
       }
     , { component = "stateLayer"
-      , module_ = "M3e.StateLayer"
+      , module_ = "M3e.Component.StateLayer"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1544,7 +1544,7 @@ facts =
       , usesAction = False
       }
     , { component = "step"
-      , module_ = "M3e.Step"
+      , module_ = "M3e.Component.Step"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1559,7 +1559,7 @@ facts =
       , usesAction = False
       }
     , { component = "stepPanel"
-      , module_ = "M3e.StepPanel"
+      , module_ = "M3e.Component.StepPanel"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1574,7 +1574,7 @@ facts =
       , usesAction = False
       }
     , { component = "stepper"
-      , module_ = "M3e.Stepper"
+      , module_ = "M3e.Component.Stepper"
       , enums = [ ( "headerPosition", [ "above", "below" ] ), ( "labelPosition", [ "below", "end" ] ), ( "orientation", [ "auto", "horizontal", "vertical" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "panel", "step" ]
@@ -1589,7 +1589,7 @@ facts =
       , usesAction = False
       }
     , { component = "stepperNext"
-      , module_ = "M3e.StepperNext"
+      , module_ = "M3e.Component.StepperNext"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1604,7 +1604,7 @@ facts =
       , usesAction = False
       }
     , { component = "stepperPrevious"
-      , module_ = "M3e.StepperPrevious"
+      , module_ = "M3e.Component.StepperPrevious"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1619,7 +1619,7 @@ facts =
       , usesAction = False
       }
     , { component = "stepperReset"
-      , module_ = "M3e.StepperReset"
+      , module_ = "M3e.Component.StepperReset"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1634,7 +1634,7 @@ facts =
       , usesAction = False
       }
     , { component = "suggestionChip"
-      , module_ = "M3e.SuggestionChip"
+      , module_ = "M3e.Component.SuggestionChip"
       , enums = [ ( "type_", [ "button", "reset", "submit" ] ), ( "variant", [ "elevated", "outlined" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1649,7 +1649,7 @@ facts =
       , usesAction = True
       }
     , { component = "switch"
-      , module_ = "M3e.Switch"
+      , module_ = "M3e.Component.Switch"
       , enums = [ ( "icons", [ "both", "none", "selected" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1664,7 +1664,7 @@ facts =
       , usesAction = False
       }
     , { component = "tab"
-      , module_ = "M3e.Tab"
+      , module_ = "M3e.Component.Tab"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1679,7 +1679,7 @@ facts =
       , usesAction = False
       }
     , { component = "tabPanel"
-      , module_ = "M3e.TabPanel"
+      , module_ = "M3e.Component.TabPanel"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1694,7 +1694,7 @@ facts =
       , usesAction = False
       }
     , { component = "tabs"
-      , module_ = "M3e.Tabs"
+      , module_ = "M3e.Component.Tabs"
       , enums = [ ( "disablePagination", [ "auto", "false", "true" ] ), ( "headerPosition", [ "after", "before" ] ), ( "variant", [ "primary", "secondary" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed", "panel" ]
@@ -1709,7 +1709,7 @@ facts =
       , usesAction = False
       }
     , { component = "textHighlight"
-      , module_ = "M3e.TextHighlight"
+      , module_ = "M3e.Component.TextHighlight"
       , enums = [ ( "mode", [ "contains", "endsWith", "startsWith" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1724,7 +1724,7 @@ facts =
       , usesAction = False
       }
     , { component = "textOverflow"
-      , module_ = "M3e.TextOverflow"
+      , module_ = "M3e.Component.TextOverflow"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1739,7 +1739,7 @@ facts =
       , usesAction = False
       }
     , { component = "textareaAutosize"
-      , module_ = "M3e.TextareaAutosize"
+      , module_ = "M3e.Component.TextareaAutosize"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1754,7 +1754,7 @@ facts =
       , usesAction = False
       }
     , { component = "theme"
-      , module_ = "M3e.Theme"
+      , module_ = "M3e.Component.Theme"
       , enums = [ ( "contrast", [ "high", "medium", "standard" ] ), ( "motion", [ "expressive", "standard" ] ), ( "scheme", [ "auto", "dark", "light" ] ), ( "variant", [ "content", "expressive", "fidelity", "fruitSalad", "monochrome", "neutral", "rainbow", "tonalSpot", "vibrant" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1769,7 +1769,7 @@ facts =
       , usesAction = False
       }
     , { component = "themeIcon"
-      , module_ = "M3e.ThemeIcon"
+      , module_ = "M3e.Component.ThemeIcon"
       , enums = [ ( "scheme", [ "auto", "dark", "light" ] ), ( "variant", [ "content", "expressive", "fidelity", "fruitSalad", "monochrome", "neutral", "rainbow", "tonalSpot", "vibrant" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1784,7 +1784,7 @@ facts =
       , usesAction = False
       }
     , { component = "timepicker"
-      , module_ = "M3e.Timepicker"
+      , module_ = "M3e.Component.Timepicker"
       , enums = [ ( "format", [ "value12", "value24", "auto" ] ), ( "mode", [ "dial", "input" ] ), ( "orientation", [ "auto", "horizontal", "vertical" ] ), ( "variant", [ "auto", "docked", "modal" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1799,7 +1799,7 @@ facts =
       , usesAction = False
       }
     , { component = "timepickerDial"
-      , module_ = "M3e.TimepickerDial"
+      , module_ = "M3e.Component.TimepickerDial"
       , enums = [ ( "format", [ "value12", "value24", "auto" ] ), ( "period", [ "am", "pm" ] ), ( "viewAttr", [ "hour", "minute", "second" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1814,7 +1814,7 @@ facts =
       , usesAction = False
       }
     , { component = "timepickerInput"
-      , module_ = "M3e.TimepickerInput"
+      , module_ = "M3e.Component.TimepickerInput"
       , enums = [ ( "format", [ "value12", "value24", "auto" ] ), ( "period", [ "am", "pm" ] ), ( "viewAttr", [ "hour", "minute", "second" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1829,7 +1829,7 @@ facts =
       , usesAction = False
       }
     , { component = "timepickerInputPeriodToggle"
-      , module_ = "M3e.TimepickerInputPeriodToggle"
+      , module_ = "M3e.Component.TimepickerInputPeriodToggle"
       , enums = [ ( "period", [ "am", "pm" ] ) ]
       , requiredSlots = []
       , multiSlots = []
@@ -1844,7 +1844,7 @@ facts =
       , usesAction = False
       }
     , { component = "timepickerToggle"
-      , module_ = "M3e.TimepickerToggle"
+      , module_ = "M3e.Component.TimepickerToggle"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1859,7 +1859,7 @@ facts =
       , usesAction = False
       }
     , { component = "toc"
-      , module_ = "M3e.Toc"
+      , module_ = "M3e.Component.Toc"
       , enums = []
       , requiredSlots = []
       , multiSlots = []
@@ -1874,7 +1874,7 @@ facts =
       , usesAction = False
       }
     , { component = "tocItem"
-      , module_ = "M3e.TocItem"
+      , module_ = "M3e.Component.TocItem"
       , enums = []
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1889,7 +1889,7 @@ facts =
       , usesAction = False
       }
     , { component = "toolbar"
-      , module_ = "M3e.Toolbar"
+      , module_ = "M3e.Component.Toolbar"
       , enums = [ ( "shape", [ "rounded", "square" ] ), ( "variant", [ "standard", "vibrant" ] ) ]
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1904,7 +1904,7 @@ facts =
       , usesAction = False
       }
     , { component = "tooltip"
-      , module_ = "M3e.Tooltip"
+      , module_ = "M3e.Component.Tooltip"
       , enums = [ ( "position", [ "above", "after", "before", "below" ] ), ( "touchGestures", [ "auto", "off", "on" ] ) ]
       , requiredSlots = [ "unnamed" ]
       , multiSlots = []
@@ -1919,7 +1919,7 @@ facts =
       , usesAction = False
       }
     , { component = "tree"
-      , module_ = "M3e.Tree"
+      , module_ = "M3e.Component.Tree"
       , enums = []
       , requiredSlots = []
       , multiSlots = [ "unnamed" ]
@@ -1934,7 +1934,7 @@ facts =
       , usesAction = False
       }
     , { component = "treeItem"
-      , module_ = "M3e.TreeItem"
+      , module_ = "M3e.Component.TreeItem"
       , enums = []
       , requiredSlots = [ "label" ]
       , multiSlots = [ "unnamed" ]
@@ -1949,7 +1949,7 @@ facts =
       , usesAction = False
       }
     , { component = "yearView"
-      , module_ = "M3e.YearView"
+      , module_ = "M3e.Component.YearView"
       , enums = []
       , requiredSlots = []
       , multiSlots = []

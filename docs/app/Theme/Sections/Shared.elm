@@ -11,7 +11,7 @@ resulting `Theme.Scale.ScaleMode`.
 -}
 
 import M3e exposing (Element)
-import M3e.Icon
+import M3e.Component.Icon
 import M3e.Kind
 import Theme exposing (TypeScaleParam)
 import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
@@ -72,11 +72,11 @@ numberStepper labelText current step toMsg =
             [ TypedHtml.Events.onClick (toMsg (current - step))
             , Aria.label ("Decrease " ++ labelText)
             ]
-            [ M3e.icon [ M3e.Icon.name "remove" ] [] ]
+            [ M3e.icon [ M3e.Component.Icon.name "remove" ] [] ]
         , M3e.text (String.fromFloat current)
         , M3e.iconButton
             [ TypedHtml.Events.onClick (toMsg (current + step))
             , Aria.label ("Increase " ++ labelText)
             ]
-            [ M3e.icon [ M3e.Icon.name "add" ] [] ]
+            [ M3e.icon [ M3e.Component.Icon.name "add" ] [] ]
         ]

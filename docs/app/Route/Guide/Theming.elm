@@ -120,7 +120,7 @@ rootBody =
 
 rootCode : String
 rootCode =
-    """import M3e.Theme as Theme
+    """import M3e.Component.Theme as Theme
 
 Theme.view
     [ Theme.color model.seed                    -- the brand/seed color, e.g. "#4285F4"

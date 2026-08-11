@@ -15,8 +15,8 @@ import Head.Seo as Seo
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
-import M3e.Heading
+import M3e.Component.Card
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -114,8 +114,8 @@ head _ =
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
     M3e.heading
-        [ M3e.Heading.variant Value.display
-        , M3e.Heading.size Value.small
+        [ M3e.Component.Heading.variant Value.display
+        , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
         [ M3e.text "Component reference" ]
@@ -181,7 +181,7 @@ twoFormsText =
     """Every component is reachable two ways — same output, different import and different strictness:
 
 - The **barrel** (`import M3e`) — one import for everything. `M3e.button`, `M3e.icon`, and the shared `M3e.Attributes.variant Value.filled` vocabulary. This is the form the [Guide](/guide/the-layers) teaches; it's the generic, easy form.
-- The **component module** (`import M3e.Button`) — `M3e.Button.view` and its component-scoped `M3e.Button.variant` / slot setters (`M3e.Button.icon`). More precise: the compiler rejects a token or slot child that isn't valid for *that* component.
+- The **component module** (`import M3e.Button`) — `M3e.Component.Button.view` and its component-scoped `M3e.Component.Button.variant` / slot setters (`M3e.Component.Button.icon`). More precise: the compiler rejects a token or slot child that isn't valid for *that* component.
 
 Barrel-vs-module isn't a [surface](/guide/the-layers) choice and it isn't an escape hatch — it's a separate axis, only *which import you reach through*. Start on the barrel; reach for a component module when you want the tighter, component-scoped types."""
 
@@ -292,8 +292,8 @@ memberRow m =
                 m.name ++ " : " ++ m.signature
     in
     M3e.card
-        [ M3e.Card.variant Value.outlined ]
-        [ M3e.Card.content
+        [ M3e.Component.Card.variant Value.outlined ]
+        [ M3e.Component.Card.content
             (TypedHtml.div
                 []
                 [ Doc.preBlock sig

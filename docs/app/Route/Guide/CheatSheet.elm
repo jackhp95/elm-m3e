@@ -12,7 +12,7 @@ import Head
 import Head.Seo as Seo
 import M3e
 import M3e.Attributes
-import M3e.Heading
+import M3e.Component.Heading
 import M3e.Values as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -64,7 +64,7 @@ head _ =
         |> Seo.website
 
 
-card : String -> List (M3e.Element (M3e.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> M3e.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
+card : String -> List (M3e.Element (M3e.Component.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> M3e.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
 card title items =
     TypedHtml.section [ TA.class "space-y-3" ]
         (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text title ] :: items)
@@ -121,10 +121,10 @@ barrelVsSpecific =
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Button.icon (M3e.icon [ TA.name "save" ] []), M3e.text "Save" ]
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []), M3e.text "Save" ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Button.view [ M3e.Button.variant Value.filled ] [ M3e.text "Save" ]"""
+M3e.Component.Button.view [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]"""
 
 
 shapes : String
@@ -138,11 +138,11 @@ shapesCode =
 M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
-M3e.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
+M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe — a one-only setter is unwritable twice; order-free
-M3e.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
-    |> M3e.Button.toElement"""
+M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
+    |> M3e.Build.Button.toElement"""
 
 
 dial : String

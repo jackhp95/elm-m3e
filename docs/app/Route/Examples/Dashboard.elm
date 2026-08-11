@@ -20,14 +20,14 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.AppBar
 import M3e.Attributes
-import M3e.Card
-import M3e.Fab
+import M3e.Component.AppBar
+import M3e.Component.Card
+import M3e.Component.Fab
+import M3e.Component.LinearProgressIndicator
+import M3e.Component.ListItem
+import M3e.Component.NavItem
 import M3e.Kind
-import M3e.LinearProgressIndicator
-import M3e.ListItem
-import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -247,11 +247,11 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.Attributes.size Value.small ]
-        [ M3e.AppBar.leading (M3e.icon [ TA.name "analytics" ] [])
-        , M3e.AppBar.title (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text "Aperture Analytics" ])
-        , M3e.AppBar.trailing (iconAction "search")
-        , M3e.AppBar.trailing (iconAction "notifications")
-        , M3e.AppBar.trailing (iconAction "account_circle")
+        [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "analytics" ] [])
+        , M3e.Component.AppBar.title (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text "Aperture Analytics" ])
+        , M3e.Component.AppBar.trailing (iconAction "search")
+        , M3e.Component.AppBar.trailing (iconAction "notifications")
+        , M3e.Component.AppBar.trailing (iconAction "account_circle")
         ]
 
 
@@ -282,7 +282,7 @@ railItem : Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 railItem d =
     M3e.navItem
         [ M3e.Attributes.href "#", M3e.Attributes.selected d.selected ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.name
         ]
 
@@ -308,7 +308,7 @@ barItem : Destination -> Element { s | navItem : M3e.Kind.Brand } adm_ msg
 barItem d =
     M3e.navItem
         [ M3e.Attributes.href "#", M3e.Attributes.selected d.selected ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.name
         ]
 
@@ -336,7 +336,7 @@ fab =
             [ M3e.fab
                 [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
                 [ M3e.icon [ TA.name "add" ] []
-                , M3e.Fab.label (M3e.text "New report")
+                , M3e.Component.Fab.label (M3e.text "New report")
                 ]
             ]
         ]
@@ -416,7 +416,7 @@ kpiRow =
 kpiCard : Kpi -> Element { s | card : M3e.Kind.Brand } adm_ msg
 kpiCard k =
     M3e.card [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Card.content
+        [ M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-2 p-4" ]
                 [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text k.label ]
                 , M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] [ M3e.text k.value ]
@@ -489,7 +489,7 @@ budgetRow b =
             , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text b.amount ]
             ]
         , M3e.linearProgressIndicator
-            [ M3e.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
+            [ M3e.Component.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
             []
         ]
 
@@ -520,10 +520,10 @@ activityRow a =
                 "text-on-surface"
     in
     M3e.listItem []
-        [ M3e.ListItem.leading
+        [ M3e.Component.ListItem.leading
             (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text a.date ])
         , M3e.text a.description
-        , M3e.ListItem.trailing
+        , M3e.Component.ListItem.trailing
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [ M3e.text a.amount ])
         ]
 
@@ -535,7 +535,7 @@ activityRow a =
 sectionCard : String -> Element any adm_ msg -> Element { r | card : M3e.Kind.Brand } adm_ msg
 sectionCard heading content =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
-        [ M3e.Card.header
+        [ M3e.Component.Card.header
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text heading ])
-        , M3e.Card.content content
+        , M3e.Component.Card.content content
         ]

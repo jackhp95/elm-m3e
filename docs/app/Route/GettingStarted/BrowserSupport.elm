@@ -6,7 +6,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.Card
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -98,7 +98,7 @@ view _ _ =
                 [ Doc.sectionHeadingWithId (Doc.slugify "Supported browsers") "Supported browsers"
                 , M3e.card
                     [ M3e.Attributes.variant Value.outlined ]
-                    [ M3e.Card.content
+                    [ M3e.Component.Card.content
                         (TypedHtml.div [ TA.class "flex flex-col px-2" ]
                             (List.intersperse (M3e.divider [] [])
                                 [ supportRow "Chrome / Edge" "Latest 2 versions"

@@ -22,12 +22,12 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.AppBar
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.AppBar
+import M3e.Component.Card
+import M3e.Component.NavItem
 import M3e.Events
 import M3e.Kind
-import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -209,7 +209,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.AppBar.title (M3e.text "Feed") ]
+        [ M3e.Component.AppBar.title (M3e.text "Feed") ]
 
 
 
@@ -257,12 +257,12 @@ cardGrid shown =
 postCard : Post -> Element { s | card : M3e.Kind.Brand } adm_ msg
 postCard post =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
-        [ M3e.Card.header
+        [ M3e.Component.Card.header
             (TypedHtml.div
                 [ TA.class (post.media ++ " rounded-md-corner-medium flex h-32 items-center justify-center") ]
                 [ M3e.icon [ TA.name post.icon, TA.class "text-4xl" ] [] ]
             )
-        , M3e.Card.content
+        , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-2 pt-1" ]
                 [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-primary" ] [ M3e.text (String.toUpper post.category) ]
                 , M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text post.title ]
@@ -301,6 +301,6 @@ navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.
 navItem d =
     M3e.navItem
         [ M3e.Attributes.selected (d.label == "Home") ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.label
         ]

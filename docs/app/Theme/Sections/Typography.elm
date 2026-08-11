@@ -9,8 +9,8 @@ per-mode numeric steppers, and a live 15-token size preview
 import Json.Decode as Decode
 import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Component.Option
 import M3e.Events
-import M3e.Option
 import Theme exposing (Msg(..))
 import Theme.Fonts
 import Theme.Scale as Scale
@@ -55,7 +55,7 @@ fontSelect labelText idSuffix current toMsg =
             (List.map
                 (\font ->
                     M3e.option
-                        [ M3e.Option.value font, M3e.Option.selected (font == current) ]
+                        [ M3e.Component.Option.value font, M3e.Component.Option.selected (font == current) ]
                         [ M3e.text font ]
                 )
                 Theme.Fonts.curatedFonts

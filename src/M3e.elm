@@ -1512,8 +1512,8 @@ mapNode =
 {-| A keyed node — like `node` but children carry diff keys for VirtualDom's keyed-node diffing. Lists that reorder/insert/remove keep their children's state and animation. Each child is a `(String, Node msg)` pair.
 -}
 keyed : String -> List (Attr attrs msg) -> List ( String, Node msg ) -> Node msg
-keyed tag attrs children =
-    HtmlIr.Node.keyedNode tag attrs children
+keyed tagName attrs children =
+    HtmlIr.Node.keyedNode tagName attrs children
 
 
 {-| A lazily-rendered subtree — Elm's `VirtualDom.lazy` memoizes rendered output by reference-equality of the function and argument. **Stable top-level function required** — an inline lambda allocates a fresh closure each render and silently never memoizes. The body returns `Html.Html msg`, not [`Element`](#Element); see type signature.

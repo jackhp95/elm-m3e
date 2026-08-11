@@ -189,6 +189,16 @@ function setupScratch() {
   // never mutating the real library source (#187).
   fs.writeFileSync(path.join(SCRATCH, "src/M3e.elm"), barrelSource());
 
+  // Component sub-modules (M3e.Component.*) — these are the per-component
+  // reference entries that map to categories.json slugs like "button", "theme".
+  const SRC_M3E_COMPONENT = path.join(SRC_M3E, "Component");
+  const componentModules = fs.existsSync(SRC_M3E_COMPONENT)
+    ? fs
+        .readdirSync(SRC_M3E_COMPONENT)
+        .filter((f) => f.endsWith(".elm"))
+        .map((f) => "M3e.Component." + f.replace(/\.elm$/, ""))
+    : [];
+
   const exposed = [
     // The one-import barrel first — it is the taught surface (#187).
     "M3e",
@@ -197,6 +207,8 @@ function setupScratch() {
       .filter((f) => f.endsWith(".elm"))
       .map((f) => "M3e." + f.replace(/\.elm$/, ""))
       .filter((m) => !NOT_EXPOSED.has(m)),
+    // Per-component modules under M3e.Component.* (Phase B layout).
+    ...componentModules,
   ].sort();
 
   const elmJson = {
@@ -300,7 +312,9 @@ function roleOf(m) {
 //    (constructor+types, attributes, slots, events) while preserving @docs order.
 function moduleEntry(mod) {
   const name = mod.name.replace(/^M3e\./, "");
-  const slug = name.toLowerCase();
+  // For M3e.Component.Button → slug "button" (strip intermediate namespace so
+  // categories.json keys stay simple). Top-level M3e.Action → slug "action" unchanged.
+  const slug = name.replace(/^Component\./, "").toLowerCase();
   const byName = new Map();
   for (const u of mod.unions || []) {
     byName.set(u.name, { name: u.name, kind: "type", signature: "", doc: (u.comment || "").trim() });

@@ -26,14 +26,14 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.AppBar
-import M3e.AssistChip
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.AppBar
+import M3e.Component.AssistChip
+import M3e.Component.Card
+import M3e.Component.NavItem
+import M3e.Component.SearchBar
 import M3e.Events
 import M3e.Kind
-import M3e.NavItem
-import M3e.SearchBar
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -247,9 +247,9 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 appBar =
     M3e.appBar []
-        [ M3e.AppBar.leading (M3e.icon [ TA.name "public" ] [])
-        , M3e.AppBar.title (M3e.text "Wander")
-        , M3e.AppBar.trailing
+        [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "public" ] [])
+        , M3e.Component.AppBar.title (M3e.text "Wander")
+        , M3e.Component.AppBar.trailing
             (M3e.iconButton
                 [ M3e.Attributes.variant Value.standard, Aria.label "Notifications" ]
                 [ M3e.icon [ TA.name "notifications" ] [] ]
@@ -277,7 +277,7 @@ railItem current ( dest, iconName, label ) =
         [ M3e.Attributes.selected (dest == current)
         , M3e.Events.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         ]
 
@@ -298,7 +298,7 @@ barItem current ( dest, iconName, label ) =
         [ M3e.Attributes.selected (dest == current)
         , M3e.Events.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         ]
 
@@ -362,9 +362,9 @@ searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } ad
 searchBar =
     M3e.searchBar
         []
-        [ M3e.SearchBar.input (TypedHtml.input [] [])
-        , M3e.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
-        , M3e.SearchBar.trailing (M3e.icon [ TA.name "tune" ] [])
+        [ M3e.Component.SearchBar.input (TypedHtml.input [] [])
+        , M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
+        , M3e.Component.SearchBar.trailing (M3e.icon [ TA.name "tune" ] [])
         ]
 
 
@@ -407,8 +407,8 @@ placeCard : Place -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 placeCard place =
     TypedHtml.div [ TA.class "w-56 shrink-0" ]
         [ M3e.card [ M3e.Attributes.variant Value.elevated ]
-            [ M3e.Card.header (media place)
-            , M3e.Card.content
+            [ M3e.Component.Card.header (media place)
+            , M3e.Component.Card.content
                 (TypedHtml.div [ TA.class "flex flex-col gap-2" ]
                     [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] [ M3e.text place.name ]
                     , TypedHtml.span [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text place.region ]
@@ -436,5 +436,5 @@ ratingChip rating =
     M3e.assistChip
         []
         [ M3e.text rating
-        , M3e.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] [])
+        , M3e.Component.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] [])
         ]

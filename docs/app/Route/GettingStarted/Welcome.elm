@@ -24,10 +24,10 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Button
-import M3e.Card
-import M3e.Heading
-import M3e.Icon
+import M3e.Component.Button
+import M3e.Component.Card
+import M3e.Component.Heading
+import M3e.Component.Icon
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -133,8 +133,8 @@ hero : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 hero =
     TypedHtml.section [ TA.class "space-y-5" ]
         [ M3e.heading
-            [ M3e.Heading.variant Value.display
-            , M3e.Heading.size Value.large
+            [ M3e.Component.Heading.variant Value.display
+            , M3e.Component.Heading.size Value.large
             , M3e.Attributes.level 1
             ]
             [ M3e.text "Type-safe Material 3 Expressive for Elm" ]
@@ -146,8 +146,8 @@ hero =
                 ]
             ]
         , TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3 pt-2" ]
-            [ M3e.button [ M3e.Button.variant Value.filled, M3e.Button.href "/getting-started/installation" ] [ M3e.text "Get started" ]
-            , M3e.button [ M3e.Button.variant Value.outlined, M3e.Button.href "/guide/reference" ] [ M3e.text "Browse the API reference" ]
+            [ M3e.button [ M3e.Component.Button.variant Value.filled, M3e.Component.Button.href "/getting-started/installation" ] [ M3e.text "Get started" ]
+            , M3e.button [ M3e.Component.Button.variant Value.outlined, M3e.Component.Button.href "/guide/reference" ] [ M3e.text "Browse the API reference" ]
             ]
         ]
 
@@ -176,12 +176,12 @@ highlights componentCount =
 highlightCard : String -> String -> String -> Element { s | card : M3e.Kind.Brand } admittedBy msg
 highlightCard iconName cardTitle cardBody =
     M3e.card
-        [ M3e.Card.variant Value.elevated ]
-        [ M3e.Card.header (M3e.heading [ M3e.Heading.variant Value.title ] [ M3e.text cardTitle ])
-        , M3e.Card.content
+        [ M3e.Component.Card.variant Value.elevated ]
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Component.Heading.variant Value.title ] [ M3e.text cardTitle ])
+        , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex gap-3" ]
                 [ TypedHtml.div [ TA.class "shrink-0" ]
-                    [ M3e.icon [ M3e.Icon.name iconName, TA.class "text-primary" ] [] ]
+                    [ M3e.icon [ M3e.Component.Icon.name iconName, TA.class "text-primary" ] [] ]
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface" ] [ M3e.text cardBody ]
                 ]
             )

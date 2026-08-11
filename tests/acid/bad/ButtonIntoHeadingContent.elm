@@ -7,7 +7,7 @@ narrows through the DEFAULT child list, which is a separate code path in the
 generator: `M3e.heading` is typed
 
     List (Attr Attrs msg)
-    -> List (Element M3e.Heading.Content (ChildAdmittedBy childAdm) msg)
+    -> List (Element M3e.Component.Heading.Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
 
 and `Content` is the closed row `{ heading : Brand, sharedText : Shared }`.
@@ -21,9 +21,9 @@ The claim needs a probe behind it.
 -}
 
 import M3e
-import M3e.Heading
+import M3e.Component.Heading
 
 
-broken : M3e.Element (M3e.Heading.Is s) admittedBy msg
+broken : M3e.Element (M3e.Component.Heading.Is s) admittedBy msg
 broken =
     M3e.heading [] [ M3e.button [] [ M3e.text "no" ] ]

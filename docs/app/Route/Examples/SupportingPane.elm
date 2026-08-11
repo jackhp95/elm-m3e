@@ -23,12 +23,12 @@ import BackendTask
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.AppBar
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.AppBar
+import M3e.Component.Card
+import M3e.Component.ListItem
+import M3e.Component.NavItem
 import M3e.Kind
-import M3e.ListItem
-import M3e.NavItem
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -152,7 +152,7 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar []
-        [ M3e.AppBar.title (M3e.text "Rally redesign") ]
+        [ M3e.Component.AppBar.title (M3e.text "Rally redesign") ]
 
 
 
@@ -188,8 +188,8 @@ primary =
 summaryCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 summaryCard =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
-        [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "This sprint" ])
-        , M3e.Card.content
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "This sprint" ])
+        , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-wrap gap-6 pt-1" ]
                 [ metric "12" "Tasks done"
                 , metric "3" "In review"
@@ -210,8 +210,8 @@ metric value label =
 milestonesCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 milestonesCard =
     M3e.card [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Milestones" ])
-        , M3e.Card.content
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Milestones" ])
+        , M3e.Component.Card.content
             (M3e.list []
                 (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
                     [ milestoneRow "check_circle" "Motion tokens" "Shipped"
@@ -226,9 +226,9 @@ milestonesCard =
 milestoneRow : String -> String -> String -> Element { s | listItem : M3e.Kind.Brand } adm_ msg
 milestoneRow iconName label status =
     M3e.listItem []
-        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
-        , M3e.ListItem.trailing
+        , M3e.Component.ListItem.trailing
             (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text status ])
         ]
 
@@ -308,6 +308,6 @@ navItem : { icon : String, label : String } -> Element { s | navItem : M3e.Kind.
 navItem d =
     M3e.navItem
         [ M3e.Attributes.selected (d.label == "Overview") ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name d.icon ] [])
         , M3e.text d.label
         ]

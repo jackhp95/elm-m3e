@@ -6,7 +6,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.Card
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -121,8 +121,8 @@ view _ _ =
                 ]
             , M3e.card
                 [ M3e.Attributes.variant Value.outlined ]
-                [ M3e.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
-                , M3e.Card.content
+                [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
+                , M3e.Component.Card.content
                     (TypedHtml.div [ TA.class "space-y-6" ]
                         [ demoBar 0
                         , demoBar -1

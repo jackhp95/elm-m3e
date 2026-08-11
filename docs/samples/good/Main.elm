@@ -5,8 +5,8 @@ module Main exposing (main)
 import Browser
 import Html
 import M3e
-import M3e.Button as Button
-import M3e.Theme as Theme
+import M3e.Component.Button as Button
+import M3e.Component.Theme as Theme
 import M3e.Values as Value
 
 

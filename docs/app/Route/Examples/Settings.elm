@@ -19,13 +19,13 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.AppBar
 import M3e.Attributes
+import M3e.Component.AppBar
+import M3e.Component.ListItem
+import M3e.Component.NavItem
+import M3e.Component.SliderThumb
 import M3e.Events
 import M3e.Kind
-import M3e.ListItem
-import M3e.NavItem
-import M3e.SliderThumb
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -233,8 +233,8 @@ exampleFooter =
 appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.Attributes.size Value.medium ]
-        [ M3e.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
-        , M3e.AppBar.title (M3e.text "Settings")
+        [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "menu" ] [])
+        , M3e.Component.AppBar.title (M3e.text "Settings")
         ]
 
 
@@ -281,7 +281,7 @@ navItem current ( section, name, iconName ) =
         [ M3e.Attributes.selected (section == current)
         , M3e.Events.onClick (PagesMsg.fromMsg (SelectSection section))
         ]
-        [ M3e.NavItem.icon (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.NavItem.icon (M3e.icon [ TA.name iconName ] [])
         , M3e.text name
         ]
 
@@ -358,10 +358,10 @@ accountCard =
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large overflow-hidden flex flex-col" ]
             (dividize
                 [ M3e.listItem []
-                    [ M3e.ListItem.leading (M3e.avatar [] [ M3e.text "JD" ])
+                    [ M3e.Component.ListItem.leading (M3e.avatar [] [ M3e.text "JD" ])
                     , M3e.text "Jane Doe"
-                    , M3e.ListItem.supportingText (M3e.text "jane@example.com")
-                    , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
+                    , M3e.Component.ListItem.supportingText (M3e.text "jane@example.com")
+                    , M3e.Component.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
                     ]
                 , linkRow "manage_accounts" "Manage account" "Password, 2FA, connected apps"
                 , linkRow "sync" "Sync & backup" "Last synced 2 minutes ago"
@@ -375,10 +375,10 @@ accountCard =
 switchRow : String -> String -> String -> Bool -> Msg -> Row (PagesMsg Msg)
 switchRow iconName label supporting on toggle =
     M3e.listItem []
-        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
-        , M3e.ListItem.supportingText (M3e.text supporting)
-        , M3e.ListItem.trailing
+        , M3e.Component.ListItem.supportingText (M3e.text supporting)
+        , M3e.Component.ListItem.trailing
             (M3e.switch
                 [ Aria.label label
                 , M3e.Attributes.checked on
@@ -394,9 +394,9 @@ switchRow iconName label supporting on toggle =
 themeRow : String -> String -> String -> String -> Row (PagesMsg Msg)
 themeRow theme label iconName current =
     M3e.listItem []
-        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
-        , M3e.ListItem.trailing
+        , M3e.Component.ListItem.trailing
             (M3e.radio
                 [ Aria.label label
                 , TA.name "theme"
@@ -429,7 +429,7 @@ densityRow =
             , Aria.label "Display density"
             , TA.class "w-full"
             ]
-            [ M3e.sliderThumb [ M3e.SliderThumb.value 2 ] [] ]
+            [ M3e.sliderThumb [ M3e.Component.SliderThumb.value 2 ] [] ]
         ]
 
 
@@ -438,10 +438,10 @@ densityRow =
 linkRow : String -> String -> String -> Row msg
 linkRow iconName label supporting =
     M3e.listItem []
-        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
-        , M3e.ListItem.supportingText (M3e.text supporting)
-        , M3e.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
+        , M3e.Component.ListItem.supportingText (M3e.text supporting)
+        , M3e.Component.ListItem.trailing (M3e.icon [ TA.name "chevron_right" ] [])
         ]
 
 
@@ -450,8 +450,8 @@ linkRow iconName label supporting =
 infoRow : String -> String -> String -> Row msg
 infoRow iconName label value =
     M3e.listItem []
-        [ M3e.ListItem.leading (M3e.icon [ TA.name iconName ] [])
+        [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
-        , M3e.ListItem.trailing
+        , M3e.Component.ListItem.trailing
             (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text value ])
         ]

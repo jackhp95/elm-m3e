@@ -13,7 +13,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.Card
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -73,9 +73,9 @@ the two can never drift.
 settingsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
-        [ M3e.Card.header
+        [ M3e.Component.Card.header
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ M3e.text "Account settings" ])
-        , M3e.Card.content
+        , M3e.Component.Card.content
             (M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ])
         ]
 
@@ -112,22 +112,22 @@ body =
 
 Look at the shape. Attributes like `M3e.Attributes.variant Value.filled` go in the first list; content goes in the second. That is the whole API — one import, one shape, every component.
 
-(One thing to notice: the *constructors* all live on the barrel, but a component's **slot setters** live on its own module — `M3e.Card.header`, not `M3e.header` — because each one is typed to the kinds that slot admits. That is why `M3e.Card` is imported alongside the barrel here.)"""
+(One thing to notice: the *constructors* all live on the barrel, but a component's **slot setters** live on its own module — `M3e.Component.Card.header`, not `M3e.header` — because each one is typed to the kinds that slot admits. That is why `M3e.Card` is imported alongside the barrel here.)"""
 
 
 source : String
 source =
     """import M3e
 import M3e.Attributes
-import M3e.Card
+import M3e.Component.Card
 import M3e.Values as Value
 
 
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
-        [ M3e.Card.header
+        [ M3e.Component.Card.header
             (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [ M3e.text "Account settings" ])
-        , M3e.Card.content
+        , M3e.Component.Card.content
             (M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ])
         ]"""
 

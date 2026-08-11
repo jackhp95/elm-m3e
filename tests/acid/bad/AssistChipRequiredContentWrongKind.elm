@@ -11,7 +11,7 @@ required slots, so the content cannot be forgotten:
         -> List (Element Content (ChildAdmittedBy childAdm) msg)
         -> Element (Is s) admittedBy msg
 
-`M3e.AssistChip.Content` is the closed row `{ heading : Brand, sharedText :
+`M3e.Component.AssistChip.Content` is the closed row `{ heading : Brand, sharedText :
 Shared }`. Supplying the field is therefore not enough — what fills it is
 checked too. `M3e.badge` produces `{ s | badge : Brand }`, so this MUST FAIL.
 
@@ -21,9 +21,9 @@ here about the KIND rather than about the required-record shape.
 -}
 
 import M3e
-import M3e.AssistChip
+import M3e.Component.AssistChip
 
 
-broken : M3e.Element (M3e.AssistChip.Is s) admittedBy msg
+broken : M3e.Element (M3e.Component.AssistChip.Is s) admittedBy msg
 broken =
-    M3e.AssistChip.el { content = M3e.badge [] [] } [] []
+    M3e.Component.AssistChip.el { content = M3e.badge [] [] } [] []

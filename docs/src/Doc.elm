@@ -26,9 +26,9 @@ import Doc.Fold as Fold
 import Html exposing (Html, p, text)
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Card
-import M3e.ContentPane
-import M3e.Heading
+import M3e.Component.Card
+import M3e.Component.ContentPane
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Unsafe
 import M3e.Unsafe.Attributes
@@ -50,11 +50,11 @@ items instead, so the card stays within `max-w-full` without clipping — a live
 example's escaping menu/tooltip is free to overflow the card.
 
 -}
-showcase : Element accepts admittedBy msg -> Element (M3e.Card.Is s) freeAdm msg
+showcase : Element accepts admittedBy msg -> Element (M3e.Component.Card.Is s) freeAdm msg
 showcase content =
     M3e.card
-        [ M3e.Card.variant Value.outlined, TA.class "max-w-full" ]
-        [ M3e.Card.content content ]
+        [ M3e.Component.Card.variant Value.outlined, TA.class "max-w-full" ]
+        [ M3e.Component.Card.content content ]
 
 
 {-| Render a raw HTML string as live DOM. The embedded `<m3e-*>` custom elements
@@ -158,18 +158,18 @@ markdown raw =
 {-| The route content pane: the standard `M3e.contentPane` wrapper every docs
 route hands to `View.fromElement` at its root.
 -}
-pane : List (Element childAccepts (M3e.ContentPane.ChildAdmittedBy childAdm) msg) -> Element (M3e.ContentPane.Is s) freeAdm msg
+pane : List (Element childAccepts (M3e.Component.ContentPane.ChildAdmittedBy childAdm) msg) -> Element (M3e.Component.ContentPane.Is s) freeAdm msg
 pane items =
     M3e.contentPane [ TA.class "mx-auto max-w-5xl" ] items
 
 
 {-| A page's `<h1>`: display-small heading.
 -}
-pageHeading : String -> Element (M3e.Heading.Is s) admittedBy msg
+pageHeading : String -> Element (M3e.Component.Heading.Is s) admittedBy msg
 pageHeading s =
     M3e.heading
-        [ M3e.Heading.variant Value.display
-        , M3e.Heading.size Value.small
+        [ M3e.Component.Heading.variant Value.display
+        , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
         [ M3e.text s ]
@@ -184,11 +184,11 @@ anchor stable across renders:
     Doc.sectionHeadingWithId (Doc.slugify "Container pairings") "Container pairings"
 
 -}
-sectionHeadingWithId : String -> String -> Element (M3e.Heading.Is s) admittedBy msg
+sectionHeadingWithId : String -> String -> Element (M3e.Component.Heading.Is s) admittedBy msg
 sectionHeadingWithId id s =
     M3e.heading
-        [ M3e.Heading.variant Value.headline
-        , M3e.Heading.size Value.small
+        [ M3e.Component.Heading.variant Value.headline
+        , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 2
         , M3e.Attributes.id id
         ]

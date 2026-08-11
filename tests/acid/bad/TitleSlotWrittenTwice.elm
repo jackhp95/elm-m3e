@@ -9,7 +9,7 @@ A singular named slot is spent when it is written:
         -> Builder attrCaps { s | title : Available } msg
         -> Builder attrCaps { s | title : Used } msg
 
-`M3e.AppBar.build` seeds `SlotCaps` with every capability `Available`. The
+`M3e.Component.AppBar.build` seeds `SlotCaps` with every capability `Available`. The
 first `withTitle` flips `title` to `Used`; the second demands `Available`
 again, so this MUST FAIL — `<m3e-app-bar>` has one title slot and the type
 says so.
@@ -24,12 +24,12 @@ repeatable — `app/Good.elm` calls it three times.
 -}
 
 import M3e
-import M3e.AppBar
+import M3e.Component.AppBar
 
 
-broken : M3e.Element (M3e.AppBar.Is s) admittedBy msg
+broken : M3e.Element (M3e.Component.AppBar.Is s) admittedBy msg
 broken =
-    M3e.AppBar.build
-        |> M3e.AppBar.withTitle (M3e.heading [] [ M3e.text "Inbox" ])
-        |> M3e.AppBar.withTitle (M3e.heading [] [ M3e.text "Drafts" ])
-        |> M3e.AppBar.toElement
+    M3e.Component.AppBar.build
+        |> M3e.Component.AppBar.withTitle (M3e.heading [] [ M3e.text "Inbox" ])
+        |> M3e.Component.AppBar.withTitle (M3e.heading [] [ M3e.text "Drafts" ])
+        |> M3e.Component.AppBar.toElement

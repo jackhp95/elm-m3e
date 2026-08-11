@@ -1,7 +1,7 @@
 module Route.Guide.Accessibility exposing (ActionData, Data, Model, Msg, route)
 
 {-| Guide (`/guide/accessibility`): the accessibility reference for elm-m3e —
-the named-slot vs `M3e.Aria.label` / `Aria.label` decision, focus behavior in
+the named-slot vs `M3e.Component.Aria.label` / `Aria.label` decision, focus behavior in
 Dialog / Menu / BottomSheet (what `@m3e/web` handles vs what the Elm author wires),
 keyboard interaction per component family, and testing with the Playwright a11y-tree
 harness in `docs/tests-browser/`. The narrow "accessible name is required" teaching
@@ -168,11 +168,11 @@ focusCode =
     """-- Elm owns the open STATE; @m3e/web owns the focus trap + Escape + return-focus.
 M3e.dialog
     [ M3e.Attributes.open model.dialogOpen
-    , M3e.Dialog.onClosed CloseDialog
+    , M3e.Component.Dialog.onClosed CloseDialog
     ]
-    [ M3e.Dialog.header (M3e.text "Delete file?")
+    [ M3e.Component.Dialog.header (M3e.text "Delete file?")
     , M3e.text "This cannot be undone."
-    , M3e.Dialog.actions confirmButtons
+    , M3e.Component.Dialog.actions confirmButtons
     ]"""
 
 

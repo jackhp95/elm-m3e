@@ -10,7 +10,9 @@ Change the sample there; this file follows.
 import M3e
 import M3e.Action
 import M3e.Attributes
-import M3e.Button
+import M3e.Build
+import M3e.Build.Button
+import M3e.Component.Button
 import M3e.Values as Value
 import Sample.Support exposing (Msg(..))
 
@@ -22,10 +24,10 @@ shown0_ =
 
 -- required-record form — the compiler demands the parts it can't do without
 shown1_ =
-    M3e.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
+    M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 
 -- builder pipe — a one-only setter is unwritable twice; order-free
 shown2_ =
-    M3e.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
-        |> M3e.Button.toElement
+    M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
+        |> M3e.Build.Button.toElement
