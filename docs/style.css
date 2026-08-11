@@ -248,10 +248,28 @@
     /* dvh, not vh: `vh` is the LARGE (URL-bar-retracted) viewport, so a `100vh`
        shell extends its bottom edge behind the shown URL bar and clips. `100dvh`
        is the STABLE visible height in this fixed, non-scrolling shell. */
-    font-family: Roboto, "Helvetica Neue", system-ui, -apple-system, sans-serif;
+    /* The active theme's BODY font. `Theme.update` pushes `--app-font-body` (via
+       the `setCssOverride` port) whenever a preset or the body-font picker
+       changes; the Roboto stack is the boot fallback. This is how "selecting a
+       theme changes the app's fonts" — @m3e/web has no font-family design token,
+       so components inherit family from this cascade. */
+    font-family: var(--app-font-body, Roboto, "Helvetica Neue", system-ui, -apple-system, sans-serif);
     font-size: var(--md-sys-typescale-body-large-font-size);
     line-height: var(--md-sys-typescale-body-large-line-height);
     letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  }
+
+  /* The active theme's DISPLAY (brand) font, applied to every heading. m3e-heading
+     sets no font-family of its own (only size/weight typescale tokens), so its
+     slotted text inherits this. `Theme.update` pushes `--app-font-display`; the
+     reel cards override it per-card with an inline `font-family` (inline wins),
+     so each card still shows its own preset's display font. */
+  m3e-heading,
+  .doc-prose h1,
+  .doc-prose h2,
+  .doc-prose h3,
+  .doc-prose h4 {
+    font-family: var(--app-font-display, var(--app-font-body, Roboto, "Helvetica Neue", system-ui, -apple-system, sans-serif));
   }
 
   /* Global responsive-media reset. Replaced-content elements have an intrinsic

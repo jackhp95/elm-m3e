@@ -1,4 +1,4 @@
-module Theme.Fonts exposing (googleFontsUrl, specimenSubsetUrls)
+module Theme.Fonts exposing (curatedFonts, fontStack, googleFontsUrl, specimenSubsetUrls)
 
 {-| Google Fonts helpers for the theme reel and global font application.
 
@@ -16,11 +16,66 @@ Specimen subsetting (§D6 of the plan): each reel card loads only the glyphs
 it displays ("Aa" + the preset name) by adding `&text=` to the Google Fonts
 URL. All 22 cards can load simultaneously at negligible payload cost.
 
-@docs googleFontsUrl, specimenSubsetUrls
+@docs curatedFonts, fontStack, googleFontsUrl, specimenSubsetUrls
 
 -}
 
 import Theme.Presets exposing (Preset)
+
+
+{-| A `font-family` value for one webfont, with a generic fallback for the
+brief window before the font swaps in (`display=swap`). Regular CSS
+`font-family` value — safe to push into the `--app-font-display` /
+`--app-font-body` custom properties (see `Theme.update`) or to set inline on a
+reel card's specimen text.
+
+    fontStack "Fraunces" --> "\"Fraunces\", system-ui, sans-serif"
+
+-}
+fontStack : String -> String
+fontStack name =
+    "\"" ++ name ++ "\", system-ui, sans-serif"
+
+
+{-| The font families offered by the display/body font pickers (the drawer's
+Typography section). A curated cross-section of Google Fonts — sans, serif,
+mono, and display faces — that also covers every family used by the presets in
+`Theme.Presets`, so a picked font always resolves once `loadFonts` fetches it.
+-}
+curatedFonts : List String
+curatedFonts =
+    [ "Roboto"
+    , "Inter"
+    , "Manrope"
+    , "DM Sans"
+    , "Hanken Grotesk"
+    , "Outfit"
+    , "Poppins"
+    , "Sora"
+    , "Source Sans 3"
+    , "Space Grotesk"
+    , "Work Sans"
+    , "Albert Sans"
+    , "Archivo"
+    , "Newsreader"
+    , "Fraunces"
+    , "EB Garamond"
+    , "Cormorant Garamond"
+    , "Libre Caslon Text"
+    , "Lora"
+    , "Playfair Display"
+    , "DM Mono"
+    , "JetBrains Mono"
+    , "IBM Plex Mono"
+    , "Space Mono"
+    , "Anton"
+    , "Archivo Black"
+    , "Bebas Neue"
+    , "Bungee"
+    , "Epilogue"
+    , "Fredoka"
+    , "Syne"
+    ]
 
 
 {-| Build a single Google Fonts `<link>` `href` that loads one or two font

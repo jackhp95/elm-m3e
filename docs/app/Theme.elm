@@ -8,8 +8,9 @@ import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Button
 import M3e.Events
-import M3e.FormField
+import M3e.Icon
 import M3e.Kind
+import M3e.Theme
 import M3e.Values as Value exposing (Value)
 import Theme.Fonts
 import Theme.Icons exposing (IconStyle)
@@ -21,7 +22,6 @@ import Theme.Tokens
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
-import TypedHtml.Button
 import TypedHtml.Events
 import TypedHtml.Grouping
 import TypedHtml.Values
@@ -138,10 +138,20 @@ update msg model =
             persist { model | motion = motion }
 
         SetDisplayFont font ->
-            persist { model | displayFont = font, activePresetId = Nothing }
+            let
+                newModel : Model
+                newModel =
+                    { model | displayFont = font, activePresetId = Nothing }
+            in
+            persist newModel |> andThen (fontCmds newModel)
 
         SetBodyFont font ->
-            persist { model | bodyFont = font, activePresetId = Nothing }
+            let
+                newModel : Model
+                newModel =
+                    { model | bodyFont = font, activePresetId = Nothing }
+            in
+            persist newModel |> andThen (fontCmds newModel)
 
         SetTypeScaleMode mode ->
             let
@@ -200,7 +210,7 @@ update msg model =
                             |> List.map (\( k, v ) -> Theme.Ports.setCssOverride { property = k, value = v })
                        )
                     ++ [ storeState newModel
-                       , loadFontCmd (fontsOf newModel)
+                       , fontCmds newModel
                        , setIconVariantCmd newModel
                        ]
                 )
@@ -219,14 +229,18 @@ update msg model =
                         (pushTypeScaleCmds loaded
                             ++ pushShapeScaleCmds loaded
                             ++ pushOverrideCmds loaded
-                            ++ [ loadFontCmd (fontsOf loaded)
+                            ++ [ fontCmds loaded
                                , setIconVariantCmd loaded
+                               , specimenFontsCmd
                                ]
                         )
                     )
 
                 Err _ ->
-                    ( model, Cmd.none )
+                    -- Even with no persisted state, boot still needs to apply the
+                    -- default font vars and load the reel's specimen fonts (the
+                    -- reliable seam past the init-port race).
+                    ( model, Cmd.batch [ fontCmds model, specimenFontsCmd ] )
 
         ResetAll ->
             persist init
@@ -277,6 +291,43 @@ expects.
 fontsOf : Model -> { displayFont : String, bodyFont : String }
 fontsOf model =
     { displayFont = model.displayFont, bodyFont = model.bodyFont }
+
+
+{-| Push the two app font custom properties (`--app-font-display` /
+`--app-font-body`) so the theme's fonts actually APPLY globally. `style.css`'s
+`body` and `m3e-heading` rules read these vars; `@m3e/web` has no font-family
+design token, so this var + the CSS cascade is the mechanism by which selecting
+a theme changes the whole app's fonts. `setCssOverride` prepends `--`, so the
+property names here are unprefixed. This was the missing "last mile" behind the
+"fonts don't change on select" bug.
+-}
+pushFontVarsCmds : Model -> List (Cmd Msg)
+pushFontVarsCmds model =
+    [ Theme.Ports.setCssOverride
+        { property = "app-font-display", value = Theme.Fonts.fontStack model.displayFont }
+    , Theme.Ports.setCssOverride
+        { property = "app-font-body", value = Theme.Fonts.fontStack model.bodyFont }
+    ]
+
+
+{-| Everything needed to make a model's fonts live: fetch the webfont files
+(`loadFonts`) AND apply them globally (`--app-font-*` vars). Both `ApplyPreset`
+and the manual font setters use this so the two never drift.
+-}
+fontCmds : Model -> Cmd Msg
+fontCmds model =
+    Cmd.batch (loadFontCmd (fontsOf model) :: pushFontVarsCmds model)
+
+
+{-| Load every reel card's specimen-subset webfont (§D6) so each card renders in
+its own display + body font instead of falling back to sans-serif. Fired from
+`ThemeStateLoaded` (which `index.ts` triggers AFTER the ports are subscribed) —
+`Shared.init`'s one-shot send races the port subscription and is dropped, so
+this is the reliable seam. `index.ts` dedupes by href, so re-sending is safe.
+-}
+specimenFontsCmd : Cmd Msg
+specimenFontsCmd =
+    Theme.Ports.loadSpecimenFonts (Theme.Fonts.specimenSubsetUrls Theme.Presets.presets)
 
 
 {-| Fire the `setIconVariant` port with the model's active icon style, switching
@@ -521,44 +572,97 @@ schemeLabel v =
             capitalize other
 
 
-{-| The source-color control, dogfooding the composition-text-field pattern
-(`/guide/composition-text-field`): an outlined `FormField` whose label and
-typed native `<input type=color>` are wired into one accessible control by a
-single shared id (`"seed-color"`), with the live hex shown as the field
-hint. Ported from `Shared.elm`.
+{-| The drawer's color controls, all real m3e components: a row of blank
+`m3e-avatar`s, one per curated seed color, each painted by its OWN nested
+`<m3e-theme>` (seeded with that hex) so the swatch shows the color's live-derived
+primary — never a hand-painted hex. The first option is the source-color picker
+(`sourceColorOption`). A small `m3e-heading` labels the row.
 -}
-seedColorInput : Model -> Element { s | formField : M3e.Kind.Brand } admittedBy Msg
-seedColorInput model =
-    M3e.formField [ M3e.FormField.variant Value.outlined ]
-        [ M3e.FormField.label
-            (TypedHtml.label [ TypedHtml.Attributes.for "seed-color" ] [ M3e.text "Source color" ])
-        , M3e.FormField.hint
-            (M3e.heading
+colorOptions : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+colorOptions model =
+    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1.5" ]
+        [ TypedHtml.div []
+            [ M3e.heading
                 [ M3e.Attributes.variant Value.label
                 , M3e.Attributes.size Value.small
                 , TypedHtml.Attributes.class "text-on-surface-variant"
                 ]
-                [ M3e.text model.seed ]
-            )
-        , TypedHtml.input
-            [ TypedHtml.Attributes.id "seed-color"
-            , TypedHtml.Attributes.type_ "color"
-            , TypedHtml.Attributes.value model.seed
-            , TypedHtml.Events.onInput SetSeed
+                [ M3e.text "Source color" ]
             ]
-            []
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-wrap items-center gap-2" ]
+            (sourceColorOption model :: List.map (colorAvatar model) curatedSwatchColors)
         ]
 
 
-{-| A compact strip of curated seed colors — a faster alternative to a full
-preset: clicking a swatch fires `SetSeed hex` only, leaving scheme/contrast/
-fonts untouched (unlike the reel's preset apply, which applies a whole preset).
+{-| The source-color picker = the first color option. A blank `m3e-avatar` (in a
+nested `<m3e-theme>` seeded with the current color, so it mirrors the live seed)
+carrying a `colorize` icon, with a transparent native `<input type=color>`
+stretched over it — clicking anywhere opens the OS color picker and fires
+`SetSeed`. The native input is the keyboard-accessible control.
 -}
-swatchStrip : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-swatchStrip model =
+sourceColorOption : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+sourceColorOption model =
     TypedHtml.div
-        [ TypedHtml.Attributes.class "flex flex-wrap gap-1" ]
-        (List.map (swatch model) curatedSwatchColors)
+        [ TypedHtml.Attributes.class "relative inline-flex rounded-full" ]
+        [ TypedHtml.div []
+            [ M3e.theme [ M3e.Theme.color model.seed ]
+                [ M3e.avatar
+                    [ M3e.Attributes.class "m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-label-color-[var(--md-sys-color-on-primary)] m3e-avatar-size-[2rem]" ]
+                    [ M3e.icon [ M3e.Icon.name "colorize", M3e.Attributes.class "text-base" ] [] ]
+                ]
+            ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "absolute inset-0" ]
+            [ TypedHtml.input
+                [ TypedHtml.Attributes.id "seed-color"
+                , TypedHtml.Attributes.type_ "color"
+                , TypedHtml.Attributes.value model.seed
+                , TypedHtml.Events.onInput SetSeed
+                , TypedHtml.Attributes.class "size-full opacity-0 cursor-pointer"
+                , Aria.label "Source color"
+                ]
+                []
+            ]
+        ]
+
+
+{-| One curated color swatch: a blank `m3e-avatar` whose background is the
+color's derived primary (via a nested `<m3e-theme>` seeded with the hex). The
+click target is a transparent, empty native `<button>` overlaid on top —
+`onClick` is an interactive-element attribute (a `div` can't carry it), and an
+empty button avoids threading a branded child through the button's
+phrasing-content slot. The active swatch (matching the current seed) gets a
+primary ring in the APP palette so the selected marker reads consistently
+across hues.
+-}
+colorAvatar : Model -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+colorAvatar model hex =
+    TypedHtml.div
+        [ TypedHtml.Attributes.class
+            ("relative inline-flex rounded-full "
+                ++ (if model.seed == hex then
+                        "ring-2 ring-primary"
+
+                    else
+                        ""
+                   )
+            )
+        ]
+        [ TypedHtml.div []
+            [ M3e.theme [ M3e.Theme.color hex ]
+                [ M3e.avatar
+                    [ M3e.Attributes.class "m3e-avatar-color-[var(--md-sys-color-primary)] m3e-avatar-size-[2rem]" ]
+                    []
+                ]
+            ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "absolute inset-0" ]
+            [ TypedHtml.button
+                [ TypedHtml.Events.onClick (SetSeed hex)
+                , Aria.label ("Set source color to " ++ hex)
+                , TypedHtml.Attributes.class "size-full rounded-full cursor-pointer"
+                ]
+                []
+            ]
+        ]
 
 
 {-| ~20 curated hex colors for the quick-picker, chosen for hue spread across
@@ -591,37 +695,6 @@ curatedSwatchColors =
     ]
 
 
-{-| Round swatch button. The fill color is set via a genuine inline `style`
-attribute (`TypedHtml.Attributes.style "background-color" hex`), NOT a
-Tailwind arbitrary-value class. Tailwind v4's JIT content-scanner only
-generates CSS for class strings that appear complete and literal in source;
-a runtime-concatenated `"[background-color:" ++ hex ++ "]"` class never
-appears as a literal anywhere, so Tailwind emitted zero rules for any of the
-20 curated colors (swatches rendered fully transparent). `background-color`
-is an ordinary CSS property, so the `style`/`styleList` inline-style escape
-hatch works here — unlike `Shared.densityClass`, which sets the CSS
-_custom property_ `--md-sys-density-scale` and must stay on the
-Tailwind-arbitrary-class convention because inline styles don't reliably
-support custom properties in this codebase's style-dict encoding.
--}
-swatch : Model -> String -> Element (TypedHtml.Button.Is s) admittedBy Msg
-swatch model hex =
-    TypedHtml.button
-        [ TypedHtml.Events.onClick (SetSeed hex)
-        , Aria.label ("Set seed color to " ++ hex)
-        , TypedHtml.Attributes.class "size-8 rounded-full border-2"
-        , TypedHtml.Attributes.style "background-color" hex
-        , TypedHtml.Attributes.class
-            (if model.seed == hex then
-                "border-primary"
-
-             else
-                "border-transparent"
-            )
-        ]
-        []
-
-
 {-| `sections` is threaded in rather than imported here because each
 `Theme.Sections.*` module imports `Theme` (for `Model`/`Msg`, per the note on
 `Msg` above) — if `Theme.elm` also imported the section modules to build
@@ -644,14 +717,13 @@ view { sectionsEl } model toMsg =
     TypedHtml.div
         [ TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
-        [ seedColorInput model |> HtmlIr.Element.map toMsg
+        [ colorOptions model |> HtmlIr.Element.map toMsg
         , schemeSegmented model |> HtmlIr.Element.map toMsg
         , Theme.Reel.view
             { presets = Theme.Presets.presets
             , activeId = model.activePresetId
             , onPick = \preset -> toMsg (ApplyPreset preset)
             }
-        , swatchStrip model |> HtmlIr.Element.map toMsg
         , sectionsEl
         , resetAllButton |> HtmlIr.Element.map toMsg
         ]

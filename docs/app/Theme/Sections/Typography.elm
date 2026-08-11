@@ -1,20 +1,24 @@
 module Theme.Sections.Typography exposing (view)
 
-{-| The Typography accordion section: display/body font pickers, a
-Linear/Modular/Bump/Power scale-mode segmented control, per-mode numeric
-steppers, and a live 15-token size preview (`Theme.Tokens.typescaleTokens`).
+{-| The Typography accordion section: display/body font pickers (real
+`m3e-select`s), a Linear/Modular/Bump/Power scale-mode segmented control,
+per-mode numeric steppers, and a live 15-token size preview
+(`Theme.Tokens.typescaleTokens`).
 -}
 
+import Json.Decode as Decode
 import M3e exposing (Element)
+import M3e.Attributes
+import M3e.Events
+import M3e.Option
 import Theme exposing (Msg(..))
+import Theme.Fonts
 import Theme.Scale as Scale
 import Theme.Sections.Shared as Shared
 import Theme.Tokens as Tokens
 import TypedHtml
 import TypedHtml.Attributes
-import TypedHtml.Events
 import TypedHtml.Grouping
-import TypedHtml.Select
 
 
 view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
@@ -28,16 +32,12 @@ view model =
         ]
 
 
-{-| Reuse a fixed font list rather than free text — matches the reference
-site's `<select>`-based font picker. Exact list is a design call; start with
-this set (common Google Fonts pairings) and let Jack extend it during manual
-review.
+{-| One font picker, an `m3e-select` of `m3e-option`s drawn from
+`Theme.Fonts.curatedFonts`. The selected family is read from the `change`
+event's `target.value` via `M3e.Events.onChangeWith` (the select binding's
+plain `onChange` carries no value). Picking a font fires `SetDisplayFont` /
+`SetBodyFont`, which loads the webfont AND applies it globally.
 -}
-availableFonts : List String
-availableFonts =
-    [ "Roboto", "Roboto Flex", "Roboto Serif", "Roboto Mono", "Inter", "Newsreader", "Space Grotesk", "JetBrains Mono" ]
-
-
 fontSelect : String -> String -> String -> (String -> Msg) -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 fontSelect labelText idSuffix current toMsg =
     let
@@ -45,17 +45,20 @@ fontSelect labelText idSuffix current toMsg =
         inputId =
             "font-select-" ++ idSuffix
     in
-    TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-2" ]
+    TypedHtml.div [ TypedHtml.Attributes.class "flex items-center justify-between gap-2" ]
         [ TypedHtml.label [ TypedHtml.Attributes.for inputId ] [ M3e.text labelText ]
-        , TypedHtml.Select.select
-            [ TypedHtml.Attributes.id inputId, TypedHtml.Events.onInput toMsg ]
+        , M3e.select
+            [ M3e.Attributes.id inputId
+            , M3e.Events.onChangeWith
+                (Decode.map toMsg (Decode.at [ "target", "value" ] Decode.string))
+            ]
             (List.map
                 (\font ->
-                    TypedHtml.Select.option
-                        [ TypedHtml.Select.value font, TypedHtml.Select.selected (font == current) ]
+                    M3e.option
+                        [ M3e.Option.value font, M3e.Option.selected (font == current) ]
                         [ M3e.text font ]
                 )
-                availableFonts
+                Theme.Fonts.curatedFonts
             )
         ]
 
