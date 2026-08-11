@@ -2,6 +2,13 @@ module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound,
 
 import Doc
 import Effect exposing (Effect)
+import M3e
+import M3e.Attributes
+import M3e.Button
+import M3e.Heading
+import M3e.Values as Value
+import TypedHtml
+import TypedHtml.Attributes as TA
 import View exposing (View)
 
 
@@ -40,22 +47,37 @@ internalError =
 
 view : ErrorPage -> Model -> View Msg
 view error _ =
-    View.fromElement
-        (case error of
-            NotFound ->
-                "Page Not Found"
+    case error of
+        NotFound ->
+            notFoundView
 
-            InternalError _ ->
-                "Unexpected Error"
-        )
-        (Doc.message
-            (case error of
-                NotFound ->
-                    "Page not found. Maybe try another URL?"
+        InternalError string ->
+            View.fromElement "Unexpected Error"
+                (Doc.message ("Something went wrong.\n" ++ string))
 
-                InternalError string ->
-                    "Something went wrong.\n" ++ string
-            )
+
+notFoundView : View Msg
+notFoundView =
+    View.fromElement "Page Not Found"
+        (Doc.pane
+            [ TypedHtml.section [ TA.class "space-y-6" ]
+                [ M3e.heading
+                    [ M3e.Heading.variant Value.display
+                    , M3e.Heading.size Value.small
+                    , M3e.Attributes.level 1
+                    ]
+                    [ M3e.text "Page not found" ]
+                , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant max-w-md" ]
+                    [ M3e.text "The page you’re looking for doesn’t exist or has moved." ]
+                , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
+                    [ M3e.button
+                        [ M3e.Button.variant Value.filled
+                        , M3e.Button.href "/getting-started/welcome"
+                        ]
+                        [ M3e.text "Go to Welcome" ]
+                    ]
+                ]
+            ]
         )
 
 
