@@ -37,7 +37,7 @@
     "format:src": "node_modules/.bin/elm-format --yes src",
     "hooks:install": "git config core.hooksPath hooks",
     "postinstall": "npm run hooks:install && node scripts/fix-native-bins.mjs",
-    "check:spike": "cd tests/spike && ../../node_modules/.bin/elm make app/ApiConsolidation.elm --output=/dev/null && ../../node_modules/.bin/elm make app/AnnotationOnly.elm --output=/dev/null && ! ../../node_modules/.bin/elm make bad/WrongKindBuilderIntoIconSlot.elm --output=/dev/null 2>/dev/null"
+    "check:spike": "cd tests/spike && ../../node_modules/.bin/elm make app/ApiConsolidation.elm --output=/dev/null && ../../node_modules/.bin/elm make app/AnnotationOnly.elm --output=/dev/null && ../../node_modules/.bin/elm make app/EnumNarrowingOk.elm --output=/dev/null && ! ../../node_modules/.bin/elm make bad/WrongKindBuilderIntoIconSlot.elm --output=/dev/null 2>/dev/null && ! ../../node_modules/.bin/elm make bad/EnumNarrowingSplitButton.elm --output=/dev/null 2>/dev/null && ! ../../node_modules/.bin/elm make bad/EnumNarrowingBuilder.elm --output=/dev/null 2>/dev/null"
   },
   "devDependencies": {
     "elm": "0.19.1-6",
