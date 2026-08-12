@@ -2,6 +2,9 @@
   "_phantom": true,
   "_brand": "M3e",
   "_publishGeneralOnly": true,
+  "_internalModules": [
+    "M3e.Html"
+  ],
   "_atoms": {
     "text": {}
   },
