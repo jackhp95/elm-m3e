@@ -6,15 +6,23 @@
 # the same `npm run gate` (or `npm test`) a human would run, so a red tree cannot
 # reach origin in the first place.
 #
-# Generated-docs auto-commit
-# --------------------------
+# Generated-docs auto-commit  (repo hygiene — NOT a Netlify build-time win)
+# ------------------------------------------------------------------------
 # `npm run gate` runs `build:site` (elm-pages build), which regenerates the
-# TRACKED files under docs/.elm-pages/*. Historically the gate left those dirty
-# and uncommitted, so a push never carried the prebuilt output and Netlify
-# rebuilt everything from scratch. After a passing gate this hook stages ONLY the
-# allowlisted generated paths (GEN_PATHS), commits them as a separate
-# `chore(docs)` commit, and pushes that commit so origin — and Netlify — get the
-# prebuilt output.
+# TRACKED files under docs/.elm-pages/* (elm-pages codegen: Pages.elm, Route/*,
+# compiled/render.mjs). Historically the gate left those dirty and uncommitted, so
+# the tracked copies drifted permanently out of sync with what the build produces
+# (main is dirty this way today). After a passing gate this hook stages ONLY the
+# allowlisted generated paths (GEN_PATHS) and commits them as a separate
+# `chore(docs)` commit so origin's tracked tree matches the build output.
+#
+# THIS DOES NOT SPEED UP NETLIFY. `elm-pages build` regenerates .elm-pages/ from
+# scratch on every build and never reads the committed copies (verified: it
+# synthesizes Pages.elm/Route/* from app/Route/*.elm and rebuilds render.mjs via
+# esbuild each run), and the served dist/ is gitignored (Netlify rebuilds it). The
+# win here is purely repo hygiene — no permanent dirty tree, no misleading diffs.
+# The REAL Netlify build-time win is the persisted ELM_HOME + elm-stuff caches
+# wired in docs/netlify.toml — see plans/2026-08-12-netlify-build-optimization.md.
 #
 # SCOPE SAFETY: the hook stages ONLY the GEN_PATHS pathspec. It never runs
 # `git add -A`/`git add .`, so a developer's unrelated uncommitted edits are
@@ -29,12 +37,24 @@
 # Cost of this design: `git push` returns non-zero on the run that commits docs.
 # The upside is Jack's intent — one `git push`, no manual re-push.
 #
+# NON-INTERACTIVE / CI PUSHERS: that unavoidable non-zero exit reads as a hard
+# failure to a scripted `git push` (CI, release scripts, automated bots). Because
+# the docs commit is pure repo hygiene with ZERO Netlify build-time value (see
+# above), a non-interactive push does NOT do the commit+self-push dance: it runs
+# the gate, then leaves the regenerated docs uncommitted and exits 0 cleanly. A
+# later interactive push by a human re-syncs the tracked generated files at no
+# Netlify cost. "Non-interactive" = no TTY on stdout, or $CI is set. Force the
+# commit+self-push anyway (accepting the non-zero exit) with
+# PREPUSH_FORCE_DOCS_COMMIT=1.
+#
 # Enable with `npm run hooks:install` (sets core.hooksPath=hooks). `postinstall`
 # does it automatically, so a fresh `npm install` is enough.
 #
 # Escape hatches, in order of preference:
-#   git push --no-verify      one-off bypass (skips gate AND docs auto-commit)
-#   SKIP_GATE=1 git push      same, but explicit about what is being skipped
+#   git push --no-verify              one-off bypass (skips gate AND docs auto-commit)
+#   SKIP_GATE=1 git push              same, but explicit about what is being skipped
+#   PREPUSH_FORCE_DOCS_COMMIT=1 …     force the docs commit+self-push in a
+#                                     non-interactive/CI context (exits non-zero by design)
 #
 # Ref deletions skip the gate: there is no tree to verify, and `git push --delete`
 # during branch cleanup should not pay for a full test run.
@@ -122,10 +142,26 @@ if git diff --cached --quiet -- $GEN_PATHS 2>/dev/null; then
   exit 0
 fi
 
-# Only the allowlist is staged at this point. Commit it as its own commit,
-# bypassing hooks (--no-verify: a commit never re-fires pre-push, but this also
-# skips any pre-commit hook).
-git commit -q --no-verify -m "chore(docs): auto-commit generated elm-pages output [skip ci]"
+# Non-interactive / CI pushers read this hook's by-design non-zero exit (see THE
+# GIT-REF WRINKLE) as a hard failure. The docs commit is pure repo hygiene with no
+# Netlify build-time value, so unless explicitly forced, a non-interactive push
+# leaves the regenerated docs uncommitted and exits 0 cleanly — a later interactive
+# push re-syncs them at no cost. Detection: no TTY on stdout, or $CI set.
+if [ "${PREPUSH_FORCE_DOCS_COMMIT:-}" != "1" ] && { [ -n "${CI:-}" ] || [ ! -t 1 ]; }; then
+  git reset -q -- $GEN_PATHS 2>/dev/null || true
+  echo "pre-push: non-interactive/CI push — regenerated docs left uncommitted"
+  echo "          (repo hygiene only, no Netlify cost; a later interactive push syncs them)."
+  echo "          Force the commit+self-push with PREPUSH_FORCE_DOCS_COMMIT=1 (exits non-zero)."
+  exit 0
+fi
+
+# Only the allowlist is committed. Pass the GEN_PATHS pathspec to `git commit` so
+# ONLY the generated paths are committed even if the developer had OTHER changes
+# pre-staged before pushing — those unrelated staged edits are never swept in.
+# (Staging above is also allowlist-scoped; the pathspec here is the belt-and-braces
+# guarantee against a pre-existing staged index.) --no-verify: a commit never
+# re-fires pre-push, but this also skips any pre-commit hook.
+git commit -q --no-verify -m "chore(docs): auto-commit generated elm-pages output [skip ci]" -- $GEN_PATHS
 new_sha=$(git rev-parse HEAD)
 echo "pre-push: committed regenerated docs -> $new_sha"
 

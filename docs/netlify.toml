@@ -16,10 +16,39 @@
   # source-directory in elm.json) instead of the old `../../elm-*/src` paths that
   # don't exist on Netlify. After changing HtmlIr or TypedHtml upstream, run
   # `pnpm run build:vendor` and commit the refreshed vendor/elm-foundation.
+  #
+  # BUILD-TIME CACHING (see ../plans/2026-08-12-netlify-build-optimization.md):
+  # The dominant cost of this build is the two `lamdera make` Elm compiles that
+  # `elm-pages build` runs (client + server apps). Two caches make rebuilds
+  # incremental:
+  #   1. ELM_HOME -> $NETLIFY_BUILD_BASE/cache/elm (below). NETLIFY_BUILD_BASE is
+  #      /opt/buildhome and its /cache subtree is the persisted Netlify cache, so
+  #      this persists Elm's DEPENDENCY artifacts (…/packages/.../artifacts.dat)
+  #      across builds — the biggest single saver. (Already in place.)
+  #   2. docs/elm-stuff via the netlify-plugin-cache block below — persists the
+  #      PROJECT's own compiled artifacts, including the nested
+  #      elm-stuff/elm-pages/{client,server} trees elm-pages compiles into.
+  # pnpm's content-addressable store and node_modules are auto-cached by Netlify,
+  # so `pnpm install` is not the bottleneck. NOTE: committing docs/.elm-pages saves
+  # NO build time here — elm-pages regenerates it from scratch every build.
   command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && corepack enable && pnpm install --frozen-lockfile && pnpm run build:ci"
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Persist the project's compiled Elm artifacts across builds so the two
+# `lamdera make` compiles inside `elm-pages build` are incremental instead of
+# from-scratch. Paths are relative to the Netlify base directory (this file's dir,
+# docs/), so "elm-stuff" == docs/elm-stuff and covers the nested
+# elm-stuff/elm-pages/{client,server}/elm-stuff/0.19.1 that elm-pages compiles
+# into. Netlify auto-installs plugins declared here (no package.json entry needed);
+# the plugin saves the paths only after a SUCCESSFUL build and restores them next
+# build. (Elm's dependency artifacts are already cached via ELM_HOME above.)
+# Deliberately NOT caching .elm-pages: it is regenerated from scratch each build.
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = ["elm-stuff"]
 
 [dev]
   command = "pnpm start"
