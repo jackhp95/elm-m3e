@@ -9,7 +9,18 @@
   "_iconModule": {
     "lib": "M3e",
     "iconComp": "Icon",
-    "catalogFrom": "config/icons-catalog.json"
+    "catalogFrom": "config/icons-catalog.json",
+    "package": {
+      "dir": "elm-m3e-icons",
+      "name": "jackhp95/elm-m3e-icons",
+      "summary": "Type-safe Material Symbols icon element helpers for elm-m3e.",
+      "version": "1.0.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-html-intermediate-representation": "1.0.0 <= v < 2.0.0"
+      }
+    }
   },
   "_atoms": {
     "text": {}
