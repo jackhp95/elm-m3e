@@ -1,4 +1,4 @@
-module M3e.Build.Internal exposing
+module M3e.Forge.Internal exposing
     ( Builder(..)
     , init, withAttribute, withChild, toElement
     )
