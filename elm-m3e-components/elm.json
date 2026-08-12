@@ -5,6 +5,7 @@
     "license": "BSD-3-Clause",
     "version": "1.0.0",
     "exposed-modules": [
+        "M3e.Icon",
         "M3e.Component.Accordion",
         "M3e.Component.ActionList",
         "M3e.Component.AppBar",

@@ -3,8 +3,14 @@
   "_brand": "M3e",
   "_publishGeneralOnly": true,
   "_internalModules": [
-    "M3e.Html"
+    "M3e.Html",
+    "M3e.Icon"
   ],
+  "_iconModule": {
+    "lib": "M3e",
+    "iconComp": "Icon",
+    "catalogFrom": "config/icons-catalog.json"
+  },
   "_atoms": {
     "text": {}
   },
