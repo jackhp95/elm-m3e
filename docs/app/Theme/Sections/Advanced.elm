@@ -23,7 +23,9 @@ import TypedHtml.Grouping
 view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
-        [ TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
+        [ TypedHtml.p [ TypedHtml.Attributes.class "text-on-surface-variant text-sm" ]
+            [ M3e.text "Motion durations and state-layer opacities — raw CSS custom property overrides for the 16 transition-timing tokens and 3 interaction-state opacity tokens @m3e/web exposes." ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
             (List.map (durationRow model) Tokens.motionDurationTokens)
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
             (List.map (opacityRow model) Tokens.stateOpacityTokens)

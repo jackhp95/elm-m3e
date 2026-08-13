@@ -12,9 +12,12 @@ import TypedHtml.Grouping
 view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
-        [ contrastSegmented model
-        , motionSegmented model
-        , densitySegmented model
+        [ TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
+            [ Theme.controlLabel "Contrast", contrastSegmented model ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
+            [ Theme.controlLabel "Motion", motionSegmented model ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
+            [ Theme.controlLabel "Density", densitySegmented model ]
         ]
 
 

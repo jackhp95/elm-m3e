@@ -134,6 +134,13 @@ test("contrast and seed color survive a reload", async ({ page }) => {
  * preset-application step and instead exercises exactly the override/reset
  * mechanics that ARE wired: a manual color override survives a scheme
  * toggle but is cleared by "Reset all".
+ *
+ * §8 rework: the Color section is now a cluster of chips. Each token is a
+ * native `<details>` disclosure whose `<summary>` is a color-circle pill; the
+ * hex text input (`aria-label="Hex value for <role>"`) lives in the expanded
+ * body. So this test opens the Color accordion, expands the Primary chip, then
+ * drives its hex input -- the old native `#color-md-sys-color-primary` input is
+ * gone.
  */
 test("a color-token override survives a scheme toggle but not Reset all", async ({
   page,
@@ -153,7 +160,16 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
   // in this case; `.last()` opens it. Not a component bug worth chasing
   // further here -- just a locator-ambiguity trap in this specific markup.
   await page.getByRole("button", { name: "Color" }).last().click();
-  const primaryInput = page.locator("#color-md-sys-color-primary");
+
+  // `exact: true` — `getByLabel` substring-matches by default, and "Primary"
+  // is a prefix of "Primary Container", "Primary Fixed", etc., so the loose
+  // form resolves to multiple inputs (Playwright strict-mode violation).
+  const primaryInput = page.getByLabel("Hex value for Primary", { exact: true });
+  // Expand the Primary chip's <details> to reveal its hex input.
+  const primaryChip = page.locator(
+    'details:has(input[aria-label="Hex value for Primary"]) > summary'
+  );
+  await primaryChip.click();
   await primaryInput.fill("#ff0000");
 
   await page.getByRole("radio", { name: "Dark" }).click();
@@ -161,4 +177,59 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
 
   await page.getByRole("button", { name: "Reset all" }).click();
   await expect(primaryInput).not.toHaveValue("#ff0000");
+});
+
+/**
+ * §11 CSS Variables panel: the free-form escape hatch. Pick a variable from the
+ * `#css-var-add` select (which seeds a blank `cssOverrides` row), type a value,
+ * assert it persists across a reload, then clear it with the row's X and assert
+ * the row is gone. `#css-var-add` is an `m3e-select` custom element. Its `value`
+ * is a GETTER derived from the selected `<m3e-option>` children -- there is NO
+ * `value` setter (confirmed against `@m3e/web/dist/select.js`), so the naive
+ * `select.value = "..."` assignment is a no-op: the getter still returns `null`,
+ * and Elm's `onChangeWith` decoder (which reads `event.target.value`) never
+ * fires. To drive it faithfully we mirror what the component's own
+ * `#selectOption` does: flip the matching option's `selected` flag, then
+ * dispatch the same bubbling native `change` event the element emits on a real
+ * user pick.
+ */
+test("a CSS variable added via the panel applies and persists, and the X clears it", async ({
+  page,
+}) => {
+  await page.goto("/getting-started/welcome");
+  await page.getByRole("button", { name: "Settings" }).click();
+
+  // Open the CSS Variables accordion panel (last section).
+  await page.getByRole("button", { name: "CSS Variables" }).last().click();
+
+  // Seed a row for --md-sys-color-primary via the add-select. `m3e-select`
+  // derives `value` from its selected option (no value setter), so select the
+  // option, then dispatch the bubbling `change` the element itself emits.
+  await page.locator("#css-var-add").evaluate((el) => {
+    const options = Array.from(el.querySelectorAll("m3e-option")) as Array<
+      HTMLElement & { selected: boolean; value: string }
+    >;
+    for (const opt of options) {
+      opt.selected = opt.value === "md-sys-color-primary";
+    }
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+
+  const valueInput = page.getByLabel("Value for md-sys-color-primary");
+  await expect(valueInput).toBeVisible();
+  await valueInput.fill("#123456");
+
+  await page.reload();
+  await page.getByRole("button", { name: "Settings" }).click();
+  await page.getByRole("button", { name: "CSS Variables" }).last().click();
+  await expect(page.getByLabel("Value for md-sys-color-primary")).toHaveValue(
+    "#123456"
+  );
+
+  await page
+    .getByRole("button", { name: "Remove override for md-sys-color-primary" })
+    .click();
+  await expect(
+    page.getByLabel("Value for md-sys-color-primary")
+  ).toHaveCount(0);
 });

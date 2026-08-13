@@ -1,4 +1,4 @@
-module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, init, segmented, subscriptions, update, view)
+module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, controlLabel, init, schemeToggle, segmented, subscriptions, update, variantSelect, view)
 
 import Dict exposing (Dict)
 import HtmlIr.Element
@@ -8,6 +8,7 @@ import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Component.Icon
+import M3e.Component.Option
 import M3e.Component.Theme
 import M3e.Events
 import M3e.Kind
@@ -91,6 +92,7 @@ type Msg
     | SetColorOverride String String
     | ResetColorOverride String
     | SetCssOverride String String
+    | UnsetCssOverride String
     | ApplyPreset Preset
     | ThemeStateLoaded Decode.Value
     | ResetAll
@@ -207,6 +209,10 @@ update msg model =
         SetCssOverride cssVar value ->
             persist { model | cssOverrides = Dict.insert cssVar value model.cssOverrides }
                 |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value })
+
+        UnsetCssOverride cssVar ->
+            persist { model | cssOverrides = Dict.remove cssVar model.cssOverrides }
+                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = "" })
 
         ApplyPreset preset ->
             let
@@ -537,53 +543,31 @@ capitalize s =
             s
 
 
-{-| These controls compare tokens with `==`. A `Value` is opaque over a
-`String`, so the comparison is on the underlying wire string — meaning
-tokens from DIFFERENT enums that share a string would compare equal. Safe
-here because each control only ever compares a field against its own enum's
-values. Ported from `Shared.elm`.
+{-| A small label heading above a control. Relocated from `Shared.elm` — sections
+(`Theme.Sections.*`) can't import `Shared` (it sits ABOVE `Theme` in the import
+graph), so this lives alongside `segmented`/`capitalize`, the same relocation
+pattern used when the drawer was split out. msg-polymorphic so both `Theme` and
+`Shared` render it under their own `Msg`.
 -}
-schemeSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-schemeSegmented model =
+controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
+controlLabel lbl =
+    M3e.heading
+        [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ]
+        [ M3e.text lbl ]
+
+
+{-| Scheme toggle: only Light/Dark (was 3-option Light/System/Dark). `Value.auto`
+("System", the default) is no longer directly selectable — reachable only via the
+row reset (§5). When `model.scheme == Value.auto`, NEITHER segment reads checked
+(both `== Value.auto` is False), which is the intended "unresolved" visual —
+`M3e.segmentedButton` renders every segment `aria-checked="false"`.
+-}
+schemeToggle : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
+schemeToggle model =
     segmented
-        (Value.schemeValues
-            |> List.sortBy schemeOrder
-            |> List.map (\v -> ( schemeLabel v, model.scheme == v, SetScheme v ))
-        )
-
-
-{-| Display order — the neutral option sits between the two poles, which is
-why this is not the generated list's alphabetical order. A value we have not
-placed sorts last rather than disappearing.
--}
-schemeOrder : Value Value.Scheme -> Int
-schemeOrder v =
-    case Value.toString v of
-        "light" ->
-            0
-
-        "auto" ->
-            1
-
-        "dark" ->
-            2
-
-        _ ->
-            3
-
-
-{-| Editorial labels: `auto` reads as "System". Anything the manifest gains
-that we have not named falls back to its wire string, so a new value shows
-up VISIBLY mislabelled rather than silently missing from the drawer.
--}
-schemeLabel : Value Value.Scheme -> String
-schemeLabel v =
-    case Value.toString v of
-        "auto" ->
-            "System"
-
-        other ->
-            capitalize other
+        [ ( "Light", model.scheme == Value.light, SetScheme Value.light )
+        , ( "Dark", model.scheme == Value.dark, SetScheme Value.dark )
+        ]
 
 
 {-| The 9 M3 dynamic-color variants valid on `m3e-theme`. Separated from the
@@ -655,16 +639,32 @@ variantLabelFor v =
             capitalize other
 
 
-{-| Segmented button for the 9 M3 dynamic-color variants, mirroring
-`schemeSegmented`. The 9 options may overflow on narrow screens; the caller
-wraps this in an `overflow-x-auto` container.
+{-| Variant picker: an `m3e-select` of the 9 `themeVariantValues` (was a 9-option
+segmented button that overflowed on narrow screens). Selecting fires the existing
+`SetVariant` msg — no `Msg`/model change, just the rendering swap. Uses `select`/
+`option` (the proven picker; the `menu` family has no existing docs usage and no
+clean declarative anchor — see plan's component-API reality check).
 -}
-variantSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-variantSegmented model =
-    segmented
-        (themeVariantValues
-            |> List.map (\v -> ( variantLabelFor v, model.variant == v, SetVariant v ))
-        )
+variantSelect : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+variantSelect model =
+    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
+        [ controlLabel "Variant"
+        , M3e.select
+            [ M3e.Attributes.id "variant-select"
+            , M3e.Events.onChangeWith
+                (Decode.map SetVariant (Decode.at [ "target", "value" ] (Decode.map themeVariantFromString Decode.string)))
+            ]
+            (List.map
+                (\v ->
+                    M3e.option
+                        [ M3e.Component.Option.value (Value.toString v)
+                        , M3e.Component.Option.selected (model.variant == v)
+                        ]
+                        [ M3e.text (variantLabelFor v) ]
+                )
+                themeVariantValues
+            )
+        ]
 
 
 {-| The drawer's color controls, all real m3e components: a row of blank
@@ -686,7 +686,7 @@ colorOptions model =
                 ]
                 [ M3e.text "Source color" ]
             ]
-        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-wrap items-center gap-2" ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex gap-3 overflow-x-auto snap-x snap-mandatory items-center" ]
             (sourceColorOption model :: List.map (colorAvatar model) curatedSwatchColors)
         ]
 
@@ -820,8 +820,6 @@ view { sectionsEl } model toMsg =
         [ TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
         [ colorOptions model |> HtmlIr.Element.map toMsg
-        , schemeSegmented model |> HtmlIr.Element.map toMsg
-        , variantSegmented model |> HtmlIr.Element.map toMsg
         , Theme.Reel.view
             { presets = Theme.Presets.presets
             , activeId = model.activePresetId
