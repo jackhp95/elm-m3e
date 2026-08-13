@@ -1,4 +1,4 @@
-module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, controlLabel, init, segmented, subscriptions, update, view)
+module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, controlLabel, init, schemeToggle, segmented, subscriptions, update, variantSelect, view)
 
 import Dict exposing (Dict)
 import HtmlIr.Element
@@ -815,8 +815,6 @@ view { sectionsEl } model toMsg =
         [ TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
         [ colorOptions model |> HtmlIr.Element.map toMsg
-        , schemeToggle model |> HtmlIr.Element.map toMsg
-        , variantSelect model |> HtmlIr.Element.map toMsg
         , Theme.Reel.view
             { presets = Theme.Presets.presets
             , activeId = model.activePresetId

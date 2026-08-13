@@ -329,6 +329,7 @@ type Msg
     | GotSearchIndex (Result Http.Error (List SearchEntry))
     | ThemeMsg Theme.Msg
     | SetDirection (TypedHtml.Values.Value TypedHtml.Values.Dir)
+    | ResetControlRow
     | PresetRequested String
 
 
@@ -553,6 +554,18 @@ update msg model =
 
         SetDirection dir ->
             ( { model | dir = dir }, Effect.none )
+
+        ResetControlRow ->
+            let
+                ( theme2, themeCmd ) =
+                    Theme.update (Theme.SetVariant Value.neutral) model.theme
+
+                ( theme3, themeCmd2 ) =
+                    Theme.update (Theme.SetScheme Value.auto) theme2
+            in
+            ( { model | theme = theme3, dir = TypedHtml.Values.auto }
+            , Effect.fromCmd (Cmd.batch [ Cmd.map ThemeMsg themeCmd, Cmd.map ThemeMsg themeCmd2 ])
+            )
 
         PresetRequested id ->
             case Theme.Presets.byId id of
@@ -897,8 +910,26 @@ settingsSheetContent model =
             }
             model.theme
             ThemeMsg
-        , Theme.controlLabel "Directionality"
-        , directionSegmented model
+        , controlRow model
+        ]
+
+
+{-| The variant + scheme + direction row (§5). Variant/scheme come from `Theme`
+(mapped through `ThemeMsg`); direction is assembled here (it lives in `Shared.Model`,
+not `Theme.Model`). One scoped reset fires all three: `SetVariant Value.neutral`,
+`SetScheme Value.auto` (both under `ThemeMsg`), and `SetDirection auto`.
+-}
+controlRow : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+controlRow model =
+    TypedHtml.div [ TypedHtml.Attributes.class "flex items-end gap-2 flex-wrap" ]
+        [ Theme.variantSelect model.theme |> HtmlIr.Element.map ThemeMsg
+        , Theme.schemeToggle model.theme |> HtmlIr.Element.map ThemeMsg
+        , directionToggle model
+        , M3e.iconButton
+            [ TypedHtml.Events.onClick ResetControlRow
+            , Aria.label "Reset variant, scheme, and direction"
+            ]
+            [ M3e.icon [ M3e.Component.Icon.name "restart_alt" ] [] ]
         ]
 
 
@@ -934,23 +965,37 @@ densityClass d =
         "[--md-sys-density-scale:0]"
 
 
-directionSegmented : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-directionSegmented model =
-    segmented
-        (TypedHtml.Values.dirValues
-            -- `dir` admits auto|ltr|rtl. `auto` defers to the document/OS, which is
-            -- already what the shell does when this control is untouched, so offering
-            -- it would be a button that visibly does nothing. Filtered explicitly
-            -- rather than hand-listing ltr/rtl, so a FOURTH value would still appear.
-            |> List.filter (\v -> TypedHtml.Values.toString v /= "auto")
-            |> List.map
-                (\v ->
-                    ( String.toUpper (TypedHtml.Values.toString v)
-                    , model.dir == v
-                    , SetDirection v
-                    )
-                )
-        )
+{-| Direction toggle: a single icon button (was a 2-option LTR/RTL segmented). Shows
+`format_textdirection_l_to_r` when LTR, `format_textdirection_r_to_l` when RTL;
+clicking flips to the other and fires `SetDirection`. `aria-pressed`/`aria-label`
+track the current direction.
+-}
+directionToggle : Model -> Element (M3e.Component.IconButton.Is s) admittedBy Msg
+directionToggle model =
+    let
+        isRtl : Bool
+        isRtl =
+            TypedHtml.Values.toString model.dir == "rtl"
+
+        ( next, glyph, lbl ) =
+            if isRtl then
+                ( TypedHtml.Values.ltr, "format_textdirection_l_to_r", "Switch to left-to-right" )
+
+            else
+                ( TypedHtml.Values.rtl, "format_textdirection_r_to_l", "Switch to right-to-left" )
+    in
+    M3e.iconButton
+        [ TypedHtml.Events.onClick (SetDirection next)
+        , Aria.label lbl
+        , Aria.pressed
+            (if isRtl then
+                Aria.true
+
+             else
+                Aria.false
+            )
+        ]
+        [ M3e.icon [ M3e.Component.Icon.name glyph ] [] ]
 
 
 
