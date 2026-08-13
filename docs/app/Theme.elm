@@ -1,4 +1,4 @@
-module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, init, segmented, subscriptions, update, view)
+module Theme exposing (Model, Msg(..), TypeScaleParam(..), capitalize, controlLabel, init, segmented, subscriptions, update, view)
 
 import Dict exposing (Dict)
 import HtmlIr.Element
@@ -535,6 +535,19 @@ capitalize s =
 
         Nothing ->
             s
+
+
+{-| A small label heading above a control. Relocated from `Shared.elm` — sections
+(`Theme.Sections.*`) can't import `Shared` (it sits ABOVE `Theme` in the import
+graph), so this lives alongside `segmented`/`capitalize`, the same relocation
+pattern used when the drawer was split out. msg-polymorphic so both `Theme` and
+`Shared` render it under their own `Msg`.
+-}
+controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
+controlLabel lbl =
+    M3e.heading
+        [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ]
+        [ M3e.text lbl ]
 
 
 {-| These controls compare tokens with `==`. A `Value` is opaque over a

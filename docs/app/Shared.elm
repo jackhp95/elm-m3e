@@ -897,16 +897,9 @@ settingsSheetContent model =
             }
             model.theme
             ThemeMsg
-        , controlLabel "Directionality"
+        , Theme.controlLabel "Directionality"
         , directionSegmented model
         ]
-
-
-controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy Msg
-controlLabel lbl =
-    M3e.heading
-        [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ]
-        [ M3e.text lbl ]
 
 
 {-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
