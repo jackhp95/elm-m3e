@@ -73,12 +73,16 @@ init _ _ =
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ msg model =
-    ( Usage.update msg model, Effect.none )
+    let
+        ( newModel, cmd ) =
+            Usage.update msg model
+    in
+    ( newModel, Effect.fromCmd cmd )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
-    Sub.none
+    Usage.readSurface Usage.SurfaceLoaded
 
 
 pages : BackendTask FatalError (List RouteParams)
@@ -127,7 +131,7 @@ view app _ model =
                   -- section — header, Usage, API — so their spacing is uniform.
                   TypedHtml.div [ TA.class "space-y-10" ]
                     (header component
-                        :: Usage.usageBlocks 0 model app.data.usage
+                        :: Usage.usageBlocks model app.data.usage
                         ++ [ apiSection component.members ]
                         ++ exampleAppsSection app.data.exampleUsage
                     )
