@@ -1,5 +1,5 @@
 module M3e.Component.MenuItemCheckbox exposing
-    ( view
+    ( menuitemcheckbox
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
     , checked, disabled, defaultChecked, onClick
     , icon, trailingIcon, child
@@ -9,7 +9,7 @@ module M3e.Component.MenuItemCheckbox exposing
 
 An item of a menu which supports a checkable state.
 
-@docs view
+@docs menuitemcheckbox
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
 @docs checked, disabled, defaultChecked, onClick
 @docs icon, trailingIcon, child
@@ -65,11 +65,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+menuitemcheckbox :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+menuitemcheckbox =
     H.menuItemCheckbox
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.Elevation exposing
-    ( view
+    ( elevation
     , Is, Attrs, ChildAdmittedBy
     , disabled, for, level
     )
@@ -8,7 +8,7 @@ module M3e.Component.Elevation exposing
 
 Visually depicts elevation using a shadow.
 
-@docs view
+@docs elevation
 @docs Is, Attrs, ChildAdmittedBy
 @docs disabled, for, level
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+elevation :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+elevation =
     H.elevation
 
 

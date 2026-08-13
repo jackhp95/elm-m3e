@@ -1,5 +1,5 @@
 module M3e.Component.Theme exposing
-    ( view
+    ( theme
     , Is, Attrs, ChildAdmittedBy
     , Contrast, contrast, Motion, motion, Scheme, scheme, Variant, variant
     , color, density, strongFocus, onChange
@@ -10,7 +10,7 @@ module M3e.Component.Theme exposing
 
 A non-visual element responsible for application-level theming.
 
-@docs view
+@docs theme
 @docs Is, Attrs, ChildAdmittedBy
 @docs Contrast, contrast, Motion, motion, Scheme, scheme, Variant, variant
 @docs color, density, strongFocus, onChange
@@ -77,11 +77,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+theme :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+theme =
     H.theme
 
 

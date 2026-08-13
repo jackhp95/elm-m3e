@@ -1,5 +1,5 @@
 module M3e.Component.Button exposing
-    ( view, el
+    ( button, required
     , Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -10,7 +10,7 @@ module M3e.Component.Button exposing
 
 A button users interact with to perform an action.
 
-@docs view, el
+@docs button, required
 @docs Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -112,29 +112,29 @@ type alias ActionCaps =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+button :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+button =
     H.button
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+required :
     { content : Element Content (ChildAdmittedBy childAdm) msg
     , action : Ac.Action ActionCaps msg
     }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+required required_ attrs children =
     let
         actioned =
             Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))
     in
-    view
+    button
         (Ac.toAttrs required_.action ++ attrs)
         (actioned :: children)
 

@@ -1,5 +1,5 @@
 module M3e.Component.LinearProgressIndicator exposing
-    ( view
+    ( linearprogressindicator
     , Is, Attrs, ChildAdmittedBy
     , Mode, mode, Variant, variant
     , bufferValue, max, value, defaultValue
@@ -9,7 +9,7 @@ module M3e.Component.LinearProgressIndicator exposing
 
 A horizontal bar for indicating progress and activity.
 
-@docs view
+@docs linearprogressindicator
 @docs Is, Attrs, ChildAdmittedBy
 @docs Mode, mode, Variant, variant
 @docs bufferValue, max, value, defaultValue
@@ -60,11 +60,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+linearprogressindicator :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+linearprogressindicator =
     H.linearProgressIndicator
 
 

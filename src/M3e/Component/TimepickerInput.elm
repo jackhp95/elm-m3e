@@ -1,5 +1,5 @@
 module M3e.Component.TimepickerInput exposing
-    ( view
+    ( timepickerinput
     , Is, Attrs, ChildAdmittedBy
     , Format, format, Period, period, ViewAttr, viewAttr
     , for, hideLabels, hour, hourLabel, maxTime, minTime, minute, minuteLabel, orientation, periodToggleLabel, second, secondLabel, showSeconds, onViewChange, onChange
@@ -9,7 +9,7 @@ module M3e.Component.TimepickerInput exposing
 
 A keyboard‑based time surface for choosing hours and minutes.
 
-@docs view
+@docs timepickerinput
 @docs Is, Attrs, ChildAdmittedBy
 @docs Format, format, Period, period, ViewAttr, viewAttr
 @docs for, hideLabels, hour, hourLabel, maxTime, minTime, minute, minuteLabel, orientation, periodToggleLabel, second, secondLabel, showSeconds, onViewChange, onChange
@@ -67,11 +67,11 @@ type alias ViewAttr =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+timepickerinput :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+timepickerinput =
     H.timepickerInput
 
 

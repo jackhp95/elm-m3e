@@ -1,7 +1,7 @@
 module M3e.Build.Select exposing
     ( build, toElement
     , Builder, AttrCaps, SlotCaps, Is, Content, ArrowSlot, ChildAdmittedBy
-    , withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValidationmessages
+    , withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequiredAttr, withSlot, withStyle, withValidationmessages
     , arrow, value
     , withArrow, withValue, withChild
     )
@@ -10,7 +10,7 @@ module M3e.Build.Select exposing
 
 @docs build, toElement
 @docs Builder, AttrCaps, SlotCaps, Is, Content, ArrowSlot, ChildAdmittedBy
-@docs withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequired, withSlot, withStyle, withValidationmessages
+@docs withClass, withDisabled, withHideSelectionIndicator, withId, withMulti, withName, withOnBeforeinput, withOnChange, withOnInput, withOnToggle, withPanelClass, withRequiredAttr, withSlot, withStyle, withValidationmessages
 @docs arrow, value
 @docs withArrow, withValue, withChild
 
@@ -175,9 +175,9 @@ withPanelClass value_ =
 
 
 {-| -}
-withRequired : Bool -> Builder { a | required : Available } slotCaps msg kind -> Builder { a | required : Used } slotCaps msg kind
-withRequired value_ =
-    B.withAttribute (A.required value_)
+withRequiredAttr : Bool -> Builder { a | requiredAttr : Available } slotCaps msg kind -> Builder { a | requiredAttr : Used } slotCaps msg kind
+withRequiredAttr value_ =
+    B.withAttribute (A.requiredAttr value_)
 
 
 {-| -}

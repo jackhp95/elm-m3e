@@ -7,6 +7,22 @@ Elm package registry from the public API).
 
 ## [Unreleased]
 
+### Changed — component constructor names (BREAKING public-API rename)
+
+- Each `M3e.Component.X` module now exposes its standard constructor under the
+  module's own lowercased base name (`M3e.Component.Button.button`,
+  `M3e.Component.Checkbox.checkbox`, …) instead of `view`, and its
+  required-content constructor as `required` instead of `el`. Reads naturally under
+  `import M3e.Component.Button as Button exposing (button, required)`. Pure rename —
+  signatures and bodies unchanged. Produced by the elm-cem generator; `src/M3e/**`
+  regenerated.
+- On `M3e.Component.RadioGroup` and `M3e.Component.Select`, the HTML `required`
+  boolean-attribute setter is renamed `required` → `requiredAttr` (and its
+  builder-pipe companion `withRequired` → `withRequiredAttr`) to avoid colliding
+  with the new `required` constructor. The emitted HTML attribute is still
+  `required` — behavior is unchanged. (Mirrors the existing `attr:view` → `viewAttr`
+  rename the generator already applies to the Timepicker components.)
+
 ## [1.0.0]
 
 First public release: a generated, **Make-Impossible-States-Impossible** `M3e.*`

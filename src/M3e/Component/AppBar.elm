@@ -1,5 +1,5 @@
 module M3e.Component.AppBar exposing
-    ( view
+    ( appbar
     , Is, Attrs, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
     , Size, size
     , centered, for
@@ -10,7 +10,7 @@ module M3e.Component.AppBar exposing
 
 A bar, placed a the top of a screen, used to help users navigate through an application.
 
-@docs view
+@docs appbar
 @docs Is, Attrs, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
 @docs Size, size
 @docs centered, for
@@ -79,11 +79,11 @@ type alias Size =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+appbar :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+appbar =
     H.appBar
 
 

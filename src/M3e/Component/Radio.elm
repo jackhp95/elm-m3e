@@ -1,5 +1,5 @@
 module M3e.Component.Radio exposing
-    ( view
+    ( radio
     , Is, Attrs, ChildAdmittedBy
     , checked, disabled, name, required, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
     )
@@ -8,7 +8,7 @@ module M3e.Component.Radio exposing
 
 A radio button that allows a user to select one option from a set of options.
 
-@docs view
+@docs radio
 @docs Is, Attrs, ChildAdmittedBy
 @docs checked, disabled, name, required, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
 
@@ -46,11 +46,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+radio :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+radio =
     H.radio
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.ActionList exposing
-    ( view
+    ( actionlist
     , Is, Attrs, Content, ChildAdmittedBy
     , Variant, variant
     , child
@@ -9,7 +9,7 @@ module M3e.Component.ActionList exposing
 
 A list of actions.
 
-@docs view
+@docs actionlist
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Variant, variant
 @docs child
@@ -59,11 +59,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+actionlist :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+actionlist =
     H.actionList
 
 

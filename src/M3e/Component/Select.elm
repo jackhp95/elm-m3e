@@ -1,7 +1,7 @@
 module M3e.Component.Select exposing
-    ( view, el
+    ( select, required
     , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
-    , disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
+    , disabled, hideSelectionIndicator, multi, name, panelClass, requiredAttr, validationmessages, onChange, onToggle, onBeforeinput, onInput
     , arrow, value, child
     )
 
@@ -9,9 +9,9 @@ module M3e.Component.Select exposing
 
 A form control that allows users to select a value from a set of predefined options.
 
-@docs view, el
+@docs select, required
 @docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
-@docs disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
+@docs disabled, hideSelectionIndicator, multi, name, panelClass, requiredAttr, validationmessages, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value, child
 
 -}
@@ -61,23 +61,23 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+select :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+select =
     H.select
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+required :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+required required_ attrs children =
+    select attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.disabled`.
@@ -115,11 +115,11 @@ panelClass =
     A.panelClass
 
 
-{-| See `M3e.Attributes.required`.
+{-| See `M3e.Attributes.requiredAttr`.
 -}
-required : Bool -> Attr { c | required : Supported } msg
-required =
-    A.required
+requiredAttr : Bool -> Attr { c | requiredAttr : Supported } msg
+requiredAttr =
+    A.requiredAttr
 
 
 {-| See `M3e.Attributes.validationmessages`.

@@ -1,5 +1,5 @@
 module M3e.Component.MonthView exposing
-    ( view
+    ( monthview
     , Is, Attrs, ChildAdmittedBy
     , active, activeDate, date, maxDate, minDate, rangeEnd, rangeStart, today, onChange, onActiveChange
     )
@@ -8,7 +8,7 @@ module M3e.Component.MonthView exposing
 
 An internal component used to display a single month in a calendar.
 
-@docs view
+@docs monthview
 @docs Is, Attrs, ChildAdmittedBy
 @docs active, activeDate, date, maxDate, minDate, rangeEnd, rangeStart, today, onChange, onActiveChange
 
@@ -45,11 +45,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+monthview :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+monthview =
     H.monthView
 
 

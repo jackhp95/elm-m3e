@@ -1,5 +1,5 @@
 module M3e.Component.MultiYearView exposing
-    ( view
+    ( multiyearview
     , Is, Attrs, ChildAdmittedBy
     , active, activeDate, date, maxDate, minDate, today, onChange, onActiveChange
     )
@@ -8,7 +8,7 @@ module M3e.Component.MultiYearView exposing
 
 An internal component used to display a year selector in a calendar.
 
-@docs view
+@docs multiyearview
 @docs Is, Attrs, ChildAdmittedBy
 @docs active, activeDate, date, maxDate, minDate, today, onChange, onActiveChange
 
@@ -45,11 +45,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+multiyearview :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+multiyearview =
     H.multiYearView
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.SearchBar exposing
-    ( view, el
+    ( searchbar, required
     , Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
     , clearLabel, clearable, onClear
     , clearIcon, input, leading, trailing
@@ -9,7 +9,7 @@ module M3e.Component.SearchBar exposing
 
 A bar that provides a prominent entry point for search.
 
-@docs view, el
+@docs searchbar, required
 @docs Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
 @docs clearLabel, clearable, onClear
 @docs clearIcon, input, leading, trailing
@@ -65,23 +65,23 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+searchbar :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+searchbar =
     H.searchBar
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+required :
     { input : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (El.toNode required_.input)) :: children)
+required required_ attrs children =
+    searchbar attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (El.toNode required_.input)) :: children)
 
 
 {-| See `M3e.Attributes.clearLabel`.

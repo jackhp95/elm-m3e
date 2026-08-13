@@ -1,5 +1,5 @@
 module M3e.Component.ChipSet exposing
-    ( view
+    ( chipset
     , Is, Attrs, Content, ChildAdmittedBy
     , vertical
     , child
@@ -9,7 +9,7 @@ module M3e.Component.ChipSet exposing
 
 A container used to organize chips into a cohesive unit.
 
-@docs view
+@docs chipset
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs vertical
 @docs child
@@ -52,11 +52,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+chipset :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+chipset =
     H.chipSet
 
 

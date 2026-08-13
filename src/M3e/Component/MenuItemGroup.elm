@@ -1,5 +1,5 @@
 module M3e.Component.MenuItemGroup exposing
-    ( view
+    ( menuitemgroup
     , Is, Attrs, Content, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.MenuItemGroup exposing
 
 Groups related items (such a radios) in a menu.
 
-@docs view
+@docs menuitemgroup
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs child
 
@@ -50,11 +50,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+menuitemgroup :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+menuitemgroup =
     H.menuItemGroup
 
 

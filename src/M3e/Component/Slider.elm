@@ -1,5 +1,5 @@
 module M3e.Component.Slider exposing
-    ( view, el
+    ( slider, required
     , Is, Attrs, ChildAdmittedBy
     , Size, size
     , disabled, discrete, labelled, max, min, step, onBeforeinput, onInput, onChange
@@ -10,7 +10,7 @@ module M3e.Component.Slider exposing
 
 Allows for the selection of numeric values from a range.
 
-@docs view, el
+@docs slider, required
 @docs Is, Attrs, ChildAdmittedBy
 @docs Size, size
 @docs disabled, discrete, labelled, max, min, step, onBeforeinput, onInput, onChange
@@ -59,23 +59,23 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+slider :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+slider =
     H.slider
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+required :
     { content : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+required required_ attrs children =
+    slider attrs (required_.content :: children)
 
 
 {-| The size of the slider. (default: `"extra-small"`)

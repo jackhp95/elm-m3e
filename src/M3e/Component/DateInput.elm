@@ -1,5 +1,5 @@
 module M3e.Component.DateInput exposing
-    ( view
+    ( dateinput
     , Is, Attrs, ChildAdmittedBy
     , TimeFormat, timeFormat, Type, type_
     , dayLabel, disabled, hourLabel, maxDate, maxTime, minDate, minTime, minuteLabel, monthLabel, name, periodLabel, readonly, required, secondLabel, showSeconds, validationmessages, value, yearLabel, defaultValue, onChange, onBeforeinput, onInput, onInvalid
@@ -9,7 +9,7 @@ module M3e.Component.DateInput exposing
 
 A segmented input for entering date and/or time values using a keyboard.
 
-@docs view
+@docs dateinput
 @docs Is, Attrs, ChildAdmittedBy
 @docs TimeFormat, timeFormat, Type, type_
 @docs dayLabel, disabled, hourLabel, maxDate, maxTime, minDate, minTime, minuteLabel, monthLabel, name, periodLabel, readonly, required, secondLabel, showSeconds, validationmessages, value, yearLabel, defaultValue, onChange, onBeforeinput, onInput, onInvalid
@@ -61,11 +61,11 @@ type alias Type =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+dateinput :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+dateinput =
     H.dateInput
 
 

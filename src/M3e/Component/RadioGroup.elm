@@ -1,7 +1,7 @@
 module M3e.Component.RadioGroup exposing
-    ( view, el
+    ( radiogroup, required
     , Is, Attrs, ChildAdmittedBy
-    , ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
+    , ariaInvalid, disabled, name, requiredAttr, validationmessages, onBeforeinput, onInput, onChange
     , child
     )
 
@@ -9,9 +9,9 @@ module M3e.Component.RadioGroup exposing
 
 A container for a set of radio buttons.
 
-@docs view, el
+@docs radiogroup, required
 @docs Is, Attrs, ChildAdmittedBy
-@docs ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
+@docs ariaInvalid, disabled, name, requiredAttr, validationmessages, onBeforeinput, onInput, onChange
 @docs child
 
 -}
@@ -51,23 +51,23 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+radiogroup :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+radiogroup =
     H.radioGroup
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+required :
     { content : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+required required_ attrs children =
+    radiogroup attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.ariaInvalid`.
@@ -91,11 +91,11 @@ name value_ =
     Ir.attribute "name" value_
 
 
-{-| See `M3e.Attributes.required`.
+{-| See `M3e.Attributes.requiredAttr`.
 -}
-required : Bool -> Attr { c | required : Supported } msg
-required =
-    A.required
+requiredAttr : Bool -> Attr { c | requiredAttr : Supported } msg
+requiredAttr =
+    A.requiredAttr
 
 
 {-| See `M3e.Attributes.validationmessages`.

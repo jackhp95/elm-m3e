@@ -1,5 +1,5 @@
 module M3e.Component.TimepickerToggle exposing
-    ( view
+    ( timepickertoggle
     , Is, Attrs, ChildAdmittedBy
     , for
     )
@@ -8,7 +8,7 @@ module M3e.Component.TimepickerToggle exposing
 
 An element, nested within a clickable element, used to toggle a timepicker.
 
-@docs view
+@docs timepickertoggle
 @docs Is, Attrs, ChildAdmittedBy
 @docs for
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+timepickertoggle :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+timepickertoggle =
     H.timepickerToggle
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.Step exposing
-    ( view, el
+    ( step, required
     , Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy
     , completed, disabled, editable, for, invalid, optional, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
     , doneIcon, editIcon, error, errorIcon, hint, icon, child
@@ -9,7 +9,7 @@ module M3e.Component.Step exposing
 
 A step in a wizard-like workflow.
 
-@docs view, el
+@docs step, required
 @docs Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy
 @docs completed, disabled, editable, for, invalid, optional, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
 @docs doneIcon, editIcon, error, errorIcon, hint, icon, child
@@ -89,23 +89,23 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+step :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+step =
     H.step
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+required :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+required required_ attrs children =
+    step attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.completed`.

@@ -1,7 +1,7 @@
 module M3e.Build.RadioGroup exposing
     ( build, toElement
     , Builder, AttrCaps, SlotCaps, Is, ChildAdmittedBy
-    , withAriaInvalid, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle, withValidationmessages
+    , withAriaInvalid, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequiredAttr, withSlot, withStyle, withValidationmessages
     , withChild
     )
 
@@ -9,7 +9,7 @@ module M3e.Build.RadioGroup exposing
 
 @docs build, toElement
 @docs Builder, AttrCaps, SlotCaps, Is, ChildAdmittedBy
-@docs withAriaInvalid, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequired, withSlot, withStyle, withValidationmessages
+@docs withAriaInvalid, withClass, withDisabled, withId, withName, withOnBeforeinput, withOnChange, withOnInput, withRequiredAttr, withSlot, withStyle, withValidationmessages
 @docs withChild
 
 -}
@@ -117,9 +117,9 @@ withName value_ =
 
 
 {-| -}
-withRequired : Bool -> Builder { a | required : Available } slotCaps msg kind -> Builder { a | required : Used } slotCaps msg kind
-withRequired value_ =
-    B.withAttribute (A.required value_)
+withRequiredAttr : Bool -> Builder { a | requiredAttr : Available } slotCaps msg kind -> Builder { a | requiredAttr : Used } slotCaps msg kind
+withRequiredAttr value_ =
+    B.withAttribute (A.requiredAttr value_)
 
 
 {-| -}

@@ -1,5 +1,5 @@
 module M3e.Component.BottomSheetAction exposing
-    ( view
+    ( bottomsheetaction
     , Is, Attrs, Content, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.BottomSheetAction exposing
 
 An element, nested within a clickable element, used to close a parenting bottom sheet.
 
-@docs view
+@docs bottomsheetaction
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs child
 
@@ -50,11 +50,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+bottomsheetaction :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+bottomsheetaction =
     H.bottomSheetAction
 
 

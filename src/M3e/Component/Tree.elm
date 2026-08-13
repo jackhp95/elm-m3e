@@ -1,5 +1,5 @@
 module M3e.Component.Tree exposing
-    ( view
+    ( tree
     , Is, Attrs, Content, ChildAdmittedBy
     , cascade, multi, onChange
     , child
@@ -9,7 +9,7 @@ module M3e.Component.Tree exposing
 
 Presents hierarchical data in a tree structure.
 
-@docs view
+@docs tree
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs cascade, multi, onChange
 @docs child
@@ -53,11 +53,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+tree :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+tree =
     H.tree
 
 
