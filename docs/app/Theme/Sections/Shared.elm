@@ -10,6 +10,7 @@ mode segmented control, differing only in which `Msg` constructor wraps the
 resulting `Theme.Scale.ScaleMode`.
 -}
 
+import Char
 import M3e exposing (Element)
 import M3e.Component.Icon
 import M3e.Kind
@@ -66,17 +67,42 @@ stepperControls toMsg config =
 
 numberStepper : String -> Float -> Float -> (Float -> msg) -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 numberStepper labelText current step toMsg =
-    TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-1" ]
-        [ M3e.text labelText
-        , M3e.iconButton
-            [ TypedHtml.Events.onClick (toMsg (current - step))
-            , Aria.label ("Decrease " ++ labelText)
+    let
+        inputId : String
+        inputId =
+            "stepper-" ++ (labelText |> String.toLower |> String.replace " " "-" |> String.filter Char.isAlphaNum)
+
+        commit : String -> msg
+        commit raw =
+            -- Invalid text falls back to the last valid value: re-emit `current`
+            -- so the model (and thus the re-rendered input) snaps back unchanged.
+            toMsg (String.toFloat (String.trim raw) |> Maybe.withDefault current)
+    in
+    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
+        [ TypedHtml.label
+            [ TypedHtml.Attributes.for inputId
+            , TypedHtml.Attributes.class "text-on-surface-variant"
             ]
-            [ M3e.icon [ M3e.Component.Icon.name "remove" ] [] ]
-        , M3e.text (String.fromFloat current)
-        , M3e.iconButton
-            [ TypedHtml.Events.onClick (toMsg (current + step))
-            , Aria.label ("Increase " ++ labelText)
+            [ M3e.text labelText ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-1" ]
+            [ TypedHtml.input
+                [ TypedHtml.Attributes.id inputId
+                , TypedHtml.Attributes.type_ "text"
+                , TypedHtml.Attributes.value (String.fromFloat current)
+                , TypedHtml.Events.onInput commit
+                , TypedHtml.Attributes.class "w-20 rounded border border-outline bg-transparent px-2 py-1 text-on-surface"
+                , Aria.label labelText
+                ]
+                []
+            , M3e.iconButton
+                [ TypedHtml.Events.onClick (toMsg (current - step))
+                , Aria.label ("Decrease " ++ labelText)
+                ]
+                [ M3e.icon [ M3e.Component.Icon.name "remove" ] [] ]
+            , M3e.iconButton
+                [ TypedHtml.Events.onClick (toMsg (current + step))
+                , Aria.label ("Increase " ++ labelText)
+                ]
+                [ M3e.icon [ M3e.Component.Icon.name "add" ] [] ]
             ]
-            [ M3e.icon [ M3e.Component.Icon.name "add" ] [] ]
         ]
