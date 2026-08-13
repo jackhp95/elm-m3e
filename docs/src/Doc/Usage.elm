@@ -1,6 +1,6 @@
 port module Doc.Usage exposing
     ( Model
-    , Msg
+    , Msg(..)
     , Surface
     , UsageExample
     , init
@@ -92,9 +92,12 @@ update msg model =
             let
                 decoded : Surface
                 decoded =
-                    Decode.decodeValue Decode.string value
-                        |> Result.andThen surfaceFromString
-                        |> Result.withDefault Top
+                    case Decode.decodeValue Decode.string value of
+                        Ok s ->
+                            surfaceFromString s |> Result.withDefault Top
+
+                        Err _ ->
+                            Top
             in
             ( { model | activeSurface = decoded }, Cmd.none )
 

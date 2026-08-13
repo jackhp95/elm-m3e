@@ -93,7 +93,11 @@ update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Mo
 update _ _ msg model =
     case msg of
         UsageMsg um ->
-            ( { model | usage = Usage.update um model.usage }, Effect.none )
+            let
+                ( newUsage, cmd ) =
+                    Usage.update um model.usage
+            in
+            ( { model | usage = newUsage }, Effect.fromCmd (Cmd.map UsageMsg cmd) )
 
         Reveal ->
             ( { model | revealed = True }, Effect.none )
@@ -101,7 +105,7 @@ update _ _ msg model =
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
-    Sub.none
+    Usage.readSurface (UsageMsg << Usage.SurfaceLoaded)
 
 
 head : App Data ActionData RouteParams -> List Head.Tag
@@ -211,9 +215,8 @@ overview d =
 
 
 {-| Every component's Usage section, ordered by `Shared.componentCategories`, each
-wrapped in an `id`-anchored `.cv-auto` block. A running offset (the count of
-examples already placed) is threaded through `Usage.usageBlocks` so each
-component's tab strips occupy a disjoint index range in the shared model.
+wrapped in an `id`-anchored `.cv-auto` block. All examples share the same
+page-wide `model.activeSurface` — no per-component offset needed.
 -}
 stackedBlocks : Usage.Model -> Data -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
 stackedBlocks model d =
@@ -223,30 +226,26 @@ stackedBlocks model d =
             Shared.componentCategories
                 |> List.concatMap (\( category, _ ) -> List.filter (\c -> c.category == category) d.components)
 
-        step : Component -> ( Int, List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg) ) -> ( Int, List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg) )
-        step component ( offset, acc ) =
+        componentBlock : Component -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
+        componentBlock component =
             let
                 examples : List UsageExample
                 examples =
                     Dict.get component.slug d.usage |> Maybe.withDefault []
-
-                block : List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
-                block =
-                    if List.isEmpty examples then
-                        []
-
-                    else
-                        [ TypedHtml.div
-                            [ TA.id component.slug
-                            , TA.class "cv-auto space-y-6 scroll-mt-24"
-                            ]
-                            (M3e.heading
-                                [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]
-                                [ M3e.text component.name ]
-                                :: Usage.usageBlocks offset model examples
-                            )
-                        ]
             in
-            ( offset + List.length examples, acc ++ block )
+            if List.isEmpty examples then
+                []
+
+            else
+                [ TypedHtml.div
+                    [ TA.id component.slug
+                    , TA.class "cv-auto space-y-6 scroll-mt-24"
+                    ]
+                    (M3e.heading
+                        [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]
+                        [ M3e.text component.name ]
+                        :: Usage.usageBlocks model examples
+                    )
+                ]
     in
-    List.foldl step ( 0, [] ) orderedComponents |> Tuple.second
+    List.concatMap componentBlock orderedComponents
