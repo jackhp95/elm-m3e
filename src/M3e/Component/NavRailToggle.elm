@@ -1,5 +1,5 @@
 module M3e.Component.NavRailToggle exposing
-    ( view
+    ( navrailtoggle
     , Is, Attrs, ChildAdmittedBy
     , for
     )
@@ -8,7 +8,7 @@ module M3e.Component.NavRailToggle exposing
 
 An element, nested within a clickable element, used to toggle the expanded state of a navigation rail.
 
-@docs view
+@docs navrailtoggle
 @docs Is, Attrs, ChildAdmittedBy
 @docs for
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+navrailtoggle :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+navrailtoggle =
     H.navRailToggle
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.BreadcrumbItemButton exposing
-    ( view
+    ( breadcrumbitembutton
     , Is, Attrs, Content, ChildAdmittedBy
     , Current, current
     , disabled, download, href, rel, target, onClick
@@ -8,7 +8,7 @@ module M3e.Component.BreadcrumbItemButton exposing
 
 {-| The `m3e-breadcrumb-item-button` component — strict per-component surface.
 
-@docs view
+@docs breadcrumbitembutton
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Current, current
 @docs disabled, download, href, rel, target, onClick
@@ -60,11 +60,11 @@ type alias Current =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+breadcrumbitembutton :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+breadcrumbitembutton =
     H.breadcrumbItemButton
 
 

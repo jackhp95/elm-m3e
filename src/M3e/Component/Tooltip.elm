@@ -1,5 +1,5 @@
 module M3e.Component.Tooltip exposing
-    ( view, el
+    ( tooltip, component
     , Is, Attrs, Content, ChildAdmittedBy
     , Position, position, TouchGestures, touchGestures
     , disabled, for, hideDelay, showDelay
@@ -10,7 +10,7 @@ module M3e.Component.Tooltip exposing
 
 Adds additional context to a button or other UI element.
 
-@docs view, el
+@docs tooltip, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Position, position, TouchGestures, touchGestures
 @docs disabled, for, hideDelay, showDelay
@@ -67,23 +67,23 @@ type alias TouchGestures =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+tooltip :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+tooltip =
     H.tooltip
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+component required_ attrs children =
+    tooltip attrs (required_.content :: children)
 
 
 {-| The position of the tooltip. (default: `"below"`)

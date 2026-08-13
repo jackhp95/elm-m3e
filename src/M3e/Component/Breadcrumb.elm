@@ -1,5 +1,5 @@
 module M3e.Component.Breadcrumb exposing
-    ( view, el
+    ( breadcrumb, component
     , Is, Attrs, Content, ChildAdmittedBy
     , wrap
     , separator, child
@@ -10,7 +10,7 @@ module M3e.Component.Breadcrumb exposing
 Displays a hierarchical navigation path and identifies the user's
 current location within an application.
 
-@docs view, el
+@docs breadcrumb, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs wrap
 @docs separator, child
@@ -53,23 +53,23 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+breadcrumb :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+breadcrumb =
     H.breadcrumb
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+component required_ attrs children =
+    breadcrumb attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.wrap`.

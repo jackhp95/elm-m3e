@@ -1,5 +1,5 @@
 module M3e.Component.NavRail exposing
-    ( view
+    ( navrail
     , Is, Attrs, Content, ChildAdmittedBy
     , Mode, mode
     , onBeforeinput, onInput, onChange
@@ -10,7 +10,7 @@ module M3e.Component.NavRail exposing
 
 A vertical bar, typically used on larger devices, that allows a user to switch between views.
 
-@docs view
+@docs navrail
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Mode, mode
 @docs onBeforeinput, onInput, onChange
@@ -62,11 +62,11 @@ type alias Mode =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+navrail :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+navrail =
     H.navRail
 
 

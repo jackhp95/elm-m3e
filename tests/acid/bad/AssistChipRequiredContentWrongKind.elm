@@ -26,4 +26,4 @@ import M3e.Component.AssistChip
 
 broken : M3e.Element (M3e.Component.AssistChip.Is s) admittedBy msg
 broken =
-    M3e.Component.AssistChip.el { content = M3e.badge [] [] } [] []
+    M3e.Component.AssistChip.component { content = M3e.badge [] [] } [] []

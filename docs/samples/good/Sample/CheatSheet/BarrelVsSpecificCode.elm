@@ -21,4 +21,4 @@ shown0_ =
 
 -- component module — component-scoped setters, compile-tight tokens
 shown1_ =
-    M3e.Component.Button.view [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]
+    M3e.Component.Button.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]

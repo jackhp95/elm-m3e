@@ -269,7 +269,7 @@ activeIndexFor surface ex =
 
 
 {-| The surfaces offered for one example, in fixed order. Each Elm surface
-(`M3e`, `el`, `build`) appears only when it compiled for this example
+(`M3e`, `component`, `build`) appears only when it compiled for this example
 (its field is non-null); `HTML` is the one universal surface and is always offered
 last. Order: M3e, el, build, HTML.
 -}
@@ -300,7 +300,7 @@ surfacesFor ex =
                     [ ( label, surface ) ]
     in
     optional ex.top "M3e" Top
-        ++ recordBuild ex.record "el" Record
+        ++ recordBuild ex.record "component" Record
         ++ recordBuild ex.build "build" Build
         ++ [ ( "HTML", Raw ) ]
 
@@ -372,7 +372,7 @@ codeFor surface ex =
             elmOrHtml ex.top
 
         Record ->
-            recordBuildCode ex.record "el"
+            recordBuildCode ex.record "component"
 
         Build ->
             recordBuildCode ex.build "build"

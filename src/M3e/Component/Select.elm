@@ -1,5 +1,5 @@
 module M3e.Component.Select exposing
-    ( view, el
+    ( select, component
     , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
     , disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
     , arrow, value, child
@@ -9,7 +9,7 @@ module M3e.Component.Select exposing
 
 A form control that allows users to select a value from a set of predefined options.
 
-@docs view, el
+@docs select, component
 @docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
 @docs disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value, child
@@ -61,23 +61,23 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+select :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+select =
     H.select
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+component required_ attrs children =
+    select attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.disabled`.

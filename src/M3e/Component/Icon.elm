@@ -1,5 +1,5 @@
 module M3e.Component.Icon exposing
-    ( view
+    ( icon
     , Is, Attrs, ChildAdmittedBy
     , Grade, grade, Variant, variant
     , filled, name, opticalSize, weight
@@ -9,7 +9,7 @@ module M3e.Component.Icon exposing
 
 A small symbol used to easily identify an action or category.
 
-@docs view
+@docs icon
 @docs Is, Attrs, ChildAdmittedBy
 @docs Grade, grade, Variant, variant
 @docs filled, name, opticalSize, weight
@@ -61,11 +61,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+icon :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+icon =
     H.icon
 
 

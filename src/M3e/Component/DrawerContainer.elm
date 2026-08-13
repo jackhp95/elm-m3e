@@ -1,5 +1,5 @@
 module M3e.Component.DrawerContainer exposing
-    ( view
+    ( drawercontainer
     , Is, Attrs, ChildAdmittedBy
     , EndMode, endMode, StartMode, startMode
     , endDivider, startDivider, onChange
@@ -10,7 +10,7 @@ module M3e.Component.DrawerContainer exposing
 
 A container for one or two sliding drawers.
 
-@docs view
+@docs drawercontainer
 @docs Is, Attrs, ChildAdmittedBy
 @docs EndMode, endMode, StartMode, startMode
 @docs endDivider, startDivider, onChange
@@ -65,11 +65,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+drawercontainer :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+drawercontainer =
     H.drawerContainer
 
 

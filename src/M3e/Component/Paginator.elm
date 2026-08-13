@@ -1,5 +1,5 @@
 module M3e.Component.Paginator exposing
-    ( view
+    ( paginator
     , Is, Attrs, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy
     , PageSizeVariant, pageSizeVariant
     , disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, previousPageLabel, showFirstLastButtons, onPage
@@ -10,7 +10,7 @@ module M3e.Component.Paginator exposing
 
 Provides navigation for paged information, typically used with a table.
 
-@docs view
+@docs paginator
 @docs Is, Attrs, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy
 @docs PageSizeVariant, pageSizeVariant
 @docs disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, previousPageLabel, showFirstLastButtons, onPage
@@ -81,11 +81,11 @@ type alias PageSizeVariant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+paginator :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+paginator =
     H.paginator
 
 

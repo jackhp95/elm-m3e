@@ -1,5 +1,5 @@
 module M3e.Component.Card exposing
-    ( view
+    ( card
     , Is, Attrs, ChildAdmittedBy
     , Orientation, orientation, Type, type_, Variant, variant
     , actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
@@ -10,7 +10,7 @@ module M3e.Component.Card exposing
 
 A content container for text, images (or other media), and actions in the context of a single subject.
 
-@docs view
+@docs card
 @docs Is, Attrs, ChildAdmittedBy
 @docs Orientation, orientation, Type, type_, Variant, variant
 @docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
@@ -72,11 +72,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+card :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+card =
     H.card
 
 

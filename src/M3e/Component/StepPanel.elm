@@ -1,5 +1,5 @@
 module M3e.Component.StepPanel exposing
-    ( view
+    ( steppanel
     , Is, Attrs, ChildAdmittedBy
     , actions, child
     )
@@ -8,7 +8,7 @@ module M3e.Component.StepPanel exposing
 
 A panel presented for a step in a wizard-like workflow.
 
-@docs view
+@docs steppanel
 @docs Is, Attrs, ChildAdmittedBy
 @docs actions, child
 
@@ -47,11 +47,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+steppanel :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+steppanel =
     H.stepPanel
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.TimepickerDial exposing
-    ( view
+    ( timepickerdial
     , Is, Attrs, ChildAdmittedBy
     , Format, format, Period, period, ViewAttr, viewAttr
     , hour, maxTime, minTime, minute, second, showSeconds, onInput, onChange, onViewChange
@@ -9,7 +9,7 @@ module M3e.Component.TimepickerDial exposing
 
 A clock‑face surface for selecting hours and minutes using a movable hand.
 
-@docs view
+@docs timepickerdial
 @docs Is, Attrs, ChildAdmittedBy
 @docs Format, format, Period, period, ViewAttr, viewAttr
 @docs hour, maxTime, minTime, minute, second, showSeconds, onInput, onChange, onViewChange
@@ -66,11 +66,11 @@ type alias ViewAttr =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+timepickerdial :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+timepickerdial =
     H.timepickerDial
 
 

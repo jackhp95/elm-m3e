@@ -1,5 +1,5 @@
 module M3e.Component.RichTooltip exposing
-    ( view, el
+    ( richtooltip, component
     , Is, Attrs, Content, SubheadSlot, ChildAdmittedBy
     , Position, position, TouchGestures, touchGestures
     , disabled, for, hideDelay, showDelay, onBeforetoggle, onToggle
@@ -10,7 +10,7 @@ module M3e.Component.RichTooltip exposing
 
 Provides contextual details for a control, such as explaining the value or purpose of a feature.
 
-@docs view, el
+@docs richtooltip, component
 @docs Is, Attrs, Content, SubheadSlot, ChildAdmittedBy
 @docs Position, position, TouchGestures, touchGestures
 @docs disabled, for, hideDelay, showDelay, onBeforetoggle, onToggle
@@ -74,23 +74,23 @@ type alias TouchGestures =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+richtooltip :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+richtooltip =
     H.richTooltip
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
-    view attrs (required_.content :: children)
+component required_ attrs children =
+    richtooltip attrs (required_.content :: children)
 
 
 {-| The position of the tooltip. (default: `"below-after"`)

@@ -1,5 +1,5 @@
 module M3e.Component.Datepicker exposing
-    ( view
+    ( datepicker
     , Is, Attrs, ChildAdmittedBy
     , StartView, startView, Variant, variant
     , clearLabel, clearable, confirmLabel, date, dismissLabel, for, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
@@ -9,7 +9,7 @@ module M3e.Component.Datepicker exposing
 
 Presents a date picker on a temporary surface.
 
-@docs view
+@docs datepicker
 @docs Is, Attrs, ChildAdmittedBy
 @docs StartView, startView, Variant, variant
 @docs clearLabel, clearable, confirmLabel, date, dismissLabel, for, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, onChange, onBeforetoggle, onToggle
@@ -61,11 +61,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+datepicker :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+datepicker =
     H.datepicker
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.FloatingPanel exposing
-    ( view
+    ( floatingpanel
     , Is, Attrs, ChildAdmittedBy
     , ScrollStrategy, scrollStrategy
     , anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
@@ -10,7 +10,7 @@ module M3e.Component.FloatingPanel exposing
 
 A lightweight, generic floating surface used to present content above the page.
 
-@docs view
+@docs floatingpanel
 @docs Is, Attrs, ChildAdmittedBy
 @docs ScrollStrategy, scrollStrategy
 @docs anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle
@@ -59,11 +59,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-view :
+floatingpanel :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+floatingpanel =
     H.floatingPanel
 
 

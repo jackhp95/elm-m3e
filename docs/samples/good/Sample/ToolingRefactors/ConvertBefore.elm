@@ -14,4 +14,4 @@ import M3e.Values as Value
 
 -- the per-component surface — what you might write, or arrive with
 shown0_ =
-    M3e.Component.Button.view [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]
+    M3e.Component.Button.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]

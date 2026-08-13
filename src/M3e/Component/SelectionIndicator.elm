@@ -1,5 +1,5 @@
 module M3e.Component.SelectionIndicator exposing
-    ( view
+    ( selectionindicator
     , Is, Attrs, ChildAdmittedBy
     , bounce, centered, disabled, for, selected, defaultSelected
     )
@@ -8,7 +8,7 @@ module M3e.Component.SelectionIndicator exposing
 
 Provides selection, focus, and hover state layer treatment for an interactive element that supports selection.
 
-@docs view
+@docs selectionindicator
 @docs Is, Attrs, ChildAdmittedBy
 @docs bounce, centered, disabled, for, selected, defaultSelected
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+selectionindicator :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+selectionindicator =
     H.selectionIndicator
 
 

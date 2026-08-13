@@ -7,6 +7,23 @@ Elm package registry from the public API).
 
 ## [Unreleased]
 
+### Changed — component constructor names (BREAKING public-API rename)
+
+- Each `M3e.Component.X` module now exposes its standard constructor under the
+  module's own lowercased base name (`M3e.Component.Button.button`,
+  `M3e.Component.Checkbox.checkbox`, …) instead of `view`, and its
+  required-content constructor as `component` instead of `el`. Reads naturally under
+  `import M3e.Component.Button as Button exposing (button, component)`. Pure rename —
+  signatures and bodies unchanged. Produced by the elm-cem generator; `src/M3e/**`
+  regenerated.
+- `component` is chosen for the required-content constructor because it collides with
+  nothing. In particular the `required` **HTML boolean-attribute** setter on
+  `M3e.Component.RadioGroup` and `M3e.Component.Select` **stays named `required`** —
+  each of those modules now exposes both a `component :` constructor and a `required :`
+  attribute setter side by side with no name clash. No attribute rename, and **no
+  `config/slots.json` change** (the earlier `attr:required` → `requiredAttr` workaround
+  is dropped).
+
 ## [1.0.0]
 
 First public release: a generated, **Make-Impossible-States-Impossible** `M3e.*`

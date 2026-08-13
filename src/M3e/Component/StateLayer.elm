@@ -1,5 +1,5 @@
 module M3e.Component.StateLayer exposing
-    ( view
+    ( statelayer
     , Is, Attrs, ChildAdmittedBy
     , disableHover, disabled, enablePressed, for
     )
@@ -8,7 +8,7 @@ module M3e.Component.StateLayer exposing
 
 Provides focus and hover state layer treatment for an interactive element.
 
-@docs view
+@docs statelayer
 @docs Is, Attrs, ChildAdmittedBy
 @docs disableHover, disabled, enablePressed, for
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+statelayer :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+statelayer =
     H.stateLayer
 
 

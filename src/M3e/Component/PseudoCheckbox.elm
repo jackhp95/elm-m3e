@@ -1,5 +1,5 @@
 module M3e.Component.PseudoCheckbox exposing
-    ( view
+    ( pseudocheckbox
     , Is, Attrs, ChildAdmittedBy
     , checked, disabled, indeterminate, defaultChecked
     )
@@ -8,7 +8,7 @@ module M3e.Component.PseudoCheckbox exposing
 
 An element which looks like a checkbox.
 
-@docs view
+@docs pseudocheckbox
 @docs Is, Attrs, ChildAdmittedBy
 @docs checked, disabled, indeterminate, defaultChecked
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-view :
+pseudocheckbox :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-view =
+pseudocheckbox =
     H.pseudoCheckbox
 
 
