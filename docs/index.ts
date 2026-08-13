@@ -257,6 +257,7 @@ function mountFeedbackFab(): void {
 }
 
 const THEME_STORAGE_KEY = "m3e-theme-state";
+const SURFACE_STORAGE_KEY = "m3e-docs-active-surface";
 
 const config: ElmPagesInit = {
   load: async function (elmLoaded) {
@@ -274,6 +275,9 @@ const config: ElmPagesInit = {
         requestPreset?: { subscribe: (cb: (v: string) => void) => void };
         onPresetRequested?: { send: (v: string) => void };
         onOpenSearchRequested?: { send: (v: null) => void };
+        // Usage surface persistence
+        storeSurface?: { subscribe: (cb: (v: unknown) => void) => void };
+        readSurface?: { send: (v: unknown) => void };
       };
     };
     // elm-pages hard-codes its route-change announcer as aria-live="assertive"
@@ -290,6 +294,18 @@ const config: ElmPagesInit = {
     app?.ports?.storeThemeState?.subscribe((state: unknown) => {
       try {
         window.localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(state));
+      } catch (_) {
+        /* localStorage unavailable (private mode / SSR) — ignore */
+      }
+    });
+
+    // Persist the docs-layer surface selection so switching layer tabs on one
+    // component page carries over to every other component page (site-wide,
+    // not page-scoped). Stored separately from the theme blob: this is a
+    // docs-navigation preference, not a visual theme setting.
+    app?.ports?.storeSurface?.subscribe((surface: unknown) => {
+      try {
+        window.localStorage.setItem(SURFACE_STORAGE_KEY, JSON.stringify(surface));
       } catch (_) {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
@@ -472,6 +488,15 @@ const config: ElmPagesInit = {
       app?.ports?.readThemeState?.send(raw ? JSON.parse(raw) : null);
     } catch (_) {
       app?.ports?.readThemeState?.send(null);
+    }
+
+    // Boot: send back the persisted surface string (or null if absent).
+    // `Doc.Usage.update` decodes it, falling back to `Top` on null/bad value.
+    try {
+      const rawSurface = window.localStorage.getItem(SURFACE_STORAGE_KEY);
+      app?.ports?.readSurface?.send(rawSurface ? JSON.parse(rawSurface) : null);
+    } catch (_) {
+      app?.ports?.readSurface?.send(null);
     }
   },
   flags: function () {

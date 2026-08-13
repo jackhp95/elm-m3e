@@ -1,18 +1,20 @@
-module Doc.Usage exposing
+port module Doc.Usage exposing
     ( Model
-    , Msg
+    , Msg(..)
     , Surface
     , UsageExample
     , init
+    , readSurface
+    , storeSurface
     , update
     , usageBlocks
     , usageExampleDecoder
     )
 
-import Dict exposing (Dict)
 import Doc
 import Doc.Slider
 import Json.Decode as Decode
+import Json.Encode as Encode
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.Heading
@@ -47,27 +49,92 @@ type Surface
     | Raw
 
 
-{-| Per-example surface selection, keyed by each example's global index on the page
-(assigned before section grouping). A missing key means the example is still on
-its default surface — so the model starts empty and only records deviations,
-and each example's tabs move independently of every other's.
+{-| Page-wide surface selection. All examples on the page share this single
+value. Navigating away and back restores the persisted choice from localStorage.
 -}
 type alias Model =
-    { surfaces : Dict Int Surface }
+    { activeSurface : Surface }
 
 
 type Msg
-    = SelectSurface Int Surface
+    = SelectSurface Surface
+    | SurfaceLoaded Decode.Value
 
 
 init : Model
 init =
-    { surfaces = Dict.empty }
+    { activeSurface = Top }
 
 
-update : Msg -> Model -> Model
-update (SelectSurface index surface) model =
-    { model | surfaces = Dict.insert index surface model.surfaces }
+{-| Persist the selected surface to localStorage via the JS port handler in
+`index.ts`. Encode as a plain string — the four constructor names are stable
+keys ("Top", "Record", "Build", "Raw").
+-}
+port storeSurface : Encode.Value -> Cmd msg
+
+
+{-| On boot, `index.ts` reads localStorage and sends the stored string back in
+(or `Encode.null` if absent/private-mode) — `update` decodes it, falling back
+to `Top` on decode failure or absence.
+-}
+port readSurface : (Decode.Value -> msg) -> Sub msg
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        SelectSurface surface ->
+            ( { model | activeSurface = surface }
+            , storeSurface (Encode.string (surfaceToString surface))
+            )
+
+        SurfaceLoaded value ->
+            let
+                decoded : Surface
+                decoded =
+                    case Decode.decodeValue Decode.string value of
+                        Ok s ->
+                            surfaceFromString s |> Result.withDefault Top
+
+                        Err _ ->
+                            Top
+            in
+            ( { model | activeSurface = decoded }, Cmd.none )
+
+
+surfaceToString : Surface -> String
+surfaceToString surface =
+    case surface of
+        Top ->
+            "Top"
+
+        Record ->
+            "Record"
+
+        Build ->
+            "Build"
+
+        Raw ->
+            "Raw"
+
+
+surfaceFromString : String -> Result String Surface
+surfaceFromString s =
+    case s of
+        "Top" ->
+            Ok Top
+
+        "Record" ->
+            Ok Record
+
+        "Build" ->
+            Ok Build
+
+        "Raw" ->
+            Ok Raw
+
+        _ ->
+            Err ("Unknown surface: " ++ s)
 
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
@@ -103,9 +170,6 @@ usageExampleDecoder =
 heading over its per-section sub-headings and examples. Empty ⇒ nothing (so it
 drops cleanly out of the top-level `space-y-10` rhythm).
 
-`offset` shifts every example's page-global index so that stacked components on
-one page get disjoint tab-state ranges in a shared `Model`.
-
 Both the "Usage" heading and each named sub-heading carry a stable `id`
 (`Doc.slugify` of their own text) rather than the random id `m3e-toc`'s own
 generator falls back to for an unidentified heading -- a stable id keeps
@@ -114,8 +178,8 @@ mounts a single `m3e-toc` that discovers these headings (and everything
 else on the page) at runtime; nothing here needs to enumerate them.
 
 -}
-usageBlocks : Int -> Model -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
-usageBlocks offset model examples =
+usageBlocks : Model -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
+usageBlocks model examples =
     case examples of
         [] ->
             []
@@ -130,16 +194,12 @@ usageBlocks offset model examples =
                     ]
                     [ M3e.text "Usage" ]
                     :: List.concatMap (sectionBlock model)
-                        (groupBySection (List.indexedMap (\i ex -> ( offset + i, ex )) examples))
+                        (groupBySection examples)
                 )
             ]
 
 
-{-| One section: an optional sub-heading (skipped for the ungrouped "" section)
-followed by each example's live preview paired with its per-example code tabs.
-Examples carry their page-global index so each tab strip stays independent.
--}
-sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { a | card : M3e.Kind.Brand, sharedFlow : TypedHtml.Kind.Shared, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
+sectionBlock : Model -> ( String, List UsageExample ) -> List (Element { a | card : M3e.Kind.Brand, sharedFlow : TypedHtml.Kind.Shared, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 sectionBlock model ( sec, examples ) =
     let
         headingEl : List (Element { s | heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
@@ -160,24 +220,30 @@ sectionBlock model ( sec, examples ) =
     headingEl ++ List.map (exampleBlock model) examples
 
 
-{-| A live preview paired with a per-example tab strip that switches its code
-between the API surfaces (optionally `M3e`, then the `el` / `build` surfaces, and
-always `HTML`). The selection lives in
-`model.surfaces` keyed by this example's index, defaulting to the first available
-surface (`defaultSurfaceFor`). Grouped as one
-`space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
+{-| A live preview paired with a per-example tab strip. The global
+`model.activeSurface` is used when that surface is offered by this example;
+otherwise falls back to `defaultSurfaceFor ex` (the example's own first-offered
+surface — a static, per-example default, not a distance ranking).
 -}
-exampleBlock : Model -> ( Int, UsageExample ) -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
-exampleBlock model ( index, ex ) =
+exampleBlock : Model -> UsageExample -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+exampleBlock model ex =
     let
+        offered : List Surface
+        offered =
+            List.map Tuple.second (surfacesFor ex)
+
         surface : Surface
         surface =
-            Dict.get index model.surfaces |> Maybe.withDefault (defaultSurfaceFor ex)
+            if List.member model.activeSurface offered then
+                model.activeSurface
+
+            else
+                defaultSurfaceFor ex
     in
     TypedHtml.div [ TA.class "space-y-3" ]
         [ TypedHtml.p [ TA.class "max-w-2xl text-body-md text-on-surface-variant" ] [ M3e.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
-        , surfaceTabs index surface ex
+        , surfaceTabs surface ex
         , Doc.Slider.slidingPanels
             (activeIndexFor surface ex)
             (List.map (\( _, l ) -> codeFor l ex) (surfacesFor ex))
@@ -249,20 +315,20 @@ defaultSurfaceFor ex =
 
 
 {-| The per-example surface selector: a single-select `Tabs` bar whose selected
-tab is this example's current surface and whose clicks record a `SelectSurface` for
-this example's index only. The tabs are dynamic per example (four to six); `Tabs`
+tab is this example's current surface and whose clicks record a page-wide
+`SelectSurface`. The tabs are dynamic per example (four to six); `Tabs`
 paginates/scrolls them horizontally on narrow viewports natively, so there's no
 `overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
 trips a spurious vertical scrollbar on the control's state-surface bleed.
 -}
-surfaceTabs : Int -> Surface -> UsageExample -> Element { s | tabs : M3e.Kind.Brand } admittedBy Msg
-surfaceTabs index current ex =
+surfaceTabs : Surface -> UsageExample -> Element { s | tabs : M3e.Kind.Brand } admittedBy Msg
+surfaceTabs current ex =
     M3e.tabs []
         (List.map
             (\( lbl, surface ) ->
                 M3e.tab
                     [ M3e.Attributes.selected (surface == current)
-                    , M3e.Events.onClick (SelectSurface index surface)
+                    , M3e.Events.onClick (SelectSurface surface)
                     ]
                     [ M3e.text lbl ]
             )
@@ -343,16 +409,16 @@ identicalSurfaceNote surface =
         ]
 
 
-{-| Group indexed examples by `.section`, preserving first-seen order of both
-sections and examples within each section (indices stay attached).
+{-| Group examples by `.section`, preserving first-seen order of both
+sections and examples within each section.
 -}
-groupBySection : List ( Int, UsageExample ) -> List ( String, List ( Int, UsageExample ) )
+groupBySection : List UsageExample -> List ( String, List UsageExample )
 groupBySection examples =
     let
         sections : List String
         sections =
             List.foldl
-                (\( _, ex ) acc ->
+                (\ex acc ->
                     if List.member ex.section acc then
                         acc
 
@@ -362,4 +428,4 @@ groupBySection examples =
                 []
                 examples
     in
-    List.map (\sec -> ( sec, List.filter (\( _, ex ) -> ex.section == sec) examples )) sections
+    List.map (\sec -> ( sec, List.filter (\ex -> ex.section == sec) examples )) sections
