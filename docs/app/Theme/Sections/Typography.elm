@@ -2,8 +2,7 @@ module Theme.Sections.Typography exposing (view)
 
 {-| The Typography accordion section: display/body font pickers (real
 `m3e-select`s), a Linear/Modular/Bump/Power scale-mode segmented control,
-per-mode numeric steppers, and a live 15-token size preview
-(`Theme.Tokens.typescaleTokens`).
+and per-mode numeric steppers.
 -}
 
 import Json.Decode as Decode
@@ -13,9 +12,7 @@ import M3e.Component.Option
 import M3e.Events
 import Theme exposing (Msg(..))
 import Theme.Fonts
-import Theme.Scale as Scale
 import Theme.Sections.Shared as Shared
-import Theme.Tokens as Tokens
 import TypedHtml
 import TypedHtml.Attributes
 import TypedHtml.Grouping
@@ -28,7 +25,6 @@ view model =
         , fontSelect "Body font" "body-font" model.bodyFont SetBodyFont
         , Shared.modeSegmented SetTypeScaleMode model.typeScale.mode
         , Shared.stepperControls SetTypeScaleParam model.typeScale
-        , preview model
         ]
 
 
@@ -61,16 +57,3 @@ fontSelect labelText idSuffix current toMsg =
                 Theme.Fonts.curatedFonts
             )
         ]
-
-
-preview : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-preview model =
-    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
-        (List.map
-            (\token ->
-                TypedHtml.div
-                    [ TypedHtml.Attributes.class ("[font-size:" ++ String.fromFloat (Scale.compute model.typeScale token) ++ "rem]") ]
-                    [ M3e.text token.label ]
-            )
-            Tokens.typescaleTokens
-        )
