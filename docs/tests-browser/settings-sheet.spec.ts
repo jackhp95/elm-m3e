@@ -161,7 +161,10 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
   // further here -- just a locator-ambiguity trap in this specific markup.
   await page.getByRole("button", { name: "Color" }).last().click();
 
-  const primaryInput = page.getByLabel("Hex value for Primary");
+  // `exact: true` — `getByLabel` substring-matches by default, and "Primary"
+  // is a prefix of "Primary Container", "Primary Fixed", etc., so the loose
+  // form resolves to multiple inputs (Playwright strict-mode violation).
+  const primaryInput = page.getByLabel("Hex value for Primary", { exact: true });
   // Expand the Primary chip's <details> to reveal its hex input.
   const primaryChip = page.locator(
     'details:has(input[aria-label="Hex value for Primary"]) > summary'
@@ -180,10 +183,15 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
  * §11 CSS Variables panel: the free-form escape hatch. Pick a variable from the
  * `#css-var-add` select (which seeds a blank `cssOverrides` row), type a value,
  * assert it persists across a reload, then clear it with the row's X and assert
- * the row is gone. `#css-var-add` is an `m3e-select` custom element; Playwright's
- * `selectOption` may not drive it, so the value is set + a `change` event is
- * dispatched directly, mirroring the reliability pattern used for other custom
- * controls in this suite.
+ * the row is gone. `#css-var-add` is an `m3e-select` custom element. Its `value`
+ * is a GETTER derived from the selected `<m3e-option>` children -- there is NO
+ * `value` setter (confirmed against `@m3e/web/dist/select.js`), so the naive
+ * `select.value = "..."` assignment is a no-op: the getter still returns `null`,
+ * and Elm's `onChangeWith` decoder (which reads `event.target.value`) never
+ * fires. To drive it faithfully we mirror what the component's own
+ * `#selectOption` does: flip the matching option's `selected` flag, then
+ * dispatch the same bubbling native `change` event the element emits on a real
+ * user pick.
  */
 test("a CSS variable added via the panel applies and persists, and the X clears it", async ({
   page,
@@ -194,11 +202,17 @@ test("a CSS variable added via the panel applies and persists, and the X clears 
   // Open the CSS Variables accordion panel (last section).
   await page.getByRole("button", { name: "CSS Variables" }).last().click();
 
-  // Seed a row for --md-sys-color-primary via the add-select.
+  // Seed a row for --md-sys-color-primary via the add-select. `m3e-select`
+  // derives `value` from its selected option (no value setter), so select the
+  // option, then dispatch the bubbling `change` the element itself emits.
   await page.locator("#css-var-add").evaluate((el) => {
-    const select = el as HTMLSelectElement;
-    select.value = "md-sys-color-primary";
-    select.dispatchEvent(new Event("change", { bubbles: true }));
+    const options = Array.from(el.querySelectorAll("m3e-option")) as Array<
+      HTMLElement & { selected: boolean; value: string }
+    >;
+    for (const opt of options) {
+      opt.selected = opt.value === "md-sys-color-primary";
+    }
+    el.dispatchEvent(new Event("change", { bubbles: true }));
   });
 
   const valueInput = page.getByLabel("Value for md-sys-color-primary");
