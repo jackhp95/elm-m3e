@@ -17,7 +17,7 @@
 //      (source-dirs = real library sources) — the compile-verified corpus.
 //   2. Write a scratch elm-review CONFIG whose single rule is `PreferBarrel.rule`.
 //   3. Run `elm-review --report=json` (NOT --fix). Apply the rename edits ourselves
-//      in one pass (each `M3e.<Comp>.view`/`.<setter>` / `M3e.Token.<token>` node
+//      in one pass (each `M3e.<Comp>.<name>`/`.<setter>` / `M3e.Token.<token>` node
 //      → its flat `M3e.<name>` barrel export). We SKIP the rule's zero-width
 //      `import M3e` insertions — imports are regenerated from references here.
 //   4. Recover each binding, compile-verify the whole barrelised set, and keep an
