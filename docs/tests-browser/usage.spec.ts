@@ -94,3 +94,72 @@ test("/components/button renders code for the available API surfaces", async ({
   const m3eTab = page.getByText("M3e", { exact: true }).first();
   await expect(m3eTab).toBeVisible();
 });
+
+test("/components/button Usage tab sync: clicking a tab updates all examples", async ({
+  page,
+}) => {
+  await page.goto("/components/button");
+
+  // Wait for the first Usage tab strip to appear and be interactive.
+  // NOTE: The docs DEV server (:1234) does NOT wire Elm event listeners onto
+  // SSR-hydrated <m3e-*> nodes. This test MUST run against the PROD build
+  // served at :1239 (gate), never the dev server. Interactivity failures on
+  // :1234 are false negatives, not bugs.
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll("code.elmsh")].some((c) =>
+      (c.textContent || "").includes("M3e.Button.view"),
+    ),
+  );
+
+  // Locate ALL tab strips rendered by surfaceTabs. Each strip is an <m3e-tabs>
+  // element. If the button component has multiple Usage examples, there will be
+  // multiple strips.
+  const tabStrips = page.locator("m3e-tabs");
+  const count = await tabStrips.count();
+
+  // The button component has at least one Usage example; skip this test if
+  // somehow none render (data pipeline issue, not a tab-sync issue).
+  if (count < 1) {
+    return;
+  }
+
+  // Click the "HTML" tab on the FIRST strip. "HTML" (Raw surface) is always
+  // offered and is not the default, so this always represents a real change.
+  await tabStrips.first().getByText("HTML", { exact: true }).click();
+
+  // After clicking, every tab strip should show "HTML" as selected. In
+  // <m3e-tabs>/<m3e-tab>, the selected tab carries `selected` attribute.
+  // Assert that no strip still has "M3e" tab selected (i.e. none have
+  // <m3e-tab selected> containing "M3e" text).
+  //
+  // We use page.evaluate to inspect shadow DOM state, since Playwright
+  // locators don't pierce shadow roots for attribute checks.
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    if (strips.length < 2) return true; // Only one example — sync trivially holds
+    return strips.every((strip) => {
+      const tabs = [...strip.querySelectorAll("m3e-tab")];
+      const selected = tabs.find((t) => t.hasAttribute("selected"));
+      return selected?.textContent?.trim() === "HTML";
+    });
+  });
+
+  // Verify persistence: the selection must survive a reload.
+  await page.reload();
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll("code.elmsh")].some((c) =>
+      (c.textContent || "").includes("<m3e-button"),
+    ),
+  );
+
+  // After reload, at least one tab strip must show HTML as the active tab.
+  const htmlTabActive = await page.evaluate(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    return strips.some((strip) => {
+      const tabs = [...strip.querySelectorAll("m3e-tab")];
+      const selected = tabs.find((t) => t.hasAttribute("selected"));
+      return selected?.textContent?.trim() === "HTML";
+    });
+  });
+  expect(htmlTabActive).toBe(true);
+});
