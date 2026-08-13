@@ -31,7 +31,7 @@ import TypedHtml.Kind
 {-| Which API surface a Usage example is shown in:
 
   - `Top` — the barrel `M3e.*` form (the Standard surface, always present)
-  - `Record` — `M3e.<Comp>.el { … }` (the required-record surface; per-example)
+  - `Record` — `M3e.<Comp>.component { … }` (the required-record surface; per-example)
   - `Build` — `M3e.<Comp>.build |> … |> toElement` (the builder-pipe surface; per-example)
   - `Raw` — the raw `<m3e-*>` HTML (always present)
 
@@ -140,7 +140,7 @@ surfaceFromString s =
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
 API surface. Every Elm surface is optional — `top` (M3e) and `record`
-(`M3e.<Comp>.el`) / `build` (`M3e.<Comp>.build`) are each present only when that
+(`M3e.<Comp>.component`) / `build` (`M3e.<Comp>.build`) are each present only when that
 surface compiled to a distinct form for this example (else `Nothing`; the UI hides
 the `top` tab, but keeps `record`/`build` as an identical-by-design rationale tab).
 `html` is the one guaranteed surface — its live preview always renders. `section`
