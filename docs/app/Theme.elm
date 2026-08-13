@@ -92,6 +92,7 @@ type Msg
     | SetColorOverride String String
     | ResetColorOverride String
     | SetCssOverride String String
+    | UnsetCssOverride String
     | ApplyPreset Preset
     | ThemeStateLoaded Decode.Value
     | ResetAll
@@ -208,6 +209,10 @@ update msg model =
         SetCssOverride cssVar value ->
             persist { model | cssOverrides = Dict.insert cssVar value model.cssOverrides }
                 |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value })
+
+        UnsetCssOverride cssVar ->
+            persist { model | cssOverrides = Dict.remove cssVar model.cssOverrides }
+                |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = "" })
 
         ApplyPreset preset ->
             let

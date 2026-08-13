@@ -77,6 +77,7 @@ import Theme.Presets
 import Theme.Sections.Advanced
 import Theme.Sections.Appearance
 import Theme.Sections.Color
+import Theme.Sections.CssVariables
 import Theme.Sections.Shape
 import Theme.Sections.Typography
 import TypedHtml
@@ -863,6 +864,7 @@ sectionsAccordion :
     , shape : Element cs adm msg
     , appearance : Element cs adm msg
     , advanced : Element cs adm msg
+    , cssVariables : Element cs adm msg
     }
     -> Element { s | accordion : M3e.Kind.Brand } admittedBy msg
 sectionsAccordion themeSections =
@@ -872,6 +874,7 @@ sectionsAccordion themeSections =
         , sectionPanel "Shape" themeSections.shape
         , sectionPanel "Appearance" themeSections.appearance
         , sectionPanel "Advanced" themeSections.advanced
+        , sectionPanel "CSS Variables" themeSections.cssVariables
         ]
 
 
@@ -906,6 +909,7 @@ settingsSheetContent model =
                     , shape = Theme.Sections.Shape.view model.theme |> HtmlIr.Element.map ThemeMsg
                     , appearance = Theme.Sections.Appearance.view model.theme |> HtmlIr.Element.map ThemeMsg
                     , advanced = Theme.Sections.Advanced.view model.theme |> HtmlIr.Element.map ThemeMsg
+                    , cssVariables = Theme.Sections.CssVariables.view model.theme |> HtmlIr.Element.map ThemeMsg
                     }
             }
             model.theme
