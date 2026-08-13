@@ -1,5 +1,5 @@
 module M3e.Component.SearchBar exposing
-    ( searchbar, required
+    ( searchbar, component
     , Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
     , clearLabel, clearable, onClear
     , clearIcon, input, leading, trailing
@@ -9,7 +9,7 @@ module M3e.Component.SearchBar exposing
 
 A bar that provides a prominent entry point for search.
 
-@docs searchbar, required
+@docs searchbar, component
 @docs Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
 @docs clearLabel, clearable, onClear
 @docs clearIcon, input, leading, trailing
@@ -75,12 +75,12 @@ searchbar =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { input : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     searchbar attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (El.toNode required_.input)) :: children)
 
 

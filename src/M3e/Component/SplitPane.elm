@@ -1,5 +1,5 @@
 module M3e.Component.SplitPane exposing
-    ( splitpane, required
+    ( splitpane, component
     , Is, Attrs, ChildAdmittedBy
     , Orientation, orientation
     , detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, defaultValue, onChange, onBeforeinput, onInput
@@ -10,7 +10,7 @@ module M3e.Component.SplitPane exposing
 
 A dual-view layout that separates content with a movable drag handle.
 
-@docs splitpane, required
+@docs splitpane, component
 @docs Is, Attrs, ChildAdmittedBy
 @docs Orientation, orientation
 @docs detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, defaultValue, onChange, onBeforeinput, onInput
@@ -67,14 +67,14 @@ splitpane =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { end : Element childAccepts (ChildAdmittedBy childAdm) msg
     , start : Element childAccepts (ChildAdmittedBy childAdm) msg
     }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     splitpane attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "end") (El.toNode required_.end)) :: Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "start") (El.toNode required_.start)) :: children)
 
 

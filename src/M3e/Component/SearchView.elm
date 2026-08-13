@@ -1,5 +1,5 @@
 module M3e.Component.SearchView exposing
-    ( searchview, required
+    ( searchview, component
     , Is, Attrs, ClearIconSlot, CloseIconSlot, ClosedLeadingSlot, ClosedTrailingSlot, OpenLeadingSlot, OpenTrailingSlot, SearchIconSlot, ChildAdmittedBy
     , Mode, mode
     , clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
@@ -10,7 +10,7 @@ module M3e.Component.SearchView exposing
 
 A surface that presents suggestions and results for a search.
 
-@docs searchview, required
+@docs searchview, component
 @docs Is, Attrs, ClearIconSlot, CloseIconSlot, ClosedLeadingSlot, ClosedTrailingSlot, OpenLeadingSlot, OpenTrailingSlot, SearchIconSlot, ChildAdmittedBy
 @docs Mode, mode
 @docs clearLabel, closeLabel, contained, hideSearchIcon, open, onQuery, onClear, onBeforetoggle, onToggle
@@ -111,12 +111,12 @@ searchview =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { input : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     searchview attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "input") (El.toNode required_.input)) :: children)
 
 

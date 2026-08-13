@@ -1,5 +1,5 @@
 module M3e.Component.Accordion exposing
-    ( accordion, required
+    ( accordion, component
     , Is, Attrs, Content, ChildAdmittedBy
     , multi
     , child
@@ -9,7 +9,7 @@ module M3e.Component.Accordion exposing
 
 Combines multiple expansion panels in to an accordion.
 
-@docs accordion, required
+@docs accordion, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs multi
 @docs child
@@ -62,12 +62,12 @@ accordion =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     accordion attrs (required_.content :: children)
 
 

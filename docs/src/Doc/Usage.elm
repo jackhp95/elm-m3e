@@ -161,7 +161,7 @@ sectionBlock model ( sec, examples ) =
 
 
 {-| A live preview paired with a per-example tab strip that switches its code
-between the API surfaces (optionally `M3e`, then the `required` / `build` surfaces, and
+between the API surfaces (optionally `M3e`, then the `component` / `build` surfaces, and
 always `HTML`). The selection lives in
 `model.surfaces` keyed by this example's index, defaulting to the first available
 surface (`defaultSurfaceFor`). Grouped as one
@@ -203,7 +203,7 @@ activeIndexFor surface ex =
 
 
 {-| The surfaces offered for one example, in fixed order. Each Elm surface
-(`M3e`, `required`, `build`) appears only when it compiled for this example
+(`M3e`, `component`, `build`) appears only when it compiled for this example
 (its field is non-null); `HTML` is the one universal surface and is always offered
 last. Order: M3e, el, build, HTML.
 -}
@@ -234,7 +234,7 @@ surfacesFor ex =
                     [ ( label, surface ) ]
     in
     optional ex.top "M3e" Top
-        ++ recordBuild ex.record "required" Record
+        ++ recordBuild ex.record "component" Record
         ++ recordBuild ex.build "build" Build
         ++ [ ( "HTML", Raw ) ]
 
@@ -306,7 +306,7 @@ codeFor surface ex =
             elmOrHtml ex.top
 
         Record ->
-            recordBuildCode ex.record "required"
+            recordBuildCode ex.record "component"
 
         Build ->
             recordBuildCode ex.build "build"

@@ -40,12 +40,6 @@
     },
     "TimepickerInput": {
       "attr:view": "viewAttr"
-    },
-    "RadioGroup": {
-      "attr:required": "requiredAttr"
-    },
-    "Select": {
-      "attr:required": "requiredAttr"
     }
   },
   "_actions": {

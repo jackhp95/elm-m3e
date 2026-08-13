@@ -1,5 +1,5 @@
 module M3e.Component.Chip exposing
-    ( chip, required
+    ( chip, component
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
     , Variant, variant
     , value, defaultValue
@@ -10,7 +10,7 @@ module M3e.Component.Chip exposing
 
 A non-interactive chip used to convey small pieces of information.
 
-@docs chip, required
+@docs chip, component
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
 @docs Variant, variant
 @docs value, defaultValue
@@ -83,12 +83,12 @@ chip =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     chip attrs (required_.content :: children)
 
 

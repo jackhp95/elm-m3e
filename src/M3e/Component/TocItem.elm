@@ -1,5 +1,5 @@
 module M3e.Component.TocItem exposing
-    ( tocitem, required
+    ( tocitem, component
     , Is, Attrs, Content, ChildAdmittedBy
     , disabled, selected, defaultSelected, onClick
     , child
@@ -9,7 +9,7 @@ module M3e.Component.TocItem exposing
 
 An item in a table of contents.
 
-@docs tocitem, required
+@docs tocitem, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs disabled, selected, defaultSelected, onClick
 @docs child
@@ -63,12 +63,12 @@ tocitem =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     tocitem attrs (required_.content :: children)
 
 

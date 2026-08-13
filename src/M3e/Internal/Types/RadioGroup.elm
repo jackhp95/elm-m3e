@@ -22,7 +22,7 @@ type alias Attrs =
     , onBeforeinput : Supported
     , onChange : Supported
     , onInput : Supported
-    , requiredAttr : Supported
+    , required : Supported
     , slot : Supported
     , style : Supported
     , validationmessages : Supported
@@ -46,7 +46,7 @@ type alias AttrCaps =
     , onBeforeinput : Available
     , onChange : Available
     , onInput : Available
-    , requiredAttr : Available
+    , required : Available
     , slot : Available
     , style : Available
     , validationmessages : Available

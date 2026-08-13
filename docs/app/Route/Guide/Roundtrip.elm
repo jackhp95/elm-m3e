@@ -289,7 +289,7 @@ surfaceLegendText =
 | Row | What it is | Surface map |
 | --- | --- | --- |
 | **top** | `M3e.Component.Button.button` — the standard form: typed, slot-safe, composes anywhere. | the standard constructor surface ([surface map](/guide/the-layers)) |
-| **record** | `M3e.Component.Button.required { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the `required` surface ([surface map](/guide/the-layers)) |
+| **record** | `M3e.Component.Button.component { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the `component` surface ([surface map](/guide/the-layers)) |
 | **build** | `M3e.Build.Button.build { … }` piped through `M3e.Build.Button.toElement` — one-only setters unwritable twice, order-free. | the `build` surface ([surface map](/guide/the-layers)) |
 | **barrel** | `M3e.button` — one import that re-exports every component's standard constructor, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/guide/reference)) |
 

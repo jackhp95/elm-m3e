@@ -302,7 +302,7 @@ function summary(overviewText) {
 //     with the constructor; `ctor` is the module's own lowercased-name constructor
 //     (`M3e.Component.Button.button`); `slot` setters return `M3e.Content.Content`;
 //     `event` setters are the `onX` attribute producers; everything else that
-//     produces an `Attr` is a plain attribute setter. `required` (the
+//     produces an `Attr` is a plain attribute setter. `component` (the
 //     required-content constructor) falls through to `other`, preserving the
 //     grouping the old `el` constructor had.
 function roleOf(m, ctorName) {

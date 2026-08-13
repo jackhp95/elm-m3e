@@ -102,7 +102,7 @@ layers =
 | Surface | What it is | You reach for it |
 | --- | --- | --- |
 | **barrel / standard constructor** | The standard form — typed, slot-safe, composes into other components. | Almost always — the default. |
-| **`required` (required record)** | Same value; the compiler demands the required parts. | The 29 components with a required record, when you must not forget it. |
+| **`component` (required record)** | Same value; the compiler demands the required parts. | The 29 components with a required record, when you must not forget it. |
 | **`build` + `toElement`** | Same value via a pipe; one-only setters unwritable twice. | Conditional or order-free construction. |
 | **`M3e.Html.*` (loose)** | The open-rowed producer — no slot/attr checking, still in the IR. Not plain HTML. | Opting out of the strict rows on purpose. |
 | **`M3e.Coerce` / `M3e.Unsafe`** | Escapes: kind crossing / raw `Html`. Loud, greppable, lint-flagged. | Leaving the typed tree when nothing else fits. |"""
@@ -115,7 +115,7 @@ barrelVsSpecific =
 | Import | Statement | You get |
 | --- | --- | --- |
 | **barrel** | `import M3e` | One import for every component's standard-constructor form, plus `text` and `toHtml`. Pair it with the shared `M3e.Attributes` / `M3e.Values` / `M3e.Events` vocabulary (library-wide unions, lint-checked). |
-| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `required` / `build` live. |"""
+| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `component` / `build` live. |"""
 
 
 barrelVsSpecificCode : String
@@ -138,7 +138,7 @@ shapesCode =
 M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
-M3e.Component.Button.required { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe — a one-only setter is unwritable twice; order-free
 M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }

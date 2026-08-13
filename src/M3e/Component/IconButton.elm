@@ -1,5 +1,5 @@
 module M3e.Component.IconButton exposing
-    ( iconbutton, required
+    ( iconbutton, component
     , Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -10,7 +10,7 @@ module M3e.Component.IconButton exposing
 
 An icon button users interact with to perform a supplementary action.
 
-@docs iconbutton, required
+@docs iconbutton, component
 @docs Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -110,7 +110,7 @@ iconbutton =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg
     , ariaLabel : String
     , action : Ac.Action ActionCaps msg
@@ -118,7 +118,7 @@ required :
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     let
         actioned =
             Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))

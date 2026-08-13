@@ -1,5 +1,5 @@
 module M3e.Component.Fab exposing
-    ( fab, required
+    ( fab, component
     , Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps
     , Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
@@ -10,7 +10,7 @@ module M3e.Component.Fab exposing
 
 A floating action button (FAB) used to present important actions.
 
-@docs fab, required
+@docs fab, component
 @docs Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps
 @docs Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
@@ -104,14 +104,14 @@ fab =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg
     , action : Ac.Action ActionCaps msg
     }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     let
         actioned =
             Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))

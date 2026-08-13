@@ -1,5 +1,5 @@
 module M3e.Component.SegmentedButton exposing
-    ( segmentedbutton, required
+    ( segmentedbutton, component
     , Is, Attrs, Content, ChildAdmittedBy
     , disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
     , child
@@ -9,7 +9,7 @@ module M3e.Component.SegmentedButton exposing
 
 A button that allows a user to select from a limited set of options.
 
-@docs segmentedbutton, required
+@docs segmentedbutton, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
 @docs child
@@ -64,12 +64,12 @@ segmentedbutton =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     segmentedbutton attrs (required_.content :: children)
 
 

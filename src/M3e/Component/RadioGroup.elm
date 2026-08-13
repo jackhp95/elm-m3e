@@ -1,7 +1,7 @@
 module M3e.Component.RadioGroup exposing
-    ( radiogroup, required
+    ( radiogroup, component
     , Is, Attrs, ChildAdmittedBy
-    , ariaInvalid, disabled, name, requiredAttr, validationmessages, onBeforeinput, onInput, onChange
+    , ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
     , child
     )
 
@@ -9,9 +9,9 @@ module M3e.Component.RadioGroup exposing
 
 A container for a set of radio buttons.
 
-@docs radiogroup, required
+@docs radiogroup, component
 @docs Is, Attrs, ChildAdmittedBy
-@docs ariaInvalid, disabled, name, requiredAttr, validationmessages, onBeforeinput, onInput, onChange
+@docs ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
 @docs child
 
 -}
@@ -61,12 +61,12 @@ radiogroup =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     radiogroup attrs (required_.content :: children)
 
 
@@ -91,11 +91,11 @@ name value_ =
     Ir.attribute "name" value_
 
 
-{-| See `M3e.Attributes.requiredAttr`.
+{-| See `M3e.Attributes.required`.
 -}
-requiredAttr : Bool -> Attr { c | requiredAttr : Supported } msg
-requiredAttr =
-    A.requiredAttr
+required : Bool -> Attr { c | required : Supported } msg
+required =
+    A.required
 
 
 {-| See `M3e.Attributes.validationmessages`.

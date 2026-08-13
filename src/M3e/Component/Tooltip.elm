@@ -1,5 +1,5 @@
 module M3e.Component.Tooltip exposing
-    ( tooltip, required
+    ( tooltip, component
     , Is, Attrs, Content, ChildAdmittedBy
     , Position, position, TouchGestures, touchGestures
     , disabled, for, hideDelay, showDelay
@@ -10,7 +10,7 @@ module M3e.Component.Tooltip exposing
 
 Adds additional context to a button or other UI element.
 
-@docs tooltip, required
+@docs tooltip, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Position, position, TouchGestures, touchGestures
 @docs disabled, for, hideDelay, showDelay
@@ -77,12 +77,12 @@ tooltip =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     tooltip attrs (required_.content :: children)
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.SplitButton exposing
-    ( splitbutton, required
+    ( splitbutton, component
     , Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy
     , Size, size, Variant, variant
     , leadingButton, trailingButton
@@ -9,7 +9,7 @@ module M3e.Component.SplitButton exposing
 
 A button used to show an action with a menu of related actions.
 
-@docs splitbutton, required
+@docs splitbutton, component
 @docs Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy
 @docs Size, size, Variant, variant
 @docs leadingButton, trailingButton
@@ -81,14 +81,14 @@ splitbutton =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { leadingButton : Element LeadingButtonSlot (ChildAdmittedBy childAdm) msg
     , trailingButton : Element TrailingButtonSlot (ChildAdmittedBy childAdm) msg
     }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     splitbutton attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "leading-button") (El.toNode required_.leadingButton)) :: Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "trailing-button") (El.toNode required_.trailingButton)) :: children)
 
 

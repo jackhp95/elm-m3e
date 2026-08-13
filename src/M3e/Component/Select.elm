@@ -1,7 +1,7 @@
 module M3e.Component.Select exposing
-    ( select, required
+    ( select, component
     , Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
-    , disabled, hideSelectionIndicator, multi, name, panelClass, requiredAttr, validationmessages, onChange, onToggle, onBeforeinput, onInput
+    , disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
     , arrow, value, child
     )
 
@@ -9,9 +9,9 @@ module M3e.Component.Select exposing
 
 A form control that allows users to select a value from a set of predefined options.
 
-@docs select, required
+@docs select, component
 @docs Is, Attrs, Content, ArrowSlot, ChildAdmittedBy
-@docs disabled, hideSelectionIndicator, multi, name, panelClass, requiredAttr, validationmessages, onChange, onToggle, onBeforeinput, onInput
+@docs disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value, child
 
 -}
@@ -71,12 +71,12 @@ select =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     select attrs (required_.content :: children)
 
 
@@ -115,11 +115,11 @@ panelClass =
     A.panelClass
 
 
-{-| See `M3e.Attributes.requiredAttr`.
+{-| See `M3e.Attributes.required`.
 -}
-requiredAttr : Bool -> Attr { c | requiredAttr : Supported } msg
-requiredAttr =
-    A.requiredAttr
+required : Bool -> Attr { c | required : Supported } msg
+required =
+    A.required
 
 
 {-| See `M3e.Attributes.validationmessages`.

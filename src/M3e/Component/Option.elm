@@ -1,5 +1,5 @@
 module M3e.Component.Option exposing
-    ( option, required
+    ( option, component
     , Is, Attrs, Content, ChildAdmittedBy
     , HighlightMode, highlightMode
     , disableHighlight, disabled, selected, term, value, defaultSelected, defaultValue
@@ -10,7 +10,7 @@ module M3e.Component.Option exposing
 
 An option that can be selected.
 
-@docs option, required
+@docs option, component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs HighlightMode, highlightMode
 @docs disableHighlight, disabled, selected, term, value, defaultSelected, defaultValue
@@ -71,12 +71,12 @@ option =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     option attrs (required_.content :: children)
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.Step exposing
-    ( step, required
+    ( step, component
     , Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy
     , completed, disabled, editable, for, invalid, optional, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
     , doneIcon, editIcon, error, errorIcon, hint, icon, child
@@ -9,7 +9,7 @@ module M3e.Component.Step exposing
 
 A step in a wizard-like workflow.
 
-@docs step, required
+@docs step, component
 @docs Is, Attrs, Content, DoneIconSlot, EditIconSlot, ErrorSlot, ErrorIconSlot, HintSlot, IconSlot, ChildAdmittedBy
 @docs completed, disabled, editable, for, invalid, optional, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
 @docs doneIcon, editIcon, error, errorIcon, hint, icon, child
@@ -99,12 +99,12 @@ step =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     step attrs (required_.content :: children)
 
 

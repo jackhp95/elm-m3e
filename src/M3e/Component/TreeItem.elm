@@ -1,5 +1,5 @@
 module M3e.Component.TreeItem exposing
-    ( treeitem, required
+    ( treeitem, component
     , Is, Attrs, Content, IconSlot, LabelSlot, OpenToggleIconSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy
     , disabled, indeterminate, open, selected, defaultSelected, onOpening, onOpened, onClosing, onClosed, onClick
     , icon, label, openToggleIcon, selectedIcon, toggleIcon, child
@@ -9,7 +9,7 @@ module M3e.Component.TreeItem exposing
 
 An expandable item in a tree.
 
-@docs treeitem, required
+@docs treeitem, component
 @docs Is, Attrs, Content, IconSlot, LabelSlot, OpenToggleIconSlot, SelectedIconSlot, ToggleIconSlot, ChildAdmittedBy
 @docs disabled, indeterminate, open, selected, defaultSelected, onOpening, onOpened, onClosing, onClosed, onClick
 @docs icon, label, openToggleIcon, selectedIcon, toggleIcon, child
@@ -93,12 +93,12 @@ treeitem =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-required :
+component :
     { label : Element LabelSlot (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-required required_ attrs children =
+component required_ attrs children =
     treeitem attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "label") (El.toNode required_.label)) :: children)
 
 
