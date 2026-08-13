@@ -23,6 +23,7 @@ import MimeType
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Set
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
@@ -78,7 +79,45 @@ componentDecoder =
         (Decode.field "module" Decode.string)
         (Decode.field "slug" Decode.string)
         (Decode.field "overview" Decode.string)
-        (Decode.field "members" (Decode.list memberDecoder))
+        membersDecoder
+
+
+{-| The barrel-reference page groups a component's members by name-prefix, so it
+needs the FLAT member list. The reference.json is now layered (`types` +
+`layers.{m3e,components,builder}`), so rebuild the flat list by unioning them
+(de-duped by name); fall back to a legacy flat `members` array when present.
+-}
+membersDecoder : Decode.Decoder (List Member)
+membersDecoder =
+    let
+        listAt : String -> Decode.Decoder (List Member)
+        listAt field =
+            Decode.oneOf [ Decode.field field (Decode.list memberDecoder), Decode.succeed [] ]
+
+        dedupe : List Member -> List Member
+        dedupe ms =
+            List.foldl
+                (\m ( seen, acc ) ->
+                    if Set.member m.name seen then
+                        ( seen, acc )
+
+                    else
+                        ( Set.insert m.name seen, m :: acc )
+                )
+                ( Set.empty, [] )
+                ms
+                |> Tuple.second
+                |> List.reverse
+    in
+    Decode.oneOf
+        [ Decode.field "members" (Decode.list memberDecoder)
+        , Decode.map4
+            (\types m3e components builder -> dedupe (types ++ m3e ++ components ++ builder))
+            (listAt "types")
+            (Decode.oneOf [ Decode.at [ "layers", "m3e" ] (Decode.list memberDecoder), Decode.succeed [] ])
+            (Decode.oneOf [ Decode.at [ "layers", "components" ] (Decode.list memberDecoder), Decode.succeed [] ])
+            (Decode.oneOf [ Decode.at [ "layers", "builder" ] (Decode.list memberDecoder), Decode.succeed [] ])
+        ]
 
 
 route : StatelessRoute RouteParams Data ActionData

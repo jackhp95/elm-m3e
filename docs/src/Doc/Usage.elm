@@ -1,11 +1,12 @@
 port module Doc.Usage exposing
     ( Model
     , Msg(..)
-    , Surface
+    , Surface(..)
     , UsageExample
     , init
     , readSurface
     , storeSurface
+    , tabStrip
     , update
     , usageBlocks
     , usageExampleDecoder
@@ -323,6 +324,18 @@ trips a spurious vertical scrollbar on the control's state-surface bleed.
 -}
 surfaceTabs : Surface -> UsageExample -> Element { s | tabs : M3e.Kind.Brand } admittedBy Msg
 surfaceTabs current ex =
+    tabStrip current (surfacesFor ex)
+
+
+{-| A generic single-select layer tab strip: one `Tab` per `(label, surface)`, the
+one matching `current` marked selected, each click a `SelectSurface`. Shared by the
+Usage examples (offered surfaces = `surfacesFor ex`) and the per-component API
+section (offered surfaces = the three Phase-1 layers). `Tabs` paginates natively on
+narrow viewports, so no `overflow-x-auto` wrapper (which would trip a spurious
+vertical scrollbar on the control's state-surface bleed).
+-}
+tabStrip : Surface -> List ( String, Surface ) -> Element { s | tabs : M3e.Kind.Brand } admittedBy Msg
+tabStrip current entries =
     M3e.tabs []
         (List.map
             (\( lbl, surface ) ->
@@ -332,7 +345,7 @@ surfaceTabs current ex =
                     ]
                     [ M3e.text lbl ]
             )
-            (surfacesFor ex)
+            entries
         )
 
 

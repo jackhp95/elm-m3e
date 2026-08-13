@@ -166,6 +166,29 @@ function barrelSource() {
   return out;
 }
 
+// Barrel per-component ownership: each top-level barrel value whose body is a
+// re-export `name =\n    M3e.Component.<Owner>.<member>` belongs to <Owner>.
+// This is the barrel's ONLY per-component content — slot placers and IR helpers
+// are universal and deliberately excluded. Keyed by lowercased owner base name
+// (the component slug), value is the list of barrel value names (usually one: the
+// constructor). (spec: 2026-08-13-api-reference-reorg §"Extraction gains 2 more sources")
+function barrelSliceByOwner() {
+  const src = fs.readFileSync(SRC_M3E_BARREL, "utf8");
+  const byOwner = new Map();
+  for (const m of src.matchAll(
+    /^([a-z][A-Za-z0-9_]*)\s*=\s*\n\s*M3e\.Component\.([A-Za-z0-9_]+)\.[a-z][A-Za-z0-9_]*\s*$/gm
+  )) {
+    const [, valueName, owner] = m;
+    const slug = owner.toLowerCase();
+    if (!byOwner.has(slug)) byOwner.set(slug, []);
+    byOwner.get(slug).push(valueName);
+  }
+  return byOwner;
+}
+
+// Barrel per-component ownership map, built once (not per component).
+const barrelSlice = barrelSliceByOwner();
+
 // 1. Build a fresh scratch package project inside the unique temp dir.
 function setupScratch() {
   // Refresh only the src tree (idempotent across runs — the dir persists); keep
@@ -206,6 +229,15 @@ function setupScratch() {
         .map((f) => "M3e.Component." + f.replace(/\.elm$/, ""))
     : [];
 
+  // Builder modules (M3e.Build.*) — the pipe API surface for the Builder tab.
+  const SRC_M3E_BUILD = path.join(SRC_M3E, "Build");
+  const buildModules = fs.existsSync(SRC_M3E_BUILD)
+    ? fs
+        .readdirSync(SRC_M3E_BUILD)
+        .filter((f) => f.endsWith(".elm"))
+        .map((f) => "M3e.Build." + f.replace(/\.elm$/, ""))
+    : [];
+
   const exposed = [
     // The one-import barrel first — it is the taught surface (#187).
     "M3e",
@@ -216,6 +248,8 @@ function setupScratch() {
       .filter((m) => !NOT_EXPOSED.has(m)),
     // Per-component modules under M3e.Component.* (Phase B layout).
     ...componentModules,
+    // Builder modules under M3e.Build.* (the Builder-tab layer source).
+    ...buildModules,
   ].sort();
 
   const elmJson = {
@@ -320,11 +354,14 @@ function roleOf(m, ctorName) {
 //    (multi-line collapsed to a single line by docs.json already). Each member
 //    also carries a `role` so the API section can render elm-module-page groups
 //    (constructor+types, attributes, slots, events) while preserving @docs order.
-function moduleEntry(mod) {
-  const name = mod.name.replace(/^M3e\./, "");
-  // For M3e.Component.Button → slug "button" (strip intermediate namespace so
-  // categories.json keys stay simple). Top-level M3e.Action → slug "action" unchanged.
-  const slug = name.replace(/^Component\./, "").toLowerCase();
+// Build a module's ordered member list (types + values), each tagged with its
+// `role` via `roleOf(m, ctorName)`. Order follows the module comment's @docs
+// sections, with anything unreferenced falling to the end alphabetically. Shared
+// by the Components, Builder, and M3e-barrel layer extraction so all three
+// classify identically. `ctorName` is the slug so the per-component ctor (named
+// after the slug in both the Component module and the barrel re-export) still
+// classifies as `ctor`; harmless for the Builder layer (no ctor-role member).
+function membersOf(mod, ctorName) {
   const byName = new Map();
   for (const u of mod.unions || []) {
     byName.set(u.name, { name: u.name, kind: "type", signature: "", doc: (u.comment || "").trim() });
@@ -348,7 +385,39 @@ function moduleEntry(mod) {
   for (const n of [...byName.keys()].sort()) {
     if (!seen.has(n)) members.push(byName.get(n));
   }
-  for (const m of members) m.role = roleOf(m, slug);
+  for (const m of members) m.role = roleOf(m, ctorName);
+  return members;
+}
+
+function moduleEntry(mod, modulesByName) {
+  const name = mod.name.replace(/^M3e\./, "");
+  // For M3e.Component.Button → slug "button" (strip intermediate namespace so
+  // categories.json keys stay simple). Top-level M3e.Action → slug "action" unchanged.
+  const slug = name.replace(/^Component\./, "").toLowerCase();
+
+  const members = membersOf(mod, slug);
+
+  // Types (aliases/unions) are shared across the M3e + Components layers, so they
+  // leave the per-layer bucket set and become a page-wide block. (Phase 1: Elm
+  // aliases only; Raw-layer types are Phase 2.)
+  const types = members.filter((m) => m.kind === "type");
+  const componentsLayer = members.filter((m) => m.kind !== "type");
+
+  // Builder layer: M3e.Build.<Name>'s own members (aliases → shared types; values
+  // classify through roleOf unchanged). Absent module ⇒ empty layer.
+  const buildMod = modulesByName.get("M3e.Build." + name.replace(/^Component\./, ""));
+  const builderMembers = buildMod ? membersOf(buildMod, slug) : [];
+  for (const t of builderMembers.filter((m) => m.kind === "type")) {
+    if (!types.some((x) => x.name === t.name)) types.push(t);
+  }
+  const builderLayer = builderMembers.filter((m) => m.kind !== "type");
+
+  // M3e barrel slice: barrel values owned by this component (see barrelSliceByOwner).
+  const barrelMod = modulesByName.get("M3e");
+  const ownedNames = new Set(barrelSlice.get(slug) || []);
+  const m3eLayer = barrelMod
+    ? membersOf(barrelMod, slug).filter((m) => ownedNames.has(m.name) && m.kind !== "type")
+    : [];
 
   const over = overview(mod.comment || "");
   // Join the editorial override (config/categories.json) by slug: a matched
@@ -369,7 +438,8 @@ function moduleEntry(mod) {
     label: override ? override.label : name,
     summary: summary(over),
     overview: over,
-    members,
+    types,
+    layers: { m3e: m3eLayer, components: componentsLayer, builder: builderLayer },
   };
 }
 
@@ -400,10 +470,22 @@ try {
   throw e;
 }
 
+// Index raw docs.json module entries by name so the Builder + barrel layer
+// lookups can pull typed members without re-parsing source.
+const modulesByName = new Map(modules.map((m) => [m.name, m]));
+
 const components = modules
-  // Keep the bare `M3e` barrel plus every `M3e.*` component module.
-  .filter((m) => m.name === "M3e" || /^M3e\./.test(m.name))
-  .map(moduleEntry)
+  // Keep the bare `M3e` barrel plus every `M3e.Component.*` page module, plus any
+  // other top-level `M3e.*` module that maps to a page — but NOT `M3e.Build.*`,
+  // which is consumed only as a layer source and must never surface as its own
+  // page (no `build`-prefixed slug in categories.json).
+  .filter(
+    (m) =>
+      m.name === "M3e" ||
+      /^M3e\.Component\./.test(m.name) ||
+      (/^M3e\./.test(m.name) && !/^M3e\.Build\./.test(m.name))
+  )
+  .map((m) => moduleEntry(m, modulesByName))
   .sort((a, b) => a.name.localeCompare(b.name));
 
 // Build guard: the package exposes ZERO `Ui.*` modules — every module is
@@ -422,7 +504,7 @@ for (const c of components) {
   for (const [field, val] of Object.entries(fields)) {
     if (/\bUi\.[A-Z]/.test(val || "")) uiHits.push(`${c.module} .${field}`);
   }
-  for (const m of c.members) {
+  for (const m of [...c.types, ...c.layers.m3e, ...c.layers.components, ...c.layers.builder]) {
     if (/\bUi\.[A-Z]/.test(m.doc || "")) uiHits.push(`${c.module}.${m.name} .doc`);
     if (/\bUi\.[A-Z]/.test(m.signature || "")) uiHits.push(`${c.module}.${m.name} .signature`);
   }
@@ -439,7 +521,11 @@ if (uiHits.length) {
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify(components));
-const totalMembers = components.reduce((n, c) => n + c.members.length, 0);
+const totalMembers = components.reduce(
+  (n, c) =>
+    n + c.types.length + c.layers.m3e.length + c.layers.components.length + c.layers.builder.length,
+  0
+);
 console.log(
   `reference (via elm make --docs): ${components.length} components, ${totalMembers} members -> data/reference.json`
 );

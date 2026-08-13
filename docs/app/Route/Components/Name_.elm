@@ -132,7 +132,7 @@ view app _ model =
                   TypedHtml.div [ TA.class "space-y-10" ]
                     (header component
                         :: Usage.usageBlocks model app.data.usage
-                        ++ [ apiSection component.members ]
+                        ++ [ apiSection model.activeSurface component ]
                         ++ exampleAppsSection app.data.exampleUsage
                     )
                 ]
@@ -217,27 +217,86 @@ installCard =
     Doc.codeBlock Doc.Elm "import M3e\nimport M3e.Values"
 
 
-{-| The API-reference section, rendered like an elm module page: the members
-grouped by role (constructor + its colocated type aliases, then attribute setters,
-slot setters, and events), each group an overline-labelled outlined card. Members
+{-| The three Phase-1 API layers, in tab order, each mapping a `Surface` to its
+label and the member list to render. `Raw` is Phase 2 (no tab here) — the CEM
+manifest source is deferred. `Top → M3e barrel slice`, `Record → Components`,
+`Build → Builder`, reusing the shared `Surface` so a Usage-tab click and an
+API-tab click move the same `activeSurface`.
+-}
+apiLayers : Doc.Data.Component -> List ( Usage.Surface, String, List Doc.Data.Member )
+apiLayers component =
+    [ ( Usage.Top, "M3e", component.layers.m3e )
+    , ( Usage.Record, "Components", component.layers.components )
+    , ( Usage.Build, "Builder", component.layers.builder )
+    ]
+
+
+{-| The API-reference section, rendered like an elm module page: a page-wide Types
+block (the component's aliases/unions, un-tabbed, above), then a 3-tab layer strip
+(`M3e | Components | Builder`) driven by the shared `activeSurface`, then the
+selected layer's members grouped by role (constructor, attribute setters, slot
+setters, events, other), each group an overline-labelled outlined card. Members
 keep their `@docs` order within a group. Empty groups drop out.
 -}
-apiSection : List Doc.Data.Member -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
-apiSection members =
+apiSection : Usage.Surface -> Doc.Data.Component -> Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg
+apiSection activeSurface component =
+    let
+        activeLayer : List Doc.Data.Member
+        activeLayer =
+            apiLayers component
+                |> List.filter (\( s, _, _ ) -> s == activeSurface)
+                |> List.head
+                |> Maybe.map (\( _, _, ms ) -> ms)
+                -- activeSurface is Raw (Phase 2, no API tab) or unmatched: fall
+                -- back to the M3e layer so the section is never blank.
+                |> Maybe.withDefault component.layers.m3e
+    in
     TypedHtml.div [ TA.class "space-y-6" ]
         (Doc.sectionHeadingWithId (Doc.slugify "API") "API"
-            :: List.filterMap (apiGroup members) apiGroups
+            :: typesBlock component.types
+            ++ [ apiTabStrip activeSurface component ]
+            ++ List.filterMap (apiGroup activeLayer) apiGroups
         )
 
 
-{-| The API groups, in render order, each with the member roles it collects. The
-constructor group also carries any exposed `type` aliases/unions so a caps/record
-type sits beside the `view` that consumes it. The trailing group catches helper
-values (e.g. `M3e.Action` combinators) that are neither attrs, slots, nor events.
+{-| The component's type aliases/unions, shared across the M3e and Components
+layers (the barrel re-exports them verbatim). Rendered once, above the tab strip
+— NOT inside any tab — since they aren't layer-specific. Empty ⇒ nothing.
+-}
+typesBlock : List Doc.Data.Member -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
+typesBlock types =
+    case types of
+        [] ->
+            []
+
+        _ ->
+            [ TypedHtml.div [ TA.class "space-y-3" ]
+                [ Doc.sectionLabel "Types"
+                , M3e.card [ M3e.Attributes.variant Value.outlined ]
+                    [ M3e.Component.Card.content (M3e.list [] (List.map memberRow types)) ]
+                ]
+            ]
+
+
+{-| The 3-tab API layer strip (`M3e | Components | Builder`), driven by the shared
+`activeSurface`. A click emits the SAME `SelectSurface` the Usage tabs emit, so
+both move together. `Raw` is Phase 2 and not offered here.
+-}
+apiTabStrip : Usage.Surface -> Doc.Data.Component -> Element { s | tabs : M3e.Kind.Brand } adm_ Usage.Msg
+apiTabStrip activeSurface component =
+    Usage.tabStrip
+        activeSurface
+        (List.map (\( surf, lbl, _ ) -> ( lbl, surf )) (apiLayers component))
+
+
+{-| The API groups, in render order, each with the member roles it collects. Type
+aliases/unions no longer live here — they render in the page-wide Types block
+above. The trailing group catches helper values (e.g. `M3e.Action` combinators)
+that are neither attrs, slots, nor events.
 -}
 apiGroups : List ( String, List String )
 apiGroups =
-    [ ( "Constructor", [ "ctor", "type" ] )
+    [ ( "Constructor", [ "ctor" ] )
     , ( "Attributes", [ "attr" ] )
     , ( "Slots", [ "slot" ] )
     , ( "Events", [ "event" ] )

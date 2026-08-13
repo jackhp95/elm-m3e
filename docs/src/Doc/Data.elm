@@ -1,10 +1,12 @@
 module Doc.Data exposing
     ( Component
     , ExampleUsage
+    , Layers
     , Member
     , allComponents
     , allExampleUsage
     , allUsage
+    , members
     )
 
 import BackendTask exposing (BackendTask)
@@ -13,10 +15,21 @@ import Dict exposing (Dict)
 import Doc.Usage exposing (UsageExample, usageExampleDecoder)
 import FatalError exposing (FatalError)
 import Json.Decode as Decode
+import Set
 
 
 type alias Member =
     { name : String, kind : String, signature : String, doc : String, role : String }
+
+
+{-| The three Phase-1 API layers of a component: `m3e` (the barrel's thin
+per-component slice — usually just the constructor), `components` (the
+`M3e.Component.<Name>` module's own members), and `builder` (`M3e.Build.<Name>`'s
+pipe surface). Type aliases are lifted OUT of the layers into `Component.types`
+(shared across layers), so a layer holds only its value members.
+-}
+type alias Layers =
+    { m3e : List Member, components : List Member, builder : List Member }
 
 
 type alias Component =
@@ -26,7 +39,8 @@ type alias Component =
     , label : String
     , summary : String
     , overview : String
-    , members : List Member
+    , types : List Member
+    , layers : Layers
     }
 
 
@@ -42,7 +56,7 @@ memberDecoder =
 
 componentDecoder : Decode.Decoder Component
 componentDecoder =
-    Decode.map7 Component
+    Decode.map8 Component
         (Decode.field "name" Decode.string)
         (Decode.field "slug" Decode.string)
         (Decode.oneOf [ Decode.field "category" Decode.string, Decode.succeed "" ])
@@ -51,7 +65,61 @@ componentDecoder =
         (Decode.oneOf [ Decode.field "label" Decode.string, Decode.field "name" Decode.string ])
         (Decode.oneOf [ Decode.field "summary" Decode.string, Decode.succeed "" ])
         (Decode.field "overview" Decode.string)
-        (Decode.field "members" (Decode.list memberDecoder))
+        (Decode.oneOf
+            [ Decode.field "types" (Decode.list memberDecoder)
+            , legacyMembers |> Decode.map (List.filter (\m -> m.kind == "type"))
+            ]
+        )
+        layersDecoder
+
+
+{-| An older flat `reference.json` carried one `members` array. Decode it (or an
+empty list) so the layered decoders can fall back gracefully.
+-}
+legacyMembers : Decode.Decoder (List Member)
+legacyMembers =
+    Decode.oneOf [ Decode.field "members" (Decode.list memberDecoder), Decode.succeed [] ]
+
+
+layersDecoder : Decode.Decoder Layers
+layersDecoder =
+    Decode.oneOf
+        [ Decode.field "layers"
+            (Decode.map3 Layers
+                (Decode.field "m3e" (Decode.list memberDecoder))
+                (Decode.field "components" (Decode.list memberDecoder))
+                (Decode.field "builder" (Decode.list memberDecoder))
+            )
+        , legacyMembers
+            |> Decode.map (\ms -> Layers [] (List.filter (\m -> m.kind /= "type") ms) [])
+        ]
+
+
+{-| The flat member list the barrel/all-components pages still consume — the union
+of this component's types and every layer, de-duplicated by name (a value
+re-exported into more than one layer appears once). The per-component API page
+(`Route.Components.Name_`) uses `.types` + `.layers` directly instead; this
+accessor exists only so the other reference consumers keep compiling after the
+record went layered.
+-}
+members : Component -> List Member
+members c =
+    let
+        dedupe : List Member -> List Member
+        dedupe =
+            List.foldl
+                (\m ( seen, acc ) ->
+                    if Set.member m.name seen then
+                        ( seen, acc )
+
+                    else
+                        ( Set.insert m.name seen, m :: acc )
+                )
+                ( Set.empty, [] )
+                >> Tuple.second
+                >> List.reverse
+    in
+    dedupe (c.types ++ c.layers.m3e ++ c.layers.components ++ c.layers.builder)
 
 
 allComponents : BackendTask FatalError (List Component)
