@@ -1,10 +1,27 @@
 # Spec — API reference section: 4-layer tabs + shared Types block
 
-Date: 2026-08-13
+Date: 2026-08-13 (revised same day — dependency ordering + Raw-tab phasing added)
 Repo: `elm-m3e`
 Status: approved design, not yet planned
 Related: `docs/app/Route/Components/Name_.elm`, `docs/scripts/extract-reference.mjs`,
 `docs/src/Doc/Usage.elm` (tab widget + Surface concept reused)
+
+## Dependency ordering
+
+This spec's plan MUST sequence after, not parallel with:
+
+1. `2026-08-13-usage-tab-sync-design.md` — this spec reuses that spec's shared/
+   persisted `activeSurface` state directly; building against today's
+   `Dict Int Surface` shape would mean redoing this spec's tab-wiring work once tab-sync
+   lands.
+2. `2026-08-13-component-api-naming-convention-design.md` — the Constructor bucket's
+   ctor-name display (`button`/`required` vs. today's `view`/`el`) depends on that
+   spec's elm-cem regeneration having already happened; building this spec's
+   extraction against the OLD names means re-touching `extract-reference.mjs` again
+   right after `roleOf`'s classifier changes underneath it.
+
+Both are independent, small-to-medium specs — landing them first is cheap and avoids
+rework in this (larger) spec.
 
 ## Problem
 
@@ -28,10 +45,12 @@ those forms, with no structured member list.
 - No literal-Elm-return-type grouping (confirmed: current semantic buckets — attr /
   slot / event / other — are kept as-is; only the layer tabbing and the Types
   extraction are new).
+- No Raw tab in this spec's Phase 1 (see Dependency ordering / Phasing above) — its
+  CEM-manifest data source is unconfirmed and deferred to a Phase 2 addendum.
 
 ## Design
 
-### Four tabs, one per real layer
+### Four tabs, one per real layer — but shipped in two phases
 
 The API section gains the same 4-surface concept `Doc.Usage.Surface` already models
 (`Top | Record | Build | Raw`), labeled for this context as `M3e | Components |
@@ -43,28 +62,41 @@ by the tab-sync spec — an API-section tab click updates the same page-wide (an
 site-wide-persisted) surface as a Usage-example tab click, and vice versa. This is
 the direct realization of "changing to an API tab changes ALL tabs."
 
-### Extraction gains 3 more sources per component
+**Phase 1 (this spec's primary scope) ships 3 of the 4 tabs**: `M3e | Components |
+Builder`. **Phase 2 (explicitly deferred, own follow-up task) adds `Raw`** — reviewed
+feedback on this spec's first draft correctly flagged that the Raw tab's data source
+(`@m3e/web`'s custom-elements-manifest — exact vendored path, and whether its shape
+maps cleanly onto the existing `roleOf`/`apiGroups` classifiers) is genuinely
+unknown, not just an implementation detail, and planning against an unknown data
+shape risks the plan stalling mid-task. Phase 1 is fully specified and can be planned
+now; Phase 2 needs a short investigation pass (read the manifest, confirm its shape)
+before it can be spec'd concretely — do that investigation as its own small task,
+write a short Phase-2 addendum to this spec (or a new spec file) once the shape is
+known, THEN plan Phase 2. Shipping 3 tabs without Raw is a coherent, useful
+intermediate state, not a broken one.
 
-`extract-reference.mjs` currently walks only `src/M3e/Component/<Name>.elm`. It needs
-three more member sources, keyed to the same component:
+### Extraction gains 2 more sources per component (Phase 1)
+
+`extract-reference.mjs` currently walks only `src/M3e/Component/<Name>.elm`. Phase 1
+adds two more member sources, keyed to the same component:
 
 - **`M3e` tab** — the barrel's per-component slice of `src/M3e.elm` (the handful of
   top-level functions/re-exports for that component, e.g. `M3e.button`,
   `M3e.variant`, etc. re-exported or thinly wrapping the Component layer).
 - **`Builder` tab** — `src/M3e/Build/<Name>.elm`'s members (the builder-pipe API:
   `build`, `toElement`, and its pipe-stage setters).
-- **`Raw` tab** — the underlying `<m3e-*>` custom element's own attribute/property/
-  event contract, sourced from `@m3e/web`'s custom-elements-manifest (exact vendored
-  path TBD at implementation time — no existing code path in this repo reads the CEM
-  manifest today, this is new plumbing, not a rename of something existing).
+
+(Phase 2 adds the `Raw` tab's CEM-manifest-sourced member list once its data shape is
+known — see above.)
 
 Each tab's member list keeps the existing `roleOf` classification
 (`extract-reference.mjs:300-313`) and existing `apiGroups` semantic buckets
 (Attributes/Slots/Events/Other) — those classifiers were written against
 `M3e.Component.*` signatures; the `M3e` and `Builder` layers will need the same
-classifier applied to their own (structurally similar) signatures, and the `Raw`
-layer's CEM-sourced attributes get a simpler mapping (CEM attribute → `attr`, CEM
-event → `event`, CEM slot → `slot`) since there's no Elm signature to pattern-match.
+classifier applied to their own (structurally similar) signatures. (Phase 2's `Raw`
+layer will need its own mapping — CEM attribute → `attr`, CEM event → `event`, CEM
+slot → `slot` — since there's no Elm signature to pattern-match; deferred with the
+rest of Phase 2.)
 
 ### Types pulled out, shared across tabs
 
@@ -76,26 +108,28 @@ barrel re-exports the Component layer's type aliases verbatim; they aren't
 layer-specific). The Constructor bucket keeps only the ctor function itself
 (`button`/`required` per the naming-convention spec) once types move out.
 
-`Raw`-layer "types" (if the CEM manifest expresses attribute value enums) can either
-feed the same shared Types block (if they line up 1:1 with the Elm `Value`-typed
-aliases) or get their own small subsection within the Raw tab — implementation-time
-call once the CEM manifest's actual shape is inspected.
+`Raw`-layer "types" (Phase 2, once the CEM manifest's shape is known) can either feed
+the same shared Types block (if they line up 1:1 with the Elm `Value`-typed aliases)
+or get their own small subsection within the Raw tab — deferred with the rest of
+Phase 2.
 
-### Page layout, top to bottom
+### Page layout, top to bottom (Phase 1)
 
 1. Title, summary, install snippet (unchanged).
 2. **Types** section (new, shared, un-tabbed).
-3. Tab strip: `M3e | Components | Builder | Raw`.
+3. Tab strip: `M3e | Components | Builder` (Phase 1 — `Raw` joins in Phase 2).
 4. Selected tab's semantic-bucket groups (Constructor/Attributes/Slots/Events/Other,
    minus Constructor's former type aliases).
 5. Usage section (unchanged, below API — existing page order).
 
-## Testing
+## Testing (Phase 1)
 
 - Spot-check 3-4 components spanning different shapes (a component with slots, one
   with events, one with no Builder module if any exist, one simple attrs-only
-  component) render all 4 tabs with correct, non-empty member lists where expected.
+  component) render all 3 Phase-1 tabs with correct, non-empty member lists where
+  expected.
 - Confirm clicking a tab in the API section moves Usage examples' tabs on the same
   page to match, and the reverse.
 - Confirm the Types block shows once per page (not duplicated per tab) and contains
   exactly the type aliases that used to live in the Constructor bucket.
+- (Phase 2 testing to be added alongside its own addendum spec.)

@@ -18,11 +18,21 @@ whole page in one layer.
 
 - No change to `surfacesFor` (which tabs are *offered* per example, `Doc/Usage.elm:210-239`)
   — an example that doesn't have a `Top` form still won't offer a `Top` tab, even
-  when `Top` is the page-wide selection. Selecting a surface that an example doesn't
-  offer leaves that example showing its nearest available surface (existing fallback
-  behavior, unchanged).
+  when `Top` is the page-wide selection.
 - No per-example override affordance — once this ships, there is no way to pin one
   example to a different layer than the rest of the page.
+
+### Fallback rule (resolved — was ambiguous in an earlier draft of this spec)
+
+When the page-wide `activeSurface` isn't in a given example's `surfacesFor` list, that
+example falls back to **its own existing per-example default** — i.e. exactly what
+`defaultSurfaceFor` (`Doc/Usage.elm:248`, `surfacesFor ex |> List.head |> ...`)
+computes today. This is a per-example, static fallback (first surface that example
+itself offers), not a "closest surface to the global pick" ranking — there is no
+ordering-distance concept to define, which is what made the earlier wording
+ambiguous. Concretely: an example with only `Record`/`Raw` offered, on a page where
+`activeSurface == Build`, shows `Record` (its own first-offered), not `Raw` or
+anything computed relative to `Build`.
 
 ## Design
 
@@ -56,3 +66,9 @@ present; fall back to `Top` on absence or decode failure.
 - Manual: reload the page, confirm the previously-selected layer persists.
 - Manual: navigate to a different component page, confirm the layer selection
   carries over.
+- Manual: on an example that doesn't offer the current `activeSurface`, confirm it
+  falls back to its own first-offered surface per the rule above.
+- Regression: `docs/tests-browser/usage.spec.ts` exercises today's per-example,
+  index-keyed `SelectSurface` behavior — its selectors/assertions need updating for
+  the page-wide model. Required plan work, not optional cleanup (same caveat the
+  theme-drawer spec calls out for `settings-sheet.spec.ts`).
