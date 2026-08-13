@@ -101,8 +101,8 @@ layers =
 
 | Surface | What it is | You reach for it |
 | --- | --- | --- |
-| **barrel / `view`** | The standard form — typed, slot-safe, composes into other components. | Almost always — the default. |
-| **`el` (required record)** | Same value; the compiler demands the required parts. | The 29 components with a required record, when you must not forget it. |
+| **barrel / standard constructor** | The standard form — typed, slot-safe, composes into other components. | Almost always — the default. |
+| **`required` (required record)** | Same value; the compiler demands the required parts. | The 29 components with a required record, when you must not forget it. |
 | **`build` + `toElement`** | Same value via a pipe; one-only setters unwritable twice. | Conditional or order-free construction. |
 | **`M3e.Html.*` (loose)** | The open-rowed producer — no slot/attr checking, still in the IR. Not plain HTML. | Opting out of the strict rows on purpose. |
 | **`M3e.Coerce` / `M3e.Unsafe`** | Escapes: kind crossing / raw `Html`. Loud, greppable, lint-flagged. | Leaving the typed tree when nothing else fits. |"""
@@ -114,8 +114,8 @@ barrelVsSpecific =
 
 | Import | Statement | You get |
 | --- | --- | --- |
-| **barrel** | `import M3e` | One import for every component's `view` form, plus `text` and `toHtml`. Pair it with the shared `M3e.Attributes` / `M3e.Values` / `M3e.Events` vocabulary (library-wide unions, lint-checked). |
-| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `el` / `build` live. |"""
+| **barrel** | `import M3e` | One import for every component's standard-constructor form, plus `text` and `toHtml`. Pair it with the shared `M3e.Attributes` / `M3e.Values` / `M3e.Events` vocabulary (library-wide unions, lint-checked). |
+| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `required` / `build` live. |"""
 
 
 barrelVsSpecificCode : String
@@ -124,7 +124,7 @@ barrelVsSpecificCode =
 M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []), M3e.text "Save" ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Component.Button.view [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]"""
+M3e.Component.Button.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]"""
 
 
 shapes : String
@@ -138,7 +138,7 @@ shapesCode =
 M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- required-record form — the compiler demands the parts it can't do without
-M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
+M3e.Component.Button.required { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
 
 -- builder pipe — a one-only setter is unwritable twice; order-free
 M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }

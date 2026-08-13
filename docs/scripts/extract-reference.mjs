@@ -299,13 +299,16 @@ function summary(overviewText) {
 
 // 4d. Classify a member into the elm-module-page groups the API section renders,
 //     preserving @docs order within each group. `type` (aliases/unions) colocate
-//     with the constructor; `ctor` is `view`; `slot` setters return
-//     `M3e.Content.Content`; `event` setters are the `onX` attribute producers;
-//     everything else that produces an `Attr` is a plain attribute setter.
-function roleOf(m) {
+//     with the constructor; `ctor` is the module's own lowercased-name constructor
+//     (`M3e.Component.Button.button`); `slot` setters return `M3e.Content.Content`;
+//     `event` setters are the `onX` attribute producers; everything else that
+//     produces an `Attr` is a plain attribute setter. `required` (the
+//     required-content constructor) falls through to `other`, preserving the
+//     grouping the old `el` constructor had.
+function roleOf(m, ctorName) {
   const sig = m.signature || "";
   if (m.kind === "type") return "type";
-  if (m.name === "view") return "ctor";
+  if (m.name === ctorName) return "ctor";
   if (/\bM3e\.Content\.Content\b/.test(sig)) return "slot";
   if (/^on[A-Z]/.test(m.name) && /\bM3e\.Cem\.Attr\.Attr\b/.test(sig)) return "event";
   if (/\bM3e\.Cem\.Attr\.Attr\b/.test(sig)) return "attr";
@@ -345,7 +348,7 @@ function moduleEntry(mod) {
   for (const n of [...byName.keys()].sort()) {
     if (!seen.has(n)) members.push(byName.get(n));
   }
-  for (const m of members) m.role = roleOf(m);
+  for (const m of members) m.role = roleOf(m, slug);
 
   const over = overview(mod.comment || "");
   // Join the editorial override (config/categories.json) by slug: a matched
