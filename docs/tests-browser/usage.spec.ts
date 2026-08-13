@@ -95,6 +95,27 @@ test("/components/button renders code for the available API surfaces", async ({
   await expect(m3eTab).toBeVisible();
 });
 
+// Helpers for discriminating between Usage and API tab strips.
+//
+// The API strip (added by the API-reference-reorg) contains tabs "M3e",
+// "Components", "Builder" (capital C/B). Usage strips contain tabs "M3e",
+// "component", "build", "HTML" (lowercase c/b, plus HTML). The presence of
+// a tab with text "Components" or "Builder" (exactly) uniquely identifies the
+// API strip.
+function isApiStrip(strip: Element): boolean {
+  const tabs = [...strip.querySelectorAll("m3e-tab")];
+  return tabs.some(
+    (t) =>
+      t.textContent?.trim() === "Components" ||
+      t.textContent?.trim() === "Builder",
+  );
+}
+
+function getSelectedTabText(strip: Element): string | undefined {
+  const tabs = [...strip.querySelectorAll("m3e-tab")];
+  return tabs.find((t) => t.hasAttribute("selected"))?.textContent?.trim();
+}
+
 test("/components/button Usage tab sync: clicking a tab updates all examples", async ({
   page,
 }) => {
@@ -111,33 +132,38 @@ test("/components/button Usage tab sync: clicking a tab updates all examples", a
     ),
   );
 
-  // Locate ALL tab strips rendered by surfaceTabs. Each strip is an <m3e-tabs>
-  // element. If the button component has multiple Usage examples, there will be
-  // multiple strips.
-  const tabStrips = page.locator("m3e-tabs");
-  const count = await tabStrips.count();
+  // Discriminator: Usage strips contain an "HTML" tab; the API strip (added by
+  // API-reorg) contains "Components"/"Builder" (capital) and has no "HTML" tab.
+  // We scope the sync assertion to Usage-section strips only.
+  const allStrips = page.locator("m3e-tabs");
+  const totalCount = await allStrips.count();
 
   // The button component has at least one Usage example; skip this test if
   // somehow none render (data pipeline issue, not a tab-sync issue).
-  if (count < 1) {
+  if (totalCount < 1) {
     return;
   }
 
-  // Click the "HTML" tab on the FIRST strip. "HTML" (Raw surface) is always
-  // offered and is not the default, so this always represents a real change.
-  await tabStrips.first().getByText("HTML", { exact: true }).click();
+  // Identify the first Usage strip (has "HTML" tab) for initial click.
+  // In practice Usage strips come before the API strip in the DOM.
+  const firstUsageStrip = allStrips
+    .filter({ has: page.locator("m3e-tab", { hasText: "HTML" }) })
+    .first();
+  await expect(firstUsageStrip).toBeAttached();
 
-  // After clicking, every tab strip should show "HTML" as selected. In
-  // <m3e-tabs>/<m3e-tab>, the selected tab carries `selected` attribute.
-  // Assert that no strip still has "M3e" tab selected (i.e. none have
-  // <m3e-tab selected> containing "M3e" text).
-  //
-  // We use page.evaluate to inspect shadow DOM state, since Playwright
-  // locators don't pierce shadow roots for attribute checks.
+  // Click the "HTML" tab on the first Usage strip.
+  await firstUsageStrip.getByText("HTML", { exact: true }).click();
+
+  // After clicking, every USAGE strip should show "HTML" as selected. The API
+  // strip is explicitly excluded: it has no HTML tab and should not be checked.
   await page.waitForFunction(() => {
     const strips = [...document.querySelectorAll("m3e-tabs")];
-    if (strips.length < 2) return true; // Only one example — sync trivially holds
-    return strips.every((strip) => {
+    const usageStrips = strips.filter((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "HTML");
+    });
+    if (usageStrips.length < 2) return true; // Only one usage example — sync trivially holds
+    return usageStrips.every((strip) => {
       const tabs = [...strip.querySelectorAll("m3e-tab")];
       const selected = tabs.find((t) => t.hasAttribute("selected"));
       return selected?.textContent?.trim() === "HTML";
@@ -152,14 +178,154 @@ test("/components/button Usage tab sync: clicking a tab updates all examples", a
     ),
   );
 
-  // After reload, at least one tab strip must show HTML as the active tab.
+  // After reload, at least one usage strip must show HTML as the active tab.
   const htmlTabActive = await page.evaluate(() => {
     const strips = [...document.querySelectorAll("m3e-tabs")];
-    return strips.some((strip) => {
+    const usageStrips = strips.filter((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "HTML");
+    });
+    return usageStrips.some((strip) => {
       const tabs = [...strip.querySelectorAll("m3e-tab")];
       const selected = tabs.find((t) => t.hasAttribute("selected"));
       return selected?.textContent?.trim() === "HTML";
     });
   });
   expect(htmlTabActive).toBe(true);
+});
+
+test("/components/button API strip and Usage strips share activeSurface state", async ({
+  page,
+}) => {
+  // Label mapping between API and Usage strips (same shared activeSurface):
+  //   API "M3e"        == Usage "M3e"       == Surface Top
+  //   API "Components" == Usage "component"  == Surface Record
+  //   API "Builder"    == Usage "build"      == Surface Build
+  // The API strip has no "HTML" / Raw surface tab.
+
+  await page.goto("/components/button");
+
+  // Wait for Elm hydration and code rendering.
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll("code.elmsh")].some((c) =>
+      (c.textContent || "").includes("M3e.Button.view"),
+    ),
+  );
+
+  // Locate the API strip (has "Components" tab, capital C) and the first Usage
+  // strip (has "HTML" tab). Both must be present for the cross-sync test.
+  const apiStrip = page
+    .locator("m3e-tabs")
+    .filter({ has: page.locator("m3e-tab", { hasText: "Components" }) })
+    .first();
+  const firstUsageStrip = page
+    .locator("m3e-tabs")
+    .filter({ has: page.locator("m3e-tab", { hasText: "HTML" }) })
+    .first();
+
+  await expect(apiStrip).toBeAttached();
+  await expect(firstUsageStrip).toBeAttached();
+
+  // --- Part A: clicking a Usage strip tab → API strip reflects shared surface ---
+  // Click "M3e" on the first Usage strip (resets to Top surface if it moved).
+  await firstUsageStrip.getByText("M3e", { exact: true }).click();
+
+  // API strip should show "M3e" selected (Top surface).
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const apiStrip = strips.find((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "Components");
+    });
+    if (!apiStrip) return false;
+    const tabs = [...apiStrip.querySelectorAll("m3e-tab")];
+    const selected = tabs.find((t) => t.hasAttribute("selected"));
+    return selected?.textContent?.trim() === "M3e";
+  });
+
+  // --- Part B: clicking the API strip tab → Usage strips reflect shared surface ---
+  // Click "Components" on the API strip → should move Usage strips to "component".
+  await apiStrip.getByText("Components", { exact: true }).click();
+
+  // All Usage strips should now show "component" selected (Record surface).
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const usageStrips = strips.filter((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "HTML");
+    });
+    if (usageStrips.length === 0) return false;
+    return usageStrips.every((strip) => {
+      const tabs = [...strip.querySelectorAll("m3e-tab")];
+      const selected = tabs.find((t) => t.hasAttribute("selected"));
+      return selected?.textContent?.trim() === "component";
+    });
+  });
+
+  // API strip should also show "Components" selected.
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const apiStrip = strips.find((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "Components");
+    });
+    if (!apiStrip) return false;
+    const tabs = [...apiStrip.querySelectorAll("m3e-tab")];
+    const selected = tabs.find((t) => t.hasAttribute("selected"));
+    return selected?.textContent?.trim() === "Components";
+  });
+
+  // --- Part C: clicking API "Builder" → Usage strips move to "build" ---
+  await apiStrip.getByText("Builder", { exact: true }).click();
+
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const usageStrips = strips.filter((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "HTML");
+    });
+    if (usageStrips.length === 0) return false;
+    return usageStrips.every((strip) => {
+      const tabs = [...strip.querySelectorAll("m3e-tab")];
+      const selected = tabs.find((t) => t.hasAttribute("selected"));
+      return selected?.textContent?.trim() === "build";
+    });
+  });
+
+  // --- Part D: setting Usage to HTML → API strip does not crash or show "HTML" ---
+  // HTML / Raw surface is not offered by the API strip, so clicking HTML on a
+  // Usage strip has no matching API tab. The API strip may show no tab selected
+  // (activeSurface=Raw is simply unmapped for the API strip). We only assert that
+  // no tab on the API strip is falsely labelled "HTML" — it has no such tab.
+
+  // Click "HTML" on the first Usage strip.
+  await firstUsageStrip.getByText("HTML", { exact: true }).click();
+
+  // Usage strips should show "HTML".
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const usageStrips = strips.filter((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "HTML");
+    });
+    return usageStrips.every((strip) => {
+      const tabs = [...strip.querySelectorAll("m3e-tab")];
+      const selected = tabs.find((t) => t.hasAttribute("selected"));
+      return selected?.textContent?.trim() === "HTML";
+    });
+  });
+
+  // API strip has no "HTML" tab: confirm none of its tabs show text "HTML"
+  // (structural sanity — the reorg must not have accidentally added an HTML tab).
+  const apiHasHtmlTab = await page.evaluate(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const apiStrip = strips.find((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "Components");
+    });
+    if (!apiStrip) return false;
+    const tabs = [...apiStrip.querySelectorAll("m3e-tab")];
+    return tabs.some((t) => t.textContent?.trim() === "HTML");
+  });
+  expect(apiHasHtmlTab).toBe(false);
 });
