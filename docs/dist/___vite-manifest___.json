@@ -1,6 +1,6 @@
 {
   "elm-stuff/elm-pages/index.html": {
-    "file": "assets/index-DFmTcQ_5.js",
+    "file": "assets/index-BSYtxa2A.js",
     "name": "index",
     "src": "elm-stuff/elm-pages/index.html",
     "isEntry": true,
@@ -11,7 +11,7 @@
       "node_modules/@m3e/web/dist/all.js"
     ],
     "css": [
-      "assets/index-BeEORiTJ.css"
+      "assets/index-BAfgelZU.css"
     ]
   },
   "node_modules/@m3e/web/dist/all.js": {
