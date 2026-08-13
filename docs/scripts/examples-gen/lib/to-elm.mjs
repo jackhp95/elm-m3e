@@ -104,7 +104,7 @@ const VOID_TYPED_TAGS = new Set(["br", "hr"]);
 // does NOT admit an m3e component's branded `<Component>.Is` row. A raw wrapper
 // of one of these that directly contains an m3e-* child must forge via
 // `Native.node` (open child row) instead of `TypedHtml.<tag>`. Derived by
-// compiling `TypedHtml.<tag> [] [ M3e.Checkbox.view [] [], Kit.text "x" ]` for
+// compiling `TypedHtml.<tag> [] [ M3e.Checkbox.checkbox [] [], Kit.text "x" ]` for
 // every TypedHtml tag and recording which REJECT the component child (flow
 // containers such as div/section/form/fieldset/figure/details accept it and are
 // intentionally absent). Regenerate that probe if TypedHtml changes.
@@ -277,7 +277,7 @@ function contentSlotChildOrNull(node, oracle) {
   // is NOT a wrapper — it is a meaningful component the slot admits as an element
   // kind, so it must NOT fold to text (that dropped the element and misaligned the
   // round-trip DOM-diff for every following sibling). Defer it to nodeToElm, which
-  // maps it to `M3e.<Comp>.view` for the slot's admitted element kind.
+  // maps it to `M3e.<Comp>.<name>` for the slot's admitted element kind.
   if (nonWs.length > 0 && nonWs.every((c) => c.nodeType === 3) && !childTag.startsWith("m3e-")) {
     const text = nonWs.map((c) => c.textContent.trim()).join(" ");
     return `Kit.text "${escapeElmString(text)}"`;
@@ -294,7 +294,7 @@ function contentSlotChildOrNull(node, oracle) {
  *      `TypedHtml.<tag>`'s tagged `Is` row (e.g. `Img.Is {…}`) does NOT unify
  *      with the slot's bare admission record, so an `<img slot="leading">` must
  *      forge natively rather than via `TypedHtml.img`.
- *   3. otherwise defer to the ordinary node mapper (m3e components -> M3e.*.view).
+ *   3. otherwise defer to the ordinary node mapper (m3e components -> M3e.*.<name>).
  */
 function renderSlotChild(child, slotEntry, oracle) {
   const kinds = slotEntry.kinds || [];
@@ -387,7 +387,7 @@ function plainElementToElm(node, oracle) {
   // content. FLOW containers (div/section/form/…) already admit m3e children on
   // the shared HtmlIr substrate, so they keep their `TypedHtml.<tag>` producer.
   // The set below is HTML phrasing/text-level content — verified against the
-  // library by compiling `TypedHtml.<tag> [] [ M3e.Checkbox.view [] [], Kit.text "x" ]`
+  // library by compiling `TypedHtml.<tag> [] [ M3e.Checkbox.checkbox [] [], Kit.text "x" ]`
   // for every TypedHtml tag and collecting the rejects.
   const hasM3eChild = [...node.childNodes].some(
     (c) => c.nodeType === 1 && c.tagName.toLowerCase().startsWith("m3e-"),
@@ -424,10 +424,16 @@ function elementToElm(node, oracle) {
   }
 
   // Variant-group members fold into the group's TOP module with a per-variant
-  // constructor (`M3e.Progress.linear`); everything else is `M3e.<Module>.view`.
+  // constructor (`M3e.Progress.linear`); everything else is
+  // `M3e.<Module>.<name>` where `<name>` is the component's own lowercased base
+  // name (the cross-repo rename replaced the old standard `view` ctor with the
+  // component's whole-word-lowercase name: Button -> `button`, Icon -> `icon`,
+  // SplitButton -> `splitbutton`). This mirrors extract-reference.mjs's slug
+  // (`name.replace(/^Component\./, "").toLowerCase()`) — a WHOLE-WORD lowercase,
+  // NOT a camelCase split, so multiword modules produce `splitbutton`.
   // Setters + content helpers all live on the target module.
   const mod = entry.group ? entry.group.module : entry.module;
-  const ctor = entry.group ? entry.group.variant : "view";
+  const ctor = entry.group ? entry.group.variant : mod.toLowerCase();
 
   const attrPairs = [...node.attributes].map((a) => [a.name, a.value]);
 
