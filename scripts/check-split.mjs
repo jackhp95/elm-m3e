@@ -75,5 +75,40 @@ for (const p of spec.packages) {
   }
 }
 
+// 3. The additive family-grouped package (elm-m3e-families) is NOT a split of the
+//    flat src — it is a separate generated tree (bin/gen-family-package.js) that
+//    re-exports M3e.Component.* under nested M3e.Family.* paths and depends on the
+//    split core + components packages. Registry-check it here, staging those two
+//    deps from their just-split sibling trees (same mechanism as the split
+//    packages above). Skipped cleanly if the package was not generated.
+const familiesDir = path.join(repo, "elm-m3e-families");
+if (fs.existsSync(path.join(familiesDir, "elm.json"))) {
+  const famElmJson = JSON.parse(fs.readFileSync(path.join(familiesDir, "elm.json"), "utf8"));
+  const famDepSrcArgs = [];
+  for (const dep of Object.keys(famElmJson.dependencies || {})) {
+    const depShort = dep.split("/")[1];
+    if (dep.startsWith("jackhp95/elm-m3e")) {
+      famDepSrcArgs.push(`--dep-src=${dep}=${path.join(outDir, depShort, "src")}`);
+    }
+  }
+  console.log(`\ncheck:split: registry-check ${famElmJson.name} (family package) ...`);
+  const r = spawnSync("node", [CEM, "registry-check", ...famDepSrcArgs], {
+    cwd: familiesDir,
+    encoding: "utf8",
+  });
+  process.stdout.write(r.stdout || "");
+  if (r.status !== 0) {
+    process.stderr.write(r.stderr || "");
+    console.error(`check:split: registry-check FAILED for ${famElmJson.name}`);
+    failed++;
+  }
+} else {
+  console.log("\ncheck:split: no elm-m3e-families package present — skipping family-package check.");
+}
+
 if (failed) die(`${failed} package(s) failed registry-check`);
-console.log(`\ncheck:split: OK — ${spec.packages.length} split package(s) compile registry-faithfully.`);
+console.log(
+  `\ncheck:split: OK — ${spec.packages.length} split package(s)${
+    fs.existsSync(path.join(familiesDir, "elm.json")) ? " + the family package" : ""
+  } compile registry-faithfully.`
+);

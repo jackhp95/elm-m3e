@@ -15,9 +15,6 @@
         "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
         "jackhp95/elm-html-intermediate-representation": "1.0.0 <= v < 2.0.0"
       },
-      "exposeInternal": [
-        "M3e.Forge.Internal"
-      ],
       "buckets": [
         {
           "exact": "M3e.Action"
@@ -27,9 +24,6 @@
         },
         {
           "exact": "M3e.Events"
-        },
-        {
-          "exact": "M3e.Forge.Internal"
         },
         {
           "exact": "M3e.Html"
