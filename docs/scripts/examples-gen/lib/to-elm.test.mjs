@@ -11,13 +11,13 @@ test("button with icon slot + text", () => {
     `<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.Button.button [ M3e.Button.variant M3e.Values.filled ] [ M3e.Button.icon (M3e.Icon.icon [ M3e.Icon.name "add" ] []), Kit.text "New" ]`,
+    code: `M3e.Button.button [ M3e.Button.variant M3e.Values.filled ] [ M3e.Button.icon (M3e.Icon.icon [ M3e.Icon.name "add" ] []), TypedHtml.text "New" ]`,
   });
 });
 
 test("plain text-only button", () => {
   assert.deepEqual(conv(`<m3e-button variant="tonal">Tonal</m3e-button>`), {
-    code: `M3e.Button.button [ M3e.Button.variant M3e.Values.tonal ] [ Kit.text "Tonal" ]`,
+    code: `M3e.Button.button [ M3e.Button.variant M3e.Values.tonal ] [ TypedHtml.text "Tonal" ]`,
   });
 });
 
@@ -54,7 +54,7 @@ test("checkbox aria-label -> TypedHtml.Aria.label setter", () => {
 });
 
 // A custom element (m3e-*) in a text-admitting slot is a component the slot admits
-// as an ELEMENT kind — it must NOT fold to `Kit.text` (that dropped the element and
+// as an ELEMENT kind — it must NOT fold to `TypedHtml.text` (that dropped the element and
 // misaligned the round-trip DOM-diff for every following sibling). Only generic
 // wrappers fold. Regression for the NavMenu label + List avatar cases.
 test("custom element in a text-admitting slot is preserved, not folded to text", () => {
@@ -62,15 +62,15 @@ test("custom element in a text-admitting slot is preserved, not folded to text",
     `<m3e-nav-menu-item-group><m3e-heading m3e-toc-ignore slot="label" variant="label" size="large">Mail</m3e-heading></m3e-nav-menu-item-group>`,
   );
   assert.match(r.code, /NavMenuItemGroup\.label \(M3e\.Heading\.heading /);
-  assert.doesNotMatch(r.code, /NavMenuItemGroup\.label \(Kit\.text "Mail"\)/);
+  assert.doesNotMatch(r.code, /NavMenuItemGroup\.label \(TypedHtml\.text "Mail"\)/);
 });
 
-// A generic text-only wrapper still folds to Kit.text (the intended behavior).
-test("generic text-only wrapper in a text slot still folds to Kit.text", () => {
+// A generic text-only wrapper still folds to TypedHtml.text (the intended behavior).
+test("generic text-only wrapper in a text slot still folds to TypedHtml.text", () => {
   const r = conv(
     `<m3e-nav-menu-item><span slot="label">Inbox</span></m3e-nav-menu-item>`,
   );
-  assert.match(r.code, /NavMenuItem\.label \(Kit\.text "Inbox"\)/);
+  assert.match(r.code, /NavMenuItem\.label \(TypedHtml\.text "Inbox"\)/);
 });
 
 // Universal HTML attributes (id/for/class/style) are settable on ANY component
@@ -119,7 +119,7 @@ test("bool attr on a 2-arg component (icon filled)", () => {
 
 test("enum attr rendered via M3e.Values with camelCase", () => {
   assert.deepEqual(conv(`<m3e-button size="extra-large">Big</m3e-button>`), {
-    code: `M3e.Button.button [ M3e.Button.size M3e.Values.extraLarge ] [ Kit.text "Big" ]`,
+    code: `M3e.Button.button [ M3e.Button.size M3e.Values.extraLarge ] [ TypedHtml.text "Big" ]`,
   });
 });
 
@@ -154,7 +154,7 @@ test("multiple default children -> raw elements in the flat content list", () =>
   assert.deepEqual(
     conv(`<m3e-button variant="text"><m3e-icon name="a"></m3e-icon>Hi</m3e-button>`),
     {
-      code: `M3e.Button.button [ M3e.Button.variant M3e.Values.text ] [ M3e.Icon.icon [ M3e.Icon.name "a" ] [], Kit.text "Hi" ]`,
+      code: `M3e.Button.button [ M3e.Button.variant M3e.Values.text ] [ M3e.Icon.icon [ M3e.Icon.name "a" ] [], TypedHtml.text "Hi" ]`,
     },
   );
 });
@@ -162,19 +162,19 @@ test("multiple default children -> raw elements in the flat content list", () =>
 test("string attr with escaping", () => {
   const r = conv(`<m3e-button href='/a"b'>Go</m3e-button>`);
   assert.deepEqual(r, {
-    code: `M3e.Button.button [ M3e.Button.href "/a\\"b" ] [ Kit.text "Go" ]`,
+    code: `M3e.Button.button [ M3e.Button.href "/a\\"b" ] [ TypedHtml.text "Go" ]`,
   });
 });
 
 // A non-typed attr (not id/for/class/style/aria, no oracle setter) is NEVER
-// silently dropped (#199): it is preserved through the sanctioned Seam escape
-// hatch (`Native.attribute` = `Seam.asAttribute (Html.Attributes.attribute …)`),
+// silently dropped (#199): it is preserved through the sanctioned raw-attribute
+// escape hatch (`M3e.Unsafe.Attributes.customAttribute`),
 // so `data-*` and any other unmodeled global attribute round-trips.
-test("non-typed attr is preserved via the Native.attribute Seam", () => {
+test("non-typed attr is preserved via M3e.Unsafe.Attributes.customAttribute", () => {
   const r = conv(`<m3e-button data-foo="x" wibble="y">Hi</m3e-button>`);
   assert.equal(r.skip, undefined);
-  assert.match(r.code, /Native\.attribute "data-foo" "x"/);
-  assert.match(r.code, /Native\.attribute "wibble" "y"/);
+  assert.match(r.code, /M3e\.Unsafe\.Attributes\.customAttribute "data-foo" "x"/);
+  assert.match(r.code, /M3e\.Unsafe\.Attributes\.customAttribute "wibble" "y"/);
 });
 
 // Universal id/class/style on an m3e element emit M3e.Attributes setters,
@@ -182,7 +182,7 @@ test("non-typed attr is preserved via the Native.attribute Seam", () => {
 test("m3e element with id/class emits universal M3e.Attributes setters", () => {
   const r = conv(`<m3e-button variant="filled" id="x" class="y">Go</m3e-button>`);
   assert.deepEqual(r, {
-    code: `M3e.Button.button [ M3e.Button.variant M3e.Values.filled, M3e.Attributes.id "x", M3e.Attributes.class "y" ] [ Kit.text "Go" ]`,
+    code: `M3e.Button.button [ M3e.Button.variant M3e.Values.filled, M3e.Attributes.id "x", M3e.Attributes.class "y" ] [ TypedHtml.text "Go" ]`,
   });
 });
 
@@ -206,7 +206,7 @@ test("nav-menu-item required label sourced from slot=label child", () => {
   // Children are emitted in DOM order: the `slot="icon"` child precedes the
   // `slot="label"` child in the source, so `icon` precedes `label` here.
   assert.deepEqual(r, {
-    code: `M3e.NavMenuItem.navmenuitem [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.icon [ M3e.Icon.name "home" ] []), M3e.NavMenuItem.label (Kit.link "/" [ Kit.text "Home" ]) ]`,
+    code: `M3e.NavMenuItem.navmenuitem [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.icon [ M3e.Icon.name "home" ] []), M3e.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href "/" ] [ TypedHtml.text "Home" ]) ]`,
   });
 });
 
@@ -217,7 +217,7 @@ test("tree-item required label + nested child tree-items", () => {
     `<m3e-tree-item open><span slot="label">Getting Started</span><m3e-tree-item><span slot="label">Overview</span></m3e-tree-item></m3e-tree-item>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.TreeItem.treeitem [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.treeitem [] [ M3e.TreeItem.label (Kit.text "Overview") ] ]`,
+    code: `M3e.TreeItem.treeitem [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (TypedHtml.text "Getting Started"), M3e.TreeItem.treeitem [] [ M3e.TreeItem.label (TypedHtml.text "Overview") ] ]`,
   });
 });
 
@@ -250,7 +250,7 @@ test("tabs: bare tab-panel child routes to named panel slot; tab -> raw element"
   // the Fix-C-routed `<m3e-tab-panel>` (named `panel` slot), so `tab,panel`
   // stays `tab,panel` on the round trip.
   assert.deepEqual(r, {
-    code: `M3e.Tabs.tabs [] [ M3e.Tab.tab [] [ Kit.text "One" ], M3e.Tabs.panel (M3e.TabPanel.tabpanel [] [ Kit.text "First panel" ]) ]`,
+    code: `M3e.Tabs.tabs [] [ M3e.Tab.tab [] [ TypedHtml.text "One" ], M3e.Tabs.panel (M3e.TabPanel.tabpanel [] [ TypedHtml.text "First panel" ]) ]`,
   });
 });
 
@@ -260,7 +260,7 @@ test("tabs: interleaved children preserve source order (tab,tab,panel,panel)", (
     `<m3e-tabs><m3e-tab>A</m3e-tab><m3e-tab>B</m3e-tab><m3e-tab-panel>PA</m3e-tab-panel><m3e-tab-panel>PB</m3e-tab-panel></m3e-tabs>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.Tabs.tabs [] [ M3e.Tab.tab [] [ Kit.text "A" ], M3e.Tab.tab [] [ Kit.text "B" ], M3e.Tabs.panel (M3e.TabPanel.tabpanel [] [ Kit.text "PA" ]), M3e.Tabs.panel (M3e.TabPanel.tabpanel [] [ Kit.text "PB" ]) ]`,
+    code: `M3e.Tabs.tabs [] [ M3e.Tab.tab [] [ TypedHtml.text "A" ], M3e.Tab.tab [] [ TypedHtml.text "B" ], M3e.Tabs.panel (M3e.TabPanel.tabpanel [] [ TypedHtml.text "PA" ]), M3e.Tabs.panel (M3e.TabPanel.tabpanel [] [ TypedHtml.text "PB" ]) ]`,
   });
 });
 
@@ -303,12 +303,12 @@ test("card with header + content(div) slots", () => {
   assert.match(r.code, /M3e\.Card\.header/);
   assert.match(r.code, /M3e\.Card\.content/);
   assert.match(r.code, /TypedHtml\.div/);
-  assert.match(r.code, /M3e\.Heading\.heading \[[^\]]*\] \[ Kit\.text "People" \]/);
-  assert.match(r.code, /M3e\.Chip\.chip \[\] \[ Kit\.text "Name" \]/);
+  assert.match(r.code, /M3e\.Heading\.heading \[[^\]]*\] \[ TypedHtml\.text "People" \]/);
+  assert.match(r.code, /M3e\.Chip\.chip \[\] \[ TypedHtml\.text "Name" \]/);
   assert.doesNotMatch(r.code, /\.child/);
 });
 
-// --- (b) plain HTML + (c) anchor -> Kit.link --------------------------------
+// --- (b) plain HTML + (c) anchor -> TypedHtml.a -----------------------------
 
 test("plain div maps to TypedHtml.div", () => {
   const r = conv(`<div><m3e-icon name="a"></m3e-icon></div>`);
@@ -318,52 +318,52 @@ test("plain div maps to TypedHtml.div", () => {
 });
 
 // 3d-native: raw HTML attributes on a plain element are now CARRIED via
-// `Native.attribute` (were dropped in v1) so they round-trip. The producer is
-// TypedHtml.div; the raw attr keeps the sanctioned Native.attribute escape.
-test("plain div carries its class attribute via Native.attribute", () => {
+// `M3e.Unsafe.Attributes.customAttribute` (were dropped in v1) so they round-trip. The producer is
+// TypedHtml.div; the raw attr keeps the sanctioned M3e.Unsafe.Attributes.customAttribute escape.
+test("plain div carries its class attribute via M3e.Unsafe.Attributes.customAttribute", () => {
   const r = conv(`<div class="grid"><m3e-icon name="a"></m3e-icon></div>`);
   assert.deepEqual(r, {
-    code: `TypedHtml.div [ Native.attribute "class" "grid" ] [ M3e.Icon.icon [ M3e.Icon.name "a" ] [] ]`,
+    code: `TypedHtml.div [ M3e.Unsafe.Attributes.customAttribute "class" "grid" ] [ M3e.Icon.icon [ M3e.Icon.name "a" ] [] ]`,
   });
 });
 
 // 3d-native: functional attrs on <input> (value/placeholder/type) are carried.
-test("input carries value/placeholder/type via Native.attribute", () => {
+test("input carries value/placeholder/type via M3e.Unsafe.Attributes.customAttribute", () => {
   const r = conv(`<m3e-menu><input type="text" placeholder="Name" value="Jo"></m3e-menu>`);
   assert.match(
     r.code,
-    /TypedHtml\.input \[ Native\.attribute "type" "text", Native\.attribute "placeholder" "Name", Native\.attribute "value" "Jo" \] \[\]/,
+    /TypedHtml\.input \[ M3e\.Unsafe\.Attributes\.customAttribute "type" "text", M3e\.Unsafe\.Attributes\.customAttribute "placeholder" "Name", M3e\.Unsafe\.Attributes\.customAttribute "value" "Jo" \] \[\]/,
   );
 });
 
 // 3d-native: <img> (TypedHtml.img, no children) carries src.
-test("img carries src via Native.attribute", () => {
+test("img carries src via M3e.Unsafe.Attributes.customAttribute", () => {
   const r = conv(`<m3e-menu><img src="/x.png"></m3e-menu>`);
-  assert.match(r.code, /TypedHtml\.img \[ Native\.attribute "src" "\/x\.png" \] \[\]/);
+  assert.match(r.code, /TypedHtml\.img \[ M3e\.Unsafe\.Attributes\.customAttribute "src" "\/x\.png" \] \[\]/);
 });
 
 // Any tag TypedHtml models (label/input/form/…) now emits its TypedHtml producer
-// — the old `Native.node Html.<tag>` fallback was a type error on the phantom
-// substrate (Native.node takes a String, not the `Html.<tag>` function).
+// — the old `M3e.Unsafe.customElement Html.<tag>` fallback was a type error on the phantom
+// substrate (M3e.Unsafe.customElement takes a String, not the `Html.<tag>` function).
 test("label maps to TypedHtml.label", () => {
   const r = conv(`<label>Hi</label>`);
   assert.deepEqual(r, {
-    code: `TypedHtml.label [] [ Kit.text "Hi" ]`,
+    code: `TypedHtml.label [] [ TypedHtml.text "Hi" ]`,
   });
 });
 
-// A tag TypedHtml does NOT model falls through to `Native.node "<tag>"` — a
-// STRING tag name (the sanctioned dynamic/custom-element forge in Native.elm).
-test("unknown tag -> Native.node with a String tag name", () => {
+// A tag TypedHtml does NOT model falls through to `M3e.Unsafe.customElement "<tag>"` — a
+// STRING tag name (the sanctioned dynamic/custom-element forge in M3e.Unsafe).
+test("unknown tag -> M3e.Unsafe.customElement with a String tag name", () => {
   const r = conv(`<my-widget>Hi</my-widget>`);
   assert.deepEqual(r, {
-    code: `Native.node "my-widget" [] [ Kit.text "Hi" ]`,
+    code: `M3e.Unsafe.customElement "my-widget" [] [ TypedHtml.text "Hi" ]`,
   });
 });
 
-test("anchor-wrapped card -> Kit.link", () => {
+test("anchor-wrapped card -> TypedHtml.a", () => {
   const r = conv(`<a href="/x"><m3e-card variant="filled">hi</m3e-card></a>`);
-  assert.ok(r.code && /Kit\.link "\/x"/.test(r.code) && /M3e\.Card\.card/.test(r.code));
+  assert.ok(r.code && /TypedHtml\.a \[ TypedHtml\.Attributes\.href "\/x"/.test(r.code) && /M3e\.Card\.card/.test(r.code));
 });
 
 test("numeric attribute -> Float literal (no quotes)", () => {

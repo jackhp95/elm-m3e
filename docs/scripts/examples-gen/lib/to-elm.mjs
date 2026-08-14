@@ -7,8 +7,8 @@
 //     ariaLabel <- aria-label) AND a required single-value default slot folded
 //     into the record as a bare `content` field (IconButton/Heading/Chip).
 //   - plain (non-m3e) HTML: TypedHtml.<tag> for
-//     any tag TypedHtml models, `Native.node "<tag>"` (String tag name) for a
-//     tag it doesn't, and <a href> -> Kit.link. v1 drops non-structural
+//     any tag TypedHtml models, `M3e.Unsafe.customElement "<tag>"` (String tag name) for a
+//     tag it doesn't, and <a href> -> TypedHtml.a. v1 drops non-structural
 //     attributes (class/id/for) rather than skipping the example.
 //
 // Anything genuinely unmappable short-circuits the example with { skip: reason }
@@ -36,12 +36,12 @@ const isWhitespaceText = (node) =>
 // Universal accessibility attributes: settable on ANY component via
 // `TypedHtml.Aria` (open-row `Attr`), which exposes `label`, `labelledby`, and
 // `describedby`. `aria-hidden` has no typed setter in `TypedHtml.Aria`; it
-// falls through to the `Native.attribute` Seam path.
+// falls through to the `M3e.Unsafe.Attributes.customAttribute` M3e.Unsafe.Attributes.customAttribute path.
 const ARIA_SETTER = {
   "aria-label": "label",
   "aria-labelledby": "labelledby",
   "aria-describedby": "describedby",
-  // aria-hidden: no TypedHtml.Aria setter — falls through to Native.attribute
+  // aria-hidden: no TypedHtml.Aria setter — falls through to M3e.Unsafe.Attributes.customAttribute
 };
 
 // Universal HTML attributes: like Aria, these are settable on ANY component
@@ -74,7 +74,7 @@ function numberLiteral(value, tag, name) {
 
 // Collected across a single toElm() run for logging/inspection.
 let droppedAttrs = [];
-// Non-typed attributes preserved via the Seam escape hatch (`Native.attribute`)
+// Non-typed attributes preserved via the M3e.Unsafe escape hatch (`M3e.Unsafe.Attributes.customAttribute`)
 // rather than dropped. Tracked for logging/inspection only.
 let seamedAttrs = [];
 
@@ -103,8 +103,8 @@ const VOID_TYPED_TAGS = new Set(["br", "hr"]);
 // HTML phrasing / text-level content tags whose `TypedHtml.<tag>` content row
 // does NOT admit an m3e component's branded `<Component>.Is` row. A raw wrapper
 // of one of these that directly contains an m3e-* child must forge via
-// `Native.node` (open child row) instead of `TypedHtml.<tag>`. Derived by
-// compiling `TypedHtml.<tag> [] [ M3e.Checkbox.checkbox [] [], Kit.text "x" ]` for
+// `M3e.Unsafe.customElement` (open child row) instead of `TypedHtml.<tag>`. Derived by
+// compiling `TypedHtml.<tag> [] [ M3e.Checkbox.checkbox [] [], TypedHtml.text "x" ]` for
 // every TypedHtml tag and recording which REJECT the component child (flow
 // containers such as div/section/form/fieldset/figure/details accept it and are
 // intentionally absent). Regenerate that probe if TypedHtml changes.
@@ -121,10 +121,10 @@ const PHRASING_CONTENT_TAGS = new Set(
 // docs/vendor/elm-foundation/TypedHtml.elm's exposing list), using real HTML tag
 // names — `main` is exposed as the reserved-name-escaped `main_`, mapped by
 // `typedHtmlProducer` below. `a`/`img`/`br`/`hr` also live here but are
-// intercepted earlier in plainElementToElm (Kit.link / childless forms).
+// intercepted earlier in plainElementToElm (TypedHtml.a / childless forms).
 //
-// Any tag TypedHtml does NOT model falls through to the sanctioned `Native.node
-// "<tag>"` escape (a STRING tag name, per docs/kit/Native.elm).
+// Any tag TypedHtml does NOT model falls through to the sanctioned `M3e.Unsafe.customElement
+// "<tag>"` escape (a STRING tag name, per M3e.Unsafe).
 const TYPED_HTML_TAGS = new Set(
   (
     "a abbr address area article aside audio b base bdi bdo blockquote body br " +
@@ -169,7 +169,7 @@ function nodeToElm(node, oracle) {
       // Whitespace-only text is not renderable content; caller filters these.
       skip("internal: whitespace text should be filtered");
     }
-    return `Kit.text "${escapeElmString(trimmed)}"`;
+    return `TypedHtml.text "${escapeElmString(trimmed)}"`;
   }
 
   // Element node.
@@ -201,21 +201,21 @@ function childNodesToElm(node, oracle) {
  * text/link (e.g. NavMenuItem/TreeItem `label`). The codegen types this field
  * as `Element { text, link }`, so a generic `TypedHtml.<tag>` wrapper (which
  * carries an `html`-family row) would NOT unify. We therefore unwrap:
- *   - <a href> child            -> Kit.link "href" [ ...text... ]
- *   - text-only wrapper/bare    -> Kit.text "..."   (span/div wrappers folded)
+ *   - <a href> child            -> TypedHtml.a "href" [ ...text... ]
+ *   - text-only wrapper/bare    -> TypedHtml.text "..."   (span/div wrappers folded)
  * Anything richer than text/link genuinely can't be sourced honestly -> skip.
  */
 function textLinkSlotChild(node, tag, field, oracle) {
   // Bare text node.
   if (node.nodeType === 3) {
-    return `Kit.text "${escapeElmString(node.textContent.trim())}"`;
+    return `TypedHtml.text "${escapeElmString(node.textContent.trim())}"`;
   }
   if (node.nodeType !== 1) {
     skip(`unsupported ${field} slot child on ${tag}`);
   }
   const childTag = node.tagName.toLowerCase();
 
-  // <a href> -> Kit.link (a link-kinded label).
+  // <a href> -> TypedHtml.a (a link-kinded label).
   if (childTag === "a") {
     return plainElementToElm(node, oracle);
   }
@@ -226,7 +226,7 @@ function textLinkSlotChild(node, tag, field, oracle) {
   const allText = nonWhitespace.every((c) => c.nodeType === 3);
   if (allText) {
     const text = nonWhitespace.map((c) => c.textContent.trim()).join(" ");
-    return `Kit.text "${escapeElmString(text)}"`;
+    return `TypedHtml.text "${escapeElmString(text)}"`;
   }
 
   skip(`unmappable ${field} slot child <${childTag}> on ${tag}`);
@@ -237,19 +237,19 @@ function textLinkSlotChild(node, tag, field, oracle) {
 // `Element { …sharedText/html… }` whose admission record is BARE, so a plain
 // `TypedHtml.<tag>` wrapper — whose `is` is a TAGGED row (`SpanIs {…}`) — never
 // unifies. The admissible producers are the Kit
-// content builders (`Kit.text`, `Kit.link`, Kit typescales), so a text-only
-// `<span>`/`<div>` wrapper (or an `<a href>`) must be UNWRAPPED to `Kit.text` /
-// `Kit.link`. Element-admitting slots (iconButton/button/icon/…) are excluded
+// content builders (`TypedHtml.text`, `TypedHtml.a`, Kit typescales), so a text-only
+// `<span>`/`<div>` wrapper (or an `<a href>`) must be UNWRAPPED to `TypedHtml.text` /
+// `TypedHtml.a`. Element-admitting slots (iconButton/button/icon/…) are excluded
 // and keep their real component/`nodeToElm` child.
 // A slot admits Kit text/link content when its accepted kinds include a
-// text/link row. `Kit.text : … -> Element { s | sharedText : Shared } …` (open)
+// text/link row. `TypedHtml.text : … -> Element { s | sharedText : Shared } …` (open)
 // unifies with ANY slot whose admission record carries `sharedText` — even a
 // mixed slot that also admits element kinds (e.g. Button `selected` =
 // {sharedIcon, sharedText}, List `trailing`, NavMenuItem `badge`). So a
-// text-only wrapper folds to `Kit.text` whenever the slot admits text; a
+// text-only wrapper folds to `TypedHtml.text` whenever the slot admits text; a
 // non-text child (icon/img/component) returns null from the unwrapper and falls
 // back to its default emission. `html` is deliberately NOT enough on its own —
-// `Kit.text` does not unify with an html-only admission record.
+// `TypedHtml.text` does not unify with an html-only admission record.
 const admitsTextOrLink = (k) =>
   k === "text" || k === "link" || k === "shared:text" || k === "shared:link";
 function slotAdmitsTextOrLink(kinds) {
@@ -264,7 +264,7 @@ function slotAdmitsTextOrLink(kinds) {
 function contentSlotChildOrNull(node, oracle) {
   if (node.nodeType === 3) {
     const t = node.textContent.trim();
-    return t ? `Kit.text "${escapeElmString(t)}"` : null;
+    return t ? `TypedHtml.text "${escapeElmString(t)}"` : null;
   }
   if (node.nodeType !== 1) return null;
   const childTag = node.tagName.toLowerCase();
@@ -273,14 +273,14 @@ function contentSlotChildOrNull(node, oracle) {
   }
   const nonWs = [...node.childNodes].filter((c) => !isWhitespaceText(c));
   // A text-only GENERIC wrapper (e.g. `<span slot="label">Inbox</span>`) folds to
-  // Kit.text. A custom element (`<m3e-heading>Mail</m3e-heading>`, `<m3e-avatar>`)
+  // TypedHtml.text. A custom element (`<m3e-heading>Mail</m3e-heading>`, `<m3e-avatar>`)
   // is NOT a wrapper — it is a meaningful component the slot admits as an element
   // kind, so it must NOT fold to text (that dropped the element and misaligned the
   // round-trip DOM-diff for every following sibling). Defer it to nodeToElm, which
   // maps it to `M3e.<Comp>.<name>` for the slot's admitted element kind.
   if (nonWs.length > 0 && nonWs.every((c) => c.nodeType === 3) && !childTag.startsWith("m3e-")) {
     const text = nonWs.map((c) => c.textContent.trim()).join(" ");
-    return `Kit.text "${escapeElmString(text)}"`;
+    return `TypedHtml.text "${escapeElmString(text)}"`;
   }
   return null;
 }
@@ -288,9 +288,9 @@ function contentSlotChildOrNull(node, oracle) {
 /**
  * Render one child element placed into an m3e NAMED slot, choosing the producer
  * whose type unifies with the slot's admission record:
- *   1. text-only / <a href> child into a text/link-admitting slot -> Kit.text/Kit.link
+ *   1. text-only / <a href> child into a text/link-admitting slot -> TypedHtml.text/TypedHtml.a
  *   2. plain (non-m3e, non-<a>) element into a slot that admits open `html`
- *      -> `Native.node "<tag>"` (a BARE `{ k | html : Brand }` producer). A
+ *      -> `M3e.Unsafe.customElement "<tag>"` (a BARE `{ k | html : Brand }` producer). A
  *      `TypedHtml.<tag>`'s tagged `Is` row (e.g. `Img.Is {…}`) does NOT unify
  *      with the slot's bare admission record, so an `<img slot="leading">` must
  *      forge natively rather than via `TypedHtml.img`.
@@ -313,14 +313,14 @@ function renderSlotChild(child, slotEntry, oracle) {
     const attrList = attrs.length === 0 ? "[]" : `[ ${attrs.join(", ")} ]`;
     const kids = childNodesToElm(child, oracle);
     const kidList = kids.length === 0 ? "[]" : `[ ${kids.join(", ")} ]`;
-    return `Native.node "${escapeElmString(tag)}" ${attrList} ${kidList}`;
+    return `M3e.Unsafe.customElement "${escapeElmString(tag)}" ${attrList} ${kidList}`;
   }
   return nodeToElm(child, oracle);
 }
 
 /**
- * Raw HTML attributes on a plain element, as `Native.attribute "n" "v"` exprs.
- * `Native.attribute` is the sanctioned raw-attribute escape (kit `Native.elm`):
+ * Raw HTML attributes on a plain element, as `M3e.Unsafe.Attributes.customAttribute "n" "v"` exprs.
+ * `M3e.Unsafe.Attributes.customAttribute` is the sanctioned raw-attribute escape (M3e.Unsafe):
  * `Ir.fromHtmlAttribute (Html.Attributes.attribute name value) : Attr c msg`. Its
  * capability row `c` is fully open, so it unifies into ANY producer's constrained
  * attr row — a `TypedHtml.div`'s `List (Attr DivAttrs msg)` as readily as a
@@ -329,7 +329,7 @@ function renderSlotChild(child, slotEntry, oracle) {
  * `<input value="…">` round-trips. `slot` is excluded — a plain child of an m3e
  * container carries its slot structurally via the parent's slot helper, not as an
  * attribute here. `href` is excluded for the caller that already emits it
- * (`<a>` -> Kit.link).
+ * (`<a>` -> TypedHtml.a).
  */
 function nativeAttrExprs(node, { excludeHref = false } = {}) {
   const out = [];
@@ -337,7 +337,7 @@ function nativeAttrExprs(node, { excludeHref = false } = {}) {
     const name = attr.name;
     if (name === "slot") continue;
     if (excludeHref && name === "href") continue;
-    out.push(`Native.attribute "${escapeElmString(name)}" "${escapeElmString(attr.value)}"`);
+    out.push(`M3e.Unsafe.Attributes.customAttribute "${escapeElmString(name)}" "${escapeElmString(attr.value)}"`);
   }
   return out;
 }
@@ -346,7 +346,7 @@ function nativeAttrExprs(node, { excludeHref = false } = {}) {
 function plainElementToElm(node, oracle) {
   const tag = node.tagName.toLowerCase();
 
-  // <a href="URL"> -> Kit.link "URL" [ children ]. Kit.link has no attribute
+  // <a href="URL"> -> TypedHtml.a "URL" [ children ]. TypedHtml.a has no attribute
   // parameter, so its other attributes cannot be carried here.
   if (tag === "a") {
     const href = node.getAttribute("href");
@@ -355,7 +355,7 @@ function plainElementToElm(node, oracle) {
     }
     const children = childNodesToElm(node, oracle);
     const list = children.length === 0 ? "[]" : `[ ${children.join(", ")} ]`;
-    return `Kit.link "${escapeElmString(href)}" ${list}`;
+    return `TypedHtml.a [ TypedHtml.Attributes.href "${escapeElmString(href)}" ] ${list}`;
   }
 
   // Void elements (`TypedHtml.br`/`TypedHtml.hr`) take the standard 2-arg call
@@ -370,7 +370,7 @@ function plainElementToElm(node, oracle) {
 
   // `TypedHtml.img` takes the standard `List Attr -> List Element -> Element`
   // shape; an <img> carries no children, so the child list is always `[]`. Its
-  // attrs (`src`/…) ARE carried via the Native.attribute escape.
+  // attrs (`src`/…) ARE carried via the M3e.Unsafe.Attributes.customAttribute escape.
   if (tag === "img") {
     return `TypedHtml.img ${attrList} []`;
   }
@@ -382,32 +382,32 @@ function plainElementToElm(node, oracle) {
   // content row that admits only HTML phrasing brands — NOT an m3e component's
   // branded `<Component>.Is` row. So a raw phrasing wrapper with a direct m3e-*
   // child (e.g. `<label><m3e-checkbox> Checkbox 1</label>`) fails to typecheck as
-  // `TypedHtml.label`; forge it via the `Native.node` escape, whose child row is
+  // `TypedHtml.label`; forge it via the `M3e.Unsafe.customElement` escape, whose child row is
   // open (`List (Element s admittedBy msg)`) and accepts mixed component+text
   // content. FLOW containers (div/section/form/…) already admit m3e children on
   // the shared HtmlIr substrate, so they keep their `TypedHtml.<tag>` producer.
   // The set below is HTML phrasing/text-level content — verified against the
-  // library by compiling `TypedHtml.<tag> [] [ M3e.Checkbox.checkbox [] [], Kit.text "x" ]`
+  // library by compiling `TypedHtml.<tag> [] [ M3e.Checkbox.checkbox [] [], TypedHtml.text "x" ]`
   // for every TypedHtml tag and collecting the rejects.
   const hasM3eChild = [...node.childNodes].some(
     (c) => c.nodeType === 1 && c.tagName.toLowerCase().startsWith("m3e-"),
   );
   if (hasM3eChild && PHRASING_CONTENT_TAGS.has(tag)) {
-    return `Native.node "${escapeElmString(tag)}" ${attrList} ${list}`;
+    return `M3e.Unsafe.customElement "${escapeElmString(tag)}" ${attrList} ${list}`;
   }
 
   // Prefer `TypedHtml.<producer>` for any tag TypedHtml
   // models (div/span/label/input/form/…). It gives a closed, element-natural attr
   // row and unifies on the shared HtmlIr substrate with the m3e producers and the
-  // `Native.attribute` escape carried above.
+  // `M3e.Unsafe.Attributes.customAttribute` escape carried above.
   const typedFn = typedHtmlProducer(tag);
   if (typedFn) {
     return `TypedHtml.${typedFn} ${attrList} ${list}`;
   }
 
   // A tag TypedHtml does not model (dynamic / custom element): forge it via the
-  // sanctioned `Native.node` escape, which takes a STRING tag name (Native.elm).
-  return `Native.node "${escapeElmString(tag)}" ${attrList} ${list}`;
+  // sanctioned `M3e.Unsafe.customElement` escape, which takes a STRING tag name.
+  return `M3e.Unsafe.customElement "${escapeElmString(tag)}" ${attrList} ${list}`;
 }
 
 function elementToElm(node, oracle) {
@@ -478,7 +478,7 @@ function elementToElm(node, oracle) {
     }
     // A text/link-kinded slot (e.g. `label`) types as `Element { text, link }`.
     // Render it through the text/link unwrapper so a `<span>`/`<div>` wrapper
-    // folds to `Kit.text` rather than an incompatible `TypedHtml.<tag>`.
+    // folds to `TypedHtml.text` rather than an incompatible `TypedHtml.<tag>`.
     const onlyTextLink =
       kinds &&
       kinds.length > 0 &&
@@ -503,7 +503,7 @@ function elementToElm(node, oracle) {
   // Block comments emitted INTO the attr list for TYPED attributes we can't place
   // (invalid enum value; a CEM type with no expressible Elm setter). A leading
   // block comment in an Elm list literal is valid whitespace, so `[ {- … -} a ]`
-  // and `[ {- … -} ]` both parse. Non-typed attrs never land here — they Seam.
+  // and `[ {- … -} ]` both parse. Non-typed attrs never land here — they use the M3e.Unsafe escape.
   const commentExprs = [];
   const dropComment = (name, value, reason) =>
     commentExprs.push(
@@ -532,13 +532,13 @@ function elementToElm(node, oracle) {
         continue;
       }
       // Non-typed attribute: no CEM setter, not universal, not aria. NEVER drop —
-      // preserve fidelity through the sanctioned Seam escape hatch. `Native.attribute`
-      // is `Seam.asAttribute (Html.Attributes.attribute name value)` (kit Native.elm):
+      // preserve fidelity through the sanctioned raw-attribute escape hatch. `M3e.Unsafe.Attributes.customAttribute`
+      // is the raw-attribute escape:
       // an open-capability-row `Attr` that type-checks in any component's attr list.
       // Covers hidden/autofocus/data-*/toc markers and any other unmodeled global
       // attribute, so hand-authored HTML round-trips instead of silently losing it.
       attrExprs.push(
-        `Native.attribute "${escapeElmString(name)}" "${escapeElmString(value)}"`
+        `M3e.Unsafe.Attributes.customAttribute "${escapeElmString(name)}" "${escapeElmString(value)}"`
       );
       seamedAttrs.push({ tag, name, value });
       continue;
@@ -628,7 +628,7 @@ function elementToElm(node, oracle) {
           skip(`unknown slot "${slotName}" on ${tag}`);
         }
         // Choose the slot-child producer that unifies with the slot's admission
-        // record (Kit content for text/link, Native.node for plain html, else
+        // record (Kit content for text/link, M3e.Unsafe.customElement for plain html, else
         // the ordinary node mapper).
         const slotChildExpr = renderSlotChild(child, slotEntry, oracle);
         orderedItems.push({

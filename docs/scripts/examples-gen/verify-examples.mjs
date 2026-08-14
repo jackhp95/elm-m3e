@@ -1,5 +1,5 @@
 // verify-examples.mjs — compile-verify generated Elm example expressions
-// against the REAL M3e.* / Kit / Native API.
+// against the REAL M3e.* / M3e.Unsafe / TypedHtml API.
 //
 // "Examples can't lie": the deterministic mapper emits typed Elm, but nothing
 // has actually type-checked it. This harness builds a scratch Elm *application*
@@ -36,7 +36,6 @@ import {
 // docs/scripts/examples-gen/verify-examples.mjs -> elm-m3e root is three up.
 const M3E_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const LIB_SRC = `${M3E_ROOT}/src`;
-const KIT_SRC = `${M3E_ROOT}/docs/kit`;
 const ELM_BIN = `${M3E_ROOT}/docs/node_modules/.bin/elm`;
 // Phantom substrate: HtmlIr.* and TypedHtml.* live in UNPUBLISHED sibling repos,
 // so their source is vendored (committed) into docs/vendor/elm-foundation — the
@@ -45,7 +44,7 @@ const ELM_BIN = `${M3E_ROOT}/docs/node_modules/.bin/elm`;
 // re-syncs it; see vendor/elm-foundation/VENDORED_FROM.txt).
 const DOCS_DIR = `${M3E_ROOT}/docs`;
 const FOUNDATION_SRC = resolve(DOCS_DIR, "vendor/elm-foundation");
-const SRC_DIRS = [LIB_SRC, KIT_SRC, FOUNDATION_SRC];
+const SRC_DIRS = [LIB_SRC, FOUNDATION_SRC];
 
 // Re-export the reference walker unchanged, and a 1-arg `moduleResolves` bound to
 // this project's library source dirs. verify-roundtrip.mjs and

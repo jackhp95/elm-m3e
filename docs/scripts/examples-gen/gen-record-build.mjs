@@ -65,7 +65,7 @@ const REPO = resolve(HERE, "..", "..", "..");
 const RICH = resolve(REPO, "config/examples.rich.json");
 const OUT = resolve(REPO, "config/examples.surfaces.json");
 
-const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/kit`];
+const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/vendor/elm-foundation`];
 const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
 const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
 const reviewElm = JSON.parse(readFileSync(`${REPO}/review/elm.json`, "utf8"));
