@@ -434,6 +434,14 @@ function elementToElm(node, oracle) {
   // Setters + content helpers all live on the target module.
   const mod = entry.group ? entry.group.module : entry.module;
   const ctor = entry.group ? entry.group.variant : mod.toLowerCase();
+  // Emit-qualifier: the component's REAL Elm module SUFFIX (e.g.
+  // `Component.Button` after the library moved the 130 components under
+  // `M3e.Component.<Name>`), sourced from reference.json via the oracle. Kept
+  // SEPARATE from `mod` — which still supplies the ctor slug (`button`) — so we
+  // qualify the call path without corrupting the constructor name. Group
+  // members and any tag lacking a reference match fall back to `mod` (never a
+  // wrong `Component.` prefix on a genuinely top-level module).
+  const qual = entry.group ? mod : entry.qual ?? mod;
 
   const attrPairs = [...node.attributes].map((a) => [a.name, a.value]);
 
@@ -494,7 +502,7 @@ function elementToElm(node, oracle) {
       : nodeToElm(matches[0], oracle);
     const slotEntry = entry.slots.find((s) => s.rawName === rawName);
     const helper = slotEntry ? slotEntry.helper : camel(rawName);
-    requiredSlotExprByName.set(rawName, `M3e.${mod}.${helper} (${expr})`);
+    requiredSlotExprByName.set(rawName, `M3e.${qual}.${helper} (${expr})`);
     consumedRequiredSlotNames.add(rawName);
   }
 
@@ -569,7 +577,7 @@ function elementToElm(node, oracle) {
       continue;
     }
 
-    const setterRef = `M3e.${mod}.${attr.setter}`;
+    const setterRef = `M3e.${qual}.${attr.setter}`;
     if (attr.kind === "enum") {
       attrExprs.push(`${setterRef} M3e.Values.${camel(value)}`);
     } else if (attr.kind === "bool") {
@@ -618,7 +626,7 @@ function elementToElm(node, oracle) {
         const forId = child.getAttribute("for") ?? "";
         orderedItems.push({
           kind: "slotted",
-          expr: `M3e.${mod}.${camel(slotName)} "${escapeElmString(forId)}" (${nodeToElm(child, oracle)})`,
+          expr: `M3e.${qual}.${camel(slotName)} "${escapeElmString(forId)}" (${nodeToElm(child, oracle)})`,
         });
         continue;
       }
@@ -633,7 +641,7 @@ function elementToElm(node, oracle) {
         const slotChildExpr = renderSlotChild(child, slotEntry, oracle);
         orderedItems.push({
           kind: "slotted",
-          expr: `M3e.${mod}.${slotEntry.helper} (${slotChildExpr})`,
+          expr: `M3e.${qual}.${slotEntry.helper} (${slotChildExpr})`,
         });
         continue;
       }
@@ -652,7 +660,7 @@ function elementToElm(node, oracle) {
         if (helper) {
           orderedItems.push({
             kind: "slotted",
-            expr: `M3e.${mod}.${helper} (${nodeToElm(child, oracle)})`,
+            expr: `M3e.${qual}.${helper} (${nodeToElm(child, oracle)})`,
           });
           continue;
         }
@@ -691,7 +699,7 @@ function elementToElm(node, oracle) {
     if (item.kind === "slotted") return item.expr;
     const expr = nodeToElm(item.node, oracle);
     return wrapControl
-      ? `M3e.${mod}.control "${escapeElmString(controlId ?? "")}" (${expr})`
+      ? `M3e.${qual}.control "${escapeElmString(controlId ?? "")}" (${expr})`
       : expr;
   });
   const contentList =
@@ -707,7 +715,7 @@ function elementToElm(node, oracle) {
   const hasRecord = recordFields.length > 0;
   const recordArg = hasRecord ? `{ ${recordFields.join(", ")} } ` : "";
 
-  return `M3e.${mod}.${ctor} ${recordArg}${attrsList} ${contentList}`;
+  return `M3e.${qual}.${ctor} ${recordArg}${attrsList} ${contentList}`;
 }
 
 /**
