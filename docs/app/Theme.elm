@@ -8,6 +8,9 @@ import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Component.Icon
+import M3e.Component.IconButton
+import M3e.Component.MenuItem
+import M3e.Component.MenuTrigger
 import M3e.Component.Option
 import M3e.Component.Theme
 import M3e.Events
@@ -556,18 +559,38 @@ controlLabel lbl =
         [ M3e.text lbl ]
 
 
-{-| Scheme toggle: only Light/Dark (was 3-option Light/System/Dark). `Value.auto`
-("System", the default) is no longer directly selectable — reachable only via the
-row reset (§5). When `model.scheme == Value.auto`, NEITHER segment reads checked
-(both `== Value.auto` is False), which is the intended "unresolved" visual —
-`M3e.segmentedButton` renders every segment `aria-checked="false"`.
+{-| Scheme control: a single toggle icon button flipping Light ⇄ Dark (matching
+`Shared.directionToggle`'s shape). `auto` ("System") is no longer directly
+selectable here — it's reachable only via the control row's scoped reset. When
+`scheme == auto`, the toggle reads as "not dark" (shows `dark_mode`, i.e. click
+to go dark) without that constituting a `SetScheme` call.
 -}
-schemeToggle : Model -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
+schemeToggle : Model -> Element (M3e.Component.IconButton.Is s) admittedBy Msg
 schemeToggle model =
-    segmented
-        [ ( "Light", model.scheme == Value.light, SetScheme Value.light )
-        , ( "Dark", model.scheme == Value.dark, SetScheme Value.dark )
+    let
+        isDark : Bool
+        isDark =
+            Value.toString model.scheme == "dark"
+
+        ( next, glyph, lbl ) =
+            if isDark then
+                ( Value.light, "light_mode", "Switch to light theme" )
+
+            else
+                ( Value.dark, "dark_mode", "Switch to dark theme" )
+    in
+    M3e.iconButton
+        [ TypedHtml.Events.onClick (SetScheme next)
+        , Aria.label lbl
+        , Aria.pressed
+            (if isDark then
+                Aria.true
+
+             else
+                Aria.false
+            )
         ]
+        [ M3e.icon [ M3e.Component.Icon.name glyph ] [] ]
 
 
 {-| The 9 M3 dynamic-color variants valid on `m3e-theme`. Separated from the
@@ -647,19 +670,16 @@ clean declarative anchor — see plan's component-API reality check).
 -}
 variantSelect : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 variantSelect model =
-    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
-        [ controlLabel "Variant"
-        , M3e.select
-            [ M3e.Attributes.id "variant-select"
-            , M3e.Events.onChangeWith
-                (Decode.map SetVariant (Decode.at [ "target", "value" ] (Decode.map themeVariantFromString Decode.string)))
+    TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
+        [ M3e.button []
+            [ M3e.menuTrigger [ M3e.Component.MenuTrigger.for "variant-menu" ]
+                [ M3e.text (variantLabelFor model.variant) ]
+            , M3e.Component.Button.trailingIcon (M3e.icon [ M3e.Component.Icon.name "arrow_drop_down" ] [])
             ]
+        , M3e.menu [ M3e.Attributes.id "variant-menu" ]
             (List.map
                 (\v ->
-                    M3e.option
-                        [ M3e.Component.Option.value (Value.toString v)
-                        , M3e.Component.Option.selected (model.variant == v)
-                        ]
+                    M3e.menuItem [ M3e.Component.MenuItem.onClick (SetVariant v) ]
                         [ M3e.text (variantLabelFor v) ]
                 )
                 themeVariantValues
@@ -686,7 +706,7 @@ colorOptions model =
                 ]
                 [ M3e.text "Source color" ]
             ]
-        , TypedHtml.div [ TypedHtml.Attributes.class "flex gap-3 overflow-x-auto snap-x snap-mandatory items-center" ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex gap-3 overflow-x-auto snap-x snap-mandatory items-center py-2" ]
             (sourceColorOption model :: List.map (colorAvatar model) curatedSwatchColors)
         ]
 
@@ -740,7 +760,7 @@ colorAvatar model hex =
         [ TypedHtml.Attributes.class
             ("relative inline-flex rounded-full "
                 ++ (if model.seed == hex then
-                        "ring-2 ring-primary"
+                        "ring-2 ring-on-surface"
 
                     else
                         ""

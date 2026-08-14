@@ -32,8 +32,12 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+{-| No per-route state: the layer-tab selection lives in `Shared.Model`
+(`activeSurface`) so it survives client-side navigation. This page only reads it
+and forwards tab clicks to `Doc.Usage.persist`.
+-}
 type alias Model =
-    Usage.Model
+    ()
 
 
 type alias Msg =
@@ -68,21 +72,20 @@ route =
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init _ _ =
-    ( Usage.init, Effect.none )
+    ( (), Effect.none )
 
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
-update _ _ msg model =
-    let
-        ( newModel, cmd ) =
-            Usage.update msg model
-    in
-    ( newModel, Effect.fromCmd cmd )
+update _ _ (Usage.SelectSurface surface) _ =
+    -- Write the choice to localStorage; `index.ts` echoes it back through
+    -- `readSurface` to `Shared`, which owns `activeSurface` and re-renders every page.
+    ( (), Effect.fromCmd (Usage.persist surface) )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
-    Usage.readSurface Usage.SurfaceLoaded
+    -- The `readSurface` subscription lives in `Shared` now (single source of truth).
+    Sub.none
 
 
 pages : BackendTask FatalError (List RouteParams)
@@ -118,7 +121,7 @@ head _ =
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
-view app _ model =
+view app shared _ =
     let
         component : Component
         component =
@@ -131,8 +134,8 @@ view app _ model =
                   -- section — header, Usage, API — so their spacing is uniform.
                   TypedHtml.div [ TA.class "space-y-10" ]
                     (header component
-                        :: Usage.usageBlocks model app.data.usage
-                        ++ [ apiSection model.activeSurface component ]
+                        :: Usage.usageBlocks shared.activeSurface app.data.usage
+                        ++ [ apiSection shared.activeSurface component ]
                         ++ exampleAppsSection app.data.exampleUsage
                     )
                 ]

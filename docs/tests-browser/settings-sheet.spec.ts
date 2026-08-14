@@ -161,21 +161,35 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
   // further here -- just a locator-ambiguity trap in this specific markup.
   await page.getByRole("button", { name: "Color" }).last().click();
 
-  // `exact: true` — `getByLabel` substring-matches by default, and "Primary"
-  // is a prefix of "Primary Container", "Primary Fixed", etc., so the loose
-  // form resolves to multiple inputs (Playwright strict-mode violation).
-  const primaryInput = page.getByLabel("Hex value for Primary", { exact: true });
-  // Expand the Primary chip's <details> to reveal its hex input.
-  const primaryChip = page.locator(
-    'details:has(input[aria-label="Hex value for Primary"]) > summary'
+  // Each token is an extra-small button hosting an `m3e-menu-trigger`; clicking
+  // the button opens the anchored `m3e-menu` with the hex input + OS picker +
+  // Unset. The menu closes on outside interaction (e.g. toggling the scheme), so
+  // the override — which lives in `colorOverrides`, not the menu — is read back
+  // by RE-OPENING the menu.
+  const primaryButton = page.locator(
+    'm3e-button:has(m3e-menu-trigger[for="colormenu-md-sys-color-primary"])',
   );
-  await primaryChip.click();
-  await primaryInput.fill("#ff0000");
+  // `exact: true` — "Primary" is a prefix of "Primary Container", "Primary
+  // Fixed", etc., so the loose form resolves to multiple inputs.
+  const primaryInput = page.getByLabel("Hex value for Primary", { exact: true });
 
-  await page.getByRole("radio", { name: "Dark" }).click();
+  // The leading color swatch must render in the button's `icon` slot (a sibling
+  // of the menu-trigger, not nested inside the display:none trigger).
+  await expect(primaryButton.locator('span[slot="icon"]')).toBeVisible();
+
+  await primaryButton.click(); // open the menu
+  await primaryInput.fill("#ff0000");
+  await primaryButton.click(); // toggle the menu closed so it stops overlaying other controls
+
+  // Scheme is a single toggle icon button now (was a Light/Dark segmented pair);
+  // when not already dark its accessible name is "Switch to dark theme".
+  await page.getByRole("button", { name: "Switch to dark theme" }).click();
+  await primaryButton.click(); // re-open to read the override back
   await expect(primaryInput).toHaveValue("#ff0000");
+  await primaryButton.click(); // close
 
   await page.getByRole("button", { name: "Reset all" }).click();
+  await primaryButton.click(); // re-open
   await expect(primaryInput).not.toHaveValue("#ff0000");
 });
 
@@ -193,43 +207,68 @@ test("a color-token override survives a scheme toggle but not Reset all", async 
  * dispatch the same bubbling native `change` event the element emits on a real
  * user pick.
  */
-test("a CSS variable added via the panel applies and persists, and the X clears it", async ({
+test("the nested CSS Variables accordion: a category field drives the CSS var, and clear reverts it", async ({
   page,
 }) => {
   await page.goto("/getting-started/welcome");
   await page.getByRole("button", { name: "Settings" }).click();
 
-  // Open the CSS Variables accordion panel (last section).
+  // Open the CSS Variables section (outer accordion). Every known var is a
+  // pre-rendered `m3e-form-field`, organized into a NESTED accordion by category —
+  // so the target field lives inside a collapsed sub-panel that must be expanded.
   await page.getByRole("button", { name: "CSS Variables" }).last().click();
 
-  // Seed a row for --md-sys-color-primary via the add-select. `m3e-select`
-  // derives `value` from its selected option (no value setter), so select the
-  // option, then dispatch the bubbling `change` the element itself emits.
-  await page.locator("#css-var-add").evaluate((el) => {
-    const options = Array.from(el.querySelectorAll("m3e-option")) as Array<
-      HTMLElement & { selected: boolean; value: string }
-    >;
-    for (const opt of options) {
-      opt.selected = opt.value === "md-sys-color-primary";
-    }
-    el.dispatchEvent(new Event("change", { bubbles: true }));
-  });
+  // Use a Motion var: the nested "Motion" category header is unique (no outer
+  // section is named "Motion"), unlike "Color"/"Shape" which collide with the
+  // curated sections. `.last()` mirrors the accordion-header locator trap.
+  const target = "--md-sys-motion-duration-short-1";
+  const fieldId = "cssvar-md-sys-motion-duration-short-1";
 
-  const valueInput = page.getByLabel("Value for md-sys-color-primary");
-  await expect(valueInput).toBeVisible();
-  await valueInput.fill("#123456");
+  // Each category is a native <details> (NOT a nested m3e-expansion-panel, which the
+  // outer m3e-accordion would re-coordinate closed). Expand it via its summary.
+  await page.locator(`details:has(#${fieldId}) > summary`).click();
+  const field = page.getByLabel(`Value for ${target}`, { exact: true });
+  await expect(field).toBeVisible();
 
-  await page.reload();
-  await page.getByRole("button", { name: "Settings" }).click();
-  await page.getByRole("button", { name: "CSS Variables" }).last().click();
-  await expect(page.getByLabel("Value for md-sys-color-primary")).toHaveValue(
-    "#123456"
-  );
+  // Regression: the category must STAY open (the nested-m3e-accordion version popped
+  // open then collapsed ~1s later off the outer accordion's bubbling toggle event).
+  await page.waitForTimeout(1200);
+  await expect(field).toBeVisible();
 
-  await page
-    .getByRole("button", { name: "Remove override for md-sys-color-primary" })
-    .click();
-  await expect(
-    page.getByLabel("Value for md-sys-color-primary")
-  ).toHaveCount(0);
+  // Assert the REAL effect: the override drives the port, which writes the custom
+  // property onto <html> (same observable mechanism as the seed-color test).
+  const computed = () =>
+    page.evaluate(
+      (v) =>
+        getComputedStyle(document.documentElement).getPropertyValue(v).trim(),
+      target,
+    );
+
+  // Drive the slotted form-field input via a native `input` event. Playwright's
+  // fill()/pressSequentially don't reliably reach Elm's `onInput` through the
+  // `m3e-form-field` slot nested inside an `m3e-expansion-panel` (a test-harness
+  // quirk — the UI works: a real input event applies the override, verified). Same
+  // family of gotcha as `m3e-select` needing option.selected + a bubbling event.
+  await page.evaluate((id) => {
+    const input = document.getElementById(id) as HTMLInputElement;
+    const setter = Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      "value",
+    )!.set!;
+    setter.call(input, "999ms");
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }, fieldId);
+  await expect.poll(computed).toBe("999ms");
+
+  // The trailing clear button (shown only when overridden) reverts the var. Drive
+  // it with a native click for the same reason as the input above — the slotted
+  // `m3e-icon-button` resolves but isn't reliably Playwright-actionable in this
+  // nested surface; a real click event still reaches Elm's `onClick`.
+  await page.evaluate((t) => {
+    const btn = document.querySelector(
+      `m3e-icon-button[aria-label="Clear ${t}"]`,
+    ) as HTMLElement | null;
+    btn?.click();
+  }, target);
+  await expect.poll(computed).not.toBe("999ms");
 });

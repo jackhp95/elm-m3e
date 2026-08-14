@@ -40,9 +40,7 @@ import View exposing (View)
 
 
 type alias Model =
-    { usage : Usage.Model
-    , revealed : Bool
-    }
+    { revealed : Bool }
 
 
 type Msg
@@ -82,9 +80,7 @@ init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init app _ =
     -- Deep-links (`/components/all#button`) carry a URL fragment; reveal the
     -- stacked content immediately so the browser can scroll to the anchor.
-    ( { usage = Usage.init
-      , revealed = app.url |> Maybe.andThen .fragment |> (/=) Nothing
-      }
+    ( { revealed = app.url |> Maybe.andThen .fragment |> (/=) Nothing }
     , Effect.none
     )
 
@@ -92,12 +88,10 @@ init app _ =
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ msg model =
     case msg of
-        UsageMsg um ->
-            let
-                ( newUsage, cmd ) =
-                    Usage.update um model.usage
-            in
-            ( { model | usage = newUsage }, Effect.fromCmd (Cmd.map UsageMsg cmd) )
+        UsageMsg (Usage.SelectSurface surface) ->
+            -- Write to localStorage; `index.ts` echoes back to `Shared`, which owns
+            -- `activeSurface`. No local state to update here.
+            ( model, Effect.fromCmd (Usage.persist surface) )
 
         Reveal ->
             ( { model | revealed = True }, Effect.none )
@@ -105,7 +99,8 @@ update _ _ msg model =
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
-    Usage.readSurface (UsageMsg << Usage.SurfaceLoaded)
+    -- `readSurface` lives in `Shared` now (single source of truth for activeSurface).
+    Sub.none
 
 
 head : App Data ActionData RouteParams -> List Head.Tag
@@ -127,7 +122,7 @@ head _ =
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
-view app _ model =
+view app shared model =
     let
         heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } adm_ Msg
         heading =
@@ -138,7 +133,7 @@ view app _ model =
         content : List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
         content =
             if model.revealed then
-                stackedBlocks model.usage app.data
+                stackedBlocks shared.activeSurface app.data
                     |> List.map (M3e.mapMsg UsageMsg)
 
             else
@@ -218,8 +213,8 @@ overview d =
 wrapped in an `id`-anchored `.cv-auto` block. All examples share the same
 page-wide `model.activeSurface` — no per-component offset needed.
 -}
-stackedBlocks : Usage.Model -> Data -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
-stackedBlocks model d =
+stackedBlocks : Usage.Surface -> Data -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
+stackedBlocks activeSurface d =
     let
         orderedComponents : List Component
         orderedComponents =
@@ -244,7 +239,7 @@ stackedBlocks model d =
                     (M3e.heading
                         [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]
                         [ M3e.text component.name ]
-                        :: Usage.usageBlocks model examples
+                        :: Usage.usageBlocks activeSurface examples
                     )
                 ]
     in

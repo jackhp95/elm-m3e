@@ -329,3 +329,46 @@ test("/components/button API strip and Usage strips share activeSurface state", 
   });
   expect(apiHasHtmlTab).toBe(false);
 });
+
+test("layer selection persists across client-side navigation between component pages", async ({
+  page,
+}) => {
+  // The site-wide activeSurface lives in Shared.Model (mirrored from localStorage
+  // via a readSurface echo), so it must survive an in-app (client-side) route
+  // change — NOT just a full reload. page.goto is a full load; this test navigates
+  // via an <a> link so elm-pages does a client-side transition (the path that was
+  // broken when activeSurface lived in the per-route model).
+  await page.goto("/components/button");
+
+  // Select "Builder" (non-default; default surface is M3e) on the API strip.
+  const apiStrip = () =>
+    page
+      .locator("m3e-tabs")
+      .filter({ has: page.locator("m3e-tab", { hasText: "Builder" }) })
+      .first();
+  await apiStrip().getByText("Builder", { exact: true }).click();
+
+  const builderSelected = () =>
+    page.waitForFunction(() => {
+      const strip = [...document.querySelectorAll("m3e-tabs")].find((s) =>
+        [...s.querySelectorAll("m3e-tab")].some(
+          (t) => t.textContent?.trim() === "Builder",
+        ),
+      );
+      const sel =
+        strip &&
+        [...strip.querySelectorAll("m3e-tab")].find((t) =>
+          t.hasAttribute("selected"),
+        );
+      return sel?.textContent?.trim() === "Builder";
+    });
+  await builderSelected();
+
+  // Client-side navigate to a different component page via an in-app link.
+  await page.locator('a[href$="/components/card"]').first().click();
+  await page.waitForURL("**/components/card");
+
+  // The destination page must open on Builder — proving Shared.activeSurface
+  // carried across the client-side navigation.
+  await builderSelected();
+});

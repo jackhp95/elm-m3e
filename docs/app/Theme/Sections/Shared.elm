@@ -12,8 +12,11 @@ resulting `Theme.Scale.ScaleMode`.
 
 import Char
 import M3e exposing (Element)
+import M3e.Attributes
+import M3e.Component.FormField as FormField
 import M3e.Component.Icon
 import M3e.Kind
+import M3e.Values as Value
 import Theme exposing (TypeScaleParam)
 import Theme.Scale as Scale exposing (ScaleConfig, ScaleMode)
 import TypedHtml
@@ -65,7 +68,15 @@ stepperControls toMsg config =
                 ]
 
 
-numberStepper : String -> Float -> Float -> (Float -> msg) -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+{-| A numeric field as a real `m3e-form-field` (outlined, `float-label="auto"`,
+`hide-subscript="auto"`, sized to fit its content). The label is wired to the input
+via the `label` slot; the decrement/increment `m3e-icon-button`s and the editable
+value input sit inline in the default slot (NOT the prefix/suffix slots) — leading
+decrement, value, trailing increment. Typing commits on input; invalid text falls
+back to the last valid value (re-emit `current` so the re-rendered input snaps back
+unchanged).
+-}
+numberStepper : String -> Float -> Float -> (Float -> msg) -> Element (FormField.Is s) admittedBy msg
 numberStepper labelText current step toMsg =
     let
         inputId : String
@@ -74,35 +85,34 @@ numberStepper labelText current step toMsg =
 
         commit : String -> msg
         commit raw =
-            -- Invalid text falls back to the last valid value: re-emit `current`
-            -- so the model (and thus the re-rendered input) snaps back unchanged.
             toMsg (String.toFloat (String.trim raw) |> Maybe.withDefault current)
     in
-    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
-        [ TypedHtml.label
-            [ TypedHtml.Attributes.for inputId
-            , TypedHtml.Attributes.class "text-on-surface-variant"
+    M3e.formField
+        [ FormField.variant Value.outlined
+        , FormField.floatLabel Value.auto
+        , FormField.hideSubscript Value.auto
+        , TypedHtml.Attributes.class "max-w-fit"
+        ]
+        [ FormField.label (TypedHtml.label [ TypedHtml.Attributes.for inputId ] [ M3e.text labelText ])
+        , M3e.iconButton
+            [ TypedHtml.Events.onClick (toMsg (current - step))
+            , Aria.label ("Decrease " ++ labelText)
+            , M3e.Attributes.size Value.small
             ]
-            [ M3e.text labelText ]
-        , TypedHtml.div [ TypedHtml.Attributes.class "flex items-center gap-1" ]
-            [ TypedHtml.input
-                [ TypedHtml.Attributes.id inputId
-                , TypedHtml.Attributes.type_ "text"
-                , TypedHtml.Attributes.value (String.fromFloat current)
-                , TypedHtml.Events.onInput commit
-                , TypedHtml.Attributes.class "w-20 rounded border border-outline bg-transparent px-2 py-1 text-on-surface"
-                , Aria.label labelText
-                ]
-                []
-            , M3e.iconButton
-                [ TypedHtml.Events.onClick (toMsg (current - step))
-                , Aria.label ("Decrease " ++ labelText)
-                ]
-                [ M3e.icon [ M3e.Component.Icon.name "remove" ] [] ]
-            , M3e.iconButton
-                [ TypedHtml.Events.onClick (toMsg (current + step))
-                , Aria.label ("Increase " ++ labelText)
-                ]
-                [ M3e.icon [ M3e.Component.Icon.name "add" ] [] ]
+            [ M3e.icon [ M3e.Component.Icon.name "remove" ] [] ]
+        , TypedHtml.input
+            [ TypedHtml.Attributes.id inputId
+            , TypedHtml.Attributes.type_ "text"
+            , TypedHtml.Attributes.value (String.fromFloat current)
+            , TypedHtml.Attributes.class "field-sizing-content px-2 w-fit"
+            , TypedHtml.Events.onInput commit
+            , Aria.label labelText
             ]
+            []
+        , M3e.iconButton
+            [ TypedHtml.Events.onClick (toMsg (current + step))
+            , Aria.label ("Increase " ++ labelText)
+            , M3e.Attributes.size Value.small
+            ]
+            [ M3e.icon [ M3e.Component.Icon.name "add" ] [] ]
         ]

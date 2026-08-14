@@ -1,13 +1,12 @@
 port module Doc.Usage exposing
-    ( Model
-    , Msg(..)
+    ( Msg(..)
     , Surface(..)
     , UsageExample
-    , init
+    , persist
     , readSurface
     , storeSurface
+    , surfaceFromString
     , tabStrip
-    , update
     , usageBlocks
     , usageExampleDecoder
     )
@@ -50,57 +49,36 @@ type Surface
     | Raw
 
 
-{-| Page-wide surface selection. All examples on the page share this single
-value. Navigating away and back restores the persisted choice from localStorage.
+{-| The click message a layer tab emits. The selected surface itself lives in
+`Shared.Model` (so it survives client-side navigation between component pages),
+mirrored from localStorage via the `readSurface` port. A route forwards this to
+`persist`; `Shared` owns the load side (its own `SurfaceLoaded`).
 -}
-type alias Model =
-    { activeSurface : Surface }
-
-
 type Msg
     = SelectSurface Surface
-    | SurfaceLoaded Decode.Value
-
-
-init : Model
-init =
-    { activeSurface = Top }
 
 
 {-| Persist the selected surface to localStorage via the JS port handler in
-`index.ts`. Encode as a plain string — the four constructor names are stable
-keys ("Top", "Record", "Build", "Raw").
+`index.ts`, which ECHOES it back through `readSurface` so `Shared` (the single
+source of truth) and every mounted page update. Encoded as a plain string — the
+four constructor names are stable keys ("Top", "Record", "Build", "Raw").
 -}
 port storeSurface : Encode.Value -> Cmd msg
 
 
-{-| On boot, `index.ts` reads localStorage and sends the stored string back in
-(or `Encode.null` if absent/private-mode) — `update` decodes it, falling back
-to `Top` on decode failure or absence.
+{-| On boot AND after every `storeSurface`, `index.ts` sends the stored surface
+string here; `Shared.update` decodes it (`surfaceFromString`), falling back to
+its current value on absence/decode failure.
 -}
 port readSurface : (Decode.Value -> msg) -> Sub msg
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        SelectSurface surface ->
-            ( { model | activeSurface = surface }
-            , storeSurface (Encode.string (surfaceToString surface))
-            )
-
-        SurfaceLoaded value ->
-            let
-                decoded : Surface
-                decoded =
-                    case Decode.decodeValue Decode.string value of
-                        Ok s ->
-                            surfaceFromString s |> Result.withDefault Top
-
-                        Err _ ->
-                            Top
-            in
-            ( { model | activeSurface = decoded }, Cmd.none )
+{-| The `Cmd` a route runs on a layer-tab click: write the choice to localStorage
+(which echoes back to `Shared` via `readSurface`, updating the shared value).
+-}
+persist : Surface -> Cmd msg
+persist surface =
+    storeSurface (Encode.string (surfaceToString surface))
 
 
 surfaceToString : Surface -> String
@@ -179,8 +157,8 @@ mounts a single `m3e-toc` that discovers these headings (and everything
 else on the page) at runtime; nothing here needs to enumerate them.
 
 -}
-usageBlocks : Model -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
-usageBlocks model examples =
+usageBlocks : Surface -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
+usageBlocks activeSurface examples =
     case examples of
         [] ->
             []
@@ -194,14 +172,14 @@ usageBlocks model examples =
                     , M3e.Attributes.id (Doc.slugify "Usage")
                     ]
                     [ M3e.text "Usage" ]
-                    :: List.concatMap (sectionBlock model)
+                    :: List.concatMap (sectionBlock activeSurface)
                         (groupBySection examples)
                 )
             ]
 
 
-sectionBlock : Model -> ( String, List UsageExample ) -> List (Element { a | card : M3e.Kind.Brand, sharedFlow : TypedHtml.Kind.Shared, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
-sectionBlock model ( sec, examples ) =
+sectionBlock : Surface -> ( String, List UsageExample ) -> List (Element { a | card : M3e.Kind.Brand, sharedFlow : TypedHtml.Kind.Shared, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
+sectionBlock activeSurface ( sec, examples ) =
     let
         headingEl : List (Element { s | heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
         headingEl =
@@ -218,16 +196,16 @@ sectionBlock model ( sec, examples ) =
                     [ M3e.text sec ]
                 ]
     in
-    headingEl ++ List.map (exampleBlock model) examples
+    headingEl ++ List.map (exampleBlock activeSurface) examples
 
 
-{-| A live preview paired with a per-example tab strip. The global
-`model.activeSurface` is used when that surface is offered by this example;
-otherwise falls back to `defaultSurfaceFor ex` (the example's own first-offered
+{-| A live preview paired with a per-example tab strip. The site-wide
+`activeSurface` (from `Shared.Model`) is used when that surface is offered by this
+example; otherwise falls back to `defaultSurfaceFor ex` (the example's own first-offered
 surface — a static, per-example default, not a distance ranking).
 -}
-exampleBlock : Model -> UsageExample -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
-exampleBlock model ex =
+exampleBlock : Surface -> UsageExample -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+exampleBlock activeSurface ex =
     let
         offered : List Surface
         offered =
@@ -235,8 +213,8 @@ exampleBlock model ex =
 
         surface : Surface
         surface =
-            if List.member model.activeSurface offered then
-                model.activeSurface
+            if List.member activeSurface offered then
+                activeSurface
 
             else
                 defaultSurfaceFor ex

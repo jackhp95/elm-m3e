@@ -38,6 +38,7 @@ constructor is `Module.view [attrs] [content]`.
 import BackendTask exposing (BackendTask)
 import Browser.Events
 import Doc.Data
+import Doc.Usage as Usage
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
@@ -115,6 +116,7 @@ type alias Model =
     , searchOpen : Bool
     , searchQuery : String
     , searchIndex : Maybe (Result Http.Error (List SearchEntry))
+    , activeSurface : Usage.Surface
     }
 
 
@@ -332,6 +334,7 @@ type Msg
     | SetDirection (TypedHtml.Values.Value TypedHtml.Values.Dir)
     | ResetControlRow
     | PresetRequested String
+    | SurfaceLoaded Decode.Value
 
 
 init :
@@ -361,6 +364,7 @@ init flags _ =
       , searchOpen = False
       , searchQuery = ""
       , searchIndex = Nothing
+      , activeSurface = Usage.Top
       }
       -- Load every reel card's specimen-subset webfont once at boot (§D6). The
       -- reel appears in both the settings drawer AND the Welcome page, and Shared
@@ -580,6 +584,23 @@ update msg model =
                 Nothing ->
                     ( model, Effect.none )
 
+        -- The site-wide layer-tab selection, mirrored from localStorage. `index.ts`
+        -- sends this on boot AND after every `Doc.Usage.persist` (a tab click on any
+        -- page), so this single field survives client-side navigation between
+        -- component pages. Falls back to the current value on absence/decode failure.
+        SurfaceLoaded value ->
+            let
+                surface : Usage.Surface
+                surface =
+                    case Decode.decodeValue Decode.string value of
+                        Ok s ->
+                            Usage.surfaceFromString s |> Result.withDefault model.activeSurface
+
+                        Err _ ->
+                            model.activeSurface
+            in
+            ( { model | activeSurface = surface }, Effect.none )
+
 
 {-| Watch viewport width so `resizeTo` can re-pin the tree (and, past
 `tocPinBreakpointPx`, the TOC) when the user crosses back up from a narrow
@@ -600,6 +621,7 @@ subscriptions path _ =
         [ Browser.Events.onResize (\w _ -> ViewportResized w)
         , Sub.map ThemeMsg Theme.subscriptions
         , Theme.Ports.onPresetRequested PresetRequested
+        , Usage.readSurface SurfaceLoaded
         , if hasDocsShell path then
             Ports.onOpenSearchRequested (\_ -> OpenSearch)
 
@@ -896,10 +918,17 @@ settingsSheetContent : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy 
 settingsSheetContent model =
     TypedHtml.div
         [ TypedHtml.Attributes.id "settings-sheet-content"
-        , TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
+
+        -- Extra bottom padding gives the sheet scroll runway so the last control
+        -- (`controlRow`) clears the mobile browser URL bar (the bottom sheet's
+        -- height is component-driven — there's no CSS height knob to make `dvh`-
+        -- aware). `env(safe-area-inset-bottom)` additionally clears the iOS home
+        -- indicator and is 0 on desktop, so no desktop gap.
+        , TypedHtml.Attributes.class "flex flex-col gap-2 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] max-md:pb-[calc(5rem+env(safe-area-inset-bottom))]"
         , Aria.role Aria.complementary
         ]
-        [ Theme.view
+        [ controlRow model
+        , Theme.view
             { dir = model.dir
             , onSetDirection = SetDirection
             , sectionsEl =
@@ -914,7 +943,6 @@ settingsSheetContent model =
             }
             model.theme
             ThemeMsg
-        , controlRow model
         ]
 
 

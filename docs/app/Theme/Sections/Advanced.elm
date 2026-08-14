@@ -12,6 +12,7 @@ adapter that rounds back to an `Int` and re-serializes the unit suffix.
 
 import Dict
 import M3e exposing (Element)
+import M3e.Component.FormField as FormField
 import Theme exposing (Msg(..))
 import Theme.Sections.Shared as Shared
 import Theme.Tokens as Tokens exposing (MotionDurationToken, StateOpacityToken)
@@ -36,7 +37,7 @@ view model =
 token's default), parsing the numeric prefix back out of the stored
 `"250ms"`-shaped string.
 -}
-durationRow : Theme.Model -> MotionDurationToken -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+durationRow : Theme.Model -> MotionDurationToken -> Element (FormField.Is s) admittedBy Msg
 durationRow model token =
     let
         currentMs : Int
@@ -52,7 +53,7 @@ durationRow model token =
     Shared.numberStepper token.label (toFloat currentMs) 25 toMsg
 
 
-opacityRow : Theme.Model -> StateOpacityToken -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+opacityRow : Theme.Model -> StateOpacityToken -> Element (FormField.Is s) admittedBy Msg
 opacityRow model token =
     let
         currentPercent : Int

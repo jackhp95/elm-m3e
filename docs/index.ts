@@ -309,6 +309,13 @@ const config: ElmPagesInit = {
       } catch (_) {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
+      // Echo the choice straight back to Elm's `readSurface` subscription, which
+      // now lives in `Shared` (the single source of truth for `activeSurface`).
+      // This is what makes a tab click on one page update the shared value so
+      // every mounted page — and the NEXT page navigated to (Shared.Model persists
+      // across client-side nav) — reflects it. Same raw-string shape the boot
+      // `readSurface.send` below uses.
+      app?.ports?.readSurface?.send(surface);
     });
 
     // One raw `--{property}: {value}` write via inline style on <html> — used
@@ -491,7 +498,8 @@ const config: ElmPagesInit = {
     }
 
     // Boot: send back the persisted surface string (or null if absent).
-    // `Doc.Usage.update` decodes it, falling back to `Top` on null/bad value.
+    // `Shared.update` (`SurfaceLoaded`) decodes it, falling back to its current
+    // value on null/bad — seeding `activeSurface` before the first render.
     try {
       const rawSurface = window.localStorage.getItem(SURFACE_STORAGE_KEY);
       app?.ports?.readSurface?.send(rawSurface ? JSON.parse(rawSurface) : null);
