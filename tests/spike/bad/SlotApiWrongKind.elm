@@ -21,7 +21,8 @@ of Design A (see planning/2026-08-11-slot-api-design.md).
 
 import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
-import M3e.Build exposing (IconButtonIs)
+import M3e.Action exposing (onClick)
+import M3e.Component.Icon as Icon
 import M3e.Component.IconButton as IconButton
 import M3e.Internal.Types.SplitButton as SBTypes
 
@@ -56,9 +57,9 @@ type Msg
 {-| An IconButton element — kind { s | iconButton : Brand }.
 This does NOT extend LeadingButtonSlot = { button : Brand }.
 -}
-myIconButton : Element (IconButtonIs s) admittedBy Msg
+myIconButton : Element (IconButton.Is s) admittedBy Msg
 myIconButton =
-    IconButton.view [] []
+    IconButton.el { content = Icon.el [ Icon.name "arrow_forward" ] [], ariaLabel = "Go", action = onClick NoOp } [] []
 
 
 {-| WRONG: IconButton (kind { iconButton : Brand }) into leadingButtonSlot

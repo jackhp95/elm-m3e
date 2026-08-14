@@ -11,6 +11,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Heading
 import M3e.Values as Value
@@ -67,7 +68,7 @@ head _ =
 card : String -> List (M3e.Element (M3e.Component.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> M3e.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
 card title items =
     TypedHtml.section [ TA.class "space-y-3" ]
-        (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text title ] :: items)
+        (M3e.heading { content = M3e.text title } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [] :: items)
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -82,7 +83,7 @@ view _ _ =
                     ]
                 , card "The surfaces" [ Doc.markdown layers ]
                 , card "Barrel vs component module" [ Doc.markdown barrelVsSpecific, Doc.codeBlock Doc.Elm barrelVsSpecificCode ]
-                , card "The three forms" [ Doc.markdown shapes, Doc.codeBlock Doc.Elm shapesCode ]
+                , card "The two shapes of `el`" [ Doc.markdown shapes, Doc.codeBlock Doc.Elm shapesCode ]
                 , card "The strictness dial" [ Doc.markdown dial ]
                 , card "Where a seam may live" [ Doc.markdown seams ]
                 ]
@@ -102,8 +103,7 @@ layers =
 | Surface | What it is | You reach for it |
 | --- | --- | --- |
 | **barrel / standard constructor** | The standard form — typed, slot-safe, composes into other components. | Almost always — the default. |
-| **`component` (required record)** | Same value; the compiler demands the required parts. | The 29 components with a required record, when you must not forget it. |
-| **`build` + `toElement`** | Same value via a pipe; one-only setters unwritable twice. | Conditional or order-free construction. |
+| **component module `el`** | Same value; bare (`attrs -> children -> Element`) when the component has no required parts, or required-record (`{ … } -> attrs -> children -> Element`) when it does. Each component has exactly one shape. | Component-scoped tighter types, or when the compiler must not let you forget a required part. |
 | **`M3e.Html.*` (loose)** | The open-rowed producer — no slot/attr checking, still in the IR. Not plain HTML. | Opting out of the strict rows on purpose. |
 | **`M3e.Coerce` / `M3e.Unsafe`** | Escapes: kind crossing / raw `Html`. Loud, greppable, lint-flagged. | Leaving the typed tree when nothing else fits. |"""
 
@@ -115,34 +115,30 @@ barrelVsSpecific =
 | Import | Statement | You get |
 | --- | --- | --- |
 | **barrel** | `import M3e` | One import for every component's standard-constructor form, plus `text` and `toHtml`. Pair it with the shared `M3e.Attributes` / `M3e.Values` / `M3e.Events` vocabulary (library-wide unions, lint-checked). |
-| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `component` / `build` live. |"""
+| **component module** | `import M3e.Button` | Component-scoped types and setters — a token or slot child wrong for *this* component won't compile; also where `el` lives. |"""
 
 
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []), M3e.text "Save" ]
+M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []) ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Component.Button.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]"""
+M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []"""
 
 
 shapes : String
 shapes =
-    """From [the strictness dial](/guide/strictness). All three render the *same* component; they differ only in what you may leave out. **Peers, not a ranking.**"""
+    """From [the strictness dial](/guide/strictness). Every component exposes ONE `el` — the shape (not the name) depends on whether the component has required parts. **Peers, not a ranking.**"""
 
 
 shapesCode : String
 shapesCode =
-    """-- the standard form — everything optional; the tersest
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
+    """-- bare form — a component with nothing it can't do without (e.g. AppBar)
+M3e.Component.AppBar.el [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
 
--- required-record form — the compiler demands the parts it can't do without
-M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
-
--- builder pipe — a one-only setter is unwritable twice; order-free
-M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
-    |> M3e.Build.Button.toElement"""
+-- required-record form — the compiler demands the parts it can't do without (e.g. Button)
+M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [] []"""
 
 
 dial : String
@@ -152,8 +148,7 @@ dial =
 | You add | How | Caught |
 | --- | --- | --- |
 | Invalid token for *this* component · empty required slot · foreign slot child · missing accessible name | run the **linter** in CI | project-wide |
-| Required parts can't be forgotten | the **required-record** form | per call site |
-| A one-only setter can't be written twice | the **pipeline** form | per call site |"""
+| Required parts can't be forgotten | the **required-record `el`** shape | per component, at every call site |"""
 
 
 seams : String

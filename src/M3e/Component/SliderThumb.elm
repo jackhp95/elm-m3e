@@ -1,5 +1,5 @@
 module M3e.Component.SliderThumb exposing
-    ( sliderthumb
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , disabled, name, value, defaultValue, onValueChange, onBeforeinput, onInput, onChange, onClick
     )
@@ -8,7 +8,7 @@ module M3e.Component.SliderThumb exposing
 
 A thumb used to select a value in a slider.
 
-@docs sliderthumb
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs disabled, name, value, defaultValue, onValueChange, onBeforeinput, onInput, onChange, onClick
 
@@ -46,11 +46,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-sliderthumb :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-sliderthumb =
+el =
     H.sliderThumb
 
 

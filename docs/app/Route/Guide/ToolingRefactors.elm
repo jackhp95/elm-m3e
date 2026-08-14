@@ -107,13 +107,13 @@ extractBefore : String
 extractBefore =
     """-- a raw escape inlined in a feature module, for something the library
 -- already models: `class` has a typed setter, so this is a needless escape
-M3e.button [ M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Attributes.class "flex-auto") ] [ M3e.text "Save" ]"""
+M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Attributes.class "flex-auto") ] []"""
 
 
 extractAfter : String
 extractAfter =
     """-- after autofix: the typed setter, no escape at all
-M3e.button [ TypedHtml.Attributes.class "flex-auto" ] [ M3e.text "Save" ]"""
+M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ TypedHtml.Attributes.class "flex-auto" ] []"""
 
 
 convert : String
@@ -124,13 +124,13 @@ convert =
 convertBefore : String
 convertBefore =
     """-- the per-component surface — what you might write, or arrive with
-M3e.Component.Button.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]"""
+M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []"""
 
 
 convertAfter : String
 convertAfter =
     """-- after autofix: the pinned form — one import, the shared vocabulary
-M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]"""
+M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []"""
 
 
 pipeline : String

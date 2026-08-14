@@ -1,5 +1,5 @@
 module M3e.Component.Optgroup exposing
-    ( optgroup
+    ( el
     , Is, Attrs, Content, LabelSlot, ChildAdmittedBy
     , label, child
     )
@@ -8,7 +8,7 @@ module M3e.Component.Optgroup exposing
 
 Groups options under a subheading.
 
-@docs optgroup
+@docs el
 @docs Is, Attrs, Content, LabelSlot, ChildAdmittedBy
 @docs label, child
 
@@ -56,11 +56,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-optgroup :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-optgroup =
+el =
     H.optgroup
 
 

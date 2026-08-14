@@ -68,9 +68,7 @@ backRow =
 builtFromRow : List ( String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 builtFromRow builtFrom =
     TypedHtml.div [ TA.class "flex flex-wrap items-baseline gap-x-2 gap-y-1" ]
-        (M3e.heading
-            [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ]
-            [ M3e.text "Built from" ]
+        (M3e.heading { content = M3e.text "Built from" } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
             :: List.map componentLink builtFrom
         )
 

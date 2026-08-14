@@ -10,8 +10,6 @@ Change the sample there; this file follows.
 import M3e
 import M3e.Action
 import M3e.Attributes
-import M3e.Build
-import M3e.Build.Button
 import M3e.Component.Button
 import M3e.Values as Value
 import Sample.Support exposing (Msg(..))
@@ -19,21 +17,10 @@ import Sample.Support exposing (Msg(..))
 
 -- barrel: one import, the standard form — the default
 shown0_ =
-    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
+    M3e.button { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Attributes.variant Value.filled ] []
 
 
--- component module: same output, component-scoped tighter types
+-- component module: same output, component-scoped tighter types — `el` is
+-- required-record here because Button can't omit its content/action
 shown1_ =
-    M3e.Component.Button.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]
-
-
--- required-record form: the compiler demands the parts a button can't omit
-shown2_ =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
-
-
--- builder pipe: a one-only setter is unwritable twice; order-free
-shown3_ =
-    M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
-        |> M3e.Build.Button.withVariant Value.filled
-        |> M3e.Build.Button.toElement
+    M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant Value.filled ] []

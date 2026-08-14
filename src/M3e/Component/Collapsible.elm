@@ -1,5 +1,5 @@
 module M3e.Component.Collapsible exposing
-    ( collapsible
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , Orientation, orientation
     , noAnimate, open, onOpening, onOpened, onClosing, onClosed
@@ -10,7 +10,7 @@ module M3e.Component.Collapsible exposing
 
 A container used to expand and collapse content.
 
-@docs collapsible
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs Orientation, orientation
 @docs noAnimate, open, onOpening, onOpened, onClosing, onClosed
@@ -59,11 +59,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-collapsible :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-collapsible =
+el =
     H.collapsible
 
 

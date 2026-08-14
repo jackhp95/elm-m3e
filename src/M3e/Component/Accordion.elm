@@ -1,5 +1,5 @@
 module M3e.Component.Accordion exposing
-    ( accordion, component
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , multi
     , child
@@ -9,7 +9,7 @@ module M3e.Component.Accordion exposing
 
 Combines multiple expansion panels in to an accordion.
 
-@docs accordion, component
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs multi
 @docs child
@@ -50,25 +50,15 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.Accordion.ChildAdmittedBy childAdm
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-accordion :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-accordion =
-    H.accordion
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    accordion attrs (required_.content :: children)
+el required_ attrs children =
+    H.accordion attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.multi`.

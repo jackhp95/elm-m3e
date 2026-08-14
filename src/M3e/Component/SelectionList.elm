@@ -1,5 +1,5 @@
 module M3e.Component.SelectionList exposing
-    ( selectionlist
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , Variant, variant
     , disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
@@ -10,7 +10,7 @@ module M3e.Component.SelectionList exposing
 
 A list of selectable options.
 
-@docs selectionlist
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Variant, variant
 @docs disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
@@ -63,11 +63,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-selectionlist :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-selectionlist =
+el =
     H.selectionList
 
 

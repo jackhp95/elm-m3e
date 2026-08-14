@@ -13,7 +13,7 @@ import TypedHtml.Attributes as TA
 
 
 shown0_ =
-    TypedHtml.div [] [ M3e.heading [] [ M3e.text "hi" ] ]        -- ✓ div takes any children
+    TypedHtml.div [] [ M3e.heading { content = M3e.text "hi" } [] [] ]        -- ✓ div takes any children
 
 
 shown1_ =

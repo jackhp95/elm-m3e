@@ -1,5 +1,5 @@
 module M3e.Component.ExpansionPanel exposing
-    ( expansionpanel, component
+    ( el
     , Is, Attrs, ToggleIconSlot, ChildAdmittedBy
     , ToggleDirection, toggleDirection, TogglePosition, togglePosition
     , disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
@@ -10,7 +10,7 @@ module M3e.Component.ExpansionPanel exposing
 
 An expandable details-summary view.
 
-@docs expansionpanel, component
+@docs el
 @docs Is, Attrs, ToggleIconSlot, ChildAdmittedBy
 @docs ToggleDirection, toggleDirection, TogglePosition, togglePosition
 @docs disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
@@ -66,28 +66,15 @@ type alias TogglePosition =
     M3e.Internal.Types.ExpansionPanel.TogglePosition
 
 
-{-| Standard constructor: `[attributes] [children]`. The default slot is
-kind-permissive (`any`): children of any kind compose, but each child's OWN
-admittedBy must still admit this context — a restricted-parent element is
-rejected here at compile time.
--}
-expansionpanel :
-    List (Attr Attrs msg)
-    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-expansionpanel =
-    H.expansionPanel
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { header : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    expansionpanel attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode required_.header)) :: children)
+el required_ attrs children =
+    H.expansionPanel attrs (Ir.fromNode (Ir.addAttribute (Ir.attribute "slot" "header") (El.toNode required_.header)) :: children)
 
 
 {-| The direction of the expansion toggle. (default: `"vertical"`)

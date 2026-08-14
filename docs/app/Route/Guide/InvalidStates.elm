@@ -13,6 +13,7 @@ import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Kind
@@ -78,10 +79,7 @@ shown as real compiler text, not built here.
 
 savedButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 savedButton =
-    M3e.button [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] [])
-        , M3e.text "Save"
-        ]
+    M3e.button { content = M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []), action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -135,17 +133,14 @@ broken =
 
 brokenCode : String
 brokenCode =
-    """M3e.button [ M3e.Attributes.variant Value.filled ]
-    [ M3e.Component.Button.icon (M3e.chip [] [ M3e.text "not an icon" ])
-    , M3e.text "Save"
-    ]"""
+    """M3e.button { content = M3e.Component.Button.icon (M3e.chip { content = M3e.text "not an icon" } [] []), action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]"""
 
 
 errorText : String
 errorText =
     """The 1st argument to `icon` is not what I expect:
 
-9|     [ M3e.Component.Button.icon (M3e.chip [] [ M3e.text "not an icon" ])
+9|     [ M3e.Component.Button.icon (M3e.chip { content = M3e.text "not an icon" } [] [])
                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This `chip` call produces:
 

@@ -2,10 +2,12 @@ module EnumNarrowingOk exposing (narrowingExamples)
 
 {-| Regression fixture: strict per-component enum narrowing COMPILES.
 
-Proves the two-tier enum safety model (spec §3.4, §1.5):
+Proves the two-tier enum safety model (spec §3.4, §1.5), post `el`-unification:
 
-  - Tier 1 (compile-time): `M3e.Component.*` and `M3e.Build.*` setters accept
-    ONLY the closed Variant row for THAT component.
+  - Tier 1 (compile-time): `M3e.Component.*` setters (the ONLY setter surface
+    now — the fluent-builder `M3e.Build.*` setters were deleted wholesale,
+    but they narrowed the SAME closed Variant row `M3e.Component.*` still
+    does) accept ONLY the closed Variant row for THAT component.
   - Tier 2 (elm-review): `M3e.Attributes` setters accept the global open union
     and are backstopped by `Cem.ValidEnumValue`.
 
@@ -18,10 +20,9 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
-import M3e.Build.Button as Button
+import M3e.Component.Button as Button
 import M3e.Component.SplitButton as SplitButton
 import M3e.Component.Theme as Theme
-import M3e.Kind exposing (Available, Used)
 import M3e.Values as V
 
 
@@ -43,17 +44,15 @@ splitButtonVariantFilled =
     SplitButton.variant V.filled
 
 
-{-| 3. Button.withVariant accepts Value.filled — the canonical builder pipeline
-narrow value (locks the form from ApiConsolidation.elm:51).
+{-| 3. Button.variant accepts V.filled — the canonical `el`-attrs narrow value
+(locks the form from ApiConsolidation.elm's saveButton).
 
-This WILL FAIL if the builder's closed Component.Variant loses `filled`.
+This WILL FAIL if Button's closed Component.Variant loses `filled`.
 
 -}
-builderVariantFilled :
-    Button.Builder { a | variant : Available } slotCaps Msg kind
-    -> Button.Builder { a | variant : Used } slotCaps Msg kind
-builderVariantFilled =
-    Button.withVariant V.filled
+buttonVariantFilled : Attr { c | variant : Supported } Msg
+buttonVariantFilled =
+    Button.variant V.filled
 
 
 {-| 4. Loose A.variant accepts V.rainbow — shared open-row, no narrowing.

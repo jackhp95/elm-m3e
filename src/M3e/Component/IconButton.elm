@@ -1,5 +1,5 @@
 module M3e.Component.IconButton exposing
-    ( iconbutton, component
+    ( el
     , Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -10,7 +10,7 @@ module M3e.Component.IconButton exposing
 
 An icon button users interact with to perform a supplementary action.
 
-@docs iconbutton, component
+@docs el
 @docs Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -98,19 +98,9 @@ type alias ActionCaps =
     M3e.Internal.Types.IconButton.ActionCaps
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-iconbutton :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-iconbutton =
-    H.iconButton
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg
     , ariaLabel : String
     , action : Ac.Action ActionCaps msg
@@ -118,12 +108,12 @@ component :
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
+el required_ attrs children =
     let
         actioned =
             Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))
     in
-    iconbutton
+    H.iconButton
         (Ir.attribute "aria-label" required_.ariaLabel :: Ac.toAttrs required_.action ++ attrs)
         (actioned :: children)
 

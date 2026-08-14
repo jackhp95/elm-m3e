@@ -1,9 +1,14 @@
 module ApiConsolidation exposing (saveButton, card, annotationGate)
 
-{-| Compile-only spike for the canonical zero-conversion builder API (plan §3.5B).
+{-| Compile-only spike for the canonical zero-conversion API, post `el`-unification
+(elm-cem L1/L2, plan §3.5B superseded — the fluent-builder `M3e.Build.*` surface this
+spike originally exercised was deleted wholesale; every component now has ONE `el`,
+bare or required-record, that already returns a slot-ready `Element` with no
+intermediate conversion step at all).
 
-Direction (a): THE canonical snippet — builder → slot, no `.toElement`.
-Direction (b): child builder → container builder pipeline, no `.toElement` on child.
+Direction (a): THE canonical snippet — a nested component composes directly into a
+slot, no unwrap/rewrap.
+Direction (b): child `el` result flows straight into a container's slot setter.
 Annotation-only: naming a component's phantom type with only the slim import.
 
 -}
@@ -11,10 +16,9 @@ Annotation-only: naming a component's phantom type with only the slim import.
 import HtmlIr.Element exposing (Element)
 import M3e exposing (text)
 import M3e.Action exposing (onClick)
-import M3e.Build exposing (ButtonIs, CardIs)
-import M3e.Build.Button as Button
-import M3e.Build.Card as Card
-import M3e.Build.Icon as Icon
+import M3e.Component.Button as Button
+import M3e.Component.Card as Card
+import M3e.Component.Icon as Icon
 import M3e.Values as Value
 
 
@@ -23,42 +27,47 @@ type Msg
     | Ok
 
 
-{-| Direction (a): THE canonical zero-conversion snippet (locked 2026-08-10).
+{-| Direction (a): THE canonical zero-conversion snippet (post `el`-unification).
 
-    Builder → slot, no `.toElement` on the nested icon.
-    ONE terminal `Button.Build.toElement`.
-    Only `Button.Build` / `Icon.Build` imports — no `M3e.Button`/`M3e.Icon`.
+    `Button.el` is required-record (content + action); its icon slot setter takes
+    a nested `Icon.el` call directly — no `.toElement`, no builder pipe, nothing to
+    unwrap. Only `Button`/`Icon` component-module imports.
 
 -}
-saveButton : Element (ButtonIs s) admittedBy Msg
+saveButton : Element (Button.Is s) admittedBy Msg
 saveButton =
-    Button.build { content = text "Save", action = onClick Save }
-        |> Button.withIcon (Icon.build |> Icon.withName "home")
-        |> Button.toElement
+    Button.el
+        { content = text "Save", action = onClick Save }
+        []
+        [ Button.icon (Icon.el [ Icon.name "home" ] []) ]
 
 
-{-| Direction (b): child builder → container builder pipeline, no `.toElement` on child.
+{-| Direction (b): a child component's `el` result flows into a container's slot
+setter with zero unwrap.
 
-    A built Button flows into a Card slot with zero unwrap.
-    Proper per-component narrow value.
+    A `Button.el` value flows into a `Card` slot with zero conversion — it already
+    IS the slot-ready `Element`, same as direction (a).
 
 -}
-card : Element (CardIs s) admittedBy Msg
+card : Element (Card.Is s) admittedBy Msg
 card =
-    Card.build
-        |> Card.withContent
-            (Button.build { content = text "Ok", action = onClick Ok }
-                |> Button.withVariant Value.filled
+    Card.el
+        []
+        [ Card.content
+            (Button.el
+                { content = text "Ok", action = onClick Ok }
+                [ Button.variant Value.filled ]
+                []
             )
-        |> Card.toElement
+        ]
 
 
 {-| Annotation-only: slim import to name a type.
 
-    Imports only `M3e.Build` (not `M3e.Button` or `M3e.Button.Build`)
-    for the `ButtonIs`/`CardIs` phantoms.
+    Imports only `M3e.Component.Button` (not the barrel) for the `Button.Is`
+    phantom.
 
 -}
-annotationGate : List (Element (ButtonIs s) admittedBy Msg)
+annotationGate : List (Element (Button.Is s) admittedBy Msg)
 annotationGate =
     [ saveButton ]

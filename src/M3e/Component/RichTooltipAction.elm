@@ -1,5 +1,5 @@
 module M3e.Component.RichTooltipAction exposing
-    ( richtooltipaction, component
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , disableRestoreFocus
     , child
@@ -9,7 +9,7 @@ module M3e.Component.RichTooltipAction exposing
 
 An element, nested within a clickable element, used to dismiss a parenting rich tooltip.
 
-@docs richtooltipaction, component
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs disableRestoreFocus
 @docs child
@@ -50,25 +50,15 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.RichTooltipAction.ChildAdmittedBy childAdm
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-richtooltipaction :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-richtooltipaction =
-    H.richTooltipAction
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    richtooltipaction attrs (required_.content :: children)
+el required_ attrs children =
+    H.richTooltipAction attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.disableRestoreFocus`.

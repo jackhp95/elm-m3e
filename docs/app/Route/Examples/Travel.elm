@@ -26,6 +26,7 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.AssistChip
@@ -250,10 +251,7 @@ appBar =
         [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "public" ] [])
         , M3e.Component.AppBar.title (M3e.text "Wander")
         , M3e.Component.AppBar.trailing
-            (M3e.iconButton
-                [ M3e.Attributes.variant Value.standard, Aria.label "Notifications" ]
-                [ M3e.icon [ TA.name "notifications" ] [] ]
-            )
+            (M3e.iconButton { content = M3e.icon [ TA.name "notifications" ] [], ariaLabel = "Notifications", action = M3e.Action.none } [ M3e.Attributes.variant Value.standard ] [])
         ]
 
 
@@ -352,7 +350,7 @@ hero : Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 hero =
     TypedHtml.div
         [ TA.class "bg-surface-container text-on-surface rounded-md-corner-extra-large flex flex-col gap-4 p-6 md:p-8" ]
-        [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] [ M3e.text "Where to next?" ]
+        [ M3e.heading { content = M3e.text "Where to next?" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] []
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Search destinations, dates, and guests." ]
         , searchBar
         ]
@@ -360,12 +358,7 @@ hero =
 
 searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 searchBar =
-    M3e.searchBar
-        []
-        [ M3e.Component.SearchBar.input (TypedHtml.input [] [])
-        , M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
-        , M3e.Component.SearchBar.trailing (M3e.icon [ TA.name "tune" ] [])
-        ]
+    M3e.searchBar { input = M3e.Component.SearchBar.input (TypedHtml.input [] []) } [] [ M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] []), M3e.Component.SearchBar.trailing (M3e.icon [ TA.name "tune" ] []) ]
 
 
 {-| Category tabs (Flights / Stays / Experiences) that reselect the rails' data.
@@ -394,7 +387,7 @@ categoryTab current ( category, label ) =
 rail : String -> List Place -> Element (TypedHtml.Sectioning.SectionIs s) adm_ (PagesMsg Msg)
 rail heading places =
     TypedHtml.section [ TA.class "flex flex-col gap-4" ]
-        [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text heading ]
+        [ M3e.heading { content = M3e.text heading } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] []
         , TypedHtml.div [ TA.class "flex gap-4 overflow-x-auto pb-2" ]
             (List.map placeCard places)
         ]
@@ -410,11 +403,11 @@ placeCard place =
             [ M3e.Component.Card.header (media place)
             , M3e.Component.Card.content
                 (TypedHtml.div [ TA.class "flex flex-col gap-2" ]
-                    [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] [ M3e.text place.name ]
+                    [ M3e.heading { content = M3e.text place.name } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] []
                     , TypedHtml.span [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text place.region ]
                     , TypedHtml.div [ TA.class "flex items-center justify-between" ]
                         [ ratingChip place.rating
-                        , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-primary" ] [ M3e.text place.price ]
+                        , M3e.heading { content = M3e.text place.price } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-primary" ] []
                         ]
                     ]
                 )
@@ -433,8 +426,4 @@ media place =
 
 ratingChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 ratingChip rating =
-    M3e.assistChip
-        []
-        [ M3e.text rating
-        , M3e.Component.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] [])
-        ]
+    M3e.assistChip { content = M3e.text rating } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] []) ]

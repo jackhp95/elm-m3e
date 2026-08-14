@@ -1,5 +1,5 @@
 module M3e.Component.AssistChip exposing
-    ( assistchip, component
+    ( el
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy
     , Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
@@ -10,7 +10,7 @@ module M3e.Component.AssistChip exposing
 
 A chip users interact with to perform a smart or automated action that can span multiple applications.
 
-@docs assistchip, component
+@docs el
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy
 @docs Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
@@ -73,25 +73,15 @@ type alias Variant =
     M3e.Internal.Types.AssistChip.Variant
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-assistchip :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-assistchip =
-    H.assistChip
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    assistchip attrs (required_.content :: children)
+el required_ attrs children =
+    H.assistChip attrs (required_.content :: children)
 
 
 {-| The type of the element. (default: `"button"`)

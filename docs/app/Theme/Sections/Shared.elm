@@ -12,6 +12,7 @@ resulting `Theme.Scale.ScaleMode`.
 
 import Char
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.FormField as FormField
 import M3e.Component.Icon
@@ -95,11 +96,14 @@ numberStepper labelText current step toMsg =
         ]
         [ FormField.label (TypedHtml.label [ TypedHtml.Attributes.for inputId ] [ M3e.text labelText ])
         , M3e.iconButton
+            { content = M3e.icon [ M3e.Component.Icon.name "remove" ] []
+            , ariaLabel = "Decrease " ++ labelText
+            , action = M3e.Action.none
+            }
             [ TypedHtml.Events.onClick (toMsg (current - step))
-            , Aria.label ("Decrease " ++ labelText)
             , M3e.Attributes.size Value.small
             ]
-            [ M3e.icon [ M3e.Component.Icon.name "remove" ] [] ]
+            []
         , TypedHtml.input
             [ TypedHtml.Attributes.id inputId
             , TypedHtml.Attributes.type_ "text"
@@ -110,9 +114,12 @@ numberStepper labelText current step toMsg =
             ]
             []
         , M3e.iconButton
+            { content = M3e.icon [ M3e.Component.Icon.name "add" ] []
+            , ariaLabel = "Increase " ++ labelText
+            , action = M3e.Action.none
+            }
             [ TypedHtml.Events.onClick (toMsg (current + step))
-            , Aria.label ("Increase " ++ labelText)
             , M3e.Attributes.size Value.small
             ]
-            [ M3e.icon [ M3e.Component.Icon.name "add" ] [] ]
+            []
         ]

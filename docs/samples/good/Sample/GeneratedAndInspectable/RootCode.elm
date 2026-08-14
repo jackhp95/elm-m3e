@@ -8,13 +8,14 @@ Change the sample there; this file follows.
 -}
 
 import M3e
+import M3e.Action
 import M3e.Attributes
 import M3e.Values as Value
 
 
 -- your page stays inspectable data all the way up…
 saveButton =
-    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
+    M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
 
 
 -- …and becomes HTML exactly once, at the root:

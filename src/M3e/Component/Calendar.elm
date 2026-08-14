@@ -1,5 +1,5 @@
 module M3e.Component.Calendar exposing
-    ( calendar
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , StartView, startView
     , date, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, onChange
@@ -10,7 +10,7 @@ module M3e.Component.Calendar exposing
 
 A calendar used to select a date.
 
-@docs calendar
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs StartView, startView
 @docs date, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, onChange
@@ -57,11 +57,11 @@ type alias StartView =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-calendar :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-calendar =
+el =
     H.calendar
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.DrawerToggle exposing
-    ( drawertoggle
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , for
     )
@@ -8,7 +8,7 @@ module M3e.Component.DrawerToggle exposing
 
 An element, nested within a clickable element, used to toggle the opened state of a drawer.
 
-@docs drawertoggle
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs for
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-drawertoggle :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-drawertoggle =
+el =
     H.drawerToggle
 
 

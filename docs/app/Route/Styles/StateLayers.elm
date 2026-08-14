@@ -11,6 +11,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Card
 import M3e.Kind
@@ -95,18 +96,16 @@ stateRow ( token, value, trigger ) =
 demoButtons : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 demoButtons =
     TypedHtml.div [ TA.class "flex flex-wrap gap-3 p-2" ]
-        [ M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Filled" ]
-        , M3e.button [ M3e.Attributes.variant Value.tonal ] [ M3e.text "Tonal" ]
-        , M3e.button [ M3e.Attributes.variant Value.outlined ] [ M3e.text "Outlined" ]
-        , M3e.button [ M3e.Attributes.variant Value.text ] [ M3e.text "Text" ]
+        [ M3e.button { content = M3e.text "Filled", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+        , M3e.button { content = M3e.text "Tonal", action = M3e.Action.none } [ M3e.Attributes.variant Value.tonal ] []
+        , M3e.button { content = M3e.text "Outlined", action = M3e.Action.none } [ M3e.Attributes.variant Value.outlined ] []
+        , M3e.button { content = M3e.text "Text", action = M3e.Action.none } [ M3e.Attributes.variant Value.text ] []
         ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading
-        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
-        [ M3e.text "State Layers" ]
+    M3e.heading { content = M3e.text "State Layers" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

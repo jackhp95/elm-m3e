@@ -6,7 +6,6 @@ shows short qualified references instead of expanded record rows.
 
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
-import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -55,31 +54,4 @@ type alias ChildAdmittedBy childAdm =
 type alias Variant =
     { elevated : Supported
     , outlined : Supported
-    }
-
-
-type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
-
-
-type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , disabledInteractive : Available
-    , id : Available
-    , onClick : Available
-    , onRemove : Available
-    , removable : Available
-    , removeLabel : Available
-    , slot : Available
-    , style : Available
-    , value : Available
-    , variant : Available
-    }
-
-
-type alias SlotCaps =
-    { avatar : Available
-    , icon : Available
-    , removeIcon : Available
     }

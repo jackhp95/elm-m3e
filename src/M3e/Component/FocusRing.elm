@@ -1,5 +1,5 @@
 module M3e.Component.FocusRing exposing
-    ( focusring
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , disabled, for, inward
     )
@@ -8,7 +8,7 @@ module M3e.Component.FocusRing exposing
 
 A focus ring used to depict a strong focus indicator.
 
-@docs focusring
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs disabled, for, inward
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-focusring :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-focusring =
+el =
     H.focusRing
 
 

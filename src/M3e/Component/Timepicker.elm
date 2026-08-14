@@ -1,5 +1,5 @@
 module M3e.Component.Timepicker exposing
-    ( timepicker
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , Format, format, Mode, mode, Orientation, orientation, Variant, variant
     , confirmLabel, date, dialLabel, dismissLabel, for, hideModeToggle, hourLabel, inputLabel, maxTime, minTime, minuteLabel, modeToggleLabel, periodToggleLabel, secondLabel, showSeconds, onChange, onBeforetoggle, onToggle
@@ -9,7 +9,7 @@ module M3e.Component.Timepicker exposing
 
 Presents a time picker on a temporary surface.
 
-@docs timepicker
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs Format, format, Mode, mode, Orientation, orientation, Variant, variant
 @docs confirmLabel, date, dialLabel, dismissLabel, for, hideModeToggle, hourLabel, inputLabel, maxTime, minTime, minuteLabel, modeToggleLabel, periodToggleLabel, secondLabel, showSeconds, onChange, onBeforetoggle, onToggle
@@ -72,11 +72,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-timepicker :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-timepicker =
+el =
     H.timepicker
 
 

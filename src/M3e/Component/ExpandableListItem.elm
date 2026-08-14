@@ -1,5 +1,5 @@
 module M3e.Component.ExpandableListItem exposing
-    ( expandablelistitem
+    ( el
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, ToggleIconSlot, ChildAdmittedBy
     , disabled, open, onOpening, onOpened, onClosing, onClosed
     , items, leading, overline, supportingText, toggleIcon, child
@@ -9,7 +9,7 @@ module M3e.Component.ExpandableListItem exposing
 
 An item in a list that can be expanded to show more items.
 
-@docs expandablelistitem
+@docs el
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, ToggleIconSlot, ChildAdmittedBy
 @docs disabled, open, onOpening, onOpened, onClosing, onClosed
 @docs items, leading, overline, supportingText, toggleIcon, child
@@ -77,11 +77,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-expandablelistitem :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-expandablelistitem =
+el =
     H.expandableListItem
 
 

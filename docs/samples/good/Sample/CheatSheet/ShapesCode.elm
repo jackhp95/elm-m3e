@@ -9,25 +9,16 @@ Change the sample there; this file follows.
 
 import M3e
 import M3e.Action
-import M3e.Attributes
-import M3e.Build
-import M3e.Build.Button
+import M3e.Component.AppBar
 import M3e.Component.Button
 import M3e.Values as Value
-import Sample.Support exposing (Msg(..))
 
 
--- the standard form — everything optional; the tersest
+-- bare form — a component with nothing it can't do without (e.g. AppBar)
 shown0_ =
-    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
+    M3e.Component.AppBar.el [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
 
 
--- required-record form — the compiler demands the parts it can't do without
+-- required-record form — the compiler demands the parts it can't do without (e.g. Button)
 shown1_ =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
-
-
--- builder pipe — a one-only setter is unwritable twice; order-free
-shown2_ =
-    M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
-        |> M3e.Build.Button.toElement
+    M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [] []

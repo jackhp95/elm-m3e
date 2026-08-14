@@ -1,5 +1,5 @@
 module M3e.Component.ExpansionHeader exposing
-    ( expansionheader
+    ( el
     , Is, Attrs, Content, ToggleIconSlot, ChildAdmittedBy
     , ToggleDirection, toggleDirection, TogglePosition, togglePosition
     , disabled, hideToggle, onClick
@@ -10,7 +10,7 @@ module M3e.Component.ExpansionHeader exposing
 
 A button used to toggle the expanded state of an expansion panel.
 
-@docs expansionheader
+@docs el
 @docs Is, Attrs, Content, ToggleIconSlot, ChildAdmittedBy
 @docs ToggleDirection, toggleDirection, TogglePosition, togglePosition
 @docs disabled, hideToggle, onClick
@@ -74,11 +74,11 @@ type alias TogglePosition =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-expansionheader :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-expansionheader =
+el =
     H.expansionHeader
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.MenuTrigger exposing
-    ( menutrigger
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , for
     , child
@@ -9,7 +9,7 @@ module M3e.Component.MenuTrigger exposing
 
 An element, nested within a clickable element, used to open a menu.
 
-@docs menutrigger
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs for
 @docs child
@@ -49,11 +49,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-menutrigger :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-menutrigger =
+el =
     H.menuTrigger
 
 

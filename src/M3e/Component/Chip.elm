@@ -1,5 +1,5 @@
 module M3e.Component.Chip exposing
-    ( chip, component
+    ( el
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
     , Variant, variant
     , value, defaultValue
@@ -10,7 +10,7 @@ module M3e.Component.Chip exposing
 
 A non-interactive chip used to convey small pieces of information.
 
-@docs chip, component
+@docs el
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
 @docs Variant, variant
 @docs value, defaultValue
@@ -71,25 +71,15 @@ type alias Variant =
     M3e.Internal.Types.Chip.Variant
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-chip :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-chip =
-    H.chip
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    chip attrs (required_.content :: children)
+el required_ attrs children =
+    H.chip attrs (required_.content :: children)
 
 
 {-| The appearance variant of the chip. (default: `"outlined"`)

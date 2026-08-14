@@ -25,6 +25,7 @@ Unset action stays a real `M3e.menuItem`.
 
 import Dict
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Icon
 import M3e.Component.MenuItem
@@ -120,7 +121,7 @@ tokenButton model token =
                 ]
     in
     TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
-        [ M3e.button
+        [ M3e.button { content = M3e.Unsafe.recast swatch, action = M3e.Action.none }
             [ M3e.Attributes.size Value.extraSmall
             , M3e.Attributes.variant
                 (if isSet then
@@ -130,8 +131,7 @@ tokenButton model token =
                     Value.outlined
                 )
             ]
-            [ M3e.Unsafe.recast swatch
-            , M3e.menuTrigger [ M3e.Component.MenuTrigger.for menuId ]
+            [ M3e.menuTrigger [ M3e.Component.MenuTrigger.for menuId ]
                 [ M3e.text token.role ]
             ]
         , M3e.menu [ M3e.Attributes.id menuId ]

@@ -1,5 +1,5 @@
 module M3e.Component.ContentPane exposing
-    ( contentpane
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.ContentPane exposing
 
 A shaped surface for vertically scrollable content.
 
-@docs contentpane
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs child
 
@@ -47,11 +47,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-contentpane :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-contentpane =
+el =
     H.contentPane
 
 

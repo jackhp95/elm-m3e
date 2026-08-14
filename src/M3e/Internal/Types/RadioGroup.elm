@@ -5,7 +5,6 @@ shows short qualified references instead of expanded record rows.
 -}
 
 import HtmlIr.Kind exposing (Supported)
-import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -31,23 +30,3 @@ type alias Attrs =
 
 type alias ChildAdmittedBy childAdm =
     { childAdm | radioGroup : Ctx }
-
-
-type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
-
-
-type alias AttrCaps =
-    { ariaInvalid : Available
-    , class : Available
-    , disabled : Available
-    , id : Available
-    , name : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onInput : Available
-    , required : Available
-    , slot : Available
-    , style : Available
-    , validationmessages : Available
-    }

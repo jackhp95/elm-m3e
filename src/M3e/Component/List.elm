@@ -1,5 +1,5 @@
 module M3e.Component.List exposing
-    ( list
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , Variant, variant
     , child
@@ -9,7 +9,7 @@ module M3e.Component.List exposing
 
 A list of items.
 
-@docs list
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Variant, variant
 @docs child
@@ -59,11 +59,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-list :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-list =
+el =
     H.list
 
 

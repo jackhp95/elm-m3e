@@ -16,6 +16,7 @@ import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Component.AppBar
 import M3e.Component.Button
 import M3e.Component.FormField
@@ -78,10 +79,7 @@ head _ =
 
 saveButton : Element { s | button : M3e.Kind.Brand } admittedBy msg
 saveButton =
-    M3e.button [ M3e.Component.Button.variant Value.filled ]
-        [ M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "save" ] [])
-        , M3e.text "Save"
-        ]
+    M3e.button { content = M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "save" ] []), action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]
 
 
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
@@ -155,10 +153,10 @@ linkNav : Element { s | navMenu : M3e.Kind.Brand } admittedBy msg
 linkNav =
     -- the label slot admits { text : M3e.Kind.Brand, link : M3e.Kind.Brand }, so a
     -- typed `TypedHtml.a` fills it directly — a nav item that IS an anchor. The
-    -- required-record form (`M3e.Component.NavMenuItem.component`) enforces the required `label`.
+    -- required-record form (`M3e.Component.NavMenuItem.el`) enforces the required `label`.
     M3e.navMenu []
-        [ M3e.Component.NavMenuItem.component { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
-        , M3e.Component.NavMenuItem.component { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
+        [ M3e.Component.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/seams" ] [ M3e.text "Seams" ] } [] []
+        , M3e.Component.NavMenuItem.el { label = TypedHtml.a [ TypedHtml.Attributes.href "/guide/the-layers" ] [ M3e.text "The surfaces" ] } [] []
         ]
 
 
@@ -181,10 +179,10 @@ htmlInSlot =
     -- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
     -- iconButton and badge INSIDE it are still checked against the div's content model.
     M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
-        [ M3e.Component.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
+        [ M3e.Component.AppBar.title (M3e.heading { content = M3e.text "Inbox" } [] [])
         , M3e.Component.AppBar.trailing
             (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-                [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
+                [ M3e.iconButton { content = M3e.icon [ TypedHtml.Attributes.name "search" ] [], ariaLabel = "Search", action = M3e.Action.none } [] []
                 , M3e.badge [] [ M3e.text "3" ]
                 ]
             )
@@ -260,12 +258,12 @@ slotSeam =
 
 oneWayRejected : String
 oneWayRejected =
-    """TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected"""
+    """TypedHtml.span [] [ M3e.heading { content = M3e.text "hi" } [] [] ]   -- ✗ rejected"""
 
 
 oneWayAccepted : String
 oneWayAccepted =
-    """TypedHtml.div [] [ M3e.heading [] [ M3e.text "hi" ] ]        -- ✓ div takes any children
+    """TypedHtml.div [] [ M3e.heading { content = M3e.text "hi" } [] [] ]        -- ✓ div takes any children
 TypedHtml.span [] [ M3e.text "hi" ]                          -- ✓ text is a shared atom
 TypedHtml.span [] [ M3e.icon [ TA.name "star" ] [] ]         -- ✓ so is icon"""
 

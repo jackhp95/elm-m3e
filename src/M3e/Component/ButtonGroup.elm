@@ -1,5 +1,5 @@
 module M3e.Component.ButtonGroup exposing
-    ( buttongroup
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , Size, size, Variant, variant
     , multi
@@ -10,7 +10,7 @@ module M3e.Component.ButtonGroup exposing
 
 Organizes buttons and adds interactions between them.
 
-@docs buttongroup
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Size, size, Variant, variant
 @docs multi
@@ -67,11 +67,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-buttongroup :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-buttongroup =
+el =
     H.buttonGroup
 
 

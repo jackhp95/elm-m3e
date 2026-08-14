@@ -1,5 +1,5 @@
 module M3e.Component.Ripple exposing
-    ( ripple
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , centered, disabled, for, radius, unbounded
     )
@@ -8,7 +8,7 @@ module M3e.Component.Ripple exposing
 
 Connects user input to screen reactions using ripples.
 
-@docs ripple
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs centered, disabled, for, radius, unbounded
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-ripple :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-ripple =
+el =
     H.ripple
 
 

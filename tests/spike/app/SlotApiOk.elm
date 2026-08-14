@@ -26,8 +26,8 @@ import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
 import M3e exposing (text)
 import M3e.Action exposing (onClick)
-import M3e.Build exposing (ButtonIs, IconButtonIs)
-import M3e.Build.Button as Button
+import M3e.Component.Button as Button
+import M3e.Component.Icon as Icon
 import M3e.Component.IconButton as IconButton
 import M3e.Internal.Types.SplitButton as SBTypes
 
@@ -114,10 +114,9 @@ type Msg
 {-| A Button element — kind row { s | button : Brand }.
 Satisfies LeadingButtonSlot = { button : Brand }. Good placement.
 -}
-myButton : Element (ButtonIs s) admittedBy Msg
+myButton : Element (Button.Is s) admittedBy Msg
 myButton =
-    Button.build { content = text "Save", action = onClick Save }
-        |> Button.toElement
+    Button.el { content = text "Save", action = onClick Save } [] []
 
 
 {-| A good placement: Button kind { button : Brand } into leadingButtonSlot
@@ -131,12 +130,12 @@ placedLeading =
 {-| An IconButton element — kind row { s | iconButton : Brand }.
 Satisfies TrailingButtonSlot = { iconButton : Brand }. Good placement.
 
-Using the view constructor with empty children (icon content omitted for
-brevity — the slot ergonomics, not the content, is what we prove here).
+Using the `el` constructor with a minimal required record (content/ariaLabel/
+action) — the slot ergonomics, not the content, is what we prove here.
 -}
-myIconButton : Element (IconButtonIs s) admittedBy Msg
+myIconButton : Element (IconButton.Is s) admittedBy Msg
 myIconButton =
-    IconButton.view [] []
+    IconButton.el { content = Icon.el [ Icon.name "arrow_forward" ] [], ariaLabel = "Go", action = onClick Save } [] []
 
 
 {-| A good placement: IconButton kind { iconButton : Brand } into

@@ -1,5 +1,5 @@
 module M3e.Component.NavItem exposing
-    ( navitem
+    ( el
     , Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy
     , Orientation, orientation
     , disabled, disabledInteractive, download, href, rel, selected, target, defaultSelected, onBeforeinput, onInput, onChange, onClick
@@ -10,7 +10,7 @@ module M3e.Component.NavItem exposing
 
 An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
 
-@docs navitem
+@docs el
 @docs Is, Attrs, Content, IconSlot, SelectedIconSlot, ChildAdmittedBy
 @docs Orientation, orientation
 @docs disabled, disabledInteractive, download, href, rel, selected, target, defaultSelected, onBeforeinput, onInput, onChange, onClick
@@ -74,11 +74,11 @@ type alias Orientation =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-navitem :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-navitem =
+el =
     H.navItem
 
 

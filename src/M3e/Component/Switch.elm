@@ -1,5 +1,5 @@
 module M3e.Component.Switch exposing
-    ( switch
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , Icons, icons
     , checked, disabled, name, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -9,7 +9,7 @@ module M3e.Component.Switch exposing
 
 An on/off control that can be toggled by clicking.
 
-@docs switch
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs Icons, icons
 @docs checked, disabled, name, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -55,11 +55,11 @@ type alias Icons =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-switch :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-switch =
+el =
     H.switch
 
 

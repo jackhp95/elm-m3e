@@ -1,5 +1,5 @@
 module M3e.Component.Tabs exposing
-    ( tabs
+    ( el
     , Is, Attrs, Content, NextIconSlot, PanelSlot, PrevIconSlot, ChildAdmittedBy
     , DisablePagination, disablePagination, HeaderPosition, headerPosition, Variant, variant
     , nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
@@ -10,7 +10,7 @@ module M3e.Component.Tabs exposing
 
 Organizes content into separate views where only one view can be visible at a time.
 
-@docs tabs
+@docs el
 @docs Is, Attrs, Content, NextIconSlot, PanelSlot, PrevIconSlot, ChildAdmittedBy
 @docs DisablePagination, disablePagination, HeaderPosition, headerPosition, Variant, variant
 @docs nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
@@ -92,11 +92,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-tabs :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-tabs =
+el =
     H.tabs
 
 

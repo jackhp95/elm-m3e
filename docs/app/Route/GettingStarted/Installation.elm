@@ -65,16 +65,12 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading
-        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
-        [ M3e.text "Installation" ]
+    M3e.heading { content = M3e.text "Installation" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 stepHeading : String -> Element { s | heading : M3e.Kind.Brand } adm_ msg
 stepHeading label =
-    M3e.heading
-        [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
-        [ M3e.text label ]
+    M3e.heading { content = M3e.text label } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -184,6 +180,7 @@ mainModule =
 import Browser
 import Html
 import M3e
+import M3e.Action
 import M3e.Component.Button as Button
 import M3e.Component.Theme as Theme
 import M3e.Values as Value
@@ -197,12 +194,13 @@ main =
 view : () -> Html.Html ()
 view _ =
     M3e.toHtml
-        (Theme.view
+        (Theme.el
             [ Theme.color "#6750A4"
             , Theme.scheme Value.auto
             ]
-            [ Button.view
+            [ Button.el
+                { content = M3e.text "It works", action = M3e.Action.none }
                 [ Button.variant Value.filled ]
-                [ M3e.text "It works" ]
+                []
             ]
         )"""

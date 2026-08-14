@@ -12,4 +12,4 @@ import TypedHtml
 
 
 shown0_ =
-    TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected
+    TypedHtml.span [] [ M3e.heading { content = M3e.text "hi" } [] [] ]   -- ✗ rejected

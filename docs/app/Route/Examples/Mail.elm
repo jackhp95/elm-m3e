@@ -33,6 +33,7 @@ import ExampleNav
 import Head
 import Json.Decode as Decode
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.AssistChip
@@ -337,16 +338,17 @@ topBar =
 searchBar : Element { s | searchBar : M3e.Kind.Brand } adm_ Msg
 searchBar =
     M3e.searchBar
+        { input =
+            M3e.Component.SearchBar.input
+                (TypedHtml.input
+                    [ TA.placeholder "Search mail"
+                    , TA.type_ "search"
+                    ]
+                    []
+                )
+        }
         []
-        [ M3e.Component.SearchBar.input
-            (TypedHtml.input
-                [ TA.placeholder "Search mail"
-                , TA.type_ "search"
-                ]
-                []
-            )
-        , M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
-        ]
+        [ M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] []) ]
 
 
 
@@ -408,12 +410,7 @@ that moves or disappears between widths is worse than one that does not.
 closeReader : Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 closeReader =
     TypedHtml.div [ TA.class "flex" ]
-        [ M3e.iconButton
-            [ M3e.Attributes.variant Value.standard
-            , Aria.label "Back to inbox"
-            , M3e.Events.onClick (DrawerChanged False)
-            ]
-            [ M3e.icon [ TA.name "arrow_back" ] [] ]
+        [ M3e.iconButton { content = M3e.icon [ TA.name "arrow_back" ] [], ariaLabel = "Back to inbox", action = M3e.Action.none } [ M3e.Attributes.variant Value.standard, M3e.Events.onClick (DrawerChanged False) ] []
         ]
 
 
@@ -476,7 +473,7 @@ messageRow selected index message =
         , M3e.text message.subject
         , M3e.Component.ListAction.supportingText (M3e.text message.snippet)
         , M3e.Component.ListAction.trailing
-            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text message.time ])
+            (M3e.heading { content = M3e.text message.time } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [])
         ]
 
 
@@ -492,12 +489,12 @@ readingPane : Message -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
 readingPane message =
     TypedHtml.div [ TA.class "flex flex-col gap-6 p-6" ]
         [ closeReader
-        , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
+        , M3e.heading { content = M3e.text message.subject } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] []
         , TypedHtml.div [ TA.class "flex items-center gap-3" ]
             [ M3e.avatar [] [ M3e.text message.initials ]
             , TypedHtml.div [ TA.class "flex flex-col" ]
-                [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text message.sender ]
-                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text ("to me · " ++ message.time) ]
+                [ M3e.heading { content = M3e.text message.sender } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
+                , M3e.heading { content = M3e.text ("to me · " ++ message.time) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] []
                 ]
             ]
         , M3e.chipSet [ Aria.label "Labels" ]
@@ -509,11 +506,7 @@ readingPane message =
 
 labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 labelChip name =
-    M3e.assistChip
-        []
-        [ M3e.text name
-        , M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] [])
-        ]
+    M3e.assistChip { content = M3e.text name } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] []) ]
 
 
 
@@ -533,12 +526,10 @@ belongs to whatever is underneath.
 composeFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 composeFab =
     TypedHtml.div [ TA.class "pointer-events-none absolute bottom-20 right-6 md:bottom-6 [&>*]:pointer-events-auto" ]
-        [ M3e.fab
+        [ M3e.fab { content = M3e.icon [ TA.name "edit" ] [], action = M3e.Action.none }
             [ M3e.Attributes.variant Value.primaryContainer
             , M3e.Attributes.extended True
             , Aria.label "Compose"
             ]
-            [ M3e.icon [ TA.name "edit" ] []
-            , M3e.Component.Fab.label (M3e.text "Compose")
-            ]
+            [ M3e.Component.Fab.label (M3e.text "Compose") ]
         ]

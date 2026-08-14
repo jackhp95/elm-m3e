@@ -1,5 +1,5 @@
 module M3e.Component.CircularProgressIndicator exposing
-    ( circularprogressindicator
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , Variant, variant
     , indeterminate, max, value, defaultValue
@@ -10,7 +10,7 @@ module M3e.Component.CircularProgressIndicator exposing
 
 A circular indicator of progress and activity.
 
-@docs circularprogressindicator
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs Variant, variant
 @docs indeterminate, max, value, defaultValue
@@ -59,11 +59,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-circularprogressindicator :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-circularprogressindicator =
+el =
     H.circularProgressIndicator
 
 

@@ -30,6 +30,7 @@ import HtmlIr.Element
 import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared)
 import HtmlIr.Node
+import M3e.Action as Ac
 import M3e.Component.Accordion
 import M3e.Component.ActionList
 import M3e.Component.AppBar
@@ -162,1304 +163,1346 @@ import M3e.Component.TreeItem
 import M3e.Component.YearView
 
 
-{-| See `M3e.Component.Accordion.accordion`.
+{-| See `M3e.Component.Accordion.el`.
 -}
 accordion :
-    List (Attr M3e.Component.Accordion.Attrs msg)
+    { content : Element M3e.Component.Accordion.Content (M3e.Component.Accordion.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Accordion.Attrs msg)
     -> List (Element M3e.Component.Accordion.Content (M3e.Component.Accordion.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Accordion.Is s) admittedBy msg
 accordion =
-    M3e.Component.Accordion.accordion
+    M3e.Component.Accordion.el
 
 
-{-| See `M3e.Component.ActionList.actionlist`.
+{-| See `M3e.Component.ActionList.el`.
 -}
 actionList :
     List (Attr M3e.Component.ActionList.Attrs msg)
     -> List (Element M3e.Component.ActionList.Content (M3e.Component.ActionList.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ActionList.Is s) admittedBy msg
 actionList =
-    M3e.Component.ActionList.actionlist
+    M3e.Component.ActionList.el
 
 
-{-| See `M3e.Component.AppBar.appbar`.
+{-| See `M3e.Component.AppBar.el`.
 -}
 appBar :
     List (Attr M3e.Component.AppBar.Attrs msg)
     -> List (Element childAccepts (M3e.Component.AppBar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.AppBar.Is s) admittedBy msg
 appBar =
-    M3e.Component.AppBar.appbar
+    M3e.Component.AppBar.el
 
 
-{-| See `M3e.Component.AssistChip.assistchip`.
+{-| See `M3e.Component.AssistChip.el`.
 -}
 assistChip :
-    List (Attr M3e.Component.AssistChip.Attrs msg)
+    { content : Element M3e.Component.AssistChip.Content (M3e.Component.AssistChip.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.AssistChip.Attrs msg)
     -> List (Element M3e.Component.AssistChip.Content (M3e.Component.AssistChip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.AssistChip.Is s) admittedBy msg
 assistChip =
-    M3e.Component.AssistChip.assistchip
+    M3e.Component.AssistChip.el
 
 
-{-| See `M3e.Component.Autocomplete.autocomplete`.
+{-| See `M3e.Component.Autocomplete.el`.
 -}
 autocomplete :
     List (Attr M3e.Component.Autocomplete.Attrs msg)
     -> List (Element M3e.Component.Autocomplete.Content (M3e.Component.Autocomplete.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Autocomplete.Is s) admittedBy msg
 autocomplete =
-    M3e.Component.Autocomplete.autocomplete
+    M3e.Component.Autocomplete.el
 
 
-{-| See `M3e.Component.Avatar.avatar`.
+{-| See `M3e.Component.Avatar.el`.
 -}
 avatar :
     List (Attr M3e.Component.Avatar.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Avatar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Avatar.Is s) admittedBy msg
 avatar =
-    M3e.Component.Avatar.avatar
+    M3e.Component.Avatar.el
 
 
-{-| See `M3e.Component.Badge.badge`.
+{-| See `M3e.Component.Badge.el`.
 -}
 badge :
     List (Attr M3e.Component.Badge.Attrs msg)
     -> List (Element M3e.Component.Badge.Content (M3e.Component.Badge.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Badge.Is s) admittedBy msg
 badge =
-    M3e.Component.Badge.badge
+    M3e.Component.Badge.el
 
 
-{-| See `M3e.Component.BottomSheet.bottomsheet`.
+{-| See `M3e.Component.BottomSheet.el`.
 -}
 bottomSheet :
     List (Attr M3e.Component.BottomSheet.Attrs msg)
     -> List (Element childAccepts (M3e.Component.BottomSheet.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BottomSheet.Is s) admittedBy msg
 bottomSheet =
-    M3e.Component.BottomSheet.bottomsheet
+    M3e.Component.BottomSheet.el
 
 
-{-| See `M3e.Component.BottomSheetAction.bottomsheetaction`.
+{-| See `M3e.Component.BottomSheetAction.el`.
 -}
 bottomSheetAction :
     List (Attr M3e.Component.BottomSheetAction.Attrs msg)
     -> List (Element M3e.Component.BottomSheetAction.Content (M3e.Component.BottomSheetAction.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BottomSheetAction.Is s) admittedBy msg
 bottomSheetAction =
-    M3e.Component.BottomSheetAction.bottomsheetaction
+    M3e.Component.BottomSheetAction.el
 
 
-{-| See `M3e.Component.BottomSheetTrigger.bottomsheettrigger`.
+{-| See `M3e.Component.BottomSheetTrigger.el`.
 -}
 bottomSheetTrigger :
     List (Attr M3e.Component.BottomSheetTrigger.Attrs msg)
     -> List (Element M3e.Component.BottomSheetTrigger.Content (M3e.Component.BottomSheetTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BottomSheetTrigger.Is s) admittedBy msg
 bottomSheetTrigger =
-    M3e.Component.BottomSheetTrigger.bottomsheettrigger
+    M3e.Component.BottomSheetTrigger.el
 
 
-{-| See `M3e.Component.Breadcrumb.breadcrumb`.
+{-| See `M3e.Component.Breadcrumb.el`.
 -}
 breadcrumb :
-    List (Attr M3e.Component.Breadcrumb.Attrs msg)
+    { content : Element M3e.Component.Breadcrumb.Content (M3e.Component.Breadcrumb.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Breadcrumb.Attrs msg)
     -> List (Element M3e.Component.Breadcrumb.Content (M3e.Component.Breadcrumb.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Breadcrumb.Is s) admittedBy msg
 breadcrumb =
-    M3e.Component.Breadcrumb.breadcrumb
+    M3e.Component.Breadcrumb.el
 
 
-{-| See `M3e.Component.BreadcrumbItem.breadcrumbitem`.
+{-| See `M3e.Component.BreadcrumbItem.el`.
 -}
 breadcrumbItem :
     List (Attr M3e.Component.BreadcrumbItem.Attrs msg)
     -> List (Element M3e.Component.BreadcrumbItem.Content (M3e.Component.BreadcrumbItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BreadcrumbItem.Is s) admittedBy msg
 breadcrumbItem =
-    M3e.Component.BreadcrumbItem.breadcrumbitem
+    M3e.Component.BreadcrumbItem.el
 
 
-{-| See `M3e.Component.BreadcrumbItemButton.breadcrumbitembutton`.
+{-| See `M3e.Component.BreadcrumbItemButton.el`.
 -}
 breadcrumbItemButton :
     List (Attr M3e.Component.BreadcrumbItemButton.Attrs msg)
     -> List (Element M3e.Component.BreadcrumbItemButton.Content (M3e.Component.BreadcrumbItemButton.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BreadcrumbItemButton.Is s) admittedBy msg
 breadcrumbItemButton =
-    M3e.Component.BreadcrumbItemButton.breadcrumbitembutton
+    M3e.Component.BreadcrumbItemButton.el
 
 
-{-| See `M3e.Component.Button.button`.
+{-| See `M3e.Component.Button.el`.
 -}
 button :
-    List (Attr M3e.Component.Button.Attrs msg)
+    { content : Element M3e.Component.Button.Content (M3e.Component.Button.ChildAdmittedBy childAdm) msg
+    , action : Ac.Action M3e.Component.Button.ActionCaps msg
+    }
+    -> List (Attr M3e.Component.Button.Attrs msg)
     -> List (Element M3e.Component.Button.Content (M3e.Component.Button.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Button.Is s) admittedBy msg
 button =
-    M3e.Component.Button.button
+    M3e.Component.Button.el
 
 
-{-| See `M3e.Component.ButtonGroup.buttongroup`.
+{-| See `M3e.Component.ButtonGroup.el`.
 -}
 buttonGroup :
     List (Attr M3e.Component.ButtonGroup.Attrs msg)
     -> List (Element M3e.Component.ButtonGroup.Content (M3e.Component.ButtonGroup.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ButtonGroup.Is s) admittedBy msg
 buttonGroup =
-    M3e.Component.ButtonGroup.buttongroup
+    M3e.Component.ButtonGroup.el
 
 
-{-| See `M3e.Component.ButtonSegment.buttonsegment`.
+{-| See `M3e.Component.ButtonSegment.el`.
 -}
 buttonSegment :
     List (Attr M3e.Component.ButtonSegment.Attrs msg)
     -> List (Element M3e.Component.ButtonSegment.Content (M3e.Component.ButtonSegment.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ButtonSegment.Is s) admittedBy msg
 buttonSegment =
-    M3e.Component.ButtonSegment.buttonsegment
+    M3e.Component.ButtonSegment.el
 
 
-{-| See `M3e.Component.Calendar.calendar`.
+{-| See `M3e.Component.Calendar.el`.
 -}
 calendar :
     List (Attr M3e.Component.Calendar.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Calendar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Calendar.Is s) admittedBy msg
 calendar =
-    M3e.Component.Calendar.calendar
+    M3e.Component.Calendar.el
 
 
-{-| See `M3e.Component.Card.card`.
+{-| See `M3e.Component.Card.el`.
 -}
 card :
     List (Attr M3e.Component.Card.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Card.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Card.Is s) admittedBy msg
 card =
-    M3e.Component.Card.card
+    M3e.Component.Card.el
 
 
-{-| See `M3e.Component.Checkbox.checkbox`.
+{-| See `M3e.Component.Checkbox.el`.
 -}
 checkbox :
     List (Attr M3e.Component.Checkbox.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Checkbox.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Checkbox.Is s) admittedBy msg
 checkbox =
-    M3e.Component.Checkbox.checkbox
+    M3e.Component.Checkbox.el
 
 
-{-| See `M3e.Component.Chip.chip`.
+{-| See `M3e.Component.Chip.el`.
 -}
 chip :
-    List (Attr M3e.Component.Chip.Attrs msg)
+    { content : Element M3e.Component.Chip.Content (M3e.Component.Chip.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Chip.Attrs msg)
     -> List (Element M3e.Component.Chip.Content (M3e.Component.Chip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Chip.Is s) admittedBy msg
 chip =
-    M3e.Component.Chip.chip
+    M3e.Component.Chip.el
 
 
-{-| See `M3e.Component.ChipSet.chipset`.
+{-| See `M3e.Component.ChipSet.el`.
 -}
 chipSet :
     List (Attr M3e.Component.ChipSet.Attrs msg)
     -> List (Element M3e.Component.ChipSet.Content (M3e.Component.ChipSet.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ChipSet.Is s) admittedBy msg
 chipSet =
-    M3e.Component.ChipSet.chipset
+    M3e.Component.ChipSet.el
 
 
-{-| See `M3e.Component.CircularProgressIndicator.circularprogressindicator`.
+{-| See `M3e.Component.CircularProgressIndicator.el`.
 -}
 circularProgressIndicator :
     List (Attr M3e.Component.CircularProgressIndicator.Attrs msg)
     -> List (Element childAccepts (M3e.Component.CircularProgressIndicator.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.CircularProgressIndicator.Is s) admittedBy msg
 circularProgressIndicator =
-    M3e.Component.CircularProgressIndicator.circularprogressindicator
+    M3e.Component.CircularProgressIndicator.el
 
 
-{-| See `M3e.Component.Collapsible.collapsible`.
+{-| See `M3e.Component.Collapsible.el`.
 -}
 collapsible :
     List (Attr M3e.Component.Collapsible.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Collapsible.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Collapsible.Is s) admittedBy msg
 collapsible =
-    M3e.Component.Collapsible.collapsible
+    M3e.Component.Collapsible.el
 
 
-{-| See `M3e.Component.ContentPane.contentpane`.
+{-| See `M3e.Component.ContentPane.el`.
 -}
 contentPane :
     List (Attr M3e.Component.ContentPane.Attrs msg)
     -> List (Element childAccepts (M3e.Component.ContentPane.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ContentPane.Is s) admittedBy msg
 contentPane =
-    M3e.Component.ContentPane.contentpane
+    M3e.Component.ContentPane.el
 
 
-{-| See `M3e.Component.DateInput.dateinput`.
+{-| See `M3e.Component.DateInput.el`.
 -}
 dateInput :
     List (Attr M3e.Component.DateInput.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DateInput.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DateInput.Is s) admittedBy msg
 dateInput =
-    M3e.Component.DateInput.dateinput
+    M3e.Component.DateInput.el
 
 
-{-| See `M3e.Component.Datepicker.datepicker`.
+{-| See `M3e.Component.Datepicker.el`.
 -}
 datepicker :
     List (Attr M3e.Component.Datepicker.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Datepicker.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Datepicker.Is s) admittedBy msg
 datepicker =
-    M3e.Component.Datepicker.datepicker
+    M3e.Component.Datepicker.el
 
 
-{-| See `M3e.Component.DatepickerToggle.datepickertoggle`.
+{-| See `M3e.Component.DatepickerToggle.el`.
 -}
 datepickerToggle :
     List (Attr M3e.Component.DatepickerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DatepickerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DatepickerToggle.Is s) admittedBy msg
 datepickerToggle =
-    M3e.Component.DatepickerToggle.datepickertoggle
+    M3e.Component.DatepickerToggle.el
 
 
-{-| See `M3e.Component.Dialog.dialog`.
+{-| See `M3e.Component.Dialog.el`.
 -}
 dialog :
     List (Attr M3e.Component.Dialog.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Dialog.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Dialog.Is s) admittedBy msg
 dialog =
-    M3e.Component.Dialog.dialog
+    M3e.Component.Dialog.el
 
 
-{-| See `M3e.Component.DialogAction.dialogaction`.
+{-| See `M3e.Component.DialogAction.el`.
 -}
 dialogAction :
     List (Attr M3e.Component.DialogAction.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DialogAction.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DialogAction.Is s) admittedBy msg
 dialogAction =
-    M3e.Component.DialogAction.dialogaction
+    M3e.Component.DialogAction.el
 
 
-{-| See `M3e.Component.DialogTrigger.dialogtrigger`.
+{-| See `M3e.Component.DialogTrigger.el`.
 -}
 dialogTrigger :
     List (Attr M3e.Component.DialogTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DialogTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DialogTrigger.Is s) admittedBy msg
 dialogTrigger =
-    M3e.Component.DialogTrigger.dialogtrigger
+    M3e.Component.DialogTrigger.el
 
 
-{-| See `M3e.Component.Divider.divider`.
+{-| See `M3e.Component.Divider.el`.
 -}
 divider :
     List (Attr M3e.Component.Divider.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Divider.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Divider.Is s) admittedBy msg
 divider =
-    M3e.Component.Divider.divider
+    M3e.Component.Divider.el
 
 
-{-| See `M3e.Component.DrawerContainer.drawercontainer`.
+{-| See `M3e.Component.DrawerContainer.el`.
 -}
 drawerContainer :
     List (Attr M3e.Component.DrawerContainer.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DrawerContainer.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DrawerContainer.Is s) admittedBy msg
 drawerContainer =
-    M3e.Component.DrawerContainer.drawercontainer
+    M3e.Component.DrawerContainer.el
 
 
-{-| See `M3e.Component.DrawerToggle.drawertoggle`.
+{-| See `M3e.Component.DrawerToggle.el`.
 -}
 drawerToggle :
     List (Attr M3e.Component.DrawerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DrawerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DrawerToggle.Is s) admittedBy msg
 drawerToggle =
-    M3e.Component.DrawerToggle.drawertoggle
+    M3e.Component.DrawerToggle.el
 
 
-{-| See `M3e.Component.Elevation.elevation`.
+{-| See `M3e.Component.Elevation.el`.
 -}
 elevation :
     List (Attr M3e.Component.Elevation.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Elevation.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Elevation.Is s) admittedBy msg
 elevation =
-    M3e.Component.Elevation.elevation
+    M3e.Component.Elevation.el
 
 
-{-| See `M3e.Component.ExpandableListItem.expandablelistitem`.
+{-| See `M3e.Component.ExpandableListItem.el`.
 -}
 expandableListItem :
     List (Attr M3e.Component.ExpandableListItem.Attrs msg)
     -> List (Element M3e.Component.ExpandableListItem.Content (M3e.Component.ExpandableListItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ExpandableListItem.Is s) admittedBy msg
 expandableListItem =
-    M3e.Component.ExpandableListItem.expandablelistitem
+    M3e.Component.ExpandableListItem.el
 
 
-{-| See `M3e.Component.ExpansionHeader.expansionheader`.
+{-| See `M3e.Component.ExpansionHeader.el`.
 -}
 expansionHeader :
     List (Attr M3e.Component.ExpansionHeader.Attrs msg)
     -> List (Element M3e.Component.ExpansionHeader.Content (M3e.Component.ExpansionHeader.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ExpansionHeader.Is s) admittedBy msg
 expansionHeader =
-    M3e.Component.ExpansionHeader.expansionheader
+    M3e.Component.ExpansionHeader.el
 
 
-{-| See `M3e.Component.ExpansionPanel.expansionpanel`.
+{-| See `M3e.Component.ExpansionPanel.el`.
 -}
 expansionPanel :
-    List (Attr M3e.Component.ExpansionPanel.Attrs msg)
+    { header : Element childAccepts (M3e.Component.ExpansionPanel.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.ExpansionPanel.Attrs msg)
     -> List (Element childAccepts (M3e.Component.ExpansionPanel.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ExpansionPanel.Is s) admittedBy msg
 expansionPanel =
-    M3e.Component.ExpansionPanel.expansionpanel
+    M3e.Component.ExpansionPanel.el
 
 
-{-| See `M3e.Component.Fab.fab`.
+{-| See `M3e.Component.Fab.el`.
 -}
 fab :
-    List (Attr M3e.Component.Fab.Attrs msg)
+    { content : Element M3e.Component.Fab.Content (M3e.Component.Fab.ChildAdmittedBy childAdm) msg
+    , action : Ac.Action M3e.Component.Fab.ActionCaps msg
+    }
+    -> List (Attr M3e.Component.Fab.Attrs msg)
     -> List (Element M3e.Component.Fab.Content (M3e.Component.Fab.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Fab.Is s) admittedBy msg
 fab =
-    M3e.Component.Fab.fab
+    M3e.Component.Fab.el
 
 
-{-| See `M3e.Component.FabMenu.fabmenu`.
+{-| See `M3e.Component.FabMenu.el`.
 -}
 fabMenu :
     List (Attr M3e.Component.FabMenu.Attrs msg)
     -> List (Element M3e.Component.FabMenu.Content (M3e.Component.FabMenu.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FabMenu.Is s) admittedBy msg
 fabMenu =
-    M3e.Component.FabMenu.fabmenu
+    M3e.Component.FabMenu.el
 
 
-{-| See `M3e.Component.FabMenuItem.fabmenuitem`.
+{-| See `M3e.Component.FabMenuItem.el`.
 -}
 fabMenuItem :
     List (Attr M3e.Component.FabMenuItem.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FabMenuItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FabMenuItem.Is s) admittedBy msg
 fabMenuItem =
-    M3e.Component.FabMenuItem.fabmenuitem
+    M3e.Component.FabMenuItem.el
 
 
-{-| See `M3e.Component.FabMenuTrigger.fabmenutrigger`.
+{-| See `M3e.Component.FabMenuTrigger.el`.
 -}
 fabMenuTrigger :
     List (Attr M3e.Component.FabMenuTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FabMenuTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FabMenuTrigger.Is s) admittedBy msg
 fabMenuTrigger =
-    M3e.Component.FabMenuTrigger.fabmenutrigger
+    M3e.Component.FabMenuTrigger.el
 
 
-{-| See `M3e.Component.FilterChip.filterchip`.
+{-| See `M3e.Component.FilterChip.el`.
 -}
 filterChip :
-    List (Attr M3e.Component.FilterChip.Attrs msg)
+    { content : Element M3e.Component.FilterChip.Content (M3e.Component.FilterChip.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.FilterChip.Attrs msg)
     -> List (Element M3e.Component.FilterChip.Content (M3e.Component.FilterChip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FilterChip.Is s) admittedBy msg
 filterChip =
-    M3e.Component.FilterChip.filterchip
+    M3e.Component.FilterChip.el
 
 
-{-| See `M3e.Component.FilterChipSet.filterchipset`.
+{-| See `M3e.Component.FilterChipSet.el`.
 -}
 filterChipSet :
     List (Attr M3e.Component.FilterChipSet.Attrs msg)
     -> List (Element M3e.Component.FilterChipSet.Content (M3e.Component.FilterChipSet.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FilterChipSet.Is s) admittedBy msg
 filterChipSet =
-    M3e.Component.FilterChipSet.filterchipset
+    M3e.Component.FilterChipSet.el
 
 
-{-| See `M3e.Component.FloatingPanel.floatingpanel`.
+{-| See `M3e.Component.FloatingPanel.el`.
 -}
 floatingPanel :
     List (Attr M3e.Component.FloatingPanel.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FloatingPanel.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FloatingPanel.Is s) admittedBy msg
 floatingPanel =
-    M3e.Component.FloatingPanel.floatingpanel
+    M3e.Component.FloatingPanel.el
 
 
-{-| See `M3e.Component.FocusRing.focusring`.
+{-| See `M3e.Component.FocusRing.el`.
 -}
 focusRing :
     List (Attr M3e.Component.FocusRing.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FocusRing.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FocusRing.Is s) admittedBy msg
 focusRing =
-    M3e.Component.FocusRing.focusring
+    M3e.Component.FocusRing.el
 
 
-{-| See `M3e.Component.FocusTrap.focustrap`.
+{-| See `M3e.Component.FocusTrap.el`.
 -}
 focusTrap :
     List (Attr M3e.Component.FocusTrap.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FocusTrap.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FocusTrap.Is s) admittedBy msg
 focusTrap =
-    M3e.Component.FocusTrap.focustrap
+    M3e.Component.FocusTrap.el
 
 
-{-| See `M3e.Component.FormField.formfield`.
+{-| See `M3e.Component.FormField.el`.
 -}
 formField :
     List (Attr M3e.Component.FormField.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FormField.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FormField.Is s) admittedBy msg
 formField =
-    M3e.Component.FormField.formfield
+    M3e.Component.FormField.el
 
 
-{-| See `M3e.Component.Heading.heading`.
+{-| See `M3e.Component.Heading.el`.
 -}
 heading :
-    List (Attr M3e.Component.Heading.Attrs msg)
+    { content : Element M3e.Component.Heading.Content (M3e.Component.Heading.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Heading.Attrs msg)
     -> List (Element M3e.Component.Heading.Content (M3e.Component.Heading.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Heading.Is s) admittedBy msg
 heading =
-    M3e.Component.Heading.heading
+    M3e.Component.Heading.el
 
 
-{-| See `M3e.Component.Icon.icon`.
+{-| See `M3e.Component.Icon.el`.
 -}
 icon :
     List (Attr M3e.Component.Icon.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Icon.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Icon.Is s) admittedBy msg
 icon =
-    M3e.Component.Icon.icon
+    M3e.Component.Icon.el
 
 
-{-| See `M3e.Component.IconButton.iconbutton`.
+{-| See `M3e.Component.IconButton.el`.
 -}
 iconButton :
-    List (Attr M3e.Component.IconButton.Attrs msg)
+    { content : Element M3e.Component.IconButton.Content (M3e.Component.IconButton.ChildAdmittedBy childAdm) msg
+    , ariaLabel : String
+    , action : Ac.Action M3e.Component.IconButton.ActionCaps msg
+    }
+    -> List (Attr M3e.Component.IconButton.Attrs msg)
     -> List (Element M3e.Component.IconButton.Content (M3e.Component.IconButton.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.IconButton.Is s) admittedBy msg
 iconButton =
-    M3e.Component.IconButton.iconbutton
+    M3e.Component.IconButton.el
 
 
-{-| See `M3e.Component.InputChip.inputchip`.
+{-| See `M3e.Component.InputChip.el`.
 -}
 inputChip :
-    List (Attr M3e.Component.InputChip.Attrs msg)
+    { content : Element M3e.Component.InputChip.Content (M3e.Component.InputChip.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.InputChip.Attrs msg)
     -> List (Element M3e.Component.InputChip.Content (M3e.Component.InputChip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.InputChip.Is s) admittedBy msg
 inputChip =
-    M3e.Component.InputChip.inputchip
+    M3e.Component.InputChip.el
 
 
-{-| See `M3e.Component.InputChipSet.inputchipset`.
+{-| See `M3e.Component.InputChipSet.el`.
 -}
 inputChipSet :
     List (Attr M3e.Component.InputChipSet.Attrs msg)
     -> List (Element M3e.Component.InputChipSet.Content (M3e.Component.InputChipSet.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.InputChipSet.Is s) admittedBy msg
 inputChipSet =
-    M3e.Component.InputChipSet.inputchipset
+    M3e.Component.InputChipSet.el
 
 
-{-| See `M3e.Component.LinearProgressIndicator.linearprogressindicator`.
+{-| See `M3e.Component.LinearProgressIndicator.el`.
 -}
 linearProgressIndicator :
     List (Attr M3e.Component.LinearProgressIndicator.Attrs msg)
     -> List (Element childAccepts (M3e.Component.LinearProgressIndicator.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.LinearProgressIndicator.Is s) admittedBy msg
 linearProgressIndicator =
-    M3e.Component.LinearProgressIndicator.linearprogressindicator
+    M3e.Component.LinearProgressIndicator.el
 
 
-{-| See `M3e.Component.List.list`.
+{-| See `M3e.Component.List.el`.
 -}
 list :
     List (Attr M3e.Component.List.Attrs msg)
     -> List (Element M3e.Component.List.Content (M3e.Component.List.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.List.Is s) admittedBy msg
 list =
-    M3e.Component.List.list
+    M3e.Component.List.el
 
 
-{-| See `M3e.Component.ListAction.listaction`.
+{-| See `M3e.Component.ListAction.el`.
 -}
 listAction :
     List (Attr M3e.Component.ListAction.Attrs msg)
     -> List (Element M3e.Component.ListAction.Content (M3e.Component.ListAction.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ListAction.Is s) admittedBy msg
 listAction =
-    M3e.Component.ListAction.listaction
+    M3e.Component.ListAction.el
 
 
-{-| See `M3e.Component.ListItem.listitem`.
+{-| See `M3e.Component.ListItem.el`.
 -}
 listItem :
     List (Attr M3e.Component.ListItem.Attrs msg)
     -> List (Element M3e.Component.ListItem.Content (M3e.Component.ListItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ListItem.Is s) admittedBy msg
 listItem =
-    M3e.Component.ListItem.listitem
+    M3e.Component.ListItem.el
 
 
-{-| See `M3e.Component.ListItemButton.listitembutton`.
+{-| See `M3e.Component.ListItemButton.el`.
 -}
 listItemButton :
     List (Attr M3e.Component.ListItemButton.Attrs msg)
     -> List (Element M3e.Component.ListItemButton.Content (M3e.Component.ListItemButton.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ListItemButton.Is s) admittedBy msg
 listItemButton =
-    M3e.Component.ListItemButton.listitembutton
+    M3e.Component.ListItemButton.el
 
 
-{-| See `M3e.Component.ListOption.listoption`.
+{-| See `M3e.Component.ListOption.el`.
 -}
 listOption :
     List (Attr M3e.Component.ListOption.Attrs msg)
     -> List (Element M3e.Component.ListOption.Content (M3e.Component.ListOption.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ListOption.Is s) admittedBy msg
 listOption =
-    M3e.Component.ListOption.listoption
+    M3e.Component.ListOption.el
 
 
-{-| See `M3e.Component.LoadingIndicator.loadingindicator`.
+{-| See `M3e.Component.LoadingIndicator.el`.
 -}
 loadingIndicator :
     List (Attr M3e.Component.LoadingIndicator.Attrs msg)
     -> List (Element childAccepts (M3e.Component.LoadingIndicator.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.LoadingIndicator.Is s) admittedBy msg
 loadingIndicator =
-    M3e.Component.LoadingIndicator.loadingindicator
+    M3e.Component.LoadingIndicator.el
 
 
-{-| See `M3e.Component.Menu.menu`.
+{-| See `M3e.Component.Menu.el`.
 -}
 menu :
     List (Attr M3e.Component.Menu.Attrs msg)
     -> List (Element M3e.Component.Menu.Content (M3e.Component.Menu.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Menu.Is s) admittedBy msg
 menu =
-    M3e.Component.Menu.menu
+    M3e.Component.Menu.el
 
 
-{-| See `M3e.Component.MenuItem.menuitem`.
+{-| See `M3e.Component.MenuItem.el`.
 -}
 menuItem :
     List (Attr M3e.Component.MenuItem.Attrs msg)
     -> List (Element M3e.Component.MenuItem.Content (M3e.Component.MenuItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuItem.Is s) admittedBy msg
 menuItem =
-    M3e.Component.MenuItem.menuitem
+    M3e.Component.MenuItem.el
 
 
-{-| See `M3e.Component.MenuItemCheckbox.menuitemcheckbox`.
+{-| See `M3e.Component.MenuItemCheckbox.el`.
 -}
 menuItemCheckbox :
     List (Attr M3e.Component.MenuItemCheckbox.Attrs msg)
     -> List (Element M3e.Component.MenuItemCheckbox.Content (M3e.Component.MenuItemCheckbox.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuItemCheckbox.Is s) admittedBy msg
 menuItemCheckbox =
-    M3e.Component.MenuItemCheckbox.menuitemcheckbox
+    M3e.Component.MenuItemCheckbox.el
 
 
-{-| See `M3e.Component.MenuItemGroup.menuitemgroup`.
+{-| See `M3e.Component.MenuItemGroup.el`.
 -}
 menuItemGroup :
     List (Attr M3e.Component.MenuItemGroup.Attrs msg)
     -> List (Element M3e.Component.MenuItemGroup.Content (M3e.Component.MenuItemGroup.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuItemGroup.Is s) admittedBy msg
 menuItemGroup =
-    M3e.Component.MenuItemGroup.menuitemgroup
+    M3e.Component.MenuItemGroup.el
 
 
-{-| See `M3e.Component.MenuItemRadio.menuitemradio`.
+{-| See `M3e.Component.MenuItemRadio.el`.
 -}
 menuItemRadio :
     List (Attr M3e.Component.MenuItemRadio.Attrs msg)
     -> List (Element M3e.Component.MenuItemRadio.Content (M3e.Component.MenuItemRadio.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuItemRadio.Is s) admittedBy msg
 menuItemRadio =
-    M3e.Component.MenuItemRadio.menuitemradio
+    M3e.Component.MenuItemRadio.el
 
 
-{-| See `M3e.Component.MenuTrigger.menutrigger`.
+{-| See `M3e.Component.MenuTrigger.el`.
 -}
 menuTrigger :
     List (Attr M3e.Component.MenuTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.MenuTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuTrigger.Is s) admittedBy msg
 menuTrigger =
-    M3e.Component.MenuTrigger.menutrigger
+    M3e.Component.MenuTrigger.el
 
 
-{-| See `M3e.Component.MonthView.monthview`.
+{-| See `M3e.Component.MonthView.el`.
 -}
 monthView :
     List (Attr M3e.Component.MonthView.Attrs msg)
     -> List (Element childAccepts (M3e.Component.MonthView.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MonthView.Is s) admittedBy msg
 monthView =
-    M3e.Component.MonthView.monthview
+    M3e.Component.MonthView.el
 
 
-{-| See `M3e.Component.MultiYearView.multiyearview`.
+{-| See `M3e.Component.MultiYearView.el`.
 -}
 multiYearView :
     List (Attr M3e.Component.MultiYearView.Attrs msg)
     -> List (Element childAccepts (M3e.Component.MultiYearView.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MultiYearView.Is s) admittedBy msg
 multiYearView =
-    M3e.Component.MultiYearView.multiyearview
+    M3e.Component.MultiYearView.el
 
 
-{-| See `M3e.Component.NavBar.navbar`.
+{-| See `M3e.Component.NavBar.el`.
 -}
 navBar :
     List (Attr M3e.Component.NavBar.Attrs msg)
     -> List (Element M3e.Component.NavBar.Content (M3e.Component.NavBar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavBar.Is s) admittedBy msg
 navBar =
-    M3e.Component.NavBar.navbar
+    M3e.Component.NavBar.el
 
 
-{-| See `M3e.Component.NavItem.navitem`.
+{-| See `M3e.Component.NavItem.el`.
 -}
 navItem :
     List (Attr M3e.Component.NavItem.Attrs msg)
     -> List (Element M3e.Component.NavItem.Content (M3e.Component.NavItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavItem.Is s) admittedBy msg
 navItem =
-    M3e.Component.NavItem.navitem
+    M3e.Component.NavItem.el
 
 
-{-| See `M3e.Component.NavMenu.navmenu`.
+{-| See `M3e.Component.NavMenu.el`.
 -}
 navMenu :
     List (Attr M3e.Component.NavMenu.Attrs msg)
     -> List (Element M3e.Component.NavMenu.Content (M3e.Component.NavMenu.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavMenu.Is s) admittedBy msg
 navMenu =
-    M3e.Component.NavMenu.navmenu
+    M3e.Component.NavMenu.el
 
 
-{-| See `M3e.Component.NavMenuItem.navmenuitem`.
+{-| See `M3e.Component.NavMenuItem.el`.
 -}
 navMenuItem :
-    List (Attr M3e.Component.NavMenuItem.Attrs msg)
+    { label : Element M3e.Component.NavMenuItem.LabelSlot (M3e.Component.NavMenuItem.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.NavMenuItem.Attrs msg)
     -> List (Element M3e.Component.NavMenuItem.Content (M3e.Component.NavMenuItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavMenuItem.Is s) admittedBy msg
 navMenuItem =
-    M3e.Component.NavMenuItem.navmenuitem
+    M3e.Component.NavMenuItem.el
 
 
-{-| See `M3e.Component.NavMenuItemGroup.navmenuitemgroup`.
+{-| See `M3e.Component.NavMenuItemGroup.el`.
 -}
 navMenuItemGroup :
     List (Attr M3e.Component.NavMenuItemGroup.Attrs msg)
     -> List (Element M3e.Component.NavMenuItemGroup.Content (M3e.Component.NavMenuItemGroup.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavMenuItemGroup.Is s) admittedBy msg
 navMenuItemGroup =
-    M3e.Component.NavMenuItemGroup.navmenuitemgroup
+    M3e.Component.NavMenuItemGroup.el
 
 
-{-| See `M3e.Component.NavRail.navrail`.
+{-| See `M3e.Component.NavRail.el`.
 -}
 navRail :
     List (Attr M3e.Component.NavRail.Attrs msg)
     -> List (Element M3e.Component.NavRail.Content (M3e.Component.NavRail.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavRail.Is s) admittedBy msg
 navRail =
-    M3e.Component.NavRail.navrail
+    M3e.Component.NavRail.el
 
 
-{-| See `M3e.Component.NavRailToggle.navrailtoggle`.
+{-| See `M3e.Component.NavRailToggle.el`.
 -}
 navRailToggle :
     List (Attr M3e.Component.NavRailToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.NavRailToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavRailToggle.Is s) admittedBy msg
 navRailToggle =
-    M3e.Component.NavRailToggle.navrailtoggle
+    M3e.Component.NavRailToggle.el
 
 
-{-| See `M3e.Component.Optgroup.optgroup`.
+{-| See `M3e.Component.Optgroup.el`.
 -}
 optgroup :
     List (Attr M3e.Component.Optgroup.Attrs msg)
     -> List (Element M3e.Component.Optgroup.Content (M3e.Component.Optgroup.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Optgroup.Is s) admittedBy msg
 optgroup =
-    M3e.Component.Optgroup.optgroup
+    M3e.Component.Optgroup.el
 
 
-{-| See `M3e.Component.Option.option`.
+{-| See `M3e.Component.Option.el`.
 -}
 option :
-    List (Attr M3e.Component.Option.Attrs msg)
+    { content : Element M3e.Component.Option.Content (M3e.Component.Option.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Option.Attrs msg)
     -> List (Element M3e.Component.Option.Content (M3e.Component.Option.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Option.Is s) admittedBy msg
 option =
-    M3e.Component.Option.option
+    M3e.Component.Option.el
 
 
-{-| See `M3e.Component.OptionPanel.optionpanel`.
+{-| See `M3e.Component.OptionPanel.el`.
 -}
 optionPanel :
     List (Attr M3e.Component.OptionPanel.Attrs msg)
     -> List (Element M3e.Component.OptionPanel.Content (M3e.Component.OptionPanel.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.OptionPanel.Is s) admittedBy msg
 optionPanel =
-    M3e.Component.OptionPanel.optionpanel
+    M3e.Component.OptionPanel.el
 
 
-{-| See `M3e.Component.Paginator.paginator`.
+{-| See `M3e.Component.Paginator.el`.
 -}
 paginator :
     List (Attr M3e.Component.Paginator.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Paginator.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Paginator.Is s) admittedBy msg
 paginator =
-    M3e.Component.Paginator.paginator
+    M3e.Component.Paginator.el
 
 
-{-| See `M3e.Component.PseudoCheckbox.pseudocheckbox`.
+{-| See `M3e.Component.PseudoCheckbox.el`.
 -}
 pseudoCheckbox :
     List (Attr M3e.Component.PseudoCheckbox.Attrs msg)
     -> List (Element childAccepts (M3e.Component.PseudoCheckbox.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.PseudoCheckbox.Is s) admittedBy msg
 pseudoCheckbox =
-    M3e.Component.PseudoCheckbox.pseudocheckbox
+    M3e.Component.PseudoCheckbox.el
 
 
-{-| See `M3e.Component.PseudoRadio.pseudoradio`.
+{-| See `M3e.Component.PseudoRadio.el`.
 -}
 pseudoRadio :
     List (Attr M3e.Component.PseudoRadio.Attrs msg)
     -> List (Element childAccepts (M3e.Component.PseudoRadio.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.PseudoRadio.Is s) admittedBy msg
 pseudoRadio =
-    M3e.Component.PseudoRadio.pseudoradio
+    M3e.Component.PseudoRadio.el
 
 
-{-| See `M3e.Component.Radio.radio`.
+{-| See `M3e.Component.Radio.el`.
 -}
 radio :
     List (Attr M3e.Component.Radio.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Radio.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Radio.Is s) admittedBy msg
 radio =
-    M3e.Component.Radio.radio
+    M3e.Component.Radio.el
 
 
-{-| See `M3e.Component.RadioGroup.radiogroup`.
+{-| See `M3e.Component.RadioGroup.el`.
 -}
 radioGroup :
-    List (Attr M3e.Component.RadioGroup.Attrs msg)
+    { content : Element childAccepts (M3e.Component.RadioGroup.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.RadioGroup.Attrs msg)
     -> List (Element childAccepts (M3e.Component.RadioGroup.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.RadioGroup.Is s) admittedBy msg
 radioGroup =
-    M3e.Component.RadioGroup.radiogroup
+    M3e.Component.RadioGroup.el
 
 
-{-| See `M3e.Component.RichTooltip.richtooltip`.
+{-| See `M3e.Component.RichTooltip.el`.
 -}
 richTooltip :
-    List (Attr M3e.Component.RichTooltip.Attrs msg)
+    { content : Element M3e.Component.RichTooltip.Content (M3e.Component.RichTooltip.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.RichTooltip.Attrs msg)
     -> List (Element M3e.Component.RichTooltip.Content (M3e.Component.RichTooltip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.RichTooltip.Is s) admittedBy msg
 richTooltip =
-    M3e.Component.RichTooltip.richtooltip
+    M3e.Component.RichTooltip.el
 
 
-{-| See `M3e.Component.RichTooltipAction.richtooltipaction`.
+{-| See `M3e.Component.RichTooltipAction.el`.
 -}
 richTooltipAction :
-    List (Attr M3e.Component.RichTooltipAction.Attrs msg)
+    { content : Element M3e.Component.RichTooltipAction.Content (M3e.Component.RichTooltipAction.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.RichTooltipAction.Attrs msg)
     -> List (Element M3e.Component.RichTooltipAction.Content (M3e.Component.RichTooltipAction.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.RichTooltipAction.Is s) admittedBy msg
 richTooltipAction =
-    M3e.Component.RichTooltipAction.richtooltipaction
+    M3e.Component.RichTooltipAction.el
 
 
-{-| See `M3e.Component.Ripple.ripple`.
+{-| See `M3e.Component.Ripple.el`.
 -}
 ripple :
     List (Attr M3e.Component.Ripple.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Ripple.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Ripple.Is s) admittedBy msg
 ripple =
-    M3e.Component.Ripple.ripple
+    M3e.Component.Ripple.el
 
 
-{-| See `M3e.Component.ScrollContainer.scrollcontainer`.
+{-| See `M3e.Component.ScrollContainer.el`.
 -}
 scrollContainer :
     List (Attr M3e.Component.ScrollContainer.Attrs msg)
     -> List (Element childAccepts (M3e.Component.ScrollContainer.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ScrollContainer.Is s) admittedBy msg
 scrollContainer =
-    M3e.Component.ScrollContainer.scrollcontainer
+    M3e.Component.ScrollContainer.el
 
 
-{-| See `M3e.Component.SearchBar.searchbar`.
+{-| See `M3e.Component.SearchBar.el`.
 -}
 searchBar :
-    List (Attr M3e.Component.SearchBar.Attrs msg)
+    { input : Element childAccepts (M3e.Component.SearchBar.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.SearchBar.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SearchBar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SearchBar.Is s) admittedBy msg
 searchBar =
-    M3e.Component.SearchBar.searchbar
+    M3e.Component.SearchBar.el
 
 
-{-| See `M3e.Component.SearchView.searchview`.
+{-| See `M3e.Component.SearchView.el`.
 -}
 searchView :
-    List (Attr M3e.Component.SearchView.Attrs msg)
+    { input : Element childAccepts (M3e.Component.SearchView.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.SearchView.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SearchView.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SearchView.Is s) admittedBy msg
 searchView =
-    M3e.Component.SearchView.searchview
+    M3e.Component.SearchView.el
 
 
-{-| See `M3e.Component.SegmentedButton.segmentedbutton`.
+{-| See `M3e.Component.SegmentedButton.el`.
 -}
 segmentedButton :
-    List (Attr M3e.Component.SegmentedButton.Attrs msg)
+    { content : Element M3e.Component.SegmentedButton.Content (M3e.Component.SegmentedButton.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.SegmentedButton.Attrs msg)
     -> List (Element M3e.Component.SegmentedButton.Content (M3e.Component.SegmentedButton.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SegmentedButton.Is s) admittedBy msg
 segmentedButton =
-    M3e.Component.SegmentedButton.segmentedbutton
+    M3e.Component.SegmentedButton.el
 
 
-{-| See `M3e.Component.Select.select`.
+{-| See `M3e.Component.Select.el`.
 -}
 select :
-    List (Attr M3e.Component.Select.Attrs msg)
+    { content : Element M3e.Component.Select.Content (M3e.Component.Select.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Select.Attrs msg)
     -> List (Element M3e.Component.Select.Content (M3e.Component.Select.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Select.Is s) admittedBy msg
 select =
-    M3e.Component.Select.select
+    M3e.Component.Select.el
 
 
-{-| See `M3e.Component.SelectionIndicator.selectionindicator`.
+{-| See `M3e.Component.SelectionIndicator.el`.
 -}
 selectionIndicator :
     List (Attr M3e.Component.SelectionIndicator.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SelectionIndicator.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SelectionIndicator.Is s) admittedBy msg
 selectionIndicator =
-    M3e.Component.SelectionIndicator.selectionindicator
+    M3e.Component.SelectionIndicator.el
 
 
-{-| See `M3e.Component.SelectionList.selectionlist`.
+{-| See `M3e.Component.SelectionList.el`.
 -}
 selectionList :
     List (Attr M3e.Component.SelectionList.Attrs msg)
     -> List (Element M3e.Component.SelectionList.Content (M3e.Component.SelectionList.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SelectionList.Is s) admittedBy msg
 selectionList =
-    M3e.Component.SelectionList.selectionlist
+    M3e.Component.SelectionList.el
 
 
-{-| See `M3e.Component.Shape.shape`.
+{-| See `M3e.Component.Shape.el`.
 -}
 shape :
     List (Attr M3e.Component.Shape.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Shape.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Shape.Is s) admittedBy msg
 shape =
-    M3e.Component.Shape.shape
+    M3e.Component.Shape.el
 
 
-{-| See `M3e.Component.Skeleton.skeleton`.
+{-| See `M3e.Component.Skeleton.el`.
 -}
 skeleton :
     List (Attr M3e.Component.Skeleton.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Skeleton.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Skeleton.Is s) admittedBy msg
 skeleton =
-    M3e.Component.Skeleton.skeleton
+    M3e.Component.Skeleton.el
 
 
-{-| See `M3e.Component.Slide.slide`.
+{-| See `M3e.Component.Slide.el`.
 -}
 slide :
     List (Attr M3e.Component.Slide.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Slide.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Slide.Is s) admittedBy msg
 slide =
-    M3e.Component.Slide.slide
+    M3e.Component.Slide.el
 
 
-{-| See `M3e.Component.SlideGroup.slidegroup`.
+{-| See `M3e.Component.SlideGroup.el`.
 -}
 slideGroup :
     List (Attr M3e.Component.SlideGroup.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SlideGroup.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SlideGroup.Is s) admittedBy msg
 slideGroup =
-    M3e.Component.SlideGroup.slidegroup
+    M3e.Component.SlideGroup.el
 
 
-{-| See `M3e.Component.Slider.slider`.
+{-| See `M3e.Component.Slider.el`.
 -}
 slider :
-    List (Attr M3e.Component.Slider.Attrs msg)
+    { content : Element childAccepts (M3e.Component.Slider.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Slider.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Slider.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Slider.Is s) admittedBy msg
 slider =
-    M3e.Component.Slider.slider
+    M3e.Component.Slider.el
 
 
-{-| See `M3e.Component.SliderThumb.sliderthumb`.
+{-| See `M3e.Component.SliderThumb.el`.
 -}
 sliderThumb :
     List (Attr M3e.Component.SliderThumb.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SliderThumb.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SliderThumb.Is s) admittedBy msg
 sliderThumb =
-    M3e.Component.SliderThumb.sliderthumb
+    M3e.Component.SliderThumb.el
 
 
-{-| See `M3e.Component.Snackbar.snackbar`.
+{-| See `M3e.Component.Snackbar.el`.
 -}
 snackbar :
-    List (Attr M3e.Component.Snackbar.Attrs msg)
+    { content : Element M3e.Component.Snackbar.Content (M3e.Component.Snackbar.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Snackbar.Attrs msg)
     -> List (Element M3e.Component.Snackbar.Content (M3e.Component.Snackbar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Snackbar.Is s) admittedBy msg
 snackbar =
-    M3e.Component.Snackbar.snackbar
+    M3e.Component.Snackbar.el
 
 
-{-| See `M3e.Component.SplitButton.splitbutton`.
+{-| See `M3e.Component.SplitButton.el`.
 -}
 splitButton :
-    List (Attr M3e.Component.SplitButton.Attrs msg)
+    { leadingButton : Element M3e.Component.SplitButton.LeadingButtonSlot (M3e.Component.SplitButton.ChildAdmittedBy childAdm) msg
+    , trailingButton : Element M3e.Component.SplitButton.TrailingButtonSlot (M3e.Component.SplitButton.ChildAdmittedBy childAdm) msg
+    }
+    -> List (Attr M3e.Component.SplitButton.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SplitButton.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SplitButton.Is s) admittedBy msg
 splitButton =
-    M3e.Component.SplitButton.splitbutton
+    M3e.Component.SplitButton.el
 
 
-{-| See `M3e.Component.SplitPane.splitpane`.
+{-| See `M3e.Component.SplitPane.el`.
 -}
 splitPane :
-    List (Attr M3e.Component.SplitPane.Attrs msg)
+    { end : Element childAccepts (M3e.Component.SplitPane.ChildAdmittedBy childAdm) msg
+    , start : Element childAccepts (M3e.Component.SplitPane.ChildAdmittedBy childAdm) msg
+    }
+    -> List (Attr M3e.Component.SplitPane.Attrs msg)
     -> List (Element childAccepts (M3e.Component.SplitPane.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SplitPane.Is s) admittedBy msg
 splitPane =
-    M3e.Component.SplitPane.splitpane
+    M3e.Component.SplitPane.el
 
 
-{-| See `M3e.Component.StateLayer.statelayer`.
+{-| See `M3e.Component.StateLayer.el`.
 -}
 stateLayer :
     List (Attr M3e.Component.StateLayer.Attrs msg)
     -> List (Element childAccepts (M3e.Component.StateLayer.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.StateLayer.Is s) admittedBy msg
 stateLayer =
-    M3e.Component.StateLayer.statelayer
+    M3e.Component.StateLayer.el
 
 
-{-| See `M3e.Component.Step.step`.
+{-| See `M3e.Component.Step.el`.
 -}
 step :
-    List (Attr M3e.Component.Step.Attrs msg)
+    { content : Element M3e.Component.Step.Content (M3e.Component.Step.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Step.Attrs msg)
     -> List (Element M3e.Component.Step.Content (M3e.Component.Step.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Step.Is s) admittedBy msg
 step =
-    M3e.Component.Step.step
+    M3e.Component.Step.el
 
 
-{-| See `M3e.Component.StepPanel.steppanel`.
+{-| See `M3e.Component.StepPanel.el`.
 -}
 stepPanel :
     List (Attr M3e.Component.StepPanel.Attrs msg)
     -> List (Element childAccepts (M3e.Component.StepPanel.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.StepPanel.Is s) admittedBy msg
 stepPanel =
-    M3e.Component.StepPanel.steppanel
+    M3e.Component.StepPanel.el
 
 
-{-| See `M3e.Component.Stepper.stepper`.
+{-| See `M3e.Component.Stepper.el`.
 -}
 stepper :
     List (Attr M3e.Component.Stepper.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Stepper.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Stepper.Is s) admittedBy msg
 stepper =
-    M3e.Component.Stepper.stepper
+    M3e.Component.Stepper.el
 
 
-{-| See `M3e.Component.StepperNext.steppernext`.
+{-| See `M3e.Component.StepperNext.el`.
 -}
 stepperNext :
     List (Attr M3e.Component.StepperNext.Attrs msg)
     -> List (Element childAccepts (M3e.Component.StepperNext.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.StepperNext.Is s) admittedBy msg
 stepperNext =
-    M3e.Component.StepperNext.steppernext
+    M3e.Component.StepperNext.el
 
 
-{-| See `M3e.Component.StepperPrevious.stepperprevious`.
+{-| See `M3e.Component.StepperPrevious.el`.
 -}
 stepperPrevious :
     List (Attr M3e.Component.StepperPrevious.Attrs msg)
     -> List (Element childAccepts (M3e.Component.StepperPrevious.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.StepperPrevious.Is s) admittedBy msg
 stepperPrevious =
-    M3e.Component.StepperPrevious.stepperprevious
+    M3e.Component.StepperPrevious.el
 
 
-{-| See `M3e.Component.StepperReset.stepperreset`.
+{-| See `M3e.Component.StepperReset.el`.
 -}
 stepperReset :
     List (Attr M3e.Component.StepperReset.Attrs msg)
     -> List (Element childAccepts (M3e.Component.StepperReset.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.StepperReset.Is s) admittedBy msg
 stepperReset =
-    M3e.Component.StepperReset.stepperreset
+    M3e.Component.StepperReset.el
 
 
-{-| See `M3e.Component.SuggestionChip.suggestionchip`.
+{-| See `M3e.Component.SuggestionChip.el`.
 -}
 suggestionChip :
-    List (Attr M3e.Component.SuggestionChip.Attrs msg)
+    { content : Element M3e.Component.SuggestionChip.Content (M3e.Component.SuggestionChip.ChildAdmittedBy childAdm) msg
+    , action : Ac.Action M3e.Component.SuggestionChip.ActionCaps msg
+    }
+    -> List (Attr M3e.Component.SuggestionChip.Attrs msg)
     -> List (Element M3e.Component.SuggestionChip.Content (M3e.Component.SuggestionChip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.SuggestionChip.Is s) admittedBy msg
 suggestionChip =
-    M3e.Component.SuggestionChip.suggestionchip
+    M3e.Component.SuggestionChip.el
 
 
-{-| See `M3e.Component.Switch.switch`.
+{-| See `M3e.Component.Switch.el`.
 -}
 switch :
     List (Attr M3e.Component.Switch.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Switch.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Switch.Is s) admittedBy msg
 switch =
-    M3e.Component.Switch.switch
+    M3e.Component.Switch.el
 
 
-{-| See `M3e.Component.Tab.tab`.
+{-| See `M3e.Component.Tab.el`.
 -}
 tab :
     List (Attr M3e.Component.Tab.Attrs msg)
     -> List (Element M3e.Component.Tab.Content (M3e.Component.Tab.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Tab.Is s) admittedBy msg
 tab =
-    M3e.Component.Tab.tab
+    M3e.Component.Tab.el
 
 
-{-| See `M3e.Component.TabPanel.tabpanel`.
+{-| See `M3e.Component.TabPanel.el`.
 -}
 tabPanel :
     List (Attr M3e.Component.TabPanel.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TabPanel.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TabPanel.Is s) admittedBy msg
 tabPanel =
-    M3e.Component.TabPanel.tabpanel
+    M3e.Component.TabPanel.el
 
 
-{-| See `M3e.Component.Tabs.tabs`.
+{-| See `M3e.Component.Tabs.el`.
 -}
 tabs :
     List (Attr M3e.Component.Tabs.Attrs msg)
     -> List (Element M3e.Component.Tabs.Content (M3e.Component.Tabs.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Tabs.Is s) admittedBy msg
 tabs =
-    M3e.Component.Tabs.tabs
+    M3e.Component.Tabs.el
 
 
-{-| See `M3e.Component.TextHighlight.texthighlight`.
+{-| See `M3e.Component.TextHighlight.el`.
 -}
 textHighlight :
     List (Attr M3e.Component.TextHighlight.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TextHighlight.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TextHighlight.Is s) admittedBy msg
 textHighlight =
-    M3e.Component.TextHighlight.texthighlight
+    M3e.Component.TextHighlight.el
 
 
-{-| See `M3e.Component.TextOverflow.textoverflow`.
+{-| See `M3e.Component.TextOverflow.el`.
 -}
 textOverflow :
     List (Attr M3e.Component.TextOverflow.Attrs msg)
     -> List (Element M3e.Component.TextOverflow.Content (M3e.Component.TextOverflow.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TextOverflow.Is s) admittedBy msg
 textOverflow =
-    M3e.Component.TextOverflow.textoverflow
+    M3e.Component.TextOverflow.el
 
 
-{-| See `M3e.Component.TextareaAutosize.textareaautosize`.
+{-| See `M3e.Component.TextareaAutosize.el`.
 -}
 textareaAutosize :
     List (Attr M3e.Component.TextareaAutosize.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TextareaAutosize.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TextareaAutosize.Is s) admittedBy msg
 textareaAutosize =
-    M3e.Component.TextareaAutosize.textareaautosize
+    M3e.Component.TextareaAutosize.el
 
 
-{-| See `M3e.Component.Theme.theme`.
+{-| See `M3e.Component.Theme.el`.
 -}
 theme :
     List (Attr M3e.Component.Theme.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Theme.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Theme.Is s) admittedBy msg
 theme =
-    M3e.Component.Theme.theme
+    M3e.Component.Theme.el
 
 
-{-| See `M3e.Component.ThemeIcon.themeicon`.
+{-| See `M3e.Component.ThemeIcon.el`.
 -}
 themeIcon :
     List (Attr M3e.Component.ThemeIcon.Attrs msg)
     -> List (Element childAccepts (M3e.Component.ThemeIcon.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.ThemeIcon.Is s) admittedBy msg
 themeIcon =
-    M3e.Component.ThemeIcon.themeicon
+    M3e.Component.ThemeIcon.el
 
 
-{-| See `M3e.Component.Timepicker.timepicker`.
+{-| See `M3e.Component.Timepicker.el`.
 -}
 timepicker :
     List (Attr M3e.Component.Timepicker.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Timepicker.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Timepicker.Is s) admittedBy msg
 timepicker =
-    M3e.Component.Timepicker.timepicker
+    M3e.Component.Timepicker.el
 
 
-{-| See `M3e.Component.TimepickerDial.timepickerdial`.
+{-| See `M3e.Component.TimepickerDial.el`.
 -}
 timepickerDial :
     List (Attr M3e.Component.TimepickerDial.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TimepickerDial.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TimepickerDial.Is s) admittedBy msg
 timepickerDial =
-    M3e.Component.TimepickerDial.timepickerdial
+    M3e.Component.TimepickerDial.el
 
 
-{-| See `M3e.Component.TimepickerInput.timepickerinput`.
+{-| See `M3e.Component.TimepickerInput.el`.
 -}
 timepickerInput :
     List (Attr M3e.Component.TimepickerInput.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TimepickerInput.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TimepickerInput.Is s) admittedBy msg
 timepickerInput =
-    M3e.Component.TimepickerInput.timepickerinput
+    M3e.Component.TimepickerInput.el
 
 
-{-| See `M3e.Component.TimepickerInputPeriodToggle.timepickerinputperiodtoggle`.
+{-| See `M3e.Component.TimepickerInputPeriodToggle.el`.
 -}
 timepickerInputPeriodToggle :
     List (Attr M3e.Component.TimepickerInputPeriodToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TimepickerInputPeriodToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TimepickerInputPeriodToggle.Is s) admittedBy msg
 timepickerInputPeriodToggle =
-    M3e.Component.TimepickerInputPeriodToggle.timepickerinputperiodtoggle
+    M3e.Component.TimepickerInputPeriodToggle.el
 
 
-{-| See `M3e.Component.TimepickerToggle.timepickertoggle`.
+{-| See `M3e.Component.TimepickerToggle.el`.
 -}
 timepickerToggle :
     List (Attr M3e.Component.TimepickerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TimepickerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TimepickerToggle.Is s) admittedBy msg
 timepickerToggle =
-    M3e.Component.TimepickerToggle.timepickertoggle
+    M3e.Component.TimepickerToggle.el
 
 
-{-| See `M3e.Component.Toc.toc`.
+{-| See `M3e.Component.Toc.el`.
 -}
 toc :
     List (Attr M3e.Component.Toc.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Toc.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Toc.Is s) admittedBy msg
 toc =
-    M3e.Component.Toc.toc
+    M3e.Component.Toc.el
 
 
-{-| See `M3e.Component.TocItem.tocitem`.
+{-| See `M3e.Component.TocItem.el`.
 -}
 tocItem :
-    List (Attr M3e.Component.TocItem.Attrs msg)
+    { content : Element M3e.Component.TocItem.Content (M3e.Component.TocItem.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.TocItem.Attrs msg)
     -> List (Element M3e.Component.TocItem.Content (M3e.Component.TocItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TocItem.Is s) admittedBy msg
 tocItem =
-    M3e.Component.TocItem.tocitem
+    M3e.Component.TocItem.el
 
 
-{-| See `M3e.Component.Toolbar.toolbar`.
+{-| See `M3e.Component.Toolbar.el`.
 -}
 toolbar :
     List (Attr M3e.Component.Toolbar.Attrs msg)
     -> List (Element childAccepts (M3e.Component.Toolbar.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Toolbar.Is s) admittedBy msg
 toolbar =
-    M3e.Component.Toolbar.toolbar
+    M3e.Component.Toolbar.el
 
 
-{-| See `M3e.Component.Tooltip.tooltip`.
+{-| See `M3e.Component.Tooltip.el`.
 -}
 tooltip :
-    List (Attr M3e.Component.Tooltip.Attrs msg)
+    { content : Element M3e.Component.Tooltip.Content (M3e.Component.Tooltip.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.Tooltip.Attrs msg)
     -> List (Element M3e.Component.Tooltip.Content (M3e.Component.Tooltip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Tooltip.Is s) admittedBy msg
 tooltip =
-    M3e.Component.Tooltip.tooltip
+    M3e.Component.Tooltip.el
 
 
-{-| See `M3e.Component.Tree.tree`.
+{-| See `M3e.Component.Tree.el`.
 -}
 tree :
     List (Attr M3e.Component.Tree.Attrs msg)
     -> List (Element M3e.Component.Tree.Content (M3e.Component.Tree.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.Tree.Is s) admittedBy msg
 tree =
-    M3e.Component.Tree.tree
+    M3e.Component.Tree.el
 
 
-{-| See `M3e.Component.TreeItem.treeitem`.
+{-| See `M3e.Component.TreeItem.el`.
 -}
 treeItem :
-    List (Attr M3e.Component.TreeItem.Attrs msg)
+    { label : Element M3e.Component.TreeItem.LabelSlot (M3e.Component.TreeItem.ChildAdmittedBy childAdm) msg }
+    -> List (Attr M3e.Component.TreeItem.Attrs msg)
     -> List (Element M3e.Component.TreeItem.Content (M3e.Component.TreeItem.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TreeItem.Is s) admittedBy msg
 treeItem =
-    M3e.Component.TreeItem.treeitem
+    M3e.Component.TreeItem.el
 
 
-{-| See `M3e.Component.YearView.yearview`.
+{-| See `M3e.Component.YearView.el`.
 -}
 yearView :
     List (Attr M3e.Component.YearView.Attrs msg)
     -> List (Element childAccepts (M3e.Component.YearView.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.YearView.Is s) admittedBy msg
 yearView =
-    M3e.Component.YearView.yearview
+    M3e.Component.YearView.el
 
 
 {-| The shared text atom — admissible into any library's opted-in slot.

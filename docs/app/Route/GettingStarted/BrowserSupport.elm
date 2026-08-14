@@ -68,7 +68,7 @@ head _ =
 supportRow : String -> String -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 supportRow browser note =
     TypedHtml.div [ TA.class "flex items-baseline justify-between gap-4 py-2.5" ]
-        [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text browser ]
+        [ M3e.heading { content = M3e.text browser } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] []
         , TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text note ]
         ]
 
@@ -80,9 +80,7 @@ featureItem note =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading
-        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
-        [ M3e.text "Browser Support" ]
+    M3e.heading { content = M3e.text "Browser Support" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

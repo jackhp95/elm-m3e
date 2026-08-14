@@ -167,12 +167,12 @@ pane items =
 -}
 pageHeading : String -> Element (M3e.Component.Heading.Is s) admittedBy msg
 pageHeading s =
-    M3e.heading
+    M3e.heading { content = M3e.text s }
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
-        [ M3e.text s ]
+        []
 
 
 {-| A section's `<h2>`: headline-small heading, carrying an `id` so it has a
@@ -186,13 +186,13 @@ anchor stable across renders:
 -}
 sectionHeadingWithId : String -> String -> Element (M3e.Component.Heading.Is s) admittedBy msg
 sectionHeadingWithId id s =
-    M3e.heading
+    M3e.heading { content = M3e.text s }
         [ M3e.Component.Heading.variant Value.headline
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 2
         , M3e.Attributes.id id
         ]
-        [ M3e.text s ]
+        []
 
 
 {-| Derive a stable `id` from a heading's own display text -- lowercase,

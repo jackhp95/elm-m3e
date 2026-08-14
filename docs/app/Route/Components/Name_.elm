@@ -17,6 +17,7 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Card
 import M3e.Component.ListItem
@@ -152,9 +153,7 @@ header : Component -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 header component =
     TypedHtml.div [ TA.class "space-y-4" ]
         (TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3" ]
-            (M3e.heading
-                [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
-                [ M3e.text component.label ]
+            (M3e.heading { content = M3e.text component.label } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
                 :: categoryChip component.category
             )
             :: summaryBlock component.summary
@@ -192,7 +191,7 @@ categoryChip cat =
         []
 
     else
-        [ M3e.suggestionChip [] [ M3e.text cat ] ]
+        [ M3e.suggestionChip { content = M3e.text cat, action = M3e.Action.none } [] [] ]
 
 
 {-| The one-line summary paragraph, constrained to a comfortable reading measure.

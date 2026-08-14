@@ -6,7 +6,6 @@ shows short qualified references instead of expanded record rows.
 
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
-import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -62,30 +61,4 @@ type alias TouchGestures =
     { auto : Supported
     , off : Supported
     , on : Supported
-    }
-
-
-type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
-
-
-type alias AttrCaps =
-    { class : Available
-    , disabled : Available
-    , for : Available
-    , hideDelay : Available
-    , id : Available
-    , onBeforetoggle : Available
-    , onToggle : Available
-    , position : Available
-    , showDelay : Available
-    , slot : Available
-    , style : Available
-    , touchGestures : Available
-    }
-
-
-type alias SlotCaps =
-    { actions : Available
-    , subhead : Available
     }

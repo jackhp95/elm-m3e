@@ -1,5 +1,5 @@
 module M3e.Component.Option exposing
-    ( option, component
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , HighlightMode, highlightMode
     , disableHighlight, disabled, selected, term, value, defaultSelected, defaultValue
@@ -10,7 +10,7 @@ module M3e.Component.Option exposing
 
 An option that can be selected.
 
-@docs option, component
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs HighlightMode, highlightMode
 @docs disableHighlight, disabled, selected, term, value, defaultSelected, defaultValue
@@ -59,25 +59,15 @@ type alias HighlightMode =
     M3e.Internal.Types.Option.HighlightMode
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-option :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-option =
-    H.option
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    option attrs (required_.content :: children)
+el required_ attrs children =
+    H.option attrs (required_.content :: children)
 
 
 {-| The mode in which to highlight a term. (default: `"contains"`)

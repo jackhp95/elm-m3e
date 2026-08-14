@@ -67,9 +67,7 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading
-        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
-        [ M3e.text "Motion" ]
+    M3e.heading { content = M3e.text "Motion" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 {-| A `(token, value)` reference table: the CSS custom property on the left, its

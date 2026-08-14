@@ -185,13 +185,13 @@ cardName : Preset -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 cardName preset =
     TypedHtml.div
         [ TA.class "min-w-0" ]
-        [ M3e.heading
+        [ M3e.heading { content = M3e.text preset.name }
             [ M3e.Component.Heading.variant Value.title
             , M3e.Component.Heading.size Value.small
             , MA.class "truncate"
             , MA.style "font-family" (Theme.Fonts.fontStack preset.displayFont)
             ]
-            [ M3e.text preset.name ]
+            []
         ]
 
 
@@ -202,18 +202,18 @@ cardSpecimen : Preset -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
 cardSpecimen preset =
     TypedHtml.div
         [ TA.class "flex items-baseline gap-1" ]
-        [ M3e.heading
+        [ M3e.heading { content = M3e.text "A" }
             [ M3e.Component.Heading.variant Value.display
             , M3e.Component.Heading.size Value.small
             , MA.style "font-family" (Theme.Fonts.fontStack preset.displayFont)
             ]
-            [ M3e.text "A" ]
-        , M3e.heading
+            []
+        , M3e.heading { content = M3e.text "a" }
             [ M3e.Component.Heading.variant Value.title
             , M3e.Component.Heading.size Value.medium
             , MA.style "font-family" (Theme.Fonts.fontStack preset.bodyFont)
             ]
-            [ M3e.text "a" ]
+            []
         ]
 
 

@@ -5,6 +5,7 @@ import HtmlIr.Element
 import HtmlIr.Kind
 import Json.Decode as Decode
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Component.Icon
@@ -521,15 +522,25 @@ Contrast/Motion segmented controls too.
 -}
 segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 segmented segments =
-    M3e.segmentedButton []
-        (List.map
-            (\( lbl, isChecked, msg ) ->
-                M3e.buttonSegment
-                    [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
-                    [ M3e.text lbl ]
-            )
-            segments
-        )
+    let
+        buttonSegments =
+            List.map
+                (\( lbl, isChecked, msg ) ->
+                    M3e.buttonSegment
+                        [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
+                        [ M3e.text lbl ]
+                )
+                segments
+    in
+    -- SegmentedButton's `el` is required-record (`content`, one Element); every
+    -- real caller supplies a non-empty enum list, so the `[]` branch is
+    -- unreachable in practice — still handled so the type holds unconditionally.
+    case buttonSegments of
+        first :: rest ->
+            M3e.segmentedButton { content = first } [] rest
+
+        [] ->
+            M3e.segmentedButton { content = M3e.buttonSegment [] [] } [] []
 
 
 {-| Upper-case the first character. Enum wire strings are lower-case; the
@@ -554,9 +565,7 @@ pattern used when the drawer was split out. msg-polymorphic so both `Theme` and
 -}
 controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
 controlLabel lbl =
-    M3e.heading
-        [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ]
-        [ M3e.text lbl ]
+    M3e.heading { content = M3e.text lbl } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ] []
 
 
 {-| Scheme control: a single toggle icon button flipping Light ⇄ Dark (matching
@@ -580,8 +589,8 @@ schemeToggle model =
                 ( Value.dark, "dark_mode", "Switch to dark theme" )
     in
     M3e.iconButton
+        { content = M3e.icon [ M3e.Component.Icon.name glyph ] [], ariaLabel = lbl, action = M3e.Action.none }
         [ TypedHtml.Events.onClick (SetScheme next)
-        , Aria.label lbl
         , Aria.pressed
             (if isDark then
                 Aria.true
@@ -590,7 +599,7 @@ schemeToggle model =
                 Aria.false
             )
         ]
-        [ M3e.icon [ M3e.Component.Icon.name glyph ] [] ]
+        []
 
 
 {-| The 9 M3 dynamic-color variants valid on `m3e-theme`. Separated from the
@@ -671,11 +680,14 @@ clean declarative anchor — see plan's component-API reality check).
 variantSelect : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 variantSelect model =
     TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
-        [ M3e.button []
-            [ M3e.menuTrigger [ M3e.Component.MenuTrigger.for "variant-menu" ]
-                [ M3e.text (variantLabelFor model.variant) ]
-            , M3e.Component.Button.trailingIcon (M3e.icon [ M3e.Component.Icon.name "arrow_drop_down" ] [])
-            ]
+        [ M3e.button
+            { content =
+                M3e.menuTrigger [ M3e.Component.MenuTrigger.for "variant-menu" ]
+                    [ M3e.text (variantLabelFor model.variant) ]
+            , action = M3e.Action.none
+            }
+            []
+            [ M3e.Component.Button.trailingIcon (M3e.icon [ M3e.Component.Icon.name "arrow_drop_down" ] []) ]
         , M3e.menu [ M3e.Attributes.id "variant-menu" ]
             (List.map
                 (\v ->
@@ -699,12 +711,12 @@ colorOptions : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 colorOptions model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1.5" ]
         [ TypedHtml.div []
-            [ M3e.heading
+            [ M3e.heading { content = M3e.text "Source color" }
                 [ M3e.Attributes.variant Value.label
                 , M3e.Attributes.size Value.small
                 , TypedHtml.Attributes.class "text-on-surface-variant"
                 ]
-                [ M3e.text "Source color" ]
+                []
             ]
         , TypedHtml.div [ TypedHtml.Attributes.class "flex gap-3 overflow-x-auto snap-x snap-mandatory items-center py-2" ]
             (sourceColorOption model :: List.map (colorAvatar model) curatedSwatchColors)
@@ -852,6 +864,4 @@ view { sectionsEl } model toMsg =
 
 resetAllButton : Element (M3e.Component.Button.Is s) admittedBy Msg
 resetAllButton =
-    M3e.button
-        [ TypedHtml.Events.onClick ResetAll ]
-        [ M3e.text "Reset all" ]
+    M3e.button { content = M3e.text "Reset all", action = M3e.Action.none } [ TypedHtml.Events.onClick ResetAll ] []

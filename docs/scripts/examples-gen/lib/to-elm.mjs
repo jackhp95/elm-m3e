@@ -424,16 +424,15 @@ function elementToElm(node, oracle) {
   }
 
   // Variant-group members fold into the group's TOP module with a per-variant
-  // constructor (`M3e.Progress.linear`); everything else is
-  // `M3e.<Module>.<name>` where `<name>` is the component's own lowercased base
-  // name (the cross-repo rename replaced the old standard `view` ctor with the
-  // component's whole-word-lowercase name: Button -> `button`, Icon -> `icon`,
-  // SplitButton -> `splitbutton`). This mirrors extract-reference.mjs's slug
-  // (`name.replace(/^Component\./, "").toLowerCase()`) — a WHOLE-WORD lowercase,
-  // NOT a camelCase split, so multiword modules produce `splitbutton`.
-  // Setters + content helpers all live on the target module.
+  // constructor (`M3e.Progress.linear`); everything else is `M3e.<Module>.el`
+  // — the `el`-unification leaf (elm-cem L1/L2) collapsed each component's
+  // former `view`+`el` (or bare-name/`component`) pair into ONE two-arity `el`
+  // (bare when no required fields, record-arg when some), so every non-group
+  // constructor slug is now the literal string `"el"`, not the component's
+  // lowercased base name. Setters + content helpers all live on the target
+  // module and are unaffected.
   const mod = entry.group ? entry.group.module : entry.module;
-  const ctor = entry.group ? entry.group.variant : mod.toLowerCase();
+  const ctor = entry.group ? entry.group.variant : "el";
   // Emit-qualifier: the component's REAL Elm module SUFFIX (e.g.
   // `Component.Button` after the library moved the 130 components under
   // `M3e.Component.<Name>`), sourced from reference.json via the oracle. Kept

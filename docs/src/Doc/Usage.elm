@@ -165,13 +165,13 @@ usageBlocks activeSurface examples =
 
         _ ->
             [ TypedHtml.div [ TA.class "space-y-6" ]
-                (M3e.heading
+                (M3e.heading { content = M3e.text "Usage" }
                     [ M3e.Component.Heading.variant Value.headline
                     , M3e.Component.Heading.size Value.small
                     , M3e.Attributes.level 2
                     , M3e.Attributes.id (Doc.slugify "Usage")
                     ]
-                    [ M3e.text "Usage" ]
+                    []
                     :: List.concatMap (sectionBlock activeSurface)
                         (groupBySection examples)
                 )
@@ -187,13 +187,13 @@ sectionBlock activeSurface ( sec, examples ) =
                 []
 
             else
-                [ M3e.heading
+                [ M3e.heading { content = M3e.text sec }
                     [ M3e.Component.Heading.variant Value.title
                     , M3e.Component.Heading.size Value.large
                     , M3e.Attributes.level 3
                     , M3e.Attributes.id (Doc.slugify sec)
                     ]
-                    [ M3e.text sec ]
+                    []
                 ]
     in
     headingEl ++ List.map (exampleBlock activeSurface) examples

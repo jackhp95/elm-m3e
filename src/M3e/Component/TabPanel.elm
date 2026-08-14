@@ -1,5 +1,5 @@
 module M3e.Component.TabPanel exposing
-    ( tabpanel
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.TabPanel exposing
 
 A panel presented for a tab.
 
-@docs tabpanel
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs child
 
@@ -47,11 +47,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-tabpanel :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-tabpanel =
+el =
     H.tabPanel
 
 

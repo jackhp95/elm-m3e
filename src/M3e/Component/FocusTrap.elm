@@ -1,5 +1,5 @@
 module M3e.Component.FocusTrap exposing
-    ( focustrap
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , disabled
     , child
@@ -9,7 +9,7 @@ module M3e.Component.FocusTrap exposing
 
 A non-visual element used to trap focus within nested content.
 
-@docs focustrap
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs disabled
 @docs child
@@ -49,11 +49,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-focustrap :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-focustrap =
+el =
     H.focusTrap
 
 

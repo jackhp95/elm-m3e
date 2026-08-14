@@ -1,5 +1,5 @@
 module M3e.Component.TextOverflow exposing
-    ( textoverflow
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.TextOverflow exposing
 
 An inline container which presents an ellipsis when content overflows.
 
-@docs textoverflow
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs child
 
@@ -50,11 +50,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-textoverflow :
+el :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-textoverflow =
+el =
     H.textOverflow
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.Heading exposing
-    ( heading, component
+    ( el
     , Is, Attrs, Content, ChildAdmittedBy
     , Size, size, Variant, variant
     , emphasized, level, tocIgnore
@@ -10,7 +10,7 @@ module M3e.Component.Heading exposing
 
 A heading to a page or section.
 
-@docs heading, component
+@docs el
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Size, size, Variant, variant
 @docs emphasized, level, tocIgnore
@@ -65,25 +65,15 @@ type alias Variant =
     M3e.Internal.Types.Heading.Variant
 
 
-{-| Standard constructor: `[attributes] [children]`.
--}
-heading :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-heading =
-    H.heading
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    heading attrs (required_.content :: children)
+el required_ attrs children =
+    H.heading attrs (required_.content :: children)
 
 
 {-| The size of the heading. (default: `"medium"`)

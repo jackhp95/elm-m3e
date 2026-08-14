@@ -23,6 +23,7 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Component.Card
@@ -132,12 +133,12 @@ view app shared _ =
 hero : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
 hero =
     TypedHtml.section [ TA.class "space-y-5" ]
-        [ M3e.heading
+        [ M3e.heading { content = M3e.text "Type-safe Material 3 Expressive for Elm" }
             [ M3e.Component.Heading.variant Value.display
             , M3e.Component.Heading.size Value.large
             , M3e.Attributes.level 1
             ]
-            [ M3e.text "Type-safe Material 3 Expressive for Elm" ]
+            []
         , TypedHtml.div [ TA.class "max-w-2xl" ]
             [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                 [ M3e.text "Material 3 Expressive for Elm, over matraic's "
@@ -146,8 +147,8 @@ hero =
                 ]
             ]
         , TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3 pt-2" ]
-            [ M3e.button [ M3e.Component.Button.variant Value.filled, M3e.Component.Button.href "/getting-started/installation" ] [ M3e.text "Get started" ]
-            , M3e.button [ M3e.Component.Button.variant Value.outlined, M3e.Component.Button.href "/guide/reference" ] [ M3e.text "Browse the API reference" ]
+            [ M3e.button { content = M3e.text "Get started", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled, M3e.Component.Button.href "/getting-started/installation" ] []
+            , M3e.button { content = M3e.text "Browse the API reference", action = M3e.Action.none } [ M3e.Component.Button.variant Value.outlined, M3e.Component.Button.href "/guide/reference" ] []
             ]
         ]
 
@@ -177,7 +178,7 @@ highlightCard : String -> String -> String -> Element { s | card : M3e.Kind.Bran
 highlightCard iconName cardTitle cardBody =
     M3e.card
         [ M3e.Component.Card.variant Value.elevated ]
-        [ M3e.Component.Card.header (M3e.heading [ M3e.Component.Heading.variant Value.title ] [ M3e.text cardTitle ])
+        [ M3e.Component.Card.header (M3e.heading { content = M3e.text cardTitle } [ M3e.Component.Heading.variant Value.title ] [])
         , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex gap-3" ]
                 [ TypedHtml.div [ TA.class "shrink-0" ]

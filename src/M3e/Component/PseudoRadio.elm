@@ -1,5 +1,5 @@
 module M3e.Component.PseudoRadio exposing
-    ( pseudoradio
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , checked, disabled, defaultChecked
     )
@@ -8,7 +8,7 @@ module M3e.Component.PseudoRadio exposing
 
 An element which looks like a radio button.
 
-@docs pseudoradio
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs checked, disabled, defaultChecked
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-pseudoradio :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-pseudoradio =
+el =
     H.pseudoRadio
 
 

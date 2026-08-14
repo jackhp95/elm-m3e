@@ -1,5 +1,5 @@
 module M3e.Component.FabMenuTrigger exposing
-    ( fabmenutrigger
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , for
     )
@@ -8,7 +8,7 @@ module M3e.Component.FabMenuTrigger exposing
 
 An element, nested within a clickable element, used to open a floating action button (FAB) menu.
 
-@docs fabmenutrigger
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs for
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-fabmenutrigger :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-fabmenutrigger =
+el =
     H.fabMenuTrigger
 
 

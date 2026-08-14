@@ -25,6 +25,7 @@ the `Theme.Ports.setCssOverride` port. Inputs use `field-sizing: content`.
 
 import Dict
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.FormField as FormField
 import M3e.Component.Icon
@@ -79,12 +80,12 @@ categoryDetails model group =
     TypedHtml.details [ TypedHtml.Attributes.class "border-b border-outline-variant" ]
         [ TypedHtml.summary [ TypedHtml.Attributes.class "cursor-pointer select-none list-none py-2" ]
             [ M3e.Unsafe.recast
-                (M3e.heading
+                (M3e.heading { content = M3e.text (categoryLabel group) }
                     [ M3e.Attributes.variant Value.title
                     , M3e.Attributes.size Value.small
                     , M3e.Attributes.level 3
                     ]
-                    [ M3e.text (categoryLabel group) ]
+                    []
                 )
             ]
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2 pt-2 pb-3" ]
@@ -153,10 +154,12 @@ cssVarField model prefix cssVar =
                     Just _ ->
                         [ FormField.suffix
                             (M3e.iconButton
-                                [ TypedHtml.Events.onClick (UnsetCssOverride cssVar)
-                                , Aria.label ("Clear --" ++ cssVar)
-                                ]
-                                [ M3e.icon [ M3e.Component.Icon.name "close" ] [] ]
+                                { content = M3e.icon [ M3e.Component.Icon.name "close" ] []
+                                , ariaLabel = "Clear --" ++ cssVar
+                                , action = M3e.Action.none
+                                }
+                                [ TypedHtml.Events.onClick (UnsetCssOverride cssVar) ]
+                                []
                             )
                         ]
 

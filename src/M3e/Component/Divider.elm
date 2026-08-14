@@ -1,5 +1,5 @@
 module M3e.Component.Divider exposing
-    ( divider
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , inset, insetEnd, insetStart, vertical
     )
@@ -8,7 +8,7 @@ module M3e.Component.Divider exposing
 
 A thin line that separates content in lists or other containers.
 
-@docs divider
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs inset, insetEnd, insetStart, vertical
 
@@ -44,11 +44,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-divider :
+el :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-divider =
+el =
     H.divider
 
 

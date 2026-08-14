@@ -1,5 +1,5 @@
 module M3e.Component.RadioGroup exposing
-    ( radiogroup, component
+    ( el
     , Is, Attrs, ChildAdmittedBy
     , ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
     , child
@@ -9,7 +9,7 @@ module M3e.Component.RadioGroup exposing
 
 A container for a set of radio buttons.
 
-@docs radiogroup, component
+@docs el
 @docs Is, Attrs, ChildAdmittedBy
 @docs ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
 @docs child
@@ -46,28 +46,15 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.RadioGroup.ChildAdmittedBy childAdm
 
 
-{-| Standard constructor: `[attributes] [children]`. The default slot is
-kind-permissive (`any`): children of any kind compose, but each child's OWN
-admittedBy must still admit this context — a restricted-parent element is
-rejected here at compile time.
--}
-radiogroup :
-    List (Attr Attrs msg)
-    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-radiogroup =
-    H.radioGroup
-
-
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-component :
+el :
     { content : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    radiogroup attrs (required_.content :: children)
+el required_ attrs children =
+    H.radioGroup attrs (required_.content :: children)
 
 
 {-| See `M3e.Attributes.ariaInvalid`.

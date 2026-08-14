@@ -5,7 +5,6 @@ shows short qualified references instead of expanded record rows.
 -}
 
 import HtmlIr.Kind exposing (Shared, Supported)
-import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -68,36 +67,3 @@ type alias IconSlot =
 
 type alias ChildAdmittedBy childAdm =
     { childAdm | step : Ctx }
-
-
-type alias Builder attrCaps slotCaps msg s =
-    B.Builder Attrs attrCaps slotCaps (Is s) msg
-
-
-type alias AttrCaps =
-    { class : Available
-    , completed : Available
-    , disabled : Available
-    , editable : Available
-    , for : Available
-    , id : Available
-    , invalid : Available
-    , onBeforeinput : Available
-    , onChange : Available
-    , onClick : Available
-    , onInput : Available
-    , optional : Available
-    , selected : Available
-    , slot : Available
-    , style : Available
-    }
-
-
-type alias SlotCaps =
-    { doneIcon : Available
-    , editIcon : Available
-    , error : Available
-    , errorIcon : Available
-    , hint : Available
-    , icon : Available
-    }
