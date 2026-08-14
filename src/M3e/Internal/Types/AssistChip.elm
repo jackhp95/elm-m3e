@@ -57,3 +57,22 @@ type alias Variant =
     { elevated : Supported
     , outlined : Supported
     }
+
+
+type alias ActionCaps =
+    { bottomSheetAction : Supported
+    , bottomSheetTrigger : Supported
+    , click : Supported
+    , datepickerToggle : Supported
+    , dialogAction : Supported
+    , dialogTrigger : Supported
+    , drawerToggle : Supported
+    , fabMenuTrigger : Supported
+    , link : Supported
+    , menuTrigger : Supported
+    , navRailToggle : Supported
+    , richTooltipAction : Supported
+    , stepperPrevious : Supported
+    , stepperReset : Supported
+    , timepickerToggle : Supported
+    }

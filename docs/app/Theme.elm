@@ -682,7 +682,8 @@ variantSelect model =
     TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
         [ M3e.button
             { content =
-                M3e.menuTrigger [ M3e.Component.MenuTrigger.for "variant-menu" ]
+                M3e.menuTrigger { for = "variant-menu" }
+                    []
                     [ M3e.text (variantLabelFor model.variant) ]
             , action = M3e.Action.none
             }

@@ -506,7 +506,7 @@ readingPane message =
 
 labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 labelChip name =
-    M3e.assistChip { content = M3e.text name } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] []) ]
+    M3e.assistChip { content = M3e.text name, action = M3e.Action.none } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] []) ]
 
 
 

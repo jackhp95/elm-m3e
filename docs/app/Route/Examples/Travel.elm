@@ -426,4 +426,4 @@ media place =
 
 ratingChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 ratingChip rating =
-    M3e.assistChip { content = M3e.text rating } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] []) ]
+    M3e.assistChip { content = M3e.text rating, action = M3e.Action.none } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "star", M3e.Attributes.filled True ] []) ]

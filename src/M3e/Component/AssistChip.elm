@@ -1,6 +1,6 @@
 module M3e.Component.AssistChip exposing
     ( el
-    , Is, Attrs, Content, IconSlot, ChildAdmittedBy
+    , Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps
     , Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
     , icon, child
@@ -11,7 +11,7 @@ module M3e.Component.AssistChip exposing
 A chip users interact with to perform a smart or automated action that can span multiple applications.
 
 @docs el
-@docs Is, Attrs, Content, IconSlot, ChildAdmittedBy
+@docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps
 @docs Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
 @docs icon, child
@@ -24,6 +24,7 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
 import Json.Encode
+import M3e.Action as Ac
 import M3e.Attributes as A
 import M3e.Events as Ev
 import M3e.Html as H
@@ -73,15 +74,29 @@ type alias Variant =
     M3e.Internal.Types.AssistChip.Variant
 
 
+{-| The behaviours this component's required action admits (see `M3e.Action`).
+-}
+type alias ActionCaps =
+    M3e.Internal.Types.AssistChip.ActionCaps
+
+
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
 el :
-    { content : Element Content (ChildAdmittedBy childAdm) msg }
+    { content : Element Content (ChildAdmittedBy childAdm) msg
+    , action : Ac.Action ActionCaps msg
+    }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
 el required_ attrs children =
-    H.assistChip attrs (required_.content :: children)
+    let
+        actioned =
+            Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))
+    in
+    H.assistChip
+        (Ac.toAttrs required_.action ++ attrs)
+        (actioned :: children)
 
 
 {-| The type of the element. (default: `"button"`)

@@ -1,7 +1,6 @@
 module M3e.Component.MenuTrigger exposing
     ( el
     , Is, Attrs, ChildAdmittedBy
-    , for
     , child
     )
 
@@ -11,7 +10,6 @@ An element, nested within a clickable element, used to open a menu.
 
 @docs el
 @docs Is, Attrs, ChildAdmittedBy
-@docs for
 @docs child
 
 -}
@@ -44,24 +42,15 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.MenuTrigger.ChildAdmittedBy childAdm
 
 
-{-| Standard constructor: `[attributes] [children]`. The default slot is
-kind-permissive (`any`): children of any kind compose, but each child's OWN
-admittedBy must still admit this context — a restricted-parent element is
-rejected here at compile time.
+{-| Required-content (and action) constructor — omissions are unwritable.
 -}
 el :
-    List (Attr Attrs msg)
+    { for : String }
+    -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
-    H.menuTrigger
-
-
-{-| See `M3e.Attributes.for`.
--}
-for : String -> Attr { c | for : Supported } msg
-for =
-    A.for
+el required_ attrs children =
+    H.menuTrigger (Ir.attribute "for" required_.for :: attrs) children
 
 
 {-| Place a pre-built element into the default (unnamed) slot (input

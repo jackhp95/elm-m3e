@@ -1,7 +1,6 @@
 module M3e.Component.FabMenuTrigger exposing
     ( el
     , Is, Attrs, ChildAdmittedBy
-    , for
     )
 
 {-| The `m3e-fab-menu-trigger` component — strict per-component surface.
@@ -10,7 +9,6 @@ An element, nested within a clickable element, used to open a floating action bu
 
 @docs el
 @docs Is, Attrs, ChildAdmittedBy
-@docs for
 
 -}
 
@@ -42,18 +40,12 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.FabMenuTrigger.ChildAdmittedBy childAdm
 
 
-{-| Standard constructor: `[attributes] [children]`.
+{-| Required-content (and action) constructor — omissions are unwritable.
 -}
 el :
-    List (Attr Attrs msg)
+    { for : String }
+    -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
-    H.fabMenuTrigger
-
-
-{-| See `M3e.Attributes.for`.
--}
-for : String -> Attr { c | for : Supported } msg
-for =
-    A.for
+el required_ attrs children =
+    H.fabMenuTrigger (Ir.attribute "for" required_.for :: attrs) children

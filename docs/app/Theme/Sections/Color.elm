@@ -131,7 +131,8 @@ tokenButton model token =
                     Value.outlined
                 )
             ]
-            [ M3e.menuTrigger [ M3e.Component.MenuTrigger.for menuId ]
+            [ M3e.menuTrigger { for = menuId }
+                []
                 [ M3e.text token.role ]
             ]
         , M3e.menu [ M3e.Attributes.id menuId ]

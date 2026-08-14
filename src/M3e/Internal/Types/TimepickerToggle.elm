@@ -14,7 +14,6 @@ type alias Is s =
 
 type alias Attrs =
     { class : Supported
-    , for : Supported
     , id : Supported
     , slot : Supported
     , style : Supported

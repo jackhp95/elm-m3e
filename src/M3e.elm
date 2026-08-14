@@ -197,7 +197,9 @@ appBar =
 {-| See `M3e.Component.AssistChip.el`.
 -}
 assistChip :
-    { content : Element M3e.Component.AssistChip.Content (M3e.Component.AssistChip.ChildAdmittedBy childAdm) msg }
+    { content : Element M3e.Component.AssistChip.Content (M3e.Component.AssistChip.ChildAdmittedBy childAdm) msg
+    , action : Ac.Action M3e.Component.AssistChip.ActionCaps msg
+    }
     -> List (Attr M3e.Component.AssistChip.Attrs msg)
     -> List (Element M3e.Component.AssistChip.Content (M3e.Component.AssistChip.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.AssistChip.Is s) admittedBy msg
@@ -258,7 +260,8 @@ bottomSheetAction =
 {-| See `M3e.Component.BottomSheetTrigger.el`.
 -}
 bottomSheetTrigger :
-    List (Attr M3e.Component.BottomSheetTrigger.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.BottomSheetTrigger.Attrs msg)
     -> List (Element M3e.Component.BottomSheetTrigger.Content (M3e.Component.BottomSheetTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BottomSheetTrigger.Is s) admittedBy msg
 bottomSheetTrigger =
@@ -433,7 +436,8 @@ datepicker =
 {-| See `M3e.Component.DatepickerToggle.el`.
 -}
 datepickerToggle :
-    List (Attr M3e.Component.DatepickerToggle.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.DatepickerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DatepickerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DatepickerToggle.Is s) admittedBy msg
 datepickerToggle =
@@ -463,7 +467,8 @@ dialogAction =
 {-| See `M3e.Component.DialogTrigger.el`.
 -}
 dialogTrigger :
-    List (Attr M3e.Component.DialogTrigger.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.DialogTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DialogTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DialogTrigger.Is s) admittedBy msg
 dialogTrigger =
@@ -493,7 +498,8 @@ drawerContainer =
 {-| See `M3e.Component.DrawerToggle.el`.
 -}
 drawerToggle :
-    List (Attr M3e.Component.DrawerToggle.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.DrawerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DrawerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DrawerToggle.Is s) admittedBy msg
 drawerToggle =
@@ -577,7 +583,8 @@ fabMenuItem =
 {-| See `M3e.Component.FabMenuTrigger.el`.
 -}
 fabMenuTrigger :
-    List (Attr M3e.Component.FabMenuTrigger.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.FabMenuTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FabMenuTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FabMenuTrigger.Is s) admittedBy msg
 fabMenuTrigger =
@@ -824,7 +831,8 @@ menuItemRadio =
 {-| See `M3e.Component.MenuTrigger.el`.
 -}
 menuTrigger :
-    List (Attr M3e.Component.MenuTrigger.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.MenuTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.MenuTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuTrigger.Is s) admittedBy msg
 menuTrigger =
@@ -915,7 +923,8 @@ navRail =
 {-| See `M3e.Component.NavRailToggle.el`.
 -}
 navRailToggle :
-    List (Attr M3e.Component.NavRailToggle.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.NavRailToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.NavRailToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavRailToggle.Is s) admittedBy msg
 navRailToggle =
@@ -1425,7 +1434,8 @@ timepickerInputPeriodToggle =
 {-| See `M3e.Component.TimepickerToggle.el`.
 -}
 timepickerToggle :
-    List (Attr M3e.Component.TimepickerToggle.Attrs msg)
+    { for : String }
+    -> List (Attr M3e.Component.TimepickerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TimepickerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TimepickerToggle.Is s) admittedBy msg
 timepickerToggle =

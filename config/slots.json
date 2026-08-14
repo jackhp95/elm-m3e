@@ -473,6 +473,9 @@
     }
   },
   "BottomSheetTrigger": {
+    "requiredAttrs": [
+      "for"
+    ],
     "admits": {
       "unnamed": {
         "kinds": [
@@ -833,6 +836,9 @@
     }
   },
   "AssistChip": {
+    "required": {
+      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,timepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+    },
     "actionMap": [
       [
         "onClick",
@@ -1669,6 +1675,9 @@
     }
   },
   "MenuTrigger": {
+    "requiredAttrs": [
+      "for"
+    ],
     "admits": {
       "unnamed": {
         "kinds": [
@@ -2663,6 +2672,36 @@
   },
   "Icon": {
     "kind": "shared:icon"
+  },
+  "DialogTrigger": {
+    "requiredAttrs": [
+      "for"
+    ]
+  },
+  "FabMenuTrigger": {
+    "requiredAttrs": [
+      "for"
+    ]
+  },
+  "NavRailToggle": {
+    "requiredAttrs": [
+      "for"
+    ]
+  },
+  "DrawerToggle": {
+    "requiredAttrs": [
+      "for"
+    ]
+  },
+  "DatepickerToggle": {
+    "requiredAttrs": [
+      "for"
+    ]
+  },
+  "TimepickerToggle": {
+    "requiredAttrs": [
+      "for"
+    ]
   },
   "_kinds": [
     "fabMenuItem",

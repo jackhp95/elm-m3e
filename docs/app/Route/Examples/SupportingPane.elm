@@ -23,6 +23,7 @@ import BackendTask
 import ExampleNav
 import Head
 import M3e exposing (Element)
+import M3e.Action
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.Card
@@ -277,7 +278,7 @@ activityRow a =
 
 tag : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 tag label =
-    M3e.assistChip { content = M3e.text label } [] []
+    M3e.assistChip { content = M3e.text label, action = M3e.Action.none } [] []
 
 
 

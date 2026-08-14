@@ -830,7 +830,7 @@ settingsButton =
     M3e.iconButton
         { content = M3e.icon [ M3e.Component.Icon.name "more_vert" ] [], ariaLabel = "Settings", action = M3e.Action.none }
         []
-        [ M3e.bottomSheetTrigger [ M3e.Component.BottomSheetTrigger.for "settings-sheet" ] [] ]
+        [ M3e.bottomSheetTrigger { for = "settings-sheet" } [] [] ]
 
 
 
@@ -1664,7 +1664,7 @@ docsNavRail toMsg path =
             , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
             ]
             [ M3e.Component.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
-            , M3e.navRailToggle [ M3e.Component.NavRailToggle.for "nav-rail" ] []
+            , M3e.navRailToggle { for = "nav-rail" } [] []
             ]
             :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
             :: List.map (railItem path) sections
