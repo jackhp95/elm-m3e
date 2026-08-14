@@ -4,7 +4,6 @@ port module Doc.Usage exposing
     , UsageExample
     , persist
     , readSurface
-    , storeSurface
     , surfaceFromString
     , tabStrip
     , usageBlocks

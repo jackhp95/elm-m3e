@@ -39,6 +39,7 @@ import TypedHtml.Attributes
 import TypedHtml.Events
 import TypedHtml.Grouping
 import TypedHtml.Sectioning
+import TypedHtml.Text
 
 
 view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
@@ -82,6 +83,7 @@ tokenButton model token =
         -- the display:none menu-trigger, which wouldn't project it). Neutral
         -- placeholder for an UNSET token: outline ring, transparent fill (Elm can't
         -- read the live computed var); a set token shows its literal override hex.
+        swatch : Element (TypedHtml.Text.SpanIs s) admittedBy Msg
         swatch =
             TypedHtml.span
                 [ TypedHtml.Attributes.slot "icon"
@@ -91,6 +93,7 @@ tokenButton model token =
                 []
 
         -- Free-form entry controls; recast into the menu's typed slot below.
+        entryPanel : Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
         entryPanel =
             TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1 p-2 min-w-48" ]
                 [ TypedHtml.input

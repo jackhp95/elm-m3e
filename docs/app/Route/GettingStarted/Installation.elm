@@ -197,11 +197,11 @@ main =
 view : () -> Html.Html ()
 view _ =
     M3e.toHtml
-        (Theme.view
+        (Theme.theme
             [ Theme.color "#6750A4"
             , Theme.scheme Value.auto
             ]
-            [ Button.view
+            [ Button.button
                 [ Button.variant Value.filled ]
                 [ M3e.text "It works" ]
             ]

@@ -164,8 +164,11 @@ test("the mobile bottom nav bar does not occlude the end of the page content", a
 }) => {
   // `/guide/reference` renders every component's full API in one page (5000+
   // `m3e-card` custom elements to upgrade) -- a cold context can take longer
-  // than the default 30s timeout just to load and hydrate it.
-  test.setTimeout(60_000);
+  // than the default 30s timeout just to load and hydrate it. Since the
+  // 4-layer API reorg (M3e/Components/Builder/Raw surfaces per component) the
+  // page roughly doubled; isolated it loads in ~45s, and under the gate's
+  // parallel workers the shared CPU pushes it past 60s. 120s gives headroom.
+  test.setTimeout(120_000);
   await page.setViewportSize({ width: 411, height: 761 });
   await page.goto("/guide/reference");
 

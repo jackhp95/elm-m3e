@@ -10,7 +10,6 @@ mode segmented control, differing only in which `Msg` constructor wraps the
 resulting `Theme.Scale.ScaleMode`.
 -}
 
-import Char
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.FormField as FormField

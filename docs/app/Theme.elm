@@ -11,7 +11,6 @@ import M3e.Component.Icon
 import M3e.Component.IconButton
 import M3e.Component.MenuItem
 import M3e.Component.MenuTrigger
-import M3e.Component.Option
 import M3e.Component.Theme
 import M3e.Events
 import M3e.Kind

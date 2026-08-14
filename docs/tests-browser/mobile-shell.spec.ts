@@ -27,8 +27,11 @@ test.use({ viewport: MOBILE });
 test("mobile shell: content scrolls in a bounded inner region (nothing clipped)", async ({ page }) => {
   // `/guide/reference` renders every component's full API in one page (5000+
   // `m3e-card` custom elements to upgrade) -- a cold context can take longer
-  // than the default 30s timeout just to load and hydrate it.
-  test.setTimeout(60_000);
+  // than the default 30s timeout just to load and hydrate it. Since the
+  // 4-layer API reorg (M3e/Components/Builder/Raw surfaces per component) the
+  // page roughly doubled; isolated it loads in ~45s, and under the gate's
+  // parallel workers the shared CPU pushes it past 60s. 120s gives headroom.
+  test.setTimeout(120_000);
   await page.goto(LONG_ROUTE);
   await expect(page.locator("#docs-app-bar")).toBeVisible();
 

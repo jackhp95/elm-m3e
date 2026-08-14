@@ -6,7 +6,6 @@ module Doc.Data exposing
     , allComponents
     , allExampleUsage
     , allUsage
-    , members
     )
 
 import BackendTask exposing (BackendTask)
@@ -15,7 +14,6 @@ import Dict exposing (Dict)
 import Doc.Usage exposing (UsageExample, usageExampleDecoder)
 import FatalError exposing (FatalError)
 import Json.Decode as Decode
-import Set
 
 
 type alias Member =
@@ -96,33 +94,6 @@ layersDecoder =
         , legacyMembers
             |> Decode.map (\ms -> Layers [] (List.filter (\m -> m.kind /= "type") ms) [] [])
         ]
-
-
-{-| The flat member list the barrel/all-components pages still consume — the union
-of this component's types and every layer, de-duplicated by name (a value
-re-exported into more than one layer appears once). The per-component API page
-(`Route.Components.Name_`) uses `.types` + `.layers` directly instead; this
-accessor exists only so the other reference consumers keep compiling after the
-record went layered.
--}
-members : Component -> List Member
-members c =
-    let
-        dedupe : List Member -> List Member
-        dedupe =
-            List.foldl
-                (\m ( seen, acc ) ->
-                    if Set.member m.name seen then
-                        ( seen, acc )
-
-                    else
-                        ( Set.insert m.name seen, m :: acc )
-                )
-                ( Set.empty, [] )
-                >> Tuple.second
-                >> List.reverse
-    in
-    dedupe (c.types ++ c.layers.m3e ++ c.layers.components ++ c.layers.builder ++ c.layers.raw)
 
 
 allComponents : BackendTask FatalError (List Component)

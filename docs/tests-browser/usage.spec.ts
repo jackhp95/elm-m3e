@@ -5,7 +5,7 @@ import { test, expect } from "@playwright/test";
  * across the available API surfaces, switched by a per-example tab strip.
  *
  * Two rendering facts shape these assertions:
- *  - the code is syntax-highlighted, so a token like `M3e.Button.view` is split
+ *  - the code is syntax-highlighted, so a token like `M3e.Component.Button.button` is split
  *    across multiple spans (no single leaf holds it contiguously), and
  *  - long code blocks fold into `<details class="cf-fold">`, which render OPEN
  *    by default as of Phase C, so their text is present and visible; every
@@ -18,7 +18,7 @@ import { test, expect } from "@playwright/test";
  * NOTE (phantom substrate migration): The barrel (M3e.button), middle
  * (M3e.Html.Button.button), and bottom (M3e.Raw.Button.button) surfaces are
  * not generated in the phantom substrate (gen-barrel and gen-record-build are
- * no-ops; M3e.Html and M3e.Raw layers retired). The top surface (M3e.Button.view)
+ * no-ops; M3e.Html and M3e.Raw layers retired). The top surface (M3e.Component.Button.button)
  * and raw HTML are always present; Record/Build show a rationale tab.
  */
 test("/components/button shows a live Usage section with preview + code", async ({
@@ -54,8 +54,8 @@ test("/components/button shows a live Usage section with preview + code", async 
 
   // (3) The derived M3e (Standard) code is rendered (attached; may be folded).
   // The barrel form (M3e.button) is not generated in the phantom substrate;
-  // the top surface uses the qualified form M3e.Button.view.
-  await expect(page.getByText("M3e.Button.view").first()).toBeAttached();
+  // the top surface uses the qualified form M3e.Component.Button.button.
+  await expect(page.getByText("M3e.Component.Button.button").first()).toBeAttached();
 
   // Code folds render OPEN by default (Phase C). Assert with count queries
   // (race-free vs a per-fold loop): at least one fold exists and none lack `open`.
@@ -72,18 +72,18 @@ test("/components/button renders code for the available API surfaces", async ({
 }) => {
   await page.goto("/components/button");
   // Wait for the Standard (top) surface code to be rendered. Barrel form
-  // (M3e.button) is not generated in the phantom substrate; top uses M3e.Button.view.
+  // (M3e.button) is not generated in the phantom substrate; top uses M3e.Component.Button.button.
   await page.waitForFunction(() =>
     [...document.querySelectorAll("code.elmsh")].some((c) =>
-      (c.textContent || "").includes("M3e.Button.view"),
+      (c.textContent || "").includes("M3e.Component.Button.button"),
     ),
   );
 
-  // Each surface's panel is mounted. Top (M3e.Button.view) and raw HTML are
+  // Each surface's panel is mounted. Top (M3e.Component.Button.button) and raw HTML are
   // always present. Mid/bottom (M3e.Html.*/M3e.Raw.*) are null in the phantom
   // substrate, so their tabs are absent. Match on text present in the rendered page.
   for (const code of [
-    "M3e.Button.view", // M3e top surface (Standard form)
+    "M3e.Component.Button.button", // M3e top surface (Standard form)
     "<m3e-button", // raw HTML
   ]) {
     await expect(page.getByText(code).first()).toBeAttached();
@@ -128,7 +128,7 @@ test("/components/button Usage tab sync: clicking a tab updates all examples", a
   // :1234 are false negatives, not bugs.
   await page.waitForFunction(() =>
     [...document.querySelectorAll("code.elmsh")].some((c) =>
-      (c.textContent || "").includes("M3e.Button.view"),
+      (c.textContent || "").includes("M3e.Component.Button.button"),
     ),
   );
 
@@ -208,7 +208,7 @@ test("/components/button API strip and Usage strips share activeSurface state", 
   // Wait for Elm hydration and code rendering.
   await page.waitForFunction(() =>
     [...document.querySelectorAll("code.elmsh")].some((c) =>
-      (c.textContent || "").includes("M3e.Button.view"),
+      (c.textContent || "").includes("M3e.Component.Button.button"),
     ),
   );
 
@@ -292,11 +292,10 @@ test("/components/button API strip and Usage strips share activeSurface state", 
     });
   });
 
-  // --- Part D: setting Usage to HTML → API strip does not crash or show "HTML" ---
-  // HTML / Raw surface is not offered by the API strip, so clicking HTML on a
-  // Usage strip has no matching API tab. The API strip may show no tab selected
-  // (activeSurface=Raw is simply unmapped for the API strip). We only assert that
-  // no tab on the API strip is falsely labelled "HTML" — it has no such tab.
+  // --- Part D: setting Usage to HTML → API strip reflects the shared Raw surface ---
+  // The Usage "HTML" tab and the API strip's "Raw" tab are the SAME shared
+  // surface (activeSurface=Raw). The API strip labels it "Raw" (not "HTML"), so
+  // clicking Usage "HTML" must move the API strip's selection to "Raw".
 
   // Click "HTML" on the first Usage strip.
   await firstUsageStrip.getByText("HTML", { exact: true }).click();
@@ -315,8 +314,22 @@ test("/components/button API strip and Usage strips share activeSurface state", 
     });
   });
 
-  // API strip has no "HTML" tab: confirm none of its tabs show text "HTML"
-  // (structural sanity — the reorg must not have accidentally added an HTML tab).
+  // The API strip shares activeSurface: its "Raw" tab (the 4th surface, added
+  // alongside the Raw API tab) must become selected.
+  await page.waitForFunction(() => {
+    const strips = [...document.querySelectorAll("m3e-tabs")];
+    const apiStrip = strips.find((s) => {
+      const tabs = [...s.querySelectorAll("m3e-tab")];
+      return tabs.some((t) => t.textContent?.trim() === "Components");
+    });
+    if (!apiStrip) return false;
+    const tabs = [...apiStrip.querySelectorAll("m3e-tab")];
+    const selected = tabs.find((t) => t.hasAttribute("selected"));
+    return selected?.textContent?.trim() === "Raw";
+  });
+
+  // The API strip labels the raw surface "Raw", never "HTML" (structural sanity
+  // — the reorg must not have accidentally added an "HTML"-labelled tab).
   const apiHasHtmlTab = await page.evaluate(() => {
     const strips = [...document.querySelectorAll("m3e-tabs")];
     const apiStrip = strips.find((s) => {

@@ -965,22 +965,6 @@ controlRow model =
         ]
 
 
-{-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
-children, each a checked/label/onClick triple.
--}
-segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-segmented segments =
-    M3e.segmentedButton []
-        (List.map
-            (\( lbl, isChecked, msg ) ->
-                M3e.buttonSegment
-                    [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
-                    [ M3e.text lbl ]
-            )
-            segments
-        )
-
-
 {-| Drive `--md-sys-density-scale` via a Tailwind arbitrary-property class — Elm
 cannot set a CSS custom property directly. The three class strings are literals
 so Tailwind's scanner (`@source "./app"` in style.css) emits all three rules.
