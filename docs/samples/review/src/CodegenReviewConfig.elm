@@ -96,6 +96,12 @@ config =
         , "Route.Examples.Shop"
         , "Route.Guide"
         , "Recast"
+
+        -- The theme drawer's live-preview sections route raw swatch/panel HTML
+        -- into the typed tree through `M3e.Unsafe.recast` — the sanctioned escape
+        -- hatch, same as `Shared`'s theme controls they mirror.
+        , "Theme.Sections.Color"
+        , "Theme.Sections.CssVariables"
         ]
 
     -- The recast-containment fence for the reserved `Recast` destination
