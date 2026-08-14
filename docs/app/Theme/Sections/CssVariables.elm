@@ -1,17 +1,19 @@
 module Theme.Sections.CssVariables exposing (view)
 
-{-| The CSS Variables accordion section (§11): the raw escape hatch. Renders EVERY
-known `@m3e/web` CSS custom property as its own `m3e-form-field`, organized into a
-NESTED `m3e-accordion` by the hierarchy encoded in the variable names — so a visitor
-can collapse categories and jump between them.
+{-| The CSS Variables accordion section (§11): the raw escape hatch. Renders the
+non-color `@m3e/web` CSS custom properties (typescale, shape, motion, state) as their
+own `m3e-form-field`s, organized into a NESTED `m3e-accordion` by the hierarchy
+encoded in the variable names — so a visitor can collapse categories and jump between
+them. Color tokens (`md-sys-color-*`) are intentionally excluded: they are managed by
+the dedicated Color section, which owns `model.colorOverrides`. Keeping each token
+under a single control prevents last-writer-wins conflicts on the shared CSS port.
 
 Grouping: vars are clustered by their first three dash-segments (the Material
-sys-category — `md-sys-color`, `md-sys-typescale`, `md-sys-shape`, `md-sys-motion`,
-`md-sys-state`). Within each group we compute the longest common segment-prefix and
-strip it from every field's LABEL, so labels are short (`on-primary`,
-`corner-value-medium`, `duration-short-1`, …). Each category is an
-`m3e-expansion-panel` whose `m3e-heading` header names it; each field's FULL `--<var>`
-name is kept as the form-field's supporting text (`hint` slot).
+sys-category — `md-sys-typescale`, `md-sys-shape`, `md-sys-motion`, `md-sys-state`).
+Within each group we compute the longest common segment-prefix and strip it from every
+field's LABEL, so labels are short (`corner-value-medium`, `duration-short-1`, …).
+Each category is an `m3e-expansion-panel` whose `m3e-heading` header names it; each
+field's FULL `--<var>` name is kept as the form-field's supporting text (`hint` slot).
 
 Typing sets the override (`SetCssOverride`, no validation); a trailing clear button
 (shown only when overridden) reverts it (`UnsetCssOverride`). Elm cannot READ a live
@@ -38,13 +40,14 @@ import TypedHtml.Events
 import TypedHtml.Grouping
 
 
-{-| Every known CSS custom property name (without the `--` prefix), the union of
-the token lists `Theme.Tokens` exposes.
+{-| The non-color CSS custom property names (without the `--` prefix): typescale,
+shape, motion, and state tokens. Color tokens are excluded — the Color section owns
+`model.colorOverrides` and writes those vars; including them here would create a
+second, conflicting control for the same CSS custom property.
 -}
 knownVars : List String
 knownVars =
-    (Tokens.colorGroups |> List.concatMap Tuple.second |> List.map .cssVar)
-        ++ List.map .cssVar Tokens.typescaleTokens
+    List.map .cssVar Tokens.typescaleTokens
         ++ List.map .cssVar Tokens.shapeTokens
         ++ List.map .cssVar Tokens.motionDurationTokens
         ++ List.map .cssVar Tokens.stateOpacityTokens
@@ -58,7 +61,7 @@ view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
         [ TypedHtml.p [ TypedHtml.Attributes.class "text-on-surface-variant text-sm" ]
-            [ M3e.text "Every known @m3e/web CSS custom property, grouped by name hierarchy. Type a value to override it; clear to revert. (Live default values aren't shown — Elm can't read computed CSS variables.)" ]
+            [ M3e.text "Non-color @m3e/web CSS custom properties (typescale, shape, motion, state), grouped by name hierarchy. Color tokens are in the Color section above. Type a value to override it; clear to revert. (Live default values aren't shown — Elm can't read computed CSS variables.)" ]
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col" ]
             (List.map (categoryDetails model) (groupVars knownVars))
         ]
