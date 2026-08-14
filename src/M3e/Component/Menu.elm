@@ -16,6 +16,19 @@ Presents a list of choices on a temporary surface.
 @docs submenu, onBeforetoggle, onToggle
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Menu.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

@@ -16,6 +16,22 @@ An expandable details-summary view.
 @docs disabled, hideToggle, open, onOpening, onOpened, onClosing, onClosed
 @docs actions, header, toggleIcon, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.ExpansionPanel.el
+    { header = TypedHtml.text "Section 1" }
+    []
+    [ TypedHtml.text "Section 1 details" ]
+```
+
+<!-- elm-cem:docmeta category=Containment -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

@@ -12,6 +12,19 @@ A non-visual element used to automatically resize a `textarea` to fit its conten
 @docs Is, Attrs, ChildAdmittedBy
 @docs disabled, for, maxRows, minRows
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.TextareaAutosize.el [] []
+```
+
+<!-- elm-cem:docmeta category=Text inputs -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

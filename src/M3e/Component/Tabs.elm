@@ -16,6 +16,19 @@ Organizes content into separate views where only one view can be visible at a ti
 @docs nextPageLabel, previousPageLabel, stretch, onChange, onBeforeinput, onInput
 @docs nextIcon, panel, prevIcon, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Tabs.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

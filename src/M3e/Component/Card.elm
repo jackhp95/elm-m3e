@@ -16,6 +16,19 @@ A content container for text, images (or other media), and actions in the contex
 @docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
 @docs actions, content, footer, header, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Card.el [] [ TypedHtml.text "Card content" ]
+```
+
+<!-- elm-cem:docmeta category=Containment -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

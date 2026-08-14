@@ -16,6 +16,19 @@ Presents frequently used actions relevant to the current page.
 @docs elevated, vertical
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Toolbar.el [] []
+```
+
+<!-- elm-cem:docmeta category=Containment -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

@@ -16,6 +16,23 @@ Organizes buttons and adds interactions between them.
 @docs multi
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.ButtonGroup.el []
+    [ M3e.Component.Button.el { content = TypedHtml.text "Day", action = M3e.Action.none } [] []
+    , M3e.Component.Button.el { content = TypedHtml.text "Week", action = M3e.Action.none } [] []
+    , M3e.Component.Button.el { content = TypedHtml.text "Month", action = M3e.Action.none } [] []
+    ]
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

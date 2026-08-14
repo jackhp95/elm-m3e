@@ -12,6 +12,19 @@ A checkbox that allows a user to select one or more options from a limited numbe
 @docs Is, Attrs, ChildAdmittedBy
 @docs checked, disabled, indeterminate, name, required, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onInvalid, onClick
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Checkbox.el [ M3e.Component.Checkbox.checked True ] []
+```
+
+<!-- elm-cem:docmeta category=Selection -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

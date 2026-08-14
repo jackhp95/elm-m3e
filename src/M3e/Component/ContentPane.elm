@@ -12,6 +12,19 @@ A shaped surface for vertically scrollable content.
 @docs Is, Attrs, ChildAdmittedBy
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.ContentPane.el [] [ TypedHtml.text "Pane content" ]
+```
+
+<!-- elm-cem:docmeta category=Containment -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

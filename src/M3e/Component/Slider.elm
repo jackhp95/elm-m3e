@@ -16,6 +16,19 @@ Allows for the selection of numeric values from a range.
 @docs disabled, discrete, labelled, max, min, step, onBeforeinput, onInput, onChange
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Slider.el { content = TypedHtml.text "Volume" } [] []
+```
+
+<!-- elm-cem:docmeta category=Selection -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

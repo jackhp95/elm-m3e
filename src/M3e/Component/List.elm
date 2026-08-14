@@ -14,6 +14,19 @@ A list of items.
 @docs Variant, variant
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.List.el [] []
+```
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

@@ -16,6 +16,19 @@ A visual placeholder that mimics the layout of content while it's still loading.
 @docs loaded
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Skeleton.el [] []
+```
+
+<!-- elm-cem:docmeta category=Communication -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

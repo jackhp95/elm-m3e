@@ -16,6 +16,19 @@ Adds additional context to a button or other UI element.
 @docs disabled, for, hideDelay, showDelay
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Tooltip.el { content = TypedHtml.text "More info" } [] []
+```
+
+<!-- elm-cem:docmeta category=Communication -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

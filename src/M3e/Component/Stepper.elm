@@ -16,6 +16,19 @@ Provides a wizard-like workflow by dividing content into logical steps.
 @docs linear, onChange, onBeforeinput, onInput
 @docs panel, step
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Stepper.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

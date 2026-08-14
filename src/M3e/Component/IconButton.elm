@@ -16,6 +16,25 @@ An icon button users interact with to perform a supplementary action.
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs selected, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.IconButton.el
+    { content = M3e.Component.Icon.el [ M3e.Component.Icon.name "settings" ] []
+    , ariaLabel = "Settings"
+    , action = M3e.Action.onClick OpenSettings
+    }
+    []
+    []
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

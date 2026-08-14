@@ -16,6 +16,19 @@ A non-interactive chip used to convey small pieces of information.
 @docs value, defaultValue
 @docs icon, trailingIcon, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage (generic chip)" -->
+```elm
+M3e.Component.Chip.el { content = TypedHtml.text "Generic" } [] []
+```
+
+<!-- elm-cem:docmeta category=Selection -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

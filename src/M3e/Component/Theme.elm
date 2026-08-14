@@ -16,6 +16,19 @@ A non-visual element responsible for application-level theming.
 @docs color, density, strongFocus, onChange
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Theme.el [] [ TypedHtml.text "Themed content" ]
+```
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

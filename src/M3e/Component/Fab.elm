@@ -16,6 +16,22 @@ A floating action button (FAB) used to present important actions.
 @docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
 @docs closeIcon, label, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Fab.el
+    { content = M3e.Component.Icon.el [ M3e.Component.Icon.name "add" ] [], action = M3e.Action.onClick Create }
+    []
+    []
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

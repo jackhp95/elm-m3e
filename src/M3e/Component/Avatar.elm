@@ -12,6 +12,19 @@ An image, icon or textual initials representing a user or other identity.
 @docs Is, Attrs, ChildAdmittedBy
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Avatar.el [] [ TypedHtml.text "JP" ]
+```
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

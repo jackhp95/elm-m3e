@@ -16,6 +16,19 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 @docs centered, for
 @docs leading, leadingIcon, subtitle, title, trailing, trailingIcon
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.AppBar.el [] [ TypedHtml.text "My App" ]
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

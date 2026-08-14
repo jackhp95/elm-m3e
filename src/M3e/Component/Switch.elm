@@ -14,6 +14,19 @@ An on/off control that can be toggled by clicking.
 @docs Icons, icons
 @docs checked, disabled, name, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onClick
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Switch.el [ M3e.Component.Switch.checked True ] []
+```
+
+<!-- elm-cem:docmeta category=Selection -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

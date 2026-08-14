@@ -12,6 +12,33 @@ A hierarchical menu, typically used on larger devices, that allows a user to swi
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage (flat module)" -->
+```elm
+M3e.Component.NavMenu.el []
+    [ M3e.Component.NavMenuItem.el { label = TypedHtml.text "Home" } [] []
+    , M3e.Component.NavMenuItem.el { label = TypedHtml.text "Settings" } [] []
+    ]
+```
+
+
+### Family package
+
+<!-- elm-cem:example title="Same component via the family package" -->
+```elm
+M3e.Family.NavMenu.el []
+    [ M3e.Family.NavMenu.child
+        (M3e.Family.NavMenu.Item.el { label = TypedHtml.text "Home" } [] [])
+    ]
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

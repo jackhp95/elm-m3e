@@ -16,6 +16,19 @@ A heading to a page or section.
 @docs emphasized, level, tocIgnore
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Heading.el { content = TypedHtml.text "Title" } [] []
+```
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

@@ -14,6 +14,19 @@ A small symbol used to easily identify an action or category.
 @docs Grade, grade, Variant, variant
 @docs filled, name, opticalSize, weight
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Icon.el [ M3e.Component.Icon.name "home" ] []
+```
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

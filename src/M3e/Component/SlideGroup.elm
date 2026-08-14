@@ -14,6 +14,19 @@ Presents pagination controls used to scroll overflowing content.
 @docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIcon, prevIcon, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.SlideGroup.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

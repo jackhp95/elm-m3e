@@ -16,6 +16,19 @@ A visual indicator used to label content.
 @docs for
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Badge.el [] [ TypedHtml.text "3" ]
+```
+
+<!-- elm-cem:docmeta category=Communication -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

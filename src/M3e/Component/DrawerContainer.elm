@@ -16,6 +16,19 @@ A container for one or two sliding drawers.
 @docs endDivider, startDivider, onChange
 @docs end, start, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.DrawerContainer.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

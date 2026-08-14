@@ -10,6 +10,19 @@ An element, nested within a clickable element, used to open a dialog.
 @docs el
 @docs Is, Attrs, ChildAdmittedBy
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Opening a dialog by id (required `for`)" -->
+```elm
+M3e.Component.DialogTrigger.el { for = "confirm-dialog" } [] [ TypedHtml.text "Open" ]
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

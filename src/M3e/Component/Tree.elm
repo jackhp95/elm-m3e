@@ -14,6 +14,19 @@ Presents hierarchical data in a tree structure.
 @docs cascade, multi, onChange
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Tree.el [] []
+```
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

@@ -14,6 +14,24 @@ A button that allows a user to select from a limited set of options.
 @docs disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.SegmentedButton.el
+    { content = M3e.Component.ButtonSegment.el [] [ TypedHtml.text "Day" ] }
+    []
+    [ M3e.Component.ButtonSegment.el [] [ TypedHtml.text "Week" ]
+    , M3e.Component.ButtonSegment.el [] [ TypedHtml.text "Month" ]
+    ]
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

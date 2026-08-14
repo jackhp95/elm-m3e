@@ -12,6 +12,19 @@ A thin line that separates content in lists or other containers.
 @docs Is, Attrs, ChildAdmittedBy
 @docs inset, insetEnd, insetStart, vertical
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Divider.el [] []
+```
+
+<!-- elm-cem:docmeta category=Containment -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

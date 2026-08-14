@@ -12,6 +12,19 @@ Shows indeterminate progress for a short wait time.
 @docs Is, Attrs, ChildAdmittedBy
 @docs Variant, variant
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.LoadingIndicator.el [] []
+```
+
+<!-- elm-cem:docmeta category=Communication -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

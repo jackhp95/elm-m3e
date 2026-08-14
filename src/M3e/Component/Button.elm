@@ -16,6 +16,40 @@ A button users interact with to perform an action.
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs icon, selected, selectedIcon, trailingIcon, child
 
+
+## Examples
+
+
+### Variants
+
+<!-- elm-cem:example title="Variants" -->
+```elm
+[ M3e.Component.Button.el { content = TypedHtml.text "Elevated", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.elevated ] []
+, M3e.Component.Button.el { content = TypedHtml.text "Filled", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.filled ] []
+, M3e.Component.Button.el { content = TypedHtml.text "Tonal", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.tonal ] []
+, M3e.Component.Button.el { content = TypedHtml.text "Outlined", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.outlined ] []
+, M3e.Component.Button.el { content = TypedHtml.text "Text", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.text ] []
+]
+```
+
+
+### Examples
+
+<!-- elm-cem:example title="With a click action" -->
+```elm
+M3e.Component.Button.el { content = TypedHtml.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant M3e.Values.filled ] []
+```
+
+<!-- elm-cem:example title="With an icon" -->
+```elm
+M3e.Component.Button.el
+    { content = TypedHtml.text "Send", action = M3e.Action.none }
+    [ M3e.Component.Button.variant M3e.Values.tonal ]
+    [ M3e.Component.Button.icon (M3e.Component.Icon.el [ M3e.Component.Icon.name "send" ] []) ]
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

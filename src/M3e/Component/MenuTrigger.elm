@@ -12,6 +12,19 @@ An element, nested within a clickable element, used to open a menu.
 @docs Is, Attrs, ChildAdmittedBy
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Opening a menu by id (required `for`)" -->
+```elm
+M3e.Component.MenuTrigger.el { for = "main-menu" } [] [ TypedHtml.text "Open menu" ]
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

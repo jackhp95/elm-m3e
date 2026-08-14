@@ -14,6 +14,19 @@ A horizontal bar for indicating progress and activity.
 @docs Mode, mode, Variant, variant
 @docs bufferValue, max, value, defaultValue
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage (indeterminate)" -->
+```elm
+M3e.Component.LinearProgressIndicator.el [] []
+```
+
+<!-- elm-cem:docmeta category=Communication -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

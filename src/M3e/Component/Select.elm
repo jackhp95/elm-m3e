@@ -14,6 +14,24 @@ A form control that allows users to select a value from a set of predefined opti
 @docs disabled, hideSelectionIndicator, multi, name, panelClass, required, validationmessages, onChange, onToggle, onBeforeinput, onInput
 @docs arrow, value, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Select.el
+    { content = M3e.Component.Option.el { content = TypedHtml.text "Small" } [] [] }
+    []
+    [ M3e.Component.Option.el { content = TypedHtml.text "Medium" } [] []
+    , M3e.Component.Option.el { content = TypedHtml.text "Large" } [] []
+    ]
+```
+
+<!-- elm-cem:docmeta category=Text inputs -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

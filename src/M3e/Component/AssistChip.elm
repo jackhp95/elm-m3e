@@ -16,6 +16,22 @@ A chip users interact with to perform a smart or automated action that can span 
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
 @docs icon, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="With a click action" -->
+```elm
+M3e.Component.AssistChip.el
+    { content = TypedHtml.text "Set reminder", action = M3e.Action.onClick SetReminder }
+    []
+    []
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

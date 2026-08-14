@@ -14,6 +14,22 @@ A bar that provides a prominent entry point for search.
 @docs clearLabel, clearable, onClear
 @docs clearIcon, input, leading, trailing
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.SearchBar.el
+    { input = TypedHtml.input [] [] }
+    []
+    [ M3e.Component.SearchBar.leading (M3e.Component.Icon.el [ M3e.Component.Icon.name "search" ] []) ]
+```
+
+<!-- elm-cem:docmeta category=Text inputs -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

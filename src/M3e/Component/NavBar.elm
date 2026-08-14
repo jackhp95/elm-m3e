@@ -16,6 +16,19 @@ A horizontal bar, typically used on smaller devices, that allows a user to switc
 @docs onChange, onBeforeinput, onInput
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.NavBar.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

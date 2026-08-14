@@ -16,6 +16,19 @@ A vertical bar, typically used on larger devices, that allows a user to switch b
 @docs onBeforeinput, onInput, onChange
 @docs child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.NavRail.el [] []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

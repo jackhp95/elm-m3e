@@ -14,6 +14,19 @@ Presents short updates about application processes at the bottom of the screen.
 @docs action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
 @docs closeIcon, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Snackbar.el { content = TypedHtml.text "Saved" } [] []
+```
+
+<!-- elm-cem:docmeta category=Communication -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

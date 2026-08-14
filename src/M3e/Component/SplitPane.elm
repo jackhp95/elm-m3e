@@ -16,6 +16,24 @@ A dual-view layout that separates content with a movable drag handle.
 @docs detents, disabled, label, max, min, name, overshootLimit, step, value, wrapDetents, defaultValue, onChange, onBeforeinput, onInput
 @docs end, start
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.SplitPane.el
+    { start = TypedHtml.text "Sidebar"
+    , end = TypedHtml.text "Main content"
+    }
+    []
+    []
+```
+
+<!-- elm-cem:docmeta category=Containment -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

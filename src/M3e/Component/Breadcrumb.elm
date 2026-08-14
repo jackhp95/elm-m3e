@@ -15,6 +15,22 @@ current location within an application.
 @docs wrap
 @docs separator, child
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.Breadcrumb.el
+    { content = M3e.Component.BreadcrumbItem.el [] [ TypedHtml.text "Home" ] }
+    []
+    []
+```
+
+<!-- elm-cem:docmeta category=Navigation -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)

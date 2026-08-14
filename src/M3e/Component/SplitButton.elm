@@ -14,6 +14,32 @@ A button used to show an action with a menu of related actions.
 @docs Size, size, Variant, variant
 @docs leadingButton, trailingButton
 
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Component.SplitButton.el
+    { leadingButton =
+        M3e.Component.Button.el { content = TypedHtml.text "Send", action = M3e.Action.onClick Send } [] []
+    , trailingButton =
+        M3e.Component.IconButton.el
+            { content = M3e.Component.Icon.el [ M3e.Component.Icon.name "expand_more" ] []
+            , ariaLabel = "More send options"
+            , action = M3e.Action.onClick OpenSendOptions
+            }
+            []
+            []
+    }
+    []
+    []
+```
+
+<!-- elm-cem:docmeta category=Actions -->
+
 -}
 
 import HtmlIr.Attribute exposing (Attr)
