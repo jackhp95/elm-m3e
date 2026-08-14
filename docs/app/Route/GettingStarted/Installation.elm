@@ -167,10 +167,13 @@ cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
 
 
 
--- @sample expect-review NoRedundantElementEscape: `Browser.sandbox` requires
--- `Html`, so the app root has to leave the typed tree exactly once. That is the
--- same documented exemption `app/Shared.elm` carries in the docs review config —
--- recorded here rather than hidden, so a SECOND toHtml would still be caught.
+-- `Browser.sandbox` requires `Html`, so the app root has to leave the typed
+-- tree exactly once via `M3e.toHtml` — the same real-app shape
+-- `app/Shared.elm` uses, which carries a `NoRedundantElementEscape` exemption
+-- in the docs review config for exactly this reason. `Theme` (the outermost
+-- call here) isn't itself a facts-covered family producer, so the rule
+-- doesn't fire on this sample either way; this is a plain `verify` sample
+-- (compiles + reviews clean), not an `expect-review` one.
 
 
 mainModule : String

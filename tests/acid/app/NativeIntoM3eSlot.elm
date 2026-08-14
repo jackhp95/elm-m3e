@@ -22,6 +22,7 @@ types no longer back.
 -}
 
 import M3e
+import M3e.Action
 import M3e.Component.AppBar
 import TypedHtml
 import TypedHtml.Attributes
@@ -32,7 +33,10 @@ nativeWrapperInM3eSlot : M3e.Element free freeAdmittedBy msg
 nativeWrapperInM3eSlot =
     M3e.Component.AppBar.trailing
         (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-            [ M3e.iconButton [] [ M3e.icon [] [] ]
+            [ M3e.iconButton
+                { content = M3e.icon [] [], ariaLabel = "Notifications", action = M3e.Action.none }
+                []
+                []
             , M3e.badge [] []
             ]
         )

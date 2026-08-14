@@ -70,11 +70,10 @@
   {
     "page": "Installation",
     "sample": "mainModule",
-    "disposition": "expect-review",
-    "reason": "`Browser.sandbox` requires `Html`, so the app root has to leave the typed tree exactly once. That is the same documented exemption `app/Shared.elm` carries in the docs review config — recorded here rather than hidden, so a SECOND toHtml would still be caught.",
+    "disposition": "verify",
+    "reason": "",
     "module": "Main",
-    "file": "good/Main.elm",
-    "rule": "NoRedundantElementEscape"
+    "file": "good/Main.elm"
   },
   {
     "page": "InvalidStates",
