@@ -220,24 +220,25 @@ installCard =
     Doc.codeBlock Doc.Elm "import M3e\nimport M3e.Values"
 
 
-{-| The three Phase-1 API layers, in tab order, each mapping a `Surface` to its
-label and the member list to render. `Raw` is Phase 2 (no tab here) — the CEM
-manifest source is deferred. `Top → M3e barrel slice`, `Record → Components`,
-`Build → Builder`, reusing the shared `Surface` so a Usage-tab click and an
-API-tab click move the same `activeSurface`.
+{-| The four API layers, in tab order, each mapping a `Surface` to its label and
+the member list to render. `Top → M3e barrel slice`, `Record → Components`,
+`Build → Builder`, `Raw → CEM-sourced custom-element attributes/events/slots`.
+Reuses the shared `Surface` so a Usage-tab click and an API-tab click move the
+same `activeSurface`.
 -}
 apiLayers : Doc.Data.Component -> List ( Usage.Surface, String, List Doc.Data.Member )
 apiLayers component =
     [ ( Usage.Top, "M3e", component.layers.m3e )
     , ( Usage.Record, "Components", component.layers.components )
     , ( Usage.Build, "Builder", component.layers.builder )
+    , ( Usage.Raw, "Raw", component.layers.raw )
     ]
 
 
 {-| The API-reference section, rendered like an elm module page: a page-wide Types
-block (the component's aliases/unions, un-tabbed, above), then a 3-tab layer strip
-(`M3e | Components | Builder`) driven by the shared `activeSurface`, then the
-selected layer's members grouped by role (constructor, attribute setters, slot
+block (the component's aliases/unions, un-tabbed, above), then a 4-tab layer strip
+(`M3e | Components | Builder | Raw`) driven by the shared `activeSurface`, then
+the selected layer's members grouped by role (constructor, attribute setters, slot
 setters, events, other), each group an overline-labelled outlined card. Members
 keep their `@docs` order within a group. Empty groups drop out.
 -}
@@ -250,8 +251,8 @@ apiSection activeSurface component =
                 |> List.filter (\( s, _, _ ) -> s == activeSurface)
                 |> List.head
                 |> Maybe.map (\( _, _, ms ) -> ms)
-                -- activeSurface is Raw (Phase 2, no API tab) or unmatched: fall
-                -- back to the M3e layer so the section is never blank.
+                -- Every Surface (Top/Record/Build/Raw) now maps to a layer; the
+                -- withDefault is an unreachable safety net.
                 |> Maybe.withDefault component.layers.m3e
     in
     TypedHtml.div [ TA.class "space-y-6" ]
@@ -281,9 +282,9 @@ typesBlock types =
             ]
 
 
-{-| The 3-tab API layer strip (`M3e | Components | Builder`), driven by the shared
-`activeSurface`. A click emits the SAME `SelectSurface` the Usage tabs emit, so
-both move together. `Raw` is Phase 2 and not offered here.
+{-| The 4-tab API layer strip (`M3e | Components | Builder | Raw`), driven by the
+shared `activeSurface`. A click emits the SAME `SelectSurface` the Usage tabs
+emit, so both move together. Tabs derive from `apiLayers`.
 -}
 apiTabStrip : Usage.Surface -> Doc.Data.Component -> Element { s | tabs : M3e.Kind.Brand } adm_ Usage.Msg
 apiTabStrip activeSurface component =

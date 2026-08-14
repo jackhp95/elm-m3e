@@ -189,6 +189,50 @@ function barrelSliceByOwner() {
 // Barrel per-component ownership map, built once (not per component).
 const barrelSlice = barrelSliceByOwner();
 
+// The @m3e/web custom-elements-manifest (CEM). Its declared path is the package's
+// package.json `customElements` field: dist/custom-elements.json. Standard CEM 1.0.0 —
+// each custom-element declaration carries `tagName` + attributes/events/slots. Indexed by
+// tagName so the per-component `raw` layer (Phase 2 / Raw tab) can look an element up by the
+// component's slug. (spec: 2026-08-13-api-reference-reorg §Phasing — Raw tab.)
+const CEM_PATH = path.resolve(
+  REPO,
+  "docs/node_modules/@m3e/web/dist/custom-elements.json"
+);
+const cemByTag = new Map();
+if (fs.existsSync(CEM_PATH)) {
+  const cem = JSON.parse(fs.readFileSync(CEM_PATH, "utf8"));
+  for (const mod of cem.modules || []) {
+    for (const d of mod.declarations || []) {
+      if (d.customElement && d.tagName) cemByTag.set(d.tagName, d);
+    }
+  }
+} else {
+  console.warn(
+    `⚠ CEM manifest not found at ${path.relative(REPO, CEM_PATH)} — ` +
+      `Raw tabs will be empty. (Is @m3e/web installed?)`
+  );
+}
+
+// slug → CEM tag(s). The common rule: strip the `m3e-` prefix and hyphens, lowercase, and
+// match against the docs slug (matches 129/139 slugs). A few docs pages consolidate multiple
+// elements or have no element; the override map covers the only such component with a real
+// element today (`progress` = both progress indicators). Slugs absent from both the stripped
+// index and the override get an empty Raw layer — correct for infra/barrel modules
+// (`action`, `html`, `m3e`, …) and sub-components with no own element (`steppernext`).
+const cemTagByStripped = new Map();
+for (const tag of cemByTag.keys()) {
+  cemTagByStripped.set(tag.replace(/^m3e-/, "").replace(/-/g, ""), tag);
+}
+const CEM_SLUG_OVERRIDES = {
+  // Docs `progress` page consolidates the two indicator elements onto one page.
+  progress: ["m3e-linear-progress-indicator", "m3e-circular-progress-indicator"],
+};
+function cemTagsForSlug(slug) {
+  if (CEM_SLUG_OVERRIDES[slug]) return CEM_SLUG_OVERRIDES[slug];
+  const tag = cemTagByStripped.get(slug);
+  return tag ? [tag] : [];
+}
+
 // 1. Build a fresh scratch package project inside the unique temp dir.
 function setupScratch() {
   // Refresh only the src tree (idempotent across runs — the dir persists); keep
@@ -389,6 +433,35 @@ function membersOf(mod, ctorName) {
   return members;
 }
 
+// Map a CEM custom-element declaration's attributes/events/slots to reference `Member`s.
+// CEM attribute → role `attr`, event → `event`, slot → `slot` (the same vocabulary the API
+// section's apiGroups buckets on). There is no Elm signature — a member's `signature` is the
+// CEM `type.text` (e.g. `boolean`, `Event`), its `doc` the CEM description. No ctor/other.
+function cemMembers(decl) {
+  const attrs = (decl.attributes || []).map((a) => ({
+    name: a.name,
+    kind: "value",
+    signature: (a.type && a.type.text) || "",
+    doc: (a.description || "").trim(),
+    role: "attr",
+  }));
+  const slots = (decl.slots || []).map((s) => ({
+    name: s.name || "(default)",
+    kind: "value",
+    signature: "",
+    doc: (s.description || "").trim(),
+    role: "slot",
+  }));
+  const events = (decl.events || []).map((e) => ({
+    name: e.name,
+    kind: "value",
+    signature: (e.type && e.type.text) || "",
+    doc: (e.description || "").trim(),
+    role: "event",
+  }));
+  return [...attrs, ...slots, ...events];
+}
+
 function moduleEntry(mod, modulesByName) {
   const name = mod.name.replace(/^M3e\./, "");
   // For M3e.Component.Button → slug "button" (strip intermediate namespace so
@@ -419,6 +492,13 @@ function moduleEntry(mod, modulesByName) {
     ? membersOf(barrelMod, slug).filter((m) => ownedNames.has(m.name) && m.kind !== "type")
     : [];
 
+  // Raw layer: the underlying custom element(s)' CEM attributes/events/slots (Phase 2).
+  // Empty for infra/barrel slugs and sub-components with no own element.
+  const rawLayer = cemTagsForSlug(slug).flatMap((tag) => {
+    const decl = cemByTag.get(tag);
+    return decl ? cemMembers(decl) : [];
+  });
+
   const over = overview(mod.comment || "");
   // Join the editorial override (config/categories.json) by slug: a matched
   // entry makes this a nav component (category + editorial label); an unmatched
@@ -439,7 +519,7 @@ function moduleEntry(mod, modulesByName) {
     summary: summary(over),
     overview: over,
     types,
-    layers: { m3e: m3eLayer, components: componentsLayer, builder: builderLayer },
+    layers: { m3e: m3eLayer, components: componentsLayer, builder: builderLayer, raw: rawLayer },
   };
 }
 
@@ -504,7 +584,7 @@ for (const c of components) {
   for (const [field, val] of Object.entries(fields)) {
     if (/\bUi\.[A-Z]/.test(val || "")) uiHits.push(`${c.module} .${field}`);
   }
-  for (const m of [...c.types, ...c.layers.m3e, ...c.layers.components, ...c.layers.builder]) {
+  for (const m of [...c.types, ...c.layers.m3e, ...c.layers.components, ...c.layers.builder, ...c.layers.raw]) {
     if (/\bUi\.[A-Z]/.test(m.doc || "")) uiHits.push(`${c.module}.${m.name} .doc`);
     if (/\bUi\.[A-Z]/.test(m.signature || "")) uiHits.push(`${c.module}.${m.name} .signature`);
   }
@@ -523,7 +603,7 @@ fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify(components));
 const totalMembers = components.reduce(
   (n, c) =>
-    n + c.types.length + c.layers.m3e.length + c.layers.components.length + c.layers.builder.length,
+    n + c.types.length + c.layers.m3e.length + c.layers.components.length + c.layers.builder.length + c.layers.raw.length,
   0
 );
 console.log(

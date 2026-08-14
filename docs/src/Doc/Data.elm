@@ -22,14 +22,16 @@ type alias Member =
     { name : String, kind : String, signature : String, doc : String, role : String }
 
 
-{-| The three Phase-1 API layers of a component: `m3e` (the barrel's thin
-per-component slice — usually just the constructor), `components` (the
-`M3e.Component.<Name>` module's own members), and `builder` (`M3e.Build.<Name>`'s
-pipe surface). Type aliases are lifted OUT of the layers into `Component.types`
-(shared across layers), so a layer holds only its value members.
+{-| The four API layers of a component: `m3e` (the barrel's thin per-component
+slice — usually just the constructor), `components` (the `M3e.Component.<Name>`
+module's own members), `builder` (`M3e.Build.<Name>`'s pipe surface), and `raw`
+(the underlying custom element's CEM attributes/events/slots from `@m3e/web`'s
+`custom-elements.json` manifest — Phase 2). Type aliases are lifted OUT of the
+layers into `Component.types` (shared across layers), so a layer holds only its
+value members.
 -}
 type alias Layers =
-    { m3e : List Member, components : List Member, builder : List Member }
+    { m3e : List Member, components : List Member, builder : List Member, raw : List Member }
 
 
 type alias Component =
@@ -85,13 +87,14 @@ layersDecoder : Decode.Decoder Layers
 layersDecoder =
     Decode.oneOf
         [ Decode.field "layers"
-            (Decode.map3 Layers
+            (Decode.map4 Layers
                 (Decode.field "m3e" (Decode.list memberDecoder))
                 (Decode.field "components" (Decode.list memberDecoder))
                 (Decode.field "builder" (Decode.list memberDecoder))
+                (Decode.oneOf [ Decode.field "raw" (Decode.list memberDecoder), Decode.succeed [] ])
             )
         , legacyMembers
-            |> Decode.map (\ms -> Layers [] (List.filter (\m -> m.kind /= "type") ms) [])
+            |> Decode.map (\ms -> Layers [] (List.filter (\m -> m.kind /= "type") ms) [] [])
         ]
 
 
@@ -119,7 +122,7 @@ members c =
                 >> Tuple.second
                 >> List.reverse
     in
-    dedupe (c.types ++ c.layers.m3e ++ c.layers.components ++ c.layers.builder)
+    dedupe (c.types ++ c.layers.m3e ++ c.layers.components ++ c.layers.builder ++ c.layers.raw)
 
 
 allComponents : BackendTask FatalError (List Component)
