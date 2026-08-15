@@ -22,7 +22,6 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
-import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)

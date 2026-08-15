@@ -29,7 +29,6 @@ import M3e.Action
 import M3e.Attributes
 import M3e.Component.Icon
 import M3e.Component.MenuItem
-import M3e.Component.MenuTrigger
 import M3e.Unsafe
 import M3e.Values as Value
 import Theme exposing (Msg(..))

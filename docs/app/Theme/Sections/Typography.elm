@@ -6,9 +6,10 @@ and per-mode numeric steppers.
 -}
 
 import Json.Decode as Decode
-import M3e exposing (Element)
+import M3e exposing (Attr, Element)
 import M3e.Attributes
 import M3e.Component.Option
+import M3e.Component.Select
 import M3e.Events
 import Theme exposing (Msg(..))
 import Theme.Fonts
@@ -41,6 +42,7 @@ fontSelect labelText idSuffix current toMsg =
         inputId =
             "font-select-" ++ idSuffix
 
+        options : List (Element M3e.Component.Select.Content (M3e.Component.Select.ChildAdmittedBy childAdm) Msg)
         options =
             List.map
                 (\font ->
@@ -48,6 +50,7 @@ fontSelect labelText idSuffix current toMsg =
                 )
                 Theme.Fonts.curatedFonts
 
+        selectAttrs : List (Attr M3e.Component.Select.Attrs Msg)
         selectAttrs =
             [ M3e.Attributes.id inputId
             , M3e.Events.onChangeWith

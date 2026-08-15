@@ -31,7 +31,6 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
-import TypedHtml.Aria
 import TypedHtml.Attributes
 import TypedHtml.Grouping
 import UrlPath

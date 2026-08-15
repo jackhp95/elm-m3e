@@ -11,7 +11,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.Heading
 import M3e.Values as Value

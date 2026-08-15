@@ -40,7 +40,6 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import TypedHtml
-import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import TypedHtml.Grouping
 import TypedHtml.Sectioning

@@ -13,6 +13,7 @@ import M3e.Component.IconButton
 import M3e.Component.MenuItem
 import M3e.Component.MenuTrigger
 import M3e.Component.Option
+import M3e.Component.SegmentedButton
 import M3e.Component.Theme
 import M3e.Events
 import M3e.Kind
@@ -523,6 +524,7 @@ Contrast/Motion segmented controls too.
 segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 segmented segments =
     let
+        buttonSegments : List (Element M3e.Component.SegmentedButton.Content (M3e.Component.SegmentedButton.ChildAdmittedBy childAdm) Msg)
         buttonSegments =
             List.map
                 (\( lbl, isChecked, msg ) ->

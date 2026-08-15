@@ -59,8 +59,8 @@ import M3e.Component.Icon
 import M3e.Component.IconButton
 import M3e.Component.NavItem
 import M3e.Component.NavMenuItem
-import M3e.Component.NavRailToggle
 import M3e.Component.SearchView
+import M3e.Component.SegmentedButton
 import M3e.Component.Theme
 import M3e.Component.Toc
 import M3e.Events
@@ -970,6 +970,7 @@ children, each a checked/label/onClick triple.
 segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 segmented segments =
     let
+        buttonSegments : List (Element M3e.Component.SegmentedButton.Content (M3e.Component.SegmentedButton.ChildAdmittedBy childAdm) Msg)
         buttonSegments =
             List.map
                 (\( lbl, isChecked, msg ) ->
