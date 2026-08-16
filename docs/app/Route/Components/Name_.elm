@@ -20,7 +20,9 @@ import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
 import M3e.Component.Card
+import M3e.Component.Heading
 import M3e.Component.ListItem
+import M3e.Component.SuggestionChip
 import M3e.Kind
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
@@ -153,7 +155,7 @@ header : Component -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 header component =
     TypedHtml.div [ TA.class "space-y-4" ]
         (TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3" ]
-            (M3e.heading { content = M3e.text component.label } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+            (M3e.Component.Heading.component { content = M3e.text component.label } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
                 :: categoryChip component.category
             )
             :: summaryBlock component.summary
@@ -191,7 +193,7 @@ categoryChip cat =
         []
 
     else
-        [ M3e.suggestionChip { content = M3e.text cat, action = M3e.Action.none } [] [] ]
+        [ M3e.Component.SuggestionChip.component { content = M3e.text cat, action = M3e.Action.none } [] [] ]
 
 
 {-| The one-line summary paragraph, constrained to a comfortable reading measure.
@@ -225,7 +227,7 @@ the member list to render. `Top → M3e barrel slice`, `Record → Components`,
 Reuses the shared `Surface` so a Usage-tab click and an API-tab click move the
 same `activeSurface`.
 -}
-apiLayers : Doc.Data.Component -> List ( Usage.Surface, String, List Doc.Data.Member )
+apiLayers : Component -> List ( Usage.Surface, String, List Doc.Data.Member )
 apiLayers component =
     [ ( Usage.Top, "M3e", component.layers.m3e )
     , ( Usage.Record, "Components", component.layers.components )
@@ -241,7 +243,7 @@ the selected layer's members grouped by role (constructor, attribute setters, sl
 setters, events, other), each group an overline-labelled outlined card. Members
 keep their `@docs` order within a group. Empty groups drop out.
 -}
-apiSection : Usage.Surface -> Doc.Data.Component -> Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg
+apiSection : Usage.Surface -> Component -> Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg
 apiSection activeSurface component =
     let
         activeLayer : List Doc.Data.Member
@@ -285,7 +287,7 @@ typesBlock types =
 shared `activeSurface`. A click emits the SAME `SelectSurface` the Usage tabs
 emit, so both move together. Tabs derive from `apiLayers`.
 -}
-apiTabStrip : Usage.Surface -> Doc.Data.Component -> Element { s | tabs : M3e.Kind.Brand } adm_ Usage.Msg
+apiTabStrip : Usage.Surface -> Component -> Element { s | tabs : M3e.Kind.Brand } adm_ Usage.Msg
 apiTabStrip activeSurface component =
     Usage.tabStrip
         activeSurface

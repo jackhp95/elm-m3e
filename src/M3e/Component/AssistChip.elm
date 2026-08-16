@@ -1,5 +1,5 @@
 module M3e.Component.AssistChip exposing
-    ( el
+    ( component
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps
     , Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
@@ -10,7 +10,7 @@ module M3e.Component.AssistChip exposing
 
 A chip users interact with to perform a smart or automated action that can span multiple applications.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps
 @docs Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
@@ -98,14 +98,14 @@ type alias ActionCaps =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg
     , action : Ac.Action ActionCaps msg
     }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     let
         actioned =
             Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))

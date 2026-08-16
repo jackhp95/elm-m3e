@@ -16,9 +16,9 @@ import M3e.Values as Value
 
 -- bare form — a component with nothing it can't do without (e.g. AppBar)
 shown0_ =
-    M3e.Component.AppBar.el [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
+    M3e.Component.AppBar.component [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
 
 
 -- required-record form — the compiler demands the parts it can't do without (e.g. Button)
 shown1_ =
-    M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [] []
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [] []

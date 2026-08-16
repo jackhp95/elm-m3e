@@ -1,5 +1,5 @@
 module M3e.Component.RadioGroup exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
     , child
@@ -9,7 +9,7 @@ module M3e.Component.RadioGroup exposing
 
 A container for a set of radio buttons.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
 @docs child
@@ -64,12 +64,12 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element childAccepts (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.radioGroup attrs (required_.content :: children)
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.MenuItemRadio exposing
-    ( el
+    ( component
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
     , checked, disabled, defaultChecked, onClick
     , icon, trailingIcon, child
@@ -9,7 +9,7 @@ module M3e.Component.MenuItemRadio exposing
 
 An item of a menu which supports a mutually exclusive checkable state.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
 @docs checked, disabled, defaultChecked, onClick
 @docs icon, trailingIcon, child
@@ -65,11 +65,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.menuItemRadio
 
 

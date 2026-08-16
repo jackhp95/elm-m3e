@@ -1,5 +1,5 @@
 module M3e.Component.ListItem exposing
-    ( el
+    ( component
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy
     , leading, overline, supportingText, trailing, child
     )
@@ -8,7 +8,7 @@ module M3e.Component.ListItem exposing
 
 An item in a list.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy
 @docs leading, overline, supportingText, trailing, child
 
@@ -74,11 +74,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.listItem
 
 

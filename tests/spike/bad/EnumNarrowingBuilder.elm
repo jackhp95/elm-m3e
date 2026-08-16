@@ -11,8 +11,8 @@ V.rainbow : Value { v | rainbow : Supported } is a valid Theme token but does
 NOT extend Button's closed Component.Variant row.
 
 The setter's signature is:
-    Value Component.Variant -> Attr { c | variant : Supported } msg
-    where Component.Variant = { elevated, filled, outlined, text, tonal }
+Value Component.Variant -> Attr { c | variant : Supported } msg
+where Component.Variant = { elevated, filled, outlined, text, tonal }
 
 Passing V.rainbow (a Theme token) here must produce a TYPE MISMATCH.
 
@@ -31,4 +31,4 @@ type Msg
 
 wrong : Element (Button.Is s) admittedBy Msg
 wrong =
-    Button.el { content = text "Save", action = onClick Save } [ Button.variant V.rainbow ] []
+    Button.component { content = text "Save", action = onClick Save } [ Button.variant V.rainbow ] []

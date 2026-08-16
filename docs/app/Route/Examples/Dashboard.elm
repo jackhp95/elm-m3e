@@ -25,6 +25,8 @@ import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.Card
 import M3e.Component.Fab
+import M3e.Component.Heading
+import M3e.Component.IconButton
 import M3e.Component.LinearProgressIndicator
 import M3e.Component.ListItem
 import M3e.Component.NavItem
@@ -249,7 +251,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.Attributes.size Value.small ]
         [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "analytics" ] [])
-        , M3e.Component.AppBar.title (M3e.heading { content = M3e.text "Aperture Analytics" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [])
+        , M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Aperture Analytics" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [])
         , M3e.Component.AppBar.trailing (iconAction "search")
         , M3e.Component.AppBar.trailing (iconAction "notifications")
         , M3e.Component.AppBar.trailing (iconAction "account_circle")
@@ -258,7 +260,7 @@ appBar =
 
 iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction name =
-    M3e.iconButton { content = M3e.icon [ TA.name name ] [], ariaLabel = name, action = M3e.Action.none } [ M3e.Attributes.variant Value.standard ] []
+    M3e.Component.IconButton.component { content = M3e.icon [ TA.name name ] [], ariaLabel = name, action = M3e.Action.none } [ M3e.Attributes.variant Value.standard ] []
 
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
@@ -332,7 +334,7 @@ fab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 fab =
     TypedHtml.div [ TA.class "pointer-events-none sticky bottom-6 flex justify-end pr-4 md:pr-6" ]
         [ TypedHtml.div [ TA.class "pointer-events-auto" ]
-            [ M3e.fab { content = M3e.icon [ TA.name "add" ] [], action = M3e.Action.none } [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ] [ M3e.Component.Fab.label (M3e.text "New report") ]
+            [ M3e.Component.Fab.component { content = M3e.icon [ TA.name "add" ] [], action = M3e.Action.none } [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ] [ M3e.Component.Fab.label (M3e.text "New report") ]
             ]
         ]
 
@@ -393,7 +395,7 @@ pageHeader : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 pageHeader =
     TypedHtml.div [ TA.class "flex flex-col gap-1" ]
         [ Doc.sectionLabelCaps "Overview"
-        , M3e.heading { content = M3e.text "Good morning, Jack" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] []
+        , M3e.Component.Heading.component { content = M3e.text "Good morning, Jack" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] []
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Here is how your business is doing today." ]
         ]
 
@@ -413,8 +415,8 @@ kpiCard k =
     M3e.card [ M3e.Attributes.variant Value.filled ]
         [ M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-2 p-4" ]
-                [ M3e.heading { content = M3e.text k.label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
-                , M3e.heading { content = M3e.text k.value } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] []
+                [ M3e.Component.Heading.component { content = M3e.text k.label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+                , M3e.Component.Heading.component { content = M3e.text k.value } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] []
                 , trendDelta k.trend k.delta
                 ]
             )
@@ -434,7 +436,7 @@ trendDelta trend delta =
     in
     TypedHtml.div [ TA.class "flex items-center gap-1" ]
         [ M3e.icon [ TA.name iconName, TA.class role ] []
-        , M3e.heading { content = M3e.text delta } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class role ] []
+        , M3e.Component.Heading.component { content = M3e.text delta } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class role ] []
         ]
 
 
@@ -459,7 +461,7 @@ accountRow a =
             [ M3e.icon [ TA.name a.icon ] [] ]
         , TypedHtml.div [ TA.class "flex flex-col min-w-0" ]
             [ TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text a.name ]
-            , M3e.heading { content = M3e.text a.balance } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] []
+            , M3e.Component.Heading.component { content = M3e.text a.balance } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] []
             ]
         ]
 
@@ -481,7 +483,7 @@ budgetRow b =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.div [ TA.class "flex items-center justify-between gap-2" ]
             [ TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text b.category ]
-            , M3e.heading { content = M3e.text b.amount } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+            , M3e.Component.Heading.component { content = M3e.text b.amount } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
             ]
         , M3e.linearProgressIndicator
             [ M3e.Component.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
@@ -516,10 +518,10 @@ activityRow a =
     in
     M3e.listItem []
         [ M3e.Component.ListItem.leading
-            (M3e.heading { content = M3e.text a.date } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
+            (M3e.Component.Heading.component { content = M3e.text a.date } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
         , M3e.text a.description
         , M3e.Component.ListItem.trailing
-            (M3e.heading { content = M3e.text a.amount } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [])
+            (M3e.Component.Heading.component { content = M3e.text a.amount } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [])
         ]
 
 
@@ -531,6 +533,6 @@ sectionCard : String -> Element any adm_ msg -> Element { r | card : M3e.Kind.Br
 sectionCard heading content =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
         [ M3e.Component.Card.header
-            (M3e.heading { content = M3e.text heading } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [])
+            (M3e.Component.Heading.component { content = M3e.text heading } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [])
         , M3e.Component.Card.content content
         ]

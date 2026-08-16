@@ -167,7 +167,7 @@ pane items =
 -}
 pageHeading : String -> Element (M3e.Component.Heading.Is s) admittedBy msg
 pageHeading s =
-    M3e.heading { content = M3e.text s }
+    M3e.Component.Heading.component { content = M3e.text s }
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
@@ -186,7 +186,7 @@ anchor stable across renders:
 -}
 sectionHeadingWithId : String -> String -> Element (M3e.Component.Heading.Is s) admittedBy msg
 sectionHeadingWithId id s =
-    M3e.heading { content = M3e.text s }
+    M3e.Component.Heading.component { content = M3e.text s }
         [ M3e.Component.Heading.variant Value.headline
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 2

@@ -1,5 +1,5 @@
 module M3e.Component.TocItem exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , disabled, selected, defaultSelected, onClick
     , child
@@ -9,7 +9,7 @@ module M3e.Component.TocItem exposing
 
 An item in a table of contents.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs disabled, selected, defaultSelected, onClick
 @docs child
@@ -53,12 +53,12 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.tocItem attrs (required_.content :: children)
 
 

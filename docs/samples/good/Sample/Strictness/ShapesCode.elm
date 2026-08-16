@@ -16,12 +16,12 @@ import M3e.Values as Value
 
 -- bare `el` (AppBar has nothing it can't do without) — everything optional
 shown0_ =
-    M3e.Component.AppBar.el [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
+    M3e.Component.AppBar.component [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
 
 
 -- required-record `el` (Button can't do without content/action) — the compiler DEMANDS the parts
 shown1_ =
-    M3e.Component.Button.el
+    M3e.Component.Button.component
         { content = M3e.text "Save", action = M3e.Action.none }
         []
         []

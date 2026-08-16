@@ -62,7 +62,7 @@ notFoundView =
     View.fromElement "Page Not Found"
         (Doc.pane
             [ TypedHtml.section [ TA.class "space-y-6" ]
-                [ M3e.heading { content = M3e.text "Page not found" }
+                [ M3e.Component.Heading.component { content = M3e.text "Page not found" }
                     [ M3e.Component.Heading.variant Value.display
                     , M3e.Component.Heading.size Value.small
                     , M3e.Attributes.level 1
@@ -71,7 +71,7 @@ notFoundView =
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant max-w-md" ]
                     [ M3e.text "The page you’re looking for doesn’t exist or has moved." ]
                 , TypedHtml.div [ TA.class "flex flex-wrap gap-3" ]
-                    [ M3e.button { content = M3e.text "Go to Welcome", action = M3e.Action.none }
+                    [ M3e.Component.Button.component { content = M3e.text "Go to Welcome", action = M3e.Action.none }
                         [ M3e.Component.Button.variant Value.filled
                         , M3e.Component.Button.href "/getting-started/welcome"
                         ]

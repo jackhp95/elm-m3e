@@ -1,4 +1,4 @@
-module ApiConsolidation exposing (saveButton, card, annotationGate)
+module ApiConsolidation exposing (annotationGate, card, saveButton)
 
 {-| Compile-only spike for the canonical zero-conversion API, post `el`-unification
 (elm-cem L1/L2, plan §3.5B superseded — the fluent-builder `M3e.Build.*` surface this
@@ -29,32 +29,32 @@ type Msg
 
 {-| Direction (a): THE canonical zero-conversion snippet (post `el`-unification).
 
-    `Button.el` is required-record (content + action); its icon slot setter takes
-    a nested `Icon.el` call directly — no `.toElement`, no builder pipe, nothing to
+    `Button.component` is required-record (content + action); its icon slot setter takes
+    a nested `Icon.component` call directly — no `.toElement`, no builder pipe, nothing to
     unwrap. Only `Button`/`Icon` component-module imports.
 
 -}
 saveButton : Element (Button.Is s) admittedBy Msg
 saveButton =
-    Button.el
+    Button.component
         { content = text "Save", action = onClick Save }
         []
-        [ Button.icon (Icon.el [ Icon.name "home" ] []) ]
+        [ Button.icon (Icon.component [ Icon.name "home" ] []) ]
 
 
 {-| Direction (b): a child component's `el` result flows into a container's slot
 setter with zero unwrap.
 
-    A `Button.el` value flows into a `Card` slot with zero conversion — it already
+    A `Button.component` value flows into a `Card` slot with zero conversion — it already
     IS the slot-ready `Element`, same as direction (a).
 
 -}
 card : Element (Card.Is s) admittedBy Msg
 card =
-    Card.el
+    Card.component
         []
         [ Card.content
-            (Button.el
+            (Button.component
                 { content = text "Ok", action = onClick Ok }
                 [ Button.variant Value.filled ]
                 []

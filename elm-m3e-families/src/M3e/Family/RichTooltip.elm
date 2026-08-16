@@ -1,13 +1,18 @@
-module M3e.Family.RichTooltip exposing (el, Is, Attrs, Content, SubheadSlot, ChildAdmittedBy, Position, position, TouchGestures, touchGestures, disabled, for, hideDelay, showDelay, onBeforetoggle, onToggle, actions, subhead, child)
+module M3e.Family.RichTooltip exposing (RichTooltipIs, RichTooltipAttrs, RichTooltipContent, RichTooltipSubheadSlot, RichTooltipChildAdmittedBy, RichTooltipPosition, RichTooltipTouchGestures, ActionIs, ActionAttrs, ActionContent, ActionChildAdmittedBy, richTooltip, richTooltipPosition, richTooltipTouchGestures, richTooltipDisabled, richTooltipFor, richTooltipHideDelay, richTooltipShowDelay, richTooltipOnBeforetoggle, richTooltipOnToggle, richTooltipActions, richTooltipSubhead, richTooltipChild, action, actionDisableRestoreFocus, actionChild)
 
-{-| The **RichTooltip** family root — re-export of `M3e.Component.RichTooltip`.
+{-| The **RichTooltip** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.RichTooltip`](M3e.Component.RichTooltip) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, Content, SubheadSlot, ChildAdmittedBy, Position, position, TouchGestures, touchGestures, disabled, for, hideDelay, showDelay, onBeforetoggle, onToggle, actions, subhead, child
+[`M3e.Component.RichTooltip`](M3e.Component.RichTooltip) as `richTooltip`, [`M3e.Component.RichTooltipAction`](M3e.Component.RichTooltipAction) as `action`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs RichTooltipIs, RichTooltipAttrs, RichTooltipContent, RichTooltipSubheadSlot, RichTooltipChildAdmittedBy, RichTooltipPosition, RichTooltipTouchGestures, ActionIs, ActionAttrs, ActionContent, ActionChildAdmittedBy, richTooltip, richTooltipPosition, richTooltipTouchGestures, richTooltipDisabled, richTooltipFor, richTooltipHideDelay, richTooltipShowDelay, richTooltipOnBeforetoggle, richTooltipOnToggle, richTooltipActions, richTooltipSubhead, richTooltipChild, action, actionDisableRestoreFocus, actionChild
 
 -}
 
@@ -15,134 +20,184 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value exposing (Value)
-import M3e.Component.RichTooltip as Orig
+import M3e.Component.RichTooltip as RichTooltip_
+import M3e.Component.RichTooltipAction as Action_
 
 
-{-| See [`M3e.Component.RichTooltip.el`](M3e.Component.RichTooltip#el).
+{-| The `richTooltip` element of this family — delegates to [`M3e.Component.RichTooltip.component`](M3e.Component.RichTooltip#component).
 -}
-el :
-    { content : Element Content (ChildAdmittedBy childAdm) msg }
-    -> List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+richTooltip :
+    { content : Element RichTooltipContent (RichTooltipChildAdmittedBy childAdm) msg }
+    -> List (Attr RichTooltipAttrs msg)
+    -> List (Element RichTooltipContent (RichTooltipChildAdmittedBy childAdm) msg)
+    -> Element (RichTooltipIs s) admittedBy msg
+richTooltip =
+    RichTooltip_.component
 
 
 {-| See [`M3e.Component.RichTooltip.Is`](M3e.Component.RichTooltip#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias RichTooltipIs s =
+    RichTooltip_.Is s
 
 
 {-| See [`M3e.Component.RichTooltip.Attrs`](M3e.Component.RichTooltip#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias RichTooltipAttrs =
+    RichTooltip_.Attrs
 
 
 {-| See [`M3e.Component.RichTooltip.Content`](M3e.Component.RichTooltip#Content).
 -}
-type alias Content =
-    Orig.Content
+type alias RichTooltipContent =
+    RichTooltip_.Content
 
 
 {-| See [`M3e.Component.RichTooltip.SubheadSlot`](M3e.Component.RichTooltip#SubheadSlot).
 -}
-type alias SubheadSlot =
-    Orig.SubheadSlot
+type alias RichTooltipSubheadSlot =
+    RichTooltip_.SubheadSlot
 
 
 {-| See [`M3e.Component.RichTooltip.ChildAdmittedBy`](M3e.Component.RichTooltip#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias RichTooltipChildAdmittedBy childAdm =
+    RichTooltip_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.RichTooltip.Position`](M3e.Component.RichTooltip#Position).
 -}
-type alias Position =
-    Orig.Position
+type alias RichTooltipPosition =
+    RichTooltip_.Position
 
 
 {-| See [`M3e.Component.RichTooltip.position`](M3e.Component.RichTooltip#position).
 -}
-position : Value Position -> Attr { c | position : Supported } msg
-position =
-    Orig.position
+richTooltipPosition : Value RichTooltipPosition -> Attr { c | position : Supported } msg
+richTooltipPosition =
+    RichTooltip_.position
 
 
 {-| See [`M3e.Component.RichTooltip.TouchGestures`](M3e.Component.RichTooltip#TouchGestures).
 -}
-type alias TouchGestures =
-    Orig.TouchGestures
+type alias RichTooltipTouchGestures =
+    RichTooltip_.TouchGestures
 
 
 {-| See [`M3e.Component.RichTooltip.touchGestures`](M3e.Component.RichTooltip#touchGestures).
 -}
-touchGestures : Value TouchGestures -> Attr { c | touchGestures : Supported } msg
-touchGestures =
-    Orig.touchGestures
+richTooltipTouchGestures : Value RichTooltipTouchGestures -> Attr { c | touchGestures : Supported } msg
+richTooltipTouchGestures =
+    RichTooltip_.touchGestures
 
 
 {-| See [`M3e.Component.RichTooltip.disabled`](M3e.Component.RichTooltip#disabled).
 -}
-disabled : Bool -> Attr { c | disabled : Supported } msg
-disabled =
-    Orig.disabled
+richTooltipDisabled : Bool -> Attr { c | disabled : Supported } msg
+richTooltipDisabled =
+    RichTooltip_.disabled
 
 
 {-| See [`M3e.Component.RichTooltip.for`](M3e.Component.RichTooltip#for).
 -}
-for : String -> Attr { c | for : Supported } msg
-for =
-    Orig.for
+richTooltipFor : String -> Attr { c | for : Supported } msg
+richTooltipFor =
+    RichTooltip_.for
 
 
 {-| See [`M3e.Component.RichTooltip.hideDelay`](M3e.Component.RichTooltip#hideDelay).
 -}
-hideDelay : Float -> Attr { c | hideDelay : Supported } msg
-hideDelay =
-    Orig.hideDelay
+richTooltipHideDelay : Float -> Attr { c | hideDelay : Supported } msg
+richTooltipHideDelay =
+    RichTooltip_.hideDelay
 
 
 {-| See [`M3e.Component.RichTooltip.showDelay`](M3e.Component.RichTooltip#showDelay).
 -}
-showDelay : Float -> Attr { c | showDelay : Supported } msg
-showDelay =
-    Orig.showDelay
+richTooltipShowDelay : Float -> Attr { c | showDelay : Supported } msg
+richTooltipShowDelay =
+    RichTooltip_.showDelay
 
 
 {-| See [`M3e.Component.RichTooltip.onBeforetoggle`](M3e.Component.RichTooltip#onBeforetoggle).
 -}
-onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
-onBeforetoggle =
-    Orig.onBeforetoggle
+richTooltipOnBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
+richTooltipOnBeforetoggle =
+    RichTooltip_.onBeforetoggle
 
 
 {-| See [`M3e.Component.RichTooltip.onToggle`](M3e.Component.RichTooltip#onToggle).
 -}
-onToggle : msg -> Attr { c | onToggle : Supported } msg
-onToggle =
-    Orig.onToggle
+richTooltipOnToggle : msg -> Attr { c | onToggle : Supported } msg
+richTooltipOnToggle =
+    RichTooltip_.onToggle
 
 
 {-| See [`M3e.Component.RichTooltip.actions`](M3e.Component.RichTooltip#actions).
 -}
-actions : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-actions =
-    Orig.actions
+richTooltipActions : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+richTooltipActions =
+    RichTooltip_.actions
 
 
 {-| See [`M3e.Component.RichTooltip.subhead`](M3e.Component.RichTooltip#subhead).
 -}
-subhead : Element SubheadSlot admittedBy msg -> Element free freeAdmittedBy msg
-subhead =
-    Orig.subhead
+richTooltipSubhead : Element RichTooltipSubheadSlot admittedBy msg -> Element free freeAdmittedBy msg
+richTooltipSubhead =
+    RichTooltip_.subhead
 
 
 {-| See [`M3e.Component.RichTooltip.child`](M3e.Component.RichTooltip#child).
 -}
-child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
-child =
-    Orig.child
+richTooltipChild : Element RichTooltipContent admittedBy msg -> Element free freeAdmittedBy msg
+richTooltipChild =
+    RichTooltip_.child
+
+
+{-| The `action` element of this family — delegates to [`M3e.Component.RichTooltipAction.component`](M3e.Component.RichTooltipAction#component).
+-}
+action :
+    { content : Element ActionContent (ActionChildAdmittedBy childAdm) msg }
+    -> List (Attr ActionAttrs msg)
+    -> List (Element ActionContent (ActionChildAdmittedBy childAdm) msg)
+    -> Element (ActionIs s) admittedBy msg
+action =
+    Action_.component
+
+
+{-| See [`M3e.Component.RichTooltipAction.Is`](M3e.Component.RichTooltipAction#Is).
+-}
+type alias ActionIs s =
+    Action_.Is s
+
+
+{-| See [`M3e.Component.RichTooltipAction.Attrs`](M3e.Component.RichTooltipAction#Attrs).
+-}
+type alias ActionAttrs =
+    Action_.Attrs
+
+
+{-| See [`M3e.Component.RichTooltipAction.Content`](M3e.Component.RichTooltipAction#Content).
+-}
+type alias ActionContent =
+    Action_.Content
+
+
+{-| See [`M3e.Component.RichTooltipAction.ChildAdmittedBy`](M3e.Component.RichTooltipAction#ChildAdmittedBy).
+-}
+type alias ActionChildAdmittedBy childAdm =
+    Action_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.RichTooltipAction.disableRestoreFocus`](M3e.Component.RichTooltipAction#disableRestoreFocus).
+-}
+actionDisableRestoreFocus : Bool -> Attr { c | disableRestoreFocus : Supported } msg
+actionDisableRestoreFocus =
+    Action_.disableRestoreFocus
+
+
+{-| See [`M3e.Component.RichTooltipAction.child`](M3e.Component.RichTooltipAction#child).
+-}
+actionChild : Element ActionContent admittedBy msg -> Element free freeAdmittedBy msg
+actionChild =
+    Action_.child

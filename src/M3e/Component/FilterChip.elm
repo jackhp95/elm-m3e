@@ -1,5 +1,5 @@
 module M3e.Component.FilterChip exposing
-    ( el
+    ( component
     , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
     , Variant, variant
     , disabled, disabledInteractive, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -10,7 +10,7 @@ module M3e.Component.FilterChip exposing
 
 A chip users interact with to select/deselect options.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
 @docs Variant, variant
 @docs disabled, disabledInteractive, selected, value, defaultSelected, defaultValue, onBeforeinput, onInput, onChange, onClick
@@ -74,12 +74,12 @@ type alias Variant =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.filterChip attrs (required_.content :: children)
 
 

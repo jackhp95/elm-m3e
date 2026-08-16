@@ -73,7 +73,7 @@ view _ _ =
         (TypedHtml.div [ TA.class "flex flex-col items-center justify-center gap-4 p-8" ]
             [ TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                 [ M3e.text "Redirecting to Welcome…" ]
-            , M3e.button { content = M3e.text "Go to Welcome", action = M3e.Action.none }
+            , M3e.Component.Button.component { content = M3e.text "Go to Welcome", action = M3e.Action.none }
                 [ M3e.Component.Button.variant Value.filled
                 , M3e.Component.Button.href "/getting-started/welcome"
                 ]

@@ -24,6 +24,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Component.Heading
 import M3e.Events
 import M3e.Kind
 import M3e.Values as Value
@@ -126,7 +127,7 @@ view app shared model =
     let
         heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } adm_ Msg
         heading =
-            M3e.heading { content = M3e.text "All components" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+            M3e.Component.Heading.component { content = M3e.text "All components" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
         content : List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
         content =
@@ -234,7 +235,7 @@ stackedBlocks activeSurface d =
                     [ TA.id component.slug
                     , TA.class "cv-auto space-y-6 scroll-mt-24"
                     ]
-                    (M3e.heading { content = M3e.text component.name } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ] []
+                    (M3e.Component.Heading.component { content = M3e.text component.name } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ] []
                         :: Usage.usageBlocks activeSurface examples
                     )
                 ]

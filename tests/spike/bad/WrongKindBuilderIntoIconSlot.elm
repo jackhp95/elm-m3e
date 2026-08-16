@@ -24,7 +24,7 @@ type Msg
 
 wrong : Element (Button.Is s) b Msg
 wrong =
-    Button.el
+    Button.component
         { content = text "Save", action = onClick Save }
         []
-        [ Button.icon (Button.el { content = text "Nope", action = onClick Save } [] []) ]
+        [ Button.icon (Button.component { content = text "Nope", action = onClick Save } [] []) ]

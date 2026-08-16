@@ -49,6 +49,7 @@ import Logo
 import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
+import M3e.Component.Accordion
 import M3e.Component.AppBar
 import M3e.Component.BottomSheet
 import M3e.Component.BottomSheetTrigger
@@ -59,8 +60,8 @@ import M3e.Component.Icon
 import M3e.Component.IconButton
 import M3e.Component.NavItem
 import M3e.Component.NavMenuItem
+import M3e.Component.NavRailToggle
 import M3e.Component.SearchView
-import M3e.Component.SegmentedButton
 import M3e.Component.Theme
 import M3e.Component.Toc
 import M3e.Events
@@ -782,7 +783,7 @@ appShellBar path =
         , M3e.Attributes.id "docs-app-bar"
         ]
         [ M3e.Component.AppBar.leading
-            (M3e.iconButton
+            (M3e.Component.IconButton.component
                 { content = M3e.icon [ M3e.Component.Icon.name "list" ] [], ariaLabel = "Toggle navigation", action = M3e.Action.none }
                 [ M3e.Events.onClick ToggleTree ]
                 []
@@ -790,7 +791,7 @@ appShellBar path =
         , M3e.Component.AppBar.title (M3e.text (Maybe.withDefault "" (currentSectionLabel path)))
         , M3e.Component.AppBar.subtitle (M3e.text "elm-m3e — Material 3 Expressive for Elm")
         , M3e.Component.AppBar.trailing
-            (M3e.iconButton
+            (M3e.Component.IconButton.component
                 { content = M3e.icon [ M3e.Component.Icon.name "toc" ] [], ariaLabel = "On this page", action = M3e.Action.none }
                 [ M3e.Events.onClick ToggleToc ]
                 []
@@ -808,7 +809,7 @@ bar's on-surface foreground and adapts to light/dark.
 -}
 githubLink : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 githubLink =
-    M3e.iconButton
+    M3e.Component.IconButton.component
         { content = M3e.icon [ M3e.Component.Icon.name "github" ] [], ariaLabel = "GitHub repository", action = M3e.Action.none }
         [ M3e.Attributes.href "https://github.com/jackhp95/elm-m3e"
         , M3e.Attributes.target "_blank"
@@ -827,10 +828,10 @@ settings-specific end drawer.)
 -}
 settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
-    M3e.iconButton
+    M3e.Component.IconButton.component
         { content = M3e.icon [ M3e.Component.Icon.name "more_vert" ] [], ariaLabel = "Settings", action = M3e.Action.none }
         []
-        [ M3e.bottomSheetTrigger { for = "settings-sheet" } [] [] ]
+        [ M3e.Component.BottomSheetTrigger.component { for = "settings-sheet" } [] [] ]
 
 
 
@@ -866,7 +867,7 @@ settingsBottomSheet model =
 
 {-| One accordion entry: a header (plain text label) plus the section's body.
 `M3e.Unsafe.recast` re-kinds both the header and body to the free rows that
-`M3e.Component.ExpansionPanel.el`'s `childAccepts` type variable unifies to. This is the
+`M3e.Component.ExpansionPanel.component`'s `childAccepts` type variable unifies to. This is the
 sanctioned escape hatch (see `src/M3e/Unsafe.elm`) for exactly this
 "wrap already-built content into a slot it wasn't originally typed for" case.
 Lives here (allow-listed) rather than in `Theme.elm` (not allow-listed) per the
@@ -874,7 +875,7 @@ Lives here (allow-listed) rather than in `Theme.elm` (not allow-listed) per the
 -}
 sectionPanel : String -> Element cs adm msg -> Element { s | expansionPanel : M3e.Kind.Brand } admittedBy msg
 sectionPanel label body =
-    M3e.Component.ExpansionPanel.el
+    M3e.Component.ExpansionPanel.component
         { header = M3e.expansionHeader [] [ M3e.text label ] |> M3e.Unsafe.recast }
         []
         [ M3e.Unsafe.recast body ]
@@ -894,7 +895,7 @@ sectionsAccordion :
     }
     -> Element { s | accordion : M3e.Kind.Brand } admittedBy msg
 sectionsAccordion themeSections =
-    M3e.accordion { content = sectionPanel "Color" themeSections.color } [] [ sectionPanel "Typography" themeSections.typography, sectionPanel "Shape" themeSections.shape, sectionPanel "Appearance" themeSections.appearance, sectionPanel "Advanced" themeSections.advanced, sectionPanel "CSS Variables" themeSections.cssVariables ]
+    M3e.Component.Accordion.component { content = sectionPanel "Color" themeSections.color } [] [ sectionPanel "Typography" themeSections.typography, sectionPanel "Shape" themeSections.shape, sectionPanel "Appearance" themeSections.appearance, sectionPanel "Advanced" themeSections.advanced, sectionPanel "CSS Variables" themeSections.cssVariables ]
 
 
 {-| The theme controls, rendered into the settings bottom sheet. `Theme.view`
@@ -954,7 +955,7 @@ controlRow model =
         [ Theme.variantSelect model.theme |> HtmlIr.Element.map ThemeMsg
         , Theme.schemeToggle model.theme |> HtmlIr.Element.map ThemeMsg
         , directionToggle model
-        , M3e.iconButton
+        , M3e.Component.IconButton.component
             { content = M3e.icon [ M3e.Component.Icon.name "restart_alt" ] []
             , ariaLabel = "Reset variant, scheme, and direction"
             , action = M3e.Action.none
@@ -962,33 +963,6 @@ controlRow model =
             [ TypedHtml.Events.onClick ResetControlRow ]
             []
         ]
-
-
-{-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
-children, each a checked/label/onClick triple.
--}
-segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
-segmented segments =
-    let
-        buttonSegments : List (Element M3e.Component.SegmentedButton.Content (M3e.Component.SegmentedButton.ChildAdmittedBy childAdm) Msg)
-        buttonSegments =
-            List.map
-                (\( lbl, isChecked, msg ) ->
-                    M3e.buttonSegment
-                        [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
-                        [ M3e.text lbl ]
-                )
-                segments
-    in
-    -- SegmentedButton's `el` is required-record (`content`, one Element); every
-    -- real caller supplies a non-empty list, so the `[]` branch is unreachable
-    -- in practice — still handled so the type holds unconditionally.
-    case buttonSegments of
-        first :: rest ->
-            M3e.segmentedButton { content = first } [] rest
-
-        [] ->
-            M3e.segmentedButton { content = M3e.buttonSegment [] [] } [] []
 
 
 {-| Drive `--md-sys-density-scale` via a Tailwind arbitrary-property class — Elm
@@ -1026,7 +1000,7 @@ directionToggle model =
             else
                 ( TypedHtml.Values.rtl, "format_textdirection_r_to_l", "Switch to right-to-left" )
     in
-    M3e.iconButton
+    M3e.Component.IconButton.component
         { content = M3e.icon [ M3e.Component.Icon.name glyph ] [], ariaLabel = lbl, action = M3e.Action.none }
         [ TypedHtml.Events.onClick (SetDirection next)
         , Aria.pressed
@@ -1083,7 +1057,7 @@ searchOverlay model =
         M3e.text ""
 
     else
-        M3e.searchView
+        M3e.Component.SearchView.component
             { input =
                 M3e.Component.SearchView.input
                     (TypedHtml.input
@@ -1493,7 +1467,7 @@ currentSectionItems components path =
 
 navLeaf : String -> ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 navLeaf currentPath ( path, lbl ) =
-    M3e.navMenuItem { label = M3e.Component.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) } [ M3e.Attributes.selected (path == currentPath) ] []
+    M3e.Component.NavMenuItem.component { label = M3e.Component.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) } [ M3e.Attributes.selected (path == currentPath) ] []
 
 
 {-| The component-nav categories, in display order, each paired with its Material
@@ -1634,7 +1608,7 @@ sibling instead.
 -}
 searchFab : String -> msg -> Element { s | fab : M3e.Kind.Brand } admittedBy msg
 searchFab extraClasses openMsg =
-    M3e.fab { content = M3e.icon [ M3e.Component.Icon.name "search" ] [], action = M3e.Action.none }
+    M3e.Component.Fab.component { content = M3e.icon [ M3e.Component.Icon.name "search" ] [], action = M3e.Action.none }
         [ M3e.Attributes.size Value.small
         , M3e.Component.Fab.extended True
         , M3e.Component.Fab.variant Value.secondary
@@ -1656,7 +1630,7 @@ docsNavRail toMsg path =
         , M3e.Attributes.id "nav-rail"
         , TypedHtml.Attributes.class "hidden shrink-0 md:flex flex-col items-stretch w-fit bg-surface-container-lowest"
         ]
-        (M3e.iconButton
+        (M3e.Component.IconButton.component
             { content = M3e.Unsafe.fromHtml (Logo.view Logo.defaultColors)
             , ariaLabel = "Toggle rail width"
             , action = M3e.Action.none
@@ -1665,7 +1639,7 @@ docsNavRail toMsg path =
             , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
             ]
             [ M3e.Component.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
-            , M3e.navRailToggle { for = "nav-rail" } [] []
+            , M3e.Component.NavRailToggle.component { for = "nav-rail" } [] []
             ]
             :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
             :: List.map (railItem path) sections

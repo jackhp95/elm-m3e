@@ -1,13 +1,18 @@
-module M3e.Family.Menu exposing (el, Is, Attrs, Content, ChildAdmittedBy, PositionX, positionX, PositionY, positionY, Variant, variant, submenu, onBeforetoggle, onToggle, child)
+module M3e.Family.Menu exposing (MenuIs, MenuAttrs, MenuContent, MenuChildAdmittedBy, MenuPositionX, MenuPositionY, MenuVariant, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemTrailingIconSlot, ItemChildAdmittedBy, ItemCheckboxIs, ItemCheckboxAttrs, ItemCheckboxContent, ItemCheckboxIconSlot, ItemCheckboxTrailingIconSlot, ItemCheckboxChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupContent, ItemGroupChildAdmittedBy, ItemRadioIs, ItemRadioAttrs, ItemRadioContent, ItemRadioIconSlot, ItemRadioTrailingIconSlot, ItemRadioChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, menu, menuPositionX, menuPositionY, menuVariant, menuSubmenu, menuOnBeforetoggle, menuOnToggle, menuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemTrailingIcon, itemChild, itemCheckbox, itemCheckboxChecked, itemCheckboxDisabled, itemCheckboxDefaultChecked, itemCheckboxOnClick, itemCheckboxIcon, itemCheckboxTrailingIcon, itemCheckboxChild, itemGroup, itemGroupChild, itemRadio, itemRadioChecked, itemRadioDisabled, itemRadioDefaultChecked, itemRadioOnClick, itemRadioIcon, itemRadioTrailingIcon, itemRadioChild, trigger, triggerChild)
 
-{-| The **Menu** family root — re-export of `M3e.Component.Menu`.
+{-| The **Menu** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.Menu`](M3e.Component.Menu) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, Content, ChildAdmittedBy, PositionX, positionX, PositionY, positionY, Variant, variant, submenu, onBeforetoggle, onToggle, child
+[`M3e.Component.Menu`](M3e.Component.Menu) as `menu`, [`M3e.Component.MenuItem`](M3e.Component.MenuItem) as `item`, [`M3e.Component.MenuItemCheckbox`](M3e.Component.MenuItemCheckbox) as `itemCheckbox`, [`M3e.Component.MenuItemGroup`](M3e.Component.MenuItemGroup) as `itemGroup`, [`M3e.Component.MenuItemRadio`](M3e.Component.MenuItemRadio) as `itemRadio`, [`M3e.Component.MenuTrigger`](M3e.Component.MenuTrigger) as `trigger`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs MenuIs, MenuAttrs, MenuContent, MenuChildAdmittedBy, MenuPositionX, MenuPositionY, MenuVariant, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemTrailingIconSlot, ItemChildAdmittedBy, ItemCheckboxIs, ItemCheckboxAttrs, ItemCheckboxContent, ItemCheckboxIconSlot, ItemCheckboxTrailingIconSlot, ItemCheckboxChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupContent, ItemGroupChildAdmittedBy, ItemRadioIs, ItemRadioAttrs, ItemRadioContent, ItemRadioIconSlot, ItemRadioTrailingIconSlot, ItemRadioChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, menu, menuPositionX, menuPositionY, menuVariant, menuSubmenu, menuOnBeforetoggle, menuOnToggle, menuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemTrailingIcon, itemChild, itemCheckbox, itemCheckboxChecked, itemCheckboxDisabled, itemCheckboxDefaultChecked, itemCheckboxOnClick, itemCheckboxIcon, itemCheckboxTrailingIcon, itemCheckboxChild, itemGroup, itemGroupChild, itemRadio, itemRadioChecked, itemRadioDisabled, itemRadioDefaultChecked, itemRadioOnClick, itemRadioIcon, itemRadioTrailingIcon, itemRadioChild, trigger, triggerChild
 
 -}
 
@@ -15,105 +20,486 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value exposing (Value)
-import M3e.Component.Menu as Orig
+import M3e.Component.Menu as Menu_
+import M3e.Component.MenuItem as Item_
+import M3e.Component.MenuItemCheckbox as ItemCheckbox_
+import M3e.Component.MenuItemGroup as ItemGroup_
+import M3e.Component.MenuItemRadio as ItemRadio_
+import M3e.Component.MenuTrigger as Trigger_
 
 
-{-| See [`M3e.Component.Menu.el`](M3e.Component.Menu#el).
+{-| The `menu` element of this family — delegates to [`M3e.Component.Menu.component`](M3e.Component.Menu#component).
 -}
-el :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+menu :
+    List (Attr MenuAttrs msg)
+    -> List (Element MenuContent (MenuChildAdmittedBy childAdm) msg)
+    -> Element (MenuIs s) admittedBy msg
+menu =
+    Menu_.component
 
 
 {-| See [`M3e.Component.Menu.Is`](M3e.Component.Menu#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias MenuIs s =
+    Menu_.Is s
 
 
 {-| See [`M3e.Component.Menu.Attrs`](M3e.Component.Menu#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias MenuAttrs =
+    Menu_.Attrs
 
 
 {-| See [`M3e.Component.Menu.Content`](M3e.Component.Menu#Content).
 -}
-type alias Content =
-    Orig.Content
+type alias MenuContent =
+    Menu_.Content
 
 
 {-| See [`M3e.Component.Menu.ChildAdmittedBy`](M3e.Component.Menu#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias MenuChildAdmittedBy childAdm =
+    Menu_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.Menu.PositionX`](M3e.Component.Menu#PositionX).
 -}
-type alias PositionX =
-    Orig.PositionX
+type alias MenuPositionX =
+    Menu_.PositionX
 
 
 {-| See [`M3e.Component.Menu.positionX`](M3e.Component.Menu#positionX).
 -}
-positionX : Value PositionX -> Attr { c | positionX : Supported } msg
-positionX =
-    Orig.positionX
+menuPositionX : Value MenuPositionX -> Attr { c | positionX : Supported } msg
+menuPositionX =
+    Menu_.positionX
 
 
 {-| See [`M3e.Component.Menu.PositionY`](M3e.Component.Menu#PositionY).
 -}
-type alias PositionY =
-    Orig.PositionY
+type alias MenuPositionY =
+    Menu_.PositionY
 
 
 {-| See [`M3e.Component.Menu.positionY`](M3e.Component.Menu#positionY).
 -}
-positionY : Value PositionY -> Attr { c | positionY : Supported } msg
-positionY =
-    Orig.positionY
+menuPositionY : Value MenuPositionY -> Attr { c | positionY : Supported } msg
+menuPositionY =
+    Menu_.positionY
 
 
 {-| See [`M3e.Component.Menu.Variant`](M3e.Component.Menu#Variant).
 -}
-type alias Variant =
-    Orig.Variant
+type alias MenuVariant =
+    Menu_.Variant
 
 
 {-| See [`M3e.Component.Menu.variant`](M3e.Component.Menu#variant).
 -}
-variant : Value Variant -> Attr { c | variant : Supported } msg
-variant =
-    Orig.variant
+menuVariant : Value MenuVariant -> Attr { c | variant : Supported } msg
+menuVariant =
+    Menu_.variant
 
 
 {-| See [`M3e.Component.Menu.submenu`](M3e.Component.Menu#submenu).
 -}
-submenu : Bool -> Attr { c | submenu : Supported } msg
-submenu =
-    Orig.submenu
+menuSubmenu : Bool -> Attr { c | submenu : Supported } msg
+menuSubmenu =
+    Menu_.submenu
 
 
 {-| See [`M3e.Component.Menu.onBeforetoggle`](M3e.Component.Menu#onBeforetoggle).
 -}
-onBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
-onBeforetoggle =
-    Orig.onBeforetoggle
+menuOnBeforetoggle : msg -> Attr { c | onBeforetoggle : Supported } msg
+menuOnBeforetoggle =
+    Menu_.onBeforetoggle
 
 
 {-| See [`M3e.Component.Menu.onToggle`](M3e.Component.Menu#onToggle).
 -}
-onToggle : (String -> msg) -> Attr { c | onToggle : Supported } msg
-onToggle =
-    Orig.onToggle
+menuOnToggle : (String -> msg) -> Attr { c | onToggle : Supported } msg
+menuOnToggle =
+    Menu_.onToggle
 
 
 {-| See [`M3e.Component.Menu.child`](M3e.Component.Menu#child).
 -}
-child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
-child =
-    Orig.child
+menuChild : Element MenuContent admittedBy msg -> Element free freeAdmittedBy msg
+menuChild =
+    Menu_.child
+
+
+{-| The `item` element of this family — delegates to [`M3e.Component.MenuItem.component`](M3e.Component.MenuItem#component).
+-}
+item :
+    List (Attr ItemAttrs msg)
+    -> List (Element ItemContent (ItemChildAdmittedBy childAdm) msg)
+    -> Element (ItemIs s) admittedBy msg
+item =
+    Item_.component
+
+
+{-| See [`M3e.Component.MenuItem.Is`](M3e.Component.MenuItem#Is).
+-}
+type alias ItemIs s =
+    Item_.Is s
+
+
+{-| See [`M3e.Component.MenuItem.Attrs`](M3e.Component.MenuItem#Attrs).
+-}
+type alias ItemAttrs =
+    Item_.Attrs
+
+
+{-| See [`M3e.Component.MenuItem.Content`](M3e.Component.MenuItem#Content).
+-}
+type alias ItemContent =
+    Item_.Content
+
+
+{-| See [`M3e.Component.MenuItem.IconSlot`](M3e.Component.MenuItem#IconSlot).
+-}
+type alias ItemIconSlot =
+    Item_.IconSlot
+
+
+{-| See [`M3e.Component.MenuItem.TrailingIconSlot`](M3e.Component.MenuItem#TrailingIconSlot).
+-}
+type alias ItemTrailingIconSlot =
+    Item_.TrailingIconSlot
+
+
+{-| See [`M3e.Component.MenuItem.ChildAdmittedBy`](M3e.Component.MenuItem#ChildAdmittedBy).
+-}
+type alias ItemChildAdmittedBy childAdm =
+    Item_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MenuItem.disabled`](M3e.Component.MenuItem#disabled).
+-}
+itemDisabled : Bool -> Attr { c | disabled : Supported } msg
+itemDisabled =
+    Item_.disabled
+
+
+{-| See [`M3e.Component.MenuItem.download`](M3e.Component.MenuItem#download).
+-}
+itemDownload : String -> Attr { c | download : Supported } msg
+itemDownload =
+    Item_.download
+
+
+{-| See [`M3e.Component.MenuItem.href`](M3e.Component.MenuItem#href).
+-}
+itemHref : String -> Attr { c | href : Supported } msg
+itemHref =
+    Item_.href
+
+
+{-| See [`M3e.Component.MenuItem.rel`](M3e.Component.MenuItem#rel).
+-}
+itemRel : String -> Attr { c | rel : Supported } msg
+itemRel =
+    Item_.rel
+
+
+{-| See [`M3e.Component.MenuItem.target`](M3e.Component.MenuItem#target).
+-}
+itemTarget : String -> Attr { c | target : Supported } msg
+itemTarget =
+    Item_.target
+
+
+{-| See [`M3e.Component.MenuItem.onClick`](M3e.Component.MenuItem#onClick).
+-}
+itemOnClick : msg -> Attr { c | onClick : Supported } msg
+itemOnClick =
+    Item_.onClick
+
+
+{-| See [`M3e.Component.MenuItem.icon`](M3e.Component.MenuItem#icon).
+-}
+itemIcon : Element ItemIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+itemIcon =
+    Item_.icon
+
+
+{-| See [`M3e.Component.MenuItem.trailingIcon`](M3e.Component.MenuItem#trailingIcon).
+-}
+itemTrailingIcon : Element ItemTrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+itemTrailingIcon =
+    Item_.trailingIcon
+
+
+{-| See [`M3e.Component.MenuItem.child`](M3e.Component.MenuItem#child).
+-}
+itemChild : Element ItemContent admittedBy msg -> Element free freeAdmittedBy msg
+itemChild =
+    Item_.child
+
+
+{-| The `itemCheckbox` element of this family — delegates to [`M3e.Component.MenuItemCheckbox.component`](M3e.Component.MenuItemCheckbox#component).
+-}
+itemCheckbox :
+    List (Attr ItemCheckboxAttrs msg)
+    -> List (Element ItemCheckboxContent (ItemCheckboxChildAdmittedBy childAdm) msg)
+    -> Element (ItemCheckboxIs s) admittedBy msg
+itemCheckbox =
+    ItemCheckbox_.component
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.Is`](M3e.Component.MenuItemCheckbox#Is).
+-}
+type alias ItemCheckboxIs s =
+    ItemCheckbox_.Is s
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.Attrs`](M3e.Component.MenuItemCheckbox#Attrs).
+-}
+type alias ItemCheckboxAttrs =
+    ItemCheckbox_.Attrs
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.Content`](M3e.Component.MenuItemCheckbox#Content).
+-}
+type alias ItemCheckboxContent =
+    ItemCheckbox_.Content
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.IconSlot`](M3e.Component.MenuItemCheckbox#IconSlot).
+-}
+type alias ItemCheckboxIconSlot =
+    ItemCheckbox_.IconSlot
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.TrailingIconSlot`](M3e.Component.MenuItemCheckbox#TrailingIconSlot).
+-}
+type alias ItemCheckboxTrailingIconSlot =
+    ItemCheckbox_.TrailingIconSlot
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.ChildAdmittedBy`](M3e.Component.MenuItemCheckbox#ChildAdmittedBy).
+-}
+type alias ItemCheckboxChildAdmittedBy childAdm =
+    ItemCheckbox_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.checked`](M3e.Component.MenuItemCheckbox#checked).
+-}
+itemCheckboxChecked : Bool -> Attr { c | checked : Supported } msg
+itemCheckboxChecked =
+    ItemCheckbox_.checked
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.disabled`](M3e.Component.MenuItemCheckbox#disabled).
+-}
+itemCheckboxDisabled : Bool -> Attr { c | disabled : Supported } msg
+itemCheckboxDisabled =
+    ItemCheckbox_.disabled
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.defaultChecked`](M3e.Component.MenuItemCheckbox#defaultChecked).
+-}
+itemCheckboxDefaultChecked : Bool -> Attr { c | checked : Supported } msg
+itemCheckboxDefaultChecked =
+    ItemCheckbox_.defaultChecked
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.onClick`](M3e.Component.MenuItemCheckbox#onClick).
+-}
+itemCheckboxOnClick : msg -> Attr { c | onClick : Supported } msg
+itemCheckboxOnClick =
+    ItemCheckbox_.onClick
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.icon`](M3e.Component.MenuItemCheckbox#icon).
+-}
+itemCheckboxIcon : Element ItemCheckboxIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+itemCheckboxIcon =
+    ItemCheckbox_.icon
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.trailingIcon`](M3e.Component.MenuItemCheckbox#trailingIcon).
+-}
+itemCheckboxTrailingIcon : Element ItemCheckboxTrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+itemCheckboxTrailingIcon =
+    ItemCheckbox_.trailingIcon
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.child`](M3e.Component.MenuItemCheckbox#child).
+-}
+itemCheckboxChild : Element ItemCheckboxContent admittedBy msg -> Element free freeAdmittedBy msg
+itemCheckboxChild =
+    ItemCheckbox_.child
+
+
+{-| The `itemGroup` element of this family — delegates to [`M3e.Component.MenuItemGroup.component`](M3e.Component.MenuItemGroup#component).
+-}
+itemGroup :
+    List (Attr ItemGroupAttrs msg)
+    -> List (Element ItemGroupContent (ItemGroupChildAdmittedBy childAdm) msg)
+    -> Element (ItemGroupIs s) admittedBy msg
+itemGroup =
+    ItemGroup_.component
+
+
+{-| See [`M3e.Component.MenuItemGroup.Is`](M3e.Component.MenuItemGroup#Is).
+-}
+type alias ItemGroupIs s =
+    ItemGroup_.Is s
+
+
+{-| See [`M3e.Component.MenuItemGroup.Attrs`](M3e.Component.MenuItemGroup#Attrs).
+-}
+type alias ItemGroupAttrs =
+    ItemGroup_.Attrs
+
+
+{-| See [`M3e.Component.MenuItemGroup.Content`](M3e.Component.MenuItemGroup#Content).
+-}
+type alias ItemGroupContent =
+    ItemGroup_.Content
+
+
+{-| See [`M3e.Component.MenuItemGroup.ChildAdmittedBy`](M3e.Component.MenuItemGroup#ChildAdmittedBy).
+-}
+type alias ItemGroupChildAdmittedBy childAdm =
+    ItemGroup_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MenuItemGroup.child`](M3e.Component.MenuItemGroup#child).
+-}
+itemGroupChild : Element ItemGroupContent admittedBy msg -> Element free freeAdmittedBy msg
+itemGroupChild =
+    ItemGroup_.child
+
+
+{-| The `itemRadio` element of this family — delegates to [`M3e.Component.MenuItemRadio.component`](M3e.Component.MenuItemRadio#component).
+-}
+itemRadio :
+    List (Attr ItemRadioAttrs msg)
+    -> List (Element ItemRadioContent (ItemRadioChildAdmittedBy childAdm) msg)
+    -> Element (ItemRadioIs s) admittedBy msg
+itemRadio =
+    ItemRadio_.component
+
+
+{-| See [`M3e.Component.MenuItemRadio.Is`](M3e.Component.MenuItemRadio#Is).
+-}
+type alias ItemRadioIs s =
+    ItemRadio_.Is s
+
+
+{-| See [`M3e.Component.MenuItemRadio.Attrs`](M3e.Component.MenuItemRadio#Attrs).
+-}
+type alias ItemRadioAttrs =
+    ItemRadio_.Attrs
+
+
+{-| See [`M3e.Component.MenuItemRadio.Content`](M3e.Component.MenuItemRadio#Content).
+-}
+type alias ItemRadioContent =
+    ItemRadio_.Content
+
+
+{-| See [`M3e.Component.MenuItemRadio.IconSlot`](M3e.Component.MenuItemRadio#IconSlot).
+-}
+type alias ItemRadioIconSlot =
+    ItemRadio_.IconSlot
+
+
+{-| See [`M3e.Component.MenuItemRadio.TrailingIconSlot`](M3e.Component.MenuItemRadio#TrailingIconSlot).
+-}
+type alias ItemRadioTrailingIconSlot =
+    ItemRadio_.TrailingIconSlot
+
+
+{-| See [`M3e.Component.MenuItemRadio.ChildAdmittedBy`](M3e.Component.MenuItemRadio#ChildAdmittedBy).
+-}
+type alias ItemRadioChildAdmittedBy childAdm =
+    ItemRadio_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MenuItemRadio.checked`](M3e.Component.MenuItemRadio#checked).
+-}
+itemRadioChecked : Bool -> Attr { c | checked : Supported } msg
+itemRadioChecked =
+    ItemRadio_.checked
+
+
+{-| See [`M3e.Component.MenuItemRadio.disabled`](M3e.Component.MenuItemRadio#disabled).
+-}
+itemRadioDisabled : Bool -> Attr { c | disabled : Supported } msg
+itemRadioDisabled =
+    ItemRadio_.disabled
+
+
+{-| See [`M3e.Component.MenuItemRadio.defaultChecked`](M3e.Component.MenuItemRadio#defaultChecked).
+-}
+itemRadioDefaultChecked : Bool -> Attr { c | checked : Supported } msg
+itemRadioDefaultChecked =
+    ItemRadio_.defaultChecked
+
+
+{-| See [`M3e.Component.MenuItemRadio.onClick`](M3e.Component.MenuItemRadio#onClick).
+-}
+itemRadioOnClick : msg -> Attr { c | onClick : Supported } msg
+itemRadioOnClick =
+    ItemRadio_.onClick
+
+
+{-| See [`M3e.Component.MenuItemRadio.icon`](M3e.Component.MenuItemRadio#icon).
+-}
+itemRadioIcon : Element ItemRadioIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+itemRadioIcon =
+    ItemRadio_.icon
+
+
+{-| See [`M3e.Component.MenuItemRadio.trailingIcon`](M3e.Component.MenuItemRadio#trailingIcon).
+-}
+itemRadioTrailingIcon : Element ItemRadioTrailingIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+itemRadioTrailingIcon =
+    ItemRadio_.trailingIcon
+
+
+{-| See [`M3e.Component.MenuItemRadio.child`](M3e.Component.MenuItemRadio#child).
+-}
+itemRadioChild : Element ItemRadioContent admittedBy msg -> Element free freeAdmittedBy msg
+itemRadioChild =
+    ItemRadio_.child
+
+
+{-| The `trigger` element of this family — delegates to [`M3e.Component.MenuTrigger.component`](M3e.Component.MenuTrigger#component).
+-}
+trigger :
+    { for : String }
+    -> List (Attr TriggerAttrs msg)
+    -> List (Element childAccepts (TriggerChildAdmittedBy childAdm) msg)
+    -> Element (TriggerIs s) admittedBy msg
+trigger =
+    Trigger_.component
+
+
+{-| See [`M3e.Component.MenuTrigger.Is`](M3e.Component.MenuTrigger#Is).
+-}
+type alias TriggerIs s =
+    Trigger_.Is s
+
+
+{-| See [`M3e.Component.MenuTrigger.Attrs`](M3e.Component.MenuTrigger#Attrs).
+-}
+type alias TriggerAttrs =
+    Trigger_.Attrs
+
+
+{-| See [`M3e.Component.MenuTrigger.ChildAdmittedBy`](M3e.Component.MenuTrigger#ChildAdmittedBy).
+-}
+type alias TriggerChildAdmittedBy childAdm =
+    Trigger_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MenuTrigger.child`](M3e.Component.MenuTrigger#child).
+-}
+triggerChild : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+triggerChild =
+    Trigger_.child

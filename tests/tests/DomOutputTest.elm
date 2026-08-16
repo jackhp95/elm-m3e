@@ -37,6 +37,7 @@ import M3e
 import M3e.Action as Action
 import M3e.Component.Button
 import M3e.Component.Icon
+import M3e.Component.IconButton
 import M3e.Component.ListItem
 import M3e.Values as Value
 import Test exposing (Test, describe, test)
@@ -61,12 +62,12 @@ suite =
         [ describe "custom-element tag emission"
             [ test "M3e.button renders an <m3e-button>" <|
                 \_ ->
-                    M3e.button { content = M3e.text "Save", action = Action.none } [] []
+                    M3e.Component.Button.component { content = M3e.text "Save", action = Action.none } [] []
                         |> toQuery
                         |> Query.has [ Selector.tag "m3e-button" ]
             , test "M3e.iconButton renders an <m3e-icon-button> wrapping an <m3e-icon>" <|
                 \_ ->
-                    M3e.iconButton
+                    M3e.Component.IconButton.component
                         { content = M3e.icon [ M3e.Component.Icon.name "arrow_back" ] [], ariaLabel = "Back", action = Action.none }
                         []
                         []
@@ -79,7 +80,7 @@ suite =
         , describe "attribute and token emission"
             [ test "a variant token becomes a variant= attribute on the host" <|
                 \_ ->
-                    M3e.button { content = M3e.text "Go", action = Action.none } [ M3e.Component.Button.variant Value.filled ] []
+                    M3e.Component.Button.component { content = M3e.text "Go", action = Action.none } [ M3e.Component.Button.variant Value.filled ] []
                         |> toQuery
                         |> Query.has
                             [ Selector.tag "m3e-button"
@@ -87,7 +88,7 @@ suite =
                             ]
             , test "an aria-label setter becomes an aria-label attribute" <|
                 \_ ->
-                    M3e.iconButton
+                    M3e.Component.IconButton.component
                         { content = M3e.icon [ M3e.Component.Icon.name "close" ] [], ariaLabel = "Close", action = Action.none }
                         []
                         []
@@ -103,7 +104,7 @@ suite =
         , describe "slot stamping on slotted children"
             [ test "M3e.Component.Button.icon stamps slot=icon on the placed icon" <|
                 \_ ->
-                    M3e.button { content = M3e.text "Add", action = Action.none }
+                    M3e.Component.Button.component { content = M3e.text "Add", action = Action.none }
                         []
                         [ M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "add" ] []) ]
                         |> toQuery
@@ -157,14 +158,14 @@ suite =
             -- attaches its click handler to `this.parentElement`, and toggles/
             -- anchors against `this.parentElement`. So it MUST be emitted as a
             -- CHILD of the clickable host, wrapping the label — never as an outer
-            -- wrapper around the host. `M3e.Component.Button.el` does this by placing
+            -- wrapper around the host. `M3e.Component.Button.component` does this by placing
             -- `Action.wrapContent action content` among the `m3e-button` children.
             -- These tests pin that nesting direction so a regen or an `Action`
             -- refactor that inverted it (host inside the toggle) fails loudly here
             -- instead of silently mis-anchoring the popup at runtime.
             [ test "togglesDatepicker emits <m3e-datepicker-toggle for> as a child of the host, wrapping the label" <|
                 \_ ->
-                    M3e.Component.Button.el
+                    M3e.Component.Button.component
                         { content = M3e.text "Pick date"
                         , action = Action.togglesDatepicker "cal1"
                         }
@@ -186,7 +187,7 @@ suite =
                     -- Also a compile-lock: `togglesTimepicker` only type-checks here
                     -- if `M3e.Button`'s ActionCaps admits `timepickerToggle`, i.e.
                     -- the config mirror landed in the required.action roster too.
-                    M3e.Component.Button.el
+                    M3e.Component.Button.component
                         { content = M3e.text "Pick time"
                         , action = Action.togglesTimepicker "clock1"
                         }
@@ -203,7 +204,7 @@ suite =
                             ]
             , test "the toggle is INNER — no clickable host nested inside it (anti-inversion)" <|
                 \_ ->
-                    M3e.Component.Button.el
+                    M3e.Component.Button.component
                         { content = M3e.text "Pick date"
                         , action = Action.togglesDatepicker "cal1"
                         }
@@ -215,7 +216,7 @@ suite =
                         |> Query.count (Expect.equal 0)
             , test "an opens-trigger wrapper (opensMenu) nests the same way — the whole family shares the contract" <|
                 \_ ->
-                    M3e.Component.Button.el
+                    M3e.Component.Button.component
                         { content = M3e.text "Open menu"
                         , action = Action.opensMenu "menu1"
                         }

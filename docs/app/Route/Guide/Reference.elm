@@ -152,7 +152,7 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
-    M3e.heading { content = M3e.text "Component reference" }
+    M3e.Component.Heading.component { content = M3e.text "Component reference" }
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
@@ -220,7 +220,7 @@ twoFormsText =
     """Every component is reachable two ways — same output, different import and different strictness:
 
 - The **barrel** (`import M3e`) — one import for everything. `M3e.button`, `M3e.icon`, and the shared `M3e.Attributes.variant Value.filled` vocabulary. This is the form the [Guide](/guide/the-layers) teaches; it's the generic, easy form.
-- The **component module** (`import M3e.Button`) — `M3e.Component.Button.el` and its component-scoped `M3e.Component.Button.variant` / slot setters (`M3e.Component.Button.icon`). More precise: the compiler rejects a token or slot child that isn't valid for *that* component.
+- The **component module** (`import M3e.Button`) — `M3e.Component.Button.component` and its component-scoped `M3e.Component.Button.variant` / slot setters (`M3e.Component.Button.icon`). More precise: the compiler rejects a token or slot child that isn't valid for *that* component.
 
 Barrel-vs-module isn't a [surface](/guide/the-layers) choice and it isn't an escape hatch — it's a separate axis, only *which import you reach through*. Start on the barrel; reach for a component module when you want the tighter, component-scoped types."""
 
@@ -293,7 +293,7 @@ barrelGroup label pred members =
         ms ->
             TypedHtml.section
                 [ TA.class "space-y-3" ]
-                [ M3e.heading { content = M3e.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, M3e.Attributes.level 3, TA.class "text-on-surface" ] []
+                [ M3e.Component.Heading.component { content = M3e.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, M3e.Attributes.level 3, TA.class "text-on-surface" ] []
                 , TypedHtml.div [ TA.class "space-y-3" ] (List.map memberRow ms)
                 ]
 

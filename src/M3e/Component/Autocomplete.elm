@@ -1,5 +1,5 @@
 module M3e.Component.Autocomplete exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , Filter, filter
     , autoActivate, caseSensitive, for, hideLoading, hideNoData, hideSelectionIndicator, loadingLabel, noDataLabel, panelClass, required, resultsLabel, onChange, onQuery, onToggle
@@ -10,7 +10,7 @@ module M3e.Component.Autocomplete exposing
 
 Enhances a text input with suggested options.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Filter, filter
 @docs autoActivate, caseSensitive, for, hideLoading, hideNoData, hideSelectionIndicator, loadingLabel, noDataLabel, panelClass, required, resultsLabel, onChange, onQuery, onToggle
@@ -75,11 +75,11 @@ type alias Filter =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.autocomplete
 
 

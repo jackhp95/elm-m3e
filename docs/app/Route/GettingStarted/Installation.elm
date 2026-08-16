@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -65,12 +66,12 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading { content = M3e.text "Installation" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.Component.Heading.component { content = M3e.text "Installation" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 stepHeading : String -> Element { s | heading : M3e.Kind.Brand } adm_ msg
 stepHeading label =
-    M3e.heading { content = M3e.text label } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
+    M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -187,6 +188,7 @@ import M3e.Action
 import M3e.Component.Button as Button
 import M3e.Component.Theme as Theme
 import M3e.Values as Value
+import M3e.Component.Heading
 
 
 main : Program () () ()
@@ -197,11 +199,11 @@ main =
 view : () -> Html.Html ()
 view _ =
     M3e.toHtml
-        (Theme.el
+        (Theme.component
             [ Theme.color "#6750A4"
             , Theme.scheme Value.auto
             ]
-            [ Button.el
+            [ Button.component
                 { content = M3e.text "It works", action = M3e.Action.none }
                 [ Button.variant Value.filled ]
                 []

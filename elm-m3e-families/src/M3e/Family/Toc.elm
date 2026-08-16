@@ -1,92 +1,168 @@
-module M3e.Family.Toc exposing (el, Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy, for, maxDepth, overline, title, child)
+module M3e.Family.Toc exposing (TocIs, TocAttrs, TocOverlineSlot, TocTitleSlot, TocChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemChildAdmittedBy, toc, tocFor, tocMaxDepth, tocOverline, tocTitle, tocChild, item, itemDisabled, itemSelected, itemDefaultSelected, itemOnClick, itemChild)
 
-{-| The **Toc** family root — re-export of `M3e.Component.Toc`.
+{-| The **Toc** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.Toc`](M3e.Component.Toc) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy, for, maxDepth, overline, title, child
+[`M3e.Component.Toc`](M3e.Component.Toc) as `toc`, [`M3e.Component.TocItem`](M3e.Component.TocItem) as `item`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs TocIs, TocAttrs, TocOverlineSlot, TocTitleSlot, TocChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemChildAdmittedBy, toc, tocFor, tocMaxDepth, tocOverline, tocTitle, tocChild, item, itemDisabled, itemSelected, itemDefaultSelected, itemOnClick, itemChild
 
 -}
 
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
-import M3e.Component.Toc as Orig
+import M3e.Component.Toc as Toc_
+import M3e.Component.TocItem as Item_
 
 
-{-| See [`M3e.Component.Toc.el`](M3e.Component.Toc#el).
+{-| The `toc` element of this family — delegates to [`M3e.Component.Toc.component`](M3e.Component.Toc#component).
 -}
-el :
-    List (Attr Attrs msg)
-    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+toc :
+    List (Attr TocAttrs msg)
+    -> List (Element childAccepts (TocChildAdmittedBy childAdm) msg)
+    -> Element (TocIs s) admittedBy msg
+toc =
+    Toc_.component
 
 
 {-| See [`M3e.Component.Toc.Is`](M3e.Component.Toc#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias TocIs s =
+    Toc_.Is s
 
 
 {-| See [`M3e.Component.Toc.Attrs`](M3e.Component.Toc#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias TocAttrs =
+    Toc_.Attrs
 
 
 {-| See [`M3e.Component.Toc.OverlineSlot`](M3e.Component.Toc#OverlineSlot).
 -}
-type alias OverlineSlot =
-    Orig.OverlineSlot
+type alias TocOverlineSlot =
+    Toc_.OverlineSlot
 
 
 {-| See [`M3e.Component.Toc.TitleSlot`](M3e.Component.Toc#TitleSlot).
 -}
-type alias TitleSlot =
-    Orig.TitleSlot
+type alias TocTitleSlot =
+    Toc_.TitleSlot
 
 
 {-| See [`M3e.Component.Toc.ChildAdmittedBy`](M3e.Component.Toc#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias TocChildAdmittedBy childAdm =
+    Toc_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.Toc.for`](M3e.Component.Toc#for).
 -}
-for : String -> Attr { c | for : Supported } msg
-for =
-    Orig.for
+tocFor : String -> Attr { c | for : Supported } msg
+tocFor =
+    Toc_.for
 
 
 {-| See [`M3e.Component.Toc.maxDepth`](M3e.Component.Toc#maxDepth).
 -}
-maxDepth : Float -> Attr { c | maxDepth : Supported } msg
-maxDepth =
-    Orig.maxDepth
+tocMaxDepth : Float -> Attr { c | maxDepth : Supported } msg
+tocMaxDepth =
+    Toc_.maxDepth
 
 
 {-| See [`M3e.Component.Toc.overline`](M3e.Component.Toc#overline).
 -}
-overline : Element OverlineSlot admittedBy msg -> Element free freeAdmittedBy msg
-overline =
-    Orig.overline
+tocOverline : Element TocOverlineSlot admittedBy msg -> Element free freeAdmittedBy msg
+tocOverline =
+    Toc_.overline
 
 
 {-| See [`M3e.Component.Toc.title`](M3e.Component.Toc#title).
 -}
-title : Element TitleSlot admittedBy msg -> Element free freeAdmittedBy msg
-title =
-    Orig.title
+tocTitle : Element TocTitleSlot admittedBy msg -> Element free freeAdmittedBy msg
+tocTitle =
+    Toc_.title
 
 
 {-| See [`M3e.Component.Toc.child`](M3e.Component.Toc#child).
 -}
-child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-child =
-    Orig.child
+tocChild : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+tocChild =
+    Toc_.child
+
+
+{-| The `item` element of this family — delegates to [`M3e.Component.TocItem.component`](M3e.Component.TocItem#component).
+-}
+item :
+    { content : Element ItemContent (ItemChildAdmittedBy childAdm) msg }
+    -> List (Attr ItemAttrs msg)
+    -> List (Element ItemContent (ItemChildAdmittedBy childAdm) msg)
+    -> Element (ItemIs s) admittedBy msg
+item =
+    Item_.component
+
+
+{-| See [`M3e.Component.TocItem.Is`](M3e.Component.TocItem#Is).
+-}
+type alias ItemIs s =
+    Item_.Is s
+
+
+{-| See [`M3e.Component.TocItem.Attrs`](M3e.Component.TocItem#Attrs).
+-}
+type alias ItemAttrs =
+    Item_.Attrs
+
+
+{-| See [`M3e.Component.TocItem.Content`](M3e.Component.TocItem#Content).
+-}
+type alias ItemContent =
+    Item_.Content
+
+
+{-| See [`M3e.Component.TocItem.ChildAdmittedBy`](M3e.Component.TocItem#ChildAdmittedBy).
+-}
+type alias ItemChildAdmittedBy childAdm =
+    Item_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.TocItem.disabled`](M3e.Component.TocItem#disabled).
+-}
+itemDisabled : Bool -> Attr { c | disabled : Supported } msg
+itemDisabled =
+    Item_.disabled
+
+
+{-| See [`M3e.Component.TocItem.selected`](M3e.Component.TocItem#selected).
+-}
+itemSelected : Bool -> Attr { c | selected : Supported } msg
+itemSelected =
+    Item_.selected
+
+
+{-| See [`M3e.Component.TocItem.defaultSelected`](M3e.Component.TocItem#defaultSelected).
+-}
+itemDefaultSelected : Bool -> Attr { c | selected : Supported } msg
+itemDefaultSelected =
+    Item_.defaultSelected
+
+
+{-| See [`M3e.Component.TocItem.onClick`](M3e.Component.TocItem#onClick).
+-}
+itemOnClick : msg -> Attr { c | onClick : Supported } msg
+itemOnClick =
+    Item_.onClick
+
+
+{-| See [`M3e.Component.TocItem.child`](M3e.Component.TocItem#child).
+-}
+itemChild : Element ItemContent admittedBy msg -> Element free freeAdmittedBy msg
+itemChild =
+    Item_.child

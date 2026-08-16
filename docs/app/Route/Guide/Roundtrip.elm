@@ -245,7 +245,7 @@ rankedCells cells =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
-    M3e.heading { content = M3e.text "Round-trip report" }
+    M3e.Component.Heading.component { content = M3e.text "Round-trip report" }
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
@@ -288,8 +288,8 @@ surfaceLegendText =
 
 | Row | What it is | Surface map |
 | --- | --- | --- |
-| **top** | `M3e.Component.Button.el` — the standard (bare, when a component has nothing required) form: typed, slot-safe, composes anywhere. | the standard constructor surface ([surface map](/guide/the-layers)) |
-| **record** | `M3e.Component.Button.el { … }` — the required-record form: the parts a component can't omit are demanded by the compiler. | the required-record `el` surface ([surface map](/guide/the-layers)) |
+| **top** | `M3e.Component.Button.component` — the standard (bare, when a component has nothing required) form: typed, slot-safe, composes anywhere. | the standard constructor surface ([surface map](/guide/the-layers)) |
+| **record** | `M3e.Component.Button.component { … }` — the required-record form: the parts a component can't omit are demanded by the compiler. | the required-record `el` surface ([surface map](/guide/the-layers)) |
 | **build** | Historical row from before the `el`-unification: the fluent-builder surface (`M3e.Build.*`) has since been deleted wholesale — this row is a frozen snapshot in the committed report, not a live surface. | *removed* ([surface map](/guide/the-layers)) |
 | **barrel** | `M3e.button` — one import that re-exports every component's standard constructor, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/guide/reference)) |
 
@@ -300,7 +300,7 @@ summarySection : List ( String, SurfaceAgg ) -> Element (TypedHtml.Sectioning.Se
 summarySection perSurface =
     TypedHtml.section
         [ TA.class "mt-12 space-y-4" ]
-        [ M3e.heading { content = M3e.text "Per-form summary" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
+        [ M3e.Component.Heading.component { content = M3e.text "Per-form summary" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
         , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map surfaceRow perSurface)
         ]
@@ -315,7 +315,7 @@ surfaceRow ( name, agg ) =
                 [ TA.class "space-y-1" ]
                 [ TypedHtml.div
                     []
-                    [ M3e.heading { content = M3e.text name } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-primary" ] [] ]
+                    [ M3e.Component.Heading.component { content = M3e.text name } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-primary" ] [] ]
                 , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ]
                     [ M3e.text
                         (String.fromInt agg.converted
@@ -355,7 +355,7 @@ cellsSection cells =
     TypedHtml.section
         [ TA.class "mt-12 space-y-4" ]
         [ M3e.divider [] []
-        , M3e.heading { content = M3e.text "Cells (deviations first)" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
+        , M3e.Component.Heading.component { content = M3e.text "Cells (deviations first)" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
         , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map cellRow (rankedCells cells))
         ]

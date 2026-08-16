@@ -5,6 +5,7 @@ shows short qualified references instead of expanded record rows.
 -}
 
 import HtmlIr.Kind exposing (Shared, Supported)
+import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -32,3 +33,20 @@ type alias LabelSlot =
 
 type alias ChildAdmittedBy childAdm =
     { childAdm | navMenuItemGroup : Ctx }
+
+
+type alias Builder attrCaps slotCaps msg s =
+    B.Builder Attrs attrCaps slotCaps (Is s) msg
+
+
+type alias AttrCaps =
+    { class : Available
+    , id : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+type alias SlotCaps =
+    { label : Available
+    }

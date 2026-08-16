@@ -1,13 +1,18 @@
-module M3e.Family.DrawerContainer exposing (el, Is, Attrs, ChildAdmittedBy, EndMode, endMode, StartMode, startMode, endDivider, startDivider, onChange, end, start, child)
+module M3e.Family.DrawerContainer exposing (DrawerContainerIs, DrawerContainerAttrs, DrawerContainerChildAdmittedBy, DrawerContainerEndMode, DrawerContainerStartMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, drawerContainer, drawerContainerEndMode, drawerContainerStartMode, drawerContainerEndDivider, drawerContainerStartDivider, drawerContainerOnChange, drawerContainerEnd, drawerContainerStart, drawerContainerChild, toggle)
 
-{-| The **DrawerContainer** family root — re-export of `M3e.Component.DrawerContainer`.
+{-| The **DrawerContainer** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.DrawerContainer`](M3e.Component.DrawerContainer) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, ChildAdmittedBy, EndMode, endMode, StartMode, startMode, endDivider, startDivider, onChange, end, start, child
+[`M3e.Component.DrawerContainer`](M3e.Component.DrawerContainer) as `drawerContainer`, [`M3e.Component.DrawerToggle`](M3e.Component.DrawerToggle) as `toggle`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs DrawerContainerIs, DrawerContainerAttrs, DrawerContainerChildAdmittedBy, DrawerContainerEndMode, DrawerContainerStartMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, drawerContainer, drawerContainerEndMode, drawerContainerStartMode, drawerContainerEndDivider, drawerContainerStartDivider, drawerContainerOnChange, drawerContainerEnd, drawerContainerStart, drawerContainerChild, toggle
 
 -}
 
@@ -15,100 +20,130 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value exposing (Value)
-import M3e.Component.DrawerContainer as Orig
+import M3e.Component.DrawerContainer as DrawerContainer_
+import M3e.Component.DrawerToggle as Toggle_
 
 
-{-| See [`M3e.Component.DrawerContainer.el`](M3e.Component.DrawerContainer#el).
+{-| The `drawerContainer` element of this family — delegates to [`M3e.Component.DrawerContainer.component`](M3e.Component.DrawerContainer#component).
 -}
-el :
-    List (Attr Attrs msg)
-    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+drawerContainer :
+    List (Attr DrawerContainerAttrs msg)
+    -> List (Element childAccepts (DrawerContainerChildAdmittedBy childAdm) msg)
+    -> Element (DrawerContainerIs s) admittedBy msg
+drawerContainer =
+    DrawerContainer_.component
 
 
 {-| See [`M3e.Component.DrawerContainer.Is`](M3e.Component.DrawerContainer#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias DrawerContainerIs s =
+    DrawerContainer_.Is s
 
 
 {-| See [`M3e.Component.DrawerContainer.Attrs`](M3e.Component.DrawerContainer#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias DrawerContainerAttrs =
+    DrawerContainer_.Attrs
 
 
 {-| See [`M3e.Component.DrawerContainer.ChildAdmittedBy`](M3e.Component.DrawerContainer#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias DrawerContainerChildAdmittedBy childAdm =
+    DrawerContainer_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.DrawerContainer.EndMode`](M3e.Component.DrawerContainer#EndMode).
 -}
-type alias EndMode =
-    Orig.EndMode
+type alias DrawerContainerEndMode =
+    DrawerContainer_.EndMode
 
 
 {-| See [`M3e.Component.DrawerContainer.endMode`](M3e.Component.DrawerContainer#endMode).
 -}
-endMode : Value EndMode -> Attr { c | endMode : Supported } msg
-endMode =
-    Orig.endMode
+drawerContainerEndMode : Value DrawerContainerEndMode -> Attr { c | endMode : Supported } msg
+drawerContainerEndMode =
+    DrawerContainer_.endMode
 
 
 {-| See [`M3e.Component.DrawerContainer.StartMode`](M3e.Component.DrawerContainer#StartMode).
 -}
-type alias StartMode =
-    Orig.StartMode
+type alias DrawerContainerStartMode =
+    DrawerContainer_.StartMode
 
 
 {-| See [`M3e.Component.DrawerContainer.startMode`](M3e.Component.DrawerContainer#startMode).
 -}
-startMode : Value StartMode -> Attr { c | startMode : Supported } msg
-startMode =
-    Orig.startMode
+drawerContainerStartMode : Value DrawerContainerStartMode -> Attr { c | startMode : Supported } msg
+drawerContainerStartMode =
+    DrawerContainer_.startMode
 
 
 {-| See [`M3e.Component.DrawerContainer.endDivider`](M3e.Component.DrawerContainer#endDivider).
 -}
-endDivider : Bool -> Attr { c | endDivider : Supported } msg
-endDivider =
-    Orig.endDivider
+drawerContainerEndDivider : Bool -> Attr { c | endDivider : Supported } msg
+drawerContainerEndDivider =
+    DrawerContainer_.endDivider
 
 
 {-| See [`M3e.Component.DrawerContainer.startDivider`](M3e.Component.DrawerContainer#startDivider).
 -}
-startDivider : Bool -> Attr { c | startDivider : Supported } msg
-startDivider =
-    Orig.startDivider
+drawerContainerStartDivider : Bool -> Attr { c | startDivider : Supported } msg
+drawerContainerStartDivider =
+    DrawerContainer_.startDivider
 
 
 {-| See [`M3e.Component.DrawerContainer.onChange`](M3e.Component.DrawerContainer#onChange).
 -}
-onChange : msg -> Attr { c | onChange : Supported } msg
-onChange =
-    Orig.onChange
+drawerContainerOnChange : msg -> Attr { c | onChange : Supported } msg
+drawerContainerOnChange =
+    DrawerContainer_.onChange
 
 
 {-| See [`M3e.Component.DrawerContainer.end`](M3e.Component.DrawerContainer#end).
 -}
-end : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-end =
-    Orig.end
+drawerContainerEnd : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+drawerContainerEnd =
+    DrawerContainer_.end
 
 
 {-| See [`M3e.Component.DrawerContainer.start`](M3e.Component.DrawerContainer#start).
 -}
-start : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-start =
-    Orig.start
+drawerContainerStart : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+drawerContainerStart =
+    DrawerContainer_.start
 
 
 {-| See [`M3e.Component.DrawerContainer.child`](M3e.Component.DrawerContainer#child).
 -}
-child : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-child =
-    Orig.child
+drawerContainerChild : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+drawerContainerChild =
+    DrawerContainer_.child
+
+
+{-| The `toggle` element of this family — delegates to [`M3e.Component.DrawerToggle.component`](M3e.Component.DrawerToggle#component).
+-}
+toggle :
+    { for : String }
+    -> List (Attr ToggleAttrs msg)
+    -> List (Element childAccepts (ToggleChildAdmittedBy childAdm) msg)
+    -> Element (ToggleIs s) admittedBy msg
+toggle =
+    Toggle_.component
+
+
+{-| See [`M3e.Component.DrawerToggle.Is`](M3e.Component.DrawerToggle#Is).
+-}
+type alias ToggleIs s =
+    Toggle_.Is s
+
+
+{-| See [`M3e.Component.DrawerToggle.Attrs`](M3e.Component.DrawerToggle#Attrs).
+-}
+type alias ToggleAttrs =
+    Toggle_.Attrs
+
+
+{-| See [`M3e.Component.DrawerToggle.ChildAdmittedBy`](M3e.Component.DrawerToggle#ChildAdmittedBy).
+-}
+type alias ToggleChildAdmittedBy childAdm =
+    Toggle_.ChildAdmittedBy childAdm

@@ -1,5 +1,5 @@
 module M3e.Component.Dialog exposing
-    ( el
+    ( component
     , Is, Attrs, CloseIconSlot, HeaderSlot, ChildAdmittedBy
     , alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
     , actions, closeIcon, header, child
@@ -9,7 +9,7 @@ module M3e.Component.Dialog exposing
 
 A dialog that provides important prompts in a user flow.
 
-@docs el
+@docs component
 @docs Is, Attrs, CloseIconSlot, HeaderSlot, ChildAdmittedBy
 @docs alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
 @docs actions, closeIcon, header, child
@@ -75,11 +75,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.dialog
 
 

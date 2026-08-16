@@ -8,11 +8,11 @@ import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
+import M3e.Component.Heading
 import M3e.Component.Icon
 import M3e.Component.IconButton
 import M3e.Component.MenuItem
 import M3e.Component.MenuTrigger
-import M3e.Component.Option
 import M3e.Component.SegmentedButton
 import M3e.Component.Theme
 import M3e.Events
@@ -539,10 +539,10 @@ segmented segments =
     -- unreachable in practice — still handled so the type holds unconditionally.
     case buttonSegments of
         first :: rest ->
-            M3e.segmentedButton { content = first } [] rest
+            M3e.Component.SegmentedButton.component { content = first } [] rest
 
         [] ->
-            M3e.segmentedButton { content = M3e.buttonSegment [] [] } [] []
+            M3e.Component.SegmentedButton.component { content = M3e.buttonSegment [] [] } [] []
 
 
 {-| Upper-case the first character. Enum wire strings are lower-case; the
@@ -567,7 +567,7 @@ pattern used when the drawer was split out. msg-polymorphic so both `Theme` and
 -}
 controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
 controlLabel lbl =
-    M3e.heading { content = M3e.text lbl } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ] []
+    M3e.Component.Heading.component { content = M3e.text lbl } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ] []
 
 
 {-| Scheme control: a single toggle icon button flipping Light ⇄ Dark (matching
@@ -590,7 +590,7 @@ schemeToggle model =
             else
                 ( Value.dark, "dark_mode", "Switch to dark theme" )
     in
-    M3e.iconButton
+    M3e.Component.IconButton.component
         { content = M3e.icon [ M3e.Component.Icon.name glyph ] [], ariaLabel = lbl, action = M3e.Action.none }
         [ TypedHtml.Events.onClick (SetScheme next)
         , Aria.pressed
@@ -682,9 +682,9 @@ clean declarative anchor — see plan's component-API reality check).
 variantSelect : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 variantSelect model =
     TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
-        [ M3e.button
+        [ M3e.Component.Button.component
             { content =
-                M3e.menuTrigger { for = "variant-menu" }
+                M3e.Component.MenuTrigger.component { for = "variant-menu" }
                     []
                     [ M3e.text (variantLabelFor model.variant) ]
             , action = M3e.Action.none
@@ -714,7 +714,7 @@ colorOptions : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
 colorOptions model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1.5" ]
         [ TypedHtml.div []
-            [ M3e.heading { content = M3e.text "Source color" }
+            [ M3e.Component.Heading.component { content = M3e.text "Source color" }
                 [ M3e.Attributes.variant Value.label
                 , M3e.Attributes.size Value.small
                 , TypedHtml.Attributes.class "text-on-surface-variant"
@@ -867,4 +867,4 @@ view { sectionsEl } model toMsg =
 
 resetAllButton : Element (M3e.Component.Button.Is s) admittedBy Msg
 resetAllButton =
-    M3e.button { content = M3e.text "Reset all", action = M3e.Action.none } [ TypedHtml.Events.onClick ResetAll ] []
+    M3e.Component.Button.component { content = M3e.text "Reset all", action = M3e.Action.none } [ TypedHtml.Events.onClick ResetAll ] []

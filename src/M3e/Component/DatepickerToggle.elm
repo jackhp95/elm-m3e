@@ -1,5 +1,5 @@
 module M3e.Component.DatepickerToggle exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     )
 
@@ -7,7 +7,7 @@ module M3e.Component.DatepickerToggle exposing
 
 An element, nested within a clickable element, used to toggle a datepicker.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 
 -}
@@ -42,10 +42,10 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { for : String }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.datepickerToggle (Ir.attribute "for" required_.for :: attrs) children

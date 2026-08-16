@@ -16,6 +16,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Action
+import M3e.Component.IconButton
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -78,7 +79,7 @@ beside the real output of the `missingRequiredAttribute` rule.
 
 helpButton : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 helpButton =
-    M3e.iconButton { content = M3e.icon [ TA.name "help" ] [], ariaLabel = "Help", action = M3e.Action.none } [] []
+    M3e.Component.IconButton.component { content = M3e.icon [ TA.name "help" ] [], ariaLabel = "Help", action = M3e.Action.none } [] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -119,7 +120,7 @@ labeled =
 
 nameless : String
 nameless =
-    """Now drop the name. Since the `el`-unification, an icon button's accessible name isn't a linter-checked attribute anymore — `ariaLabel` is a **required record field** on `IconButton.el` itself, the same required-record mechanism that makes forgetting a Button's `action` impossible (see [the strictness dial](/guide/strictness)). Try to omit it and the build stops — the message below is the compiler's real output:"""
+    """Now drop the name. Since the `el`-unification, an icon button's accessible name isn't a linter-checked attribute anymore — `ariaLabel` is a **required record field** on `IconButton.component` itself, the same required-record mechanism that makes forgetting a Button's `action` impossible (see [the strictness dial](/guide/strictness)). Try to omit it and the build stops — the message below is the compiler's real output:"""
 
 
 
@@ -133,8 +134,10 @@ nameless =
 
 namelessCode : String
 namelessCode =
-    """M3e.iconButton []
-    [ M3e.icon [ TA.name "help" ] [] ]"""
+    """M3e.Component.IconButton.component
+    { content = M3e.icon [ TA.name "help" ] [], action = M3e.Action.none }
+    []
+    []"""
 
 
 linterText : String
@@ -163,6 +166,6 @@ wiring =
 recap : String
 recap =
     """- An icon-only control has no visible text, so its **accessible name is required**.
-- `ariaLabel` is a **required record field** on `IconButton.el` — omitting it is a **compile error**, not a lint finding, so there's no CI step to forget.
+- `ariaLabel` is a **required record field** on `IconButton.component` — omitting it is a **compile error**, not a lint finding, so there's no CI step to forget.
 - Visible labels are **wired to their input for you** from one shared id — no hand-typed `for`/`id`.
 - **Next: [Composition, not injection](/guide/composition-text-field) →** build a text field that doesn't exist as a component — by composition."""

@@ -67,7 +67,7 @@ head _ =
 card : String -> List (M3e.Element (M3e.Component.Heading.Is s) (TypedHtml.Sectioning.SectionChildAdmittedBy childAdm) msg) -> M3e.Element (TypedHtml.Sectioning.SectionIs s2) adm_ msg
 card title items =
     TypedHtml.section [ TA.class "space-y-3" ]
-        (M3e.heading { content = M3e.text title } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [] :: items)
+        (M3e.Component.Heading.component { content = M3e.text title } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [] :: items)
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -120,10 +120,10 @@ barrelVsSpecific =
 barrelVsSpecificCode : String
 barrelVsSpecificCode =
     """-- barrel — one import, shared vocabulary (M3e.Attributes.* unions, lint-checked)
-M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []) ]
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []) ]
 
 -- component module — component-scoped setters, compile-tight tokens
-M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []"""
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []"""
 
 
 shapes : String
@@ -134,10 +134,10 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- bare form — a component with nothing it can't do without (e.g. AppBar)
-M3e.Component.AppBar.el [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
+M3e.Component.AppBar.component [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
 
 -- required-record form — the compiler demands the parts it can't do without (e.g. Button)
-M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [] []"""
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [] []"""
 
 
 dial : String

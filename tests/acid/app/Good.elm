@@ -29,6 +29,9 @@ import Html exposing (Html)
 import M3e
 import M3e.Action
 import M3e.Component.AppBar
+import M3e.Component.Chip
+import M3e.Component.Heading
+import M3e.Component.IconButton
 import M3e.Component.SearchBar
 import M3e.Unsafe
 import M3e.Values
@@ -43,21 +46,21 @@ view =
             , M3e.Component.AppBar.centered True
             ]
             [ M3e.Component.AppBar.leading (M3e.icon [] [])
-            , M3e.Component.AppBar.title (M3e.heading { content = M3e.text "Inbox" } [] [])
+            , M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Inbox" } [] [])
             , M3e.Component.AppBar.trailing
-                (M3e.iconButton
+                (M3e.Component.IconButton.component
                     { content = M3e.icon [] [], ariaLabel = "Search", action = M3e.Action.none }
                     []
                     []
                 )
             , M3e.Component.AppBar.trailing
-                (M3e.searchBar
+                (M3e.Component.SearchBar.component
                     { input = M3e.Component.SearchBar.input (TypedHtml.input [] []) }
                     []
                     []
                 )
             , M3e.Component.AppBar.trailing
-                (M3e.Unsafe.recast (M3e.chip { content = M3e.text "All" } [] []))
+                (M3e.Unsafe.recast (M3e.Component.Chip.component { content = M3e.text "All" } [] []))
             ]
         )
 

@@ -14,7 +14,9 @@ import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
+import M3e.Component.Button
 import M3e.Component.Card
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -75,9 +77,9 @@ settingsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.Component.Card.header
-            (M3e.heading { content = M3e.text "Account settings" } [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [])
+            (M3e.Component.Heading.component { content = M3e.text "Account settings" } [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [])
         , M3e.Component.Card.content
-            (M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [])
+            (M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [])
         ]
 
 
@@ -122,14 +124,16 @@ source =
 import M3e.Attributes
 import M3e.Component.Card
 import M3e.Values as Value
+import M3e.Component.Heading
+import M3e.Component.Button
 
 
 settingsCard =
     M3e.card [ M3e.Attributes.variant Value.outlined ]
         [ M3e.Component.Card.header
-            (M3e.heading { content = M3e.text "Account settings" } [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [])
+            (M3e.Component.Heading.component { content = M3e.text "Account settings" } [ M3e.Attributes.variant Value.title, M3e.Attributes.level 2 ] [])
         , M3e.Component.Card.content
-            (M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [])
+            (M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [])
         ]"""
 
 

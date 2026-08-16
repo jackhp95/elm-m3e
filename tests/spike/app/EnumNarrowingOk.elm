@@ -30,22 +30,30 @@ type Msg
     = NoOp
 
 
-{-| 1. Theme.variant accepts V.rainbow — rainbow IS in Theme.Variant.
+{-|
+
+1.  Theme.variant accepts V.rainbow — rainbow IS in Theme.Variant.
+
 -}
 themeVariantRainbow : Attr { c | variant : Supported } Msg
 themeVariantRainbow =
     Theme.variant V.rainbow
 
 
-{-| 2. SplitButton.variant accepts V.filled — filled IS in SplitButton.Variant.
+{-|
+
+1.  SplitButton.variant accepts V.filled — filled IS in SplitButton.Variant.
+
 -}
 splitButtonVariantFilled : Attr { c | variant : Supported } Msg
 splitButtonVariantFilled =
     SplitButton.variant V.filled
 
 
-{-| 3. Button.variant accepts V.filled — the canonical `el`-attrs narrow value
-(locks the form from ApiConsolidation.elm's saveButton).
+{-|
+
+1.  Button.variant accepts V.filled — the canonical `el`-attrs narrow value
+    (locks the form from ApiConsolidation.elm's saveButton).
 
 This WILL FAIL if Button's closed Component.Variant loses `filled`.
 
@@ -55,8 +63,11 @@ buttonVariantFilled =
     Button.variant V.filled
 
 
-{-| 4. Loose A.variant accepts V.rainbow — shared open-row, no narrowing.
-The elm-review Cem.ValidEnumValue rule is the backstop here, not the type.
+{-|
+
+1.  Loose A.variant accepts V.rainbow — shared open-row, no narrowing.
+    The elm-review Cem.ValidEnumValue rule is the backstop here, not the type.
+
 -}
 looseVariantRainbow : Attr { c | variant : Supported } Msg
 looseVariantRainbow =

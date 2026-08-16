@@ -5,6 +5,7 @@ shows short qualified references instead of expanded record rows.
 -}
 
 import HtmlIr.Kind exposing (Shared, Supported)
+import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -88,3 +89,29 @@ type alias TrailingSlot =
 
 type alias ChildAdmittedBy childAdm =
     { childAdm | listAction : Ctx }
+
+
+type alias Builder attrCaps slotCaps msg s =
+    B.Builder Attrs attrCaps slotCaps (Is s) msg
+
+
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , download : Available
+    , href : Available
+    , id : Available
+    , onClick : Available
+    , rel : Available
+    , slot : Available
+    , style : Available
+    , target : Available
+    }
+
+
+type alias SlotCaps =
+    { leading : Available
+    , overline : Available
+    , supportingText : Available
+    , trailing : Available
+    }

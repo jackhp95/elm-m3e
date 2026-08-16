@@ -10,12 +10,12 @@ mode segmented control, differing only in which `Msg` constructor wraps the
 resulting `Theme.Scale.ScaleMode`.
 -}
 
-import Char
 import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
 import M3e.Component.FormField as FormField
 import M3e.Component.Icon
+import M3e.Component.IconButton
 import M3e.Kind
 import M3e.Values as Value
 import Theme exposing (TypeScaleParam)
@@ -95,7 +95,7 @@ numberStepper labelText current step toMsg =
         , TypedHtml.Attributes.class "max-w-fit"
         ]
         [ FormField.label (TypedHtml.label [ TypedHtml.Attributes.for inputId ] [ M3e.text labelText ])
-        , M3e.iconButton
+        , M3e.Component.IconButton.component
             { content = M3e.icon [ M3e.Component.Icon.name "remove" ] []
             , ariaLabel = "Decrease " ++ labelText
             , action = M3e.Action.none
@@ -113,7 +113,7 @@ numberStepper labelText current step toMsg =
             , Aria.label labelText
             ]
             []
-        , M3e.iconButton
+        , M3e.Component.IconButton.component
             { content = M3e.icon [ M3e.Component.Icon.name "add" ] []
             , ariaLabel = "Increase " ++ labelText
             , action = M3e.Action.none

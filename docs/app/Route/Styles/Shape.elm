@@ -16,6 +16,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Component.Heading
 import M3e.Component.Shape as Shape
 import M3e.Kind
 import M3e.Values as Value
@@ -102,7 +103,7 @@ cornerSwatch ( rounded, label, value ) =
             [ TA.class ("bg-primary-container text-on-primary-container " ++ rounded ++ " h-20 w-full") ]
             []
         , TypedHtml.div [ TA.class "flex flex-col" ]
-            [ M3e.heading { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] []
+            [ M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] []
             , TypedHtml.code [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text value ]
             ]
         ]
@@ -124,7 +125,7 @@ namedShapes =
         (\( token, label ) ->
             TypedHtml.div [ TA.class "flex flex-col items-center gap-2" ]
                 [ TypedHtml.div [ TA.class "contents" ] [ M3e.shape [ Shape.name token ] [] ]
-                , M3e.heading { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+                , M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
                 ]
         )
         [ ( Value.circle, "Circle" )
@@ -144,7 +145,7 @@ namedShapes =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading { content = M3e.text "Shape" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.Component.Heading.component { content = M3e.text "Shape" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

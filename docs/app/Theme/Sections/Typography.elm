@@ -46,7 +46,7 @@ fontSelect labelText idSuffix current toMsg =
         options =
             List.map
                 (\font ->
-                    M3e.option { content = M3e.text font } [ M3e.Component.Option.value font, M3e.Component.Option.selected (font == current) ] []
+                    M3e.Component.Option.component { content = M3e.text font } [ M3e.Component.Option.value font, M3e.Component.Option.selected (font == current) ] []
                 )
                 Theme.Fonts.curatedFonts
 
@@ -61,10 +61,10 @@ fontSelect labelText idSuffix current toMsg =
         [ TypedHtml.label [ TypedHtml.Attributes.for inputId ] [ M3e.text labelText ]
         , case options of
             first :: rest ->
-                M3e.select { content = first } selectAttrs rest
+                M3e.Component.Select.component { content = first } selectAttrs rest
 
             [] ->
                 -- Select's `el` is required-record (`content`, one Element); the
                 -- curated font list is always non-empty, so this is unreachable.
-                M3e.select { content = M3e.option { content = M3e.text "" } [] [] } selectAttrs []
+                M3e.Component.Select.component { content = M3e.Component.Option.component { content = M3e.text "" } [] [] } selectAttrs []
         ]

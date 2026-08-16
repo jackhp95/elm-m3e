@@ -1,5 +1,5 @@
 module M3e.Component.BottomSheetTrigger exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , detent, secondary
     , child
@@ -9,7 +9,7 @@ module M3e.Component.BottomSheetTrigger exposing
 
 An element, nested within a clickable element, used to trigger a bottom sheet.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs detent, secondary
 @docs child
@@ -52,12 +52,12 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { for : String }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.bottomSheetTrigger (Ir.attribute "for" required_.for :: attrs) children
 
 

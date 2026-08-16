@@ -25,6 +25,8 @@ import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.Card
+import M3e.Component.FilterChip
+import M3e.Component.Heading
 import M3e.Component.NavItem
 import M3e.Events
 import M3e.Kind
@@ -228,7 +230,7 @@ filterBar current =
 
 filterChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } adm_ Msg
 filterChip current category =
-    M3e.filterChip { content = M3e.text category }
+    M3e.Component.FilterChip.component { content = M3e.text category }
         [ M3e.Attributes.selected (category == current)
         , M3e.Events.onClick (SelectFilter category)
         ]
@@ -264,10 +266,10 @@ postCard post =
             )
         , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-2 pt-1" ]
-                [ M3e.heading { content = M3e.text (String.toUpper post.category) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-primary" ] []
-                , M3e.heading { content = M3e.text post.title } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
+                [ M3e.Component.Heading.component { content = M3e.text (String.toUpper post.category) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-primary" ] []
+                , M3e.Component.Heading.component { content = M3e.text post.title } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
                 , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text post.excerpt ]
-                , M3e.heading { content = M3e.text (post.author ++ " · " ++ post.when) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] []
+                , M3e.Component.Heading.component { content = M3e.text (post.author ++ " · " ++ post.when) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] []
                 ]
             )
         ]

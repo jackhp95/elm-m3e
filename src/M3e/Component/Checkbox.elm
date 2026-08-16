@@ -1,5 +1,5 @@
 module M3e.Component.Checkbox exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , checked, disabled, indeterminate, name, required, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onInvalid, onClick
     )
@@ -8,7 +8,7 @@ module M3e.Component.Checkbox exposing
 
 A checkbox that allows a user to select one or more options from a limited number of choices.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs checked, disabled, indeterminate, name, required, validationmessages, value, defaultChecked, defaultValue, onBeforeinput, onInput, onChange, onInvalid, onClick
 
@@ -59,11 +59,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.checkbox
 
 

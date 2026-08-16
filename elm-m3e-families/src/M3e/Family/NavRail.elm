@@ -1,13 +1,18 @@
-module M3e.Family.NavRail exposing (el, Is, Attrs, Content, ChildAdmittedBy, Mode, mode, onBeforeinput, onInput, onChange, child)
+module M3e.Family.NavRail exposing (NavRailIs, NavRailAttrs, NavRailContent, NavRailChildAdmittedBy, NavRailMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, navRail, navRailMode, navRailOnBeforeinput, navRailOnInput, navRailOnChange, navRailChild, toggle)
 
-{-| The **NavRail** family root — re-export of `M3e.Component.NavRail`.
+{-| The **NavRail** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.NavRail`](M3e.Component.NavRail) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, Content, ChildAdmittedBy, Mode, mode, onBeforeinput, onInput, onChange, child
+[`M3e.Component.NavRail`](M3e.Component.NavRail) as `navRail`, [`M3e.Component.NavRailToggle`](M3e.Component.NavRailToggle) as `toggle`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs NavRailIs, NavRailAttrs, NavRailContent, NavRailChildAdmittedBy, NavRailMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, navRail, navRailMode, navRailOnBeforeinput, navRailOnInput, navRailOnChange, navRailChild, toggle
 
 -}
 
@@ -15,79 +20,109 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value exposing (Value)
-import M3e.Component.NavRail as Orig
+import M3e.Component.NavRail as NavRail_
+import M3e.Component.NavRailToggle as Toggle_
 
 
-{-| See [`M3e.Component.NavRail.el`](M3e.Component.NavRail#el).
+{-| The `navRail` element of this family — delegates to [`M3e.Component.NavRail.component`](M3e.Component.NavRail#component).
 -}
-el :
-    List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+navRail :
+    List (Attr NavRailAttrs msg)
+    -> List (Element NavRailContent (NavRailChildAdmittedBy childAdm) msg)
+    -> Element (NavRailIs s) admittedBy msg
+navRail =
+    NavRail_.component
 
 
 {-| See [`M3e.Component.NavRail.Is`](M3e.Component.NavRail#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias NavRailIs s =
+    NavRail_.Is s
 
 
 {-| See [`M3e.Component.NavRail.Attrs`](M3e.Component.NavRail#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias NavRailAttrs =
+    NavRail_.Attrs
 
 
 {-| See [`M3e.Component.NavRail.Content`](M3e.Component.NavRail#Content).
 -}
-type alias Content =
-    Orig.Content
+type alias NavRailContent =
+    NavRail_.Content
 
 
 {-| See [`M3e.Component.NavRail.ChildAdmittedBy`](M3e.Component.NavRail#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias NavRailChildAdmittedBy childAdm =
+    NavRail_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.NavRail.Mode`](M3e.Component.NavRail#Mode).
 -}
-type alias Mode =
-    Orig.Mode
+type alias NavRailMode =
+    NavRail_.Mode
 
 
 {-| See [`M3e.Component.NavRail.mode`](M3e.Component.NavRail#mode).
 -}
-mode : Value Mode -> Attr { c | mode : Supported } msg
-mode =
-    Orig.mode
+navRailMode : Value NavRailMode -> Attr { c | mode : Supported } msg
+navRailMode =
+    NavRail_.mode
 
 
 {-| See [`M3e.Component.NavRail.onBeforeinput`](M3e.Component.NavRail#onBeforeinput).
 -}
-onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
-onBeforeinput =
-    Orig.onBeforeinput
+navRailOnBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
+navRailOnBeforeinput =
+    NavRail_.onBeforeinput
 
 
 {-| See [`M3e.Component.NavRail.onInput`](M3e.Component.NavRail#onInput).
 -}
-onInput : msg -> Attr { c | onInput : Supported } msg
-onInput =
-    Orig.onInput
+navRailOnInput : msg -> Attr { c | onInput : Supported } msg
+navRailOnInput =
+    NavRail_.onInput
 
 
 {-| See [`M3e.Component.NavRail.onChange`](M3e.Component.NavRail#onChange).
 -}
-onChange : msg -> Attr { c | onChange : Supported } msg
-onChange =
-    Orig.onChange
+navRailOnChange : msg -> Attr { c | onChange : Supported } msg
+navRailOnChange =
+    NavRail_.onChange
 
 
 {-| See [`M3e.Component.NavRail.child`](M3e.Component.NavRail#child).
 -}
-child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
-child =
-    Orig.child
+navRailChild : Element NavRailContent admittedBy msg -> Element free freeAdmittedBy msg
+navRailChild =
+    NavRail_.child
+
+
+{-| The `toggle` element of this family — delegates to [`M3e.Component.NavRailToggle.component`](M3e.Component.NavRailToggle#component).
+-}
+toggle :
+    { for : String }
+    -> List (Attr ToggleAttrs msg)
+    -> List (Element childAccepts (ToggleChildAdmittedBy childAdm) msg)
+    -> Element (ToggleIs s) admittedBy msg
+toggle =
+    Toggle_.component
+
+
+{-| See [`M3e.Component.NavRailToggle.Is`](M3e.Component.NavRailToggle#Is).
+-}
+type alias ToggleIs s =
+    Toggle_.Is s
+
+
+{-| See [`M3e.Component.NavRailToggle.Attrs`](M3e.Component.NavRailToggle#Attrs).
+-}
+type alias ToggleAttrs =
+    Toggle_.Attrs
+
+
+{-| See [`M3e.Component.NavRailToggle.ChildAdmittedBy`](M3e.Component.NavRailToggle#ChildAdmittedBy).
+-}
+type alias ToggleChildAdmittedBy childAdm =
+    Toggle_.ChildAdmittedBy childAdm

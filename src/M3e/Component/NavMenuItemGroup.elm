@@ -1,5 +1,5 @@
 module M3e.Component.NavMenuItemGroup exposing
-    ( el
+    ( component
     , Is, Attrs, Content, LabelSlot, ChildAdmittedBy
     , label, child
     )
@@ -8,7 +8,7 @@ module M3e.Component.NavMenuItemGroup exposing
 
 A top-level semantic grouping of items in a navigation menu.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, LabelSlot, ChildAdmittedBy
 @docs label, child
 
@@ -56,11 +56,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.navMenuItemGroup
 
 

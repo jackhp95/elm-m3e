@@ -1,5 +1,5 @@
 module M3e.Component.TextHighlight exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , Mode, mode
     , caseSensitive, disabled, term, onHighlight
@@ -10,7 +10,7 @@ module M3e.Component.TextHighlight exposing
 
 Highlights text which matches a given search term.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs Mode, mode
 @docs caseSensitive, disabled, term, onHighlight
@@ -59,11 +59,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.textHighlight
 
 

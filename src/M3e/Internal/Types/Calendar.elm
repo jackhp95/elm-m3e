@@ -6,6 +6,7 @@ shows short qualified references instead of expanded record rows.
 
 import HtmlIr.Kind exposing (Supported)
 import HtmlIr.Value as Val exposing (Value)
+import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -43,4 +44,35 @@ type alias StartView =
     { month : Supported
     , multiYear : Supported
     , year : Supported
+    }
+
+
+type alias Builder attrCaps slotCaps msg s =
+    B.Builder Attrs attrCaps slotCaps (Is s) msg
+
+
+type alias AttrCaps =
+    { class : Available
+    , date : Available
+    , id : Available
+    , maxDate : Available
+    , minDate : Available
+    , nextMonthLabel : Available
+    , nextMultiYearLabel : Available
+    , nextYearLabel : Available
+    , onChange : Available
+    , previousMonthLabel : Available
+    , previousMultiYearLabel : Available
+    , previousYearLabel : Available
+    , rangeEnd : Available
+    , rangeStart : Available
+    , slot : Available
+    , startAt : Available
+    , startView : Available
+    , style : Available
+    }
+
+
+type alias SlotCaps =
+    { header : Available
     }

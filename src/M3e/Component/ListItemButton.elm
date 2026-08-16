@@ -1,5 +1,5 @@
 module M3e.Component.ListItemButton exposing
-    ( el
+    ( component
     , Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy
     , disabled, download, href, rel, target, onClick
     , leading, overline, supportingText, trailing, child
@@ -7,7 +7,7 @@ module M3e.Component.ListItemButton exposing
 
 {-| The `m3e-list-item-button` component — strict per-component surface.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, LeadingSlot, OverlineSlot, SupportingTextSlot, TrailingSlot, ChildAdmittedBy
 @docs disabled, download, href, rel, target, onClick
 @docs leading, overline, supportingText, trailing, child
@@ -75,11 +75,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.listItemButton
 
 

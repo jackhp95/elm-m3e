@@ -87,6 +87,9 @@ config =
       --   `Recast` — reserved `ExtractToSeam` destination (see docstring); the
       --     hoisted module itself is allowed to hold the `M3e.Unsafe` import
       --     it wraps.
+      --   `Theme.Sections` — the theme-inspector sections (Color, CssVariables)
+      --     recast raw swatch/panel nodes into typed slots through the same
+      --     sanctioned `M3e.Unsafe.recast` escape they document.
       NoUnsafeImportOutsideAllowed.rule
         [ "M3e"
         , "TypedHtml"
@@ -96,6 +99,7 @@ config =
         , "Route.Examples.Shop"
         , "Route.Guide"
         , "Recast"
+        , "Theme.Sections"
         ]
 
     -- The recast-containment fence for the reserved `Recast` destination
@@ -114,6 +118,7 @@ config =
             , "Route.Examples.Shop"
             , "Route.Guide"
             , "Recast"
+            , "Theme.Sections"
             ]
         }
 

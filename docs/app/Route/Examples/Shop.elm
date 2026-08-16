@@ -27,6 +27,9 @@ import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.Card
 import M3e.Component.Fab
+import M3e.Component.FilterChip
+import M3e.Component.Heading
+import M3e.Component.IconButton
 import M3e.Component.NavItem
 import M3e.Events
 import M3e.Kind
@@ -241,7 +244,7 @@ appBar model =
     M3e.appBar
         [ TA.class "px-2" ]
         [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "storefront", M3e.Attributes.filled True, TA.class "text-primary" ] [])
-        , M3e.Component.AppBar.title (M3e.heading { content = M3e.text "Maru Market" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [])
+        , M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Maru Market" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [])
         , M3e.Component.AppBar.trailing (iconAction "search")
         , M3e.Component.AppBar.trailing (cartAction model.cart)
         ]
@@ -267,7 +270,7 @@ cartAction : Int -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
 cartAction count =
     TypedHtml.div
         [ TA.class "inline-flex" ]
-        [ M3e.iconButton { content = M3e.icon [ TA.name "shopping_bag" ] [], ariaLabel = "Cart", action = M3e.Action.none } [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard ] []
+        [ M3e.Component.IconButton.component { content = M3e.icon [ TA.name "shopping_bag" ] [], ariaLabel = "Cart", action = M3e.Action.none } [ M3e.Attributes.id "cart-btn", M3e.Attributes.variant Value.standard ] []
         , M3e.badge [ M3e.Attributes.for "cart-btn" ] [ M3e.text (String.fromInt count) ]
         ]
 
@@ -351,7 +354,7 @@ hero =
     TypedHtml.div
         [ TA.class "bg-primary-container text-on-primary-container rounded-md-corner-extra-large flex flex-col gap-1 p-6" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide" ] [ M3e.text "New season" ]
-        , M3e.heading { content = M3e.text "Everyday goods, thoughtfully made" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] []
+        , M3e.Component.Heading.component { content = M3e.text "Everyday goods, thoughtfully made" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small ] []
         , TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text "Free shipping on orders over $75." ]
         ]
 
@@ -372,7 +375,7 @@ filterBar current =
 
 categoryChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } adm_ (PagesMsg Msg)
 categoryChip current cat =
-    M3e.filterChip { content = M3e.text cat }
+    M3e.Component.FilterChip.component { content = M3e.text cat }
         [ M3e.Attributes.selected (cat == current)
         , M3e.Events.onClick (PagesMsg.fromMsg (SetCategory cat))
         ]
@@ -395,14 +398,14 @@ productCard product =
         [ M3e.Component.Card.header (media product)
         , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-0.5 px-1" ]
-                [ M3e.heading { content = M3e.text product.name } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
-                , M3e.heading { content = M3e.text product.category } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+                [ M3e.Component.Heading.component { content = M3e.text product.name } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
+                , M3e.Component.Heading.component { content = M3e.text product.category } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
                 ]
             )
         , M3e.Component.Card.actions
             (TypedHtml.div [ TA.class "flex w-full items-center justify-between px-1" ]
-                [ M3e.heading { content = M3e.text product.price } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-primary" ] []
-                , M3e.iconButton { content = M3e.icon [ TA.name "add_shopping_cart" ] [], ariaLabel = "Add to cart", action = M3e.Action.none } [ M3e.Attributes.variant Value.tonal, M3e.Events.onClick (PagesMsg.fromMsg AddToCart) ] []
+                [ M3e.Component.Heading.component { content = M3e.text product.price } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-primary" ] []
+                , M3e.Component.IconButton.component { content = M3e.icon [ TA.name "add_shopping_cart" ] [], ariaLabel = "Add to cart", action = M3e.Action.none } [ M3e.Attributes.variant Value.tonal, M3e.Events.onClick (PagesMsg.fromMsg AddToCart) ] []
                 ]
             )
         ]
@@ -423,7 +426,7 @@ checkoutFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
 checkoutFab =
     TypedHtml.div [ TA.class "pointer-events-none sticky bottom-6 flex justify-end pr-2" ]
         [ TypedHtml.div [ TA.class "pointer-events-auto" ]
-            [ M3e.fab { content = M3e.icon [ TA.name "shopping_cart_checkout" ] [], action = M3e.Action.none } [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Checkout" ] [ M3e.Component.Fab.label (M3e.text "Checkout") ]
+            [ M3e.Component.Fab.component { content = M3e.icon [ TA.name "shopping_cart_checkout" ] [], action = M3e.Action.none } [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Checkout" ] [ M3e.Component.Fab.label (M3e.text "Checkout") ]
             ]
         ]
 
@@ -432,4 +435,4 @@ checkoutFab =
 -}
 iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction icon =
-    M3e.iconButton { content = M3e.icon [ TA.name icon ] [], ariaLabel = icon, action = M3e.Action.none } [ M3e.Attributes.variant Value.standard ] []
+    M3e.Component.IconButton.component { content = M3e.icon [ TA.name icon ] [], ariaLabel = icon, action = M3e.Action.none } [ M3e.Attributes.variant Value.standard ] []

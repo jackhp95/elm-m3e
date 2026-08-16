@@ -1,5 +1,5 @@
 module M3e.Component.NavMenu exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.NavMenu exposing
 
 A hierarchical menu, typically used on larger devices, that allows a user to switch between views.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs child
 
@@ -77,11 +77,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.navMenu
 
 

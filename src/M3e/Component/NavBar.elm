@@ -1,5 +1,5 @@
 module M3e.Component.NavBar exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , Mode, mode
     , onChange, onBeforeinput, onInput
@@ -10,7 +10,7 @@ module M3e.Component.NavBar exposing
 
 A horizontal bar, typically used on smaller devices, that allows a user to switch between 3-5 views.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Mode, mode
 @docs onChange, onBeforeinput, onInput
@@ -75,11 +75,11 @@ type alias Mode =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.navBar
 
 

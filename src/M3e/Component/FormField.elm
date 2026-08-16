@@ -1,5 +1,5 @@
 module M3e.Component.FormField exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
     , hideRequiredMarker
@@ -10,7 +10,7 @@ module M3e.Component.FormField exposing
 
 A container for form controls that applies Material Design styling and behavior.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
 @docs hideRequiredMarker
@@ -83,11 +83,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.formField
 
 

@@ -15,4 +15,4 @@ import M3e.Values as Value
 
 -- the per-component surface — what you might write, or arrive with
 shown0_ =
-    M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []

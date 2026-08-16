@@ -8,12 +8,13 @@ Change the sample there; this file follows.
 -}
 
 import M3e
+import M3e.Component.Heading
 import TypedHtml
 import TypedHtml.Attributes as TA
 
 
 shown0_ =
-    TypedHtml.div [] [ M3e.heading { content = M3e.text "hi" } [] [] ]        -- ✓ div takes any children
+    TypedHtml.div [] [ M3e.Component.Heading.component { content = M3e.text "hi" } [] [] ]        -- ✓ div takes any children
 
 
 shown1_ =

@@ -6,6 +6,7 @@ shows short qualified references instead of expanded record rows.
 
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
+import M3e.Forge.Internal as B
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
@@ -58,4 +59,38 @@ type alias ChildAdmittedBy childAdm =
 type alias PageSizeVariant =
     { filled : Supported
     , outlined : Supported
+    }
+
+
+type alias Builder attrCaps slotCaps msg s =
+    B.Builder Attrs attrCaps slotCaps (Is s) msg
+
+
+type alias AttrCaps =
+    { class : Available
+    , disabled : Available
+    , firstPageLabel : Available
+    , hidePageSize : Available
+    , id : Available
+    , itemsPerPageLabel : Available
+    , lastPageLabel : Available
+    , length : Available
+    , nextPageLabel : Available
+    , onPage : Available
+    , pageIndex : Available
+    , pageSize : Available
+    , pageSizeVariant : Available
+    , pageSizes : Available
+    , previousPageLabel : Available
+    , showFirstLastButtons : Available
+    , slot : Available
+    , style : Available
+    }
+
+
+type alias SlotCaps =
+    { firstPageIcon : Available
+    , lastPageIcon : Available
+    , nextPageIcon : Available
+    , previousPageIcon : Available
     }

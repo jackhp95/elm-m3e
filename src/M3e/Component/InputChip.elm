@@ -1,5 +1,5 @@
 module M3e.Component.InputChip exposing
-    ( el
+    ( component
     , Is, Attrs, Content, AvatarSlot, IconSlot, RemoveIconSlot, ChildAdmittedBy
     , Variant, variant
     , disabled, disabledInteractive, removable, removeLabel, value, defaultValue, onRemove, onClick
@@ -10,7 +10,7 @@ module M3e.Component.InputChip exposing
 
 A chip which represents a discrete piece of information entered by a user.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, AvatarSlot, IconSlot, RemoveIconSlot, ChildAdmittedBy
 @docs Variant, variant
 @docs disabled, disabledInteractive, removable, removeLabel, value, defaultValue, onRemove, onClick
@@ -80,12 +80,12 @@ type alias Variant =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.inputChip attrs (required_.content :: children)
 
 

@@ -3,6 +3,7 @@ module SlotPlacersOk exposing (placed1, placed2, placed3)
 {-| Compile-only spike for Design-C loose slot placers (Objective 2).
 
 Verifies:
+
   - Slot placers generated into the `M3e` single-import surface compile.
   - Placing a text node into a named slot typechecks.
   - Placing an icon element into a button's icon slot typechecks.
@@ -23,7 +24,8 @@ type Msg
     = Save
 
 
-{-| Good placement: text into the "icon" slot (broad row accepts it). -}
+{-| Good placement: text into the "icon" slot (broad row accepts it).
+-}
 placed1 : Element free freeAdm Msg
 placed1 =
     M3e.slotIcon (text "favorite")
@@ -42,7 +44,8 @@ placed2 =
     M3e.slotIcon (icon [] [])
 
 
-{-| Good placement: icon into the "trailing-icon" slot. -}
+{-| Good placement: icon into the "trailing-icon" slot.
+-}
 placed3 : Element free freeAdm Msg
 placed3 =
     M3e.slotTrailingIcon (icon [] [])

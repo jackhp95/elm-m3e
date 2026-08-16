@@ -76,7 +76,7 @@ always demands its content/action, so there is no leaner form to fall back to.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.button { content = M3e.text "Save", action = M3e.Action.none }
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none }
         [ M3e.Attributes.variant Value.filled ]
         [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []) ]
 
@@ -127,10 +127,10 @@ shapes =
 shapesCode : String
 shapesCode =
     """-- bare `el` (AppBar has nothing it can't do without) — everything optional
-M3e.Component.AppBar.el [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
+M3e.Component.AppBar.component [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
 
 -- required-record `el` (Button can't do without content/action) — the compiler DEMANDS the parts
-M3e.Component.Button.el
+M3e.Component.Button.component
     { content = M3e.text "Save", action = M3e.Action.none }
     []
     []"""
@@ -145,7 +145,7 @@ recordError : String
 recordError =
     """The 1st argument to `el` is not what I expect:
 
-4| M3e.Component.Button.el { content = M3e.text "Save" } [] []
+4| M3e.Component.Button.component { content = M3e.text "Save" } [] []
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This argument is a record of type:
 

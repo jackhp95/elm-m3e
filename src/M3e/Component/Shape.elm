@@ -1,5 +1,5 @@
 module M3e.Component.Shape exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , Name, name
     , child
@@ -9,7 +9,7 @@ module M3e.Component.Shape exposing
 
 A shape used to add emphasis and decorative flair.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs Name, name
 @docs child
@@ -69,11 +69,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.shape
 
 

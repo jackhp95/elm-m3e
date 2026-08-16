@@ -1,5 +1,5 @@
 module M3e.Component.Badge exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , Position, position, Size, size
     , for
@@ -10,7 +10,7 @@ module M3e.Component.Badge exposing
 
 A visual indicator used to label content.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs Position, position, Size, size
 @docs for
@@ -80,11 +80,11 @@ type alias Size =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.badge
 
 

@@ -1,5 +1,5 @@
 module M3e.Component.ScrollContainer exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , Dividers, dividers
     , thin
@@ -10,7 +10,7 @@ module M3e.Component.ScrollContainer exposing
 
 A vertically oriented content container which presents dividers above and below content when scrolled.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs Dividers, dividers
 @docs thin
@@ -58,11 +58,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.scrollContainer
 
 

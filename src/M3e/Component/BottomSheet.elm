@@ -1,5 +1,5 @@
 module M3e.Component.BottomSheet exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , detent, detents, handle, handleLabel, hideFriction, hideable, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
     , header, child
@@ -9,7 +9,7 @@ module M3e.Component.BottomSheet exposing
 
 A sheet used to show secondary content anchored to the bottom of the screen.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs detent, detents, handle, handleLabel, hideFriction, hideable, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
 @docs header, child
@@ -63,11 +63,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.bottomSheet
 
 

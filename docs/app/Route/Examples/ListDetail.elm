@@ -28,6 +28,7 @@ import Head
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.AppBar
+import M3e.Component.Heading
 import M3e.Component.ListAction
 import M3e.Component.ListItem
 import M3e.Component.NavItem
@@ -274,7 +275,7 @@ header : Contact -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
 header contact =
     TypedHtml.div [ TA.class "flex flex-col items-center gap-3 pt-2" ]
         [ M3e.avatar [] [ M3e.text contact.initials ]
-        , M3e.heading { content = M3e.text contact.name } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] []
+        , M3e.Component.Heading.component { content = M3e.text contact.name } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] []
         , TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text contact.role ]
         ]
 

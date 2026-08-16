@@ -10,8 +10,8 @@ token's admittance row. `{ iconButton : Brand }` does NOT extend
 `{ button : Brand }` — these are disjoint fields, not a subset relationship.
 
 The compiler must reject this with a TYPE MISMATCH like:
-    the element's `accepts` row `{ s | iconButton : Brand }` does not match
-    `SBTypes.LeadingButtonSlot` = `{ button : Brand }`.
+the element's `accepts` row `{ s | iconButton : Brand }` does not match
+`SBTypes.LeadingButtonSlot` = `{ button : Brand }`.
 
 This proves the SlotToken phantom row propagates the kind constraint,
 making wrong-kind placements a COMPILE ERROR — the core safety property
@@ -27,8 +27,11 @@ import M3e.Component.IconButton as IconButton
 import M3e.Internal.Types.SplitButton as SBTypes
 
 
+
 -- Copy of the SlotToken type and place fn from SlotApiOk.elm
 -- (in the real API these would be in M3e.Slot.* modules)
+
+
 type SlotToken admittance
     = SlotToken String
 
@@ -59,7 +62,7 @@ This does NOT extend LeadingButtonSlot = { button : Brand }.
 -}
 myIconButton : Element (IconButton.Is s) admittedBy Msg
 myIconButton =
-    IconButton.el { content = Icon.el [ Icon.name "arrow_forward" ] [], ariaLabel = "Go", action = onClick NoOp } [] []
+    IconButton.component { content = Icon.component [ Icon.name "arrow_forward" ] [], ariaLabel = "Go", action = onClick NoOp } [] []
 
 
 {-| WRONG: IconButton (kind { iconButton : Brand }) into leadingButtonSlot

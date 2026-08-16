@@ -1,5 +1,5 @@
 module M3e.Component.Menu exposing
-    ( el
+    ( component
     , Is, Attrs, Content, ChildAdmittedBy
     , PositionX, positionX, PositionY, positionY, Variant, variant
     , submenu, onBeforetoggle, onToggle
@@ -10,7 +10,7 @@ module M3e.Component.Menu exposing
 
 Presents a list of choices on a temporary surface.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, ChildAdmittedBy
 @docs PositionX, positionX, PositionY, positionY, Variant, variant
 @docs submenu, onBeforetoggle, onToggle
@@ -88,11 +88,11 @@ type alias Variant =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.menu
 
 

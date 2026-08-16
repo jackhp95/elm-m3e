@@ -1,108 +1,307 @@
-module M3e.Family.SegmentedButton exposing (el, Is, Attrs, Content, ChildAdmittedBy, disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput, child)
+module M3e.Family.SegmentedButton exposing (SegmentedButtonIs, SegmentedButtonAttrs, SegmentedButtonContent, SegmentedButtonChildAdmittedBy, SegmentIs, SegmentAttrs, SegmentContent, SegmentIconSlot, SegmentChildAdmittedBy, GroupIs, GroupAttrs, GroupContent, GroupChildAdmittedBy, GroupSize, GroupVariant, segmentedButton, segmentedButtonDisabled, segmentedButtonHideSelectionIndicator, segmentedButtonMulti, segmentedButtonName, segmentedButtonOnChange, segmentedButtonOnBeforeinput, segmentedButtonOnInput, segmentedButtonChild, segment, segmentChecked, segmentDisabled, segmentValue, segmentDefaultChecked, segmentDefaultValue, segmentOnBeforeinput, segmentOnInput, segmentOnChange, segmentOnClick, segmentIcon, segmentChild, group, groupSize, groupVariant, groupMulti, groupChild)
 
-{-| The **SegmentedButton** family root — re-export of `M3e.Component.SegmentedButton`.
+{-| The **SegmentedButton** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.SegmentedButton`](M3e.Component.SegmentedButton) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, Content, ChildAdmittedBy, disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput, child
+[`M3e.Component.SegmentedButton`](M3e.Component.SegmentedButton) as `segmentedButton`, [`M3e.Component.ButtonSegment`](M3e.Component.ButtonSegment) as `segment`, [`M3e.Component.ButtonGroup`](M3e.Component.ButtonGroup) as `group`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs SegmentedButtonIs, SegmentedButtonAttrs, SegmentedButtonContent, SegmentedButtonChildAdmittedBy, SegmentIs, SegmentAttrs, SegmentContent, SegmentIconSlot, SegmentChildAdmittedBy, GroupIs, GroupAttrs, GroupContent, GroupChildAdmittedBy, GroupSize, GroupVariant, segmentedButton, segmentedButtonDisabled, segmentedButtonHideSelectionIndicator, segmentedButtonMulti, segmentedButtonName, segmentedButtonOnChange, segmentedButtonOnBeforeinput, segmentedButtonOnInput, segmentedButtonChild, segment, segmentChecked, segmentDisabled, segmentValue, segmentDefaultChecked, segmentDefaultValue, segmentOnBeforeinput, segmentOnInput, segmentOnChange, segmentOnClick, segmentIcon, segmentChild, group, groupSize, groupVariant, groupMulti, groupChild
 
 -}
 
 import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
-import M3e.Component.SegmentedButton as Orig
+import HtmlIr.Value exposing (Value)
+import M3e.Component.ButtonGroup as Group_
+import M3e.Component.ButtonSegment as Segment_
+import M3e.Component.SegmentedButton as SegmentedButton_
 
 
-{-| See [`M3e.Component.SegmentedButton.el`](M3e.Component.SegmentedButton#el).
+{-| The `segmentedButton` element of this family — delegates to [`M3e.Component.SegmentedButton.component`](M3e.Component.SegmentedButton#component).
 -}
-el :
-    { content : Element Content (ChildAdmittedBy childAdm) msg }
-    -> List (Attr Attrs msg)
-    -> List (Element Content (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+segmentedButton :
+    { content : Element SegmentedButtonContent (SegmentedButtonChildAdmittedBy childAdm) msg }
+    -> List (Attr SegmentedButtonAttrs msg)
+    -> List (Element SegmentedButtonContent (SegmentedButtonChildAdmittedBy childAdm) msg)
+    -> Element (SegmentedButtonIs s) admittedBy msg
+segmentedButton =
+    SegmentedButton_.component
 
 
 {-| See [`M3e.Component.SegmentedButton.Is`](M3e.Component.SegmentedButton#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias SegmentedButtonIs s =
+    SegmentedButton_.Is s
 
 
 {-| See [`M3e.Component.SegmentedButton.Attrs`](M3e.Component.SegmentedButton#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias SegmentedButtonAttrs =
+    SegmentedButton_.Attrs
 
 
 {-| See [`M3e.Component.SegmentedButton.Content`](M3e.Component.SegmentedButton#Content).
 -}
-type alias Content =
-    Orig.Content
+type alias SegmentedButtonContent =
+    SegmentedButton_.Content
 
 
 {-| See [`M3e.Component.SegmentedButton.ChildAdmittedBy`](M3e.Component.SegmentedButton#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias SegmentedButtonChildAdmittedBy childAdm =
+    SegmentedButton_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.SegmentedButton.disabled`](M3e.Component.SegmentedButton#disabled).
 -}
-disabled : Bool -> Attr { c | disabled : Supported } msg
-disabled =
-    Orig.disabled
+segmentedButtonDisabled : Bool -> Attr { c | disabled : Supported } msg
+segmentedButtonDisabled =
+    SegmentedButton_.disabled
 
 
 {-| See [`M3e.Component.SegmentedButton.hideSelectionIndicator`](M3e.Component.SegmentedButton#hideSelectionIndicator).
 -}
-hideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
-hideSelectionIndicator =
-    Orig.hideSelectionIndicator
+segmentedButtonHideSelectionIndicator : Bool -> Attr { c | hideSelectionIndicator : Supported } msg
+segmentedButtonHideSelectionIndicator =
+    SegmentedButton_.hideSelectionIndicator
 
 
 {-| See [`M3e.Component.SegmentedButton.multi`](M3e.Component.SegmentedButton#multi).
 -}
-multi : Bool -> Attr { c | multi : Supported } msg
-multi =
-    Orig.multi
+segmentedButtonMulti : Bool -> Attr { c | multi : Supported } msg
+segmentedButtonMulti =
+    SegmentedButton_.multi
 
 
 {-| See [`M3e.Component.SegmentedButton.name`](M3e.Component.SegmentedButton#name).
 -}
-name : String -> Attr { c | name : Supported } msg
-name =
-    Orig.name
+segmentedButtonName : String -> Attr { c | name : Supported } msg
+segmentedButtonName =
+    SegmentedButton_.name
 
 
 {-| See [`M3e.Component.SegmentedButton.onChange`](M3e.Component.SegmentedButton#onChange).
 -}
-onChange : msg -> Attr { c | onChange : Supported } msg
-onChange =
-    Orig.onChange
+segmentedButtonOnChange : msg -> Attr { c | onChange : Supported } msg
+segmentedButtonOnChange =
+    SegmentedButton_.onChange
 
 
 {-| See [`M3e.Component.SegmentedButton.onBeforeinput`](M3e.Component.SegmentedButton#onBeforeinput).
 -}
-onBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
-onBeforeinput =
-    Orig.onBeforeinput
+segmentedButtonOnBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
+segmentedButtonOnBeforeinput =
+    SegmentedButton_.onBeforeinput
 
 
 {-| See [`M3e.Component.SegmentedButton.onInput`](M3e.Component.SegmentedButton#onInput).
 -}
-onInput : msg -> Attr { c | onInput : Supported } msg
-onInput =
-    Orig.onInput
+segmentedButtonOnInput : msg -> Attr { c | onInput : Supported } msg
+segmentedButtonOnInput =
+    SegmentedButton_.onInput
 
 
 {-| See [`M3e.Component.SegmentedButton.child`](M3e.Component.SegmentedButton#child).
 -}
-child : Element Content admittedBy msg -> Element free freeAdmittedBy msg
-child =
-    Orig.child
+segmentedButtonChild : Element SegmentedButtonContent admittedBy msg -> Element free freeAdmittedBy msg
+segmentedButtonChild =
+    SegmentedButton_.child
+
+
+{-| The `segment` element of this family — delegates to [`M3e.Component.ButtonSegment.component`](M3e.Component.ButtonSegment#component).
+-}
+segment :
+    List (Attr SegmentAttrs msg)
+    -> List (Element SegmentContent (SegmentChildAdmittedBy childAdm) msg)
+    -> Element (SegmentIs s) admittedBy msg
+segment =
+    Segment_.component
+
+
+{-| See [`M3e.Component.ButtonSegment.Is`](M3e.Component.ButtonSegment#Is).
+-}
+type alias SegmentIs s =
+    Segment_.Is s
+
+
+{-| See [`M3e.Component.ButtonSegment.Attrs`](M3e.Component.ButtonSegment#Attrs).
+-}
+type alias SegmentAttrs =
+    Segment_.Attrs
+
+
+{-| See [`M3e.Component.ButtonSegment.Content`](M3e.Component.ButtonSegment#Content).
+-}
+type alias SegmentContent =
+    Segment_.Content
+
+
+{-| See [`M3e.Component.ButtonSegment.IconSlot`](M3e.Component.ButtonSegment#IconSlot).
+-}
+type alias SegmentIconSlot =
+    Segment_.IconSlot
+
+
+{-| See [`M3e.Component.ButtonSegment.ChildAdmittedBy`](M3e.Component.ButtonSegment#ChildAdmittedBy).
+-}
+type alias SegmentChildAdmittedBy childAdm =
+    Segment_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.ButtonSegment.checked`](M3e.Component.ButtonSegment#checked).
+-}
+segmentChecked : Bool -> Attr { c | checked : Supported } msg
+segmentChecked =
+    Segment_.checked
+
+
+{-| See [`M3e.Component.ButtonSegment.disabled`](M3e.Component.ButtonSegment#disabled).
+-}
+segmentDisabled : Bool -> Attr { c | disabled : Supported } msg
+segmentDisabled =
+    Segment_.disabled
+
+
+{-| See [`M3e.Component.ButtonSegment.value`](M3e.Component.ButtonSegment#value).
+-}
+segmentValue : String -> Attr { c | value : Supported } msg
+segmentValue =
+    Segment_.value
+
+
+{-| See [`M3e.Component.ButtonSegment.defaultChecked`](M3e.Component.ButtonSegment#defaultChecked).
+-}
+segmentDefaultChecked : Bool -> Attr { c | checked : Supported } msg
+segmentDefaultChecked =
+    Segment_.defaultChecked
+
+
+{-| See [`M3e.Component.ButtonSegment.defaultValue`](M3e.Component.ButtonSegment#defaultValue).
+-}
+segmentDefaultValue : String -> Attr { c | value : Supported } msg
+segmentDefaultValue =
+    Segment_.defaultValue
+
+
+{-| See [`M3e.Component.ButtonSegment.onBeforeinput`](M3e.Component.ButtonSegment#onBeforeinput).
+-}
+segmentOnBeforeinput : msg -> Attr { c | onBeforeinput : Supported } msg
+segmentOnBeforeinput =
+    Segment_.onBeforeinput
+
+
+{-| See [`M3e.Component.ButtonSegment.onInput`](M3e.Component.ButtonSegment#onInput).
+-}
+segmentOnInput : msg -> Attr { c | onInput : Supported } msg
+segmentOnInput =
+    Segment_.onInput
+
+
+{-| See [`M3e.Component.ButtonSegment.onChange`](M3e.Component.ButtonSegment#onChange).
+-}
+segmentOnChange : msg -> Attr { c | onChange : Supported } msg
+segmentOnChange =
+    Segment_.onChange
+
+
+{-| See [`M3e.Component.ButtonSegment.onClick`](M3e.Component.ButtonSegment#onClick).
+-}
+segmentOnClick : msg -> Attr { c | onClick : Supported } msg
+segmentOnClick =
+    Segment_.onClick
+
+
+{-| See [`M3e.Component.ButtonSegment.icon`](M3e.Component.ButtonSegment#icon).
+-}
+segmentIcon : Element SegmentIconSlot admittedBy msg -> Element free freeAdmittedBy msg
+segmentIcon =
+    Segment_.icon
+
+
+{-| See [`M3e.Component.ButtonSegment.child`](M3e.Component.ButtonSegment#child).
+-}
+segmentChild : Element SegmentContent admittedBy msg -> Element free freeAdmittedBy msg
+segmentChild =
+    Segment_.child
+
+
+{-| The `group` element of this family — delegates to [`M3e.Component.ButtonGroup.component`](M3e.Component.ButtonGroup#component).
+-}
+group :
+    List (Attr GroupAttrs msg)
+    -> List (Element GroupContent (GroupChildAdmittedBy childAdm) msg)
+    -> Element (GroupIs s) admittedBy msg
+group =
+    Group_.component
+
+
+{-| See [`M3e.Component.ButtonGroup.Is`](M3e.Component.ButtonGroup#Is).
+-}
+type alias GroupIs s =
+    Group_.Is s
+
+
+{-| See [`M3e.Component.ButtonGroup.Attrs`](M3e.Component.ButtonGroup#Attrs).
+-}
+type alias GroupAttrs =
+    Group_.Attrs
+
+
+{-| See [`M3e.Component.ButtonGroup.Content`](M3e.Component.ButtonGroup#Content).
+-}
+type alias GroupContent =
+    Group_.Content
+
+
+{-| See [`M3e.Component.ButtonGroup.ChildAdmittedBy`](M3e.Component.ButtonGroup#ChildAdmittedBy).
+-}
+type alias GroupChildAdmittedBy childAdm =
+    Group_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.ButtonGroup.Size`](M3e.Component.ButtonGroup#Size).
+-}
+type alias GroupSize =
+    Group_.Size
+
+
+{-| See [`M3e.Component.ButtonGroup.size`](M3e.Component.ButtonGroup#size).
+-}
+groupSize : Value GroupSize -> Attr { c | size : Supported } msg
+groupSize =
+    Group_.size
+
+
+{-| See [`M3e.Component.ButtonGroup.Variant`](M3e.Component.ButtonGroup#Variant).
+-}
+type alias GroupVariant =
+    Group_.Variant
+
+
+{-| See [`M3e.Component.ButtonGroup.variant`](M3e.Component.ButtonGroup#variant).
+-}
+groupVariant : Value GroupVariant -> Attr { c | variant : Supported } msg
+groupVariant =
+    Group_.variant
+
+
+{-| See [`M3e.Component.ButtonGroup.multi`](M3e.Component.ButtonGroup#multi).
+-}
+groupMulti : Bool -> Attr { c | multi : Supported } msg
+groupMulti =
+    Group_.multi
+
+
+{-| See [`M3e.Component.ButtonGroup.child`](M3e.Component.ButtonGroup#child).
+-}
+groupChild : Element GroupContent admittedBy msg -> Element free freeAdmittedBy msg
+groupChild =
+    Group_.child

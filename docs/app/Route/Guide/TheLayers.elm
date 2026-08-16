@@ -16,6 +16,7 @@ import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
+import M3e.Component.Button
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -73,7 +74,7 @@ produce this same slottable value, so one live demo covers them all.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -116,8 +117,8 @@ layersDiagram : String
 layersDiagram =
     """SURFACES — same typed value, different call shape (a horizontal choice)
   M3e.button …                     barrel: one import, every component's standard constructor
-  M3e.Component.AppBar.el …                    the component module's `el` — bare/list form (no required fields)
-  M3e.Component.Button.el { … } …               the component module's `el` — required-record form (components with required fields)
+  M3e.Component.AppBar.component …                    the component module's `el` — bare/list form (no required fields)
+  M3e.Component.Button.component { … } …               the component module's `el` — required-record form (components with required fields)
 
 LOOSENESS — opt out of the strict phantom rows, still in the IR
   M3e.Html.button …                the loose producer (open rows, no slot checking)
@@ -137,11 +138,11 @@ sameButton =
 descentCode : String
 descentCode =
     """-- barrel: one import, the standard form — the default
-M3e.button { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Attributes.variant Value.filled ] []
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Attributes.variant Value.filled ] []
 
 -- component module: same output, component-scoped tighter types — `el` is
 -- required-record here because Button can't omit its content/action
-M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant Value.filled ] []"""
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant Value.filled ] []"""
 
 
 tell : String

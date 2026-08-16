@@ -7,7 +7,6 @@ alias skin, distinct from the full component/builder modules; that skin was
 deleted along with `M3e.Build.*` — the property it demonstrated is now just
 "the component module IS already minimal", so a plain `M3e.Component.Button`
 import suffices.)
-
 -}
 
 import HtmlIr.Element exposing (Element)

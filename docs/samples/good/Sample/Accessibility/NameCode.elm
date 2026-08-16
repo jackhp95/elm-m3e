@@ -10,6 +10,8 @@ Change the sample there; this file follows.
 import M3e
 import M3e.Action
 import M3e.Attributes
+import M3e.Component.Button
+import M3e.Component.IconButton
 import M3e.Values as Value
 import Sample.Support exposing (on)
 import TypedHtml.Aria as Aria
@@ -18,12 +20,12 @@ import TypedHtml.Attributes as TA
 
 -- Visible text: the slot content is the name. Nothing extra.
 shown0_ =
-    M3e.button { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
 
 
 -- Icon-only: the name is REQUIRED — supply it explicitly.
 shown1_ =
-    M3e.iconButton { content = M3e.icon [ TA.name "arrow_back" ] [], ariaLabel = "Back", action = M3e.Action.none } [] []
+    M3e.Component.IconButton.component { content = M3e.icon [ TA.name "arrow_back" ] [], ariaLabel = "Back", action = M3e.Action.none } [] []
 
 
 -- Sneaky case: a Switch/Radio in a list row whose visible label is a SIBLING

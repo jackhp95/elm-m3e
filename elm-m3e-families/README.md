@@ -3,11 +3,13 @@
 Family-grouped nested module organization for elm-m3e components.
 
 This package is a standalone sub-package of [elm-m3e](https://github.com/jackhp95/elm-m3e).
-It is a **purely additive** re-organization: every module here re-exports an
-existing flat `M3e.Component.*` element under a nested **family** path
-(`M3e.Family.NavMenu.Item` re-exports `M3e.Component.NavMenuItem`), so nothing
-built against the flat surface regresses. Depends on `jackhp95/elm-m3e-components`
-— it adds no logic of its own.
+It is a **purely additive** re-organization: each module here is a **flat**
+family module that re-exports the member elements of one family from the flat
+`M3e.Component.*` surface — element-named constructors (`M3e.Family.Chip.assist`
+delegates to `M3e.Component.AssistChip.component`) plus element-prefixed types
+(`AssistIs`, `AssistAttrs`) and element-prefixed helpers (`assistVariant`) —
+so nothing built against the flat surface regresses. Depends on
+`jackhp95/elm-m3e-components` — it adds no logic of its own.
 
 **Generated file.** Do not edit `src/` by hand — run `npm run gen:src` in the
 elm-m3e repo to regenerate from the `_families` config (`config/slots.json`).
@@ -15,10 +17,9 @@ elm-m3e repo to regenerate from the `_families` config (`config/slots.json`).
 ## Usage
 
 ```elm
-import M3e.Family.NavMenu as NavMenu
-import M3e.Family.NavMenu.Item as NavMenuItem
+import M3e.Family.Chip as Chip
 
-NavMenu.el [] [ NavMenu.child (NavMenuItem.el { label = ... } [] []) ]
+Chip.set [] [ Chip.child (Chip.assist [] [ Chip.assistChild ... ]) ]
 ```
 
 ## License

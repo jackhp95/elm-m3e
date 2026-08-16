@@ -1,13 +1,18 @@
-module M3e.Family.Calendar exposing (el, Is, Attrs, ChildAdmittedBy, StartView, startView, date, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, onChange, header)
+module M3e.Family.Calendar exposing (CalendarIs, CalendarAttrs, CalendarChildAdmittedBy, CalendarStartView, MonthViewIs, MonthViewAttrs, MonthViewChildAdmittedBy, YearViewIs, YearViewAttrs, YearViewChildAdmittedBy, MultiYearViewIs, MultiYearViewAttrs, MultiYearViewChildAdmittedBy, calendar, calendarStartView, calendarDate, calendarMaxDate, calendarMinDate, calendarNextMonthLabel, calendarNextMultiYearLabel, calendarNextYearLabel, calendarPreviousMonthLabel, calendarPreviousMultiYearLabel, calendarPreviousYearLabel, calendarRangeEnd, calendarRangeStart, calendarStartAt, calendarOnChange, calendarHeader, monthView, monthViewActive, monthViewActiveDate, monthViewDate, monthViewMaxDate, monthViewMinDate, monthViewRangeEnd, monthViewRangeStart, monthViewToday, monthViewOnChange, monthViewOnActiveChange, yearView, yearViewActive, yearViewActiveDate, yearViewDate, yearViewMaxDate, yearViewMinDate, yearViewToday, yearViewOnChange, yearViewOnActiveChange, multiYearView, multiYearViewActive, multiYearViewActiveDate, multiYearViewDate, multiYearViewMaxDate, multiYearViewMinDate, multiYearViewToday, multiYearViewOnChange, multiYearViewOnActiveChange)
 
-{-| The **Calendar** family root — re-export of `M3e.Component.Calendar`.
+{-| The **Calendar** family — flat module re-exporting its member elements.
 
-This module is part of the **family-grouped** organization of elm-m3e: it
-re-exports the flat [`M3e.Component.Calendar`](M3e.Component.Calendar) surface under a nested
-family path, unchanged. Prefer whichever import reads best for your code —
-the flat module and this family module are the same element, same types.
+This is the **flat family module** for this family: one module carrying every
+member element as an element-named constructor (delegating to that component's
+`component` ctor), with element-prefixed type aliases and element-prefixed
+typed helpers so members never collide. It re-exports:
 
-@docs el, Is, Attrs, ChildAdmittedBy, StartView, startView, date, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, onChange, header
+[`M3e.Component.Calendar`](M3e.Component.Calendar) as `calendar`, [`M3e.Component.MonthView`](M3e.Component.MonthView) as `monthView`, [`M3e.Component.YearView`](M3e.Component.YearView) as `yearView`, [`M3e.Component.MultiYearView`](M3e.Component.MultiYearView) as `multiYearView`.
+
+Prefer whichever import reads best — the flat `M3e.Component.*` modules and
+this family module are the same elements, same types.
+
+@docs CalendarIs, CalendarAttrs, CalendarChildAdmittedBy, CalendarStartView, MonthViewIs, MonthViewAttrs, MonthViewChildAdmittedBy, YearViewIs, YearViewAttrs, YearViewChildAdmittedBy, MultiYearViewIs, MultiYearViewAttrs, MultiYearViewChildAdmittedBy, calendar, calendarStartView, calendarDate, calendarMaxDate, calendarMinDate, calendarNextMonthLabel, calendarNextMultiYearLabel, calendarNextYearLabel, calendarPreviousMonthLabel, calendarPreviousMultiYearLabel, calendarPreviousYearLabel, calendarRangeEnd, calendarRangeStart, calendarStartAt, calendarOnChange, calendarHeader, monthView, monthViewActive, monthViewActiveDate, monthViewDate, monthViewMaxDate, monthViewMinDate, monthViewRangeEnd, monthViewRangeStart, monthViewToday, monthViewOnChange, monthViewOnActiveChange, yearView, yearViewActive, yearViewActiveDate, yearViewDate, yearViewMaxDate, yearViewMinDate, yearViewToday, yearViewOnChange, yearViewOnActiveChange, multiYearView, multiYearViewActive, multiYearViewActiveDate, multiYearViewDate, multiYearViewMaxDate, multiYearViewMinDate, multiYearViewToday, multiYearViewOnChange, multiYearViewOnActiveChange
 
 -}
 
@@ -15,143 +20,412 @@ import HtmlIr.Attribute exposing (Attr)
 import HtmlIr.Element exposing (Element)
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value exposing (Value)
-import M3e.Component.Calendar as Orig
+import M3e.Component.Calendar as Calendar_
+import M3e.Component.MonthView as MonthView_
+import M3e.Component.MultiYearView as MultiYearView_
+import M3e.Component.YearView as YearView_
 
 
-{-| See [`M3e.Component.Calendar.el`](M3e.Component.Calendar#el).
+{-| The `calendar` element of this family — delegates to [`M3e.Component.Calendar.component`](M3e.Component.Calendar#component).
 -}
-el :
-    List (Attr Attrs msg)
-    -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
-    -> Element (Is s) admittedBy msg
-el =
-    Orig.el
+calendar :
+    List (Attr CalendarAttrs msg)
+    -> List (Element childAccepts (CalendarChildAdmittedBy childAdm) msg)
+    -> Element (CalendarIs s) admittedBy msg
+calendar =
+    Calendar_.component
 
 
 {-| See [`M3e.Component.Calendar.Is`](M3e.Component.Calendar#Is).
 -}
-type alias Is s =
-    Orig.Is s
+type alias CalendarIs s =
+    Calendar_.Is s
 
 
 {-| See [`M3e.Component.Calendar.Attrs`](M3e.Component.Calendar#Attrs).
 -}
-type alias Attrs =
-    Orig.Attrs
+type alias CalendarAttrs =
+    Calendar_.Attrs
 
 
 {-| See [`M3e.Component.Calendar.ChildAdmittedBy`](M3e.Component.Calendar#ChildAdmittedBy).
 -}
-type alias ChildAdmittedBy childAdm =
-    Orig.ChildAdmittedBy childAdm
+type alias CalendarChildAdmittedBy childAdm =
+    Calendar_.ChildAdmittedBy childAdm
 
 
 {-| See [`M3e.Component.Calendar.StartView`](M3e.Component.Calendar#StartView).
 -}
-type alias StartView =
-    Orig.StartView
+type alias CalendarStartView =
+    Calendar_.StartView
 
 
 {-| See [`M3e.Component.Calendar.startView`](M3e.Component.Calendar#startView).
 -}
-startView : Value StartView -> Attr { c | startView : Supported } msg
-startView =
-    Orig.startView
+calendarStartView : Value CalendarStartView -> Attr { c | startView : Supported } msg
+calendarStartView =
+    Calendar_.startView
 
 
 {-| See [`M3e.Component.Calendar.date`](M3e.Component.Calendar#date).
 -}
-date : String -> Attr { c | date : Supported } msg
-date =
-    Orig.date
+calendarDate : String -> Attr { c | date : Supported } msg
+calendarDate =
+    Calendar_.date
 
 
 {-| See [`M3e.Component.Calendar.maxDate`](M3e.Component.Calendar#maxDate).
 -}
-maxDate : String -> Attr { c | maxDate : Supported } msg
-maxDate =
-    Orig.maxDate
+calendarMaxDate : String -> Attr { c | maxDate : Supported } msg
+calendarMaxDate =
+    Calendar_.maxDate
 
 
 {-| See [`M3e.Component.Calendar.minDate`](M3e.Component.Calendar#minDate).
 -}
-minDate : String -> Attr { c | minDate : Supported } msg
-minDate =
-    Orig.minDate
+calendarMinDate : String -> Attr { c | minDate : Supported } msg
+calendarMinDate =
+    Calendar_.minDate
 
 
 {-| See [`M3e.Component.Calendar.nextMonthLabel`](M3e.Component.Calendar#nextMonthLabel).
 -}
-nextMonthLabel : String -> Attr { c | nextMonthLabel : Supported } msg
-nextMonthLabel =
-    Orig.nextMonthLabel
+calendarNextMonthLabel : String -> Attr { c | nextMonthLabel : Supported } msg
+calendarNextMonthLabel =
+    Calendar_.nextMonthLabel
 
 
 {-| See [`M3e.Component.Calendar.nextMultiYearLabel`](M3e.Component.Calendar#nextMultiYearLabel).
 -}
-nextMultiYearLabel : String -> Attr { c | nextMultiYearLabel : Supported } msg
-nextMultiYearLabel =
-    Orig.nextMultiYearLabel
+calendarNextMultiYearLabel : String -> Attr { c | nextMultiYearLabel : Supported } msg
+calendarNextMultiYearLabel =
+    Calendar_.nextMultiYearLabel
 
 
 {-| See [`M3e.Component.Calendar.nextYearLabel`](M3e.Component.Calendar#nextYearLabel).
 -}
-nextYearLabel : String -> Attr { c | nextYearLabel : Supported } msg
-nextYearLabel =
-    Orig.nextYearLabel
+calendarNextYearLabel : String -> Attr { c | nextYearLabel : Supported } msg
+calendarNextYearLabel =
+    Calendar_.nextYearLabel
 
 
 {-| See [`M3e.Component.Calendar.previousMonthLabel`](M3e.Component.Calendar#previousMonthLabel).
 -}
-previousMonthLabel : String -> Attr { c | previousMonthLabel : Supported } msg
-previousMonthLabel =
-    Orig.previousMonthLabel
+calendarPreviousMonthLabel : String -> Attr { c | previousMonthLabel : Supported } msg
+calendarPreviousMonthLabel =
+    Calendar_.previousMonthLabel
 
 
 {-| See [`M3e.Component.Calendar.previousMultiYearLabel`](M3e.Component.Calendar#previousMultiYearLabel).
 -}
-previousMultiYearLabel : String -> Attr { c | previousMultiYearLabel : Supported } msg
-previousMultiYearLabel =
-    Orig.previousMultiYearLabel
+calendarPreviousMultiYearLabel : String -> Attr { c | previousMultiYearLabel : Supported } msg
+calendarPreviousMultiYearLabel =
+    Calendar_.previousMultiYearLabel
 
 
 {-| See [`M3e.Component.Calendar.previousYearLabel`](M3e.Component.Calendar#previousYearLabel).
 -}
-previousYearLabel : String -> Attr { c | previousYearLabel : Supported } msg
-previousYearLabel =
-    Orig.previousYearLabel
+calendarPreviousYearLabel : String -> Attr { c | previousYearLabel : Supported } msg
+calendarPreviousYearLabel =
+    Calendar_.previousYearLabel
 
 
 {-| See [`M3e.Component.Calendar.rangeEnd`](M3e.Component.Calendar#rangeEnd).
 -}
-rangeEnd : String -> Attr { c | rangeEnd : Supported } msg
-rangeEnd =
-    Orig.rangeEnd
+calendarRangeEnd : String -> Attr { c | rangeEnd : Supported } msg
+calendarRangeEnd =
+    Calendar_.rangeEnd
 
 
 {-| See [`M3e.Component.Calendar.rangeStart`](M3e.Component.Calendar#rangeStart).
 -}
-rangeStart : String -> Attr { c | rangeStart : Supported } msg
-rangeStart =
-    Orig.rangeStart
+calendarRangeStart : String -> Attr { c | rangeStart : Supported } msg
+calendarRangeStart =
+    Calendar_.rangeStart
 
 
 {-| See [`M3e.Component.Calendar.startAt`](M3e.Component.Calendar#startAt).
 -}
-startAt : String -> Attr { c | startAt : Supported } msg
-startAt =
-    Orig.startAt
+calendarStartAt : String -> Attr { c | startAt : Supported } msg
+calendarStartAt =
+    Calendar_.startAt
 
 
 {-| See [`M3e.Component.Calendar.onChange`](M3e.Component.Calendar#onChange).
 -}
-onChange : (String -> msg) -> Attr { c | onChange : Supported } msg
-onChange =
-    Orig.onChange
+calendarOnChange : (String -> msg) -> Attr { c | onChange : Supported } msg
+calendarOnChange =
+    Calendar_.onChange
 
 
 {-| See [`M3e.Component.Calendar.header`](M3e.Component.Calendar#header).
 -}
-header : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
-header =
-    Orig.header
+calendarHeader : Element childAccepts admittedBy msg -> Element free freeAdmittedBy msg
+calendarHeader =
+    Calendar_.header
+
+
+{-| The `monthView` element of this family — delegates to [`M3e.Component.MonthView.component`](M3e.Component.MonthView#component).
+-}
+monthView :
+    List (Attr MonthViewAttrs msg)
+    -> List (Element childAccepts (MonthViewChildAdmittedBy childAdm) msg)
+    -> Element (MonthViewIs s) admittedBy msg
+monthView =
+    MonthView_.component
+
+
+{-| See [`M3e.Component.MonthView.Is`](M3e.Component.MonthView#Is).
+-}
+type alias MonthViewIs s =
+    MonthView_.Is s
+
+
+{-| See [`M3e.Component.MonthView.Attrs`](M3e.Component.MonthView#Attrs).
+-}
+type alias MonthViewAttrs =
+    MonthView_.Attrs
+
+
+{-| See [`M3e.Component.MonthView.ChildAdmittedBy`](M3e.Component.MonthView#ChildAdmittedBy).
+-}
+type alias MonthViewChildAdmittedBy childAdm =
+    MonthView_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MonthView.active`](M3e.Component.MonthView#active).
+-}
+monthViewActive : Bool -> Attr { c | active : Supported } msg
+monthViewActive =
+    MonthView_.active
+
+
+{-| See [`M3e.Component.MonthView.activeDate`](M3e.Component.MonthView#activeDate).
+-}
+monthViewActiveDate : String -> Attr { c | activeDate : Supported } msg
+monthViewActiveDate =
+    MonthView_.activeDate
+
+
+{-| See [`M3e.Component.MonthView.date`](M3e.Component.MonthView#date).
+-}
+monthViewDate : String -> Attr { c | date : Supported } msg
+monthViewDate =
+    MonthView_.date
+
+
+{-| See [`M3e.Component.MonthView.maxDate`](M3e.Component.MonthView#maxDate).
+-}
+monthViewMaxDate : String -> Attr { c | maxDate : Supported } msg
+monthViewMaxDate =
+    MonthView_.maxDate
+
+
+{-| See [`M3e.Component.MonthView.minDate`](M3e.Component.MonthView#minDate).
+-}
+monthViewMinDate : String -> Attr { c | minDate : Supported } msg
+monthViewMinDate =
+    MonthView_.minDate
+
+
+{-| See [`M3e.Component.MonthView.rangeEnd`](M3e.Component.MonthView#rangeEnd).
+-}
+monthViewRangeEnd : String -> Attr { c | rangeEnd : Supported } msg
+monthViewRangeEnd =
+    MonthView_.rangeEnd
+
+
+{-| See [`M3e.Component.MonthView.rangeStart`](M3e.Component.MonthView#rangeStart).
+-}
+monthViewRangeStart : String -> Attr { c | rangeStart : Supported } msg
+monthViewRangeStart =
+    MonthView_.rangeStart
+
+
+{-| See [`M3e.Component.MonthView.today`](M3e.Component.MonthView#today).
+-}
+monthViewToday : String -> Attr { c | today : Supported } msg
+monthViewToday =
+    MonthView_.today
+
+
+{-| See [`M3e.Component.MonthView.onChange`](M3e.Component.MonthView#onChange).
+-}
+monthViewOnChange : msg -> Attr { c | onChange : Supported } msg
+monthViewOnChange =
+    MonthView_.onChange
+
+
+{-| See [`M3e.Component.MonthView.onActiveChange`](M3e.Component.MonthView#onActiveChange).
+-}
+monthViewOnActiveChange : msg -> Attr { c | onActiveChange : Supported } msg
+monthViewOnActiveChange =
+    MonthView_.onActiveChange
+
+
+{-| The `yearView` element of this family — delegates to [`M3e.Component.YearView.component`](M3e.Component.YearView#component).
+-}
+yearView :
+    List (Attr YearViewAttrs msg)
+    -> List (Element childAccepts (YearViewChildAdmittedBy childAdm) msg)
+    -> Element (YearViewIs s) admittedBy msg
+yearView =
+    YearView_.component
+
+
+{-| See [`M3e.Component.YearView.Is`](M3e.Component.YearView#Is).
+-}
+type alias YearViewIs s =
+    YearView_.Is s
+
+
+{-| See [`M3e.Component.YearView.Attrs`](M3e.Component.YearView#Attrs).
+-}
+type alias YearViewAttrs =
+    YearView_.Attrs
+
+
+{-| See [`M3e.Component.YearView.ChildAdmittedBy`](M3e.Component.YearView#ChildAdmittedBy).
+-}
+type alias YearViewChildAdmittedBy childAdm =
+    YearView_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.YearView.active`](M3e.Component.YearView#active).
+-}
+yearViewActive : Bool -> Attr { c | active : Supported } msg
+yearViewActive =
+    YearView_.active
+
+
+{-| See [`M3e.Component.YearView.activeDate`](M3e.Component.YearView#activeDate).
+-}
+yearViewActiveDate : String -> Attr { c | activeDate : Supported } msg
+yearViewActiveDate =
+    YearView_.activeDate
+
+
+{-| See [`M3e.Component.YearView.date`](M3e.Component.YearView#date).
+-}
+yearViewDate : String -> Attr { c | date : Supported } msg
+yearViewDate =
+    YearView_.date
+
+
+{-| See [`M3e.Component.YearView.maxDate`](M3e.Component.YearView#maxDate).
+-}
+yearViewMaxDate : String -> Attr { c | maxDate : Supported } msg
+yearViewMaxDate =
+    YearView_.maxDate
+
+
+{-| See [`M3e.Component.YearView.minDate`](M3e.Component.YearView#minDate).
+-}
+yearViewMinDate : String -> Attr { c | minDate : Supported } msg
+yearViewMinDate =
+    YearView_.minDate
+
+
+{-| See [`M3e.Component.YearView.today`](M3e.Component.YearView#today).
+-}
+yearViewToday : String -> Attr { c | today : Supported } msg
+yearViewToday =
+    YearView_.today
+
+
+{-| See [`M3e.Component.YearView.onChange`](M3e.Component.YearView#onChange).
+-}
+yearViewOnChange : msg -> Attr { c | onChange : Supported } msg
+yearViewOnChange =
+    YearView_.onChange
+
+
+{-| See [`M3e.Component.YearView.onActiveChange`](M3e.Component.YearView#onActiveChange).
+-}
+yearViewOnActiveChange : msg -> Attr { c | onActiveChange : Supported } msg
+yearViewOnActiveChange =
+    YearView_.onActiveChange
+
+
+{-| The `multiYearView` element of this family — delegates to [`M3e.Component.MultiYearView.component`](M3e.Component.MultiYearView#component).
+-}
+multiYearView :
+    List (Attr MultiYearViewAttrs msg)
+    -> List (Element childAccepts (MultiYearViewChildAdmittedBy childAdm) msg)
+    -> Element (MultiYearViewIs s) admittedBy msg
+multiYearView =
+    MultiYearView_.component
+
+
+{-| See [`M3e.Component.MultiYearView.Is`](M3e.Component.MultiYearView#Is).
+-}
+type alias MultiYearViewIs s =
+    MultiYearView_.Is s
+
+
+{-| See [`M3e.Component.MultiYearView.Attrs`](M3e.Component.MultiYearView#Attrs).
+-}
+type alias MultiYearViewAttrs =
+    MultiYearView_.Attrs
+
+
+{-| See [`M3e.Component.MultiYearView.ChildAdmittedBy`](M3e.Component.MultiYearView#ChildAdmittedBy).
+-}
+type alias MultiYearViewChildAdmittedBy childAdm =
+    MultiYearView_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MultiYearView.active`](M3e.Component.MultiYearView#active).
+-}
+multiYearViewActive : Bool -> Attr { c | active : Supported } msg
+multiYearViewActive =
+    MultiYearView_.active
+
+
+{-| See [`M3e.Component.MultiYearView.activeDate`](M3e.Component.MultiYearView#activeDate).
+-}
+multiYearViewActiveDate : String -> Attr { c | activeDate : Supported } msg
+multiYearViewActiveDate =
+    MultiYearView_.activeDate
+
+
+{-| See [`M3e.Component.MultiYearView.date`](M3e.Component.MultiYearView#date).
+-}
+multiYearViewDate : String -> Attr { c | date : Supported } msg
+multiYearViewDate =
+    MultiYearView_.date
+
+
+{-| See [`M3e.Component.MultiYearView.maxDate`](M3e.Component.MultiYearView#maxDate).
+-}
+multiYearViewMaxDate : String -> Attr { c | maxDate : Supported } msg
+multiYearViewMaxDate =
+    MultiYearView_.maxDate
+
+
+{-| See [`M3e.Component.MultiYearView.minDate`](M3e.Component.MultiYearView#minDate).
+-}
+multiYearViewMinDate : String -> Attr { c | minDate : Supported } msg
+multiYearViewMinDate =
+    MultiYearView_.minDate
+
+
+{-| See [`M3e.Component.MultiYearView.today`](M3e.Component.MultiYearView#today).
+-}
+multiYearViewToday : String -> Attr { c | today : Supported } msg
+multiYearViewToday =
+    MultiYearView_.today
+
+
+{-| See [`M3e.Component.MultiYearView.onChange`](M3e.Component.MultiYearView#onChange).
+-}
+multiYearViewOnChange : msg -> Attr { c | onChange : Supported } msg
+multiYearViewOnChange =
+    MultiYearView_.onChange
+
+
+{-| See [`M3e.Component.MultiYearView.onActiveChange`](M3e.Component.MultiYearView#onActiveChange).
+-}
+multiYearViewOnActiveChange : msg -> Attr { c | onActiveChange : Supported } msg
+multiYearViewOnActiveChange =
+    MultiYearView_.onActiveChange

@@ -1,5 +1,5 @@
 module M3e.Component.BreadcrumbItem exposing
-    ( el
+    ( component
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy
     , Current, current
     , disabled, download, href, itemLabel, rel, target, onClick
@@ -10,7 +10,7 @@ module M3e.Component.BreadcrumbItem exposing
 
 An item in a breadcrumb.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy
 @docs Current, current
 @docs disabled, download, href, itemLabel, rel, target, onClick
@@ -68,11 +68,11 @@ type alias Current =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.breadcrumbItem
 
 

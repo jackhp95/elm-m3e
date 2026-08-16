@@ -17,10 +17,10 @@ import Sample.Support exposing (Msg(..))
 
 -- barrel: one import, the standard form — the default
 shown0_ =
-    M3e.button { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Attributes.variant Value.filled ] []
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Attributes.variant Value.filled ] []
 
 
 -- component module: same output, component-scoped tighter types — `el` is
 -- required-record here because Button can't omit its content/action
 shown1_ =
-    M3e.Component.Button.el { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant Value.filled ] []
+    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant Value.filled ] []

@@ -1,5 +1,5 @@
 module M3e.Component.MenuTrigger exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , child
     )
@@ -8,7 +8,7 @@ module M3e.Component.MenuTrigger exposing
 
 An element, nested within a clickable element, used to open a menu.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs child
 
@@ -57,12 +57,12 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
-el :
+component :
     { for : String }
     -> List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el required_ attrs children =
+component required_ attrs children =
     H.menuTrigger (Ir.attribute "for" required_.for :: attrs) children
 
 

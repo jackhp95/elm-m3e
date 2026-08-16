@@ -1,5 +1,5 @@
 module M3e.Component.Tab exposing
-    ( el
+    ( component
     , Is, Attrs, Content, IconSlot, ChildAdmittedBy
     , disabled, for, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
     , icon, child
@@ -9,7 +9,7 @@ module M3e.Component.Tab exposing
 
 An interactive element that, when activated, presents an associated tab panel.
 
-@docs el
+@docs component
 @docs Is, Attrs, Content, IconSlot, ChildAdmittedBy
 @docs disabled, for, selected, defaultSelected, onBeforeinput, onInput, onChange, onClick
 @docs icon, child
@@ -59,11 +59,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.tab
 
 

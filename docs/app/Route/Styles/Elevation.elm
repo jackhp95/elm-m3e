@@ -13,6 +13,7 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -91,14 +92,14 @@ swatch ( shadow, label, token ) =
         [ TypedHtml.div
             [ TA.class ("bg-surface-container-high text-on-surface rounded-md-corner-large " ++ shadow ++ " flex min-h-24 items-center justify-center p-4")
             ]
-            [ M3e.heading { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [] ]
+            [ M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [] ]
         , TypedHtml.code [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text token ]
         ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading { content = M3e.text "Elevation" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.Component.Heading.component { content = M3e.text "Elevation" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

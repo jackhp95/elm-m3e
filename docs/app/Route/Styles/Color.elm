@@ -7,6 +7,7 @@ import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.Card
+import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -110,14 +111,14 @@ swatch ( label, bg, role ) =
     TypedHtml.div
         [ TA.class (role ++ " rounded-md-corner-medium border border-outline-variant flex flex-col justify-between p-4 min-h-24")
         ]
-        [ M3e.heading { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large ] []
+        [ M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large ] []
         , TypedHtml.code [ TA.class "text-body-sm" ] [ M3e.text bg ]
         ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.heading { content = M3e.text "Color" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.Component.Heading.component { content = M3e.text "Color" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -172,7 +173,7 @@ forcedColorsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 forcedColorsCard =
     M3e.card
         [ M3e.Attributes.variant Value.outlined ]
-        [ M3e.Component.Card.header (M3e.heading { content = M3e.text "Test it" } [ M3e.Attributes.variant Value.title ] [])
+        [ M3e.Component.Card.header (M3e.Component.Heading.component { content = M3e.text "Test it" } [ M3e.Attributes.variant Value.title ] [])
         , M3e.Component.Card.content
             (M3e.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
         ]

@@ -21,8 +21,10 @@ import Head
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.AppBar
+import M3e.Component.Heading
 import M3e.Component.ListItem
 import M3e.Component.NavItem
+import M3e.Component.Slider
 import M3e.Component.SliderThumb
 import M3e.Events
 import M3e.Kind
@@ -420,7 +422,7 @@ densityRow =
             [ M3e.icon [ TA.name "density_medium" ] []
             , M3e.text "Display density"
             ]
-        , M3e.slider { content = M3e.sliderThumb [ M3e.Component.SliderThumb.value 2 ] [] }
+        , M3e.Component.Slider.component { content = M3e.sliderThumb [ M3e.Component.SliderThumb.value 2 ] [] }
             [ M3e.Attributes.min 0
             , M3e.Attributes.max 3
             , M3e.Attributes.step 1
@@ -453,5 +455,5 @@ infoRow iconName label value =
         [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         , M3e.Component.ListItem.trailing
-            (M3e.heading { content = M3e.text value } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
+            (M3e.Component.Heading.component { content = M3e.text value } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
         ]

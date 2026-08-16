@@ -27,8 +27,10 @@ import Dict
 import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
+import M3e.Component.Button
 import M3e.Component.Icon
 import M3e.Component.MenuItem
+import M3e.Component.MenuTrigger
 import M3e.Unsafe
 import M3e.Values as Value
 import Theme exposing (Msg(..))
@@ -39,6 +41,7 @@ import TypedHtml.Attributes
 import TypedHtml.Events
 import TypedHtml.Grouping
 import TypedHtml.Sectioning
+import TypedHtml.Text
 
 
 view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
@@ -82,6 +85,7 @@ tokenButton model token =
         -- the display:none menu-trigger, which wouldn't project it). Neutral
         -- placeholder for an UNSET token: outline ring, transparent fill (Elm can't
         -- read the live computed var); a set token shows its literal override hex.
+        swatch : Element (TypedHtml.Text.SpanIs s) admittedBy Msg
         swatch =
             TypedHtml.span
                 [ TypedHtml.Attributes.slot "icon"
@@ -91,6 +95,7 @@ tokenButton model token =
                 []
 
         -- Free-form entry controls; recast into the menu's typed slot below.
+        entryPanel : Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
         entryPanel =
             TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1 p-2 min-w-48" ]
                 [ TypedHtml.input
@@ -120,7 +125,7 @@ tokenButton model token =
                 ]
     in
     TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
-        [ M3e.button { content = M3e.Unsafe.recast swatch, action = M3e.Action.none }
+        [ M3e.Component.Button.component { content = M3e.Unsafe.recast swatch, action = M3e.Action.none }
             [ M3e.Attributes.size Value.extraSmall
             , M3e.Attributes.variant
                 (if isSet then
@@ -130,7 +135,7 @@ tokenButton model token =
                     Value.outlined
                 )
             ]
-            [ M3e.menuTrigger { for = menuId }
+            [ M3e.Component.MenuTrigger.component { for = menuId }
                 []
                 [ M3e.text token.role ]
             ]

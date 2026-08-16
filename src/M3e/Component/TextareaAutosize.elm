@@ -1,5 +1,5 @@
 module M3e.Component.TextareaAutosize exposing
-    ( el
+    ( component
     , Is, Attrs, ChildAdmittedBy
     , disabled, for, maxRows, minRows
     )
@@ -8,7 +8,7 @@ module M3e.Component.TextareaAutosize exposing
 
 A non-visual element used to automatically resize a `textarea` to fit its content.
 
-@docs el
+@docs component
 @docs Is, Attrs, ChildAdmittedBy
 @docs disabled, for, maxRows, minRows
 
@@ -57,11 +57,11 @@ type alias ChildAdmittedBy childAdm =
 
 {-| Standard constructor: `[attributes] [children]`.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.textareaAutosize
 
 

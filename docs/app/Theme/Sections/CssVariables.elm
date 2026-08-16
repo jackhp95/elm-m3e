@@ -28,7 +28,9 @@ import M3e exposing (Element)
 import M3e.Action
 import M3e.Attributes
 import M3e.Component.FormField as FormField
+import M3e.Component.Heading
 import M3e.Component.Icon
+import M3e.Component.IconButton
 import M3e.Unsafe
 import M3e.Values as Value
 import Theme exposing (Msg(..))
@@ -80,7 +82,7 @@ categoryDetails model group =
     TypedHtml.details [ TypedHtml.Attributes.class "border-b border-outline-variant" ]
         [ TypedHtml.summary [ TypedHtml.Attributes.class "cursor-pointer select-none list-none py-2" ]
             [ M3e.Unsafe.recast
-                (M3e.heading { content = M3e.text (categoryLabel group) }
+                (M3e.Component.Heading.component { content = M3e.text (categoryLabel group) }
                     [ M3e.Attributes.variant Value.title
                     , M3e.Attributes.size Value.small
                     , M3e.Attributes.level 3
@@ -153,7 +155,7 @@ cssVarField model prefix cssVar =
             :: (case current of
                     Just _ ->
                         [ FormField.suffix
-                            (M3e.iconButton
+                            (M3e.Component.IconButton.component
                                 { content = M3e.icon [ M3e.Component.Icon.name "close" ] []
                                 , ariaLabel = "Clear --" ++ cssVar
                                 , action = M3e.Action.none

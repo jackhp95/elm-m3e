@@ -1,5 +1,5 @@
 module M3e.Component.SlideGroup exposing
-    ( el
+    ( component
     , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy
     , disabled, nextPageLabel, previousPageLabel, threshold, vertical
     , nextIcon, prevIcon, child
@@ -9,7 +9,7 @@ module M3e.Component.SlideGroup exposing
 
 Presents pagination controls used to scroll overflowing content.
 
-@docs el
+@docs component
 @docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy
 @docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIcon, prevIcon, child
@@ -74,11 +74,11 @@ kind-permissive (`any`): children of any kind compose, but each child's OWN
 admittedBy must still admit this context — a restricted-parent element is
 rejected here at compile time.
 -}
-el :
+component :
     List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-el =
+component =
     H.slideGroup
 
 
