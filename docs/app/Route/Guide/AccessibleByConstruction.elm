@@ -142,20 +142,33 @@ namelessCode =
 
 linterText : String
 linterText =
-    """The 1st argument to `iconButton` is not what I expect:
+    """-- TYPE MISMATCH --
 
-M3e.iconButton []
-              ^^
-This argument is a list of type:
+The 1st argument to `component` is not what I expect:
 
-    List a
+17|     M3e.Component.IconButton.component
+18|>        { content = M3e.icon [ TA.name "help" ] [], action = M3e.Action.none }
+19|         []
+20|         []
 
-But `iconButton` needs the 1st argument to be:
+This argument is a record of type:
 
-    { action : M3e.Action.Action IconButton.ActionCaps msg
+    { action : M3e.Action.Action capability msg1
+    , content : M3e.Element (M3e.Component.Icon.Is s) admittedBy msg
+    }
+
+But `component` needs the 1st argument to be:
+
+    { action : M3e.Action.Action M3e.Component.IconButton.ActionCaps msg
     , ariaLabel : String
-    , content : Element IconButton.Content (IconButton.ChildAdmittedBy childAdm) msg
-    }"""
+    , content :
+          HtmlIr.Element.Element
+              M3e.Component.IconButton.Content
+              (M3e.Component.IconButton.ChildAdmittedBy childAdm)
+              msg
+    }
+
+Hint: Looks like the ariaLabel field is missing."""
 
 
 wiring : String
