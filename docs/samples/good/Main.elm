@@ -19,14 +19,16 @@ main =
 
 view : () -> Html.Html ()
 view _ =
-    M3e.toHtml
-        (Theme.component
-            [ Theme.color "#6750A4"
-            , Theme.scheme Value.auto
-            ]
-            [ Button.component
-                { content = M3e.text "It works", action = M3e.Action.none }
-                [ Button.variant Value.filled ]
-                []
-            ]
-        )
+    let
+        app =
+            Theme.component
+                [ Theme.color "#6750A4"
+                , Theme.scheme Value.auto
+                ]
+                [ Button.component
+                    { content = M3e.text "It works", action = M3e.Action.none }
+                    [ Button.variant Value.filled ]
+                    []
+                ]
+    in
+    M3e.toHtml app
