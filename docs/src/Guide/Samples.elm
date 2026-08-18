@@ -51,8 +51,7 @@ guideEmailField =
 -}
 guideHelpButton : String
 guideHelpButton =
-    """M3e.iconButton [ Aria.label "Help" ]
-    [ M3e.icon [ TA.name "help" ] [] ]"""
+    """M3e.Component.IconButton.component { content = M3e.icon [ TA.name "help" ] [], ariaLabel = "Help", action = M3e.Action.none } [] []"""
 
 
 {-| `savedButton`, from `docs/app/Route/Guide/InvalidStates.elm`.
@@ -104,13 +103,21 @@ seamsModelViewer : String
 seamsModelViewer =
     """modelViewer =
     -- a real seam: a custom element the types can't express, contained once.
-    M3e.Unsafe.customElement "model-viewer"
-        [ TypedHtml.Attributes.src "/models/chair.glb"
-        , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
-        , M3e.Unsafe.Attributes.customAttribute "auto-rotate" ""
-        , TypedHtml.Attributes.class "block h-48 w-full rounded-lg bg-surface-container"
-        ]
-        []"""
+    -- The surface the third-party tag renders on comes from `m3e-card` (filled
+    -- variant — same rung the layout-only-styling rule wants for any painted
+    -- container), not hand-rolled `rounded-lg bg-surface-container`: `<model-viewer>`
+    -- has no background/shape of its own, so it needs a container to read as a
+    -- box while its 3D content loads.
+    M3e.card
+        [ M3e.Component.Card.variant Value.filled, TypedHtml.Attributes.class "h-48 w-full" ]
+        [ M3e.Unsafe.customElement "model-viewer"
+            [ TypedHtml.Attributes.src "/models/chair.glb"
+            , M3e.Unsafe.Attributes.customAttribute "camera-controls" ""
+            , M3e.Unsafe.Attributes.customAttribute "auto-rotate" ""
+            , TypedHtml.Attributes.class "block h-full w-full"
+            ]
+            []
+        ]"""
 
 
 {-| `twoColumn`, from `docs/app/Route/Guide/Seams.elm`.

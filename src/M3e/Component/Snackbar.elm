@@ -1,7 +1,7 @@
 module M3e.Component.Snackbar exposing
     ( component
     , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, CloseIconSlot, ChildAdmittedBy
-    , action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
+    , action, closeLabel, dismissible, duration, open, onBeforetoggle, onToggle
     , closeIcon, child
     )
 
@@ -11,8 +11,31 @@ Presents short updates about application processes at the bottom of the screen.
 
 @docs component
 @docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, CloseIconSlot, ChildAdmittedBy
-@docs action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
+@docs action, closeLabel, dismissible, duration, open, onBeforetoggle, onToggle
 @docs closeIcon, child
+
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Snackbar service" -->
+```elm
+M3e.Component.Button.component { content = M3e.text "Delete file", action = M3e.Action.none } [ M3e.Attributes.id "example1" ] []
+```
+
+<!-- elm-cem:example title="Actions" -->
+```elm
+M3e.Component.Button.component { content = M3e.text "Delete file", action = M3e.Action.none } [ M3e.Attributes.id "example2" ] []
+```
+
+<!-- elm-cem:example title="Dismissal" -->
+```elm
+M3e.Component.Button.component { content = M3e.text "Delete file", action = M3e.Action.none } [ M3e.Attributes.id "example3" ] []
+```
+
+<!-- elm-cem:docmeta category=Communication -->
 
 -}
 
@@ -112,6 +135,13 @@ dismissible =
 duration : Float -> Attr { c | duration : Supported } msg
 duration =
     A.duration
+
+
+{-| See `M3e.Attributes.open`.
+-}
+open : Bool -> Attr { c | open : Supported } msg
+open =
+    A.open
 
 
 {-| See `M3e.Events.onBeforetoggle`.

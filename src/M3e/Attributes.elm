@@ -1,9 +1,9 @@
 module M3e.Attributes exposing
     ( class, id, slot, style, classList, styleList
-    , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bounce, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, enablePressed, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
+    , action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bounce, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, enablePressed, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxChips, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
     , defaultChecked, defaultSelected, defaultValue
-    , animation, contrast, current, disablePagination, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
-    , animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, disablePaginationAuto, disablePaginationFalse, disablePaginationTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, timeFormatValue12, timeFormatValue24, timeFormatAuto, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Date, type_Datetime, type_Reset, type_Submit, type_Time, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
+    , animation, contrast, current, disablePagination, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
+    , animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, disablePaginationAuto, disablePaginationFalse, disablePaginationTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, timeFormatValue12, timeFormatValue24, timeFormatAuto, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Date, type_Datetime, type_Reset, type_Submit, type_Time, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
     )
 
 {-| The canonical shared attribute vocabulary. Every setter is an open
@@ -18,10 +18,10 @@ type `variant` and autocomplete lists every value inline. Each claims
 the same capability row as its base enum setter, so admittance is identical.
 
 @docs class, id, slot, style, classList, styleList
-@docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bounce, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, enablePressed, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
+@docs action, actionable, active, activeDate, alert, anchorOffset, ariaInvalid, autoActivate, bounce, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, date, dayLabel, density, detent, detents, dialLabel, disableClose, disableHighlight, disableHover, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, download, duration, editable, elevated, emphasized, enablePressed, end, endDivider, extended, filled, firstPageLabel, fitAnchorWidth, for, handle, handleLabel, hideDelay, hideFriction, hideLabels, hideLoading, hideModeToggle, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideToggle, hideable, hour, hourLabel, href, indeterminate, inline, inputLabel, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxChips, maxDate, maxDepth, maxRows, maxTime, min, minDate, minRows, minTime, minute, minuteLabel, modal, modeToggleLabel, monthLabel, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, overshootLimit, pageIndex, pageSize, pageSizes, panelClass, periodLabel, periodToggleLabel, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, readonly, rel, removable, removeLabel, required, resultsLabel, returnValue, second, secondLabel, secondary, selected, selectedIndex, showDelay, showFirstLastButtons, showSeconds, start, startAt, startDivider, step, stretch, strongFocus, submenu, target, term, thin, threshold, tocIgnore, today, toggle, unbounded, validationmessages, value, vertical, weight, wrap, wrapDetents, yearLabel
 @docs defaultChecked, defaultSelected, defaultValue
-@docs animation, contrast, current, disablePagination, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, state, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
-@docs animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, disablePaginationAuto, disablePaginationFalse, disablePaginationTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, stateContent, stateLoading, stateNoData, timeFormatValue12, timeFormatValue24, timeFormatAuto, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Date, type_Datetime, type_Reset, type_Submit, type_Time, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
+@docs animation, contrast, current, disablePagination, dividers, endMode, filter, floatLabel, format, grade, headerPosition, hideSubscript, highlightMode, icons, labelPosition, mode, motion, name, orientation, pageSizeVariant, period, position, positionX, positionY, scheme, scrollStrategy, shape, size, startMode, startView, timeFormat, toggleDirection, togglePosition, touchGestures, type_, variant, viewAttr, width
+@docs animationNone, animationPulse, animationWave, contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep, currentTime, currentTrue, disablePaginationAuto, disablePaginationFalse, disablePaginationTrue, dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways, floatLabelAuto, formatValue12, formatValue24, formatAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAbove, headerPositionAfter, headerPositionBefore, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow, labelPositionEnd, modeAuto, modeBuffer, modeCompact, modeContains, modeDeterminate, modeDial, modeDocked, modeEndsWith, modeExpanded, modeFullscreen, modeIndeterminate, modeInput, modeQuery, modeStartsWith, motionExpressive, motionStandard, nameValue12SidedCookie, nameValue4LeafClover, nameValue4SidedCookie, nameValue6SidedCookie, nameValue7SidedCookie, nameValue8LeafClover, nameValue9SidedCookie, nameArch, nameArrow, nameBoom, nameBun, nameBurst, nameCircle, nameDiamond, nameFan, nameFlower, nameGem, nameGhostIsh, nameHeart, nameHexagon, nameOval, namePentagon, namePill, namePixelCircle, namePixelTriangle, namePuffy, namePuffyDiamond, nameSemicircle, nameSlanted, nameSoftBoom, nameSoftBurst, nameSquare, nameSunny, nameTriangle, nameVerySunny, orientationAuto, orientationBoth, orientationHorizontal, orientationVertical, pageSizeVariantFilled, pageSizeVariantOutlined, periodAm, periodPm, positionAbove, positionAboveAfter, positionAboveBefore, positionAfter, positionBefore, positionBelow, positionBelowAfter, positionBelowBefore, positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeAuto, shapeCircular, shapeRounded, shapeSquare, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear, timeFormatValue12, timeFormatValue24, timeFormatAuto, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, type_Button, type_Date, type_Datetime, type_Reset, type_Submit, type_Time, variantAuto, variantConnected, variantContained, variantContent, variantDisplay, variantDocked, variantElevated, variantExpressive, variantFidelity, variantFilled, variantFlat, variantFruitSalad, variantHeadline, variantLabel, variantModal, variantMonochrome, variantNeutral, variantOutlined, variantPrimary, variantPrimaryContainer, variantRainbow, variantRounded, variantSecondary, variantSecondaryContainer, variantSegmented, variantSharp, variantStandard, variantSurface, variantTertiary, variantTertiaryContainer, variantText, variantTitle, variantTonal, variantTonalSpot, variantUncontained, variantVibrant, variantWavy, viewAttrHour, viewAttrMinute, viewAttrSecond, widthDefault, widthNarrow, widthWide
 
 -}
 
@@ -176,7 +176,7 @@ cascade value_ =
         Ir.none
 
 
-{-| Whether matching is case sensitive. (default: `false`)
+{-| Whether filtering is case sensitive. (default: `false`)
 -}
 caseSensitive : Bool -> Attr { c | caseSensitive : Supported } msg
 caseSensitive value_ =
@@ -187,8 +187,7 @@ caseSensitive value_ =
         Ir.none
 
 
-{-| Whether the selection animation always originates from the center of the element's bounds,
-rather than originating from the location of the click event. (default: `false`)
+{-| Whether the title and subtitle are centered. (default: `false`)
 -}
 centered : Bool -> Attr { c | centered : Supported } msg
 centered value_ =
@@ -209,14 +208,14 @@ checked value_ =
     Ir.property "checked" (Json.Encode.bool value_)
 
 
-{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`)
+{-| The label given to the button used clear the selected date and close the picker. (default: `"Clear"`)
 -}
 clearLabel : String -> Attr { c | clearLabel : Supported } msg
 clearLabel =
     Ir.attribute "clear-label"
 
 
-{-| Whether the bar presents a button used to clear the search term. (default: `false`)
+{-| Whether the user can clear the selected date and close the picker. (default: `false`)
 -}
 clearable : Bool -> Attr { c | clearable : Supported } msg
 clearable value_ =
@@ -227,14 +226,14 @@ clearable value_ =
         Ir.none
 
 
-{-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`)
+{-| The accessible label given to the button used to dismiss the dialog. (default: `"Close"`)
 -}
 closeLabel : String -> Attr { c | closeLabel : Supported } msg
 closeLabel =
     Ir.attribute "close-label"
 
 
-{-| The hex color of the theme to preview (default: `"#6750A4"`)
+{-| The hex color from which to derive dynamic color palettes. (default: `"#6750A4"`)
 -}
 color : String -> Attr { c | color : Supported } msg
 color =
@@ -252,7 +251,7 @@ completed value_ =
         Ir.none
 
 
-{-| Label given to the button used apply the selected date and close the picker. (default: `"OK"`)
+{-| The label given to the button used apply the selected date and close the picker. (default: `"OK"`)
 -}
 confirmLabel : String -> Attr { c | confirmLabel : Supported } msg
 confirmLabel =
@@ -291,14 +290,14 @@ density value_ =
     Ir.attribute "density" (String.fromFloat value_)
 
 
-{-| The zero‑based index of the detent the sheet should open to.
+{-| The zero‑based index of the detent the sheet should open to. (default: `0`)
 -}
 detent : Float -> Attr { c | detent : Supported } msg
 detent value_ =
     Ir.attribute "detent" (String.fromFloat value_)
 
 
-{-| Detents (discrete sizes) the start pane can snap to. (default: `[]`)
+{-| Detents (discrete height states) the sheet can snap to. (default: `[]`)
 -}
 detents : String -> Attr { c | detents : Supported } msg
 detents =
@@ -368,7 +367,7 @@ disabled value_ =
         Ir.none
 
 
-{-| A value indicating whether the element is disabled and interactive. (default: `false`)
+{-| Whether the element is disabled and interactive. (default: `false`)
 -}
 disabledInteractive : Bool -> Attr { c | disabledInteractive : Supported } msg
 disabledInteractive value_ =
@@ -390,14 +389,14 @@ discrete value_ =
         Ir.none
 
 
-{-| Label given to the button used discard the selected date and close the picker. (default: `"Cancel"`)
+{-| The label given to the button used discard the selected date and close the picker. (default: `"Cancel"`)
 -}
 dismissLabel : String -> Attr { c | dismissLabel : Supported } msg
 dismissLabel =
     Ir.attribute "dismiss-label"
 
 
-{-| Whether a button is presented that can be used to close the snackbar. (default: `false`)
+{-| Whether a button is presented that can be used to close the dialog. (default: `false`)
 -}
 dismissible : Bool -> Attr { c | dismissible : Supported } msg
 dismissible value_ =
@@ -408,7 +407,7 @@ dismissible value_ =
         Ir.none
 
 
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
+{-| Whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
 -}
 download : String -> Attr { c | download : Supported } msg
 download =
@@ -686,7 +685,7 @@ hour value_ =
     Ir.attribute "hour" (String.fromFloat value_)
 
 
-{-| The label for the hour field. (default: `"Hour"`)
+{-| The accessible label given to the hour segment. (default: `"Hour"`)
 -}
 hourLabel : String -> Attr { c | hourLabel : Supported } msg
 hourLabel =
@@ -700,7 +699,7 @@ href =
     Ir.attribute "href"
 
 
-{-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`)
+{-| Whether the element's checked state is indeterminate. (default: `false`)
 -}
 indeterminate : Bool -> Attr { c | indeterminate : Supported } msg
 indeterminate value_ =
@@ -798,7 +797,7 @@ itemsPerPageLabel =
     Ir.attribute "items-per-page-label"
 
 
-{-| The accessible label given to the movable drag handle. (default: `"Resize panes"`)
+{-| The label given to the the picker. (default: `"Select date"`)
 -}
 label : String -> Attr { c | label : Supported } msg
 label =
@@ -830,7 +829,7 @@ length value_ =
     Ir.attribute "length" (String.fromFloat value_)
 
 
-{-| The accessibility level of the heading.
+{-| The level at which to visually depict elevation. (default: `null`)
 -}
 level : Int -> Attr { c | level : Supported } msg
 level value_ =
@@ -888,11 +887,18 @@ lowered value_ =
         Ir.none
 
 
-{-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`)
+{-| The maximum progress value. (default: `100`)
 -}
 max : Float -> Attr { c | max : Supported } msg
 max value_ =
     Ir.attribute "max" (String.fromFloat value_)
+
+
+{-| Maximum number of chips to display when not focused. When focused, all chips are displayed. (default: `null`)
+-}
+maxChips : Float -> Attr { c | maxChips : Supported } msg
+maxChips value_ =
+    Ir.attribute "max-chips" (String.fromFloat value_)
 
 
 {-| The maximum date that can be selected. (default: `null`)
@@ -923,7 +929,7 @@ maxTime =
     Ir.attribute "max-time"
 
 
-{-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`)
+{-| The minimum allowable value. (default: `0`)
 -}
 min : Float -> Attr { c | min : Supported } msg
 min value_ =
@@ -958,7 +964,7 @@ minute value_ =
     Ir.attribute "minute" (String.fromFloat value_)
 
 
-{-| The label for the minute field. (default: `"Minute"`)
+{-| The accessible label given to the minute segment. (default: `"Minute"`)
 -}
 minuteLabel : String -> Attr { c | minuteLabel : Supported } msg
 minuteLabel =
@@ -990,7 +996,7 @@ monthLabel =
     Ir.attribute "month-label"
 
 
-{-| Whether multiple items can be selected. (default: `false`)
+{-| Whether multiple expansion panels can be open at the same time. (default: `false`)
 -}
 multi : Bool -> Attr { c | multi : Supported } msg
 multi value_ =
@@ -1058,7 +1064,7 @@ noFocusTrap value_ =
         Ir.none
 
 
-{-| Whether the item is expanded. (default: `false`)
+{-| Whether the bottom sheet is open. (default: `false`)
 -}
 open : Bool -> Attr { c | open : Supported } msg
 open value_ =
@@ -1115,7 +1121,7 @@ pageSizes =
     Ir.attribute "page-sizes"
 
 
-{-| Class or list of classes to be applied to the select's overlay panel. (default: `""`)
+{-| Class or list of classes to be applied to the autocomplete's overlay panel. (default: `""`)
 -}
 panelClass : String -> Attr { c | panelClass : Supported } msg
 panelClass =
@@ -1196,7 +1202,7 @@ rangeStart =
     Ir.attribute "range-start"
 
 
-{-| A value indicating whether the element is read-only. (default: `false`)
+{-| Whether the element is read-only. (default: `false`)
 -}
 readonly : Bool -> Attr { c | readonly : Supported } msg
 readonly value_ =
@@ -1232,7 +1238,7 @@ removeLabel =
     Ir.attribute "remove-label"
 
 
-{-| Whether the element is required. (default: `false`)
+{-| Whether the user is required to make a selection when interacting with the autocomplete. (default: `false`)
 -}
 required : Bool -> Attr { c | required : Supported } msg
 required value_ =
@@ -1264,7 +1270,7 @@ second value_ =
     Ir.attribute "second" (String.fromFloat value_)
 
 
-{-| The label for the second field. (default: `"Second"`)
+{-| The accessible label given to the second segment. (default: `"Second"`)
 -}
 secondLabel : String -> Attr { c | secondLabel : Supported } msg
 secondLabel =
@@ -1282,7 +1288,7 @@ secondary value_ =
         Ir.none
 
 
-{-| Whether the item is selected. (default: `false`)
+{-| Whether the toggle button is selected. (default: `false`)
 
 Sets the LIVE DOM property `selected`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultSelected`.
 
@@ -1359,7 +1365,7 @@ startDivider value_ =
         Ir.none
 
 
-{-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`)
+{-| The value at which the thumb will snap. (default: `1`)
 -}
 step : Float -> Attr { c | step : Supported } msg
 step value_ =
@@ -1388,7 +1394,7 @@ strongFocus value_ =
         Ir.none
 
 
-{-| A value indicating whether the menu is a submenu. (default: `false`)
+{-| Whether the menu is a submenu. (default: `false`)
 -}
 submenu : Bool -> Attr { c | submenu : Supported } msg
 submenu value_ =
@@ -1406,7 +1412,7 @@ target =
     Ir.attribute "target"
 
 
-{-| The term to highlight. (default: `""`)
+{-| The search term to highlight. (default: `""`)
 -}
 term : String -> Attr { c | term : Supported } msg
 term =
@@ -1478,7 +1484,7 @@ validationmessages =
     Ir.attribute "validationMessages"
 
 
-{-| A string representing the value of the switch. (default: `"on"`)
+{-| A string representing the value of the chip.
 
 Sets the LIVE DOM property `value`, not the content attribute. The content attribute — the element's INITIAL state, and the only form that serializes to server-rendered markup — is `defaultValue`.
 
@@ -1578,7 +1584,7 @@ contrast value_ =
     Ir.attribute "contrast" (HtmlIr.Value.toString value_)
 
 
-{-| Indicates the current item in the breadcrumb path.
+{-| Indicates the current item in the breadcrumb path. (default: `null`)
 -}
 current : Value M3e.Values.Current -> Attr { c | current : Supported } msg
 current value_ =
@@ -1634,7 +1640,7 @@ grade value_ =
     Ir.attribute "grade" (HtmlIr.Value.toString value_)
 
 
-{-| The position of the tab headers. (default: `"before"`)
+{-| The position of the step header, when oriented horizontally. (default: `"above"`)
 -}
 headerPosition : Value M3e.Values.HeaderPosition -> Attr { c | headerPosition : Supported } msg
 headerPosition value_ =
@@ -1669,7 +1675,7 @@ labelPosition value_ =
     Ir.attribute "label-position" (HtmlIr.Value.toString value_)
 
 
-{-| The mode in which to select time. (default: `"dial"`)
+{-| The mode of the progress bar. (default: `"determinate"`)
 -}
 mode : Value M3e.Values.Mode -> Attr { c | mode : Supported } msg
 mode value_ =
@@ -1683,14 +1689,14 @@ motion value_ =
     Ir.attribute "motion" (HtmlIr.Value.toString value_)
 
 
-{-| The name that identifies the element when submitting the associated form.
+{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form.
 -}
 name : Value M3e.Values.Name -> Attr { c | name : Supported } msg
 name value_ =
     Ir.attribute "name" (HtmlIr.Value.toString value_)
 
 
-{-| The orientation of the toggle. (default: `"vertical"`)
+{-| The orientation of the card. (default: `"vertical"`)
 -}
 orientation : Value M3e.Values.Orientation -> Attr { c | orientation : Supported } msg
 orientation value_ =
@@ -1711,7 +1717,7 @@ period value_ =
     Ir.attribute "period" (HtmlIr.Value.toString value_)
 
 
-{-| The position of the tooltip. (default: `"below"`)
+{-| The position of the badge, when attached to another element. (default: `"above-after"`)
 -}
 position : Value M3e.Values.Position -> Attr { c | position : Supported } msg
 position value_ =
@@ -1746,14 +1752,14 @@ scrollStrategy value_ =
     Ir.attribute "scroll-strategy" (HtmlIr.Value.toString value_)
 
 
-{-| The shape of the toolbar. (default: `"square"`)
+{-| The shape of the button. (default: `"rounded"`)
 -}
 shape : Value M3e.Values.Shape -> Attr { c | shape : Supported } msg
 shape value_ =
     Ir.attribute "shape" (HtmlIr.Value.toString value_)
 
 
-{-| The size of the button. (default: `"small"`)
+{-| The size of the bar. (default: `"small"`)
 -}
 size : Value M3e.Values.Size -> Attr { c | size : Supported } msg
 size value_ =
@@ -1772,13 +1778,6 @@ startMode value_ =
 startView : Value M3e.Values.StartView -> Attr { c | startView : Supported } msg
 startView value_ =
     Ir.attribute "start-view" (HtmlIr.Value.toString value_)
-
-
-{-| The state for which to present content. (default: `"content"`)
--}
-state : Value M3e.Values.State -> Attr { c | state : Supported } msg
-state value_ =
-    Ir.attribute "state" (HtmlIr.Value.toString value_)
 
 
 {-| Format used when editing time values. (default: `"12"`)
@@ -1816,7 +1815,7 @@ type_ value_ =
     Ir.attribute "type" (HtmlIr.Value.toString value_)
 
 
-{-| The appearance variant of the toolbar. (default: `"standard"`)
+{-| The appearance variant of the list. (default: `"standard"`)
 -}
 variant : Value M3e.Values.Variant -> Attr { c | variant : Supported } msg
 variant value_ =
@@ -2829,27 +2828,6 @@ startViewMultiYear =
 startViewYear : Attr { c | startView : Supported } msg
 startViewYear =
     Ir.attribute "start-view" "year"
-
-
-{-| Set the `state` attribute to `"content"`. Portmanteau of `state` + `content` — for IDE discovery and single-import ergonomics.
--}
-stateContent : Attr { c | state : Supported } msg
-stateContent =
-    Ir.attribute "state" "content"
-
-
-{-| Set the `state` attribute to `"loading"`. Portmanteau of `state` + `loading` — for IDE discovery and single-import ergonomics.
--}
-stateLoading : Attr { c | state : Supported } msg
-stateLoading =
-    Ir.attribute "state" "loading"
-
-
-{-| Set the `state` attribute to `"no-data"`. Portmanteau of `state` + `no-data` — for IDE discovery and single-import ergonomics.
--}
-stateNoData : Attr { c | state : Supported } msg
-stateNoData =
-    Ir.attribute "state" "no-data"
 
 
 {-| Set the `time-format` attribute to `"12"`. Portmanteau of `timeFormat` + `12` — for IDE discovery and single-import ergonomics.
