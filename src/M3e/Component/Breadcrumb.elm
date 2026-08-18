@@ -1,6 +1,6 @@
 module M3e.Component.Breadcrumb exposing
     ( component
-    , Is, Attrs, Content, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
     , wrap
     , separator, child
     )
@@ -11,25 +11,9 @@ Displays a hierarchical navigation path and identifies the user's
 current location within an application.
 
 @docs component
-@docs Is, Attrs, Content, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
 @docs wrap
 @docs separator, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.Breadcrumb.el
-    { content = M3e.Component.BreadcrumbItem.el [] [ TypedHtml.text "Home" ] }
-    []
-    []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -65,6 +49,24 @@ type alias Content =
 -}
 type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.Breadcrumb.ChildAdmittedBy childAdm
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Breadcrumb.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Breadcrumb.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Breadcrumb.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

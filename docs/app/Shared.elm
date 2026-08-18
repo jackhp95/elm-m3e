@@ -31,14 +31,14 @@ distinction is load-bearing.
 The scheme/contrast/direction state is held as generated `Value` tokens — there is
 no local shadow union — so `M3e.Theme` takes the model field directly and the
 settings controls render from the generated `<enum>Values` lists. Every
-constructor is `Module.view [attrs] [content]`.
+constructor is `Module.component [attrs] [content]`.
 
 -}
 
 import BackendTask exposing (BackendTask)
 import Browser.Events
 import Doc.Data
-import Doc.Usage as Usage
+import Doc.Usage
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
@@ -47,9 +47,7 @@ import Http
 import Json.Decode as Decode
 import Logo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
-import M3e.Component.Accordion
 import M3e.Component.AppBar
 import M3e.Component.BottomSheet
 import M3e.Component.BottomSheetTrigger
@@ -86,9 +84,9 @@ import Theme.Sections.Typography
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
+import TypedHtml.Component.Grouping
+import TypedHtml.Component.Sectioning
 import TypedHtml.Events
-import TypedHtml.Grouping
-import TypedHtml.Sectioning
 import TypedHtml.Values
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -118,7 +116,13 @@ type alias Model =
     , searchOpen : Bool
     , searchQuery : String
     , searchIndex : Maybe (Result Http.Error (List SearchEntry))
-    , activeSurface : Usage.Surface
+
+    -- The site-wide API-layer tab selection shared by every Usage example and
+    -- every component page's API section. It lives HERE, not in a route's local
+    -- model, so it survives client-side navigation between component pages;
+    -- localStorage (via `Theme.Ports.storeSurface`/`readSurface`) survives a
+    -- reload. Routes only read it and forward tab clicks to the store port.
+    , activeSurface : Doc.Usage.Surface
     }
 
 
@@ -366,7 +370,7 @@ init flags _ =
       , searchOpen = False
       , searchQuery = ""
       , searchIndex = Nothing
-      , activeSurface = Usage.Top
+      , activeSurface = Doc.Usage.Top
       }
       -- Load every reel card's specimen-subset webfont once at boot (§D6). The
       -- reel appears in both the settings drawer AND the Welcome page, and Shared
@@ -562,6 +566,10 @@ update msg model =
         SetDirection dir ->
             ( { model | dir = dir }, Effect.none )
 
+        -- Scoped reset for `controlRow` only: variant → neutral, scheme → auto
+        -- ("System"), direction → auto. Deliberately NOT `Theme.ResetAll`, which
+        -- would also discard every colour, typescale, shape and CSS-variable
+        -- override the visitor has built up in the sections below.
         ResetControlRow ->
             let
                 ( theme2, themeCmd ) =
@@ -586,17 +594,20 @@ update msg model =
                 Nothing ->
                     ( model, Effect.none )
 
-        -- The site-wide layer-tab selection, mirrored from localStorage. `index.ts`
-        -- sends this on boot AND after every `Doc.Usage.persist` (a tab click on any
-        -- page), so this single field survives client-side navigation between
-        -- component pages. Falls back to the current value on absence/decode failure.
+        -- The site-wide layer-tab selection, mirrored from localStorage.
+        -- `index.ts` sends this on boot AND after every `storeSurface` (a tab
+        -- click on any page), so this single field is the only writer and it
+        -- survives client-side navigation between component pages. Falls back to
+        -- the current value on absence/decode failure rather than resetting to
+        -- `Top` — a bad blob must not silently undo the user's choice.
         SurfaceLoaded value ->
             let
-                surface : Usage.Surface
+                surface : Doc.Usage.Surface
                 surface =
                     case Decode.decodeValue Decode.string value of
                         Ok s ->
-                            Usage.surfaceFromString s |> Result.withDefault model.activeSurface
+                            Doc.Usage.surfaceFromString s
+                                |> Result.withDefault model.activeSurface
 
                         Err _ ->
                             model.activeSurface
@@ -623,7 +634,7 @@ subscriptions path _ =
         [ Browser.Events.onResize (\w _ -> ViewportResized w)
         , Sub.map ThemeMsg Theme.subscriptions
         , Theme.Ports.onPresetRequested PresetRequested
-        , Usage.readSurface SurfaceLoaded
+        , Theme.Ports.readSurface SurfaceLoaded
         , if hasDocsShell path then
             Ports.onOpenSearchRequested (\_ -> OpenSearch)
 
@@ -783,18 +794,14 @@ appShellBar path =
         , M3e.Attributes.id "docs-app-bar"
         ]
         [ M3e.Component.AppBar.leading
-            (M3e.Component.IconButton.component
-                { content = M3e.icon [ M3e.Component.Icon.name "list" ] [], ariaLabel = "Toggle navigation", action = M3e.Action.none }
-                [ M3e.Events.onClick ToggleTree ]
-                []
+            (M3e.iconButton [ Aria.label "Toggle navigation", M3e.Events.onClick ToggleTree ]
+                [ M3e.icon [ M3e.Component.Icon.name "list" ] [] ]
             )
         , M3e.Component.AppBar.title (M3e.text (Maybe.withDefault "" (currentSectionLabel path)))
         , M3e.Component.AppBar.subtitle (M3e.text "elm-m3e — Material 3 Expressive for Elm")
         , M3e.Component.AppBar.trailing
-            (M3e.Component.IconButton.component
-                { content = M3e.icon [ M3e.Component.Icon.name "toc" ] [], ariaLabel = "On this page", action = M3e.Action.none }
-                [ M3e.Events.onClick ToggleToc ]
-                []
+            (M3e.iconButton [ Aria.label "On this page", M3e.Events.onClick ToggleToc ]
+                [ M3e.icon [ M3e.Component.Icon.name "toc" ] [] ]
             )
         , M3e.Component.AppBar.trailing githubLink
         , M3e.Component.AppBar.trailing settingsButton
@@ -809,13 +816,13 @@ bar's on-surface foreground and adapts to light/dark.
 -}
 githubLink : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 githubLink =
-    M3e.Component.IconButton.component
-        { content = M3e.icon [ M3e.Component.Icon.name "github" ] [], ariaLabel = "GitHub repository", action = M3e.Action.none }
-        [ M3e.Attributes.href "https://github.com/jackhp95/elm-m3e"
+    M3e.iconButton
+        [ Aria.label "GitHub repository"
+        , M3e.Attributes.href "https://github.com/jackhp95/elm-m3e"
         , M3e.Attributes.target "_blank"
         , M3e.Attributes.rel "noreferrer noopener"
         ]
-        []
+        [ M3e.icon [ M3e.Component.Icon.name "github" ] [] ]
 
 
 {-| The app-bar settings control: an icon button carrying a nested
@@ -828,10 +835,11 @@ settings-specific end drawer.)
 -}
 settingsButton : Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 settingsButton =
-    M3e.Component.IconButton.component
-        { content = M3e.icon [ M3e.Component.Icon.name "more_vert" ] [], ariaLabel = "Settings", action = M3e.Action.none }
-        []
-        [ M3e.Component.BottomSheetTrigger.component { for = "settings-sheet" } [] [] ]
+    M3e.iconButton
+        [ Aria.label "Settings" ]
+        [ M3e.icon [ M3e.Component.Icon.name "more_vert" ] []
+        , M3e.bottomSheetTrigger [ M3e.Component.BottomSheetTrigger.for "settings-sheet" ] []
+        ]
 
 
 
@@ -881,7 +889,7 @@ sectionPanel label body =
         [ M3e.Unsafe.recast body ]
 
 
-{-| The 5 theme-editor sections wrapped in an accordion. Assembles the
+{-| The 6 theme-editor sections wrapped in an accordion. Assembles the
 `sectionsEl` passed to `Theme.view`. Lives here (allow-listed) because
 `sectionPanel` needs `M3e.Unsafe.recast`.
 -}
@@ -895,7 +903,18 @@ sectionsAccordion :
     }
     -> Element { s | accordion : M3e.Kind.Brand } admittedBy msg
 sectionsAccordion themeSections =
-    M3e.Component.Accordion.component { content = sectionPanel "Color" themeSections.color } [] [ sectionPanel "Typography" themeSections.typography, sectionPanel "Shape" themeSections.shape, sectionPanel "Appearance" themeSections.appearance, sectionPanel "Advanced" themeSections.advanced, sectionPanel "CSS Variables" themeSections.cssVariables ]
+    M3e.accordion []
+        [ sectionPanel "Color" themeSections.color
+        , sectionPanel "Typography" themeSections.typography
+        , sectionPanel "Shape" themeSections.shape
+        , sectionPanel "Appearance" themeSections.appearance
+        , sectionPanel "Advanced" themeSections.advanced
+
+        -- Last, and named for the mechanism rather than a topic: this is the raw
+        -- CSS-custom-property hatch, reached after the curated sections above
+        -- have failed to expose whatever the visitor is after.
+        , sectionPanel "CSS Variables" themeSections.cssVariables
+        ]
 
 
 {-| The theme controls, rendered into the settings bottom sheet. `Theme.view`
@@ -912,16 +931,16 @@ their CONTROL logic moved out of `Shared` into the `Theme` module and its
 per-section `Theme.Sections.*` views.
 
 -}
-settingsSheetContent : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+settingsSheetContent : Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 settingsSheetContent model =
     TypedHtml.div
         [ TypedHtml.Attributes.id "settings-sheet-content"
 
         -- Extra bottom padding gives the sheet scroll runway so the last control
-        -- (`controlRow`) clears the mobile browser URL bar (the bottom sheet's
-        -- height is component-driven — there's no CSS height knob to make `dvh`-
-        -- aware). `env(safe-area-inset-bottom)` additionally clears the iOS home
-        -- indicator and is 0 on desktop, so no desktop gap.
+        -- clears the mobile browser URL bar (the bottom sheet's height is
+        -- component-driven — there is no CSS height knob to make it `dvh`-aware).
+        -- `env(safe-area-inset-bottom)` additionally clears the iOS home
+        -- indicator and is 0 on desktop, so it costs desktop nothing.
         , TypedHtml.Attributes.class "flex flex-col gap-2 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] max-md:pb-[calc(5rem+env(safe-area-inset-bottom))]"
         , Aria.role Aria.complementary
         ]
@@ -944,24 +963,28 @@ settingsSheetContent model =
         ]
 
 
-{-| The variant + scheme + direction row (§5). Variant/scheme come from `Theme`
-(mapped through `ThemeMsg`); direction is assembled here (it lives in `Shared.Model`,
-not `Theme.Model`). One scoped reset fires all three: `SetVariant Value.neutral`,
-`SetScheme Value.auto` (both under `ThemeMsg`), and `SetDirection auto`.
+{-| The variant + scheme + direction row, pinned at the top of the settings
+sheet: the three "what does the whole app look like" knobs, previously scattered
+(scheme and variant were full-width segmented strips inside `Theme.view`,
+direction was a labelled strip at the very bottom of the sheet).
+
+Variant and scheme come from `Theme` (mapped through `ThemeMsg`); direction is
+assembled here, since `dir` lives in `Shared.Model`, not `Theme.Model`. One
+scoped reset fires all three back to their neutral values — deliberately NOT
+`Theme.ResetAll`, which would also discard every colour/typescale override.
+
 -}
-controlRow : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+controlRow : Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 controlRow model =
-    TypedHtml.div [ TypedHtml.Attributes.class "flex items-end gap-2 flex-wrap" ]
+    TypedHtml.div [ TypedHtml.Attributes.class "flex flex-wrap items-end gap-2" ]
         [ Theme.variantSelect model.theme |> HtmlIr.Element.map ThemeMsg
         , Theme.schemeToggle model.theme |> HtmlIr.Element.map ThemeMsg
         , directionToggle model
-        , M3e.Component.IconButton.component
-            { content = M3e.icon [ M3e.Component.Icon.name "restart_alt" ] []
-            , ariaLabel = "Reset variant, scheme, and direction"
-            , action = M3e.Action.none
-            }
-            [ TypedHtml.Events.onClick ResetControlRow ]
-            []
+        , M3e.iconButton
+            [ TypedHtml.Events.onClick ResetControlRow
+            , Aria.label "Reset variant, scheme, and direction"
+            ]
+            [ M3e.icon [ M3e.Component.Icon.name "restart_alt" ] [] ]
         ]
 
 
@@ -981,12 +1004,19 @@ densityClass d =
         "[--md-sys-density-scale:0]"
 
 
-{-| Direction toggle: a single icon button (was a 2-option LTR/RTL segmented). Shows
-`format_textdirection_l_to_r` when LTR, `format_textdirection_r_to_l` when RTL;
+{-| Direction control: a single icon button flipping LTR ⇄ RTL, replacing the
+2-option segmented strip (a two-option enum strip is a toggle wearing a costume,
+and it cost a full row plus its own label). Shows
+`format_textdirection_l_to_r` when LTR and `format_textdirection_r_to_l` when RTL;
 clicking flips to the other and fires `SetDirection`. `aria-pressed`/`aria-label`
-track the current direction.
+carry the state, since the glyph alone does not.
+
+`auto` is not offered — it defers to the document/OS, which is already what the
+shell does when this control is untouched, so it would be a button that visibly
+does nothing. It stays reachable through `ResetControlRow`.
+
 -}
-directionToggle : Model -> Element (M3e.Component.IconButton.Is s) admittedBy Msg
+directionToggle : Model -> Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 directionToggle model =
     let
         isRtl : Bool
@@ -1000,9 +1030,9 @@ directionToggle model =
             else
                 ( TypedHtml.Values.rtl, "format_textdirection_r_to_l", "Switch to right-to-left" )
     in
-    M3e.Component.IconButton.component
-        { content = M3e.icon [ M3e.Component.Icon.name glyph ] [], ariaLabel = lbl, action = M3e.Action.none }
+    M3e.iconButton
         [ TypedHtml.Events.onClick (SetDirection next)
+        , Aria.label lbl
         , Aria.pressed
             (if isRtl then
                 Aria.true
@@ -1011,7 +1041,7 @@ directionToggle model =
                 Aria.false
             )
         ]
-        []
+        [ M3e.icon [ M3e.Component.Icon.name glyph ] [] ]
 
 
 
@@ -1057,24 +1087,23 @@ searchOverlay model =
         M3e.text ""
 
     else
-        M3e.Component.SearchView.component
-            { input =
-                M3e.Component.SearchView.input
-                    (TypedHtml.input
-                        [ TypedHtml.Attributes.type_ "text"
-                        , TypedHtml.Attributes.placeholder "Search..."
-                        , TypedHtml.Attributes.value model.searchQuery
-                        ]
-                        []
-                    )
-            }
+        M3e.searchView
             [ TypedHtml.Attributes.class "fixed inset-x-0 top-2 z-50 mx-auto w-full max-w-2xl"
             , M3e.Component.SearchView.mode (searchModeFor model.viewportWidth)
             , M3e.Component.SearchView.open True
             , M3e.Events.onQueryWith searchQueryDecoder
             , M3e.Events.onToggleWith searchToggleDecoder
             ]
-            [ searchResults model ]
+            [ M3e.Component.SearchView.input
+                (TypedHtml.input
+                    [ TypedHtml.Attributes.type_ "text"
+                    , TypedHtml.Attributes.placeholder "Search..."
+                    , TypedHtml.Attributes.value model.searchQuery
+                    ]
+                    []
+                )
+            , searchResults model
+            ]
 
 
 {-| The results list (or an empty-state hint). `filterSearchEntries` never
@@ -1082,7 +1111,7 @@ runs against an unloaded or failed index -- both surface their own message
 instead, so a failed fetch is visibly "Search unavailable," not a silently
 empty panel.
 -}
-searchResults : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+searchResults : Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 searchResults model =
     case model.searchIndex of
         Nothing ->
@@ -1286,8 +1315,8 @@ drawerShell :
     -> Model
     -> { path : UrlPath, route : Maybe Route }
     -> List NavComponent
-    -> List (Element childAccepts (TypedHtml.Grouping.DivChildAdmittedBy childAdm) msg)
-    -> Element (TypedHtml.Sectioning.MainIs s) admittedBy msg
+    -> List (Element childAccepts (TypedHtml.Component.Grouping.DivChildAdmittedBy childAdm) msg)
+    -> Element (TypedHtml.Component.Sectioning.MainIs s) admittedBy msg
 drawerShell toMsg model page components body =
     TypedHtml.main_
         [ TypedHtml.Attributes.id "main-content"
@@ -1449,6 +1478,7 @@ currentSectionItems components path =
     case List.head path of
         Just "components" ->
             ( "/components/all", "All components" )
+                :: ( "/components/compose", "Compose" )
                 :: (components
                         |> List.sortBy (\c -> String.toLower c.label)
                         |> List.map (\c -> ( "/components/" ++ c.slug, c.label ))
@@ -1467,7 +1497,9 @@ currentSectionItems components path =
 
 navLeaf : String -> ( String, String ) -> Element { s | navMenuItem : M3e.Kind.Brand } admittedBy msg
 navLeaf currentPath ( path, lbl ) =
-    M3e.Component.NavMenuItem.component { label = M3e.Component.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) } [ M3e.Attributes.selected (path == currentPath) ] []
+    M3e.navMenuItem
+        [ M3e.Attributes.selected (path == currentPath) ]
+        [ M3e.Component.NavMenuItem.label (TypedHtml.a [ TypedHtml.Attributes.href path ] [ M3e.text lbl ]) ]
 
 
 {-| The component-nav categories, in display order, each paired with its Material
@@ -1608,7 +1640,7 @@ sibling instead.
 -}
 searchFab : String -> msg -> Element { s | fab : M3e.Kind.Brand } admittedBy msg
 searchFab extraClasses openMsg =
-    M3e.Component.Fab.component { content = M3e.icon [ M3e.Component.Icon.name "search" ] [], action = M3e.Action.none }
+    M3e.fab
         [ M3e.Attributes.size Value.small
         , M3e.Component.Fab.extended True
         , M3e.Component.Fab.variant Value.secondary
@@ -1616,7 +1648,9 @@ searchFab extraClasses openMsg =
         , Aria.label "Search"
         , M3e.Events.onClick openMsg
         ]
-        [ M3e.Component.Fab.label (M3e.text "Search") ]
+        [ M3e.icon [ M3e.Component.Icon.name "search" ] []
+        , M3e.Component.Fab.label (M3e.text "Search")
+        ]
 
 
 {-| Desktop: a persistent full-height rail beside the app bar. Hidden below the
@@ -1630,16 +1664,14 @@ docsNavRail toMsg path =
         , M3e.Attributes.id "nav-rail"
         , TypedHtml.Attributes.class "hidden shrink-0 md:flex flex-col items-stretch w-fit bg-surface-container-lowest"
         ]
-        (M3e.Component.IconButton.component
-            { content = M3e.Unsafe.fromHtml (Logo.view Logo.defaultColors)
-            , ariaLabel = "Toggle rail width"
-            , action = M3e.Action.none
-            }
-            [ M3e.Component.IconButton.toggle True
+        (M3e.iconButton
+            [ Aria.label "Toggle rail width"
+            , M3e.Component.IconButton.toggle True
             , TypedHtml.Attributes.class "mx-auto [:not([selected])]:[--m3e-nav-rail-icon-button-inset:auto]"
             ]
-            [ M3e.Component.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
-            , M3e.Component.NavRailToggle.component { for = "nav-rail" } [] []
+            [ M3e.Unsafe.fromHtml (Logo.view Logo.defaultColors)
+            , M3e.Component.IconButton.selected (M3e.Unsafe.fromHtml (Logo.view Logo.invertedColors))
+            , M3e.navRailToggle [ M3e.Component.NavRailToggle.for "nav-rail" ] []
             ]
             :: M3e.mapMsg toMsg (searchFab "mx-auto" OpenSearch)
             :: List.map (railItem path) sections
@@ -1664,7 +1696,7 @@ Material FAB floats over content by design, and it sits in the bar's own
 gutter (`bottom-20`) rather than displacing content.
 
 -}
-docsNavBar : (Msg -> msg) -> UrlPath -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+docsNavBar : (Msg -> msg) -> UrlPath -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy msg
 docsNavBar toMsg path =
     TypedHtml.div
         [ TypedHtml.Attributes.class "contents" ]

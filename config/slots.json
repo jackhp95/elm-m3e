@@ -10,10 +10,11 @@
     "lib": "M3e",
     "iconComp": "Icon",
     "catalogFrom": "config/icons-catalog.json",
+    "shape": "names",
     "package": {
       "dir": "elm-m3e-icons",
       "name": "jackhp95/elm-m3e-icons",
-      "summary": "Type-safe Material Symbols icon element helpers for elm-m3e.",
+      "summary": "Type-safe Material Symbols icon names for elm-m3e.",
       "version": "1.0.0",
       "deps": {
         "elm/core": "1.0.0 <= v < 2.0.0",
@@ -46,156 +47,306 @@
       "NavMenu": {
         "root": "NavMenu",
         "members": [
-          { "component": "NavMenuItem", "path": "Item" },
-          { "component": "NavMenuItemGroup", "path": "ItemGroup" }
+          {
+            "component": "NavMenuItem",
+            "path": "Item"
+          },
+          {
+            "component": "NavMenuItemGroup",
+            "path": "ItemGroup"
+          }
         ]
       },
       "NavRail": {
         "root": "NavRail",
         "members": [
-          { "component": "NavRailToggle", "path": "Toggle" }
+          {
+            "component": "NavRailToggle",
+            "path": "Toggle"
+          }
         ]
       },
       "DrawerContainer": {
         "root": "DrawerContainer",
         "members": [
-          { "component": "DrawerToggle", "path": "Toggle" }
+          {
+            "component": "DrawerToggle",
+            "path": "Toggle"
+          }
         ]
       },
       "Menu": {
         "root": "Menu",
         "members": [
-          { "component": "MenuItem", "path": "Item" },
-          { "component": "MenuItemCheckbox", "path": "ItemCheckbox" },
-          { "component": "MenuItemGroup", "path": "ItemGroup" },
-          { "component": "MenuItemRadio", "path": "ItemRadio" },
-          { "component": "MenuTrigger", "path": "Trigger" }
+          {
+            "component": "MenuItem",
+            "path": "Item"
+          },
+          {
+            "component": "MenuItemCheckbox",
+            "path": "ItemCheckbox"
+          },
+          {
+            "component": "MenuItemGroup",
+            "path": "ItemGroup"
+          },
+          {
+            "component": "MenuItemRadio",
+            "path": "ItemRadio"
+          },
+          {
+            "component": "MenuTrigger",
+            "path": "Trigger"
+          }
         ]
       },
       "Dialog": {
         "root": "Dialog",
         "members": [
-          { "component": "DialogAction", "path": "Action" },
-          { "component": "DialogTrigger", "path": "Trigger" }
+          {
+            "component": "DialogAction",
+            "path": "Action"
+          },
+          {
+            "component": "DialogTrigger",
+            "path": "Trigger"
+          }
         ]
       },
       "BottomSheet": {
         "root": "BottomSheet",
         "members": [
-          { "component": "BottomSheetAction", "path": "Action" },
-          { "component": "BottomSheetTrigger", "path": "Trigger" }
+          {
+            "component": "BottomSheetAction",
+            "path": "Action"
+          },
+          {
+            "component": "BottomSheetTrigger",
+            "path": "Trigger"
+          }
         ]
       },
       "FabMenu": {
         "root": "FabMenu",
         "members": [
-          { "component": "FabMenuItem", "path": "Item" },
-          { "component": "FabMenuTrigger", "path": "Trigger" }
+          {
+            "component": "FabMenuItem",
+            "path": "Item"
+          },
+          {
+            "component": "FabMenuTrigger",
+            "path": "Trigger"
+          }
         ]
       },
       "RichTooltip": {
         "root": "RichTooltip",
         "members": [
-          { "component": "RichTooltipAction", "path": "Action" }
+          {
+            "component": "RichTooltipAction",
+            "path": "Action"
+          }
         ]
       },
       "Datepicker": {
         "root": "Datepicker",
         "members": [
-          { "component": "DatepickerToggle", "path": "Toggle" }
+          {
+            "component": "DatepickerToggle",
+            "path": "Toggle"
+          }
         ]
       },
       "Timepicker": {
         "root": "Timepicker",
         "members": [
-          { "component": "TimepickerToggle", "path": "Toggle" },
-          { "component": "TimepickerDial", "path": "Dial" },
-          { "component": "TimepickerInput", "path": "Input" },
-          { "component": "TimepickerInputPeriodToggle", "path": "InputPeriodToggle" }
+          {
+            "component": "TimepickerToggle",
+            "path": "Toggle"
+          },
+          {
+            "component": "TimepickerDial",
+            "path": "Dial"
+          },
+          {
+            "component": "TimepickerInput",
+            "path": "Input"
+          },
+          {
+            "component": "TimepickerInputPeriodToggle",
+            "path": "InputPeriodToggle"
+          }
         ]
       },
       "Calendar": {
         "root": "Calendar",
         "members": [
-          { "component": "MonthView", "path": "MonthView" },
-          { "component": "YearView", "path": "YearView" },
-          { "component": "MultiYearView", "path": "MultiYearView" }
+          {
+            "component": "MonthView",
+            "path": "MonthView"
+          },
+          {
+            "component": "YearView",
+            "path": "YearView"
+          },
+          {
+            "component": "MultiYearView",
+            "path": "MultiYearView"
+          }
         ]
       },
       "Stepper": {
         "root": "Stepper",
         "members": [
-          { "component": "Step", "path": "Step" },
-          { "component": "StepPanel", "path": "Panel" },
-          { "component": "StepperNext", "path": "Next" },
-          { "component": "StepperPrevious", "path": "Previous" },
-          { "component": "StepperReset", "path": "Reset" }
+          {
+            "component": "Step",
+            "path": "Step"
+          },
+          {
+            "component": "StepPanel",
+            "path": "Panel"
+          },
+          {
+            "component": "StepperNext",
+            "path": "Next"
+          },
+          {
+            "component": "StepperPrevious",
+            "path": "Previous"
+          },
+          {
+            "component": "StepperReset",
+            "path": "Reset"
+          }
         ]
       },
       "List": {
         "root": "List",
         "members": [
-          { "component": "ListItem", "path": "Item" },
-          { "component": "ListAction", "path": "Action" },
-          { "component": "ListOption", "path": "Option" }
+          {
+            "component": "ListItem",
+            "path": "Item"
+          },
+          {
+            "component": "ListAction",
+            "path": "Action"
+          },
+          {
+            "component": "ListOption",
+            "path": "Option"
+          }
         ]
       },
       "Breadcrumb": {
         "root": "Breadcrumb",
         "members": [
-          { "component": "BreadcrumbItem", "path": "Item" }
+          {
+            "component": "BreadcrumbItem",
+            "path": "Item"
+          }
         ]
       },
       "Tabs": {
         "root": "Tabs",
         "members": [
-          { "component": "Tab", "path": "Tab" },
-          { "component": "TabPanel", "path": "TabPanel" }
+          {
+            "component": "Tab",
+            "path": "Tab"
+          },
+          {
+            "component": "TabPanel",
+            "path": "TabPanel"
+          }
         ]
       },
       "Tree": {
         "root": "Tree",
         "members": [
-          { "component": "TreeItem", "path": "Item" }
+          {
+            "component": "TreeItem",
+            "path": "Item"
+          }
         ]
       },
       "Toc": {
         "root": "Toc",
         "members": [
-          { "component": "TocItem", "path": "Item" }
+          {
+            "component": "TocItem",
+            "path": "Item"
+          }
         ]
       },
       "Chip": {
         "root": "Chip",
         "members": [
-          { "component": "AssistChip", "path": "Assist" },
-          { "component": "FilterChip", "path": "Filter" },
-          { "component": "InputChip", "path": "Input" },
-          { "component": "SuggestionChip", "path": "Suggestion" },
-          { "component": "ChipSet", "path": "Set" },
-          { "component": "FilterChipSet", "path": "FilterSet" },
-          { "component": "InputChipSet", "path": "InputSet" }
+          {
+            "component": "AssistChip",
+            "path": "Assist"
+          },
+          {
+            "component": "FilterChip",
+            "path": "Filter"
+          },
+          {
+            "component": "InputChip",
+            "path": "Input"
+          },
+          {
+            "component": "SuggestionChip",
+            "path": "Suggestion"
+          },
+          {
+            "component": "ChipSet",
+            "path": "Set"
+          },
+          {
+            "component": "FilterChipSet",
+            "path": "FilterSet"
+          },
+          {
+            "component": "InputChipSet",
+            "path": "InputSet"
+          }
         ]
       },
       "SegmentedButton": {
         "root": "SegmentedButton",
         "members": [
-          { "component": "ButtonSegment", "path": "Segment" },
-          { "component": "ButtonGroup", "path": "Group" }
+          {
+            "component": "ButtonSegment",
+            "path": "Segment"
+          },
+          {
+            "component": "ButtonGroup",
+            "path": "Group"
+          }
         ]
       },
       "Accordion": {
         "root": "Accordion",
         "members": [
-          { "component": "ExpansionPanel", "path": "Panel" }
+          {
+            "component": "ExpansionPanel",
+            "path": "Panel"
+          }
         ]
       },
       "Progress": {
         "root": null,
         "members": [
-          { "component": "CircularProgressIndicator", "path": "Circular" },
-          { "component": "LinearProgressIndicator", "path": "Linear" },
-          { "component": "LoadingIndicator", "path": "Loading" }
+          {
+            "component": "CircularProgressIndicator",
+            "path": "Circular"
+          },
+          {
+            "component": "LinearProgressIndicator",
+            "path": "Linear"
+          },
+          {
+            "component": "LoadingIndicator",
+            "path": "Loading"
+          }
         ]
       }
     }
@@ -303,15 +454,6 @@
     "bottomSheetComp": "BottomSheetTrigger",
     "dialogActionComp": "DialogAction"
   },
-  "_coerce": [
-    {
-      "from": "Chip",
-      "fromKind": "chip",
-      "to": "button",
-      "name": "asButton",
-      "_comment": "WS6/CX5: A Chip admitted as a button-kinded element. Loud crossing \u2014 never automatic. M3e.Chip.view produces { chip : M3e.Kind.Brand }; SplitButton.leadingButton requires { button : M3e.Kind.Brand }. Use M3e.Coerce.asButton to explicitly admit a Chip into a button slot."
-    }
-  ],
   "Collapsible": {
     "admits": {
       "unnamed": {
@@ -649,9 +791,6 @@
     }
   },
   "BottomSheetTrigger": {
-    "requiredAttrs": [
-      "for"
-    ],
     "admits": {
       "unnamed": {
         "kinds": [
@@ -798,7 +937,8 @@
       },
       "trailing-icon": {
         "kinds": [
-          "shared:icon"
+          "shared:icon",
+          "badge"
         ],
         "multi": false,
         "required": false
@@ -1012,9 +1152,6 @@
     }
   },
   "AssistChip": {
-    "required": {
-      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,timepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
-    },
     "actionMap": [
       [
         "onClick",
@@ -1851,9 +1988,6 @@
     }
   },
   "MenuTrigger": {
-    "requiredAttrs": [
-      "for"
-    ],
     "admits": {
       "unnamed": {
         "kinds": [
@@ -2848,36 +2982,6 @@
   },
   "Icon": {
     "kind": "shared:icon"
-  },
-  "DialogTrigger": {
-    "requiredAttrs": [
-      "for"
-    ]
-  },
-  "FabMenuTrigger": {
-    "requiredAttrs": [
-      "for"
-    ]
-  },
-  "NavRailToggle": {
-    "requiredAttrs": [
-      "for"
-    ]
-  },
-  "DrawerToggle": {
-    "requiredAttrs": [
-      "for"
-    ]
-  },
-  "DatepickerToggle": {
-    "requiredAttrs": [
-      "for"
-    ]
-  },
-  "TimepickerToggle": {
-    "requiredAttrs": [
-      "for"
-    ]
   },
   "_kinds": [
     "fabMenuItem",

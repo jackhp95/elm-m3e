@@ -15,14 +15,13 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
-import M3e.Component.IconButton
 import M3e.Kind
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
+import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
 import UrlPath
 import View exposing (View)
@@ -72,7 +71,8 @@ name, so the page itself passes the a11y-tree check it describes.
 -}
 labeledBack : Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 labeledBack =
-    M3e.Component.IconButton.component { content = M3e.icon [ TA.name "arrow_back" ] [], ariaLabel = "Back", action = M3e.Action.none } [] []
+    M3e.iconButton [ Aria.label "Back" ]
+        [ M3e.icon [ TA.name "arrow_back" ] [] ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -142,10 +142,11 @@ The shipped, correct icon-only control (this one renders and announces as "Back"
 nameCode : String
 nameCode =
     """-- Visible text: the slot content is the name. Nothing extra.
-M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 -- Icon-only: the name is REQUIRED — supply it explicitly.
-M3e.Component.IconButton.component { content = M3e.icon [ TA.name "arrow_back" ] [], ariaLabel = "Back", action = M3e.Action.none } [] []
+M3e.iconButton [ Aria.label "Back" ]
+    [ M3e.icon [ TA.name "arrow_back" ] [] ]
 
 -- Sneaky case: a Switch/Radio in a list row whose visible label is a SIBLING
 -- ListItem text, not its own — it still needs its own name.

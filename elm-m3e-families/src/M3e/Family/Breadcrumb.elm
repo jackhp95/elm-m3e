@@ -1,4 +1,4 @@
-module M3e.Family.Breadcrumb exposing (BreadcrumbIs, BreadcrumbAttrs, BreadcrumbContent, BreadcrumbChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemChildAdmittedBy, ItemCurrent, breadcrumb, breadcrumbWrap, breadcrumbSeparator, breadcrumbChild, item, itemCurrent, itemDisabled, itemDownload, itemHref, itemItemLabel, itemRel, itemTarget, itemOnClick, itemIcon, itemChild)
+module M3e.Family.Breadcrumb exposing (BreadcrumbIs, BreadcrumbAttrs, BreadcrumbBuilder, BreadcrumbAttrCaps, BreadcrumbSlotCaps, BreadcrumbContent, BreadcrumbChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemIconSlot, ItemChildAdmittedBy, ItemCurrent, breadcrumb, breadcrumbWrap, breadcrumbSeparator, breadcrumbChild, item, itemCurrent, itemDisabled, itemDownload, itemHref, itemItemLabel, itemRel, itemTarget, itemOnClick, itemIcon, itemChild)
 
 {-| The **Breadcrumb** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs BreadcrumbIs, BreadcrumbAttrs, BreadcrumbContent, BreadcrumbChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemChildAdmittedBy, ItemCurrent, breadcrumb, breadcrumbWrap, breadcrumbSeparator, breadcrumbChild, item, itemCurrent, itemDisabled, itemDownload, itemHref, itemItemLabel, itemRel, itemTarget, itemOnClick, itemIcon, itemChild
+@docs BreadcrumbIs, BreadcrumbAttrs, BreadcrumbBuilder, BreadcrumbAttrCaps, BreadcrumbSlotCaps, BreadcrumbContent, BreadcrumbChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemIconSlot, ItemChildAdmittedBy, ItemCurrent, breadcrumb, breadcrumbWrap, breadcrumbSeparator, breadcrumbChild, item, itemCurrent, itemDisabled, itemDownload, itemHref, itemItemLabel, itemRel, itemTarget, itemOnClick, itemIcon, itemChild
 
 -}
 
@@ -45,6 +45,24 @@ type alias BreadcrumbIs s =
 -}
 type alias BreadcrumbAttrs =
     Breadcrumb_.Attrs
+
+
+{-| See [`M3e.Component.Breadcrumb.Builder`](M3e.Component.Breadcrumb#Builder).
+-}
+type alias BreadcrumbBuilder attrCaps slotCaps msg kind =
+    Breadcrumb_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Breadcrumb.AttrCaps`](M3e.Component.Breadcrumb#AttrCaps).
+-}
+type alias BreadcrumbAttrCaps =
+    Breadcrumb_.AttrCaps
+
+
+{-| See [`M3e.Component.Breadcrumb.SlotCaps`](M3e.Component.Breadcrumb#SlotCaps).
+-}
+type alias BreadcrumbSlotCaps =
+    Breadcrumb_.SlotCaps
 
 
 {-| See [`M3e.Component.Breadcrumb.Content`](M3e.Component.Breadcrumb#Content).
@@ -100,6 +118,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.BreadcrumbItem.Builder`](M3e.Component.BreadcrumbItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.BreadcrumbItem.AttrCaps`](M3e.Component.BreadcrumbItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.BreadcrumbItem.SlotCaps`](M3e.Component.BreadcrumbItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.BreadcrumbItem.Content`](M3e.Component.BreadcrumbItem#Content).

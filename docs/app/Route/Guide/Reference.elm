@@ -27,9 +27,9 @@ import Set
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
+import TypedHtml.Component.Sectioning
 import TypedHtml.Kind
-import TypedHtml.Sectioning
 import UrlPath
 import View exposing (View)
 
@@ -82,10 +82,13 @@ componentDecoder =
         membersDecoder
 
 
-{-| The barrel-reference page groups a component's members by name-prefix, so it
-needs the FLAT member list. The reference.json is now layered (`types` +
-`layers.{m3e,components,builder}`), so rebuild the flat list by unioning them
-(de-duped by name); fall back to a legacy flat `members` array when present.
+{-| The barrel-reference page groups a component's members by NAME PREFIX, so it
+needs the FLAT member list. `reference.json` is layered now (`types` +
+`layers.{m3e,components,builder,raw}`), so rebuild the flat list by unioning them,
+de-duped by name. `raw` is deliberately excluded: its members are custom-element
+attribute names (`aria-label`, `variant`), not Elm values, so they would not group
+under any of this page's Elm name-prefix buckets. A legacy flat `members` array is
+still accepted first, so a stale generated artifact keeps rendering.
 -}
 membersDecoder : Decode.Decoder (List Member)
 membersDecoder =
@@ -93,6 +96,10 @@ membersDecoder =
         listAt : String -> Decode.Decoder (List Member)
         listAt field =
             Decode.oneOf [ Decode.field field (Decode.list memberDecoder), Decode.succeed [] ]
+
+        layerAt : String -> Decode.Decoder (List Member)
+        layerAt field =
+            Decode.oneOf [ Decode.at [ "layers", field ] (Decode.list memberDecoder), Decode.succeed [] ]
 
         dedupe : List Member -> List Member
         dedupe ms =
@@ -114,9 +121,9 @@ membersDecoder =
         , Decode.map4
             (\types m3e components builder -> dedupe (types ++ m3e ++ components ++ builder))
             (listAt "types")
-            (Decode.oneOf [ Decode.at [ "layers", "m3e" ] (Decode.list memberDecoder), Decode.succeed [] ])
-            (Decode.oneOf [ Decode.at [ "layers", "components" ] (Decode.list memberDecoder), Decode.succeed [] ])
-            (Decode.oneOf [ Decode.at [ "layers", "builder" ] (Decode.list memberDecoder), Decode.succeed [] ])
+            (layerAt "m3e")
+            (layerAt "components")
+            (layerAt "builder")
         ]
 
 
@@ -152,12 +159,12 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Component reference" }
+    M3e.heading
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
-        []
+        [ M3e.text "Component reference" ]
 
 
 {-| The one-import barrel module (`module M3e`) is split out of the alphabetical
@@ -207,7 +214,7 @@ generic **barrel** teaching form vs the precise **specific-module** form.
 Keeps the reference's terminology aligned with `/guide/the-layers` and
 `/guide/strictness` so a reader never meets a fifth name for the same idea.
 -}
-twoForms : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+twoForms : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 twoForms =
     TypedHtml.div [ TA.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
         [ TypedHtml.p [ TA.class "text-label-lg uppercase tracking-wide text-primary" ] [ M3e.text "Two forms" ]
@@ -225,7 +232,7 @@ twoFormsText =
 Barrel-vs-module isn't a [surface](/guide/the-layers) choice and it isn't an escape hatch — it's a separate axis, only *which import you reach through*. Start on the barrel; reach for a component module when you want the tighter, component-scoped types."""
 
 
-indexGrid : List Component -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+indexGrid : List Component -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 indexGrid components =
     TypedHtml.div [ TA.class "mt-8 flex flex-wrap gap-2" ]
         (List.map
@@ -241,7 +248,7 @@ name-keyed groups a reader scans for (constructors, `variant*` tokens, `slot*`
 setters, `attr*`/other setters, `on*` events). Grouping by name prefix — not the
 JSON `role` — is what makes the ~650-member barrel navigable.
 -}
-barrelBlock : Component -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+barrelBlock : Component -> Element (TypedHtml.Component.Sectioning.SectionIs s) adm_ msg
 barrelBlock c =
     TypedHtml.section
         [ TA.id c.slug, TA.class "mt-12 scroll-mt-6 space-y-6" ]
@@ -293,12 +300,14 @@ barrelGroup label pred members =
         ms ->
             TypedHtml.section
                 [ TA.class "space-y-3" ]
-                [ M3e.Component.Heading.component { content = M3e.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, M3e.Attributes.level 3, TA.class "text-on-surface" ] []
+                [ M3e.heading
+                    [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, M3e.Attributes.level 3, TA.class "text-on-surface" ]
+                    [ M3e.text (label ++ " (" ++ String.fromInt (List.length ms) ++ ")") ]
                 , TypedHtml.div [ TA.class "space-y-3" ] (List.map memberRow ms)
                 ]
 
 
-componentBlock : Component -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+componentBlock : Component -> Element (TypedHtml.Component.Sectioning.SectionIs s) adm_ msg
 componentBlock c =
     TypedHtml.section
         [ TA.id c.slug, TA.class "scroll-mt-6 space-y-4" ]
@@ -346,7 +355,7 @@ memberRow m =
 
 {-| Render \\n\\n-separated text as body paragraphs at the given type-scale size.
 -}
-prose : String -> String -> String -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+prose : String -> String -> String -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 prose layoutCls bodyCls s =
     TypedHtml.div [ TA.class layoutCls ]
         (s

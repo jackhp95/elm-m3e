@@ -1,6 +1,6 @@
 module M3e.Component.LoadingIndicator exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
     , Variant, variant
     )
 
@@ -9,21 +9,8 @@ module M3e.Component.LoadingIndicator exposing
 Shows indeterminate progress for a short wait time.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
 @docs Variant, variant
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.LoadingIndicator.el [] []
-```
-
-<!-- elm-cem:docmeta category=Communication -->
 
 -}
 
@@ -60,6 +47,24 @@ type alias ChildAdmittedBy childAdm =
 -}
 type alias Variant =
     M3e.Internal.Types.LoadingIndicator.Variant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.LoadingIndicator.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.LoadingIndicator.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
 
 
 {-| Standard constructor: `[attributes] [children]`.

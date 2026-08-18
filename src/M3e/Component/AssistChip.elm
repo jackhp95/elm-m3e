@@ -1,6 +1,6 @@
 module M3e.Component.AssistChip exposing
     ( component
-    , Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, IconSlot, ChildAdmittedBy
     , Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
     , icon, child
@@ -11,26 +11,10 @@ module M3e.Component.AssistChip exposing
 A chip users interact with to perform a smart or automated action that can span multiple applications.
 
 @docs component
-@docs Is, Attrs, Content, IconSlot, ChildAdmittedBy, ActionCaps
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, IconSlot, ChildAdmittedBy
 @docs Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, value, defaultValue, onClick
 @docs icon, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="With a click action" -->
-```elm
-M3e.Component.AssistChip.el
-    { content = TypedHtml.text "Set reminder", action = M3e.Action.onClick SetReminder }
-    []
-    []
-```
-
-<!-- elm-cem:docmeta category=Actions -->
 
 -}
 
@@ -40,7 +24,6 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
 import Json.Encode
-import M3e.Action as Ac
 import M3e.Attributes as A
 import M3e.Events as Ev
 import M3e.Html as H
@@ -90,29 +73,33 @@ type alias Variant =
     M3e.Internal.Types.AssistChip.Variant
 
 
-{-| The behaviours this component's required action admits (see `M3e.Action`).
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
 -}
-type alias ActionCaps =
-    M3e.Internal.Types.AssistChip.ActionCaps
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.AssistChip.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.AssistChip.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.AssistChip.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.
 -}
 component :
-    { content : Element Content (ChildAdmittedBy childAdm) msg
-    , action : Ac.Action ActionCaps msg
-    }
+    { content : Element Content (ChildAdmittedBy childAdm) msg }
     -> List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
 component required_ attrs children =
-    let
-        actioned =
-            Ir.fromNode (Ac.wrapContent required_.action (El.toNode required_.content))
-    in
-    H.assistChip
-        (Ac.toAttrs required_.action ++ attrs)
-        (actioned :: children)
+    H.assistChip attrs (required_.content :: children)
 
 
 {-| The type of the element. (default: `"button"`)

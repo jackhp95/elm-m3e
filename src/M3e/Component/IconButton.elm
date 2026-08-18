@@ -1,6 +1,6 @@
 module M3e.Component.IconButton exposing
     ( component
-    , Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
     , selected, child
@@ -11,29 +11,10 @@ module M3e.Component.IconButton exposing
 An icon button users interact with to perform a supplementary action.
 
 @docs component
-@docs Is, Attrs, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, SelectedSlot, ChildAdmittedBy, ActionCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant, Width, width
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs selected, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.IconButton.el
-    { content = M3e.Component.Icon.el [ M3e.Component.Icon.name "settings" ] []
-    , ariaLabel = "Settings"
-    , action = M3e.Action.onClick OpenSettings
-    }
-    []
-    []
-```
-
-<!-- elm-cem:docmeta category=Actions -->
 
 -}
 
@@ -115,6 +96,24 @@ type alias Width =
 -}
 type alias ActionCaps =
     M3e.Internal.Types.IconButton.ActionCaps
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.IconButton.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.IconButton.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.IconButton.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

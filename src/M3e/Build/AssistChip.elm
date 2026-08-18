@@ -1,6 +1,6 @@
 module M3e.Build.AssistChip exposing
     ( build, toElement
-    , Builder, AttrCaps, SlotCaps, Is, Content, IconSlot, ChildAdmittedBy, ActionCaps
+    , Builder, AttrCaps, SlotCaps, Is, Content, IconSlot, ChildAdmittedBy
     , withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
     , icon
     , withIcon, withChild
@@ -9,7 +9,7 @@ module M3e.Build.AssistChip exposing
 {-|
 
 @docs build, toElement
-@docs Builder, AttrCaps, SlotCaps, Is, Content, IconSlot, ChildAdmittedBy, ActionCaps
+@docs Builder, AttrCaps, SlotCaps, Is, Content, IconSlot, ChildAdmittedBy
 @docs withClass, withDisabled, withDisabledInteractive, withDownload, withHref, withId, withName, withOnClick, withRel, withSlot, withStyle, withTarget, withType, withValue, withVariant
 @docs icon
 @docs withIcon, withChild
@@ -21,64 +21,55 @@ import HtmlIr.Internal as Ir
 import HtmlIr.Kind exposing (Shared, Supported)
 import HtmlIr.Value as Val exposing (Value)
 import Json.Encode
-import M3e.Action as Ac
 import M3e.Attributes as A
 import M3e.Component.AssistChip as Component
 import M3e.Events as Ev
 import M3e.Forge.Internal as B
-import M3e.Internal.Types.AssistChip
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 import M3e.Values
 
 
 {-| -}
 type alias Is s =
-    M3e.Internal.Types.AssistChip.Is s
+    Component.Is s
 
 
 {-| -}
 type alias Builder attrCaps slotCaps msg kind =
-    M3e.Internal.Types.AssistChip.Builder attrCaps slotCaps msg kind
+    Component.Builder attrCaps slotCaps msg kind
 
 
 {-| -}
 type alias AttrCaps =
-    M3e.Internal.Types.AssistChip.AttrCaps
+    Component.AttrCaps
 
 
 {-| -}
 type alias SlotCaps =
-    M3e.Internal.Types.AssistChip.SlotCaps
+    Component.SlotCaps
 
 
 {-| -}
 type alias ChildAdmittedBy childAdm =
-    M3e.Internal.Types.AssistChip.ChildAdmittedBy childAdm
-
-
-{-| -}
-type alias ActionCaps =
-    M3e.Internal.Types.AssistChip.ActionCaps
+    Component.ChildAdmittedBy childAdm
 
 
 {-| -}
 type alias Content =
-    M3e.Internal.Types.AssistChip.Content
+    Component.Content
 
 
 {-| -}
 type alias IconSlot =
-    M3e.Internal.Types.AssistChip.IconSlot
+    Component.IconSlot
 
 
 {-| -}
 build :
-    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg
-    , action : Ac.Action Component.ActionCaps msg
-    }
+    { content : Element Component.Content (Component.ChildAdmittedBy childAdm) msg }
     -> Builder AttrCaps SlotCaps msg kind
 build required_ =
-    B.init "m3e-assist-chip" (Ac.toAttrs required_.action) [ Ac.wrapContent required_.action (El.toNode required_.content) ]
+    B.init "m3e-assist-chip" [] [ El.toNode required_.content ]
 
 
 {-| -}

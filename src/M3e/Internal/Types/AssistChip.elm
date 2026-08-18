@@ -60,25 +60,6 @@ type alias Variant =
     }
 
 
-type alias ActionCaps =
-    { bottomSheetAction : Supported
-    , bottomSheetTrigger : Supported
-    , click : Supported
-    , datepickerToggle : Supported
-    , dialogAction : Supported
-    , dialogTrigger : Supported
-    , drawerToggle : Supported
-    , fabMenuTrigger : Supported
-    , link : Supported
-    , menuTrigger : Supported
-    , navRailToggle : Supported
-    , richTooltipAction : Supported
-    , stepperPrevious : Supported
-    , stepperReset : Supported
-    , timepickerToggle : Supported
-    }
-
-
 type alias Builder attrCaps slotCaps msg s =
     B.Builder Attrs attrCaps slotCaps (Is s) msg
 

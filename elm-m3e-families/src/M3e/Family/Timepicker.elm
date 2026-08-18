@@ -1,4 +1,4 @@
-module M3e.Family.Timepicker exposing (TimepickerIs, TimepickerAttrs, TimepickerChildAdmittedBy, TimepickerFormat, TimepickerMode, TimepickerOrientation, TimepickerVariant, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, DialIs, DialAttrs, DialChildAdmittedBy, DialFormat, DialPeriod, DialViewAttr, InputIs, InputAttrs, InputChildAdmittedBy, InputFormat, InputPeriod, InputViewAttr, InputPeriodToggleIs, InputPeriodToggleAttrs, InputPeriodToggleChildAdmittedBy, InputPeriodTogglePeriod, timepicker, timepickerFormat, timepickerMode, timepickerOrientation, timepickerVariant, timepickerConfirmLabel, timepickerDate, timepickerDialLabel, timepickerDismissLabel, timepickerFor, timepickerHideModeToggle, timepickerHourLabel, timepickerInputLabel, timepickerMaxTime, timepickerMinTime, timepickerMinuteLabel, timepickerModeToggleLabel, timepickerPeriodToggleLabel, timepickerSecondLabel, timepickerShowSeconds, timepickerOnChange, timepickerOnBeforetoggle, timepickerOnToggle, toggle, dial, dialFormat, dialPeriod, dialViewAttr, dialHour, dialMaxTime, dialMinTime, dialMinute, dialSecond, dialShowSeconds, dialOnInput, dialOnChange, dialOnViewChange, input, inputFormat, inputPeriod, inputViewAttr, inputFor, inputHideLabels, inputHour, inputHourLabel, inputMaxTime, inputMinTime, inputMinute, inputMinuteLabel, inputOrientation, inputPeriodToggleLabel, inputSecond, inputSecondLabel, inputShowSeconds, inputOnViewChange, inputOnChange, inputPeriodToggle, inputPeriodTogglePeriod, inputPeriodToggleOrientation, inputPeriodToggleOnChange)
+module M3e.Family.Timepicker exposing (TimepickerIs, TimepickerAttrs, TimepickerBuilder, TimepickerAttrCaps, TimepickerSlotCaps, TimepickerChildAdmittedBy, TimepickerFormat, TimepickerMode, TimepickerOrientation, TimepickerVariant, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, DialIs, DialAttrs, DialBuilder, DialAttrCaps, DialSlotCaps, DialChildAdmittedBy, DialFormat, DialPeriod, DialViewAttr, InputIs, InputAttrs, InputBuilder, InputAttrCaps, InputSlotCaps, InputChildAdmittedBy, InputFormat, InputPeriod, InputViewAttr, InputPeriodToggleIs, InputPeriodToggleAttrs, InputPeriodToggleBuilder, InputPeriodToggleAttrCaps, InputPeriodToggleSlotCaps, InputPeriodToggleChildAdmittedBy, InputPeriodTogglePeriod, timepicker, timepickerFormat, timepickerMode, timepickerOrientation, timepickerVariant, timepickerConfirmLabel, timepickerDate, timepickerDialLabel, timepickerDismissLabel, timepickerFor, timepickerHideModeToggle, timepickerHourLabel, timepickerInputLabel, timepickerMaxTime, timepickerMinTime, timepickerMinuteLabel, timepickerModeToggleLabel, timepickerPeriodToggleLabel, timepickerSecondLabel, timepickerShowSeconds, timepickerOnChange, timepickerOnBeforetoggle, timepickerOnToggle, toggle, toggleFor, dial, dialFormat, dialPeriod, dialViewAttr, dialHour, dialMaxTime, dialMinTime, dialMinute, dialSecond, dialShowSeconds, dialOnInput, dialOnChange, dialOnViewChange, input, inputFormat, inputPeriod, inputViewAttr, inputFor, inputHideLabels, inputHour, inputHourLabel, inputMaxTime, inputMinTime, inputMinute, inputMinuteLabel, inputOrientation, inputPeriodToggleLabel, inputSecond, inputSecondLabel, inputShowSeconds, inputOnViewChange, inputOnChange, inputPeriodToggle, inputPeriodTogglePeriod, inputPeriodToggleOrientation, inputPeriodToggleOnChange)
 
 {-| The **Timepicker** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs TimepickerIs, TimepickerAttrs, TimepickerChildAdmittedBy, TimepickerFormat, TimepickerMode, TimepickerOrientation, TimepickerVariant, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, DialIs, DialAttrs, DialChildAdmittedBy, DialFormat, DialPeriod, DialViewAttr, InputIs, InputAttrs, InputChildAdmittedBy, InputFormat, InputPeriod, InputViewAttr, InputPeriodToggleIs, InputPeriodToggleAttrs, InputPeriodToggleChildAdmittedBy, InputPeriodTogglePeriod, timepicker, timepickerFormat, timepickerMode, timepickerOrientation, timepickerVariant, timepickerConfirmLabel, timepickerDate, timepickerDialLabel, timepickerDismissLabel, timepickerFor, timepickerHideModeToggle, timepickerHourLabel, timepickerInputLabel, timepickerMaxTime, timepickerMinTime, timepickerMinuteLabel, timepickerModeToggleLabel, timepickerPeriodToggleLabel, timepickerSecondLabel, timepickerShowSeconds, timepickerOnChange, timepickerOnBeforetoggle, timepickerOnToggle, toggle, dial, dialFormat, dialPeriod, dialViewAttr, dialHour, dialMaxTime, dialMinTime, dialMinute, dialSecond, dialShowSeconds, dialOnInput, dialOnChange, dialOnViewChange, input, inputFormat, inputPeriod, inputViewAttr, inputFor, inputHideLabels, inputHour, inputHourLabel, inputMaxTime, inputMinTime, inputMinute, inputMinuteLabel, inputOrientation, inputPeriodToggleLabel, inputSecond, inputSecondLabel, inputShowSeconds, inputOnViewChange, inputOnChange, inputPeriodToggle, inputPeriodTogglePeriod, inputPeriodToggleOrientation, inputPeriodToggleOnChange
+@docs TimepickerIs, TimepickerAttrs, TimepickerBuilder, TimepickerAttrCaps, TimepickerSlotCaps, TimepickerChildAdmittedBy, TimepickerFormat, TimepickerMode, TimepickerOrientation, TimepickerVariant, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, DialIs, DialAttrs, DialBuilder, DialAttrCaps, DialSlotCaps, DialChildAdmittedBy, DialFormat, DialPeriod, DialViewAttr, InputIs, InputAttrs, InputBuilder, InputAttrCaps, InputSlotCaps, InputChildAdmittedBy, InputFormat, InputPeriod, InputViewAttr, InputPeriodToggleIs, InputPeriodToggleAttrs, InputPeriodToggleBuilder, InputPeriodToggleAttrCaps, InputPeriodToggleSlotCaps, InputPeriodToggleChildAdmittedBy, InputPeriodTogglePeriod, timepicker, timepickerFormat, timepickerMode, timepickerOrientation, timepickerVariant, timepickerConfirmLabel, timepickerDate, timepickerDialLabel, timepickerDismissLabel, timepickerFor, timepickerHideModeToggle, timepickerHourLabel, timepickerInputLabel, timepickerMaxTime, timepickerMinTime, timepickerMinuteLabel, timepickerModeToggleLabel, timepickerPeriodToggleLabel, timepickerSecondLabel, timepickerShowSeconds, timepickerOnChange, timepickerOnBeforetoggle, timepickerOnToggle, toggle, toggleFor, dial, dialFormat, dialPeriod, dialViewAttr, dialHour, dialMaxTime, dialMinTime, dialMinute, dialSecond, dialShowSeconds, dialOnInput, dialOnChange, dialOnViewChange, input, inputFormat, inputPeriod, inputViewAttr, inputFor, inputHideLabels, inputHour, inputHourLabel, inputMaxTime, inputMinTime, inputMinute, inputMinuteLabel, inputOrientation, inputPeriodToggleLabel, inputSecond, inputSecondLabel, inputShowSeconds, inputOnViewChange, inputOnChange, inputPeriodToggle, inputPeriodTogglePeriod, inputPeriodToggleOrientation, inputPeriodToggleOnChange
 
 -}
 
@@ -47,6 +47,24 @@ type alias TimepickerIs s =
 -}
 type alias TimepickerAttrs =
     Timepicker_.Attrs
+
+
+{-| See [`M3e.Component.Timepicker.Builder`](M3e.Component.Timepicker#Builder).
+-}
+type alias TimepickerBuilder attrCaps slotCaps msg kind =
+    Timepicker_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Timepicker.AttrCaps`](M3e.Component.Timepicker#AttrCaps).
+-}
+type alias TimepickerAttrCaps =
+    Timepicker_.AttrCaps
+
+
+{-| See [`M3e.Component.Timepicker.SlotCaps`](M3e.Component.Timepicker#SlotCaps).
+-}
+type alias TimepickerSlotCaps =
+    Timepicker_.SlotCaps
 
 
 {-| See [`M3e.Component.Timepicker.ChildAdmittedBy`](M3e.Component.Timepicker#ChildAdmittedBy).
@@ -236,8 +254,7 @@ timepickerOnToggle =
 {-| The `toggle` element of this family — delegates to [`M3e.Component.TimepickerToggle.component`](M3e.Component.TimepickerToggle#component).
 -}
 toggle :
-    { for : String }
-    -> List (Attr ToggleAttrs msg)
+    List (Attr ToggleAttrs msg)
     -> List (Element childAccepts (ToggleChildAdmittedBy childAdm) msg)
     -> Element (ToggleIs s) admittedBy msg
 toggle =
@@ -256,10 +273,35 @@ type alias ToggleAttrs =
     Toggle_.Attrs
 
 
+{-| See [`M3e.Component.TimepickerToggle.Builder`](M3e.Component.TimepickerToggle#Builder).
+-}
+type alias ToggleBuilder attrCaps slotCaps msg kind =
+    Toggle_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TimepickerToggle.AttrCaps`](M3e.Component.TimepickerToggle#AttrCaps).
+-}
+type alias ToggleAttrCaps =
+    Toggle_.AttrCaps
+
+
+{-| See [`M3e.Component.TimepickerToggle.SlotCaps`](M3e.Component.TimepickerToggle#SlotCaps).
+-}
+type alias ToggleSlotCaps =
+    Toggle_.SlotCaps
+
+
 {-| See [`M3e.Component.TimepickerToggle.ChildAdmittedBy`](M3e.Component.TimepickerToggle#ChildAdmittedBy).
 -}
 type alias ToggleChildAdmittedBy childAdm =
     Toggle_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.TimepickerToggle.for`](M3e.Component.TimepickerToggle#for).
+-}
+toggleFor : String -> Attr { c | for : Supported } msg
+toggleFor =
+    Toggle_.for
 
 
 {-| The `dial` element of this family — delegates to [`M3e.Component.TimepickerDial.component`](M3e.Component.TimepickerDial#component).
@@ -282,6 +324,24 @@ type alias DialIs s =
 -}
 type alias DialAttrs =
     Dial_.Attrs
+
+
+{-| See [`M3e.Component.TimepickerDial.Builder`](M3e.Component.TimepickerDial#Builder).
+-}
+type alias DialBuilder attrCaps slotCaps msg kind =
+    Dial_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TimepickerDial.AttrCaps`](M3e.Component.TimepickerDial#AttrCaps).
+-}
+type alias DialAttrCaps =
+    Dial_.AttrCaps
+
+
+{-| See [`M3e.Component.TimepickerDial.SlotCaps`](M3e.Component.TimepickerDial#SlotCaps).
+-}
+type alias DialSlotCaps =
+    Dial_.SlotCaps
 
 
 {-| See [`M3e.Component.TimepickerDial.ChildAdmittedBy`](M3e.Component.TimepickerDial#ChildAdmittedBy).
@@ -412,6 +472,24 @@ type alias InputIs s =
 -}
 type alias InputAttrs =
     Input_.Attrs
+
+
+{-| See [`M3e.Component.TimepickerInput.Builder`](M3e.Component.TimepickerInput#Builder).
+-}
+type alias InputBuilder attrCaps slotCaps msg kind =
+    Input_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TimepickerInput.AttrCaps`](M3e.Component.TimepickerInput#AttrCaps).
+-}
+type alias InputAttrCaps =
+    Input_.AttrCaps
+
+
+{-| See [`M3e.Component.TimepickerInput.SlotCaps`](M3e.Component.TimepickerInput#SlotCaps).
+-}
+type alias InputSlotCaps =
+    Input_.SlotCaps
 
 
 {-| See [`M3e.Component.TimepickerInput.ChildAdmittedBy`](M3e.Component.TimepickerInput#ChildAdmittedBy).
@@ -584,6 +662,24 @@ type alias InputPeriodToggleIs s =
 -}
 type alias InputPeriodToggleAttrs =
     InputPeriodToggle_.Attrs
+
+
+{-| See [`M3e.Component.TimepickerInputPeriodToggle.Builder`](M3e.Component.TimepickerInputPeriodToggle#Builder).
+-}
+type alias InputPeriodToggleBuilder attrCaps slotCaps msg kind =
+    InputPeriodToggle_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TimepickerInputPeriodToggle.AttrCaps`](M3e.Component.TimepickerInputPeriodToggle#AttrCaps).
+-}
+type alias InputPeriodToggleAttrCaps =
+    InputPeriodToggle_.AttrCaps
+
+
+{-| See [`M3e.Component.TimepickerInputPeriodToggle.SlotCaps`](M3e.Component.TimepickerInputPeriodToggle#SlotCaps).
+-}
+type alias InputPeriodToggleSlotCaps =
+    InputPeriodToggle_.SlotCaps
 
 
 {-| See [`M3e.Component.TimepickerInputPeriodToggle.ChildAdmittedBy`](M3e.Component.TimepickerInputPeriodToggle#ChildAdmittedBy).

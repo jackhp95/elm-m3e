@@ -1,6 +1,6 @@
 module M3e.Component.Heading exposing
     ( component
-    , Is, Attrs, Content, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
     , Size, size, Variant, variant
     , emphasized, level, tocIgnore
     , child
@@ -11,23 +11,10 @@ module M3e.Component.Heading exposing
 A heading to a page or section.
 
 @docs component
-@docs Is, Attrs, Content, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
 @docs Size, size, Variant, variant
 @docs emphasized, level, tocIgnore
 @docs child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.Heading.el { content = TypedHtml.text "Title" } [] []
-```
-
-<!-- elm-cem:docmeta category=Layout & style -->
 
 -}
 
@@ -76,6 +63,24 @@ type alias Size =
 -}
 type alias Variant =
     M3e.Internal.Types.Heading.Variant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Heading.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Heading.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

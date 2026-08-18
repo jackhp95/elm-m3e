@@ -8,9 +8,8 @@ Change the sample there; this file follows.
 -}
 
 import M3e
-import M3e.Component.Heading
 import TypedHtml
 
 
 shown0_ =
-    TypedHtml.span [] [ M3e.Component.Heading.component { content = M3e.text "hi" } [] [] ]   -- ✗ rejected
+    TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected

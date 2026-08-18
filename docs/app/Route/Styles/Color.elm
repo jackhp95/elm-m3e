@@ -7,7 +7,6 @@ import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.Card
-import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -17,7 +16,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -98,7 +97,7 @@ surfaces =
 {-| A container/on-container pairing row: the bold role beside its container, so the
 "on" color is read directly off each layer/form.
 -}
-accentRow : Accent -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+accentRow : Accent -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 accentRow accent =
     TypedHtml.div [ TA.class "grid grid-cols-2 gap-3" ]
         [ swatch ( accent.name, accent.baseBg, accent.base )
@@ -106,19 +105,21 @@ accentRow accent =
         ]
 
 
-swatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+swatch : ( String, String, String ) -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 swatch ( label, bg, role ) =
     TypedHtml.div
         [ TA.class (role ++ " rounded-md-corner-medium border border-outline-variant flex flex-col justify-between p-4 min-h-24")
         ]
-        [ M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large ] []
+        [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large ] [ M3e.text label ]
         , TypedHtml.code [ TA.class "text-body-sm" ] [ M3e.text bg ]
         ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Color" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Color" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -173,7 +174,7 @@ forcedColorsCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 forcedColorsCard =
     M3e.card
         [ M3e.Attributes.variant Value.outlined ]
-        [ M3e.Component.Card.header (M3e.Component.Heading.component { content = M3e.text "Test it" } [ M3e.Attributes.variant Value.title ] [])
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Test it" ])
         , M3e.Component.Card.content
             (M3e.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
         ]

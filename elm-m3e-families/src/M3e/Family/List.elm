@@ -1,4 +1,4 @@
-module M3e.Family.List exposing (ListIs, ListAttrs, ListContent, ListChildAdmittedBy, ListVariant, ItemIs, ItemAttrs, ItemContent, ItemLeadingSlot, ItemOverlineSlot, ItemSupportingTextSlot, ItemTrailingSlot, ItemChildAdmittedBy, ActionIs, ActionAttrs, ActionContent, ActionLeadingSlot, ActionOverlineSlot, ActionSupportingTextSlot, ActionTrailingSlot, ActionChildAdmittedBy, OptionIs, OptionAttrs, OptionContent, OptionLeadingSlot, OptionOverlineSlot, OptionSupportingTextSlot, OptionTrailingSlot, OptionChildAdmittedBy, list, listVariant, listChild, item, itemLeading, itemOverline, itemSupportingText, itemTrailing, itemChild, action, actionDisabled, actionDownload, actionHref, actionRel, actionTarget, actionOnClick, actionLeading, actionOverline, actionSupportingText, actionTrailing, actionChild, option, optionDisabled, optionSelected, optionValue, optionDefaultSelected, optionDefaultValue, optionOnBeforeinput, optionOnInput, optionOnChange, optionOnClick, optionLeading, optionOverline, optionSupportingText, optionTrailing, optionChild)
+module M3e.Family.List exposing (ListIs, ListAttrs, ListBuilder, ListAttrCaps, ListSlotCaps, ListContent, ListChildAdmittedBy, ListVariant, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemLeadingSlot, ItemOverlineSlot, ItemSupportingTextSlot, ItemTrailingSlot, ItemChildAdmittedBy, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionContent, ActionLeadingSlot, ActionOverlineSlot, ActionSupportingTextSlot, ActionTrailingSlot, ActionChildAdmittedBy, OptionIs, OptionAttrs, OptionBuilder, OptionAttrCaps, OptionSlotCaps, OptionContent, OptionLeadingSlot, OptionOverlineSlot, OptionSupportingTextSlot, OptionTrailingSlot, OptionChildAdmittedBy, list, listVariant, listChild, item, itemLeading, itemOverline, itemSupportingText, itemTrailing, itemChild, action, actionDisabled, actionDownload, actionHref, actionRel, actionTarget, actionOnClick, actionLeading, actionOverline, actionSupportingText, actionTrailing, actionChild, option, optionDisabled, optionSelected, optionValue, optionDefaultSelected, optionDefaultValue, optionOnBeforeinput, optionOnInput, optionOnChange, optionOnClick, optionLeading, optionOverline, optionSupportingText, optionTrailing, optionChild)
 
 {-| The **List** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs ListIs, ListAttrs, ListContent, ListChildAdmittedBy, ListVariant, ItemIs, ItemAttrs, ItemContent, ItemLeadingSlot, ItemOverlineSlot, ItemSupportingTextSlot, ItemTrailingSlot, ItemChildAdmittedBy, ActionIs, ActionAttrs, ActionContent, ActionLeadingSlot, ActionOverlineSlot, ActionSupportingTextSlot, ActionTrailingSlot, ActionChildAdmittedBy, OptionIs, OptionAttrs, OptionContent, OptionLeadingSlot, OptionOverlineSlot, OptionSupportingTextSlot, OptionTrailingSlot, OptionChildAdmittedBy, list, listVariant, listChild, item, itemLeading, itemOverline, itemSupportingText, itemTrailing, itemChild, action, actionDisabled, actionDownload, actionHref, actionRel, actionTarget, actionOnClick, actionLeading, actionOverline, actionSupportingText, actionTrailing, actionChild, option, optionDisabled, optionSelected, optionValue, optionDefaultSelected, optionDefaultValue, optionOnBeforeinput, optionOnInput, optionOnChange, optionOnClick, optionLeading, optionOverline, optionSupportingText, optionTrailing, optionChild
+@docs ListIs, ListAttrs, ListBuilder, ListAttrCaps, ListSlotCaps, ListContent, ListChildAdmittedBy, ListVariant, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemLeadingSlot, ItemOverlineSlot, ItemSupportingTextSlot, ItemTrailingSlot, ItemChildAdmittedBy, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionContent, ActionLeadingSlot, ActionOverlineSlot, ActionSupportingTextSlot, ActionTrailingSlot, ActionChildAdmittedBy, OptionIs, OptionAttrs, OptionBuilder, OptionAttrCaps, OptionSlotCaps, OptionContent, OptionLeadingSlot, OptionOverlineSlot, OptionSupportingTextSlot, OptionTrailingSlot, OptionChildAdmittedBy, list, listVariant, listChild, item, itemLeading, itemOverline, itemSupportingText, itemTrailing, itemChild, action, actionDisabled, actionDownload, actionHref, actionRel, actionTarget, actionOnClick, actionLeading, actionOverline, actionSupportingText, actionTrailing, actionChild, option, optionDisabled, optionSelected, optionValue, optionDefaultSelected, optionDefaultValue, optionOnBeforeinput, optionOnInput, optionOnChange, optionOnClick, optionLeading, optionOverline, optionSupportingText, optionTrailing, optionChild
 
 -}
 
@@ -46,6 +46,24 @@ type alias ListIs s =
 -}
 type alias ListAttrs =
     List_.Attrs
+
+
+{-| See [`M3e.Component.List.Builder`](M3e.Component.List#Builder).
+-}
+type alias ListBuilder attrCaps slotCaps msg kind =
+    List_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.List.AttrCaps`](M3e.Component.List#AttrCaps).
+-}
+type alias ListAttrCaps =
+    List_.AttrCaps
+
+
+{-| See [`M3e.Component.List.SlotCaps`](M3e.Component.List#SlotCaps).
+-}
+type alias ListSlotCaps =
+    List_.SlotCaps
 
 
 {-| See [`M3e.Component.List.Content`](M3e.Component.List#Content).
@@ -100,6 +118,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.ListItem.Builder`](M3e.Component.ListItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.ListItem.AttrCaps`](M3e.Component.ListItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.ListItem.SlotCaps`](M3e.Component.ListItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.ListItem.Content`](M3e.Component.ListItem#Content).
@@ -193,6 +229,24 @@ type alias ActionIs s =
 -}
 type alias ActionAttrs =
     Action_.Attrs
+
+
+{-| See [`M3e.Component.ListAction.Builder`](M3e.Component.ListAction#Builder).
+-}
+type alias ActionBuilder attrCaps slotCaps msg kind =
+    Action_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.ListAction.AttrCaps`](M3e.Component.ListAction#AttrCaps).
+-}
+type alias ActionAttrCaps =
+    Action_.AttrCaps
+
+
+{-| See [`M3e.Component.ListAction.SlotCaps`](M3e.Component.ListAction#SlotCaps).
+-}
+type alias ActionSlotCaps =
+    Action_.SlotCaps
 
 
 {-| See [`M3e.Component.ListAction.Content`](M3e.Component.ListAction#Content).
@@ -328,6 +382,24 @@ type alias OptionIs s =
 -}
 type alias OptionAttrs =
     Option_.Attrs
+
+
+{-| See [`M3e.Component.ListOption.Builder`](M3e.Component.ListOption#Builder).
+-}
+type alias OptionBuilder attrCaps slotCaps msg kind =
+    Option_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.ListOption.AttrCaps`](M3e.Component.ListOption#AttrCaps).
+-}
+type alias OptionAttrCaps =
+    Option_.AttrCaps
+
+
+{-| See [`M3e.Component.ListOption.SlotCaps`](M3e.Component.ListOption#SlotCaps).
+-}
+type alias OptionSlotCaps =
+    Option_.SlotCaps
 
 
 {-| See [`M3e.Component.ListOption.Content`](M3e.Component.ListOption#Content).

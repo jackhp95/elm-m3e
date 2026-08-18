@@ -16,7 +16,6 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Component.Heading
 import M3e.Component.Shape as Shape
 import M3e.Kind
 import M3e.Values as Value
@@ -27,7 +26,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -96,14 +95,14 @@ cornerScale =
     ]
 
 
-cornerSwatch : ( String, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+cornerSwatch : ( String, String, String ) -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 cornerSwatch ( rounded, label, value ) =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.div
             [ TA.class ("bg-primary-container text-on-primary-container " ++ rounded ++ " h-20 w-full") ]
             []
         , TypedHtml.div [ TA.class "flex flex-col" ]
-            [ M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] []
+            [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text label ]
             , TypedHtml.code [ TA.class "text-body-sm text-on-surface-variant" ] [ M3e.text value ]
             ]
         ]
@@ -115,7 +114,7 @@ tokens' open phantom rows unify into one wide record in the list literal, and
 passing the token through (rather than a literal enum) keeps the barrel-flatten
 rule from firing on a per-shape enum value.
 -}
-namedShapes : List (Element (TypedHtml.Grouping.DivIs s) adm_ msg)
+namedShapes : List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg)
 namedShapes =
     -- The lambda is inlined (no top-level `namedSwatch` signature) on purpose:
     -- `Shape.name` wants a wide closed record, and the tokens' open phantom rows
@@ -125,7 +124,7 @@ namedShapes =
         (\( token, label ) ->
             TypedHtml.div [ TA.class "flex flex-col items-center gap-2" ]
                 [ TypedHtml.div [ TA.class "contents" ] [ M3e.shape [ Shape.name token ] [] ]
-                , M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text label ]
                 ]
         )
         [ ( Value.circle, "Circle" )
@@ -145,7 +144,9 @@ namedShapes =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Shape" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Shape" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

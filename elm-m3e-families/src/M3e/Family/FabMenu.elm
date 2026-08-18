@@ -1,4 +1,4 @@
-module M3e.Family.FabMenu exposing (FabMenuIs, FabMenuAttrs, FabMenuContent, FabMenuChildAdmittedBy, FabMenuVariant, ItemIs, ItemAttrs, ItemIconSlot, ItemChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, fabMenu, fabMenuVariant, fabMenuOnBeforetoggle, fabMenuOnToggle, fabMenuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemChild, trigger)
+module M3e.Family.FabMenu exposing (FabMenuIs, FabMenuAttrs, FabMenuBuilder, FabMenuAttrCaps, FabMenuSlotCaps, FabMenuContent, FabMenuChildAdmittedBy, FabMenuVariant, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemIconSlot, ItemChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerChildAdmittedBy, fabMenu, fabMenuVariant, fabMenuOnBeforetoggle, fabMenuOnToggle, fabMenuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemChild, trigger, triggerFor)
 
 {-| The **FabMenu** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs FabMenuIs, FabMenuAttrs, FabMenuContent, FabMenuChildAdmittedBy, FabMenuVariant, ItemIs, ItemAttrs, ItemIconSlot, ItemChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, fabMenu, fabMenuVariant, fabMenuOnBeforetoggle, fabMenuOnToggle, fabMenuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemChild, trigger
+@docs FabMenuIs, FabMenuAttrs, FabMenuBuilder, FabMenuAttrCaps, FabMenuSlotCaps, FabMenuContent, FabMenuChildAdmittedBy, FabMenuVariant, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemIconSlot, ItemChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerChildAdmittedBy, fabMenu, fabMenuVariant, fabMenuOnBeforetoggle, fabMenuOnToggle, fabMenuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemChild, trigger, triggerFor
 
 -}
 
@@ -45,6 +45,24 @@ type alias FabMenuIs s =
 -}
 type alias FabMenuAttrs =
     FabMenu_.Attrs
+
+
+{-| See [`M3e.Component.FabMenu.Builder`](M3e.Component.FabMenu#Builder).
+-}
+type alias FabMenuBuilder attrCaps slotCaps msg kind =
+    FabMenu_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.FabMenu.AttrCaps`](M3e.Component.FabMenu#AttrCaps).
+-}
+type alias FabMenuAttrCaps =
+    FabMenu_.AttrCaps
+
+
+{-| See [`M3e.Component.FabMenu.SlotCaps`](M3e.Component.FabMenu#SlotCaps).
+-}
+type alias FabMenuSlotCaps =
+    FabMenu_.SlotCaps
 
 
 {-| See [`M3e.Component.FabMenu.Content`](M3e.Component.FabMenu#Content).
@@ -113,6 +131,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.FabMenuItem.Builder`](M3e.Component.FabMenuItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.FabMenuItem.AttrCaps`](M3e.Component.FabMenuItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.FabMenuItem.SlotCaps`](M3e.Component.FabMenuItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.FabMenuItem.IconSlot`](M3e.Component.FabMenuItem#IconSlot).
@@ -186,8 +222,7 @@ itemChild =
 {-| The `trigger` element of this family — delegates to [`M3e.Component.FabMenuTrigger.component`](M3e.Component.FabMenuTrigger#component).
 -}
 trigger :
-    { for : String }
-    -> List (Attr TriggerAttrs msg)
+    List (Attr TriggerAttrs msg)
     -> List (Element childAccepts (TriggerChildAdmittedBy childAdm) msg)
     -> Element (TriggerIs s) admittedBy msg
 trigger =
@@ -206,7 +241,32 @@ type alias TriggerAttrs =
     Trigger_.Attrs
 
 
+{-| See [`M3e.Component.FabMenuTrigger.Builder`](M3e.Component.FabMenuTrigger#Builder).
+-}
+type alias TriggerBuilder attrCaps slotCaps msg kind =
+    Trigger_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.FabMenuTrigger.AttrCaps`](M3e.Component.FabMenuTrigger#AttrCaps).
+-}
+type alias TriggerAttrCaps =
+    Trigger_.AttrCaps
+
+
+{-| See [`M3e.Component.FabMenuTrigger.SlotCaps`](M3e.Component.FabMenuTrigger#SlotCaps).
+-}
+type alias TriggerSlotCaps =
+    Trigger_.SlotCaps
+
+
 {-| See [`M3e.Component.FabMenuTrigger.ChildAdmittedBy`](M3e.Component.FabMenuTrigger#ChildAdmittedBy).
 -}
 type alias TriggerChildAdmittedBy childAdm =
     Trigger_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.FabMenuTrigger.for`](M3e.Component.FabMenuTrigger#for).
+-}
+triggerFor : String -> Attr { c | for : Supported } msg
+triggerFor =
+    Trigger_.for

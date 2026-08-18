@@ -26,7 +26,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Sectioning
+import TypedHtml.Component.Sectioning
 import UrlPath
 import View exposing (View)
 
@@ -245,12 +245,12 @@ rankedCells cells =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Round-trip report" }
+    M3e.heading
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
-        []
+        [ M3e.text "Round-trip report" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -273,7 +273,7 @@ view app _ =
 vocabulary, so the form names aren't undefined jargon. `top`/`record`/`build`/`barrel`
 are the four interchangeable [surfaces](/guide/the-layers).
 -}
-surfaceLegend : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+surfaceLegend : Element (TypedHtml.Component.Sectioning.SectionIs s) adm_ msg
 surfaceLegend =
     TypedHtml.section
         [ TA.class "mt-8 max-w-2xl rounded-md-corner-medium bg-surface-container p-4 space-y-2" ]
@@ -288,19 +288,21 @@ surfaceLegendText =
 
 | Row | What it is | Surface map |
 | --- | --- | --- |
-| **top** | `M3e.Component.Button.component` — the standard (bare, when a component has nothing required) form: typed, slot-safe, composes anywhere. | the standard constructor surface ([surface map](/guide/the-layers)) |
-| **record** | `M3e.Component.Button.component { … }` — the required-record form: the parts a component can't omit are demanded by the compiler. | the required-record `el` surface ([surface map](/guide/the-layers)) |
-| **build** | Historical row from before the `el`-unification: the fluent-builder surface (`M3e.Build.*`) has since been deleted wholesale — this row is a frozen snapshot in the committed report, not a live surface. | *removed* ([surface map](/guide/the-layers)) |
-| **barrel** | `M3e.button` — one import that re-exports every component's standard constructor, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/guide/reference)) |
+| **top** | `M3e.Component.Divider.component […] […]` — the standard form (no required record): typed, slot-safe, composes anywhere. | the standard `component` surface ([surface map](/guide/the-layers)) |
+| **record** | `M3e.Component.Button.component { … }` — the required-record form: the parts a component can't omit are demanded by the compiler (the 29 components that have a required record). | the required-record `component` surface ([surface map](/guide/the-layers)) |
+| **build** | `M3e.Build.Button.build { … }` piped through `M3e.Build.Button.toElement` — one-only setters unwritable twice, order-free. | the `build` surface ([surface map](/guide/the-layers)) |
+| **barrel** | `M3e.button` — one import that re-exports every component's `component`, with the shared `M3e.Attributes.variant Value.filled` vocabulary. | the barrel surface the Guide teaches ([reference](/guide/reference)) |
 
-These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value. (The `build` row is retained here only because the underlying report data predates the deletion and check:drift deliberately doesn't regenerate this pipeline cold — see `docs/scripts/check-data-drift.mjs`.)"""
+These are **peers, not a ranking** — interchangeable call shapes that all produce the same slottable value."""
 
 
-summarySection : List ( String, SurfaceAgg ) -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+summarySection : List ( String, SurfaceAgg ) -> Element (TypedHtml.Component.Sectioning.SectionIs s) adm_ msg
 summarySection perSurface =
     TypedHtml.section
         [ TA.class "mt-12 space-y-4" ]
-        [ M3e.Component.Heading.component { content = M3e.text "Per-form summary" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
+        [ M3e.heading
+            [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+            [ M3e.text "Per-form summary" ]
         , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map surfaceRow perSurface)
         ]
@@ -315,7 +317,7 @@ surfaceRow ( name, agg ) =
                 [ TA.class "space-y-1" ]
                 [ TypedHtml.div
                     []
-                    [ M3e.Component.Heading.component { content = M3e.text name } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-primary" ] [] ]
+                    [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-primary" ] [ M3e.text name ] ]
                 , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ]
                     [ M3e.text
                         (String.fromInt agg.converted
@@ -350,12 +352,14 @@ surfaceRow ( name, agg ) =
         ]
 
 
-cellsSection : List Cell -> Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+cellsSection : List Cell -> Element (TypedHtml.Component.Sectioning.SectionIs s) adm_ msg
 cellsSection cells =
     TypedHtml.section
         [ TA.class "mt-12 space-y-4" ]
         [ M3e.divider [] []
-        , M3e.Component.Heading.component { content = M3e.text "Cells (deviations first)" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
+        , M3e.heading
+            [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+            [ M3e.text "Cells (deviations first)" ]
         , TypedHtml.div [ TA.class "space-y-3" ]
             (List.map cellRow (rankedCells cells))
         ]

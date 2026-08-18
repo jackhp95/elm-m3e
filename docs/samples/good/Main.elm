@@ -9,7 +9,6 @@ import M3e.Action
 import M3e.Component.Button as Button
 import M3e.Component.Theme as Theme
 import M3e.Values as Value
-import M3e.Component.Heading
 
 
 main : Program () () ()
@@ -19,16 +18,14 @@ main =
 
 view : () -> Html.Html ()
 view _ =
-    let
-        app =
-            Theme.component
-                [ Theme.color "#6750A4"
-                , Theme.scheme Value.auto
-                ]
-                [ Button.component
-                    { content = M3e.text "It works", action = M3e.Action.none }
-                    [ Button.variant Value.filled ]
-                    []
-                ]
-    in
-    M3e.toHtml app
+    M3e.toHtml
+        (Theme.component
+            [ Theme.color "#6750A4"
+            , Theme.scheme Value.auto
+            ]
+            [ Button.component
+                { content = M3e.text "It works", action = M3e.Action.none }
+                [ Button.variant Value.filled ]
+                []
+            ]
+        )

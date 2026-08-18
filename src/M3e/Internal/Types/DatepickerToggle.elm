@@ -15,6 +15,7 @@ type alias Is s =
 
 type alias Attrs =
     { class : Supported
+    , for : Supported
     , id : Supported
     , slot : Supported
     , style : Supported
@@ -31,6 +32,7 @@ type alias Builder attrCaps slotCaps msg s =
 
 type alias AttrCaps =
     { class : Available
+    , for : Available
     , id : Available
     , slot : Available
     , style : Available

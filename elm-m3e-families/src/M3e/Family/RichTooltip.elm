@@ -1,4 +1,4 @@
-module M3e.Family.RichTooltip exposing (RichTooltipIs, RichTooltipAttrs, RichTooltipContent, RichTooltipSubheadSlot, RichTooltipChildAdmittedBy, RichTooltipPosition, RichTooltipTouchGestures, ActionIs, ActionAttrs, ActionContent, ActionChildAdmittedBy, richTooltip, richTooltipPosition, richTooltipTouchGestures, richTooltipDisabled, richTooltipFor, richTooltipHideDelay, richTooltipShowDelay, richTooltipOnBeforetoggle, richTooltipOnToggle, richTooltipActions, richTooltipSubhead, richTooltipChild, action, actionDisableRestoreFocus, actionChild)
+module M3e.Family.RichTooltip exposing (RichTooltipIs, RichTooltipAttrs, RichTooltipBuilder, RichTooltipAttrCaps, RichTooltipSlotCaps, RichTooltipContent, RichTooltipSubheadSlot, RichTooltipChildAdmittedBy, RichTooltipPosition, RichTooltipTouchGestures, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionContent, ActionChildAdmittedBy, richTooltip, richTooltipPosition, richTooltipTouchGestures, richTooltipDisabled, richTooltipFor, richTooltipHideDelay, richTooltipShowDelay, richTooltipOnBeforetoggle, richTooltipOnToggle, richTooltipActions, richTooltipSubhead, richTooltipChild, action, actionDisableRestoreFocus, actionChild)
 
 {-| The **RichTooltip** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs RichTooltipIs, RichTooltipAttrs, RichTooltipContent, RichTooltipSubheadSlot, RichTooltipChildAdmittedBy, RichTooltipPosition, RichTooltipTouchGestures, ActionIs, ActionAttrs, ActionContent, ActionChildAdmittedBy, richTooltip, richTooltipPosition, richTooltipTouchGestures, richTooltipDisabled, richTooltipFor, richTooltipHideDelay, richTooltipShowDelay, richTooltipOnBeforetoggle, richTooltipOnToggle, richTooltipActions, richTooltipSubhead, richTooltipChild, action, actionDisableRestoreFocus, actionChild
+@docs RichTooltipIs, RichTooltipAttrs, RichTooltipBuilder, RichTooltipAttrCaps, RichTooltipSlotCaps, RichTooltipContent, RichTooltipSubheadSlot, RichTooltipChildAdmittedBy, RichTooltipPosition, RichTooltipTouchGestures, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionContent, ActionChildAdmittedBy, richTooltip, richTooltipPosition, richTooltipTouchGestures, richTooltipDisabled, richTooltipFor, richTooltipHideDelay, richTooltipShowDelay, richTooltipOnBeforetoggle, richTooltipOnToggle, richTooltipActions, richTooltipSubhead, richTooltipChild, action, actionDisableRestoreFocus, actionChild
 
 -}
 
@@ -45,6 +45,24 @@ type alias RichTooltipIs s =
 -}
 type alias RichTooltipAttrs =
     RichTooltip_.Attrs
+
+
+{-| See [`M3e.Component.RichTooltip.Builder`](M3e.Component.RichTooltip#Builder).
+-}
+type alias RichTooltipBuilder attrCaps slotCaps msg kind =
+    RichTooltip_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.RichTooltip.AttrCaps`](M3e.Component.RichTooltip#AttrCaps).
+-}
+type alias RichTooltipAttrCaps =
+    RichTooltip_.AttrCaps
+
+
+{-| See [`M3e.Component.RichTooltip.SlotCaps`](M3e.Component.RichTooltip#SlotCaps).
+-}
+type alias RichTooltipSlotCaps =
+    RichTooltip_.SlotCaps
 
 
 {-| See [`M3e.Component.RichTooltip.Content`](M3e.Component.RichTooltip#Content).
@@ -175,6 +193,24 @@ type alias ActionIs s =
 -}
 type alias ActionAttrs =
     Action_.Attrs
+
+
+{-| See [`M3e.Component.RichTooltipAction.Builder`](M3e.Component.RichTooltipAction#Builder).
+-}
+type alias ActionBuilder attrCaps slotCaps msg kind =
+    Action_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.RichTooltipAction.AttrCaps`](M3e.Component.RichTooltipAction#AttrCaps).
+-}
+type alias ActionAttrCaps =
+    Action_.AttrCaps
+
+
+{-| See [`M3e.Component.RichTooltipAction.SlotCaps`](M3e.Component.RichTooltipAction#SlotCaps).
+-}
+type alias ActionSlotCaps =
+    Action_.SlotCaps
 
 
 {-| See [`M3e.Component.RichTooltipAction.Content`](M3e.Component.RichTooltipAction#Content).

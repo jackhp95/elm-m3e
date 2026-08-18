@@ -16,26 +16,18 @@ keep compiling. Exercises, in one value each:
     `Size = { large, medium, small }`; `M3e.Values.small` is in that set.
   - **The explicit crossing.** `M3e.Unsafe.recast` frees the kind row so a
     Chip is admitted into a `button` slot.
-  - **Attr-list composition.** Ordinary `List.concat`/`++` on `Attr` lists
-    composes cleanly ahead of `el` — post-unification there is no separate
-    pipe-builder surface (`M3e.Build.*` was deleted wholesale; every
-    component is a single two-arity `el`, required-record when it has
-    required fields).
+  - **The pipe-builder.** Attr capabilities pipe cleanly through the builder.
+    Slot and child helpers live in `M3e.Build.AppBar` (Phase B split).
   - **The render exit.** `M3e.toHtml`, called once, at the top.
 
 -}
 
 import Html exposing (Html)
 import M3e
-import M3e.Action
+import M3e.Build.AppBar as AppBarB
 import M3e.Component.AppBar
-import M3e.Component.Chip
-import M3e.Component.Heading
-import M3e.Component.IconButton
-import M3e.Component.SearchBar
 import M3e.Unsafe
 import M3e.Values
-import TypedHtml
 
 
 view : Html msg
@@ -46,31 +38,17 @@ view =
             , M3e.Component.AppBar.centered True
             ]
             [ M3e.Component.AppBar.leading (M3e.icon [] [])
-            , M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Inbox" } [] [])
-            , M3e.Component.AppBar.trailing
-                (M3e.Component.IconButton.component
-                    { content = M3e.icon [] [], ariaLabel = "Search", action = M3e.Action.none }
-                    []
-                    []
-                )
-            , M3e.Component.AppBar.trailing
-                (M3e.Component.SearchBar.component
-                    { input = M3e.Component.SearchBar.input (TypedHtml.input [] []) }
-                    []
-                    []
-                )
-            , M3e.Component.AppBar.trailing
-                (M3e.Unsafe.recast (M3e.Component.Chip.component { content = M3e.text "All" } [] []))
+            , M3e.Component.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
+            , M3e.Component.AppBar.trailing (M3e.iconButton [] [ M3e.icon [] [] ])
+            , M3e.Component.AppBar.trailing (M3e.searchBar [] [])
+            , M3e.Component.AppBar.trailing (M3e.Unsafe.recast (M3e.chip [] [ M3e.text "All" ]))
             ]
         )
 
 
 bar : M3e.Element (M3e.Component.AppBar.Is s) admittedBy msg
 bar =
-    M3e.appBar
-        (List.concat
-            [ [ M3e.Component.AppBar.centered True ]
-            , [ M3e.Component.AppBar.size M3e.Values.small ]
-            ]
-        )
-        []
+    AppBarB.build
+        |> AppBarB.withCentered True
+        |> AppBarB.withSize M3e.Values.small
+        |> AppBarB.toElement

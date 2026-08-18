@@ -7,7 +7,6 @@ import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.Card
-import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -17,7 +16,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -68,7 +67,9 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Motion" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Motion" ]
 
 
 {-| A `(token, value)` reference table: the CSS custom property on the left, its
@@ -85,7 +86,7 @@ tokenTable rows =
         ]
 
 
-tokenRow : ( String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+tokenRow : ( String, String ) -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 tokenRow ( token, value ) =
     TypedHtml.div [ TA.class "flex flex-wrap items-baseline justify-between gap-2 py-2.5" ]
         [ TypedHtml.code [ TA.class "text-body-md text-on-surface" ] [ M3e.text token ]

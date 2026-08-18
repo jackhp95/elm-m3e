@@ -1,6 +1,6 @@
 module M3e.Component.SplitButton exposing
     ( component
-    , Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy
     , Size, size, Variant, variant
     , leadingButton, trailingButton
     )
@@ -10,35 +10,9 @@ module M3e.Component.SplitButton exposing
 A button used to show an action with a menu of related actions.
 
 @docs component
-@docs Is, Attrs, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, LeadingButtonSlot, TrailingButtonSlot, ChildAdmittedBy
 @docs Size, size, Variant, variant
 @docs leadingButton, trailingButton
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.SplitButton.el
-    { leadingButton =
-        M3e.Component.Button.el { content = TypedHtml.text "Send", action = M3e.Action.onClick Send } [] []
-    , trailingButton =
-        M3e.Component.IconButton.el
-            { content = M3e.Component.Icon.el [ M3e.Component.Icon.name "expand_more" ] []
-            , ariaLabel = "More send options"
-            , action = M3e.Action.onClick OpenSendOptions
-            }
-            []
-            []
-    }
-    []
-    []
-```
-
-<!-- elm-cem:docmeta category=Actions -->
 
 -}
 
@@ -93,6 +67,24 @@ type alias Size =
 -}
 type alias Variant =
     M3e.Internal.Types.SplitButton.Variant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.SplitButton.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.SplitButton.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.SplitButton.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

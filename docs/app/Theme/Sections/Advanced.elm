@@ -6,8 +6,9 @@ and Shape's steppers, which drive a `Theme.Scale.ScaleConfig` through
 `SetTypeScaleParam`/`SetShapeScaleParam`, these tokens have no scale-mode
 computation — each stepper writes a raw CSS custom property directly via
 `Theme.SetCssOverride`, reusing `Theme.Sections.Shared.numberStepper` (an
-`M3e.iconButton`-based, real-`Aria.label` stepper) with a `Float -> Msg`
-adapter that rounds back to an `Int` and re-serializes the unit suffix.
+editable `m3e-form-field` with decrement/increment icon buttons) with a
+`Float -> Msg` adapter that rounds back to an `Int` and re-serializes the unit
+suffix.
 -}
 
 import Dict
@@ -18,14 +19,14 @@ import Theme.Sections.Shared as Shared
 import Theme.Tokens as Tokens exposing (MotionDurationToken, StateOpacityToken)
 import TypedHtml
 import TypedHtml.Attributes
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 
 
-view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+view : Theme.Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
-        [ TypedHtml.p [ TypedHtml.Attributes.class "text-on-surface-variant text-sm" ]
-            [ M3e.text "Motion durations and state-layer opacities — raw CSS custom property overrides for the 16 transition-timing tokens and 3 interaction-state opacity tokens @m3e/web exposes." ]
+        [ TypedHtml.p [ TypedHtml.Attributes.class "text-sm text-on-surface-variant" ]
+            [ M3e.text "Motion durations and state-layer opacities — raw CSS custom-property overrides for the 16 transition-timing tokens and 3 interaction-state opacity tokens @m3e/web exposes." ]
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]
             (List.map (durationRow model) Tokens.motionDurationTokens)
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2" ]

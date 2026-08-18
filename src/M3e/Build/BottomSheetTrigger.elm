@@ -1,7 +1,7 @@
 module M3e.Build.BottomSheetTrigger exposing
     ( build, toElement
     , Builder, AttrCaps, SlotCaps, Is, Content, ChildAdmittedBy
-    , withClass, withDetent, withId, withSecondary, withSlot, withStyle
+    , withClass, withDetent, withFor, withId, withSecondary, withSlot, withStyle
     , withChild
     )
 
@@ -9,7 +9,7 @@ module M3e.Build.BottomSheetTrigger exposing
 
 @docs build, toElement
 @docs Builder, AttrCaps, SlotCaps, Is, Content, ChildAdmittedBy
-@docs withClass, withDetent, withId, withSecondary, withSlot, withStyle
+@docs withClass, withDetent, withFor, withId, withSecondary, withSlot, withStyle
 @docs withChild
 
 -}
@@ -20,23 +20,22 @@ import HtmlIr.Kind exposing (Shared, Supported)
 import M3e.Attributes as A
 import M3e.Component.BottomSheetTrigger as Component
 import M3e.Forge.Internal as B
-import M3e.Internal.Types.BottomSheetTrigger
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| -}
 type alias Is s =
-    M3e.Internal.Types.BottomSheetTrigger.Is s
+    Component.Is s
 
 
 {-| -}
 type alias Builder attrCaps slotCaps msg kind =
-    M3e.Internal.Types.BottomSheetTrigger.Builder attrCaps slotCaps msg kind
+    Component.Builder attrCaps slotCaps msg kind
 
 
 {-| -}
 type alias AttrCaps =
-    M3e.Internal.Types.BottomSheetTrigger.AttrCaps
+    Component.AttrCaps
 
 
 {-| -}
@@ -46,20 +45,18 @@ type alias SlotCaps =
 
 {-| -}
 type alias ChildAdmittedBy childAdm =
-    M3e.Internal.Types.BottomSheetTrigger.ChildAdmittedBy childAdm
+    Component.ChildAdmittedBy childAdm
 
 
 {-| -}
 type alias Content =
-    M3e.Internal.Types.BottomSheetTrigger.Content
+    Component.Content
 
 
 {-| -}
-build :
-    { for : String }
-    -> Builder AttrCaps SlotCaps msg kind
-build required_ =
-    B.init "m3e-bottom-sheet-trigger" [ Ir.attribute "for" required_.for ] []
+build : Builder AttrCaps SlotCaps msg kind
+build =
+    B.init "m3e-bottom-sheet-trigger" [] []
 
 
 {-| -}
@@ -105,6 +102,12 @@ withStyle property value_ =
 withDetent : Float -> Builder { a | detent : Available } slotCaps msg kind -> Builder { a | detent : Used } slotCaps msg kind
 withDetent value_ =
     B.withAttribute (A.detent value_)
+
+
+{-| -}
+withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
+withFor value_ =
+    B.withAttribute (A.for value_)
 
 
 {-| -}

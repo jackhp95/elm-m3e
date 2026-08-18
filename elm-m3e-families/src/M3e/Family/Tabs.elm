@@ -1,4 +1,4 @@
-module M3e.Family.Tabs exposing (TabsIs, TabsAttrs, TabsContent, TabsNextIconSlot, TabsPanelSlot, TabsPrevIconSlot, TabsChildAdmittedBy, TabsDisablePagination, TabsHeaderPosition, TabsVariant, TabIs, TabAttrs, TabContent, TabIconSlot, TabChildAdmittedBy, TabPanelIs, TabPanelAttrs, TabPanelChildAdmittedBy, tabs, tabsDisablePagination, tabsHeaderPosition, tabsVariant, tabsNextPageLabel, tabsPreviousPageLabel, tabsStretch, tabsOnChange, tabsOnBeforeinput, tabsOnInput, tabsNextIcon, tabsPanel, tabsPrevIcon, tabsChild, tab, tabDisabled, tabFor, tabSelected, tabDefaultSelected, tabOnBeforeinput, tabOnInput, tabOnChange, tabOnClick, tabIcon, tabChild, tabPanel, tabPanelChild)
+module M3e.Family.Tabs exposing (TabsIs, TabsAttrs, TabsBuilder, TabsAttrCaps, TabsSlotCaps, TabsContent, TabsNextIconSlot, TabsPanelSlot, TabsPrevIconSlot, TabsChildAdmittedBy, TabsDisablePagination, TabsHeaderPosition, TabsVariant, TabIs, TabAttrs, TabBuilder, TabAttrCaps, TabSlotCaps, TabContent, TabIconSlot, TabChildAdmittedBy, TabPanelIs, TabPanelAttrs, TabPanelBuilder, TabPanelAttrCaps, TabPanelSlotCaps, TabPanelChildAdmittedBy, tabs, tabsDisablePagination, tabsHeaderPosition, tabsVariant, tabsNextPageLabel, tabsPreviousPageLabel, tabsStretch, tabsOnChange, tabsOnBeforeinput, tabsOnInput, tabsNextIcon, tabsPanel, tabsPrevIcon, tabsChild, tab, tabDisabled, tabFor, tabSelected, tabDefaultSelected, tabOnBeforeinput, tabOnInput, tabOnChange, tabOnClick, tabIcon, tabChild, tabPanel, tabPanelChild)
 
 {-| The **Tabs** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs TabsIs, TabsAttrs, TabsContent, TabsNextIconSlot, TabsPanelSlot, TabsPrevIconSlot, TabsChildAdmittedBy, TabsDisablePagination, TabsHeaderPosition, TabsVariant, TabIs, TabAttrs, TabContent, TabIconSlot, TabChildAdmittedBy, TabPanelIs, TabPanelAttrs, TabPanelChildAdmittedBy, tabs, tabsDisablePagination, tabsHeaderPosition, tabsVariant, tabsNextPageLabel, tabsPreviousPageLabel, tabsStretch, tabsOnChange, tabsOnBeforeinput, tabsOnInput, tabsNextIcon, tabsPanel, tabsPrevIcon, tabsChild, tab, tabDisabled, tabFor, tabSelected, tabDefaultSelected, tabOnBeforeinput, tabOnInput, tabOnChange, tabOnClick, tabIcon, tabChild, tabPanel, tabPanelChild
+@docs TabsIs, TabsAttrs, TabsBuilder, TabsAttrCaps, TabsSlotCaps, TabsContent, TabsNextIconSlot, TabsPanelSlot, TabsPrevIconSlot, TabsChildAdmittedBy, TabsDisablePagination, TabsHeaderPosition, TabsVariant, TabIs, TabAttrs, TabBuilder, TabAttrCaps, TabSlotCaps, TabContent, TabIconSlot, TabChildAdmittedBy, TabPanelIs, TabPanelAttrs, TabPanelBuilder, TabPanelAttrCaps, TabPanelSlotCaps, TabPanelChildAdmittedBy, tabs, tabsDisablePagination, tabsHeaderPosition, tabsVariant, tabsNextPageLabel, tabsPreviousPageLabel, tabsStretch, tabsOnChange, tabsOnBeforeinput, tabsOnInput, tabsNextIcon, tabsPanel, tabsPrevIcon, tabsChild, tab, tabDisabled, tabFor, tabSelected, tabDefaultSelected, tabOnBeforeinput, tabOnInput, tabOnChange, tabOnClick, tabIcon, tabChild, tabPanel, tabPanelChild
 
 -}
 
@@ -45,6 +45,24 @@ type alias TabsIs s =
 -}
 type alias TabsAttrs =
     Tabs_.Attrs
+
+
+{-| See [`M3e.Component.Tabs.Builder`](M3e.Component.Tabs#Builder).
+-}
+type alias TabsBuilder attrCaps slotCaps msg kind =
+    Tabs_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Tabs.AttrCaps`](M3e.Component.Tabs#AttrCaps).
+-}
+type alias TabsAttrCaps =
+    Tabs_.AttrCaps
+
+
+{-| See [`M3e.Component.Tabs.SlotCaps`](M3e.Component.Tabs#SlotCaps).
+-}
+type alias TabsSlotCaps =
+    Tabs_.SlotCaps
 
 
 {-| See [`M3e.Component.Tabs.Content`](M3e.Component.Tabs#Content).
@@ -208,6 +226,24 @@ type alias TabAttrs =
     Tab_.Attrs
 
 
+{-| See [`M3e.Component.Tab.Builder`](M3e.Component.Tab#Builder).
+-}
+type alias TabBuilder attrCaps slotCaps msg kind =
+    Tab_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Tab.AttrCaps`](M3e.Component.Tab#AttrCaps).
+-}
+type alias TabAttrCaps =
+    Tab_.AttrCaps
+
+
+{-| See [`M3e.Component.Tab.SlotCaps`](M3e.Component.Tab#SlotCaps).
+-}
+type alias TabSlotCaps =
+    Tab_.SlotCaps
+
+
 {-| See [`M3e.Component.Tab.Content`](M3e.Component.Tab#Content).
 -}
 type alias TabContent =
@@ -316,6 +352,24 @@ type alias TabPanelIs s =
 -}
 type alias TabPanelAttrs =
     TabPanel_.Attrs
+
+
+{-| See [`M3e.Component.TabPanel.Builder`](M3e.Component.TabPanel#Builder).
+-}
+type alias TabPanelBuilder attrCaps slotCaps msg kind =
+    TabPanel_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TabPanel.AttrCaps`](M3e.Component.TabPanel#AttrCaps).
+-}
+type alias TabPanelAttrCaps =
+    TabPanel_.AttrCaps
+
+
+{-| See [`M3e.Component.TabPanel.SlotCaps`](M3e.Component.TabPanel#SlotCaps).
+-}
+type alias TabPanelSlotCaps =
+    TabPanel_.SlotCaps
 
 
 {-| See [`M3e.Component.TabPanel.ChildAdmittedBy`](M3e.Component.TabPanel#ChildAdmittedBy).

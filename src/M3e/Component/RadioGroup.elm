@@ -1,6 +1,6 @@
 module M3e.Component.RadioGroup exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
     , ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
     , child
     )
@@ -10,25 +10,9 @@ module M3e.Component.RadioGroup exposing
 A container for a set of radio buttons.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
 @docs ariaInvalid, disabled, name, required, validationmessages, onBeforeinput, onInput, onChange
 @docs child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.RadioGroup.el
-    { content = M3e.Component.Radio.el [ M3e.Component.Radio.checked True ] [] }
-    []
-    []
-```
-
-<!-- elm-cem:docmeta category=Selection -->
 
 -}
 
@@ -60,6 +44,24 @@ type alias Attrs =
 -}
 type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.RadioGroup.ChildAdmittedBy childAdm
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.RadioGroup.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.RadioGroup.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

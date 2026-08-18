@@ -1,6 +1,7 @@
 module M3e.Component.MenuTrigger exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+    , for
     , child
     )
 
@@ -9,21 +10,9 @@ module M3e.Component.MenuTrigger exposing
 An element, nested within a clickable element, used to open a menu.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+@docs for
 @docs child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Opening a menu by id (required `for`)" -->
-```elm
-M3e.Component.MenuTrigger.el { for = "main-menu" } [] [ TypedHtml.text "Open menu" ]
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -55,15 +44,42 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.MenuTrigger.ChildAdmittedBy childAdm
 
 
-{-| Required-content (and action) constructor — omissions are unwritable.
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.MenuTrigger.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.MenuTrigger.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Standard constructor: `[attributes] [children]`. The default slot is
+kind-permissive (`any`): children of any kind compose, but each child's OWN
+admittedBy must still admit this context — a restricted-parent element is
+rejected here at compile time.
 -}
 component :
-    { for : String }
-    -> List (Attr Attrs msg)
+    List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    H.menuTrigger (Ir.attribute "for" required_.for :: attrs) children
+component =
+    H.menuTrigger
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for
 
 
 {-| Place a pre-built element into the default (unnamed) slot (input

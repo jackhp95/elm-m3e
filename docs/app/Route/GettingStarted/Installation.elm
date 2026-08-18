@@ -6,7 +6,6 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -66,12 +65,16 @@ head _ =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Installation" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Installation" ]
 
 
 stepHeading : String -> Element { s | heading : M3e.Kind.Brand } adm_ msg
 stepHeading label =
-    M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, M3e.Attributes.level 2 ]
+        [ M3e.text label ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -114,17 +117,13 @@ import "@m3e/web/all";
             , TypedHtml.section [ TA.class "space-y-3" ]
                 [ stepHeading "3. Add the token + utility CSS bridge"
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                    [ M3e.text "tailwind-m3e-web maps the M3 design tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …). It is NOT published to npm — it is a private repository, vendored here as CSS only. There is no @import from a package name; you must vendor the CSS files into your project first." ]
+                    [ M3e.text "tailwind-m3e-web maps the M3 design tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …). It is NOT published to npm — it is a private repository. There is no @import from a package name outside its own workspace; you must vendor the CSS files into your project first." ]
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                    [ M3e.text "If you have access to the private repo, clone it and copy its CSS into your project; otherwise copy the vendored copy from this repo (docs/vendor/tailwind-m3e-web):" ]
+                    [ M3e.text "If you have access to the private repo, clone it and copy its CSS into your project:" ]
                 , codeBlock Shell """
-# Option A — from the private source repo (requires access)
 git clone https://github.com/jackhp95/tailwind-m3e-web.git
 cp -R tailwind-m3e-web/src        your-project/vendor/tailwind-m3e-web/src
 cp -R tailwind-m3e-web/generated  your-project/vendor/tailwind-m3e-web/generated
-
-# Option B — from the copy vendored inside this repo
-cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
 """
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                     [ M3e.text "Then reference the vendored files by relative path from your stylesheet:" ]
@@ -138,7 +137,7 @@ cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
             , TypedHtml.section [ TA.class "space-y-3" ]
                 [ stepHeading "4. Wrap your app in a theme and render"
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
-                    [ M3e.text "M3e.Theme is an attribute-style element (not a builder): M3e.Component.Theme.theme takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
+                    [ M3e.text "M3e.Theme is an attribute-style element (not a builder): M3e.Component.Theme.component takes a list of attributes — color, scheme, contrast, density, variant, motion — and a list of child elements. It owns the dynamic color for its subtree, usually the whole app. Here is a complete Main.elm that renders a themed button:" ]
                 , codeBlock Elm mainModule
                 , TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ]
                     [ M3e.text "M3e.toHtml turns an M3e Element into elm/html, so Browser.sandbox can render it. Finally, an index.html loads the CSS, registers the components, and boots Elm:" ]
@@ -168,13 +167,10 @@ cp -R elm-m3e/docs/vendor/tailwind-m3e-web your-project/vendor/tailwind-m3e-web
 
 
 
--- `Browser.sandbox` requires `Html`, so the app root has to leave the typed
--- tree exactly once via `M3e.toHtml` — the same real-app shape
--- `app/Shared.elm` uses, which carries a `NoRedundantElementEscape` exemption
--- in the docs review config for exactly this reason. `Theme` (the outermost
--- call here) isn't itself a facts-covered family producer, so the rule
--- doesn't fire on this sample either way; this is a plain `verify` sample
--- (compiles + reviews clean), not an `expect-review` one.
+-- @sample expect-review NoRedundantElementEscape: `Browser.sandbox` requires
+-- `Html`, so the app root has to leave the typed tree exactly once. That is the
+-- same documented exemption `app/Shared.elm` carries in the docs review config —
+-- recorded here rather than hidden, so a SECOND toHtml would still be caught.
 
 
 mainModule : String
@@ -188,7 +184,6 @@ import M3e.Action
 import M3e.Component.Button as Button
 import M3e.Component.Theme as Theme
 import M3e.Values as Value
-import M3e.Component.Heading
 
 
 main : Program () () ()
@@ -198,16 +193,14 @@ main =
 
 view : () -> Html.Html ()
 view _ =
-    let
-        app =
-            Theme.component
-                [ Theme.color "#6750A4"
-                , Theme.scheme Value.auto
-                ]
-                [ Button.component
-                    { content = M3e.text "It works", action = M3e.Action.none }
-                    [ Button.variant Value.filled ]
-                    []
-                ]
-    in
-    M3e.toHtml app"""
+    M3e.toHtml
+        (Theme.component
+            [ Theme.color "#6750A4"
+            , Theme.scheme Value.auto
+            ]
+            [ Button.component
+                { content = M3e.text "It works", action = M3e.Action.none }
+                [ Button.variant Value.filled ]
+                []
+            ]
+        )"""

@@ -1,6 +1,7 @@
 module M3e.Component.DialogTrigger exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+    , for
     )
 
 {-| The `m3e-dialog-trigger` component — strict per-component surface.
@@ -8,20 +9,8 @@ module M3e.Component.DialogTrigger exposing
 An element, nested within a clickable element, used to open a dialog.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Opening a dialog by id (required `for`)" -->
-```elm
-M3e.Component.DialogTrigger.el { for = "confirm-dialog" } [] [ TypedHtml.text "Open" ]
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+@docs for
 
 -}
 
@@ -53,12 +42,36 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.DialogTrigger.ChildAdmittedBy childAdm
 
 
-{-| Required-content (and action) constructor — omissions are unwritable.
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.DialogTrigger.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.DialogTrigger.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 component :
-    { for : String }
-    -> List (Attr Attrs msg)
+    List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    H.dialogTrigger (Ir.attribute "for" required_.for :: attrs) children
+component =
+    H.dialogTrigger
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for

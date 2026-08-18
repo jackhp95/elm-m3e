@@ -1,6 +1,6 @@
 module M3e.Component.Toc exposing
     ( component
-    , Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, OverlineSlot, TitleSlot, ChildAdmittedBy
     , for, maxDepth
     , overline, title, child
     )
@@ -10,22 +10,9 @@ module M3e.Component.Toc exposing
 A table of contents that provides in-page scroll navigation.
 
 @docs component
-@docs Is, Attrs, OverlineSlot, TitleSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, OverlineSlot, TitleSlot, ChildAdmittedBy
 @docs for, maxDepth
 @docs overline, title, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.Toc.el [] []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -67,6 +54,24 @@ type alias TitleSlot =
 -}
 type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.Toc.ChildAdmittedBy childAdm
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Toc.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Toc.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Toc.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is

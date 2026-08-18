@@ -1,6 +1,6 @@
 module M3e.Component.SearchBar exposing
     ( component
-    , Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
     , clearLabel, clearable, onClear
     , clearIcon, input, leading, trailing
     )
@@ -10,25 +10,9 @@ module M3e.Component.SearchBar exposing
 A bar that provides a prominent entry point for search.
 
 @docs component
-@docs Is, Attrs, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ClearIconSlot, LeadingSlot, TrailingSlot, ChildAdmittedBy
 @docs clearLabel, clearable, onClear
 @docs clearIcon, input, leading, trailing
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.SearchBar.el
-    { input = TypedHtml.input [] [] }
-    []
-    [ M3e.Component.SearchBar.leading (M3e.Component.Icon.el [ M3e.Component.Icon.name "search" ] []) ]
-```
-
-<!-- elm-cem:docmeta category=Text inputs -->
 
 -}
 
@@ -77,6 +61,24 @@ type alias TrailingSlot =
 -}
 type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.SearchBar.ChildAdmittedBy childAdm
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.SearchBar.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.SearchBar.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.SearchBar.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

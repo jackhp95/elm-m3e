@@ -1,4 +1,4 @@
-module M3e.Family.NavMenu exposing (NavMenuIs, NavMenuAttrs, NavMenuContent, NavMenuChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemBadgeSlot, ItemIconSlot, ItemLabelSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupContent, ItemGroupLabelSlot, ItemGroupChildAdmittedBy, navMenu, navMenuChild, item, itemDisabled, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemBadge, itemIcon, itemLabel, itemSelectedIcon, itemToggleIcon, itemChild, itemGroup, itemGroupLabel, itemGroupChild)
+module M3e.Family.NavMenu exposing (NavMenuIs, NavMenuAttrs, NavMenuBuilder, NavMenuAttrCaps, NavMenuSlotCaps, NavMenuContent, NavMenuChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemBadgeSlot, ItemIconSlot, ItemLabelSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupBuilder, ItemGroupAttrCaps, ItemGroupSlotCaps, ItemGroupContent, ItemGroupLabelSlot, ItemGroupChildAdmittedBy, navMenu, navMenuChild, item, itemDisabled, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemBadge, itemIcon, itemLabel, itemSelectedIcon, itemToggleIcon, itemChild, itemGroup, itemGroupLabel, itemGroupChild)
 
 {-| The **NavMenu** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs NavMenuIs, NavMenuAttrs, NavMenuContent, NavMenuChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemBadgeSlot, ItemIconSlot, ItemLabelSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupContent, ItemGroupLabelSlot, ItemGroupChildAdmittedBy, navMenu, navMenuChild, item, itemDisabled, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemBadge, itemIcon, itemLabel, itemSelectedIcon, itemToggleIcon, itemChild, itemGroup, itemGroupLabel, itemGroupChild
+@docs NavMenuIs, NavMenuAttrs, NavMenuBuilder, NavMenuAttrCaps, NavMenuSlotCaps, NavMenuContent, NavMenuChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemBadgeSlot, ItemIconSlot, ItemLabelSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupBuilder, ItemGroupAttrCaps, ItemGroupSlotCaps, ItemGroupContent, ItemGroupLabelSlot, ItemGroupChildAdmittedBy, navMenu, navMenuChild, item, itemDisabled, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemBadge, itemIcon, itemLabel, itemSelectedIcon, itemToggleIcon, itemChild, itemGroup, itemGroupLabel, itemGroupChild
 
 -}
 
@@ -44,6 +44,24 @@ type alias NavMenuIs s =
 -}
 type alias NavMenuAttrs =
     NavMenu_.Attrs
+
+
+{-| See [`M3e.Component.NavMenu.Builder`](M3e.Component.NavMenu#Builder).
+-}
+type alias NavMenuBuilder attrCaps slotCaps msg kind =
+    NavMenu_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.NavMenu.AttrCaps`](M3e.Component.NavMenu#AttrCaps).
+-}
+type alias NavMenuAttrCaps =
+    NavMenu_.AttrCaps
+
+
+{-| See [`M3e.Component.NavMenu.SlotCaps`](M3e.Component.NavMenu#SlotCaps).
+-}
+type alias NavMenuSlotCaps =
+    NavMenu_.SlotCaps
 
 
 {-| See [`M3e.Component.NavMenu.Content`](M3e.Component.NavMenu#Content).
@@ -86,6 +104,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.NavMenuItem.Builder`](M3e.Component.NavMenuItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.NavMenuItem.AttrCaps`](M3e.Component.NavMenuItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.NavMenuItem.SlotCaps`](M3e.Component.NavMenuItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.NavMenuItem.Content`](M3e.Component.NavMenuItem#Content).
@@ -255,6 +291,24 @@ type alias ItemGroupIs s =
 -}
 type alias ItemGroupAttrs =
     ItemGroup_.Attrs
+
+
+{-| See [`M3e.Component.NavMenuItemGroup.Builder`](M3e.Component.NavMenuItemGroup#Builder).
+-}
+type alias ItemGroupBuilder attrCaps slotCaps msg kind =
+    ItemGroup_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.NavMenuItemGroup.AttrCaps`](M3e.Component.NavMenuItemGroup#AttrCaps).
+-}
+type alias ItemGroupAttrCaps =
+    ItemGroup_.AttrCaps
+
+
+{-| See [`M3e.Component.NavMenuItemGroup.SlotCaps`](M3e.Component.NavMenuItemGroup#SlotCaps).
+-}
+type alias ItemGroupSlotCaps =
+    ItemGroup_.SlotCaps
 
 
 {-| See [`M3e.Component.NavMenuItemGroup.Content`](M3e.Component.NavMenuItemGroup#Content).

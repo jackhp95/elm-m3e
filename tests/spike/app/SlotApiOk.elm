@@ -6,7 +6,6 @@ This hand-written fixture demonstrates what a generated `M3e.Slot.*` API
 would look like and proves the ergonomics work with existing types.
 
 Key invariants proved here:
-
   - `place (SlotToken admittance) (Element admittance …)` type-checks.
   - Only an element whose kind row extends the token's admittance row compiles.
   - The bad case (wrong kind) fails at compile time — see bad/SlotApiWrongKind.elm.
@@ -16,7 +15,6 @@ The `place` function would live in `M3e.Slot` (the shared placer module).
 NEITHER of these IS generated — do NOT merge.
 
 Generator seam for a real implementation:
-
   - Emit `M3e.Slot.<Component>.elm` per component from `Cem.Facts.slotKinds`.
   - Emit `M3e.Slot.elm` with `place` using `HtmlIr.Internal.fromNode` +
     `HtmlIr.Internal.addAttribute`.
@@ -26,13 +24,12 @@ Generator seam for a real implementation:
 
 import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
-import M3e exposing (text)
+import M3e exposing (icon, text)
 import M3e.Action exposing (onClick)
-import M3e.Component.Button as Button
-import M3e.Component.Icon as Icon
-import M3e.Component.IconButton as IconButton
+import M3e.Build exposing (ButtonIs, IconButtonIs)
+import M3e.Build.Button as Button
+import M3e.Build.IconButton as IconButton
 import M3e.Internal.Types.SplitButton as SBTypes
-
 
 
 -- ---------------------------------------------------------------------------
@@ -47,8 +44,7 @@ row. The `admittance` row is the union of kind fields the slot accepts
 Generated form (one module per component, per slot):
 
     -- M3e.Slot.SplitButton
-    type SlotToken admittance
-        = SlotToken String
+    type SlotToken admittance = SlotToken String
 
 -}
 type SlotToken admittance
@@ -61,7 +57,7 @@ Admittance = SBTypes.LeadingButtonSlot = { button : Brand }.
 Only an element with kind { s | button : Brand } unifies here.
 
 Generated from:
-slotKinds = [ ("leading-button", ["button"]), … ]
+    slotKinds = [ ("leading-button", ["button"]), … ]
 
 -}
 leadingButtonSlot : SlotToken SBTypes.LeadingButtonSlot
@@ -77,7 +73,6 @@ Admittance = SBTypes.TrailingButtonSlot = { iconButton : Brand }.
 trailingButtonSlot : SlotToken SBTypes.TrailingButtonSlot
 trailingButtonSlot =
     SlotToken "trailing-button"
-
 
 
 -- ---------------------------------------------------------------------------
@@ -106,7 +101,6 @@ place (SlotToken slotName) el =
         )
 
 
-
 -- ---------------------------------------------------------------------------
 -- Usage: good placements — kind rows unify, both compile
 -- ---------------------------------------------------------------------------
@@ -120,9 +114,10 @@ type Msg
 {-| A Button element — kind row { s | button : Brand }.
 Satisfies LeadingButtonSlot = { button : Brand }. Good placement.
 -}
-myButton : Element (Button.Is s) admittedBy Msg
+myButton : Element (ButtonIs s) admittedBy Msg
 myButton =
-    Button.component { content = text "Save", action = onClick Save } [] []
+    Button.build { content = text "Save", action = onClick Save }
+        |> Button.toElement
 
 
 {-| A good placement: Button kind { button : Brand } into leadingButtonSlot
@@ -136,13 +131,13 @@ placedLeading =
 {-| An IconButton element — kind row { s | iconButton : Brand }.
 Satisfies TrailingButtonSlot = { iconButton : Brand }. Good placement.
 
-Using the `el` constructor with a minimal required record (content/ariaLabel/
-action) — the slot ergonomics, not the content, is what we prove here.
-
+Built through the required-content ctor (R-025) — the slot ergonomics, not
+the content, is what we prove here.
 -}
-myIconButton : Element (IconButton.Is s) admittedBy Msg
+myIconButton : Element (IconButtonIs s) admittedBy Msg
 myIconButton =
-    IconButton.component { content = Icon.component [ Icon.name "arrow_forward" ] [], ariaLabel = "Go", action = onClick Save } [] []
+    IconButton.build { content = icon [] [], ariaLabel = "icon", action = onClick Save }
+        |> IconButton.toElement
 
 
 {-| A good placement: IconButton kind { iconButton : Brand } into

@@ -1,6 +1,6 @@
 module M3e.Component.AppBar exposing
     ( component
-    , Is, Attrs, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
     , Size, size
     , centered, for
     , leading, leadingIcon, subtitle, title, trailing, trailingIcon
@@ -11,23 +11,10 @@ module M3e.Component.AppBar exposing
 A bar, placed a the top of a screen, used to help users navigate through an application.
 
 @docs component
-@docs Is, Attrs, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, LeadingSlot, SubtitleSlot, TitleSlot, TrailingSlot, ChildAdmittedBy
 @docs Size, size
 @docs centered, for
 @docs leading, leadingIcon, subtitle, title, trailing, trailingIcon
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.AppBar.el [] [ TypedHtml.text "My App" ]
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -88,6 +75,24 @@ type alias ChildAdmittedBy childAdm =
 -}
 type alias Size =
     M3e.Internal.Types.AppBar.Size
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.AppBar.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.AppBar.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.AppBar.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`.

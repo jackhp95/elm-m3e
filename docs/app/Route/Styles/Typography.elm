@@ -17,7 +17,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import TypedHtml.Kind
 import UrlPath
 import View exposing (View)
@@ -75,25 +75,25 @@ font-size / line-height / weight from `--md-sys-typescale-*` (see
 -}
 scale : List ( Element (M3e.Component.Heading.Is { a | sharedPhrasing : TypedHtml.Kind.Shared }) admittedBy msg, String, String )
 scale =
-    [ ( M3e.Component.Heading.component { content = M3e.text "Display Large" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [], "text-display-lg", "3.5625rem / 4rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Display Medium" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [], "text-display-md", "2.8125rem / 3.25rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Display Small" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [], "text-display-sm", "2.25rem / 2.75rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Headline Large" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [], "text-headline-lg", "2rem / 2.5rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Headline Medium" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [], "text-headline-md", "1.75rem / 2.25rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Headline Small" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [], "text-headline-sm", "1.5rem / 2rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Title Large" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [], "text-title-lg", "1.375rem / 1.75rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Title Medium" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [], "text-title-md", "1rem / 1.5rem · 500" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Title Small" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [], "text-title-sm", "0.875rem / 1.25rem · 500" )
+    [ ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Display Large" ], "text-display-lg", "3.5625rem / 4rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Display Medium" ], "text-display-md", "2.8125rem / 3.25rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text "Display Small" ], "text-display-sm", "2.25rem / 2.75rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Headline Large" ], "text-headline-lg", "2rem / 2.5rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Headline Medium" ], "text-headline-md", "1.75rem / 2.25rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text "Headline Small" ], "text-headline-sm", "1.5rem / 2rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Title Large" ], "text-title-lg", "1.375rem / 1.75rem · 400" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Title Medium" ], "text-title-md", "1rem / 1.5rem · 500" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text "Title Small" ], "text-title-sm", "0.875rem / 1.25rem · 500" )
     , ( TypedHtml.span [ TA.class "text-body-lg text-on-surface" ] [ M3e.text "Body Large" ], "text-body-lg", "1rem / 1.5rem · 400" )
     , ( TypedHtml.span [ TA.class "text-body-md text-on-surface" ] [ M3e.text "Body Medium" ], "text-body-md", "0.875rem / 1.25rem · 400" )
     , ( TypedHtml.span [ TA.class "text-body-sm text-on-surface" ] [ M3e.text "Body Small" ], "text-body-sm", "0.75rem / 1rem · 400" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Label Large" } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [], "text-label-lg", "0.875rem / 1.25rem · 500" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Label Medium" } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [], "text-label-md", "0.75rem / 1rem · 500" )
-    , ( M3e.Component.Heading.component { content = M3e.text "Label Small" } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [], "text-label-sm", "0.6875rem / 1rem · 500" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Label Large" ], "text-label-lg", "0.875rem / 1.25rem · 500" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Label Medium" ], "text-label-md", "0.75rem / 1rem · 500" )
+    , ( M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text "Label Small" ], "text-label-sm", "0.6875rem / 1rem · 500" )
     ]
 
 
-row : ( Element (TypedHtml.Grouping.DivIs { a | heading : M3e.Kind.Brand, sharedPhrasing : TypedHtml.Kind.Shared }) (TypedHtml.Grouping.DivChildAdmittedBy childAdm) msg, String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+row : ( Element (TypedHtml.Component.Grouping.DivIs { a | heading : M3e.Kind.Brand, sharedPhrasing : TypedHtml.Kind.Shared }) (TypedHtml.Component.Grouping.DivChildAdmittedBy childAdm) msg, String, String ) -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 row ( exhibit, cls, metrics ) =
     TypedHtml.div [ TA.class "flex flex-wrap items-baseline justify-between gap-2 py-3" ]
         [ exhibit
@@ -106,7 +106,9 @@ row ( exhibit, cls, metrics ) =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Typography" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Typography" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

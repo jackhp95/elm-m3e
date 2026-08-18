@@ -1,6 +1,6 @@
 module M3e.Component.FormField exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
     , FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
     , hideRequiredMarker
     , error, hint, label, prefix, prefixText, suffix, suffixText, child
@@ -11,23 +11,10 @@ module M3e.Component.FormField exposing
 A container for form controls that applies Material Design styling and behavior.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
 @docs FloatLabel, floatLabel, HideSubscript, hideSubscript, Variant, variant
 @docs hideRequiredMarker
 @docs error, hint, label, prefix, prefixText, suffix, suffixText, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.FormField.el [] [ TypedHtml.text "Label" ]
-```
-
-<!-- elm-cem:docmeta category=Text inputs -->
 
 -}
 
@@ -76,6 +63,24 @@ type alias HideSubscript =
 -}
 type alias Variant =
     M3e.Internal.Types.FormField.Variant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.FormField.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.FormField.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.FormField.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is

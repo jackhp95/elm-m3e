@@ -1,6 +1,7 @@
 module M3e.Component.NavRailToggle exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+    , for
     )
 
 {-| The `m3e-nav-rail-toggle` component — strict per-component surface.
@@ -8,7 +9,8 @@ module M3e.Component.NavRailToggle exposing
 An element, nested within a clickable element, used to toggle the expanded state of a navigation rail.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+@docs for
 
 -}
 
@@ -40,12 +42,36 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.NavRailToggle.ChildAdmittedBy childAdm
 
 
-{-| Required-content (and action) constructor — omissions are unwritable.
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.NavRailToggle.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.NavRailToggle.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 component :
-    { for : String }
-    -> List (Attr Attrs msg)
+    List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    H.navRailToggle (Ir.attribute "for" required_.for :: attrs) children
+component =
+    H.navRailToggle
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for

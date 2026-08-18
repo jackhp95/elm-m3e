@@ -5,15 +5,11 @@ import HtmlIr.Element
 import HtmlIr.Kind
 import Json.Decode as Decode
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
-import M3e.Component.Heading
 import M3e.Component.Icon
-import M3e.Component.IconButton
 import M3e.Component.MenuItem
 import M3e.Component.MenuTrigger
-import M3e.Component.SegmentedButton
 import M3e.Component.Theme
 import M3e.Events
 import M3e.Kind
@@ -28,8 +24,8 @@ import Theme.Tokens
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
+import TypedHtml.Component.Grouping
 import TypedHtml.Events
-import TypedHtml.Grouping
 import TypedHtml.Values
 
 
@@ -215,6 +211,10 @@ update msg model =
             persist { model | cssOverrides = Dict.insert cssVar value model.cssOverrides }
                 |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = value })
 
+        -- Revert one raw CSS custom property to the stylesheet default: drop it
+        -- from the persisted overrides AND send `value = ""`, which `index.ts`
+        -- turns into `style.removeProperty` (setting it to a literal empty string
+        -- would leave the inline declaration in place, shadowing the default).
         UnsetCssOverride cssVar ->
             persist { model | cssOverrides = Dict.remove cssVar model.cssOverrides }
                 |> andThen (Theme.Ports.setCssOverride { property = cssVar, value = "" })
@@ -523,26 +523,15 @@ Contrast/Motion segmented controls too.
 -}
 segmented : List ( String, Bool, Msg ) -> Element { s | segmentedButton : M3e.Kind.Brand } admittedBy Msg
 segmented segments =
-    let
-        buttonSegments : List (Element M3e.Component.SegmentedButton.Content (M3e.Component.SegmentedButton.ChildAdmittedBy childAdm) Msg)
-        buttonSegments =
-            List.map
-                (\( lbl, isChecked, msg ) ->
-                    M3e.buttonSegment
-                        [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
-                        [ M3e.text lbl ]
-                )
-                segments
-    in
-    -- SegmentedButton's `el` is required-record (`content`, one Element); every
-    -- real caller supplies a non-empty enum list, so the `[]` branch is
-    -- unreachable in practice — still handled so the type holds unconditionally.
-    case buttonSegments of
-        first :: rest ->
-            M3e.Component.SegmentedButton.component { content = first } [] rest
-
-        [] ->
-            M3e.Component.SegmentedButton.component { content = M3e.buttonSegment [] [] } [] []
+    M3e.segmentedButton []
+        (List.map
+            (\( lbl, isChecked, msg ) ->
+                M3e.buttonSegment
+                    [ M3e.Attributes.checked isChecked, M3e.Events.onClick msg ]
+                    [ M3e.text lbl ]
+            )
+            segments
+        )
 
 
 {-| Upper-case the first character. Enum wire strings are lower-case; the
@@ -559,24 +548,35 @@ capitalize s =
             s
 
 
-{-| A small label heading above a control. Relocated from `Shared.elm` — sections
-(`Theme.Sections.*`) can't import `Shared` (it sits ABOVE `Theme` in the import
-graph), so this lives alongside `segmented`/`capitalize`, the same relocation
-pattern used when the drawer was split out. msg-polymorphic so both `Theme` and
-`Shared` render it under their own `Msg`.
+{-| A small label heading above a control. Relocated here from `Shared.elm`: the
+`Theme.Sections.*` modules cannot import `Shared` (it sits ABOVE `Theme` in the
+import graph), so it lives alongside `segmented`/`capitalize` — the same
+relocation pattern used when the drawer was split out. `msg`-polymorphic so both
+`Theme` and `Shared` can render it under their own `Msg`.
 -}
 controlLabel : String -> Element { s | heading : M3e.Kind.Brand } admittedBy msg
 controlLabel lbl =
-    M3e.Component.Heading.component { content = M3e.text lbl } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TypedHtml.Attributes.class "text-on-surface" ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.label
+        , M3e.Attributes.size Value.large
+        , TypedHtml.Attributes.class "text-on-surface"
+        ]
+        [ M3e.text lbl ]
 
 
-{-| Scheme control: a single toggle icon button flipping Light ⇄ Dark (matching
-`Shared.directionToggle`'s shape). `auto` ("System") is no longer directly
-selectable here — it's reachable only via the control row's scoped reset. When
-`scheme == auto`, the toggle reads as "not dark" (shows `dark_mode`, i.e. click
-to go dark) without that constituting a `SetScheme` call.
+{-| Scheme control: a single toggle icon button flipping Light ⇄ Dark (the same
+shape as `Shared.directionToggle`), replacing the 3-option segmented control.
+`auto` ("System") is no longer directly selectable here — it is reachable through
+the control row's scoped reset. When `scheme == auto` the toggle reads as "not
+dark" (shows `dark_mode`, i.e. click to go dark) without that being a `SetScheme`.
+
+These controls compare tokens with `==`. A `Value` is opaque over a `String`, so
+the comparison is on the underlying wire string — meaning tokens from DIFFERENT
+enums that share a string would compare equal. Safe here because each control
+only ever compares a field against its own enum's values.
+
 -}
-schemeToggle : Model -> Element (M3e.Component.IconButton.Is s) admittedBy Msg
+schemeToggle : Model -> Element { s | iconButton : M3e.Kind.Brand } admittedBy Msg
 schemeToggle model =
     let
         isDark : Bool
@@ -590,9 +590,9 @@ schemeToggle model =
             else
                 ( Value.dark, "dark_mode", "Switch to dark theme" )
     in
-    M3e.Component.IconButton.component
-        { content = M3e.icon [ M3e.Component.Icon.name glyph ] [], ariaLabel = lbl, action = M3e.Action.none }
+    M3e.iconButton
         [ TypedHtml.Events.onClick (SetScheme next)
+        , Aria.label lbl
         , Aria.pressed
             (if isDark then
                 Aria.true
@@ -601,7 +601,7 @@ schemeToggle model =
                 Aria.false
             )
         ]
-        []
+        [ M3e.icon [ M3e.Component.Icon.name glyph ] [] ]
 
 
 {-| The 9 M3 dynamic-color variants valid on `m3e-theme`. Separated from the
@@ -673,33 +673,42 @@ variantLabelFor v =
             capitalize other
 
 
-{-| Variant picker: an `m3e-select` of the 9 `themeVariantValues` (was a 9-option
-segmented button that overflowed on narrow screens). Selecting fires the existing
-`SetVariant` msg — no `Msg`/model change, just the rendering swap. Uses `select`/
-`option` (the proven picker; the `menu` family has no existing docs usage and no
-clean declarative anchor — see plan's component-API reality check).
+{-| Variant picker: a button whose nested `m3e-menu-trigger` opens an anchored
+`m3e-menu` of the 9 `themeVariantValues` (was a 9-option segmented button that
+overflowed on every narrow screen). The anchor is `MenuTrigger.for` pointing at
+the sibling menu's `id`; the menu itself carries no `for`/`open` attribute.
+Selecting fires the existing `SetVariant` — no `Msg`/model change, only the
+rendering swap.
 -}
-variantSelect : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+variantSelect : Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 variantSelect model =
     TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
-        [ M3e.Component.Button.component
-            { content =
-                M3e.Component.MenuTrigger.component { for = "variant-menu" }
-                    []
-                    [ M3e.text (variantLabelFor model.variant) ]
-            , action = M3e.Action.none
-            }
+        [ M3e.button
             []
-            [ M3e.Component.Button.trailingIcon (M3e.icon [ M3e.Component.Icon.name "arrow_drop_down" ] []) ]
-        , M3e.menu [ M3e.Attributes.id "variant-menu" ]
+            [ M3e.menuTrigger
+                [ M3e.Component.MenuTrigger.for variantMenuId ]
+                [ M3e.text (variantLabelFor model.variant) ]
+            , M3e.Component.Button.trailingIcon
+                (M3e.icon [ M3e.Component.Icon.name "arrow_drop_down" ] [])
+            ]
+        , M3e.menu [ M3e.Attributes.id variantMenuId ]
             (List.map
                 (\v ->
-                    M3e.menuItem [ M3e.Component.MenuItem.onClick (SetVariant v) ]
+                    M3e.menuItem
+                        [ M3e.Component.MenuItem.onClick (SetVariant v) ]
                         [ M3e.text (variantLabelFor v) ]
                 )
                 themeVariantValues
             )
         ]
+
+
+{-| The one `id` the variant button's `menu-trigger` anchors to. A single
+constant so the anchor and the menu can never drift apart.
+-}
+variantMenuId : String
+variantMenuId =
+    "theme-variant-menu"
 
 
 {-| The drawer's color controls, all real m3e components: a row of blank
@@ -710,18 +719,22 @@ primary — never a hand-painted hex. Each swatch sets the avatar's
 resolves against that swatch's nested theme. The first option is the
 source-color picker (`sourceColorOption`). A small `m3e-heading` labels the row.
 -}
-colorOptions : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+colorOptions : Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 colorOptions model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1.5" ]
         [ TypedHtml.div []
-            [ M3e.Component.Heading.component { content = M3e.text "Source color" }
+            [ M3e.heading
                 [ M3e.Attributes.variant Value.label
                 , M3e.Attributes.size Value.small
                 , TypedHtml.Attributes.class "text-on-surface-variant"
                 ]
-                []
+                [ M3e.text "Source color" ]
             ]
-        , TypedHtml.div [ TypedHtml.Attributes.class "flex gap-3 overflow-x-auto snap-x snap-mandatory items-center py-2" ]
+        , -- One horizontally-scrolling, snap-aligned row instead of a wrapping
+          -- block: the swatch strip is a browse-and-pick control, and wrapping it
+          -- to four rows in a narrow drawer buries the reel and the sections
+          -- below it. `py-2` gives the selected swatch's ring room to draw.
+          TypedHtml.div [ TypedHtml.Attributes.class "flex snap-x snap-mandatory items-center gap-3 overflow-x-auto py-2" ]
             (sourceColorOption model :: List.map (colorAvatar model) curatedSwatchColors)
         ]
 
@@ -732,7 +745,7 @@ carrying a `colorize` icon, with a transparent native `<input type=color>`
 stretched over it — clicking anywhere opens the OS color picker and fires
 `SetSeed`. The native input is the keyboard-accessible control.
 -}
-sourceColorOption : Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+sourceColorOption : Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 sourceColorOption model =
     TypedHtml.div
         [ TypedHtml.Attributes.class "relative inline-flex rounded-full" ]
@@ -769,12 +782,16 @@ phrasing-content slot. The active swatch (matching the current seed) gets a
 primary ring in the APP palette so the selected marker reads consistently
 across hues.
 -}
-colorAvatar : Model -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+colorAvatar : Model -> String -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 colorAvatar model hex =
     TypedHtml.div
         [ TypedHtml.Attributes.class
             ("relative inline-flex rounded-full "
                 ++ (if model.seed == hex then
+                        -- `on-surface`, not `primary`: the ring is drawn in the
+                        -- APP palette over a swatch whose own nested theme is a
+                        -- different hue, and a primary ring can vanish against a
+                        -- near-primary swatch.
                         "ring-2 ring-on-surface"
 
                     else
@@ -845,16 +862,20 @@ here.
 view :
     { dir : TypedHtml.Values.Value TypedHtml.Values.Dir
     , onSetDirection : TypedHtml.Values.Value TypedHtml.Values.Dir -> msg
-    , sectionsEl : Element { cs | formField : M3e.Kind.Brand, segmentedButton : M3e.Kind.Brand, sharedFlow : HtmlIr.Kind.Shared, button : M3e.Kind.Brand } (TypedHtml.Grouping.DivChildAdmittedBy sectionAdm) msg
+    , sectionsEl : Element { cs | formField : M3e.Kind.Brand, segmentedButton : M3e.Kind.Brand, sharedFlow : HtmlIr.Kind.Shared, button : M3e.Kind.Brand } (TypedHtml.Component.Grouping.DivChildAdmittedBy sectionAdm) msg
     }
     -> Model
     -> (Msg -> msg)
-    -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+    -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy msg
 view { sectionsEl } model toMsg =
     TypedHtml.div
         [ TypedHtml.Attributes.class "flex flex-col gap-2 py-4"
         ]
-        [ colorOptions model |> HtmlIr.Element.map toMsg
+        [ -- Scheme and variant no longer render here: they moved into
+          -- `Shared.controlRow`, pinned at the top of the settings sheet with
+          -- direction and the scoped reset, so the three "what does the whole app
+          -- look like" knobs sit together above the per-topic accordion.
+          colorOptions model |> HtmlIr.Element.map toMsg
         , Theme.Reel.view
             { presets = Theme.Presets.presets
             , activeId = model.activePresetId
@@ -867,4 +888,6 @@ view { sectionsEl } model toMsg =
 
 resetAllButton : Element (M3e.Component.Button.Is s) admittedBy Msg
 resetAllButton =
-    M3e.Component.Button.component { content = M3e.text "Reset all", action = M3e.Action.none } [ TypedHtml.Events.onClick ResetAll ] []
+    M3e.button
+        [ TypedHtml.Events.onClick ResetAll ]
+        [ M3e.text "Reset all" ]

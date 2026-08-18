@@ -14,9 +14,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
-import M3e.Component.Button
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -74,7 +72,7 @@ controls until the single conversion at the root.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -113,7 +111,7 @@ That does mean the API isn't *fully* automatic: when a new version of the compon
 
 inspectable : String
 inspectable =
-    """**A component isn't opaque HTML — it's inspectable data.** `M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []` doesn't produce HTML on the spot. It builds a small value the library can *read*: it knows this is a button, that it's filled, that its content is the text "Save". Your whole page stays as this readable data right up until one conversion — `M3e.toNode` — at your app's root, which turns the entire tree into HTML exactly once.
+    """**A component isn't opaque HTML — it's inspectable data.** `M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]` doesn't produce HTML on the spot. It builds a small value the library can *read*: it knows this is a button, that it's filled, that its content is the text "Save". Your whole page stays as this readable data right up until one conversion — `M3e.toNode` — at your app's root, which turns the entire tree into HTML exactly once.
 
 Because the library can inspect what you built *before* it becomes HTML, it can enforce rules a plain HTML wrapper never could — the next chapters are all cashing in on this one fact."""
 
@@ -122,7 +120,7 @@ rootCode : String
 rootCode =
     """-- your page stays inspectable data all the way up…
 saveButton =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 
 -- …and becomes HTML exactly once, at the root:

@@ -1,6 +1,6 @@
 module M3e.Component.Fab exposing
     ( component
-    , Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps
     , Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
     , closeIcon, label, child
@@ -11,26 +11,10 @@ module M3e.Component.Fab exposing
 A floating action button (FAB) used to present important actions.
 
 @docs component
-@docs Is, Attrs, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, CloseIconSlot, LabelSlot, ChildAdmittedBy, ActionCaps
 @docs Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, target, value, defaultValue, onClick
 @docs closeIcon, label, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.Fab.el
-    { content = M3e.Component.Icon.el [ M3e.Component.Icon.name "add" ] [], action = M3e.Action.onClick Create }
-    []
-    []
-```
-
-<!-- elm-cem:docmeta category=Actions -->
 
 -}
 
@@ -106,6 +90,24 @@ type alias Variant =
 -}
 type alias ActionCaps =
     M3e.Internal.Types.Fab.ActionCaps
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Fab.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Fab.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Fab.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

@@ -1,6 +1,6 @@
 module M3e.Component.SlideGroup exposing
     ( component
-    , Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, NextIconSlot, PrevIconSlot, ChildAdmittedBy
     , disabled, nextPageLabel, previousPageLabel, threshold, vertical
     , nextIcon, prevIcon, child
     )
@@ -10,22 +10,9 @@ module M3e.Component.SlideGroup exposing
 Presents pagination controls used to scroll overflowing content.
 
 @docs component
-@docs Is, Attrs, NextIconSlot, PrevIconSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, NextIconSlot, PrevIconSlot, ChildAdmittedBy
 @docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIcon, prevIcon, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.SlideGroup.el [] []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -67,6 +54,24 @@ type alias PrevIconSlot =
 -}
 type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.SlideGroup.ChildAdmittedBy childAdm
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.SlideGroup.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.SlideGroup.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.SlideGroup.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is

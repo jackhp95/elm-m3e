@@ -2,11 +2,10 @@ module Route.Guide.TheLayers exposing (ActionData, Data, Model, Msg, route)
 
 {-| Guide (`/guide/the-layers`): the orienting map. A component is not a
 stack of layers you descend; it is one typed value you can write through a
-handful of interchangeable **surfaces** (barrel, the standard constructor, the
-required-record `el`), plus a few loud **escapes** for leaving the typed tree.
-The running example doesn't change; the same Save button is shown live once
-and its surfaces are shown as code, with the "hand-writing raw HTML the
-library already ships" tell.
+handful of interchangeable **surfaces** (barrel, `component`, `build`), plus a
+few loud **escapes** for leaving the typed tree. The running example doesn't
+change; the same Save button is shown live once and its surfaces are shown as
+code, with the "hand-writing raw HTML the library already ships" tell.
 -}
 
 import BackendTask
@@ -14,9 +13,7 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
-import M3e.Component.Button
 import M3e.Kind
 import M3e.Values as Value
 import Pages.Url
@@ -61,7 +58,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.svg" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "A component is one typed value written through interchangeable surfaces — barrel, component module, required-record el. You leave the typed tree only through a few loud, named escapes."
+        , description = "A component is one typed value written through interchangeable surfaces — barrel, view, el, build. You leave the typed tree only through a few loud, named escapes."
         , locale = Nothing
         , title = "The surface map · elm-m3e"
         }
@@ -74,7 +71,7 @@ produce this same slottable value, so one live demo covers them all.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+    M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -116,15 +113,15 @@ layers =
 layersDiagram : String
 layersDiagram =
     """SURFACES — same typed value, different call shape (a horizontal choice)
-  M3e.button …                     barrel: one import, every component's standard constructor
-  M3e.Component.AppBar.component …                    the component module's `el` — bare/list form (no required fields)
-  M3e.Component.Button.component { … } …               the component module's `el` — required-record form (components with required fields)
+  M3e.button …                     barrel: one import, every component's `component`
+  M3e.Component.Divider.component [ … ] …           the standard/list form (no required record)
+  M3e.Component.Button.component { … } …            required-record form (the 29 with a required record)
+  M3e.Build.Button.build { … } |> …      builder pipe, closed by M3e.Build.Button.toElement
 
 LOOSENESS — opt out of the strict phantom rows, still in the IR
   M3e.Html.button …                the loose producer (open rows, no slot checking)
 
 ESCAPES — leave the typed tree (loud, greppable, lint-fenced)
-  M3e.Component.Coerce.asButton …            config-blessed kind crossing
   M3e.Unsafe.fromHtml …            wrap raw elm/html; free rows, checks nothing
   M3e.Unsafe.recast …              re-kind an Element so it fits any slot
   M3e.Unsafe.customElement …       forge a custom-element tag as a slot-ready Element"""
@@ -138,11 +135,18 @@ sameButton =
 descentCode : String
 descentCode =
     """-- barrel: one import, the standard form — the default
-M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Attributes.variant Value.filled ] []
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
--- component module: same output, component-scoped tighter types — `el` is
--- required-record here because Button can't omit its content/action
-M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant Value.filled ] []"""
+-- component module: same output, component-scoped tighter types
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] []
+
+-- required-record form: the compiler demands the parts a button can't omit
+M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.onClick Save } [] []
+
+-- builder pipe: a one-only setter is unwritable twice; order-free
+M3e.Build.Button.build { content = M3e.text "Save", action = M3e.Action.onClick Save }
+    |> M3e.Build.Button.withVariant Value.filled
+    |> M3e.Build.Button.toElement"""
 
 
 tell : String
@@ -152,8 +156,8 @@ tell =
 
 recap : String
 recap =
-    """- A component is **one typed value**, written through interchangeable **surfaces** (barrel, standard constructor, component-module `el`) — **peers, not a ranking**.
+    """- A component is **one typed value**, written through interchangeable **surfaces** (barrel, `component`, `build`) — **peers, not a ranking**.
 - `M3e.Html.*` is the **loose** producer: opt out of strict phantom rows while staying in the IR (it is *not* plain HTML).
-- You leave the typed tree only through loud, named **escapes**: `M3e.Unsafe` / `M3e.Unsafe.Attributes` (`fromHtml`, `fromNode`, `recast`, `customElement`, …) — shipped with the library, built on the raw forge `HtmlIr.Internal` that application code never touches directly — plus `M3e.Coerce` for the config-blessed kind crossings a brand declares.
+- You leave the typed tree only through loud, named **escapes**: `M3e.Unsafe` / `M3e.Unsafe.Attributes` (`fromHtml`, `fromNode`, `recast`, `customElement`, …) — shipped with the library, built on the raw forge `HtmlIr.Internal` that application code never touches directly. There is no second, config-blessed kind-crossing module — a specific, recurring crossing is a small named function built on `recast`.
 - The tell that you over-escaped: **hand-writing raw HTML the library already ships as a component.**
 - **Next: [Your own seam](/guide/seams) →** when you *do* need to step outside, do it through one of the sanctioned escapes."""

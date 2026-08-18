@@ -17,7 +17,7 @@
 //      (source-dirs = real library sources) — the compile-verified corpus.
 //   2. Write a scratch elm-review CONFIG whose single rule is `PreferBarrel.rule`.
 //   3. Run `elm-review --report=json` (NOT --fix). Apply the rename edits ourselves
-//      in one pass (each `M3e.<Comp>.<name>`/`.<setter>` / `M3e.Token.<token>` node
+//      in one pass (each `M3e.<Comp>.view`/`.<setter>` / `M3e.Token.<token>` node
 //      → its flat `M3e.<name>` barrel export). We SKIP the rule's zero-width
 //      `import M3e` insertions — imports are regenerated from references here.
 //   4. Recover each binding, compile-verify the whole barrelised set, and keep an
@@ -49,7 +49,7 @@ const REPO = resolve(HERE, "..", "..", "..");
 const RICH = resolve(REPO, "config/examples.rich.json");
 const BARREL = resolve(REPO, "config/examples.barrel.json");
 
-const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/vendor/elm-foundation`];
+const SRC_DIRS = [`${REPO}/src`, `${REPO}/docs/kit`];
 const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
 const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
 const reviewElm = JSON.parse(readFileSync(`${REPO}/review/elm.json`, "utf8"));

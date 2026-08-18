@@ -16,13 +16,10 @@ import Guide.Samples as Samples
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Component.AppBar
 import M3e.Component.Button
 import M3e.Component.FormField
-import M3e.Component.Heading
 import M3e.Component.Icon
-import M3e.Component.IconButton
 import M3e.Component.NavMenuItem
 import M3e.Kind
 import M3e.Unsafe
@@ -33,8 +30,9 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
+import TypedHtml.Aria
 import TypedHtml.Attributes
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -80,7 +78,10 @@ head _ =
 
 saveButton : Element { s | button : M3e.Kind.Brand } admittedBy msg
 saveButton =
-    M3e.Component.Button.component { content = M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "save" ] []), action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Save" ]
+    M3e.button [ M3e.Component.Button.variant Value.filled ]
+        [ M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "save" ] [])
+        , M3e.text "Save"
+        ]
 
 
 emailField : Element { s | formField : M3e.Kind.Brand } admittedBy msg
@@ -108,7 +109,7 @@ site. No escape, no door.
 -- @sample-source seamsTwoColumn
 
 
-twoColumn : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+twoColumn : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 twoColumn =
     -- NOT a seam: standard HTML is already typed, so layout is a plain div.
     TypedHtml.div [ TypedHtml.Attributes.class "grid grid-cols-1 gap-4 md:grid-cols-2" ]
@@ -127,7 +128,7 @@ producer, contained and greppable, not scattered through feature code.
 -- @sample-source seamsModelViewer
 
 
-modelViewer : Element (TypedHtml.Grouping.DivIs k) freeAdm msg
+modelViewer : Element (TypedHtml.Component.Grouping.DivIs k) freeAdm msg
 modelViewer =
     -- a real seam: a custom element the types can't express, contained once.
     M3e.Unsafe.customElement "model-viewer"
@@ -180,10 +181,10 @@ htmlInSlot =
     -- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
     -- iconButton and badge INSIDE it are still checked against the div's content model.
     M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
-        [ M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Inbox" } [] [])
+        [ M3e.Component.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
         , M3e.Component.AppBar.trailing
             (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-                [ M3e.Component.IconButton.component { content = M3e.icon [ TypedHtml.Attributes.name "search" ] [], ariaLabel = "Search", action = M3e.Action.none } [] []
+                [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
                 , M3e.badge [] [ M3e.text "3" ]
                 ]
             )
@@ -259,12 +260,12 @@ slotSeam =
 
 oneWayRejected : String
 oneWayRejected =
-    """TypedHtml.span [] [ M3e.Component.Heading.component { content = M3e.text "hi" } [] [] ]   -- ✗ rejected"""
+    """TypedHtml.span [] [ M3e.heading [] [ M3e.text "hi" ] ]   -- ✗ rejected"""
 
 
 oneWayAccepted : String
 oneWayAccepted =
-    """TypedHtml.div [] [ M3e.Component.Heading.component { content = M3e.text "hi" } [] [] ]        -- ✓ div takes any children
+    """TypedHtml.div [] [ M3e.heading [] [ M3e.text "hi" ] ]        -- ✓ div takes any children
 TypedHtml.span [] [ M3e.text "hi" ]                          -- ✓ text is a shared atom
 TypedHtml.span [] [ M3e.icon [ TA.name "star" ] [] ]         -- ✓ so is icon"""
 
@@ -286,7 +287,7 @@ In practice it rarely bites, and there are three honest answers before you reach
 
 1. **Use a flow container.** `TypedHtml.div`, `section`, `article`, `header`, `footer`, `main_`, `nav`, `form`, `figure`, `aside`, `details`, `dialog` and 20-odd others take any children at all. Wrapping a component in a `<div>` is not a workaround — it is what the content model already says.
 2. **Check the slot first.** Text and icons cross both ways as shared atoms, so `M3e.text` and `M3e.icon` sit inside native phrasing content directly.
-3. **`M3e.Coerce`** for a crossing the design system has blessed in config, and **`M3e.Unsafe.recast`** for the one-off where the design system is genuinely wrong. Both are loud, named and lint-fenced — which is the point of this page.
+3. **`M3e.Unsafe.recast`** for the case where the design system is genuinely wrong — a specific, recurring crossing gets a small named function built on `recast`, kept next to the feature that needs it. Loud, named and lint-fenced — which is the point of this page.
 
 Two smaller residues, for completeness: a bare `<img>` or `<area>` keeps a per-tag kind (so `<picture>` and `<map>` stay exact) and needs a wrapper to enter an M3e slot; and `<dl>`/`<option>` accept any flow content rather than the narrower set the spec names."""
 

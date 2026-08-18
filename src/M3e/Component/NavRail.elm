@@ -1,6 +1,6 @@
 module M3e.Component.NavRail exposing
     ( component
-    , Is, Attrs, Content, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
     , Mode, mode
     , onBeforeinput, onInput, onChange
     , child
@@ -11,23 +11,10 @@ module M3e.Component.NavRail exposing
 A vertical bar, typically used on larger devices, that allows a user to switch between views.
 
 @docs component
-@docs Is, Attrs, Content, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
 @docs Mode, mode
 @docs onBeforeinput, onInput, onChange
 @docs child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.NavRail.el [] []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -71,6 +58,24 @@ type alias ChildAdmittedBy childAdm =
 -}
 type alias Mode =
     M3e.Internal.Types.NavRail.Mode
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.NavRail.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.NavRail.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
 
 
 {-| Standard constructor: `[attributes] [children]`.

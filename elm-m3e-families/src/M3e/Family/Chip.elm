@@ -1,4 +1,4 @@
-module M3e.Family.Chip exposing (ChipIs, ChipAttrs, ChipContent, ChipIconSlot, ChipTrailingIconSlot, ChipChildAdmittedBy, ChipVariant, AssistIs, AssistAttrs, AssistContent, AssistIconSlot, AssistChildAdmittedBy, AssistActionCaps, AssistType, AssistVariant, FilterIs, FilterAttrs, FilterContent, FilterIconSlot, FilterTrailingIconSlot, FilterChildAdmittedBy, FilterVariant, InputIs, InputAttrs, InputContent, InputAvatarSlot, InputIconSlot, InputRemoveIconSlot, InputChildAdmittedBy, InputVariant, SuggestionIs, SuggestionAttrs, SuggestionContent, SuggestionIconSlot, SuggestionChildAdmittedBy, SuggestionActionCaps, SuggestionType, SuggestionVariant, SetIs, SetAttrs, SetContent, SetChildAdmittedBy, FilterSetIs, FilterSetAttrs, FilterSetContent, FilterSetChildAdmittedBy, InputSetIs, InputSetAttrs, InputSetContent, InputSetChildAdmittedBy, chip, chipVariant, chipValue, chipDefaultValue, chipIcon, chipTrailingIcon, chipChild, assist, assistType_, assistVariant, assistDisabled, assistDisabledInteractive, assistDownload, assistHref, assistName, assistRel, assistTarget, assistValue, assistDefaultValue, assistOnClick, assistIcon, assistChild, filter, filterVariant, filterDisabled, filterDisabledInteractive, filterSelected, filterValue, filterDefaultSelected, filterDefaultValue, filterOnBeforeinput, filterOnInput, filterOnChange, filterOnClick, filterIcon, filterTrailingIcon, filterChild, input, inputVariant, inputDisabled, inputDisabledInteractive, inputRemovable, inputRemoveLabel, inputValue, inputDefaultValue, inputOnRemove, inputOnClick, inputAvatar, inputIcon, inputRemoveIcon, inputChild, suggestion, suggestionType_, suggestionVariant, suggestionDisabled, suggestionDisabledInteractive, suggestionDownload, suggestionHref, suggestionName, suggestionRel, suggestionTarget, suggestionValue, suggestionDefaultValue, suggestionOnClick, suggestionIcon, suggestionChild, set, setVertical, setChild, filterSet, filterSetDisabled, filterSetHideSelectionIndicator, filterSetMulti, filterSetName, filterSetVertical, filterSetOnChange, filterSetOnBeforeinput, filterSetOnInput, filterSetChild, inputSet, inputSetDisabled, inputSetName, inputSetRequired, inputSetValidationmessages, inputSetVertical, inputSetOnChange, inputSetInput, inputSetChild)
+module M3e.Family.Chip exposing (ChipIs, ChipAttrs, ChipBuilder, ChipAttrCaps, ChipSlotCaps, ChipContent, ChipIconSlot, ChipTrailingIconSlot, ChipChildAdmittedBy, ChipVariant, AssistIs, AssistAttrs, AssistBuilder, AssistAttrCaps, AssistSlotCaps, AssistContent, AssistIconSlot, AssistChildAdmittedBy, AssistType, AssistVariant, FilterIs, FilterAttrs, FilterBuilder, FilterAttrCaps, FilterSlotCaps, FilterContent, FilterIconSlot, FilterTrailingIconSlot, FilterChildAdmittedBy, FilterVariant, InputIs, InputAttrs, InputBuilder, InputAttrCaps, InputSlotCaps, InputContent, InputAvatarSlot, InputIconSlot, InputRemoveIconSlot, InputChildAdmittedBy, InputVariant, SuggestionIs, SuggestionAttrs, SuggestionBuilder, SuggestionAttrCaps, SuggestionSlotCaps, SuggestionContent, SuggestionIconSlot, SuggestionChildAdmittedBy, SuggestionActionCaps, SuggestionType, SuggestionVariant, SetIs, SetAttrs, SetBuilder, SetAttrCaps, SetSlotCaps, SetContent, SetChildAdmittedBy, FilterSetIs, FilterSetAttrs, FilterSetBuilder, FilterSetAttrCaps, FilterSetSlotCaps, FilterSetContent, FilterSetChildAdmittedBy, InputSetIs, InputSetAttrs, InputSetBuilder, InputSetAttrCaps, InputSetSlotCaps, InputSetContent, InputSetChildAdmittedBy, chip, chipVariant, chipValue, chipDefaultValue, chipIcon, chipTrailingIcon, chipChild, assist, assistType_, assistVariant, assistDisabled, assistDisabledInteractive, assistDownload, assistHref, assistName, assistRel, assistTarget, assistValue, assistDefaultValue, assistOnClick, assistIcon, assistChild, filter, filterVariant, filterDisabled, filterDisabledInteractive, filterSelected, filterValue, filterDefaultSelected, filterDefaultValue, filterOnBeforeinput, filterOnInput, filterOnChange, filterOnClick, filterIcon, filterTrailingIcon, filterChild, input, inputVariant, inputDisabled, inputDisabledInteractive, inputRemovable, inputRemoveLabel, inputValue, inputDefaultValue, inputOnRemove, inputOnClick, inputAvatar, inputIcon, inputRemoveIcon, inputChild, suggestion, suggestionType_, suggestionVariant, suggestionDisabled, suggestionDisabledInteractive, suggestionDownload, suggestionHref, suggestionName, suggestionRel, suggestionTarget, suggestionValue, suggestionDefaultValue, suggestionOnClick, suggestionIcon, suggestionChild, set, setVertical, setChild, filterSet, filterSetDisabled, filterSetHideSelectionIndicator, filterSetMulti, filterSetName, filterSetVertical, filterSetOnChange, filterSetOnBeforeinput, filterSetOnInput, filterSetChild, inputSet, inputSetDisabled, inputSetName, inputSetRequired, inputSetValidationmessages, inputSetVertical, inputSetOnChange, inputSetInput, inputSetChild)
 
 {-| The **Chip** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs ChipIs, ChipAttrs, ChipContent, ChipIconSlot, ChipTrailingIconSlot, ChipChildAdmittedBy, ChipVariant, AssistIs, AssistAttrs, AssistContent, AssistIconSlot, AssistChildAdmittedBy, AssistActionCaps, AssistType, AssistVariant, FilterIs, FilterAttrs, FilterContent, FilterIconSlot, FilterTrailingIconSlot, FilterChildAdmittedBy, FilterVariant, InputIs, InputAttrs, InputContent, InputAvatarSlot, InputIconSlot, InputRemoveIconSlot, InputChildAdmittedBy, InputVariant, SuggestionIs, SuggestionAttrs, SuggestionContent, SuggestionIconSlot, SuggestionChildAdmittedBy, SuggestionActionCaps, SuggestionType, SuggestionVariant, SetIs, SetAttrs, SetContent, SetChildAdmittedBy, FilterSetIs, FilterSetAttrs, FilterSetContent, FilterSetChildAdmittedBy, InputSetIs, InputSetAttrs, InputSetContent, InputSetChildAdmittedBy, chip, chipVariant, chipValue, chipDefaultValue, chipIcon, chipTrailingIcon, chipChild, assist, assistType_, assistVariant, assistDisabled, assistDisabledInteractive, assistDownload, assistHref, assistName, assistRel, assistTarget, assistValue, assistDefaultValue, assistOnClick, assistIcon, assistChild, filter, filterVariant, filterDisabled, filterDisabledInteractive, filterSelected, filterValue, filterDefaultSelected, filterDefaultValue, filterOnBeforeinput, filterOnInput, filterOnChange, filterOnClick, filterIcon, filterTrailingIcon, filterChild, input, inputVariant, inputDisabled, inputDisabledInteractive, inputRemovable, inputRemoveLabel, inputValue, inputDefaultValue, inputOnRemove, inputOnClick, inputAvatar, inputIcon, inputRemoveIcon, inputChild, suggestion, suggestionType_, suggestionVariant, suggestionDisabled, suggestionDisabledInteractive, suggestionDownload, suggestionHref, suggestionName, suggestionRel, suggestionTarget, suggestionValue, suggestionDefaultValue, suggestionOnClick, suggestionIcon, suggestionChild, set, setVertical, setChild, filterSet, filterSetDisabled, filterSetHideSelectionIndicator, filterSetMulti, filterSetName, filterSetVertical, filterSetOnChange, filterSetOnBeforeinput, filterSetOnInput, filterSetChild, inputSet, inputSetDisabled, inputSetName, inputSetRequired, inputSetValidationmessages, inputSetVertical, inputSetOnChange, inputSetInput, inputSetChild
+@docs ChipIs, ChipAttrs, ChipBuilder, ChipAttrCaps, ChipSlotCaps, ChipContent, ChipIconSlot, ChipTrailingIconSlot, ChipChildAdmittedBy, ChipVariant, AssistIs, AssistAttrs, AssistBuilder, AssistAttrCaps, AssistSlotCaps, AssistContent, AssistIconSlot, AssistChildAdmittedBy, AssistType, AssistVariant, FilterIs, FilterAttrs, FilterBuilder, FilterAttrCaps, FilterSlotCaps, FilterContent, FilterIconSlot, FilterTrailingIconSlot, FilterChildAdmittedBy, FilterVariant, InputIs, InputAttrs, InputBuilder, InputAttrCaps, InputSlotCaps, InputContent, InputAvatarSlot, InputIconSlot, InputRemoveIconSlot, InputChildAdmittedBy, InputVariant, SuggestionIs, SuggestionAttrs, SuggestionBuilder, SuggestionAttrCaps, SuggestionSlotCaps, SuggestionContent, SuggestionIconSlot, SuggestionChildAdmittedBy, SuggestionActionCaps, SuggestionType, SuggestionVariant, SetIs, SetAttrs, SetBuilder, SetAttrCaps, SetSlotCaps, SetContent, SetChildAdmittedBy, FilterSetIs, FilterSetAttrs, FilterSetBuilder, FilterSetAttrCaps, FilterSetSlotCaps, FilterSetContent, FilterSetChildAdmittedBy, InputSetIs, InputSetAttrs, InputSetBuilder, InputSetAttrCaps, InputSetSlotCaps, InputSetContent, InputSetChildAdmittedBy, chip, chipVariant, chipValue, chipDefaultValue, chipIcon, chipTrailingIcon, chipChild, assist, assistType_, assistVariant, assistDisabled, assistDisabledInteractive, assistDownload, assistHref, assistName, assistRel, assistTarget, assistValue, assistDefaultValue, assistOnClick, assistIcon, assistChild, filter, filterVariant, filterDisabled, filterDisabledInteractive, filterSelected, filterValue, filterDefaultSelected, filterDefaultValue, filterOnBeforeinput, filterOnInput, filterOnChange, filterOnClick, filterIcon, filterTrailingIcon, filterChild, input, inputVariant, inputDisabled, inputDisabledInteractive, inputRemovable, inputRemoveLabel, inputValue, inputDefaultValue, inputOnRemove, inputOnClick, inputAvatar, inputIcon, inputRemoveIcon, inputChild, suggestion, suggestionType_, suggestionVariant, suggestionDisabled, suggestionDisabledInteractive, suggestionDownload, suggestionHref, suggestionName, suggestionRel, suggestionTarget, suggestionValue, suggestionDefaultValue, suggestionOnClick, suggestionIcon, suggestionChild, set, setVertical, setChild, filterSet, filterSetDisabled, filterSetHideSelectionIndicator, filterSetMulti, filterSetName, filterSetVertical, filterSetOnChange, filterSetOnBeforeinput, filterSetOnInput, filterSetChild, inputSet, inputSetDisabled, inputSetName, inputSetRequired, inputSetValidationmessages, inputSetVertical, inputSetOnChange, inputSetInput, inputSetChild
 
 -}
 
@@ -52,6 +52,24 @@ type alias ChipIs s =
 -}
 type alias ChipAttrs =
     Chip_.Attrs
+
+
+{-| See [`M3e.Component.Chip.Builder`](M3e.Component.Chip#Builder).
+-}
+type alias ChipBuilder attrCaps slotCaps msg kind =
+    Chip_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Chip.AttrCaps`](M3e.Component.Chip#AttrCaps).
+-}
+type alias ChipAttrCaps =
+    Chip_.AttrCaps
+
+
+{-| See [`M3e.Component.Chip.SlotCaps`](M3e.Component.Chip#SlotCaps).
+-}
+type alias ChipSlotCaps =
+    Chip_.SlotCaps
 
 
 {-| See [`M3e.Component.Chip.Content`](M3e.Component.Chip#Content).
@@ -129,9 +147,7 @@ chipChild =
 {-| The `assist` element of this family — delegates to [`M3e.Component.AssistChip.component`](M3e.Component.AssistChip#component).
 -}
 assist :
-    { content : Element AssistContent (AssistChildAdmittedBy childAdm) msg
-    , action : Ac.Action AssistActionCaps msg
-    }
+    { content : Element AssistContent (AssistChildAdmittedBy childAdm) msg }
     -> List (Attr AssistAttrs msg)
     -> List (Element AssistContent (AssistChildAdmittedBy childAdm) msg)
     -> Element (AssistIs s) admittedBy msg
@@ -151,6 +167,24 @@ type alias AssistAttrs =
     Assist_.Attrs
 
 
+{-| See [`M3e.Component.AssistChip.Builder`](M3e.Component.AssistChip#Builder).
+-}
+type alias AssistBuilder attrCaps slotCaps msg kind =
+    Assist_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.AssistChip.AttrCaps`](M3e.Component.AssistChip#AttrCaps).
+-}
+type alias AssistAttrCaps =
+    Assist_.AttrCaps
+
+
+{-| See [`M3e.Component.AssistChip.SlotCaps`](M3e.Component.AssistChip#SlotCaps).
+-}
+type alias AssistSlotCaps =
+    Assist_.SlotCaps
+
+
 {-| See [`M3e.Component.AssistChip.Content`](M3e.Component.AssistChip#Content).
 -}
 type alias AssistContent =
@@ -167,12 +201,6 @@ type alias AssistIconSlot =
 -}
 type alias AssistChildAdmittedBy childAdm =
     Assist_.ChildAdmittedBy childAdm
-
-
-{-| See [`M3e.Component.AssistChip.ActionCaps`](M3e.Component.AssistChip#ActionCaps).
--}
-type alias AssistActionCaps =
-    Assist_.ActionCaps
 
 
 {-| See [`M3e.Component.AssistChip.Type`](M3e.Component.AssistChip#Type).
@@ -306,6 +334,24 @@ type alias FilterIs s =
 -}
 type alias FilterAttrs =
     Filter_.Attrs
+
+
+{-| See [`M3e.Component.FilterChip.Builder`](M3e.Component.FilterChip#Builder).
+-}
+type alias FilterBuilder attrCaps slotCaps msg kind =
+    Filter_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.FilterChip.AttrCaps`](M3e.Component.FilterChip#AttrCaps).
+-}
+type alias FilterAttrCaps =
+    Filter_.AttrCaps
+
+
+{-| See [`M3e.Component.FilterChip.SlotCaps`](M3e.Component.FilterChip#SlotCaps).
+-}
+type alias FilterSlotCaps =
+    Filter_.SlotCaps
 
 
 {-| See [`M3e.Component.FilterChip.Content`](M3e.Component.FilterChip#Content).
@@ -459,6 +505,24 @@ type alias InputAttrs =
     Input_.Attrs
 
 
+{-| See [`M3e.Component.InputChip.Builder`](M3e.Component.InputChip#Builder).
+-}
+type alias InputBuilder attrCaps slotCaps msg kind =
+    Input_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.InputChip.AttrCaps`](M3e.Component.InputChip#AttrCaps).
+-}
+type alias InputAttrCaps =
+    Input_.AttrCaps
+
+
+{-| See [`M3e.Component.InputChip.SlotCaps`](M3e.Component.InputChip#SlotCaps).
+-}
+type alias InputSlotCaps =
+    Input_.SlotCaps
+
+
 {-| See [`M3e.Component.InputChip.Content`](M3e.Component.InputChip#Content).
 -}
 type alias InputContent =
@@ -609,6 +673,24 @@ type alias SuggestionIs s =
 -}
 type alias SuggestionAttrs =
     Suggestion_.Attrs
+
+
+{-| See [`M3e.Component.SuggestionChip.Builder`](M3e.Component.SuggestionChip#Builder).
+-}
+type alias SuggestionBuilder attrCaps slotCaps msg kind =
+    Suggestion_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.SuggestionChip.AttrCaps`](M3e.Component.SuggestionChip#AttrCaps).
+-}
+type alias SuggestionAttrCaps =
+    Suggestion_.AttrCaps
+
+
+{-| See [`M3e.Component.SuggestionChip.SlotCaps`](M3e.Component.SuggestionChip#SlotCaps).
+-}
+type alias SuggestionSlotCaps =
+    Suggestion_.SlotCaps
 
 
 {-| See [`M3e.Component.SuggestionChip.Content`](M3e.Component.SuggestionChip#Content).
@@ -767,6 +849,24 @@ type alias SetAttrs =
     Set_.Attrs
 
 
+{-| See [`M3e.Component.ChipSet.Builder`](M3e.Component.ChipSet#Builder).
+-}
+type alias SetBuilder attrCaps slotCaps msg kind =
+    Set_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.ChipSet.AttrCaps`](M3e.Component.ChipSet#AttrCaps).
+-}
+type alias SetAttrCaps =
+    Set_.AttrCaps
+
+
+{-| See [`M3e.Component.ChipSet.SlotCaps`](M3e.Component.ChipSet#SlotCaps).
+-}
+type alias SetSlotCaps =
+    Set_.SlotCaps
+
+
 {-| See [`M3e.Component.ChipSet.Content`](M3e.Component.ChipSet#Content).
 -}
 type alias SetContent =
@@ -813,6 +913,24 @@ type alias FilterSetIs s =
 -}
 type alias FilterSetAttrs =
     FilterSet_.Attrs
+
+
+{-| See [`M3e.Component.FilterChipSet.Builder`](M3e.Component.FilterChipSet#Builder).
+-}
+type alias FilterSetBuilder attrCaps slotCaps msg kind =
+    FilterSet_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.FilterChipSet.AttrCaps`](M3e.Component.FilterChipSet#AttrCaps).
+-}
+type alias FilterSetAttrCaps =
+    FilterSet_.AttrCaps
+
+
+{-| See [`M3e.Component.FilterChipSet.SlotCaps`](M3e.Component.FilterChipSet#SlotCaps).
+-}
+type alias FilterSetSlotCaps =
+    FilterSet_.SlotCaps
 
 
 {-| See [`M3e.Component.FilterChipSet.Content`](M3e.Component.FilterChipSet#Content).
@@ -910,6 +1028,24 @@ type alias InputSetIs s =
 -}
 type alias InputSetAttrs =
     InputSet_.Attrs
+
+
+{-| See [`M3e.Component.InputChipSet.Builder`](M3e.Component.InputChipSet#Builder).
+-}
+type alias InputSetBuilder attrCaps slotCaps msg kind =
+    InputSet_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.InputChipSet.AttrCaps`](M3e.Component.InputChipSet#AttrCaps).
+-}
+type alias InputSetAttrCaps =
+    InputSet_.AttrCaps
+
+
+{-| See [`M3e.Component.InputChipSet.SlotCaps`](M3e.Component.InputChipSet#SlotCaps).
+-}
+type alias InputSetSlotCaps =
+    InputSet_.SlotCaps
 
 
 {-| See [`M3e.Component.InputChipSet.Content`](M3e.Component.InputChipSet#Content).

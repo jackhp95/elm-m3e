@@ -20,16 +20,20 @@ type alias Member =
     { name : String, kind : String, signature : String, doc : String, role : String }
 
 
-{-| The four API layers of a component: `m3e` (the barrel's thin per-component
-slice — usually just the constructor), `components` (the `M3e.Component.<Name>`
-module's own members), `builder` (`M3e.Build.<Name>`'s pipe surface), and `raw`
-(the underlying custom element's CEM attributes/events/slots from `@m3e/web`'s
-`custom-elements.json` manifest — Phase 2). Type aliases are lifted OUT of the
-layers into `Component.types` (shared across layers), so a layer holds only its
-value members.
+{-| The four API layers of a component, one per API-reference tab: `m3e` (the
+barrel's thin per-component slice — normally just the constructor), `components`
+(the `M3e.Component.<Name>` module's own members), `builder` (`M3e.Build.<Name>`'s
+pipe surface), and `raw` (the underlying custom element's CEM
+attributes/events/slots, read from `@m3e/web`'s `custom-elements.json`). Type
+aliases/unions are lifted OUT of the layers into `Component.types` — they are
+shared across layers — so a layer holds only its value members.
 -}
 type alias Layers =
-    { m3e : List Member, components : List Member, builder : List Member, raw : List Member }
+    { m3e : List Member
+    , components : List Member
+    , builder : List Member
+    , raw : List Member
+    }
 
 
 type alias Component =
@@ -74,7 +78,8 @@ componentDecoder =
 
 
 {-| An older flat `reference.json` carried one `members` array. Decode it (or an
-empty list) so the layered decoders can fall back gracefully.
+empty list) so the layered decoders can fall back gracefully instead of failing
+the whole file on a stale generated artifact.
 -}
 legacyMembers : Decode.Decoder (List Member)
 legacyMembers =

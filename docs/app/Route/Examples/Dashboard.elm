@@ -20,13 +20,10 @@ import Effect exposing (Effect)
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.Card
 import M3e.Component.Fab
-import M3e.Component.Heading
-import M3e.Component.IconButton
 import M3e.Component.LinearProgressIndicator
 import M3e.Component.ListItem
 import M3e.Component.NavItem
@@ -38,8 +35,8 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
-import TypedHtml.Sectioning
+import TypedHtml.Component.Grouping
+import TypedHtml.Component.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -224,7 +221,7 @@ height that the content can never get back -- a permanent ~100px tax on a
 screen. Scrolling it in with the content is also what the other examples do.
 
 -}
-exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+exampleFooter : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -251,7 +248,7 @@ appBar : Element { s | appBar : M3e.Kind.Brand } adm_ msg
 appBar =
     M3e.appBar [ M3e.Attributes.size Value.small ]
         [ M3e.Component.AppBar.leading (M3e.icon [ TA.name "analytics" ] [])
-        , M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Aperture Analytics" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [])
+        , M3e.Component.AppBar.title (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text "Aperture Analytics" ])
         , M3e.Component.AppBar.trailing (iconAction "search")
         , M3e.Component.AppBar.trailing (iconAction "notifications")
         , M3e.Component.AppBar.trailing (iconAction "account_circle")
@@ -260,7 +257,9 @@ appBar =
 
 iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } adm_ msg
 iconAction name =
-    M3e.Component.IconButton.component { content = M3e.icon [ TA.name name ] [], ariaLabel = name, action = M3e.Action.none } [ M3e.Attributes.variant Value.standard ] []
+    M3e.iconButton
+        [ M3e.Attributes.variant Value.standard, Aria.label name ]
+        [ M3e.icon [ TA.name name ] [] ]
 
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
@@ -271,7 +270,7 @@ the rail is a plain full-height flex child of the bounded row and stays put on
 its own.
 
 -}
-desktopRail : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+desktopRail : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 desktopRail =
     TypedHtml.div [ TA.class "hidden md:flex shrink-0" ]
         [ M3e.navRail []
@@ -297,7 +296,7 @@ stack above. `shrink-0` keeps it at its intrinsic height when the row above
 competes for space.
 
 -}
-mobileBar : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+mobileBar : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 mobileBar =
     TypedHtml.div [ TA.class "md:hidden shrink-0" ]
         [ M3e.navBar []
@@ -330,11 +329,15 @@ the FAB itself keeps the full-width sticky row from blanketing the content it
 floats over.
 
 -}
-fab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+fab : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 fab =
     TypedHtml.div [ TA.class "pointer-events-none sticky bottom-6 flex justify-end pr-4 md:pr-6" ]
         [ TypedHtml.div [ TA.class "pointer-events-auto" ]
-            [ M3e.Component.Fab.component { content = M3e.icon [ TA.name "add" ] [], action = M3e.Action.none } [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ] [ M3e.Component.Fab.label (M3e.text "New report") ]
+            [ M3e.fab
+                [ M3e.Attributes.variant Value.primary, M3e.Attributes.extended True, Aria.label "Add" ]
+                [ M3e.icon [ TA.name "add" ] []
+                , M3e.Component.Fab.label (M3e.text "New report")
+                ]
             ]
         ]
 
@@ -363,7 +366,7 @@ above them) rather than costing the viewport a permanent row each. The old
 floats over this box any more.
 
 -}
-mainContent : Element (TypedHtml.Sectioning.SectionIs s) adm_ msg
+mainContent : Element (TypedHtml.Component.Sectioning.SectionIs s) adm_ msg
 mainContent =
     TypedHtml.section [ TA.class "flex-1 min-w-0 min-h-0 overflow-y-auto" ]
         -- `fab` is `sticky`, and a sticky element's stick range is its
@@ -391,11 +394,11 @@ mainContent =
         ]
 
 
-pageHeader : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+pageHeader : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 pageHeader =
     TypedHtml.div [ TA.class "flex flex-col gap-1" ]
         [ Doc.sectionLabelCaps "Overview"
-        , M3e.Component.Heading.component { content = M3e.text "Good morning, Jack" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] []
+        , M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] [ M3e.text "Good morning, Jack" ]
         , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text "Here is how your business is doing today." ]
         ]
 
@@ -404,7 +407,7 @@ pageHeader =
 -- KPI ROW ---------------------------------------------------------------------
 
 
-kpiRow : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+kpiRow : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 kpiRow =
     TypedHtml.div [ TA.class "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" ]
         (List.map kpiCard kpis)
@@ -415,15 +418,15 @@ kpiCard k =
     M3e.card [ M3e.Attributes.variant Value.filled ]
         [ M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-2 p-4" ]
-                [ M3e.Component.Heading.component { content = M3e.text k.label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
-                , M3e.Component.Heading.component { content = M3e.text k.value } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] []
+                [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text k.label ]
+                , M3e.heading [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small ] [ M3e.text k.value ]
                 , trendDelta k.trend k.delta
                 ]
             )
         ]
 
 
-trendDelta : Trend -> String -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+trendDelta : Trend -> String -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 trendDelta trend delta =
     let
         ( iconName, role ) =
@@ -436,7 +439,7 @@ trendDelta trend delta =
     in
     TypedHtml.div [ TA.class "flex items-center gap-1" ]
         [ M3e.icon [ TA.name iconName, TA.class role ] []
-        , M3e.Component.Heading.component { content = M3e.text delta } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class role ] []
+        , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class role ] [ M3e.text delta ]
         ]
 
 
@@ -452,7 +455,7 @@ accountsSection =
         )
 
 
-accountRow : Account -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+accountRow : Account -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 accountRow a =
     TypedHtml.div
         [ TA.class "bg-surface-container-high text-on-surface rounded-md-corner-large flex items-center gap-3 p-3" ]
@@ -461,7 +464,7 @@ accountRow a =
             [ M3e.icon [ TA.name a.icon ] [] ]
         , TypedHtml.div [ TA.class "flex flex-col min-w-0" ]
             [ TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text a.name ]
-            , M3e.Component.Heading.component { content = M3e.text a.balance } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] []
+            , M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium ] [ M3e.text a.balance ]
             ]
         ]
 
@@ -478,12 +481,12 @@ budgetsSection =
         )
 
 
-budgetRow : Budget -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+budgetRow : Budget -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 budgetRow b =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ TypedHtml.div [ TA.class "flex items-center justify-between gap-2" ]
             [ TypedHtml.span [ TA.class "text-body-md" ] [ M3e.text b.category ]
-            , M3e.Component.Heading.component { content = M3e.text b.amount } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+            , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text b.amount ]
             ]
         , M3e.linearProgressIndicator
             [ M3e.Component.LinearProgressIndicator.value b.used, M3e.Attributes.max b.max ]
@@ -518,10 +521,10 @@ activityRow a =
     in
     M3e.listItem []
         [ M3e.Component.ListItem.leading
-            (M3e.Component.Heading.component { content = M3e.text a.date } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text a.date ])
         , M3e.text a.description
         , M3e.Component.ListItem.trailing
-            (M3e.Component.Heading.component { content = M3e.text a.amount } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class role ] [ M3e.text a.amount ])
         ]
 
 
@@ -533,6 +536,6 @@ sectionCard : String -> Element any adm_ msg -> Element { r | card : M3e.Kind.Br
 sectionCard heading content =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
         [ M3e.Component.Card.header
-            (M3e.Component.Heading.component { content = M3e.text heading } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [])
+            (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large ] [ M3e.text heading ])
         , M3e.Component.Card.content content
         ]

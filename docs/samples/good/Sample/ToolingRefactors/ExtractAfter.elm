@@ -8,12 +8,10 @@ Change the sample there; this file follows.
 -}
 
 import M3e
-import M3e.Action
-import M3e.Component.Button
 import TypedHtml
 import TypedHtml.Attributes
 
 
 -- after autofix: the typed setter, no escape at all
 shown0_ =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ TypedHtml.Attributes.class "flex-auto" ] []
+    M3e.button [ TypedHtml.Attributes.class "flex-auto" ] [ M3e.text "Save" ]

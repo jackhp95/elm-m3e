@@ -1,4 +1,4 @@
-module M3e.Family.Toc exposing (TocIs, TocAttrs, TocOverlineSlot, TocTitleSlot, TocChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemChildAdmittedBy, toc, tocFor, tocMaxDepth, tocOverline, tocTitle, tocChild, item, itemDisabled, itemSelected, itemDefaultSelected, itemOnClick, itemChild)
+module M3e.Family.Toc exposing (TocIs, TocAttrs, TocBuilder, TocAttrCaps, TocSlotCaps, TocOverlineSlot, TocTitleSlot, TocChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemChildAdmittedBy, toc, tocFor, tocMaxDepth, tocOverline, tocTitle, tocChild, item, itemDisabled, itemSelected, itemDefaultSelected, itemOnClick, itemChild)
 
 {-| The **Toc** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs TocIs, TocAttrs, TocOverlineSlot, TocTitleSlot, TocChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemChildAdmittedBy, toc, tocFor, tocMaxDepth, tocOverline, tocTitle, tocChild, item, itemDisabled, itemSelected, itemDefaultSelected, itemOnClick, itemChild
+@docs TocIs, TocAttrs, TocBuilder, TocAttrCaps, TocSlotCaps, TocOverlineSlot, TocTitleSlot, TocChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemChildAdmittedBy, toc, tocFor, tocMaxDepth, tocOverline, tocTitle, tocChild, item, itemDisabled, itemSelected, itemDefaultSelected, itemOnClick, itemChild
 
 -}
 
@@ -43,6 +43,24 @@ type alias TocIs s =
 -}
 type alias TocAttrs =
     Toc_.Attrs
+
+
+{-| See [`M3e.Component.Toc.Builder`](M3e.Component.Toc#Builder).
+-}
+type alias TocBuilder attrCaps slotCaps msg kind =
+    Toc_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Toc.AttrCaps`](M3e.Component.Toc#AttrCaps).
+-}
+type alias TocAttrCaps =
+    Toc_.AttrCaps
+
+
+{-| See [`M3e.Component.Toc.SlotCaps`](M3e.Component.Toc#SlotCaps).
+-}
+type alias TocSlotCaps =
+    Toc_.SlotCaps
 
 
 {-| See [`M3e.Component.Toc.OverlineSlot`](M3e.Component.Toc#OverlineSlot).
@@ -119,6 +137,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.TocItem.Builder`](M3e.Component.TocItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TocItem.AttrCaps`](M3e.Component.TocItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.TocItem.SlotCaps`](M3e.Component.TocItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.TocItem.Content`](M3e.Component.TocItem#Content).

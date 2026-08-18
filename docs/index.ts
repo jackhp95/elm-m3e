@@ -275,7 +275,7 @@ const config: ElmPagesInit = {
         requestPreset?: { subscribe: (cb: (v: string) => void) => void };
         onPresetRequested?: { send: (v: string) => void };
         onOpenSearchRequested?: { send: (v: null) => void };
-        // Usage surface persistence
+        // Docs API-layer tab (Doc.Usage.Surface) persistence
         storeSurface?: { subscribe: (cb: (v: unknown) => void) => void };
         readSurface?: { send: (v: unknown) => void };
       };
@@ -299,10 +299,11 @@ const config: ElmPagesInit = {
       }
     });
 
-    // Persist the docs-layer surface selection so switching layer tabs on one
-    // component page carries over to every other component page (site-wide,
-    // not page-scoped). Stored separately from the theme blob: this is a
-    // docs-navigation preference, not a visual theme setting.
+    // Persist the docs API-layer tab selection so switching layer tabs on one
+    // component page carries over to every other component page (site-wide, not
+    // page-scoped) and across reloads. Stored under its own key, separate from
+    // the theme blob: this is a docs-navigation preference, not a visual theme
+    // setting, and the two have different lifetimes.
     app?.ports?.storeSurface?.subscribe((surface: unknown) => {
       try {
         window.localStorage.setItem(SURFACE_STORAGE_KEY, JSON.stringify(surface));
@@ -310,11 +311,11 @@ const config: ElmPagesInit = {
         /* localStorage unavailable (private mode / SSR) — ignore */
       }
       // Echo the choice straight back to Elm's `readSurface` subscription, which
-      // now lives in `Shared` (the single source of truth for `activeSurface`).
-      // This is what makes a tab click on one page update the shared value so
-      // every mounted page — and the NEXT page navigated to (Shared.Model persists
-      // across client-side nav) — reflects it. Same raw-string shape the boot
-      // `readSurface.send` below uses.
+      // lives in `Shared` (the single source of truth for `activeSurface`). This
+      // is what makes a tab click on ANY strip update the shared value, so every
+      // other strip on the page — and the next page navigated to, since
+      // Shared.Model survives client-side nav — reflects it. Same raw shape the
+      // boot `readSurface.send` below uses.
       app?.ports?.readSurface?.send(surface);
     });
 
@@ -498,8 +499,8 @@ const config: ElmPagesInit = {
     }
 
     // Boot: send back the persisted surface string (or null if absent).
-    // `Shared.update` (`SurfaceLoaded`) decodes it, falling back to its current
-    // value on null/bad — seeding `activeSurface` before the first render.
+    // `Shared.update`'s `SurfaceLoaded` decodes it, keeping its current value on
+    // null/bad — this seeds `activeSurface` before the first interactive render.
     try {
       const rawSurface = window.localStorage.getItem(SURFACE_STORAGE_KEY);
       app?.ports?.readSurface?.send(rawSurface ? JSON.parse(rawSurface) : null);

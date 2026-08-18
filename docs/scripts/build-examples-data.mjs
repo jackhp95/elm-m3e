@@ -97,7 +97,7 @@ function formatElm(code) {
   return tryFormat(broken) ?? tryFormat(code) ?? code;
 }
 
-// The ④ Record (`M3e.<Comp>.component { … }`) / ⑤ Build (`M3e.<Comp>.build |> … |>
+// The ④ Record (`M3e.<Comp>.el { … }`) / ⑤ Build (`M3e.<Comp>.build |> … |>
 // M3e.<Comp>.toElement`) surfaces (config/examples.surfaces.json) are produced by
 // the surface translator harness (gen-record-build.mjs), index-aligned with the
 // rich file. The harness writes a surface field ONLY when it genuinely translated

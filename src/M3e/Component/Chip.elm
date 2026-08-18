@@ -1,6 +1,6 @@
 module M3e.Component.Chip exposing
     ( component
-    , Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
     , Variant, variant
     , value, defaultValue
     , icon, trailingIcon, child
@@ -11,23 +11,10 @@ module M3e.Component.Chip exposing
 A non-interactive chip used to convey small pieces of information.
 
 @docs component
-@docs Is, Attrs, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, IconSlot, TrailingIconSlot, ChildAdmittedBy
 @docs Variant, variant
 @docs value, defaultValue
 @docs icon, trailingIcon, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage (generic chip)" -->
-```elm
-M3e.Component.Chip.el { content = TypedHtml.text "Generic" } [] []
-```
-
-<!-- elm-cem:docmeta category=Selection -->
 
 -}
 
@@ -82,6 +69,24 @@ type alias ChildAdmittedBy childAdm =
 -}
 type alias Variant =
     M3e.Internal.Types.Chip.Variant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Chip.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Chip.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Chip.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

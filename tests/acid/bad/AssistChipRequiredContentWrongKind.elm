@@ -2,10 +2,10 @@ module AssistChipRequiredContentWrongKind exposing (broken)
 
 {-| NEGATIVE probe — REQUIRED content is typed, not merely present.
 
-Components with mandatory content expose `el` / `build` taking a record of the
-required slots, so the content cannot be forgotten:
+Components with mandatory content expose `component` / `build` taking a record
+of the required slots, so the content cannot be forgotten:
 
-    el :
+    component :
         { content : Element Content (ChildAdmittedBy childAdm) msg }
         -> List (Attr Attrs msg)
         -> List (Element Content (ChildAdmittedBy childAdm) msg)

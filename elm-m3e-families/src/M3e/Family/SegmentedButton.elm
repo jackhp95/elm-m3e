@@ -1,4 +1,4 @@
-module M3e.Family.SegmentedButton exposing (SegmentedButtonIs, SegmentedButtonAttrs, SegmentedButtonContent, SegmentedButtonChildAdmittedBy, SegmentIs, SegmentAttrs, SegmentContent, SegmentIconSlot, SegmentChildAdmittedBy, GroupIs, GroupAttrs, GroupContent, GroupChildAdmittedBy, GroupSize, GroupVariant, segmentedButton, segmentedButtonDisabled, segmentedButtonHideSelectionIndicator, segmentedButtonMulti, segmentedButtonName, segmentedButtonOnChange, segmentedButtonOnBeforeinput, segmentedButtonOnInput, segmentedButtonChild, segment, segmentChecked, segmentDisabled, segmentValue, segmentDefaultChecked, segmentDefaultValue, segmentOnBeforeinput, segmentOnInput, segmentOnChange, segmentOnClick, segmentIcon, segmentChild, group, groupSize, groupVariant, groupMulti, groupChild)
+module M3e.Family.SegmentedButton exposing (SegmentedButtonIs, SegmentedButtonAttrs, SegmentedButtonBuilder, SegmentedButtonAttrCaps, SegmentedButtonSlotCaps, SegmentedButtonContent, SegmentedButtonChildAdmittedBy, SegmentIs, SegmentAttrs, SegmentBuilder, SegmentAttrCaps, SegmentSlotCaps, SegmentContent, SegmentIconSlot, SegmentChildAdmittedBy, GroupIs, GroupAttrs, GroupBuilder, GroupAttrCaps, GroupSlotCaps, GroupContent, GroupChildAdmittedBy, GroupSize, GroupVariant, segmentedButton, segmentedButtonDisabled, segmentedButtonHideSelectionIndicator, segmentedButtonMulti, segmentedButtonName, segmentedButtonOnChange, segmentedButtonOnBeforeinput, segmentedButtonOnInput, segmentedButtonChild, segment, segmentChecked, segmentDisabled, segmentValue, segmentDefaultChecked, segmentDefaultValue, segmentOnBeforeinput, segmentOnInput, segmentOnChange, segmentOnClick, segmentIcon, segmentChild, group, groupSize, groupVariant, groupMulti, groupChild)
 
 {-| The **SegmentedButton** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs SegmentedButtonIs, SegmentedButtonAttrs, SegmentedButtonContent, SegmentedButtonChildAdmittedBy, SegmentIs, SegmentAttrs, SegmentContent, SegmentIconSlot, SegmentChildAdmittedBy, GroupIs, GroupAttrs, GroupContent, GroupChildAdmittedBy, GroupSize, GroupVariant, segmentedButton, segmentedButtonDisabled, segmentedButtonHideSelectionIndicator, segmentedButtonMulti, segmentedButtonName, segmentedButtonOnChange, segmentedButtonOnBeforeinput, segmentedButtonOnInput, segmentedButtonChild, segment, segmentChecked, segmentDisabled, segmentValue, segmentDefaultChecked, segmentDefaultValue, segmentOnBeforeinput, segmentOnInput, segmentOnChange, segmentOnClick, segmentIcon, segmentChild, group, groupSize, groupVariant, groupMulti, groupChild
+@docs SegmentedButtonIs, SegmentedButtonAttrs, SegmentedButtonBuilder, SegmentedButtonAttrCaps, SegmentedButtonSlotCaps, SegmentedButtonContent, SegmentedButtonChildAdmittedBy, SegmentIs, SegmentAttrs, SegmentBuilder, SegmentAttrCaps, SegmentSlotCaps, SegmentContent, SegmentIconSlot, SegmentChildAdmittedBy, GroupIs, GroupAttrs, GroupBuilder, GroupAttrCaps, GroupSlotCaps, GroupContent, GroupChildAdmittedBy, GroupSize, GroupVariant, segmentedButton, segmentedButtonDisabled, segmentedButtonHideSelectionIndicator, segmentedButtonMulti, segmentedButtonName, segmentedButtonOnChange, segmentedButtonOnBeforeinput, segmentedButtonOnInput, segmentedButtonChild, segment, segmentChecked, segmentDisabled, segmentValue, segmentDefaultChecked, segmentDefaultValue, segmentOnBeforeinput, segmentOnInput, segmentOnChange, segmentOnClick, segmentIcon, segmentChild, group, groupSize, groupVariant, groupMulti, groupChild
 
 -}
 
@@ -46,6 +46,24 @@ type alias SegmentedButtonIs s =
 -}
 type alias SegmentedButtonAttrs =
     SegmentedButton_.Attrs
+
+
+{-| See [`M3e.Component.SegmentedButton.Builder`](M3e.Component.SegmentedButton#Builder).
+-}
+type alias SegmentedButtonBuilder attrCaps slotCaps msg kind =
+    SegmentedButton_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.SegmentedButton.AttrCaps`](M3e.Component.SegmentedButton#AttrCaps).
+-}
+type alias SegmentedButtonAttrCaps =
+    SegmentedButton_.AttrCaps
+
+
+{-| See [`M3e.Component.SegmentedButton.SlotCaps`](M3e.Component.SegmentedButton#SlotCaps).
+-}
+type alias SegmentedButtonSlotCaps =
+    SegmentedButton_.SlotCaps
 
 
 {-| See [`M3e.Component.SegmentedButton.Content`](M3e.Component.SegmentedButton#Content).
@@ -136,6 +154,24 @@ type alias SegmentIs s =
 -}
 type alias SegmentAttrs =
     Segment_.Attrs
+
+
+{-| See [`M3e.Component.ButtonSegment.Builder`](M3e.Component.ButtonSegment#Builder).
+-}
+type alias SegmentBuilder attrCaps slotCaps msg kind =
+    Segment_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.ButtonSegment.AttrCaps`](M3e.Component.ButtonSegment#AttrCaps).
+-}
+type alias SegmentAttrCaps =
+    Segment_.AttrCaps
+
+
+{-| See [`M3e.Component.ButtonSegment.SlotCaps`](M3e.Component.ButtonSegment#SlotCaps).
+-}
+type alias SegmentSlotCaps =
+    Segment_.SlotCaps
 
 
 {-| See [`M3e.Component.ButtonSegment.Content`](M3e.Component.ButtonSegment#Content).
@@ -253,6 +289,24 @@ type alias GroupIs s =
 -}
 type alias GroupAttrs =
     Group_.Attrs
+
+
+{-| See [`M3e.Component.ButtonGroup.Builder`](M3e.Component.ButtonGroup#Builder).
+-}
+type alias GroupBuilder attrCaps slotCaps msg kind =
+    Group_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.ButtonGroup.AttrCaps`](M3e.Component.ButtonGroup#AttrCaps).
+-}
+type alias GroupAttrCaps =
+    Group_.AttrCaps
+
+
+{-| See [`M3e.Component.ButtonGroup.SlotCaps`](M3e.Component.ButtonGroup#SlotCaps).
+-}
+type alias GroupSlotCaps =
+    Group_.SlotCaps
 
 
 {-| See [`M3e.Component.ButtonGroup.Content`](M3e.Component.ButtonGroup#Content).

@@ -17,27 +17,25 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.Card
-import M3e.Component.Heading
 import M3e.Component.ListItem
-import M3e.Component.SuggestionChip
 import M3e.Kind
 import M3e.Values as Value
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
+import Theme.Ports
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
 {-| No per-route state: the layer-tab selection lives in `Shared.Model`
 (`activeSurface`) so it survives client-side navigation. This page only reads it
-and forwards tab clicks to `Doc.Usage.persist`.
+and forwards tab clicks to `Theme.Ports.storeSurface`.
 -}
 type alias Model =
     ()
@@ -81,13 +79,14 @@ init _ _ =
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ (Usage.SelectSurface surface) _ =
     -- Write the choice to localStorage; `index.ts` echoes it back through
-    -- `readSurface` to `Shared`, which owns `activeSurface` and re-renders every page.
-    ( (), Effect.fromCmd (Usage.persist surface) )
+    -- `readSurface` to `Shared`, which owns `activeSurface` and re-renders every
+    -- tab strip on the page from that one value.
+    ( (), Effect.fromCmd (Theme.Ports.storeSurface (Usage.encodeSurface surface)) )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
-    -- The `readSurface` subscription lives in `Shared` now (single source of truth).
+    -- The `readSurface` subscription lives in `Shared` (single source of truth).
     Sub.none
 
 
@@ -151,11 +150,13 @@ a display heading (with its category chip alongside), the cleaned one-line CEM
 summary, and a barrel-first install card. Events and slots are documented by the
 colocated API section below, not repeated here.
 -}
-header : Component -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+header : Component -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 header component =
     TypedHtml.div [ TA.class "space-y-4" ]
         (TypedHtml.div [ TA.class "flex flex-wrap items-center gap-3" ]
-            (M3e.Component.Heading.component { content = M3e.text component.label } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+            (M3e.heading
+                [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+                [ M3e.text component.label ]
                 :: categoryChip component.category
             )
             :: summaryBlock component.summary
@@ -167,7 +168,7 @@ header component =
 component, from `data/example-usage.json`. Rendered only when non-empty, so a
 component absent from every example app shows no section at all.
 -}
-exampleAppsSection : List ExampleUsage -> List (Element (TypedHtml.Grouping.DivIs s) adm_ msg)
+exampleAppsSection : List ExampleUsage -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg)
 exampleAppsSection usages =
     if List.isEmpty usages then
         []
@@ -193,13 +194,13 @@ categoryChip cat =
         []
 
     else
-        [ M3e.Component.SuggestionChip.component { content = M3e.text cat, action = M3e.Action.none } [] [] ]
+        [ M3e.suggestionChip [] [ M3e.text cat ] ]
 
 
 {-| The one-line summary paragraph, constrained to a comfortable reading measure.
 Empty ⇒ nothing.
 -}
-summaryBlock : String -> List (Element (TypedHtml.Grouping.DivIs s) adm_ msg)
+summaryBlock : String -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg)
 summaryBlock summary =
     if summary == "" then
         []
@@ -216,16 +217,16 @@ same filled, rounded code block the Usage section uses (matraic's install card i
 a bare `<pre>`); wrapping it in an outlined Card would nest a surface-container
 fill inside a card border — a box-in-box that fights the M3 surface roles.
 -}
-installCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+installCard : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 installCard =
     Doc.codeBlock Doc.Elm "import M3e\nimport M3e.Values"
 
 
 {-| The four API layers, in tab order, each mapping a `Surface` to its label and
-the member list to render. `Top → M3e barrel slice`, `Record → Components`,
-`Build → Builder`, `Raw → CEM-sourced custom-element attributes/events/slots`.
-Reuses the shared `Surface` so a Usage-tab click and an API-tab click move the
-same `activeSurface`.
+the member list to render: `Top → the M3e barrel's per-component slice`,
+`Record → M3e.Component.<Name>`, `Build → M3e.Build.<Name>`, `Raw → the underlying
+custom element's CEM attributes/events/slots`. These reuse `Doc.Usage.Surface`, so
+a Usage-tab click and an API-tab click move the SAME site-wide `activeSurface`.
 -}
 apiLayers : Component -> List ( Usage.Surface, String, List Doc.Data.Member )
 apiLayers component =
@@ -237,13 +238,13 @@ apiLayers component =
 
 
 {-| The API-reference section, rendered like an elm module page: a page-wide Types
-block (the component's aliases/unions, un-tabbed, above), then a 4-tab layer strip
-(`M3e | Components | Builder | Raw`) driven by the shared `activeSurface`, then
-the selected layer's members grouped by role (constructor, attribute setters, slot
-setters, events, other), each group an overline-labelled outlined card. Members
-keep their `@docs` order within a group. Empty groups drop out.
+block (the component's aliases/unions, un-tabbed, above — they are not
+layer-specific), then the 4-tab layer strip driven by the shared `activeSurface`,
+then the selected layer's members grouped by role (constructor, attribute setters,
+slot setters, events, other), each group an overline-labelled outlined card.
+Members keep their `@docs` order within a group. Empty groups drop out.
 -}
-apiSection : Usage.Surface -> Component -> Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg
+apiSection : Usage.Surface -> Component -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ Usage.Msg
 apiSection activeSurface component =
     let
         activeLayer : List Doc.Data.Member
@@ -252,8 +253,8 @@ apiSection activeSurface component =
                 |> List.filter (\( s, _, _ ) -> s == activeSurface)
                 |> List.head
                 |> Maybe.map (\( _, _, ms ) -> ms)
-                -- Every Surface (Top/Record/Build/Raw) now maps to a layer; the
-                -- withDefault is an unreachable safety net.
+                -- Every Surface maps to a layer, so this is an unreachable
+                -- safety net — never a blank section.
                 |> Maybe.withDefault component.layers.m3e
     in
     TypedHtml.div [ TA.class "space-y-6" ]
@@ -265,10 +266,11 @@ apiSection activeSurface component =
 
 
 {-| The component's type aliases/unions, shared across the M3e and Components
-layers (the barrel re-exports them verbatim). Rendered once, above the tab strip
-— NOT inside any tab — since they aren't layer-specific. Empty ⇒ nothing.
+layers (the barrel re-exports the same types verbatim). Rendered once, above the
+tab strip — NOT inside any tab — since they aren't layer-specific. Empty ⇒
+nothing.
 -}
-typesBlock : List Doc.Data.Member -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
+typesBlock : List Doc.Data.Member -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ Usage.Msg)
 typesBlock types =
     case types of
         [] ->
@@ -284,8 +286,8 @@ typesBlock types =
 
 
 {-| The 4-tab API layer strip (`M3e | Components | Builder | Raw`), driven by the
-shared `activeSurface`. A click emits the SAME `SelectSurface` the Usage tabs
-emit, so both move together. Tabs derive from `apiLayers`.
+shared `activeSurface`. A click emits the SAME `Doc.Usage.SelectSurface` the Usage
+tabs emit, so both strips move together.
 -}
 apiTabStrip : Usage.Surface -> Component -> Element { s | tabs : M3e.Kind.Brand } adm_ Usage.Msg
 apiTabStrip activeSurface component =
@@ -312,7 +314,7 @@ apiGroups =
 {-| One API group: an overline label over an outlined card listing its members.
 `Nothing` when the group has no members, so it drops out of the section rhythm.
 -}
-apiGroup : List Doc.Data.Member -> ( String, List String ) -> Maybe (Element (TypedHtml.Grouping.DivIs s) adm_ msg)
+apiGroup : List Doc.Data.Member -> ( String, List String ) -> Maybe (Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg)
 apiGroup members ( label, roles ) =
     case List.filter (\m -> List.member m.role roles) members of
         [] ->

@@ -1,6 +1,6 @@
 module M3e.Component.NavBar exposing
     ( component
-    , Is, Attrs, Content, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
     , Mode, mode
     , onChange, onBeforeinput, onInput
     , child
@@ -11,23 +11,10 @@ module M3e.Component.NavBar exposing
 A horizontal bar, typically used on smaller devices, that allows a user to switch between 3-5 views.
 
 @docs component
-@docs Is, Attrs, Content, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
 @docs Mode, mode
 @docs onChange, onBeforeinput, onInput
 @docs child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.NavBar.el [] []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -71,6 +58,24 @@ type alias ChildAdmittedBy childAdm =
 -}
 type alias Mode =
     M3e.Internal.Types.NavBar.Mode
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.NavBar.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.NavBar.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
 
 
 {-| Standard constructor: `[attributes] [children]`.

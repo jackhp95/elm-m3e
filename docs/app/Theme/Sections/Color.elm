@@ -1,150 +1,138 @@
 module Theme.Sections.Color exposing (view)
 
-{-| The Color accordion section (§8): one extra-small BUTTON per color token,
-grouped by `Theme.Tokens.colorGroups` (37 tokens across 9 groups), laid out as a
-wrapping cluster. Each button (a leading color-circle swatch + the role label)
-hosts an `m3e-menu-trigger` that opens an anchored `m3e-menu` holding the
-value-entry controls: a hex text input, an OS color picker, and Unset.
+{-| The Color accordion section: one compact chip per color token, grouped by
+`Theme.Tokens.colorGroups` (37 tokens across 9 groups) and laid out as a WRAPPING
+CLUSTER rather than the old one-full-width-row-per-token stack (37 stacked rows
+pushed every other section out of the drawer).
 
-State lives only in the existing `colorOverrides` dict — a SET token shows the
-`tonal` button variant and its literal override hex in the swatch; an UNSET token
-shows the `outlined` variant and a neutral placeholder (transparent fill; Elm
-cannot read the live computed CSS var, per the `Shared.elm` constraint). No new
-`Theme.Model` field, no persisted-state change.
+Each chip is a real `m3e-form-field` carrying, left to right:
 
-Uses the real `m3e-menu` family (replacing the earlier `<details>` fallback):
-the anchor is `MenuTrigger.for` pointing at the sibling `M3e.menu`'s `id` — the
-menu carries no `for`/`open` attribute. The menu's DEFAULT SLOT is typed to admit
-only menu-item-family kinds, so the free-form entry panel (hex input + OS picker)
-is routed in through `M3e.Unsafe.recast` — the same sanctioned escape hatch
-`Shared.sectionPanel` uses to wrap already-built content into a slot it wasn't
-originally typed for. The `m3e-menu` renders the slotted panel at runtime; the
-Unset action stays a real `M3e.menuItem`.
+  - a **color circle** in the `prefix` slot — a `<label>` whose `for` points at a
+    visually-hidden native `<input type="color">`, so clicking the circle opens
+    the OS picker and the native input stays the keyboard-accessible control;
+  - a **value entry** — a short hex text input, so a token can be typed exactly
+    (`#1a73e8`) instead of only being dialled in through the OS widget;
+  - an **unset** icon button in the `suffix` slot, shown only when the token
+    actually carries an override.
+
+State lives only in the existing `colorOverrides` dict — an unset token shows an
+empty input and a transparent circle (Elm cannot read the live computed CSS
+variable, so there is no honest default to display). No new `Theme.Model` field,
+no persisted-state change.
 
 -}
 
 import Dict
 import M3e exposing (Element)
-import M3e.Action
-import M3e.Attributes
-import M3e.Component.Button
+import M3e.Component.FormField as FormField
 import M3e.Component.Icon
-import M3e.Component.MenuItem
-import M3e.Component.MenuTrigger
-import M3e.Unsafe
 import M3e.Values as Value
 import Theme exposing (Msg(..))
 import Theme.Tokens as Tokens exposing (ColorToken)
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
+import TypedHtml.Component.Grouping
+import TypedHtml.Component.Sectioning
 import TypedHtml.Events
-import TypedHtml.Grouping
-import TypedHtml.Sectioning
-import TypedHtml.Text
 
 
-view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+view : Theme.Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
         (List.map (groupView model) Tokens.colorGroups)
 
 
-groupView : Theme.Model -> ( String, List ColorToken ) -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+groupView : Theme.Model -> ( String, List ColorToken ) -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 groupView model ( groupName, tokens ) =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1" ]
-        [ TypedHtml.Sectioning.h3 [ TypedHtml.Attributes.class "text-on-surface-variant text-sm" ] [ M3e.text groupName ]
-        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-wrap gap-2" ]
-            (List.map (tokenButton model) tokens)
+        [ TypedHtml.Component.Sectioning.h3
+            [ TypedHtml.Attributes.class "text-title-sm text-on-surface-variant" ]
+            [ M3e.text groupName ]
+        , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-wrap items-start gap-2" ]
+            (List.map (tokenChip model) tokens)
         ]
 
 
-{-| One color token: an extra-small button whose `m3e-menu-trigger` opens the
-sibling value-entry `m3e-menu`.
+{-| One color token as a compact form-field chip: circle + value entry + unset.
 -}
-tokenButton : Theme.Model -> ColorToken -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-tokenButton model token =
+tokenChip : Theme.Model -> ColorToken -> Element (FormField.Is s) admittedBy Msg
+tokenChip model token =
     let
         current : Maybe String
         current =
             Dict.get token.cssVar model.colorOverrides
 
-        isSet : Bool
-        isSet =
-            current /= Nothing
-
-        menuId : String
-        menuId =
-            "colormenu-" ++ token.cssVar
-
         pickerId : String
         pickerId =
             "colorpick-" ++ token.cssVar
 
-        -- Leading color swatch, routed to the button's `icon` slot (NOT nested in
-        -- the display:none menu-trigger, which wouldn't project it). Neutral
-        -- placeholder for an UNSET token: outline ring, transparent fill (Elm can't
-        -- read the live computed var); a set token shows its literal override hex.
-        swatch : Element (TypedHtml.Text.SpanIs s) admittedBy Msg
-        swatch =
-            TypedHtml.span
-                [ TypedHtml.Attributes.slot "icon"
-                , TypedHtml.Attributes.class "size-4 rounded-full border border-outline shrink-0"
-                , TypedHtml.Attributes.style "background-color" (Maybe.withDefault "transparent" current)
-                ]
-                []
+        hexId : String
+        hexId =
+            "colorhex-" ++ token.cssVar
 
-        -- Free-form entry controls; recast into the menu's typed slot below.
-        entryPanel : Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
-        entryPanel =
-            TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-1 p-2 min-w-48" ]
-                [ TypedHtml.input
-                    [ TypedHtml.Attributes.type_ "text"
-                    , TypedHtml.Attributes.placeholder "#RRGGBB"
-                    , TypedHtml.Attributes.value (Maybe.withDefault "" current)
-                    , TypedHtml.Events.onInput (SetColorOverride token.cssVar)
-                    , TypedHtml.Attributes.class "w-full rounded border border-outline bg-transparent px-2 py-1 text-on-surface"
-                    , Aria.label ("Hex value for " ++ token.role)
+        -- The swatch circle IS the OS-picker trigger: a `<label for>` over a
+        -- visually-hidden native `<input type=color>`. Keeping the native input
+        -- in the tree (rather than firing a click from Elm) is what keeps the
+        -- control keyboard-reachable and screen-reader-labelled.
+        swatch : Element (TypedHtml.Component.Grouping.DivIs t) admittedBy Msg
+        swatch =
+            TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center" ]
+                [ TypedHtml.label
+                    [ TypedHtml.Attributes.for pickerId
+                    , TypedHtml.Attributes.class "size-4 shrink-0 cursor-pointer rounded-full border border-outline"
+                    , TypedHtml.Attributes.style "background-color" (Maybe.withDefault "transparent" current)
                     ]
                     []
-                , TypedHtml.label
-                    [ TypedHtml.Attributes.for pickerId
-                    , TypedHtml.Attributes.class "flex items-center gap-2 rounded px-2 py-1 cursor-pointer text-on-surface hover:bg-surface-container-high"
+                , TypedHtml.input
+                    [ TypedHtml.Attributes.id pickerId
+                    , TypedHtml.Attributes.type_ "color"
+                    , TypedHtml.Attributes.value (Maybe.withDefault "#000000" current)
+                    , TypedHtml.Attributes.class "sr-only"
+                    , TypedHtml.Events.onInput (SetColorOverride token.cssVar)
+                    , Aria.label ("Pick " ++ token.role ++ " from the OS color picker")
                     ]
-                    [ M3e.icon [ M3e.Component.Icon.name "palette" ] []
-                    , M3e.text "Pick from OS…"
-                    , TypedHtml.input
-                        [ TypedHtml.Attributes.id pickerId
-                        , TypedHtml.Attributes.type_ "color"
-                        , TypedHtml.Attributes.value (Maybe.withDefault "#000000" current)
-                        , TypedHtml.Events.onInput (SetColorOverride token.cssVar)
-                        , TypedHtml.Attributes.class "sr-only"
-                        ]
-                        []
-                    ]
+                    []
                 ]
-    in
-    TypedHtml.div [ TypedHtml.Attributes.class "inline-block" ]
-        [ M3e.Component.Button.component { content = M3e.Unsafe.recast swatch, action = M3e.Action.none }
-            [ M3e.Attributes.size Value.extraSmall
-            , M3e.Attributes.variant
-                (if isSet then
-                    Value.tonal
 
-                 else
-                    Value.outlined
-                )
-            ]
-            [ M3e.Component.MenuTrigger.component { for = menuId }
-                []
-                [ M3e.text token.role ]
-            ]
-        , M3e.menu [ M3e.Attributes.id menuId ]
-            [ M3e.Unsafe.recast entryPanel
-            , M3e.menuItem
-                [ M3e.Attributes.disabled (not isSet)
-                , M3e.Component.MenuItem.onClick (ResetColorOverride token.cssVar)
-                ]
-                [ M3e.text "Unset" ]
-            ]
+        unsetButton : List (Element free freeAdm Msg)
+        unsetButton =
+            case current of
+                Just _ ->
+                    [ FormField.suffix
+                        (M3e.iconButton
+                            [ TypedHtml.Events.onClick (ResetColorOverride token.cssVar)
+                            , Aria.label ("Unset " ++ token.role)
+                            ]
+                            [ M3e.icon [ M3e.Component.Icon.name "close" ] [] ]
+                        )
+                    ]
+
+                Nothing ->
+                    []
+    in
+    M3e.formField
+        [ FormField.variant Value.outlined
+        , FormField.floatLabel Value.auto
+        , FormField.hideSubscript Value.auto
+        , TypedHtml.Attributes.class "w-max max-w-full"
         ]
+        (FormField.label
+            (TypedHtml.label [ TypedHtml.Attributes.for hexId ] [ M3e.text token.role ])
+            :: FormField.prefix swatch
+            :: TypedHtml.input
+                [ TypedHtml.Attributes.id hexId
+                , TypedHtml.Attributes.type_ "text"
+                , TypedHtml.Attributes.value (Maybe.withDefault "" current)
+                , TypedHtml.Attributes.placeholder "#RRGGBB"
+
+                -- A floor on the width: `field-sizing-content` collapses an
+                -- empty input to nothing, leaving an unset token with no visible
+                -- typing target at all.
+                , TypedHtml.Attributes.class "field-sizing-content min-w-[8ch] px-2"
+                , TypedHtml.Events.onInput (SetColorOverride token.cssVar)
+                , Aria.label ("Hex value for " ++ token.role)
+                ]
+                []
+            :: unsetButton
+        )

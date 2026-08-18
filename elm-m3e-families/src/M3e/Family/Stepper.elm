@@ -1,4 +1,4 @@
-module M3e.Family.Stepper exposing (StepperIs, StepperAttrs, StepperPanelSlot, StepperStepSlot, StepperChildAdmittedBy, StepperHeaderPosition, StepperLabelPosition, StepperOrientation, StepIs, StepAttrs, StepContent, StepDoneIconSlot, StepEditIconSlot, StepErrorSlot, StepErrorIconSlot, StepHintSlot, StepIconSlot, StepChildAdmittedBy, PanelIs, PanelAttrs, PanelChildAdmittedBy, NextIs, NextAttrs, NextChildAdmittedBy, PreviousIs, PreviousAttrs, PreviousChildAdmittedBy, ResetIs, ResetAttrs, ResetChildAdmittedBy, stepper, stepperHeaderPosition, stepperLabelPosition, stepperOrientation, stepperLinear, stepperOnChange, stepperOnBeforeinput, stepperOnInput, stepperPanel, stepperStep, step, stepCompleted, stepDisabled, stepEditable, stepFor, stepInvalid, stepOptional, stepSelected, stepDefaultSelected, stepOnBeforeinput, stepOnInput, stepOnChange, stepOnClick, stepDoneIcon, stepEditIcon, stepError, stepErrorIcon, stepHint, stepIcon, stepChild, panel, panelActions, panelChild, next, previous, previousChild, reset, resetChild)
+module M3e.Family.Stepper exposing (StepperIs, StepperAttrs, StepperBuilder, StepperAttrCaps, StepperSlotCaps, StepperPanelSlot, StepperStepSlot, StepperChildAdmittedBy, StepperHeaderPosition, StepperLabelPosition, StepperOrientation, StepIs, StepAttrs, StepBuilder, StepAttrCaps, StepSlotCaps, StepContent, StepDoneIconSlot, StepEditIconSlot, StepErrorSlot, StepErrorIconSlot, StepHintSlot, StepIconSlot, StepChildAdmittedBy, PanelIs, PanelAttrs, PanelBuilder, PanelAttrCaps, PanelSlotCaps, PanelChildAdmittedBy, NextIs, NextAttrs, NextBuilder, NextAttrCaps, NextSlotCaps, NextChildAdmittedBy, PreviousIs, PreviousAttrs, PreviousBuilder, PreviousAttrCaps, PreviousSlotCaps, PreviousChildAdmittedBy, ResetIs, ResetAttrs, ResetBuilder, ResetAttrCaps, ResetSlotCaps, ResetChildAdmittedBy, stepper, stepperHeaderPosition, stepperLabelPosition, stepperOrientation, stepperLinear, stepperOnChange, stepperOnBeforeinput, stepperOnInput, stepperPanel, stepperStep, step, stepCompleted, stepDisabled, stepEditable, stepFor, stepInvalid, stepOptional, stepSelected, stepDefaultSelected, stepOnBeforeinput, stepOnInput, stepOnChange, stepOnClick, stepDoneIcon, stepEditIcon, stepError, stepErrorIcon, stepHint, stepIcon, stepChild, panel, panelActions, panelChild, next, previous, previousChild, reset, resetChild)
 
 {-| The **Stepper** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs StepperIs, StepperAttrs, StepperPanelSlot, StepperStepSlot, StepperChildAdmittedBy, StepperHeaderPosition, StepperLabelPosition, StepperOrientation, StepIs, StepAttrs, StepContent, StepDoneIconSlot, StepEditIconSlot, StepErrorSlot, StepErrorIconSlot, StepHintSlot, StepIconSlot, StepChildAdmittedBy, PanelIs, PanelAttrs, PanelChildAdmittedBy, NextIs, NextAttrs, NextChildAdmittedBy, PreviousIs, PreviousAttrs, PreviousChildAdmittedBy, ResetIs, ResetAttrs, ResetChildAdmittedBy, stepper, stepperHeaderPosition, stepperLabelPosition, stepperOrientation, stepperLinear, stepperOnChange, stepperOnBeforeinput, stepperOnInput, stepperPanel, stepperStep, step, stepCompleted, stepDisabled, stepEditable, stepFor, stepInvalid, stepOptional, stepSelected, stepDefaultSelected, stepOnBeforeinput, stepOnInput, stepOnChange, stepOnClick, stepDoneIcon, stepEditIcon, stepError, stepErrorIcon, stepHint, stepIcon, stepChild, panel, panelActions, panelChild, next, previous, previousChild, reset, resetChild
+@docs StepperIs, StepperAttrs, StepperBuilder, StepperAttrCaps, StepperSlotCaps, StepperPanelSlot, StepperStepSlot, StepperChildAdmittedBy, StepperHeaderPosition, StepperLabelPosition, StepperOrientation, StepIs, StepAttrs, StepBuilder, StepAttrCaps, StepSlotCaps, StepContent, StepDoneIconSlot, StepEditIconSlot, StepErrorSlot, StepErrorIconSlot, StepHintSlot, StepIconSlot, StepChildAdmittedBy, PanelIs, PanelAttrs, PanelBuilder, PanelAttrCaps, PanelSlotCaps, PanelChildAdmittedBy, NextIs, NextAttrs, NextBuilder, NextAttrCaps, NextSlotCaps, NextChildAdmittedBy, PreviousIs, PreviousAttrs, PreviousBuilder, PreviousAttrCaps, PreviousSlotCaps, PreviousChildAdmittedBy, ResetIs, ResetAttrs, ResetBuilder, ResetAttrCaps, ResetSlotCaps, ResetChildAdmittedBy, stepper, stepperHeaderPosition, stepperLabelPosition, stepperOrientation, stepperLinear, stepperOnChange, stepperOnBeforeinput, stepperOnInput, stepperPanel, stepperStep, step, stepCompleted, stepDisabled, stepEditable, stepFor, stepInvalid, stepOptional, stepSelected, stepDefaultSelected, stepOnBeforeinput, stepOnInput, stepOnChange, stepOnClick, stepDoneIcon, stepEditIcon, stepError, stepErrorIcon, stepHint, stepIcon, stepChild, panel, panelActions, panelChild, next, previous, previousChild, reset, resetChild
 
 -}
 
@@ -48,6 +48,24 @@ type alias StepperIs s =
 -}
 type alias StepperAttrs =
     Stepper_.Attrs
+
+
+{-| See [`M3e.Component.Stepper.Builder`](M3e.Component.Stepper#Builder).
+-}
+type alias StepperBuilder attrCaps slotCaps msg kind =
+    Stepper_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Stepper.AttrCaps`](M3e.Component.Stepper#AttrCaps).
+-}
+type alias StepperAttrCaps =
+    Stepper_.AttrCaps
+
+
+{-| See [`M3e.Component.Stepper.SlotCaps`](M3e.Component.Stepper#SlotCaps).
+-}
+type alias StepperSlotCaps =
+    Stepper_.SlotCaps
 
 
 {-| See [`M3e.Component.Stepper.PanelSlot`](M3e.Component.Stepper#PanelSlot).
@@ -170,6 +188,24 @@ type alias StepIs s =
 -}
 type alias StepAttrs =
     Step_.Attrs
+
+
+{-| See [`M3e.Component.Step.Builder`](M3e.Component.Step#Builder).
+-}
+type alias StepBuilder attrCaps slotCaps msg kind =
+    Step_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Step.AttrCaps`](M3e.Component.Step#AttrCaps).
+-}
+type alias StepAttrCaps =
+    Step_.AttrCaps
+
+
+{-| See [`M3e.Component.Step.SlotCaps`](M3e.Component.Step#SlotCaps).
+-}
+type alias StepSlotCaps =
+    Step_.SlotCaps
 
 
 {-| See [`M3e.Component.Step.Content`](M3e.Component.Step#Content).
@@ -375,6 +411,24 @@ type alias PanelAttrs =
     Panel_.Attrs
 
 
+{-| See [`M3e.Component.StepPanel.Builder`](M3e.Component.StepPanel#Builder).
+-}
+type alias PanelBuilder attrCaps slotCaps msg kind =
+    Panel_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.StepPanel.AttrCaps`](M3e.Component.StepPanel#AttrCaps).
+-}
+type alias PanelAttrCaps =
+    Panel_.AttrCaps
+
+
+{-| See [`M3e.Component.StepPanel.SlotCaps`](M3e.Component.StepPanel#SlotCaps).
+-}
+type alias PanelSlotCaps =
+    Panel_.SlotCaps
+
+
 {-| See [`M3e.Component.StepPanel.ChildAdmittedBy`](M3e.Component.StepPanel#ChildAdmittedBy).
 -}
 type alias PanelChildAdmittedBy childAdm =
@@ -417,6 +471,24 @@ type alias NextAttrs =
     Next_.Attrs
 
 
+{-| See [`M3e.Component.StepperNext.Builder`](M3e.Component.StepperNext#Builder).
+-}
+type alias NextBuilder attrCaps slotCaps msg kind =
+    Next_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.StepperNext.AttrCaps`](M3e.Component.StepperNext#AttrCaps).
+-}
+type alias NextAttrCaps =
+    Next_.AttrCaps
+
+
+{-| See [`M3e.Component.StepperNext.SlotCaps`](M3e.Component.StepperNext#SlotCaps).
+-}
+type alias NextSlotCaps =
+    Next_.SlotCaps
+
+
 {-| See [`M3e.Component.StepperNext.ChildAdmittedBy`](M3e.Component.StepperNext#ChildAdmittedBy).
 -}
 type alias NextChildAdmittedBy childAdm =
@@ -443,6 +515,24 @@ type alias PreviousIs s =
 -}
 type alias PreviousAttrs =
     Previous_.Attrs
+
+
+{-| See [`M3e.Component.StepperPrevious.Builder`](M3e.Component.StepperPrevious#Builder).
+-}
+type alias PreviousBuilder attrCaps slotCaps msg kind =
+    Previous_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.StepperPrevious.AttrCaps`](M3e.Component.StepperPrevious#AttrCaps).
+-}
+type alias PreviousAttrCaps =
+    Previous_.AttrCaps
+
+
+{-| See [`M3e.Component.StepperPrevious.SlotCaps`](M3e.Component.StepperPrevious#SlotCaps).
+-}
+type alias PreviousSlotCaps =
+    Previous_.SlotCaps
 
 
 {-| See [`M3e.Component.StepperPrevious.ChildAdmittedBy`](M3e.Component.StepperPrevious#ChildAdmittedBy).
@@ -478,6 +568,24 @@ type alias ResetIs s =
 -}
 type alias ResetAttrs =
     Reset_.Attrs
+
+
+{-| See [`M3e.Component.StepperReset.Builder`](M3e.Component.StepperReset#Builder).
+-}
+type alias ResetBuilder attrCaps slotCaps msg kind =
+    Reset_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.StepperReset.AttrCaps`](M3e.Component.StepperReset#AttrCaps).
+-}
+type alias ResetAttrCaps =
+    Reset_.AttrCaps
+
+
+{-| See [`M3e.Component.StepperReset.SlotCaps`](M3e.Component.StepperReset#SlotCaps).
+-}
+type alias ResetSlotCaps =
+    Reset_.SlotCaps
 
 
 {-| See [`M3e.Component.StepperReset.ChildAdmittedBy`](M3e.Component.StepperReset#ChildAdmittedBy).

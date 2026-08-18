@@ -10,7 +10,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Component.Card
@@ -87,12 +86,12 @@ examples =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } admittedBy msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Examples" }
+    M3e.heading
         [ M3e.Component.Heading.variant Value.display
         , M3e.Component.Heading.size Value.small
         , M3e.Attributes.level 1
         ]
-        []
+        [ M3e.text "Examples" ]
 
 
 exampleCard : ( String, String, String ) -> Element { s | card : M3e.Kind.Brand } admittedBy msg
@@ -104,10 +103,13 @@ exampleCard ( slug, cardTitle, cardBody ) =
     in
     M3e.card
         [ M3e.Component.Card.variant Value.elevated ]
-        [ M3e.Component.Card.header (M3e.Component.Heading.component { content = M3e.text cardTitle } [ M3e.Component.Heading.variant Value.title ] [])
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Component.Heading.variant Value.title ] [ M3e.text cardTitle ])
         , M3e.Component.Card.content (TypedHtml.p [ TA.class "text-body-lg text-on-surface-variant" ] [ M3e.text cardBody ])
         , M3e.Component.Card.actions
-            (M3e.Component.Button.component { content = M3e.text ("Open " ++ cardTitle), action = M3e.Action.none } [ M3e.Component.Button.variant Value.filled, M3e.Component.Button.href exampleHref ] [])
+            (M3e.button
+                [ M3e.Component.Button.variant Value.filled, M3e.Component.Button.href exampleHref ]
+                [ M3e.text ("Open " ++ cardTitle) ]
+            )
         ]
 
 

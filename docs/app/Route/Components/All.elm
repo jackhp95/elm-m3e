@@ -6,10 +6,9 @@ block is `id`-anchored (so `/components/all#button` deep-links straight to it) a
 carries the hand-authored `.cv-auto` class (`content-visibility: auto`) so the
 browser skips laying out off-screen blocks — 329 examples stay snappy.
 
-The tab state for every example lives in one shared `Usage.Model`, keyed by a
-page-global index. Each component is rendered with a **running offset** equal to
-the count of examples already placed, so no two components' tab strips share an
-index — their selections stay independent.
+Every example's tab strip reads the ONE site-wide `Shared.Model.activeSurface`, so
+picking a surface on any block moves all of them together (and carries over to the
+per-component pages and across reloads, via `Theme.Ports.storeSurface`).
 
 -}
 
@@ -24,7 +23,6 @@ import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Component.Heading
 import M3e.Events
 import M3e.Kind
 import M3e.Values as Value
@@ -33,13 +31,17 @@ import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
+import Theme.Ports
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+{-| Only the reveal gate is per-route state — the layer-tab selection lives in
+`Shared.Model.activeSurface`.
+-}
 type alias Model =
     { revealed : Bool }
 
@@ -90,9 +92,9 @@ update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Mo
 update _ _ msg model =
     case msg of
         UsageMsg (Usage.SelectSurface surface) ->
-            -- Write to localStorage; `index.ts` echoes back to `Shared`, which owns
-            -- `activeSurface`. No local state to update here.
-            ( model, Effect.fromCmd (Usage.persist surface) )
+            -- Persist only; `index.ts` echoes the write back to `Shared`, which
+            -- owns `activeSurface` and re-renders every strip on this page.
+            ( model, Effect.fromCmd (Theme.Ports.storeSurface (Usage.encodeSurface surface)) )
 
         Reveal ->
             ( { model | revealed = True }, Effect.none )
@@ -100,7 +102,7 @@ update _ _ msg model =
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
-    -- `readSurface` lives in `Shared` now (single source of truth for activeSurface).
+    -- The `readSurface` subscription lives in `Shared` (single source of truth).
     Sub.none
 
 
@@ -127,9 +129,11 @@ view app shared model =
     let
         heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } adm_ Msg
         heading =
-            M3e.Component.Heading.component { content = M3e.text "All components" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+            M3e.heading
+                [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+                [ M3e.text "All components" ]
 
-        content : List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
+        content : List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg)
         content =
             if model.revealed then
                 stackedBlocks shared.activeSurface app.data
@@ -154,7 +158,7 @@ a summary line, the category names, and a **Show all components** button that
 flips `revealed` on click.
 
 -}
-overview : Data -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+overview : Data -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg
 overview d =
     let
         withExamples : List Component
@@ -210,9 +214,9 @@ overview d =
 
 {-| Every component's Usage section, ordered by `Shared.componentCategories`, each
 wrapped in an `id`-anchored `.cv-auto` block. All examples share the same
-page-wide `model.activeSurface` — no per-component offset needed.
+site-wide `activeSurface` — no per-component index offset is needed any more.
 -}
-stackedBlocks : Usage.Surface -> Data -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
+stackedBlocks : Usage.Surface -> Data -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ Usage.Msg)
 stackedBlocks activeSurface d =
     let
         orderedComponents : List Component
@@ -220,7 +224,7 @@ stackedBlocks activeSurface d =
             Shared.componentCategories
                 |> List.concatMap (\( category, _ ) -> List.filter (\c -> c.category == category) d.components)
 
-        componentBlock : Component -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Usage.Msg)
+        componentBlock : Component -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ Usage.Msg)
         componentBlock component =
             let
                 examples : List UsageExample
@@ -235,7 +239,9 @@ stackedBlocks activeSurface d =
                     [ TA.id component.slug
                     , TA.class "cv-auto space-y-6 scroll-mt-24"
                     ]
-                    (M3e.Component.Heading.component { content = M3e.text component.name } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ] []
+                    (M3e.heading
+                        [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, M3e.Attributes.level 2 ]
+                        [ M3e.text component.name ]
                         :: Usage.usageBlocks activeSurface examples
                     )
                 ]

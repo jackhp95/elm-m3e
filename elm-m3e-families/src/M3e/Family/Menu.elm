@@ -1,4 +1,4 @@
-module M3e.Family.Menu exposing (MenuIs, MenuAttrs, MenuContent, MenuChildAdmittedBy, MenuPositionX, MenuPositionY, MenuVariant, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemTrailingIconSlot, ItemChildAdmittedBy, ItemCheckboxIs, ItemCheckboxAttrs, ItemCheckboxContent, ItemCheckboxIconSlot, ItemCheckboxTrailingIconSlot, ItemCheckboxChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupContent, ItemGroupChildAdmittedBy, ItemRadioIs, ItemRadioAttrs, ItemRadioContent, ItemRadioIconSlot, ItemRadioTrailingIconSlot, ItemRadioChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, menu, menuPositionX, menuPositionY, menuVariant, menuSubmenu, menuOnBeforetoggle, menuOnToggle, menuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemTrailingIcon, itemChild, itemCheckbox, itemCheckboxChecked, itemCheckboxDisabled, itemCheckboxDefaultChecked, itemCheckboxOnClick, itemCheckboxIcon, itemCheckboxTrailingIcon, itemCheckboxChild, itemGroup, itemGroupChild, itemRadio, itemRadioChecked, itemRadioDisabled, itemRadioDefaultChecked, itemRadioOnClick, itemRadioIcon, itemRadioTrailingIcon, itemRadioChild, trigger, triggerChild)
+module M3e.Family.Menu exposing (MenuIs, MenuAttrs, MenuBuilder, MenuAttrCaps, MenuSlotCaps, MenuContent, MenuChildAdmittedBy, MenuPositionX, MenuPositionY, MenuVariant, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemIconSlot, ItemTrailingIconSlot, ItemChildAdmittedBy, ItemCheckboxIs, ItemCheckboxAttrs, ItemCheckboxBuilder, ItemCheckboxAttrCaps, ItemCheckboxSlotCaps, ItemCheckboxContent, ItemCheckboxIconSlot, ItemCheckboxTrailingIconSlot, ItemCheckboxChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupBuilder, ItemGroupAttrCaps, ItemGroupSlotCaps, ItemGroupContent, ItemGroupChildAdmittedBy, ItemRadioIs, ItemRadioAttrs, ItemRadioBuilder, ItemRadioAttrCaps, ItemRadioSlotCaps, ItemRadioContent, ItemRadioIconSlot, ItemRadioTrailingIconSlot, ItemRadioChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerChildAdmittedBy, menu, menuPositionX, menuPositionY, menuVariant, menuSubmenu, menuOnBeforetoggle, menuOnToggle, menuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemTrailingIcon, itemChild, itemCheckbox, itemCheckboxChecked, itemCheckboxDisabled, itemCheckboxDefaultChecked, itemCheckboxOnClick, itemCheckboxIcon, itemCheckboxTrailingIcon, itemCheckboxChild, itemGroup, itemGroupChild, itemRadio, itemRadioChecked, itemRadioDisabled, itemRadioDefaultChecked, itemRadioOnClick, itemRadioIcon, itemRadioTrailingIcon, itemRadioChild, trigger, triggerFor, triggerChild)
 
 {-| The **Menu** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs MenuIs, MenuAttrs, MenuContent, MenuChildAdmittedBy, MenuPositionX, MenuPositionY, MenuVariant, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemTrailingIconSlot, ItemChildAdmittedBy, ItemCheckboxIs, ItemCheckboxAttrs, ItemCheckboxContent, ItemCheckboxIconSlot, ItemCheckboxTrailingIconSlot, ItemCheckboxChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupContent, ItemGroupChildAdmittedBy, ItemRadioIs, ItemRadioAttrs, ItemRadioContent, ItemRadioIconSlot, ItemRadioTrailingIconSlot, ItemRadioChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, menu, menuPositionX, menuPositionY, menuVariant, menuSubmenu, menuOnBeforetoggle, menuOnToggle, menuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemTrailingIcon, itemChild, itemCheckbox, itemCheckboxChecked, itemCheckboxDisabled, itemCheckboxDefaultChecked, itemCheckboxOnClick, itemCheckboxIcon, itemCheckboxTrailingIcon, itemCheckboxChild, itemGroup, itemGroupChild, itemRadio, itemRadioChecked, itemRadioDisabled, itemRadioDefaultChecked, itemRadioOnClick, itemRadioIcon, itemRadioTrailingIcon, itemRadioChild, trigger, triggerChild
+@docs MenuIs, MenuAttrs, MenuBuilder, MenuAttrCaps, MenuSlotCaps, MenuContent, MenuChildAdmittedBy, MenuPositionX, MenuPositionY, MenuVariant, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemIconSlot, ItemTrailingIconSlot, ItemChildAdmittedBy, ItemCheckboxIs, ItemCheckboxAttrs, ItemCheckboxBuilder, ItemCheckboxAttrCaps, ItemCheckboxSlotCaps, ItemCheckboxContent, ItemCheckboxIconSlot, ItemCheckboxTrailingIconSlot, ItemCheckboxChildAdmittedBy, ItemGroupIs, ItemGroupAttrs, ItemGroupBuilder, ItemGroupAttrCaps, ItemGroupSlotCaps, ItemGroupContent, ItemGroupChildAdmittedBy, ItemRadioIs, ItemRadioAttrs, ItemRadioBuilder, ItemRadioAttrCaps, ItemRadioSlotCaps, ItemRadioContent, ItemRadioIconSlot, ItemRadioTrailingIconSlot, ItemRadioChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerChildAdmittedBy, menu, menuPositionX, menuPositionY, menuVariant, menuSubmenu, menuOnBeforetoggle, menuOnToggle, menuChild, item, itemDisabled, itemDownload, itemHref, itemRel, itemTarget, itemOnClick, itemIcon, itemTrailingIcon, itemChild, itemCheckbox, itemCheckboxChecked, itemCheckboxDisabled, itemCheckboxDefaultChecked, itemCheckboxOnClick, itemCheckboxIcon, itemCheckboxTrailingIcon, itemCheckboxChild, itemGroup, itemGroupChild, itemRadio, itemRadioChecked, itemRadioDisabled, itemRadioDefaultChecked, itemRadioOnClick, itemRadioIcon, itemRadioTrailingIcon, itemRadioChild, trigger, triggerFor, triggerChild
 
 -}
 
@@ -48,6 +48,24 @@ type alias MenuIs s =
 -}
 type alias MenuAttrs =
     Menu_.Attrs
+
+
+{-| See [`M3e.Component.Menu.Builder`](M3e.Component.Menu#Builder).
+-}
+type alias MenuBuilder attrCaps slotCaps msg kind =
+    Menu_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Menu.AttrCaps`](M3e.Component.Menu#AttrCaps).
+-}
+type alias MenuAttrCaps =
+    Menu_.AttrCaps
+
+
+{-| See [`M3e.Component.Menu.SlotCaps`](M3e.Component.Menu#SlotCaps).
+-}
+type alias MenuSlotCaps =
+    Menu_.SlotCaps
 
 
 {-| See [`M3e.Component.Menu.Content`](M3e.Component.Menu#Content).
@@ -149,6 +167,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.MenuItem.Builder`](M3e.Component.MenuItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MenuItem.AttrCaps`](M3e.Component.MenuItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.MenuItem.SlotCaps`](M3e.Component.MenuItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.MenuItem.Content`](M3e.Component.MenuItem#Content).
@@ -260,6 +296,24 @@ type alias ItemCheckboxAttrs =
     ItemCheckbox_.Attrs
 
 
+{-| See [`M3e.Component.MenuItemCheckbox.Builder`](M3e.Component.MenuItemCheckbox#Builder).
+-}
+type alias ItemCheckboxBuilder attrCaps slotCaps msg kind =
+    ItemCheckbox_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.AttrCaps`](M3e.Component.MenuItemCheckbox#AttrCaps).
+-}
+type alias ItemCheckboxAttrCaps =
+    ItemCheckbox_.AttrCaps
+
+
+{-| See [`M3e.Component.MenuItemCheckbox.SlotCaps`](M3e.Component.MenuItemCheckbox#SlotCaps).
+-}
+type alias ItemCheckboxSlotCaps =
+    ItemCheckbox_.SlotCaps
+
+
 {-| See [`M3e.Component.MenuItemCheckbox.Content`](M3e.Component.MenuItemCheckbox#Content).
 -}
 type alias ItemCheckboxContent =
@@ -355,6 +409,24 @@ type alias ItemGroupAttrs =
     ItemGroup_.Attrs
 
 
+{-| See [`M3e.Component.MenuItemGroup.Builder`](M3e.Component.MenuItemGroup#Builder).
+-}
+type alias ItemGroupBuilder attrCaps slotCaps msg kind =
+    ItemGroup_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MenuItemGroup.AttrCaps`](M3e.Component.MenuItemGroup#AttrCaps).
+-}
+type alias ItemGroupAttrCaps =
+    ItemGroup_.AttrCaps
+
+
+{-| See [`M3e.Component.MenuItemGroup.SlotCaps`](M3e.Component.MenuItemGroup#SlotCaps).
+-}
+type alias ItemGroupSlotCaps =
+    ItemGroup_.SlotCaps
+
+
 {-| See [`M3e.Component.MenuItemGroup.Content`](M3e.Component.MenuItemGroup#Content).
 -}
 type alias ItemGroupContent =
@@ -394,6 +466,24 @@ type alias ItemRadioIs s =
 -}
 type alias ItemRadioAttrs =
     ItemRadio_.Attrs
+
+
+{-| See [`M3e.Component.MenuItemRadio.Builder`](M3e.Component.MenuItemRadio#Builder).
+-}
+type alias ItemRadioBuilder attrCaps slotCaps msg kind =
+    ItemRadio_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MenuItemRadio.AttrCaps`](M3e.Component.MenuItemRadio#AttrCaps).
+-}
+type alias ItemRadioAttrCaps =
+    ItemRadio_.AttrCaps
+
+
+{-| See [`M3e.Component.MenuItemRadio.SlotCaps`](M3e.Component.MenuItemRadio#SlotCaps).
+-}
+type alias ItemRadioSlotCaps =
+    ItemRadio_.SlotCaps
 
 
 {-| See [`M3e.Component.MenuItemRadio.Content`](M3e.Component.MenuItemRadio#Content).
@@ -472,8 +562,7 @@ itemRadioChild =
 {-| The `trigger` element of this family — delegates to [`M3e.Component.MenuTrigger.component`](M3e.Component.MenuTrigger#component).
 -}
 trigger :
-    { for : String }
-    -> List (Attr TriggerAttrs msg)
+    List (Attr TriggerAttrs msg)
     -> List (Element childAccepts (TriggerChildAdmittedBy childAdm) msg)
     -> Element (TriggerIs s) admittedBy msg
 trigger =
@@ -492,10 +581,35 @@ type alias TriggerAttrs =
     Trigger_.Attrs
 
 
+{-| See [`M3e.Component.MenuTrigger.Builder`](M3e.Component.MenuTrigger#Builder).
+-}
+type alias TriggerBuilder attrCaps slotCaps msg kind =
+    Trigger_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MenuTrigger.AttrCaps`](M3e.Component.MenuTrigger#AttrCaps).
+-}
+type alias TriggerAttrCaps =
+    Trigger_.AttrCaps
+
+
+{-| See [`M3e.Component.MenuTrigger.SlotCaps`](M3e.Component.MenuTrigger#SlotCaps).
+-}
+type alias TriggerSlotCaps =
+    Trigger_.SlotCaps
+
+
 {-| See [`M3e.Component.MenuTrigger.ChildAdmittedBy`](M3e.Component.MenuTrigger#ChildAdmittedBy).
 -}
 type alias TriggerChildAdmittedBy childAdm =
     Trigger_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.MenuTrigger.for`](M3e.Component.MenuTrigger#for).
+-}
+triggerFor : String -> Attr { c | for : Supported } msg
+triggerFor =
+    Trigger_.for
 
 
 {-| See [`M3e.Component.MenuTrigger.child`](M3e.Component.MenuTrigger#child).

@@ -3,7 +3,6 @@ Autocomplete :: Native module support (2) :: filtered: registration-only (script
 Autocomplete :: Native module support :: filtered: registration-only (script/link)
 Avatar :: Native module support :: filtered: registration-only (script/link)
 Badge :: Native module support :: filtered: registration-only (script/link)
-BottomSheet :: Collapsed height :: degraded: top: The 5th element of this list does not match all the previous elements:
 BottomSheet :: Native module support :: filtered: registration-only (script/link)
 Breadcrumb :: Native module support :: filtered: registration-only (script/link)
 ButtonGroup :: Native module support (2) :: filtered: registration-only (script/link)
@@ -11,16 +10,18 @@ ButtonGroup :: Native module support :: filtered: registration-only (script/link
 Card :: Native module support :: filtered: registration-only (script/link)
 Checkbox :: Native module support :: filtered: registration-only (script/link)
 ContentPane :: Native module support :: filtered: registration-only (script/link)
-FabMenu :: Anatomy :: degraded: top: The 2nd argument to `fab` is not what I expect:
-FabMenu :: Disabling :: degraded: top: The 2nd argument to `fab` is not what I expect:
-FabMenu :: Links :: degraded: top: The 2nd argument to `fab` is not what I expect:
+FabMenu :: Anatomy :: degraded: top: The 1st argument to `component` is not what I expect:
+FabMenu :: Disabling :: degraded: top: The 1st argument to `component` is not what I expect:
+FabMenu :: Links :: degraded: top: The 1st argument to `component` is not what I expect:
 FabMenu :: Native module support :: filtered: registration-only (script/link)
-FabMenu :: Variants :: degraded: top: The 2nd argument to `fab` is not what I expect:
+FabMenu :: Variants :: degraded: top: The 1st argument to `component` is not what I expect:
 Icon :: Variable fonts :: filtered: registration-only (script/link)
 List :: Media content (3) :: degraded: top: The 1st argument to `leading` is not what I expect:
-NavMenu :: Personal folders (2) :: degraded: top: The 2nd argument to `navmenu` is not what I expect:
-NavMenu :: Personal folders :: degraded: top: The 2nd argument to `navmenuitemgroup` is not what I expect:
+NavMenu :: Personal folders (2) :: degraded: top: The 2nd argument to `component` is not what I expect:
+NavMenu :: Personal folders :: degraded: top: The 2nd argument to `component` is not what I expect:
 Paginator :: Native module support :: filtered: registration-only (script/link)
 Select :: Native module support (2) :: filtered: registration-only (script/link)
 Select :: Native module support :: filtered: registration-only (script/link)
+Tooltip :: Delays :: degraded: top: m3e-icon-button requires attribute "aria-label" (record field) but it is absent
+Tooltip :: Disabling :: degraded: top: m3e-icon-button requires attribute "aria-label" (record field) but it is absent
 Tree :: Native module support :: filtered: registration-only (script/link)

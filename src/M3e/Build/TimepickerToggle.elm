@@ -1,14 +1,14 @@
 module M3e.Build.TimepickerToggle exposing
     ( build, toElement
     , Builder, AttrCaps, SlotCaps, Is, ChildAdmittedBy
-    , withClass, withId, withSlot, withStyle
+    , withClass, withFor, withId, withSlot, withStyle
     )
 
 {-|
 
 @docs build, toElement
 @docs Builder, AttrCaps, SlotCaps, Is, ChildAdmittedBy
-@docs withClass, withId, withSlot, withStyle
+@docs withClass, withFor, withId, withSlot, withStyle
 
 -}
 
@@ -18,23 +18,22 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Component.TimepickerToggle as Component
 import M3e.Forge.Internal as B
-import M3e.Internal.Types.TimepickerToggle
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| -}
 type alias Is s =
-    M3e.Internal.Types.TimepickerToggle.Is s
+    Component.Is s
 
 
 {-| -}
 type alias Builder attrCaps slotCaps msg kind =
-    M3e.Internal.Types.TimepickerToggle.Builder attrCaps slotCaps msg kind
+    Component.Builder attrCaps slotCaps msg kind
 
 
 {-| -}
 type alias AttrCaps =
-    M3e.Internal.Types.TimepickerToggle.AttrCaps
+    Component.AttrCaps
 
 
 {-| -}
@@ -44,15 +43,13 @@ type alias SlotCaps =
 
 {-| -}
 type alias ChildAdmittedBy childAdm =
-    M3e.Internal.Types.TimepickerToggle.ChildAdmittedBy childAdm
+    Component.ChildAdmittedBy childAdm
 
 
 {-| -}
-build :
-    { for : String }
-    -> Builder AttrCaps SlotCaps msg kind
-build required_ =
-    B.init "m3e-timepicker-toggle" [ Ir.attribute "for" required_.for ] []
+build : Builder AttrCaps SlotCaps msg kind
+build =
+    B.init "m3e-timepicker-toggle" [] []
 
 
 {-| -}
@@ -83,3 +80,9 @@ withSlot value_ =
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
 withStyle property value_ =
     B.withAttribute (A.style property value_)
+
+
+{-| -}
+withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
+withFor value_ =
+    B.withAttribute (A.for value_)

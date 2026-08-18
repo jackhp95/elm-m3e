@@ -1,6 +1,6 @@
 module M3e.Component.Paginator exposing
     ( component
-    , Is, Attrs, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy
     , PageSizeVariant, pageSizeVariant
     , disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, previousPageLabel, showFirstLastButtons, onPage
     , firstPageIcon, lastPageIcon, nextPageIcon, previousPageIcon
@@ -11,23 +11,10 @@ module M3e.Component.Paginator exposing
 Provides navigation for paged information, typically used with a table.
 
 @docs component
-@docs Is, Attrs, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, FirstPageIconSlot, LastPageIconSlot, NextPageIconSlot, PreviousPageIconSlot, ChildAdmittedBy
 @docs PageSizeVariant, pageSizeVariant
 @docs disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, previousPageLabel, showFirstLastButtons, onPage
 @docs firstPageIcon, lastPageIcon, nextPageIcon, previousPageIcon
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.Paginator.el [] []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -90,6 +77,24 @@ type alias ChildAdmittedBy childAdm =
 -}
 type alias PageSizeVariant =
     M3e.Internal.Types.Paginator.PageSizeVariant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Paginator.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Paginator.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Paginator.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`.

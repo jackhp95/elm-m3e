@@ -1,6 +1,7 @@
 module M3e.Component.DatepickerToggle exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+    , for
     )
 
 {-| The `m3e-datepicker-toggle` component — strict per-component surface.
@@ -8,7 +9,8 @@ module M3e.Component.DatepickerToggle exposing
 An element, nested within a clickable element, used to toggle a datepicker.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
+@docs for
 
 -}
 
@@ -40,12 +42,36 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.DatepickerToggle.ChildAdmittedBy childAdm
 
 
-{-| Required-content (and action) constructor — omissions are unwritable.
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.DatepickerToggle.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.DatepickerToggle.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 component :
-    { for : String }
-    -> List (Attr Attrs msg)
+    List (Attr Attrs msg)
     -> List (Element childAccepts (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    H.datepickerToggle (Ir.attribute "for" required_.for :: attrs) children
+component =
+    H.datepickerToggle
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for

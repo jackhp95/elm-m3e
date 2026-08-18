@@ -5,11 +5,8 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
-import M3e.Component.Button
 import M3e.Component.Card
-import M3e.Component.Heading
 import M3e.Kind
 import M3e.Values as Value
 import MimeType
@@ -19,7 +16,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath
 import View exposing (View)
 
@@ -88,16 +85,17 @@ densityScaleClass n =
         "[--md-sys-density-scale:0]"
 
 
-demoBar : Int -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+demoBar : Int -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 demoBar scaleValue =
     TypedHtml.div [ TA.class "space-y-2" ]
-        [ M3e.Component.Heading.component { content = M3e.text ("density scale " ++ String.fromInt scaleValue) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+        [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ]
+            [ M3e.text ("density scale " ++ String.fromInt scaleValue) ]
         , TypedHtml.div
             [ TA.class (densityScaleClass scaleValue ++ " flex flex-wrap gap-2") ]
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        M3e.Component.Button.component { content = M3e.text "Action", action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] []
+                        M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Action" ]
                     )
             )
         ]
@@ -105,7 +103,9 @@ demoBar scaleValue =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } adm_ msg
 pageHeading =
-    M3e.Component.Heading.component { content = M3e.text "Density" } [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ] []
+    M3e.heading
+        [ M3e.Attributes.variant Value.display, M3e.Attributes.size Value.small, M3e.Attributes.level 1 ]
+        [ M3e.text "Density" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -121,7 +121,7 @@ view _ _ =
                 ]
             , M3e.card
                 [ M3e.Attributes.variant Value.outlined ]
-                [ M3e.Component.Card.header (M3e.Component.Heading.component { content = M3e.text "Density scale, 0 to -3" } [ M3e.Attributes.variant Value.title ] [])
+                [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title ] [ M3e.text "Density scale, 0 to -3" ])
                 , M3e.Component.Card.content
                     (TypedHtml.div [ TA.class "space-y-6" ]
                         [ demoBar 0

@@ -1,4 +1,4 @@
-module M3e.Family.BottomSheet exposing (BottomSheetIs, BottomSheetAttrs, BottomSheetChildAdmittedBy, ActionIs, ActionAttrs, ActionContent, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerContent, TriggerChildAdmittedBy, bottomSheet, bottomSheetDetent, bottomSheetDetents, bottomSheetHandle, bottomSheetHandleLabel, bottomSheetHideFriction, bottomSheetHideable, bottomSheetModal, bottomSheetOpen, bottomSheetOvershootLimit, bottomSheetOnOpening, bottomSheetOnClosing, bottomSheetOnCancel, bottomSheetOnOpened, bottomSheetOnClosed, bottomSheetHeader, bottomSheetChild, action, actionChild, trigger, triggerDetent, triggerSecondary, triggerChild)
+module M3e.Family.BottomSheet exposing (BottomSheetIs, BottomSheetAttrs, BottomSheetBuilder, BottomSheetAttrCaps, BottomSheetSlotCaps, BottomSheetChildAdmittedBy, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionContent, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerContent, TriggerChildAdmittedBy, bottomSheet, bottomSheetDetent, bottomSheetDetents, bottomSheetHandle, bottomSheetHandleLabel, bottomSheetHideFriction, bottomSheetHideable, bottomSheetModal, bottomSheetOpen, bottomSheetOvershootLimit, bottomSheetOnOpening, bottomSheetOnClosing, bottomSheetOnCancel, bottomSheetOnOpened, bottomSheetOnClosed, bottomSheetHeader, bottomSheetChild, action, actionChild, trigger, triggerDetent, triggerFor, triggerSecondary, triggerChild)
 
 {-| The **BottomSheet** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs BottomSheetIs, BottomSheetAttrs, BottomSheetChildAdmittedBy, ActionIs, ActionAttrs, ActionContent, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerContent, TriggerChildAdmittedBy, bottomSheet, bottomSheetDetent, bottomSheetDetents, bottomSheetHandle, bottomSheetHandleLabel, bottomSheetHideFriction, bottomSheetHideable, bottomSheetModal, bottomSheetOpen, bottomSheetOvershootLimit, bottomSheetOnOpening, bottomSheetOnClosing, bottomSheetOnCancel, bottomSheetOnOpened, bottomSheetOnClosed, bottomSheetHeader, bottomSheetChild, action, actionChild, trigger, triggerDetent, triggerSecondary, triggerChild
+@docs BottomSheetIs, BottomSheetAttrs, BottomSheetBuilder, BottomSheetAttrCaps, BottomSheetSlotCaps, BottomSheetChildAdmittedBy, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionContent, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerContent, TriggerChildAdmittedBy, bottomSheet, bottomSheetDetent, bottomSheetDetents, bottomSheetHandle, bottomSheetHandleLabel, bottomSheetHideFriction, bottomSheetHideable, bottomSheetModal, bottomSheetOpen, bottomSheetOvershootLimit, bottomSheetOnOpening, bottomSheetOnClosing, bottomSheetOnCancel, bottomSheetOnOpened, bottomSheetOnClosed, bottomSheetHeader, bottomSheetChild, action, actionChild, trigger, triggerDetent, triggerFor, triggerSecondary, triggerChild
 
 -}
 
@@ -44,6 +44,24 @@ type alias BottomSheetIs s =
 -}
 type alias BottomSheetAttrs =
     BottomSheet_.Attrs
+
+
+{-| See [`M3e.Component.BottomSheet.Builder`](M3e.Component.BottomSheet#Builder).
+-}
+type alias BottomSheetBuilder attrCaps slotCaps msg kind =
+    BottomSheet_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.BottomSheet.AttrCaps`](M3e.Component.BottomSheet#AttrCaps).
+-}
+type alias BottomSheetAttrCaps =
+    BottomSheet_.AttrCaps
+
+
+{-| See [`M3e.Component.BottomSheet.SlotCaps`](M3e.Component.BottomSheet#SlotCaps).
+-}
+type alias BottomSheetSlotCaps =
+    BottomSheet_.SlotCaps
 
 
 {-| See [`M3e.Component.BottomSheet.ChildAdmittedBy`](M3e.Component.BottomSheet#ChildAdmittedBy).
@@ -186,6 +204,24 @@ type alias ActionAttrs =
     Action_.Attrs
 
 
+{-| See [`M3e.Component.BottomSheetAction.Builder`](M3e.Component.BottomSheetAction#Builder).
+-}
+type alias ActionBuilder attrCaps slotCaps msg kind =
+    Action_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.BottomSheetAction.AttrCaps`](M3e.Component.BottomSheetAction#AttrCaps).
+-}
+type alias ActionAttrCaps =
+    Action_.AttrCaps
+
+
+{-| See [`M3e.Component.BottomSheetAction.SlotCaps`](M3e.Component.BottomSheetAction#SlotCaps).
+-}
+type alias ActionSlotCaps =
+    Action_.SlotCaps
+
+
 {-| See [`M3e.Component.BottomSheetAction.Content`](M3e.Component.BottomSheetAction#Content).
 -}
 type alias ActionContent =
@@ -208,8 +244,7 @@ actionChild =
 {-| The `trigger` element of this family — delegates to [`M3e.Component.BottomSheetTrigger.component`](M3e.Component.BottomSheetTrigger#component).
 -}
 trigger :
-    { for : String }
-    -> List (Attr TriggerAttrs msg)
+    List (Attr TriggerAttrs msg)
     -> List (Element TriggerContent (TriggerChildAdmittedBy childAdm) msg)
     -> Element (TriggerIs s) admittedBy msg
 trigger =
@@ -226,6 +261,24 @@ type alias TriggerIs s =
 -}
 type alias TriggerAttrs =
     Trigger_.Attrs
+
+
+{-| See [`M3e.Component.BottomSheetTrigger.Builder`](M3e.Component.BottomSheetTrigger#Builder).
+-}
+type alias TriggerBuilder attrCaps slotCaps msg kind =
+    Trigger_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.BottomSheetTrigger.AttrCaps`](M3e.Component.BottomSheetTrigger#AttrCaps).
+-}
+type alias TriggerAttrCaps =
+    Trigger_.AttrCaps
+
+
+{-| See [`M3e.Component.BottomSheetTrigger.SlotCaps`](M3e.Component.BottomSheetTrigger#SlotCaps).
+-}
+type alias TriggerSlotCaps =
+    Trigger_.SlotCaps
 
 
 {-| See [`M3e.Component.BottomSheetTrigger.Content`](M3e.Component.BottomSheetTrigger#Content).
@@ -245,6 +298,13 @@ type alias TriggerChildAdmittedBy childAdm =
 triggerDetent : Float -> Attr { c | detent : Supported } msg
 triggerDetent =
     Trigger_.detent
+
+
+{-| See [`M3e.Component.BottomSheetTrigger.for`](M3e.Component.BottomSheetTrigger#for).
+-}
+triggerFor : String -> Attr { c | for : Supported } msg
+triggerFor =
+    Trigger_.for
 
 
 {-| See [`M3e.Component.BottomSheetTrigger.secondary`](M3e.Component.BottomSheetTrigger#secondary).

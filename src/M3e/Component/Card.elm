@@ -1,6 +1,6 @@
 module M3e.Component.Card exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
     , Orientation, orientation, Type, type_, Variant, variant
     , actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
     , actions, content, footer, header, child
@@ -11,23 +11,10 @@ module M3e.Component.Card exposing
 A content container for text, images (or other media), and actions in the context of a single subject.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
 @docs Orientation, orientation, Type, type_, Variant, variant
 @docs actionable, disabled, disabledInteractive, download, href, inline, name, rel, target, value, defaultValue, onClick
 @docs actions, content, footer, header, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.Card.el [] [ TypedHtml.text "Card content" ]
-```
-
-<!-- elm-cem:docmeta category=Containment -->
 
 -}
 
@@ -78,6 +65,24 @@ type alias Type =
 -}
 type alias Variant =
     M3e.Internal.Types.Card.Variant
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Card.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Card.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Card.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is

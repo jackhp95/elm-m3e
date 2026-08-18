@@ -1,4 +1,4 @@
-module M3e.Family.DrawerContainer exposing (DrawerContainerIs, DrawerContainerAttrs, DrawerContainerChildAdmittedBy, DrawerContainerEndMode, DrawerContainerStartMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, drawerContainer, drawerContainerEndMode, drawerContainerStartMode, drawerContainerEndDivider, drawerContainerStartDivider, drawerContainerOnChange, drawerContainerEnd, drawerContainerStart, drawerContainerChild, toggle)
+module M3e.Family.DrawerContainer exposing (DrawerContainerIs, DrawerContainerAttrs, DrawerContainerBuilder, DrawerContainerAttrCaps, DrawerContainerSlotCaps, DrawerContainerChildAdmittedBy, DrawerContainerEndMode, DrawerContainerStartMode, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, drawerContainer, drawerContainerEndMode, drawerContainerStartMode, drawerContainerEndDivider, drawerContainerStartDivider, drawerContainerOnChange, drawerContainerEnd, drawerContainerStart, drawerContainerChild, toggle, toggleFor)
 
 {-| The **DrawerContainer** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs DrawerContainerIs, DrawerContainerAttrs, DrawerContainerChildAdmittedBy, DrawerContainerEndMode, DrawerContainerStartMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, drawerContainer, drawerContainerEndMode, drawerContainerStartMode, drawerContainerEndDivider, drawerContainerStartDivider, drawerContainerOnChange, drawerContainerEnd, drawerContainerStart, drawerContainerChild, toggle
+@docs DrawerContainerIs, DrawerContainerAttrs, DrawerContainerBuilder, DrawerContainerAttrCaps, DrawerContainerSlotCaps, DrawerContainerChildAdmittedBy, DrawerContainerEndMode, DrawerContainerStartMode, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, drawerContainer, drawerContainerEndMode, drawerContainerStartMode, drawerContainerEndDivider, drawerContainerStartDivider, drawerContainerOnChange, drawerContainerEnd, drawerContainerStart, drawerContainerChild, toggle, toggleFor
 
 -}
 
@@ -44,6 +44,24 @@ type alias DrawerContainerIs s =
 -}
 type alias DrawerContainerAttrs =
     DrawerContainer_.Attrs
+
+
+{-| See [`M3e.Component.DrawerContainer.Builder`](M3e.Component.DrawerContainer#Builder).
+-}
+type alias DrawerContainerBuilder attrCaps slotCaps msg kind =
+    DrawerContainer_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.DrawerContainer.AttrCaps`](M3e.Component.DrawerContainer#AttrCaps).
+-}
+type alias DrawerContainerAttrCaps =
+    DrawerContainer_.AttrCaps
+
+
+{-| See [`M3e.Component.DrawerContainer.SlotCaps`](M3e.Component.DrawerContainer#SlotCaps).
+-}
+type alias DrawerContainerSlotCaps =
+    DrawerContainer_.SlotCaps
 
 
 {-| See [`M3e.Component.DrawerContainer.ChildAdmittedBy`](M3e.Component.DrawerContainer#ChildAdmittedBy).
@@ -123,8 +141,7 @@ drawerContainerChild =
 {-| The `toggle` element of this family — delegates to [`M3e.Component.DrawerToggle.component`](M3e.Component.DrawerToggle#component).
 -}
 toggle :
-    { for : String }
-    -> List (Attr ToggleAttrs msg)
+    List (Attr ToggleAttrs msg)
     -> List (Element childAccepts (ToggleChildAdmittedBy childAdm) msg)
     -> Element (ToggleIs s) admittedBy msg
 toggle =
@@ -143,7 +160,32 @@ type alias ToggleAttrs =
     Toggle_.Attrs
 
 
+{-| See [`M3e.Component.DrawerToggle.Builder`](M3e.Component.DrawerToggle#Builder).
+-}
+type alias ToggleBuilder attrCaps slotCaps msg kind =
+    Toggle_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.DrawerToggle.AttrCaps`](M3e.Component.DrawerToggle#AttrCaps).
+-}
+type alias ToggleAttrCaps =
+    Toggle_.AttrCaps
+
+
+{-| See [`M3e.Component.DrawerToggle.SlotCaps`](M3e.Component.DrawerToggle#SlotCaps).
+-}
+type alias ToggleSlotCaps =
+    Toggle_.SlotCaps
+
+
 {-| See [`M3e.Component.DrawerToggle.ChildAdmittedBy`](M3e.Component.DrawerToggle#ChildAdmittedBy).
 -}
 type alias ToggleChildAdmittedBy childAdm =
     Toggle_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.DrawerToggle.for`](M3e.Component.DrawerToggle#for).
+-}
+toggleFor : String -> Attr { c | for : Supported } msg
+toggleFor =
+    Toggle_.for

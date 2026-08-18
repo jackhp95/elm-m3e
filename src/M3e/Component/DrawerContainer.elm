@@ -1,6 +1,6 @@
 module M3e.Component.DrawerContainer exposing
     ( component
-    , Is, Attrs, ChildAdmittedBy
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
     , EndMode, endMode, StartMode, startMode
     , endDivider, startDivider, onChange
     , end, start, child
@@ -11,23 +11,10 @@ module M3e.Component.DrawerContainer exposing
 A container for one or two sliding drawers.
 
 @docs component
-@docs Is, Attrs, ChildAdmittedBy
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, ChildAdmittedBy
 @docs EndMode, endMode, StartMode, startMode
 @docs endDivider, startDivider, onChange
 @docs end, start, child
-
-
-## Examples
-
-
-### Examples
-
-<!-- elm-cem:example title="Basic usage" -->
-```elm
-M3e.Component.DrawerContainer.el [] []
-```
-
-<!-- elm-cem:docmeta category=Navigation -->
 
 -}
 
@@ -71,6 +58,24 @@ type alias EndMode =
 -}
 type alias StartMode =
     M3e.Internal.Types.DrawerContainer.StartMode
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.DrawerContainer.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.DrawerContainer.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.DrawerContainer.SlotCaps
 
 
 {-| Standard constructor: `[attributes] [children]`. The default slot is

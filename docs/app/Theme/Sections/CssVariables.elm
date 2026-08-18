@@ -1,52 +1,48 @@
 module Theme.Sections.CssVariables exposing (view)
 
-{-| The CSS Variables accordion section (§11): the raw escape hatch. Renders the
-non-color `@m3e/web` CSS custom properties (typescale, shape, motion, state) as their
-own `m3e-form-field`s, organized into a NESTED `m3e-accordion` by the hierarchy
-encoded in the variable names — so a visitor can collapse categories and jump between
-them. Color tokens (`md-sys-color-*`) are intentionally excluded: they are managed by
-the dedicated Color section, which owns `model.colorOverrides`. Keeping each token
-under a single control prevents last-writer-wins conflicts on the shared CSS port.
+{-| The CSS Variables accordion section — the raw escape hatch. Renders the
+NON-COLOR `@m3e/web` CSS custom properties (typescale, shape, motion, state) as
+`m3e-form-field`s, clustered into collapsible categories by the hierarchy already
+encoded in the variable names, so a visitor can collapse a category and jump
+between them instead of scrolling one 40-row list.
 
-Grouping: vars are clustered by their first three dash-segments (the Material
-sys-category — `md-sys-typescale`, `md-sys-shape`, `md-sys-motion`, `md-sys-state`).
-Within each group we compute the longest common segment-prefix and strip it from every
-field's LABEL, so labels are short (`corner-value-medium`, `duration-short-1`, …).
-Each category is an `m3e-expansion-panel` whose `m3e-heading` header names it; each
-field's FULL `--<var>` name is kept as the form-field's supporting text (`hint` slot).
+Color tokens (`md-sys-color-*`) are deliberately excluded: the Color section owns
+`model.colorOverrides` and writes those same properties. Keeping every token under
+exactly one control is what prevents last-writer-wins conflicts on the shared
+`Theme.Ports.setCssOverride` port.
 
-Typing sets the override (`SetCssOverride`, no validation); a trailing clear button
-(shown only when overridden) reverts it (`UnsetCssOverride`). Elm cannot READ a live
-computed CSS custom property, so an un-overridden field shows an empty input with a
-"(default)" placeholder rather than the resolved default. Every write goes through
-the `Theme.Ports.setCssOverride` port. Inputs use `field-sizing: content`.
+Grouping: vars cluster by their first three dash-segments (the Material
+sys-category — `md-sys-typescale`, `md-sys-shape`, `md-sys-motion`,
+`md-sys-state`). Within a cluster we compute the longest common segment-prefix and
+strip it from every field's LABEL, so labels stay short (`corner-value-medium`,
+`duration-short-1`, …) while the full `--<var>` name stays visible as the field's
+supporting text (`hint` slot).
+
+Typing sets the override (`SetCssOverride`, no validation — this IS the raw
+hatch); a trailing clear button, shown only when overridden, reverts it
+(`UnsetCssOverride`). Elm cannot READ a live computed CSS custom property, so an
+un-overridden field shows an empty input with a `(default)` placeholder rather
+than the resolved default.
 
 -}
 
 import Dict
 import M3e exposing (Element)
-import M3e.Action
-import M3e.Attributes
 import M3e.Component.FormField as FormField
-import M3e.Component.Heading
 import M3e.Component.Icon
-import M3e.Component.IconButton
-import M3e.Unsafe
-import M3e.Values as Value
 import Theme exposing (Msg(..))
 import Theme.Tokens as Tokens
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes
-import TypedHtml.Details
+import TypedHtml.Component.Details
+import TypedHtml.Component.Grouping
 import TypedHtml.Events
-import TypedHtml.Grouping
 
 
 {-| The non-color CSS custom property names (without the `--` prefix): typescale,
-shape, motion, and state tokens. Color tokens are excluded — the Color section owns
-`model.colorOverrides` and writes those vars; including them here would create a
-second, conflicting control for the same CSS custom property.
+shape, motion, and state tokens, in that order. Color tokens are excluded — see
+the module comment.
 -}
 knownVars : List String
 knownVars =
@@ -56,46 +52,46 @@ knownVars =
         ++ List.map .cssVar Tokens.stateOpacityTokens
 
 
+{-| One hierarchy cluster: the segment prefix every member shares (stripped from
+each member's label) and the members themselves.
+-}
 type alias VarGroup =
     { prefix : List String, vars : List String }
 
 
-view : Theme.Model -> Element (TypedHtml.Grouping.DivIs s) admittedBy Msg
+view : Theme.Model -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy Msg
 view model =
     TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-3" ]
-        [ TypedHtml.p [ TypedHtml.Attributes.class "text-on-surface-variant text-sm" ]
-            [ M3e.text "Non-color @m3e/web CSS custom properties (typescale, shape, motion, state), grouped by name hierarchy. Color tokens are in the Color section above. Type a value to override it; clear to revert. (Live default values aren't shown — Elm can't read computed CSS variables.)" ]
+        [ TypedHtml.p [ TypedHtml.Attributes.class "text-sm text-on-surface-variant" ]
+            [ M3e.text "Non-color @m3e/web CSS custom properties (typescale, shape, motion, state), grouped by name hierarchy. Color tokens live in the Color section. Type a value to override it; clear it to revert. Live default values are not shown — Elm cannot read computed CSS variables." ]
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col" ]
             (List.map (categoryDetails model) (groupVars knownVars))
         ]
 
 
-{-| One hierarchy category as a native `<details>` disclosure (NOT a nested
-`m3e-expansion-panel`): the outer settings drawer is itself an `m3e-accordion`, and
-nesting `m3e-expansion-panel`s inside it makes the outer accordion re-coordinate off
-the inner panels' bubbling `toggle` events (and its panel query) — collapsing them a
-tick after they open. A native `<details>` sidesteps that entirely while staying
-collapsible; its `<summary>` carries the substantial `m3e-heading`.
+{-| One hierarchy category as a NATIVE `<details>` disclosure, deliberately not a
+nested `m3e-expansion-panel`: the settings drawer is itself an `m3e-accordion`,
+and nesting expansion panels inside it makes the outer accordion re-coordinate off
+the inner panels' bubbling `toggle` events, collapsing them a tick after they
+open. `<details>` sidesteps that while staying collapsible and keyboard-operable.
 -}
-categoryDetails : Theme.Model -> VarGroup -> Element (TypedHtml.Details.DetailsIs s) admittedBy Msg
+categoryDetails : Theme.Model -> VarGroup -> Element (TypedHtml.Component.Details.DetailsIs s) admittedBy Msg
 categoryDetails model group =
     TypedHtml.details [ TypedHtml.Attributes.class "border-b border-outline-variant" ]
-        [ TypedHtml.summary [ TypedHtml.Attributes.class "cursor-pointer select-none list-none py-2" ]
-            [ M3e.Unsafe.recast
-                (M3e.Component.Heading.component { content = M3e.text (categoryLabel group) }
-                    [ M3e.Attributes.variant Value.title
-                    , M3e.Attributes.size Value.small
-                    , M3e.Attributes.level 3
-                    ]
-                    []
-                )
+        [ TypedHtml.summary [ TypedHtml.Attributes.class "cursor-pointer list-none select-none py-2" ]
+            -- A `<span>`, not an `m3e-heading`/`<h3>`: `<summary>` admits only
+            -- phrasing content, and the disclosure itself is already the
+            -- structural affordance. Type scale comes from the utility class.
+            [ TypedHtml.span
+                [ TypedHtml.Attributes.class "text-title-sm text-on-surface" ]
+                [ M3e.text (categoryLabel group) ]
             ]
         , TypedHtml.div [ TypedHtml.Attributes.class "flex flex-col gap-2 pt-2 pb-3" ]
             (List.map (cssVarField model group.prefix) group.vars)
         ]
 
 
-{-| A humanized heading for a group: the Material sys-category (the third dash
+{-| A humanised heading for a cluster: the Material sys-category (the third dash
 segment of the shared prefix), title-cased.
 -}
 categoryLabel : VarGroup -> String
@@ -107,9 +103,9 @@ categoryLabel group =
         |> Theme.capitalize
 
 
-{-| One CSS custom property as a form field: short label (var name minus the group's
-common prefix), the value input, the full `--<var>` name as supporting text (`hint`),
-and a trailing clear button when overridden.
+{-| One CSS custom property as a form field: short label (the var name minus the
+cluster's common prefix), the value input, the full `--<var>` name as supporting
+text, and a trailing clear button when — and only when — it is overridden.
 -}
 cssVarField : Theme.Model -> List String -> String -> Element (FormField.Is s) admittedBy Msg
 cssVarField model prefix cssVar =
@@ -124,18 +120,30 @@ cssVarField model prefix cssVar =
 
         shortLabel : String
         shortLabel =
-            String.split "-" cssVar
-                |> List.drop (List.length prefix)
-                |> String.join "-"
-                |> (\s ->
-                        if String.isEmpty s then
-                            cssVar
+            case String.split "-" cssVar |> List.drop (List.length prefix) |> String.join "-" of
+                "" ->
+                    cssVar
 
-                        else
-                            s
-                   )
+                short ->
+                    short
+
+        clearButton : List (Element free freeAdm Msg)
+        clearButton =
+            case current of
+                Just _ ->
+                    [ FormField.suffix
+                        (M3e.iconButton
+                            [ TypedHtml.Events.onClick (UnsetCssOverride cssVar)
+                            , Aria.label ("Clear --" ++ cssVar)
+                            ]
+                            [ M3e.icon [ M3e.Component.Icon.name "close" ] [] ]
+                        )
+                    ]
+
+                Nothing ->
+                    []
     in
-    M3e.formField [ M3e.Attributes.class "w-max max-w-full" ]
+    M3e.formField [ TypedHtml.Attributes.class "w-max max-w-full" ]
         (FormField.label
             (TypedHtml.label [ TypedHtml.Attributes.for fieldId ] [ M3e.text shortLabel ])
             :: FormField.hint
@@ -147,27 +155,16 @@ cssVarField model prefix cssVar =
                 , TypedHtml.Attributes.type_ "text"
                 , TypedHtml.Attributes.value (Maybe.withDefault "" current)
                 , TypedHtml.Attributes.placeholder "(default)"
-                , TypedHtml.Attributes.class "field-sizing-content px-2"
+
+                -- A floor on the width: `field-sizing-content` collapses an
+                -- empty input to nothing, leaving an un-overridden var with no
+                -- visible typing target.
+                , TypedHtml.Attributes.class "field-sizing-content min-w-[10ch] px-2"
                 , TypedHtml.Events.onInput (SetCssOverride cssVar)
                 , Aria.label ("Value for --" ++ cssVar)
                 ]
                 []
-            :: (case current of
-                    Just _ ->
-                        [ FormField.suffix
-                            (M3e.Component.IconButton.component
-                                { content = M3e.icon [ M3e.Component.Icon.name "close" ] []
-                                , ariaLabel = "Clear --" ++ cssVar
-                                , action = M3e.Action.none
-                                }
-                                [ TypedHtml.Events.onClick (UnsetCssOverride cssVar) ]
-                                []
-                            )
-                        ]
-
-                    Nothing ->
-                        []
-               )
+            :: clearButton
         )
 
 
@@ -184,10 +181,6 @@ groupVars vars =
         categoryOf : String -> String
         categoryOf v =
             String.split "-" v |> List.take 3 |> String.join "-"
-
-        categories : List String
-        categories =
-            uniqueOrder (List.map categoryOf vars)
     in
     List.map
         (\cat ->
@@ -200,10 +193,11 @@ groupVars vars =
             , vars = members
             }
         )
-        categories
+        (uniqueOrder (List.map categoryOf vars))
 
 
-{-| Dedupe preserving first-seen order (small lists, so O(n²) is fine).
+{-| Dedupe preserving first-seen order. The lists here are tens of entries, so the
+quadratic `List.member` scan is cheaper than building a `Set` and re-sorting.
 -}
 uniqueOrder : List String -> List String
 uniqueOrder list =
@@ -219,7 +213,7 @@ uniqueOrder list =
         list
 
 
-{-| The longest common leading run of segments across every var in a group.
+{-| The longest common leading run of segments across every var in a cluster.
 -}
 commonPrefix : List (List String) -> List String
 commonPrefix lists =

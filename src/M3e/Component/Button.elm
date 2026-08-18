@@ -1,6 +1,6 @@
 module M3e.Component.Button exposing
     ( component
-    , Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps
     , Shape, shape, Size, size, Type, type_, Variant, variant
     , disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
     , icon, selected, selectedIcon, trailingIcon, child
@@ -11,44 +11,10 @@ module M3e.Component.Button exposing
 A button users interact with to perform an action.
 
 @docs component
-@docs Is, Attrs, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, IconSlot, SelectedSlot, SelectedIconSlot, TrailingIconSlot, ChildAdmittedBy, ActionCaps
 @docs Shape, shape, Size, size, Type, type_, Variant, variant
 @docs disabled, disabledInteractive, download, href, name, rel, target, toggle, value, defaultValue, onBeforeinput, onInput, onChange, onClick
 @docs icon, selected, selectedIcon, trailingIcon, child
-
-
-## Examples
-
-
-### Variants
-
-<!-- elm-cem:example title="Variants" -->
-```elm
-[ M3e.Component.Button.el { content = TypedHtml.text "Elevated", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.elevated ] []
-, M3e.Component.Button.el { content = TypedHtml.text "Filled", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.filled ] []
-, M3e.Component.Button.el { content = TypedHtml.text "Tonal", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.tonal ] []
-, M3e.Component.Button.el { content = TypedHtml.text "Outlined", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.outlined ] []
-, M3e.Component.Button.el { content = TypedHtml.text "Text", action = M3e.Action.none } [ M3e.Component.Button.variant M3e.Values.text ] []
-]
-```
-
-
-### Examples
-
-<!-- elm-cem:example title="With a click action" -->
-```elm
-M3e.Component.Button.el { content = TypedHtml.text "Save", action = M3e.Action.onClick Save } [ M3e.Component.Button.variant M3e.Values.filled ] []
-```
-
-<!-- elm-cem:example title="With an icon" -->
-```elm
-M3e.Component.Button.el
-    { content = TypedHtml.text "Send", action = M3e.Action.none }
-    [ M3e.Component.Button.variant M3e.Values.tonal ]
-    [ M3e.Component.Button.icon (M3e.Component.Icon.el [ M3e.Component.Icon.name "send" ] []) ]
-```
-
-<!-- elm-cem:docmeta category=Actions -->
 
 -}
 
@@ -142,6 +108,24 @@ type alias Variant =
 -}
 type alias ActionCaps =
     M3e.Internal.Types.Button.ActionCaps
+
+
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.Button.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.Button.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    M3e.Internal.Types.Button.SlotCaps
 
 
 {-| Required-content (and action) constructor — omissions are unwritable.

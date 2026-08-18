@@ -1,4 +1,4 @@
-module M3e.Family.Tree exposing (TreeIs, TreeAttrs, TreeContent, TreeChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemLabelSlot, ItemOpenToggleIconSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, tree, treeCascade, treeMulti, treeOnChange, treeChild, item, itemDisabled, itemIndeterminate, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemIcon, itemLabel, itemOpenToggleIcon, itemSelectedIcon, itemToggleIcon, itemChild)
+module M3e.Family.Tree exposing (TreeIs, TreeAttrs, TreeBuilder, TreeAttrCaps, TreeSlotCaps, TreeContent, TreeChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemIconSlot, ItemLabelSlot, ItemOpenToggleIconSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, tree, treeCascade, treeMulti, treeOnChange, treeChild, item, itemDisabled, itemIndeterminate, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemIcon, itemLabel, itemOpenToggleIcon, itemSelectedIcon, itemToggleIcon, itemChild)
 
 {-| The **Tree** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs TreeIs, TreeAttrs, TreeContent, TreeChildAdmittedBy, ItemIs, ItemAttrs, ItemContent, ItemIconSlot, ItemLabelSlot, ItemOpenToggleIconSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, tree, treeCascade, treeMulti, treeOnChange, treeChild, item, itemDisabled, itemIndeterminate, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemIcon, itemLabel, itemOpenToggleIcon, itemSelectedIcon, itemToggleIcon, itemChild
+@docs TreeIs, TreeAttrs, TreeBuilder, TreeAttrCaps, TreeSlotCaps, TreeContent, TreeChildAdmittedBy, ItemIs, ItemAttrs, ItemBuilder, ItemAttrCaps, ItemSlotCaps, ItemContent, ItemIconSlot, ItemLabelSlot, ItemOpenToggleIconSlot, ItemSelectedIconSlot, ItemToggleIconSlot, ItemChildAdmittedBy, tree, treeCascade, treeMulti, treeOnChange, treeChild, item, itemDisabled, itemIndeterminate, itemOpen, itemSelected, itemDefaultSelected, itemOnOpening, itemOnOpened, itemOnClosing, itemOnClosed, itemOnClick, itemIcon, itemLabel, itemOpenToggleIcon, itemSelectedIcon, itemToggleIcon, itemChild
 
 -}
 
@@ -43,6 +43,24 @@ type alias TreeIs s =
 -}
 type alias TreeAttrs =
     Tree_.Attrs
+
+
+{-| See [`M3e.Component.Tree.Builder`](M3e.Component.Tree#Builder).
+-}
+type alias TreeBuilder attrCaps slotCaps msg kind =
+    Tree_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Tree.AttrCaps`](M3e.Component.Tree#AttrCaps).
+-}
+type alias TreeAttrCaps =
+    Tree_.AttrCaps
+
+
+{-| See [`M3e.Component.Tree.SlotCaps`](M3e.Component.Tree#SlotCaps).
+-}
+type alias TreeSlotCaps =
+    Tree_.SlotCaps
 
 
 {-| See [`M3e.Component.Tree.Content`](M3e.Component.Tree#Content).
@@ -106,6 +124,24 @@ type alias ItemIs s =
 -}
 type alias ItemAttrs =
     Item_.Attrs
+
+
+{-| See [`M3e.Component.TreeItem.Builder`](M3e.Component.TreeItem#Builder).
+-}
+type alias ItemBuilder attrCaps slotCaps msg kind =
+    Item_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.TreeItem.AttrCaps`](M3e.Component.TreeItem#AttrCaps).
+-}
+type alias ItemAttrCaps =
+    Item_.AttrCaps
+
+
+{-| See [`M3e.Component.TreeItem.SlotCaps`](M3e.Component.TreeItem#SlotCaps).
+-}
+type alias ItemSlotCaps =
+    Item_.SlotCaps
 
 
 {-| See [`M3e.Component.TreeItem.Content`](M3e.Component.TreeItem#Content).

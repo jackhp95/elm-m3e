@@ -25,8 +25,6 @@ import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.Card
-import M3e.Component.FilterChip
-import M3e.Component.Heading
 import M3e.Component.NavItem
 import M3e.Events
 import M3e.Kind
@@ -36,7 +34,7 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -173,7 +171,7 @@ but it keeps the "one bounded scroll region" invariant from hanging on that
 one class.
 
 -}
-screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+screen : Model -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg
 screen model =
     TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
@@ -192,7 +190,7 @@ screen model =
         ]
 
 
-exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+exampleFooter : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -230,11 +228,11 @@ filterBar current =
 
 filterChip : String -> String -> Element { s | filterChip : M3e.Kind.Brand } adm_ Msg
 filterChip current category =
-    M3e.Component.FilterChip.component { content = M3e.text category }
+    M3e.filterChip
         [ M3e.Attributes.selected (category == current)
         , M3e.Events.onClick (SelectFilter category)
         ]
-        []
+        [ M3e.text category ]
 
 
 
@@ -250,7 +248,7 @@ shownPosts filter =
         List.filter (\p -> p.category == filter) posts
 
 
-cardGrid : List Post -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+cardGrid : List Post -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 cardGrid shown =
     TypedHtml.div [ TA.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
         (List.map postCard shown)
@@ -266,10 +264,10 @@ postCard post =
             )
         , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-col gap-2 pt-1" ]
-                [ M3e.Component.Heading.component { content = M3e.text (String.toUpper post.category) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-primary" ] []
-                , M3e.Component.Heading.component { content = M3e.text post.title } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
+                [ M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-primary" ] [ M3e.text (String.toUpper post.category) ]
+                , M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text post.title ]
                 , TypedHtml.span [ TA.class "text-body-md text-on-surface-variant" ] [ M3e.text post.excerpt ]
-                , M3e.Component.Heading.component { content = M3e.text (post.author ++ " · " ++ post.when) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] []
+                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text (post.author ++ " · " ++ post.when) ]
                 ]
             )
         ]

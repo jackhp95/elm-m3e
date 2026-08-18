@@ -1,4 +1,4 @@
-module M3e.Family.Calendar exposing (CalendarIs, CalendarAttrs, CalendarChildAdmittedBy, CalendarStartView, MonthViewIs, MonthViewAttrs, MonthViewChildAdmittedBy, YearViewIs, YearViewAttrs, YearViewChildAdmittedBy, MultiYearViewIs, MultiYearViewAttrs, MultiYearViewChildAdmittedBy, calendar, calendarStartView, calendarDate, calendarMaxDate, calendarMinDate, calendarNextMonthLabel, calendarNextMultiYearLabel, calendarNextYearLabel, calendarPreviousMonthLabel, calendarPreviousMultiYearLabel, calendarPreviousYearLabel, calendarRangeEnd, calendarRangeStart, calendarStartAt, calendarOnChange, calendarHeader, monthView, monthViewActive, monthViewActiveDate, monthViewDate, monthViewMaxDate, monthViewMinDate, monthViewRangeEnd, monthViewRangeStart, monthViewToday, monthViewOnChange, monthViewOnActiveChange, yearView, yearViewActive, yearViewActiveDate, yearViewDate, yearViewMaxDate, yearViewMinDate, yearViewToday, yearViewOnChange, yearViewOnActiveChange, multiYearView, multiYearViewActive, multiYearViewActiveDate, multiYearViewDate, multiYearViewMaxDate, multiYearViewMinDate, multiYearViewToday, multiYearViewOnChange, multiYearViewOnActiveChange)
+module M3e.Family.Calendar exposing (CalendarIs, CalendarAttrs, CalendarBuilder, CalendarAttrCaps, CalendarSlotCaps, CalendarChildAdmittedBy, CalendarStartView, MonthViewIs, MonthViewAttrs, MonthViewBuilder, MonthViewAttrCaps, MonthViewSlotCaps, MonthViewChildAdmittedBy, YearViewIs, YearViewAttrs, YearViewBuilder, YearViewAttrCaps, YearViewSlotCaps, YearViewChildAdmittedBy, MultiYearViewIs, MultiYearViewAttrs, MultiYearViewBuilder, MultiYearViewAttrCaps, MultiYearViewSlotCaps, MultiYearViewChildAdmittedBy, calendar, calendarStartView, calendarDate, calendarMaxDate, calendarMinDate, calendarNextMonthLabel, calendarNextMultiYearLabel, calendarNextYearLabel, calendarPreviousMonthLabel, calendarPreviousMultiYearLabel, calendarPreviousYearLabel, calendarRangeEnd, calendarRangeStart, calendarStartAt, calendarOnChange, calendarHeader, monthView, monthViewActive, monthViewActiveDate, monthViewDate, monthViewMaxDate, monthViewMinDate, monthViewRangeEnd, monthViewRangeStart, monthViewToday, monthViewOnChange, monthViewOnActiveChange, yearView, yearViewActive, yearViewActiveDate, yearViewDate, yearViewMaxDate, yearViewMinDate, yearViewToday, yearViewOnChange, yearViewOnActiveChange, multiYearView, multiYearViewActive, multiYearViewActiveDate, multiYearViewDate, multiYearViewMaxDate, multiYearViewMinDate, multiYearViewToday, multiYearViewOnChange, multiYearViewOnActiveChange)
 
 {-| The **Calendar** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs CalendarIs, CalendarAttrs, CalendarChildAdmittedBy, CalendarStartView, MonthViewIs, MonthViewAttrs, MonthViewChildAdmittedBy, YearViewIs, YearViewAttrs, YearViewChildAdmittedBy, MultiYearViewIs, MultiYearViewAttrs, MultiYearViewChildAdmittedBy, calendar, calendarStartView, calendarDate, calendarMaxDate, calendarMinDate, calendarNextMonthLabel, calendarNextMultiYearLabel, calendarNextYearLabel, calendarPreviousMonthLabel, calendarPreviousMultiYearLabel, calendarPreviousYearLabel, calendarRangeEnd, calendarRangeStart, calendarStartAt, calendarOnChange, calendarHeader, monthView, monthViewActive, monthViewActiveDate, monthViewDate, monthViewMaxDate, monthViewMinDate, monthViewRangeEnd, monthViewRangeStart, monthViewToday, monthViewOnChange, monthViewOnActiveChange, yearView, yearViewActive, yearViewActiveDate, yearViewDate, yearViewMaxDate, yearViewMinDate, yearViewToday, yearViewOnChange, yearViewOnActiveChange, multiYearView, multiYearViewActive, multiYearViewActiveDate, multiYearViewDate, multiYearViewMaxDate, multiYearViewMinDate, multiYearViewToday, multiYearViewOnChange, multiYearViewOnActiveChange
+@docs CalendarIs, CalendarAttrs, CalendarBuilder, CalendarAttrCaps, CalendarSlotCaps, CalendarChildAdmittedBy, CalendarStartView, MonthViewIs, MonthViewAttrs, MonthViewBuilder, MonthViewAttrCaps, MonthViewSlotCaps, MonthViewChildAdmittedBy, YearViewIs, YearViewAttrs, YearViewBuilder, YearViewAttrCaps, YearViewSlotCaps, YearViewChildAdmittedBy, MultiYearViewIs, MultiYearViewAttrs, MultiYearViewBuilder, MultiYearViewAttrCaps, MultiYearViewSlotCaps, MultiYearViewChildAdmittedBy, calendar, calendarStartView, calendarDate, calendarMaxDate, calendarMinDate, calendarNextMonthLabel, calendarNextMultiYearLabel, calendarNextYearLabel, calendarPreviousMonthLabel, calendarPreviousMultiYearLabel, calendarPreviousYearLabel, calendarRangeEnd, calendarRangeStart, calendarStartAt, calendarOnChange, calendarHeader, monthView, monthViewActive, monthViewActiveDate, monthViewDate, monthViewMaxDate, monthViewMinDate, monthViewRangeEnd, monthViewRangeStart, monthViewToday, monthViewOnChange, monthViewOnActiveChange, yearView, yearViewActive, yearViewActiveDate, yearViewDate, yearViewMaxDate, yearViewMinDate, yearViewToday, yearViewOnChange, yearViewOnActiveChange, multiYearView, multiYearViewActive, multiYearViewActiveDate, multiYearViewDate, multiYearViewMaxDate, multiYearViewMinDate, multiYearViewToday, multiYearViewOnChange, multiYearViewOnActiveChange
 
 -}
 
@@ -46,6 +46,24 @@ type alias CalendarIs s =
 -}
 type alias CalendarAttrs =
     Calendar_.Attrs
+
+
+{-| See [`M3e.Component.Calendar.Builder`](M3e.Component.Calendar#Builder).
+-}
+type alias CalendarBuilder attrCaps slotCaps msg kind =
+    Calendar_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Calendar.AttrCaps`](M3e.Component.Calendar#AttrCaps).
+-}
+type alias CalendarAttrCaps =
+    Calendar_.AttrCaps
+
+
+{-| See [`M3e.Component.Calendar.SlotCaps`](M3e.Component.Calendar#SlotCaps).
+-}
+type alias CalendarSlotCaps =
+    Calendar_.SlotCaps
 
 
 {-| See [`M3e.Component.Calendar.ChildAdmittedBy`](M3e.Component.Calendar#ChildAdmittedBy).
@@ -187,6 +205,24 @@ type alias MonthViewAttrs =
     MonthView_.Attrs
 
 
+{-| See [`M3e.Component.MonthView.Builder`](M3e.Component.MonthView#Builder).
+-}
+type alias MonthViewBuilder attrCaps slotCaps msg kind =
+    MonthView_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MonthView.AttrCaps`](M3e.Component.MonthView#AttrCaps).
+-}
+type alias MonthViewAttrCaps =
+    MonthView_.AttrCaps
+
+
+{-| See [`M3e.Component.MonthView.SlotCaps`](M3e.Component.MonthView#SlotCaps).
+-}
+type alias MonthViewSlotCaps =
+    MonthView_.SlotCaps
+
+
 {-| See [`M3e.Component.MonthView.ChildAdmittedBy`](M3e.Component.MonthView#ChildAdmittedBy).
 -}
 type alias MonthViewChildAdmittedBy childAdm =
@@ -285,6 +321,24 @@ type alias YearViewAttrs =
     YearView_.Attrs
 
 
+{-| See [`M3e.Component.YearView.Builder`](M3e.Component.YearView#Builder).
+-}
+type alias YearViewBuilder attrCaps slotCaps msg kind =
+    YearView_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.YearView.AttrCaps`](M3e.Component.YearView#AttrCaps).
+-}
+type alias YearViewAttrCaps =
+    YearView_.AttrCaps
+
+
+{-| See [`M3e.Component.YearView.SlotCaps`](M3e.Component.YearView#SlotCaps).
+-}
+type alias YearViewSlotCaps =
+    YearView_.SlotCaps
+
+
 {-| See [`M3e.Component.YearView.ChildAdmittedBy`](M3e.Component.YearView#ChildAdmittedBy).
 -}
 type alias YearViewChildAdmittedBy childAdm =
@@ -367,6 +421,24 @@ type alias MultiYearViewIs s =
 -}
 type alias MultiYearViewAttrs =
     MultiYearView_.Attrs
+
+
+{-| See [`M3e.Component.MultiYearView.Builder`](M3e.Component.MultiYearView#Builder).
+-}
+type alias MultiYearViewBuilder attrCaps slotCaps msg kind =
+    MultiYearView_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.MultiYearView.AttrCaps`](M3e.Component.MultiYearView#AttrCaps).
+-}
+type alias MultiYearViewAttrCaps =
+    MultiYearView_.AttrCaps
+
+
+{-| See [`M3e.Component.MultiYearView.SlotCaps`](M3e.Component.MultiYearView#SlotCaps).
+-}
+type alias MultiYearViewSlotCaps =
+    MultiYearView_.SlotCaps
 
 
 {-| See [`M3e.Component.MultiYearView.ChildAdmittedBy`](M3e.Component.MultiYearView#ChildAdmittedBy).

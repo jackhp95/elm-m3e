@@ -33,14 +33,11 @@ import ExampleNav
 import Head
 import Json.Decode as Decode
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.AppBar
 import M3e.Component.AssistChip
 import M3e.Component.DrawerContainer
 import M3e.Component.Fab
-import M3e.Component.Heading
-import M3e.Component.IconButton
 import M3e.Component.ListAction
 import M3e.Component.NavItem
 import M3e.Component.SearchBar
@@ -53,8 +50,8 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
-import TypedHtml.Sectioning
+import TypedHtml.Component.Grouping
+import TypedHtml.Component.Sectioning
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -239,7 +236,7 @@ clips it away entirely.
 content in both directions -- which is what the `relative` here anchors.
 
 -}
-screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+screen : Model -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg
 screen model =
     TypedHtml.div
         [ TA.class "bg-surface text-on-surface relative flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
@@ -255,7 +252,7 @@ screen model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+exampleFooter : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -279,7 +276,7 @@ exampleFooter =
 
 {-| Desktop navigation rail (hidden below `md:`).
 -}
-navRail : Element (TypedHtml.Sectioning.NavIs s) adm_ Msg
+navRail : Element (TypedHtml.Component.Sectioning.NavIs s) adm_ Msg
 navRail =
     TypedHtml.nav [ TA.class "hidden md:flex" ]
         [ M3e.navRail [ M3e.Attributes.mode Value.expanded ]
@@ -307,7 +304,7 @@ wrapper around the bar) as the flex child mirrors `navRail`, whose `<nav>` is
 likewise the flex child at `md:` and up.
 
 -}
-bottomBar : Element (TypedHtml.Sectioning.NavIs s) adm_ Msg
+bottomBar : Element (TypedHtml.Component.Sectioning.NavIs s) adm_ Msg
 bottomBar =
     TypedHtml.nav [ TA.class "md:hidden shrink-0" ]
         [ M3e.navBar []
@@ -339,18 +336,17 @@ topBar =
 
 searchBar : Element { s | searchBar : M3e.Kind.Brand } adm_ Msg
 searchBar =
-    M3e.Component.SearchBar.component
-        { input =
-            M3e.Component.SearchBar.input
-                (TypedHtml.input
-                    [ TA.placeholder "Search mail"
-                    , TA.type_ "search"
-                    ]
-                    []
-                )
-        }
+    M3e.searchBar
         []
-        [ M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] []) ]
+        [ M3e.Component.SearchBar.input
+            (TypedHtml.input
+                [ TA.placeholder "Search mail"
+                , TA.type_ "search"
+                ]
+                []
+            )
+        , M3e.Component.SearchBar.leading (M3e.icon [ TA.name "search" ] [])
+        ]
 
 
 
@@ -409,10 +405,15 @@ it, where dismissing is a preference rather than a necessity -- but a control
 that moves or disappears between widths is worse than one that does not.
 
 -}
-closeReader : Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+closeReader : Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg
 closeReader =
     TypedHtml.div [ TA.class "flex" ]
-        [ M3e.Component.IconButton.component { content = M3e.icon [ TA.name "arrow_back" ] [], ariaLabel = "Back to inbox", action = M3e.Action.none } [ M3e.Attributes.variant Value.standard, M3e.Events.onClick (DrawerChanged False) ] []
+        [ M3e.iconButton
+            [ M3e.Attributes.variant Value.standard
+            , Aria.label "Back to inbox"
+            , M3e.Events.onClick (DrawerChanged False)
+            ]
+            [ M3e.icon [ TA.name "arrow_back" ] [] ]
         ]
 
 
@@ -475,7 +476,7 @@ messageRow selected index message =
         , M3e.text message.subject
         , M3e.Component.ListAction.supportingText (M3e.text message.snippet)
         , M3e.Component.ListAction.trailing
-            (M3e.Component.Heading.component { content = M3e.text message.time } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text message.time ])
         ]
 
 
@@ -487,16 +488,16 @@ messageRow selected index message =
 avatar and timestamp, label chips, and the body paragraphs — all styled with
 M3 token classes applied directly.
 -}
-readingPane : Message -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+readingPane : Message -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg
 readingPane message =
     TypedHtml.div [ TA.class "flex flex-col gap-6 p-6" ]
         [ closeReader
-        , M3e.Component.Heading.component { content = M3e.text message.subject } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] []
+        , M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text message.subject ]
         , TypedHtml.div [ TA.class "flex items-center gap-3" ]
             [ M3e.avatar [] [ M3e.text message.initials ]
             , TypedHtml.div [ TA.class "flex flex-col" ]
-                [ M3e.Component.Heading.component { content = M3e.text message.sender } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
-                , M3e.Component.Heading.component { content = M3e.text ("to me · " ++ message.time) } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] []
+                [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text message.sender ]
+                , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.small, TA.class "text-on-surface-variant" ] [ M3e.text ("to me · " ++ message.time) ]
                 ]
             ]
         , M3e.chipSet [ Aria.label "Labels" ]
@@ -508,7 +509,11 @@ readingPane message =
 
 labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 labelChip name =
-    M3e.Component.AssistChip.component { content = M3e.text name, action = M3e.Action.none } [] [ M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] []) ]
+    M3e.assistChip
+        []
+        [ M3e.text name
+        , M3e.Component.AssistChip.icon (M3e.icon [ TA.name "label" ] [])
+        ]
 
 
 
@@ -525,13 +530,15 @@ pointer events. Only the FAB itself should be clickable; the gutter around it
 belongs to whatever is underneath.
 
 -}
-composeFab : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+composeFab : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 composeFab =
     TypedHtml.div [ TA.class "pointer-events-none absolute bottom-20 right-6 md:bottom-6 [&>*]:pointer-events-auto" ]
-        [ M3e.Component.Fab.component { content = M3e.icon [ TA.name "edit" ] [], action = M3e.Action.none }
+        [ M3e.fab
             [ M3e.Attributes.variant Value.primaryContainer
             , M3e.Attributes.extended True
             , Aria.label "Compose"
             ]
-            [ M3e.Component.Fab.label (M3e.text "Compose") ]
+            [ M3e.icon [ TA.name "edit" ] []
+            , M3e.Component.Fab.label (M3e.text "Compose")
+            ]
         ]

@@ -2,14 +2,12 @@ module Route.Guide.Strictness exposing (ActionData, Data, Model, Msg, route)
 
 {-| Guide (`/guide/strictness`): choose how strict your project is.
 The compiler enforces kinds and valid tokens but deliberately leaves the softer
-"did you fill the required slot?" loose for components that have nothing
-required to forget. For a component that DOES have required parts (like
-Button's content/action), its `el` is a required-record from the start — that
-strictness is decided by the component, not opted into per call site. You dial
-the rest up two ways: a linter that knows your components, and the
-required-record shape itself, each promoting one advisory check to a compile
-guarantee. The live demo stays the barrel Save button; the required-record
-shape is shown as code with its real compiler output.
+"did you fill the required slot?" loose on the standard surface, so that tax
+doesn't land on every call site. You dial those back up two ways: a linter that knows
+your components, and stricter call-shapes you opt into per component (options
+list, required record, pipeline) — peers, each promoting one advisory check to a
+compile guarantee. The live demo stays the barrel Save button; the alternative
+shapes are shown as code with their real compiler output.
 -}
 
 import BackendTask
@@ -17,7 +15,6 @@ import Doc
 import Head
 import Head.Seo as Seo
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.Button
 import M3e.Kind
@@ -71,14 +68,16 @@ head _ =
         |> Seo.website
 
 
-{-| The running Save button, via the barrel's required-record `el` — Button
-always demands its content/action, so there is no leaner form to fall back to.
+{-| The running Save button, in the default options-list shape — the standard,
+easy top. The stricter shapes are shown as code below, each rendering the same
+button; they only change what you're allowed to leave out.
 -}
 saveButton : Element { s | button : M3e.Kind.Brand } adm_ msg
 saveButton =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none }
-        [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []) ]
+    M3e.button [ M3e.Attributes.variant Value.filled ]
+        [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] [])
+        , M3e.text "Save"
+        ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -121,29 +120,34 @@ linter =
 
 shapes : String
 shapes =
-    """Every component ships exactly one `el` shape, and the library — not the call site — decides which: a component with nothing required (like AppBar) gets a bare `el`; a component that can't render without some part (like Button's content/action) gets a required-record `el`. They're **peers, not a ranking** — the shape just follows what the component actually needs:"""
+    """Stricter call-shapes, chosen per component. A component isn't one function shape; each ships several **surfaces**, and they all render the *same* button. They differ only in what you're allowed to leave out — they are **peers, not a ranking**, and you pick per call site:"""
 
 
 shapesCode : String
 shapesCode =
-    """-- bare `el` (AppBar has nothing it can't do without) — everything optional
-M3e.Component.AppBar.component [ M3e.Component.AppBar.size Value.medium ] [ M3e.Component.AppBar.title (M3e.text "Inbox") ]
+    """-- the standard form — everything optional; the tersest, easiest form
+M3e.button [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]
 
--- required-record `el` (Button can't do without content/action) — the compiler DEMANDS the parts
+-- required-record form (`component`) — the compiler now DEMANDS the parts a button can't do without
 M3e.Component.Button.component
-    { content = M3e.text "Save", action = M3e.Action.none }
+    { content = M3e.text "Save", action = M3e.Action.onClick SaveClicked }
     []
-    []"""
+    []
+
+-- builder pipe (`build`/`toElement`) — a one-only setter becomes UNWRITABLE twice; order-free
+M3e.Build.Button.build
+    { content = M3e.text "Save", action = M3e.Action.onClick SaveClicked }
+    |> M3e.Build.Button.toElement"""
 
 
 recordAha : String
 recordAha =
-    """Button's `el` is required-record from the start — there is no leaner form that lets you forget the action. Try leaving it out and the build stops, because the record spells out the parts a button can't render without."""
+    """The standard-form Save button lets you forget its action — that's the easy path's cost. Switch the same button to the **required-record** form (`component`) and forgetting the action is no longer possible: leave it out and the build stops, because the record spells out the parts a button can't render without."""
 
 
 recordError : String
 recordError =
-    """The 1st argument to `el` is not what I expect:
+    """The 1st argument to `component` is not what I expect:
 
 4| M3e.Component.Button.component { content = M3e.text "Save" } [] []
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -151,14 +155,14 @@ This argument is a record of type:
 
     { content : … }
 
-But `el` needs the 1st argument to be:
+But `component` needs the 1st argument to be:
 
     { action : Action { … } msg, content : … }"""
 
 
 recap : String
 recap =
-    """- The compiler enforces **kinds and valid tokens**; it leaves softer checks loose for components with nothing required.
+    """- The compiler enforces **kinds and valid tokens**; it leaves softer checks loose on the standard surface on purpose.
 - **Project-wide:** a linter that knows your components (invalid token for *this* component, empty required slot, foreign slot child) — **linter-guaranteed, so run elm-review in CI**.
-- **Per component:** the required-record `el` shape — chosen by the library, not opted into — promotes "don't forget the required parts" to a compile guarantee wherever it applies.
+- **Per call site:** three call-shapes — the standard form, required record, pipeline — **peers**, each promoting one check to a compile guarantee.
 - **Next: [Accessibility you can't forget](/guide/accessible-by-construction) →** the one place strictness is not optional — an accessible name you cannot forget."""

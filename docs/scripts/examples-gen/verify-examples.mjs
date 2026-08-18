@@ -1,5 +1,5 @@
 // verify-examples.mjs — compile-verify generated Elm example expressions
-// against the REAL M3e.* / M3e.Unsafe / TypedHtml API.
+// against the REAL M3e.* / Kit / Native API.
 //
 // "Examples can't lie": the deterministic mapper emits typed Elm, but nothing
 // has actually type-checked it. This harness builds a scratch Elm *application*
@@ -42,6 +42,14 @@ const ELM_BIN = `${M3E_ROOT}/docs/node_modules/.bin/elm`;
 // same single source-directory docs/elm.json points at. Use the vendored copy so
 // example verification runs against a self-contained tree (`pnpm run build:vendor`
 // re-syncs it; see vendor/elm-foundation/VENDORED_FROM.txt).
+//
+// Phase 1 (L5 revive): the former `docs/kit` seam (Kit.*/Native.*) was DELETED in
+// the concern-separated-packages refactor. Engine A now targets the current
+// userland seam directly — `M3e.text` / `TypedHtml.*` / the `M3e.Unsafe.*` +
+// `TypedHtml.Unsafe.*` escapes — all of which live in LIB_SRC (M3e.*) and
+// FOUNDATION_SRC (TypedHtml.*). So SRC_DIRS points only at substrate that EXISTS
+// and compiles; the deleted docs/kit is gone from the list (it FATAL'd the
+// harness — a non-existent source-directory).
 const DOCS_DIR = `${M3E_ROOT}/docs`;
 const FOUNDATION_SRC = resolve(DOCS_DIR, "vendor/elm-foundation");
 const SRC_DIRS = [LIB_SRC, FOUNDATION_SRC];

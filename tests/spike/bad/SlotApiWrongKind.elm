@@ -10,8 +10,8 @@ token's admittance row. `{ iconButton : Brand }` does NOT extend
 `{ button : Brand }` — these are disjoint fields, not a subset relationship.
 
 The compiler must reject this with a TYPE MISMATCH like:
-the element's `accepts` row `{ s | iconButton : Brand }` does not match
-`SBTypes.LeadingButtonSlot` = `{ button : Brand }`.
+    the element's `accepts` row `{ s | iconButton : Brand }` does not match
+    `SBTypes.LeadingButtonSlot` = `{ button : Brand }`.
 
 This proves the SlotToken phantom row propagates the kind constraint,
 making wrong-kind placements a COMPILE ERROR — the core safety property
@@ -21,17 +21,15 @@ of Design A (see planning/2026-08-11-slot-api-design.md).
 
 import HtmlIr.Element as El exposing (Element)
 import HtmlIr.Internal as Ir
+import M3e exposing (icon)
 import M3e.Action exposing (onClick)
-import M3e.Component.Icon as Icon
-import M3e.Component.IconButton as IconButton
+import M3e.Build exposing (IconButtonIs)
+import M3e.Build.IconButton as IconButton
 import M3e.Internal.Types.SplitButton as SBTypes
-
 
 
 -- Copy of the SlotToken type and place fn from SlotApiOk.elm
 -- (in the real API these would be in M3e.Slot.* modules)
-
-
 type SlotToken admittance
     = SlotToken String
 
@@ -60,9 +58,10 @@ type Msg
 {-| An IconButton element — kind { s | iconButton : Brand }.
 This does NOT extend LeadingButtonSlot = { button : Brand }.
 -}
-myIconButton : Element (IconButton.Is s) admittedBy Msg
+myIconButton : Element (IconButtonIs s) admittedBy Msg
 myIconButton =
-    IconButton.component { content = Icon.component [ Icon.name "arrow_forward" ] [], ariaLabel = "Go", action = onClick NoOp } [] []
+    IconButton.build { content = icon [] [], ariaLabel = "icon", action = onClick NoOp }
+        |> IconButton.toElement
 
 
 {-| WRONG: IconButton (kind { iconButton : Brand }) into leadingButtonSlot

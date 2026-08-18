@@ -1,4 +1,4 @@
-module M3e.Family.Datepicker exposing (DatepickerIs, DatepickerAttrs, DatepickerChildAdmittedBy, DatepickerStartView, DatepickerVariant, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, datepicker, datepickerStartView, datepickerVariant, datepickerClearLabel, datepickerClearable, datepickerConfirmLabel, datepickerDate, datepickerDismissLabel, datepickerFor, datepickerLabel, datepickerMaxDate, datepickerMinDate, datepickerNextMonthLabel, datepickerNextMultiYearLabel, datepickerNextYearLabel, datepickerPreviousMonthLabel, datepickerPreviousMultiYearLabel, datepickerPreviousYearLabel, datepickerRange, datepickerRangeEnd, datepickerRangeStart, datepickerStartAt, datepickerOnChange, datepickerOnBeforetoggle, datepickerOnToggle, toggle)
+module M3e.Family.Datepicker exposing (DatepickerIs, DatepickerAttrs, DatepickerBuilder, DatepickerAttrCaps, DatepickerSlotCaps, DatepickerChildAdmittedBy, DatepickerStartView, DatepickerVariant, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, datepicker, datepickerStartView, datepickerVariant, datepickerClearLabel, datepickerClearable, datepickerConfirmLabel, datepickerDate, datepickerDismissLabel, datepickerFor, datepickerLabel, datepickerMaxDate, datepickerMinDate, datepickerNextMonthLabel, datepickerNextMultiYearLabel, datepickerNextYearLabel, datepickerPreviousMonthLabel, datepickerPreviousMultiYearLabel, datepickerPreviousYearLabel, datepickerRange, datepickerRangeEnd, datepickerRangeStart, datepickerStartAt, datepickerOnChange, datepickerOnBeforetoggle, datepickerOnToggle, toggle, toggleFor)
 
 {-| The **Datepicker** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs DatepickerIs, DatepickerAttrs, DatepickerChildAdmittedBy, DatepickerStartView, DatepickerVariant, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, datepicker, datepickerStartView, datepickerVariant, datepickerClearLabel, datepickerClearable, datepickerConfirmLabel, datepickerDate, datepickerDismissLabel, datepickerFor, datepickerLabel, datepickerMaxDate, datepickerMinDate, datepickerNextMonthLabel, datepickerNextMultiYearLabel, datepickerNextYearLabel, datepickerPreviousMonthLabel, datepickerPreviousMultiYearLabel, datepickerPreviousYearLabel, datepickerRange, datepickerRangeEnd, datepickerRangeStart, datepickerStartAt, datepickerOnChange, datepickerOnBeforetoggle, datepickerOnToggle, toggle
+@docs DatepickerIs, DatepickerAttrs, DatepickerBuilder, DatepickerAttrCaps, DatepickerSlotCaps, DatepickerChildAdmittedBy, DatepickerStartView, DatepickerVariant, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, datepicker, datepickerStartView, datepickerVariant, datepickerClearLabel, datepickerClearable, datepickerConfirmLabel, datepickerDate, datepickerDismissLabel, datepickerFor, datepickerLabel, datepickerMaxDate, datepickerMinDate, datepickerNextMonthLabel, datepickerNextMultiYearLabel, datepickerNextYearLabel, datepickerPreviousMonthLabel, datepickerPreviousMultiYearLabel, datepickerPreviousYearLabel, datepickerRange, datepickerRangeEnd, datepickerRangeStart, datepickerStartAt, datepickerOnChange, datepickerOnBeforetoggle, datepickerOnToggle, toggle, toggleFor
 
 -}
 
@@ -44,6 +44,24 @@ type alias DatepickerIs s =
 -}
 type alias DatepickerAttrs =
     Datepicker_.Attrs
+
+
+{-| See [`M3e.Component.Datepicker.Builder`](M3e.Component.Datepicker#Builder).
+-}
+type alias DatepickerBuilder attrCaps slotCaps msg kind =
+    Datepicker_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Datepicker.AttrCaps`](M3e.Component.Datepicker#AttrCaps).
+-}
+type alias DatepickerAttrCaps =
+    Datepicker_.AttrCaps
+
+
+{-| See [`M3e.Component.Datepicker.SlotCaps`](M3e.Component.Datepicker#SlotCaps).
+-}
+type alias DatepickerSlotCaps =
+    Datepicker_.SlotCaps
 
 
 {-| See [`M3e.Component.Datepicker.ChildAdmittedBy`](M3e.Component.Datepicker#ChildAdmittedBy).
@@ -235,8 +253,7 @@ datepickerOnToggle =
 {-| The `toggle` element of this family — delegates to [`M3e.Component.DatepickerToggle.component`](M3e.Component.DatepickerToggle#component).
 -}
 toggle :
-    { for : String }
-    -> List (Attr ToggleAttrs msg)
+    List (Attr ToggleAttrs msg)
     -> List (Element childAccepts (ToggleChildAdmittedBy childAdm) msg)
     -> Element (ToggleIs s) admittedBy msg
 toggle =
@@ -255,7 +272,32 @@ type alias ToggleAttrs =
     Toggle_.Attrs
 
 
+{-| See [`M3e.Component.DatepickerToggle.Builder`](M3e.Component.DatepickerToggle#Builder).
+-}
+type alias ToggleBuilder attrCaps slotCaps msg kind =
+    Toggle_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.DatepickerToggle.AttrCaps`](M3e.Component.DatepickerToggle#AttrCaps).
+-}
+type alias ToggleAttrCaps =
+    Toggle_.AttrCaps
+
+
+{-| See [`M3e.Component.DatepickerToggle.SlotCaps`](M3e.Component.DatepickerToggle#SlotCaps).
+-}
+type alias ToggleSlotCaps =
+    Toggle_.SlotCaps
+
+
 {-| See [`M3e.Component.DatepickerToggle.ChildAdmittedBy`](M3e.Component.DatepickerToggle#ChildAdmittedBy).
 -}
 type alias ToggleChildAdmittedBy childAdm =
     Toggle_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.DatepickerToggle.for`](M3e.Component.DatepickerToggle#for).
+-}
+toggleFor : String -> Attr { c | for : Supported } msg
+toggleFor =
+    Toggle_.for

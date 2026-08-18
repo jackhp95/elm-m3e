@@ -1,4 +1,4 @@
-module M3e.Family.NavRail exposing (NavRailIs, NavRailAttrs, NavRailContent, NavRailChildAdmittedBy, NavRailMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, navRail, navRailMode, navRailOnBeforeinput, navRailOnInput, navRailOnChange, navRailChild, toggle)
+module M3e.Family.NavRail exposing (NavRailIs, NavRailAttrs, NavRailBuilder, NavRailAttrCaps, NavRailSlotCaps, NavRailContent, NavRailChildAdmittedBy, NavRailMode, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, navRail, navRailMode, navRailOnBeforeinput, navRailOnInput, navRailOnChange, navRailChild, toggle, toggleFor)
 
 {-| The **NavRail** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs NavRailIs, NavRailAttrs, NavRailContent, NavRailChildAdmittedBy, NavRailMode, ToggleIs, ToggleAttrs, ToggleChildAdmittedBy, navRail, navRailMode, navRailOnBeforeinput, navRailOnInput, navRailOnChange, navRailChild, toggle
+@docs NavRailIs, NavRailAttrs, NavRailBuilder, NavRailAttrCaps, NavRailSlotCaps, NavRailContent, NavRailChildAdmittedBy, NavRailMode, ToggleIs, ToggleAttrs, ToggleBuilder, ToggleAttrCaps, ToggleSlotCaps, ToggleChildAdmittedBy, navRail, navRailMode, navRailOnBeforeinput, navRailOnInput, navRailOnChange, navRailChild, toggle, toggleFor
 
 -}
 
@@ -44,6 +44,24 @@ type alias NavRailIs s =
 -}
 type alias NavRailAttrs =
     NavRail_.Attrs
+
+
+{-| See [`M3e.Component.NavRail.Builder`](M3e.Component.NavRail#Builder).
+-}
+type alias NavRailBuilder attrCaps slotCaps msg kind =
+    NavRail_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.NavRail.AttrCaps`](M3e.Component.NavRail#AttrCaps).
+-}
+type alias NavRailAttrCaps =
+    NavRail_.AttrCaps
+
+
+{-| See [`M3e.Component.NavRail.SlotCaps`](M3e.Component.NavRail#SlotCaps).
+-}
+type alias NavRailSlotCaps =
+    NavRail_.SlotCaps
 
 
 {-| See [`M3e.Component.NavRail.Content`](M3e.Component.NavRail#Content).
@@ -102,8 +120,7 @@ navRailChild =
 {-| The `toggle` element of this family — delegates to [`M3e.Component.NavRailToggle.component`](M3e.Component.NavRailToggle#component).
 -}
 toggle :
-    { for : String }
-    -> List (Attr ToggleAttrs msg)
+    List (Attr ToggleAttrs msg)
     -> List (Element childAccepts (ToggleChildAdmittedBy childAdm) msg)
     -> Element (ToggleIs s) admittedBy msg
 toggle =
@@ -122,7 +139,32 @@ type alias ToggleAttrs =
     Toggle_.Attrs
 
 
+{-| See [`M3e.Component.NavRailToggle.Builder`](M3e.Component.NavRailToggle#Builder).
+-}
+type alias ToggleBuilder attrCaps slotCaps msg kind =
+    Toggle_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.NavRailToggle.AttrCaps`](M3e.Component.NavRailToggle#AttrCaps).
+-}
+type alias ToggleAttrCaps =
+    Toggle_.AttrCaps
+
+
+{-| See [`M3e.Component.NavRailToggle.SlotCaps`](M3e.Component.NavRailToggle#SlotCaps).
+-}
+type alias ToggleSlotCaps =
+    Toggle_.SlotCaps
+
+
 {-| See [`M3e.Component.NavRailToggle.ChildAdmittedBy`](M3e.Component.NavRailToggle#ChildAdmittedBy).
 -}
 type alias ToggleChildAdmittedBy childAdm =
     Toggle_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.NavRailToggle.for`](M3e.Component.NavRailToggle#for).
+-}
+toggleFor : String -> Attr { c | for : Supported } msg
+toggleFor =
+    Toggle_.for

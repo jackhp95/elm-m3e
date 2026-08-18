@@ -1,9 +1,8 @@
-port module Doc.Usage exposing
+module Doc.Usage exposing
     ( Msg(..)
     , Surface(..)
     , UsageExample
-    , persist
-    , readSurface
+    , encodeSurface
     , surfaceFromString
     , tabStrip
     , usageBlocks
@@ -22,7 +21,7 @@ import M3e.Kind
 import M3e.Values as Value
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import TypedHtml.Kind
 
 
@@ -48,36 +47,23 @@ type Surface
     | Raw
 
 
-{-| The click message a layer tab emits. The selected surface itself lives in
-`Shared.Model` (so it survives client-side navigation between component pages),
-mirrored from localStorage via the `readSurface` port. A route forwards this to
-`persist`; `Shared` owns the load side (its own `SurfaceLoaded`).
+{-| The click message a layer tab emits. The selected surface itself is NOT held
+here: it lives in `Shared.Model.activeSurface`, mirrored from localStorage through
+`Theme.Ports.readSurface`, so one choice governs every example on the page AND
+survives client-side navigation between component pages. A route forwards this
+message straight to `Theme.Ports.storeSurface (encodeSurface surface)`; `index.ts`
+echoes the write back so `Shared` is the only writer.
 -}
 type Msg
     = SelectSurface Surface
 
 
-{-| Persist the selected surface to localStorage via the JS port handler in
-`index.ts`, which ECHOES it back through `readSurface` so `Shared` (the single
-source of truth) and every mounted page update. Encoded as a plain string — the
-four constructor names are stable keys ("Top", "Record", "Build", "Raw").
+{-| Wire form of a surface — a plain string, since the four constructor names are
+stable keys ("Top", "Record", "Build", "Raw"). Paired with `surfaceFromString`.
 -}
-port storeSurface : Encode.Value -> Cmd msg
-
-
-{-| On boot AND after every `storeSurface`, `index.ts` sends the stored surface
-string here; `Shared.update` decodes it (`surfaceFromString`), falling back to
-its current value on absence/decode failure.
--}
-port readSurface : (Decode.Value -> msg) -> Sub msg
-
-
-{-| The `Cmd` a route runs on a layer-tab click: write the choice to localStorage
-(which echoes back to `Shared` via `readSurface`, updating the shared value).
--}
-persist : Surface -> Cmd msg
-persist surface =
-    storeSurface (Encode.string (surfaceToString surface))
+encodeSurface : Surface -> Encode.Value
+encodeSurface surface =
+    Encode.string (surfaceToString surface)
 
 
 surfaceToString : Surface -> String
@@ -96,6 +82,10 @@ surfaceToString surface =
             "Raw"
 
 
+{-| Parse the persisted wire string back to a `Surface`. An unknown string is an
+`Err` rather than a silent default, so the caller decides what to fall back to
+(`Shared` keeps its current value).
+-}
 surfaceFromString : String -> Result String Surface
 surfaceFromString s =
     case s of
@@ -117,7 +107,7 @@ surfaceFromString s =
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
 API surface. Every Elm surface is optional — `top` (M3e) and `record`
-(`M3e.<Comp>.component`) / `build` (`M3e.<Comp>.build`) are each present only when that
+(`M3e.<Comp>.component`, required-record form) / `build` (`M3e.<Comp>.build`) are each present only when that
 surface compiled to a distinct form for this example (else `Nothing`; the UI hides
 the `top` tab, but keeps `record`/`build` as an identical-by-design rationale tab).
 `html` is the one guaranteed surface — its live preview always renders. `section`
@@ -156,7 +146,7 @@ mounts a single `m3e-toc` that discovers these headings (and everything
 else on the page) at runtime; nothing here needs to enumerate them.
 
 -}
-usageBlocks : Surface -> List UsageExample -> List (Element (TypedHtml.Grouping.DivIs s) adm_ Msg)
+usageBlocks : Surface -> List UsageExample -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg)
 usageBlocks activeSurface examples =
     case examples of
         [] ->
@@ -164,19 +154,22 @@ usageBlocks activeSurface examples =
 
         _ ->
             [ TypedHtml.div [ TA.class "space-y-6" ]
-                (M3e.Component.Heading.component { content = M3e.text "Usage" }
+                (M3e.heading
                     [ M3e.Component.Heading.variant Value.headline
                     , M3e.Component.Heading.size Value.small
                     , M3e.Attributes.level 2
                     , M3e.Attributes.id (Doc.slugify "Usage")
                     ]
-                    []
+                    [ M3e.text "Usage" ]
                     :: List.concatMap (sectionBlock activeSurface)
                         (groupBySection examples)
                 )
             ]
 
 
+{-| One section: an optional sub-heading (skipped for the ungrouped "" section)
+followed by each example's live preview paired with its code tabs.
+-}
 sectionBlock : Surface -> ( String, List UsageExample ) -> List (Element { a | card : M3e.Kind.Brand, sharedFlow : TypedHtml.Kind.Shared, heading : M3e.Kind.Brand, tabs : M3e.Kind.Brand } admittedBy Msg)
 sectionBlock activeSurface ( sec, examples ) =
     let
@@ -186,24 +179,26 @@ sectionBlock activeSurface ( sec, examples ) =
                 []
 
             else
-                [ M3e.Component.Heading.component { content = M3e.text sec }
+                [ M3e.heading
                     [ M3e.Component.Heading.variant Value.title
                     , M3e.Component.Heading.size Value.large
                     , M3e.Attributes.level 3
                     , M3e.Attributes.id (Doc.slugify sec)
                     ]
-                    []
+                    [ M3e.text sec ]
                 ]
     in
     headingEl ++ List.map (exampleBlock activeSurface) examples
 
 
-{-| A live preview paired with a per-example tab strip. The site-wide
-`activeSurface` (from `Shared.Model`) is used when that surface is offered by this
-example; otherwise falls back to `defaultSurfaceFor ex` (the example's own first-offered
-surface — a static, per-example default, not a distance ranking).
+{-| A live preview paired with a tab strip that switches its code between the API
+surfaces (optionally `M3e`, then the required-record `component` / `build`
+surfaces, and always `HTML`). The site-wide `activeSurface` is used when this
+example offers it; otherwise it falls back to `defaultSurfaceFor ex` (the
+example's own first-offered surface). Grouped as one `space-y-3` block so
+title/preview/tabs/code stay tight while sections stay apart.
 -}
-exampleBlock : Surface -> UsageExample -> Element (TypedHtml.Grouping.DivIs s) adm_ Msg
+exampleBlock : Surface -> UsageExample -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ Msg
 exampleBlock activeSurface ex =
     let
         offered : List Surface
@@ -247,9 +242,9 @@ activeIndexFor surface ex =
 
 
 {-| The surfaces offered for one example, in fixed order. Each Elm surface
-(`M3e`, `component`, `build`) appears only when it compiled for this example
+(`M3e`, required-record `component`, `build`) appears only when it compiled for this example
 (its field is non-null); `HTML` is the one universal surface and is always offered
-last. Order: M3e, el, build, HTML.
+last. Order: M3e, component, build, HTML.
 -}
 surfacesFor : UsageExample -> List ( String, Surface )
 surfacesFor ex =
@@ -292,12 +287,8 @@ defaultSurfaceFor ex =
     surfacesFor ex |> List.head |> Maybe.map Tuple.second |> Maybe.withDefault Raw
 
 
-{-| The per-example surface selector: a single-select `Tabs` bar whose selected
-tab is this example's current surface and whose clicks record a page-wide
-`SelectSurface`. The tabs are dynamic per example (four to six); `Tabs`
-paginates/scrolls them horizontally on narrow viewports natively, so there's no
-`overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
-trips a spurious vertical scrollbar on the control's state-surface bleed.
+{-| The per-example surface selector: the shared `tabStrip` over exactly the
+surfaces this example offers.
 -}
 surfaceTabs : Surface -> UsageExample -> Element { s | tabs : M3e.Kind.Brand } admittedBy Msg
 surfaceTabs current ex =
@@ -305,11 +296,13 @@ surfaceTabs current ex =
 
 
 {-| A generic single-select layer tab strip: one `Tab` per `(label, surface)`, the
-one matching `current` marked selected, each click a `SelectSurface`. Shared by the
-Usage examples (offered surfaces = `surfacesFor ex`) and the per-component API
-section (offered surfaces = the three Phase-1 layers). `Tabs` paginates natively on
-narrow viewports, so no `overflow-x-auto` wrapper (which would trip a spurious
-vertical scrollbar on the control's state-surface bleed).
+one matching `current` marked selected, each click a page-wide `SelectSurface`.
+Shared by the Usage examples (offered surfaces = `surfacesFor ex`) and the
+per-component API section (offered surfaces = the four API layers), so a click on
+either strip moves both. `Tabs` paginates/scrolls horizontally on narrow viewports
+natively, so there is no `overflow-x-auto` wrapper — that wrapper forces
+`overflow-y: auto` (CSS spec) and trips a spurious vertical scrollbar on the
+control's state-surface bleed.
 -}
 tabStrip : Surface -> List ( String, Surface ) -> Element { s | tabs : M3e.Kind.Brand } admittedBy Msg
 tabStrip current entries =
@@ -336,10 +329,10 @@ surface is identical to `M3e` by design, so we show a short rationale instead of
 hollow duplicate.
 
 -}
-codeFor : Surface -> UsageExample -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+codeFor : Surface -> UsageExample -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy msg
 codeFor surface ex =
     let
-        elmOrHtml : Maybe String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+        elmOrHtml : Maybe String -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy msg
         elmOrHtml field =
             case field of
                 Just code ->
@@ -348,7 +341,7 @@ codeFor surface ex =
                 Nothing ->
                     Doc.codeBlock Doc.Xml ex.html
 
-        recordBuildCode : Maybe String -> String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+        recordBuildCode : Maybe String -> String -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy msg
         recordBuildCode field surfaceName =
             case field of
                 Just code ->
@@ -383,7 +376,7 @@ the paragraph does not overflow on mobile when this panel is the inactive (inert
 panel in a `Doc.Slider.slidingPanels` stack.
 
 -}
-identicalSurfaceNote : String -> Element (TypedHtml.Grouping.DivIs s) admittedBy msg
+identicalSurfaceNote : String -> Element (TypedHtml.Component.Grouping.DivIs s) admittedBy msg
 identicalSurfaceNote surface =
     TypedHtml.div [ TA.class "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4" ]
         [ TypedHtml.p [ TA.class "text-body-md leading-relaxed text-on-surface" ]
@@ -399,8 +392,8 @@ identicalSurfaceNote surface =
         ]
 
 
-{-| Group examples by `.section`, preserving first-seen order of both
-sections and examples within each section.
+{-| Group examples by `.section`, preserving first-seen order of both sections and
+examples within each section.
 -}
 groupBySection : List UsageExample -> List ( String, List UsageExample )
 groupBySection examples =

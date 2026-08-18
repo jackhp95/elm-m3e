@@ -1,7 +1,7 @@
 module M3e.Build.MenuTrigger exposing
     ( build, toElement
     , Builder, AttrCaps, SlotCaps, Is, ChildAdmittedBy
-    , withClass, withId, withSlot, withStyle
+    , withClass, withFor, withId, withSlot, withStyle
     , withChild
     )
 
@@ -9,7 +9,7 @@ module M3e.Build.MenuTrigger exposing
 
 @docs build, toElement
 @docs Builder, AttrCaps, SlotCaps, Is, ChildAdmittedBy
-@docs withClass, withId, withSlot, withStyle
+@docs withClass, withFor, withId, withSlot, withStyle
 @docs withChild
 
 -}
@@ -20,23 +20,22 @@ import HtmlIr.Kind exposing (Supported)
 import M3e.Attributes as A
 import M3e.Component.MenuTrigger as Component
 import M3e.Forge.Internal as B
-import M3e.Internal.Types.MenuTrigger
 import M3e.Kind exposing (Available, Brand, Ctx, Used)
 
 
 {-| -}
 type alias Is s =
-    M3e.Internal.Types.MenuTrigger.Is s
+    Component.Is s
 
 
 {-| -}
 type alias Builder attrCaps slotCaps msg kind =
-    M3e.Internal.Types.MenuTrigger.Builder attrCaps slotCaps msg kind
+    Component.Builder attrCaps slotCaps msg kind
 
 
 {-| -}
 type alias AttrCaps =
-    M3e.Internal.Types.MenuTrigger.AttrCaps
+    Component.AttrCaps
 
 
 {-| -}
@@ -46,15 +45,13 @@ type alias SlotCaps =
 
 {-| -}
 type alias ChildAdmittedBy childAdm =
-    M3e.Internal.Types.MenuTrigger.ChildAdmittedBy childAdm
+    Component.ChildAdmittedBy childAdm
 
 
 {-| -}
-build :
-    { for : String }
-    -> Builder AttrCaps SlotCaps msg kind
-build required_ =
-    B.init "m3e-menu-trigger" [ Ir.attribute "for" required_.for ] []
+build : Builder AttrCaps SlotCaps msg kind
+build =
+    B.init "m3e-menu-trigger" [] []
 
 
 {-| -}
@@ -94,3 +91,9 @@ withSlot value_ =
 withStyle : String -> String -> Builder { a | style : Available } slotCaps msg kind -> Builder { a | style : Used } slotCaps msg kind
 withStyle property value_ =
     B.withAttribute (A.style property value_)
+
+
+{-| -}
+withFor : String -> Builder { a | for : Available } slotCaps msg kind -> Builder { a | for : Used } slotCaps msg kind
+withFor value_ =
+    B.withAttribute (A.for value_)

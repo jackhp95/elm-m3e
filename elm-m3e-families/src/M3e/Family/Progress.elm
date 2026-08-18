@@ -1,4 +1,4 @@
-module M3e.Family.Progress exposing (CircularIs, CircularAttrs, CircularChildAdmittedBy, CircularVariant, LinearIs, LinearAttrs, LinearChildAdmittedBy, LinearMode, LinearVariant, LoadingIs, LoadingAttrs, LoadingChildAdmittedBy, LoadingVariant, circular, circularVariant, circularIndeterminate, circularMax, circularValue, circularDefaultValue, circularChild, linear, linearMode, linearVariant, linearBufferValue, linearMax, linearValue, linearDefaultValue, loading, loadingVariant)
+module M3e.Family.Progress exposing (CircularIs, CircularAttrs, CircularBuilder, CircularAttrCaps, CircularSlotCaps, CircularChildAdmittedBy, CircularVariant, LinearIs, LinearAttrs, LinearBuilder, LinearAttrCaps, LinearSlotCaps, LinearChildAdmittedBy, LinearMode, LinearVariant, LoadingIs, LoadingAttrs, LoadingBuilder, LoadingAttrCaps, LoadingSlotCaps, LoadingChildAdmittedBy, LoadingVariant, circular, circularVariant, circularIndeterminate, circularMax, circularValue, circularDefaultValue, circularChild, linear, linearMode, linearVariant, linearBufferValue, linearMax, linearValue, linearDefaultValue, loading, loadingVariant)
 
 {-| The **Progress** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs CircularIs, CircularAttrs, CircularChildAdmittedBy, CircularVariant, LinearIs, LinearAttrs, LinearChildAdmittedBy, LinearMode, LinearVariant, LoadingIs, LoadingAttrs, LoadingChildAdmittedBy, LoadingVariant, circular, circularVariant, circularIndeterminate, circularMax, circularValue, circularDefaultValue, circularChild, linear, linearMode, linearVariant, linearBufferValue, linearMax, linearValue, linearDefaultValue, loading, loadingVariant
+@docs CircularIs, CircularAttrs, CircularBuilder, CircularAttrCaps, CircularSlotCaps, CircularChildAdmittedBy, CircularVariant, LinearIs, LinearAttrs, LinearBuilder, LinearAttrCaps, LinearSlotCaps, LinearChildAdmittedBy, LinearMode, LinearVariant, LoadingIs, LoadingAttrs, LoadingBuilder, LoadingAttrCaps, LoadingSlotCaps, LoadingChildAdmittedBy, LoadingVariant, circular, circularVariant, circularIndeterminate, circularMax, circularValue, circularDefaultValue, circularChild, linear, linearMode, linearVariant, linearBufferValue, linearMax, linearValue, linearDefaultValue, loading, loadingVariant
 
 -}
 
@@ -45,6 +45,24 @@ type alias CircularIs s =
 -}
 type alias CircularAttrs =
     Circular_.Attrs
+
+
+{-| See [`M3e.Component.CircularProgressIndicator.Builder`](M3e.Component.CircularProgressIndicator#Builder).
+-}
+type alias CircularBuilder attrCaps slotCaps msg kind =
+    Circular_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.CircularProgressIndicator.AttrCaps`](M3e.Component.CircularProgressIndicator#AttrCaps).
+-}
+type alias CircularAttrCaps =
+    Circular_.AttrCaps
+
+
+{-| See [`M3e.Component.CircularProgressIndicator.SlotCaps`](M3e.Component.CircularProgressIndicator#SlotCaps).
+-}
+type alias CircularSlotCaps =
+    Circular_.SlotCaps
 
 
 {-| See [`M3e.Component.CircularProgressIndicator.ChildAdmittedBy`](M3e.Component.CircularProgressIndicator#ChildAdmittedBy).
@@ -121,6 +139,24 @@ type alias LinearIs s =
 -}
 type alias LinearAttrs =
     Linear_.Attrs
+
+
+{-| See [`M3e.Component.LinearProgressIndicator.Builder`](M3e.Component.LinearProgressIndicator#Builder).
+-}
+type alias LinearBuilder attrCaps slotCaps msg kind =
+    Linear_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.LinearProgressIndicator.AttrCaps`](M3e.Component.LinearProgressIndicator#AttrCaps).
+-}
+type alias LinearAttrCaps =
+    Linear_.AttrCaps
+
+
+{-| See [`M3e.Component.LinearProgressIndicator.SlotCaps`](M3e.Component.LinearProgressIndicator#SlotCaps).
+-}
+type alias LinearSlotCaps =
+    Linear_.SlotCaps
 
 
 {-| See [`M3e.Component.LinearProgressIndicator.ChildAdmittedBy`](M3e.Component.LinearProgressIndicator#ChildAdmittedBy).
@@ -203,6 +239,24 @@ type alias LoadingIs s =
 -}
 type alias LoadingAttrs =
     Loading_.Attrs
+
+
+{-| See [`M3e.Component.LoadingIndicator.Builder`](M3e.Component.LoadingIndicator#Builder).
+-}
+type alias LoadingBuilder attrCaps slotCaps msg kind =
+    Loading_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.LoadingIndicator.AttrCaps`](M3e.Component.LoadingIndicator#AttrCaps).
+-}
+type alias LoadingAttrCaps =
+    Loading_.AttrCaps
+
+
+{-| See [`M3e.Component.LoadingIndicator.SlotCaps`](M3e.Component.LoadingIndicator#SlotCaps).
+-}
+type alias LoadingSlotCaps =
+    Loading_.SlotCaps
 
 
 {-| See [`M3e.Component.LoadingIndicator.ChildAdmittedBy`](M3e.Component.LoadingIndicator#ChildAdmittedBy).

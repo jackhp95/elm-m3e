@@ -1,6 +1,24 @@
 // Mapping oracle: per-tag lookup derived from the Custom Elements Manifest
 // (@m3e/web custom-elements.json) + config/slots.json. Feeds the HTML->Elm
 // mapper so it can turn `<m3e-button variant="filled">` into typed M3e.* calls.
+//
+// M5 (R-012) — DELIBERATE EXCEPTION, not moved onto elm-cem's facts bundle:
+// this reads fields the RAW CEM carries in its own shape — `mod.exports`
+// with `kind: "custom-element-definition"` + `declaration.module`/`.name`
+// (reconcileTagNames' tag-collision fix), `attr.type.text` / `attr.parsedType.text`
+// as raw TS type strings, `d.slots[].name` — that Face B's distilled shape
+// (schemaVersion/tagReconciliation/components/...) represents differently
+// (type.raw/type.parsed, tagReconciliation.mismatches, component.slots).
+// Rewriting this to Face B's shape is a real, nontrivial port of an
+// actively-used generator that turns live HTML markup into typed Elm calls
+// for the docs site's examples — a mismatch here silently mis-generates
+// example code, and there is no existing equivalence test to catch a bad
+// port. Given the standing rule ("when in doubt about uniqueness, keep and
+// flag rather than delete") and no test coverage proving the two shapes are
+// interchangeable for every field this file reads, keeping the direct CEM
+// read is the safer call than risking a silent behavior change here.
+// Revisit if/when Face B's schema is extended to cover set-equality with the
+// raw CEM's exports/declarations shape (see docs/facts-bundle/schema.json).
 
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -16,37 +34,9 @@ const CEM_PATH = resolve(
   "docs/node_modules/@m3e/web/dist/custom-elements.json"
 );
 const SLOTS_PATH = resolve(REPO_ROOT, "config/slots.json");
-// The authoritative per-component reference (elm-cem extract). Each entry
-// carries the REAL Elm module path (`"module": "M3e.Component.Button"`), which
-// the library rework moved out of top-level `M3e.<Name>` into
-// `M3e.Component.<Name>`. The oracle keys entries by the pascal-cased tag base
-// (`Button`), so we build a base -> module-suffix map to emit the real path.
-const REFERENCE_PATH = resolve(REPO_ROOT, "docs/data/reference.json");
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
-}
-
-// base module name (last segment) -> module suffix (module minus the leading
-// `M3e.`). E.g. `Button` -> `Component.Button`; `Action` -> `Action`. Derived
-// from reference.json so the emitter targets the component's ACTUAL module
-// path. Components that moved under `M3e.Component.<Name>` get the qualified
-// suffix; the ~8 genuinely top-level modules (Action, Attributes, Build,
-// Events, Html, Kind, Unsafe, Values) map to their bare name. A tag with no
-// reference match falls back to its bare base in the caller (never mis-prefixed).
-function buildModuleSuffixMap() {
-  const entries = readJson(REFERENCE_PATH);
-  const arr = Array.isArray(entries) ? entries : Object.values(entries);
-  const map = {};
-  for (const e of arr) {
-    if (!e || typeof e.module !== "string" || !e.module.startsWith("M3e.")) {
-      continue;
-    }
-    const suffix = e.module.slice("M3e.".length);
-    const base = suffix.split(".").pop();
-    map[base] = suffix;
-  }
-  return map;
 }
 
 // Kebab-case a config key: insert "-" before each interior uppercase, lowercase
@@ -154,7 +144,6 @@ export function buildOracle() {
   const cem = readJson(CEM_PATH);
   reconcileTagNames(cem);
   const slots = readJson(SLOTS_PATH);
-  const moduleSuffixByBase = buildModuleSuffixMap();
 
   // Variant groups: a `group` config folds several tags into ONE top module
   // with a constructor per variant (e.g. Progress.group = { linear:
@@ -465,13 +454,6 @@ export function buildOracle() {
       oracle[tag] = {
         tag,
         module,
-        // The REAL Elm module SUFFIX (minus the leading `M3e.`) to qualify the
-        // emitted call — `Component.Button` post-rework, or the bare base for a
-        // genuinely top-level module. Kept SEPARATE from `module` (the pascal
-        // tag base) because `module` still sources the ctor slug (`button`).
-        // Falls back to the bare base when reference.json has no match, so a
-        // top-level module is never wrongly prefixed with `Component.`.
-        qual: moduleSuffixByBase[module] ?? module,
         // Produced kind (this element's kind as a child of another container).
         kind: decapitalize(module),
         childSlotByKind,

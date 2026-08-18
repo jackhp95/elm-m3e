@@ -51,14 +51,18 @@ guideEmailField =
 -}
 guideHelpButton : String
 guideHelpButton =
-    """M3e.Component.IconButton.component { content = M3e.icon [ TA.name "help" ] [], ariaLabel = "Help", action = M3e.Action.none } [] []"""
+    """M3e.iconButton [ Aria.label "Help" ]
+    [ M3e.icon [ TA.name "help" ] [] ]"""
 
 
 {-| `savedButton`, from `docs/app/Route/Guide/InvalidStates.elm`.
 -}
 guideSavedButton : String
 guideSavedButton =
-    """M3e.Component.Button.component { content = M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] []), action = M3e.Action.none } [ M3e.Attributes.variant Value.filled ] [ M3e.text "Save" ]"""
+    """M3e.button [ M3e.Attributes.variant Value.filled ]
+    [ M3e.Component.Button.icon (M3e.icon [ TA.name "save" ] [])
+    , M3e.text "Save"
+    ]"""
 
 
 {-| `htmlInSlot`, from `docs/app/Route/Guide/Seams.elm`.
@@ -70,10 +74,10 @@ seamsHtmlInSlot =
     -- `TypedHtml.div` produces `sharedFlow`, so the wrapper goes in as itself — and the
     -- iconButton and badge INSIDE it are still checked against the div's content model.
     M3e.appBar [ TypedHtml.Attributes.class "px-2" ]
-        [ M3e.Component.AppBar.title (M3e.Component.Heading.component { content = M3e.text "Inbox" } [] [])
+        [ M3e.Component.AppBar.title (M3e.heading [] [ M3e.text "Inbox" ])
         , M3e.Component.AppBar.trailing
             (TypedHtml.div [ TypedHtml.Attributes.class "inline-flex items-center gap-1" ]
-                [ M3e.Component.IconButton.component { content = M3e.icon [ TypedHtml.Attributes.name "search" ] [], ariaLabel = "Search", action = M3e.Action.none } [] []
+                [ M3e.iconButton [ TypedHtml.Aria.label "Search" ] [ M3e.icon [ TypedHtml.Attributes.name "search" ] [] ]
                 , M3e.badge [] [ M3e.text "3" ]
                 ]
             )

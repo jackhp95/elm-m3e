@@ -23,12 +23,11 @@ annotates.
 
 import M3e exposing (Element)
 import M3e.Attributes
-import M3e.Component.Heading
 import M3e.Values as Value
 import TypedHtml
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
-import TypedHtml.Text
+import TypedHtml.Component.Grouping
+import TypedHtml.Component.Text
 
 
 {-| Render the footer for one example page.
@@ -46,7 +45,7 @@ footer :
     , prev : Maybe ( String, String )
     , next : Maybe ( String, String )
     }
-    -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+    -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 footer { builtFrom, prev, next } =
     TypedHtml.div
         [ TA.class "bg-surface-container text-on-surface w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
@@ -60,27 +59,29 @@ footer { builtFrom, prev, next } =
 gallery cards no longer target `_blank`), so the browser Back button already returns
 here — this is the explicit in-page affordance for it.
 -}
-backRow : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+backRow : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 backRow =
     TypedHtml.div [ TA.class "flex" ]
         [ TypedHtml.a [ TA.href "/examples", TA.class "hover:underline text-on-surface-variant" ] [ M3e.text "← Back to examples" ] ]
 
 
-builtFromRow : List ( String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+builtFromRow : List ( String, String ) -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 builtFromRow builtFrom =
     TypedHtml.div [ TA.class "flex flex-wrap items-baseline gap-x-2 gap-y-1" ]
-        (M3e.Component.Heading.component { content = M3e.text "Built from" } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+        (M3e.heading
+            [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ]
+            [ M3e.text "Built from" ]
             :: List.map componentLink builtFrom
         )
 
 
-componentLink : ( String, String ) -> Element (TypedHtml.Text.SpanIs s) adm_ msg
+componentLink : ( String, String ) -> Element (TypedHtml.Component.Text.SpanIs s) adm_ msg
 componentLink ( slug, label ) =
     TypedHtml.span [ TA.class "text-body-md" ]
         [ TypedHtml.a [ TA.href ("/components/" ++ slug), TA.class "hover:underline text-primary" ] [ M3e.text label ] ]
 
 
-prevNextRow : Maybe ( String, String ) -> Maybe ( String, String ) -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+prevNextRow : Maybe ( String, String ) -> Maybe ( String, String ) -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 prevNextRow prev next =
     TypedHtml.div [ TA.class "flex items-center justify-between gap-4" ]
         [ pagerSlot "← " prev
@@ -91,7 +92,7 @@ prevNextRow prev next =
 {-| One side of the prev/next pager. `prefix`/absence of `arrow` keeps the
 "previous" arrow leading and the "next" arrow trailing.
 -}
-pagerSlot : String -> Maybe ( String, String ) -> Element (TypedHtml.Text.SpanIs s) adm_ msg
+pagerSlot : String -> Maybe ( String, String ) -> Element (TypedHtml.Component.Text.SpanIs s) adm_ msg
 pagerSlot leadingArrow slot =
     case slot of
         Nothing ->

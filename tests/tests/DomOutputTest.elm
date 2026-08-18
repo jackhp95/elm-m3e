@@ -18,16 +18,13 @@ here rather than only in the Playwright runtime harness.
 Ported to the phantom substrate: the two-step `HtmlIr.Element.toNode` then
 `HtmlIr.Node.toHtml` render path collapsed into `M3e.toHtml`; attribute setters
 moved to `M3e.Values` (variant tokens) and the per-component modules
-(`M3e.Component.Icon.name`, `M3e.Component.Button.icon`, `M3e.Component.ListItem.leading`). Slotted text was the
+(`M3e.Component.Icon.name`, `M3e.Component.Button.icon`, `M3e.Component.ListItem.leading`); `aria-label` has no
+typed setter, so it crosses the library's lint-fenced escape
+`M3e.Unsafe.Attributes.fromHtmlAttribute` (formerly the userland `Seam.asAttribute`,
+now deleted along with the rest of `docs/kit/Seam.elm`). Slotted text was the
 userland `Kit.text` seam when this suite was written; the unseam migration made it
 a library value (`M3e.text`, same signature), so the calls below moved onto the
 barrel.
-
-Post `el`-unification (elm-cem L1/L2): `M3e.button`/`M3e.iconButton` are now
-required-record calls (`{ content, action }` / `{ content, ariaLabel, action }`)
-— `ariaLabel` is a first-class required record field now, not a lint-fenced
-`M3e.Unsafe.Attributes.fromHtmlAttribute` escape, so the icon-button tests below
-set it via the record instead.
 
 -}
 
@@ -37,8 +34,8 @@ import M3e
 import M3e.Action as Action
 import M3e.Component.Button
 import M3e.Component.Icon
-import M3e.Component.IconButton
 import M3e.Component.ListItem
+import M3e.Unsafe.Attributes
 import M3e.Values as Value
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
@@ -62,15 +59,13 @@ suite =
         [ describe "custom-element tag emission"
             [ test "M3e.button renders an <m3e-button>" <|
                 \_ ->
-                    M3e.Component.Button.component { content = M3e.text "Save", action = Action.none } [] []
+                    M3e.button [] [ M3e.text "Save" ]
                         |> toQuery
                         |> Query.has [ Selector.tag "m3e-button" ]
             , test "M3e.iconButton renders an <m3e-icon-button> wrapping an <m3e-icon>" <|
                 \_ ->
-                    M3e.Component.IconButton.component
-                        { content = M3e.icon [ M3e.Component.Icon.name "arrow_back" ] [], ariaLabel = "Back", action = Action.none }
-                        []
-                        []
+                    M3e.iconButton [ M3e.Unsafe.Attributes.fromHtmlAttribute (HtmlAttr.attribute "aria-label" "Back") ]
+                        [ M3e.icon [ M3e.Component.Icon.name "arrow_back" ] [] ]
                         |> toQuery
                         |> Expect.all
                             [ Query.has [ Selector.tag "m3e-icon-button" ]
@@ -80,7 +75,7 @@ suite =
         , describe "attribute and token emission"
             [ test "a variant token becomes a variant= attribute on the host" <|
                 \_ ->
-                    M3e.Component.Button.component { content = M3e.text "Go", action = Action.none } [ M3e.Component.Button.variant Value.filled ] []
+                    M3e.button [ M3e.Component.Button.variant Value.filled ] [ M3e.text "Go" ]
                         |> toQuery
                         |> Query.has
                             [ Selector.tag "m3e-button"
@@ -88,10 +83,8 @@ suite =
                             ]
             , test "an aria-label setter becomes an aria-label attribute" <|
                 \_ ->
-                    M3e.Component.IconButton.component
-                        { content = M3e.icon [ M3e.Component.Icon.name "close" ] [], ariaLabel = "Close", action = Action.none }
-                        []
-                        []
+                    M3e.iconButton [ M3e.Unsafe.Attributes.fromHtmlAttribute (HtmlAttr.attribute "aria-label" "Close") ]
+                        [ M3e.icon [ M3e.Component.Icon.name "close" ] [] ]
                         |> toQuery
                         |> Query.has
                             [ Selector.attribute (HtmlAttr.attribute "aria-label" "Close") ]
@@ -104,9 +97,10 @@ suite =
         , describe "slot stamping on slotted children"
             [ test "M3e.Component.Button.icon stamps slot=icon on the placed icon" <|
                 \_ ->
-                    M3e.Component.Button.component { content = M3e.text "Add", action = Action.none }
-                        []
-                        [ M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "add" ] []) ]
+                    M3e.button []
+                        [ M3e.Component.Button.icon (M3e.icon [ M3e.Component.Icon.name "add" ] [])
+                        , M3e.text "Add"
+                        ]
                         |> toQuery
                         |> Query.find [ Selector.tag "m3e-icon" ]
                         |> Query.has [ Selector.attribute (HtmlAttr.attribute "slot" "icon") ]

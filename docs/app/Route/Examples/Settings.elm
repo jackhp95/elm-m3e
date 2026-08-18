@@ -21,10 +21,8 @@ import Head
 import M3e exposing (Element)
 import M3e.Attributes
 import M3e.Component.AppBar
-import M3e.Component.Heading
 import M3e.Component.ListItem
 import M3e.Component.NavItem
-import M3e.Component.Slider
 import M3e.Component.SliderThumb
 import M3e.Events
 import M3e.Kind
@@ -35,7 +33,7 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import TypedHtml.Kind
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -194,7 +192,7 @@ column's own `overflow-hidden` already suppresses the automatic minimum size),
 but it keeps the bounded-scroll invariant from depending on that.
 
 -}
-screen : Model -> Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg)
+screen : Model -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ (PagesMsg Msg)
 screen model =
     TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
@@ -214,7 +212,7 @@ screen model =
 {-| The shared "Built from" + prev/next strip. Settings is the last example, so
 it has no next screen.
 -}
-exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+exampleFooter : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -299,10 +297,10 @@ every field any row needs. Each producing function's `view` returns an open row,
 which widens to fill this closed record.
 -}
 type alias Row msg =
-    Element { sharedFlow : TypedHtml.Kind.Shared, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } (TypedHtml.Grouping.DivChildAdmittedBy {}) msg
+    Element { sharedFlow : TypedHtml.Kind.Shared, listItem : M3e.Kind.Brand, divider : M3e.Kind.Brand } (TypedHtml.Component.Grouping.DivChildAdmittedBy {}) msg
 
 
-content : Model -> List (Element (TypedHtml.Grouping.DivIs s) adm_ (PagesMsg Msg))
+content : Model -> List (Element (TypedHtml.Component.Grouping.DivIs s) adm_ (PagesMsg Msg))
 content model =
     [ accountCard
     , sectionCard "Notifications"
@@ -332,7 +330,7 @@ content model =
 {-| A settings section: an overline heading above a rounded surface-container card
 whose `ListItem` rows are separated by `Divider`s.
 -}
-sectionCard : String -> List (Row msg) -> Element (TypedHtml.Grouping.DivIs s) admOut_ msg
+sectionCard : String -> List (Row msg) -> Element (TypedHtml.Component.Grouping.DivIs s) admOut_ msg
 sectionCard heading rows =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ Doc.sectionLabelCaps heading
@@ -352,7 +350,7 @@ dividize rows =
 {-| The account header: a profile card (avatar + name + email) followed by a
 drill-in row for managing the account.
 -}
-accountCard : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+accountCard : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 accountCard =
     TypedHtml.div [ TA.class "flex flex-col gap-2" ]
         [ Doc.sectionLabelCaps "Account"
@@ -415,14 +413,14 @@ themeRow theme label iconName current =
 supporting-text, so this row is a plain layout (leading icon + label above the
 slider) rather than a `ListItem` with the control crammed into a text slot.
 -}
-densityRow : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+densityRow : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 densityRow =
     TypedHtml.div [ TA.class "flex flex-col gap-3 px-4 py-3" ]
         [ TypedHtml.div [ TA.class "flex items-center gap-4" ]
             [ M3e.icon [ TA.name "density_medium" ] []
             , M3e.text "Display density"
             ]
-        , M3e.Component.Slider.component { content = M3e.sliderThumb [ M3e.Component.SliderThumb.value 2 ] [] }
+        , M3e.slider
             [ M3e.Attributes.min 0
             , M3e.Attributes.max 3
             , M3e.Attributes.step 1
@@ -431,7 +429,7 @@ densityRow =
             , Aria.label "Display density"
             , TA.class "w-full"
             ]
-            []
+            [ M3e.sliderThumb [ M3e.Component.SliderThumb.value 2 ] [] ]
         ]
 
 
@@ -455,5 +453,5 @@ infoRow iconName label value =
         [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         , M3e.Component.ListItem.trailing
-            (M3e.Component.Heading.component { content = M3e.text value } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text value ])
         ]

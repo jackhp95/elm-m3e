@@ -252,14 +252,14 @@ bottomSheetAction =
     M3e.Component.BottomSheetAction.component
 
 
-{-| The loose `m3e-bottom-sheet-trigger` producer — open attribute/child rows, no required record. See `M3e.Component.BottomSheetTrigger.component` for the required-content form.
+{-| See `M3e.Component.BottomSheetTrigger.component`.
 -}
 bottomSheetTrigger :
     List (Attr M3e.Component.BottomSheetTrigger.Attrs msg)
     -> List (Element M3e.Component.BottomSheetTrigger.Content (M3e.Component.BottomSheetTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.BottomSheetTrigger.Is s) admittedBy msg
-bottomSheetTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-bottom-sheet-trigger" attrs (List.map HtmlIr.Element.toNode children))
+bottomSheetTrigger =
+    M3e.Component.BottomSheetTrigger.component
 
 
 {-| The loose `m3e-breadcrumb` producer — open attribute/child rows, no required record. See `M3e.Component.Breadcrumb.component` for the required-content form.
@@ -422,14 +422,14 @@ datepicker =
     M3e.Component.Datepicker.component
 
 
-{-| The loose `m3e-datepicker-toggle` producer — open attribute/child rows, no required record. See `M3e.Component.DatepickerToggle.component` for the required-content form.
+{-| See `M3e.Component.DatepickerToggle.component`.
 -}
 datepickerToggle :
     List (Attr M3e.Component.DatepickerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DatepickerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DatepickerToggle.Is s) admittedBy msg
-datepickerToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-datepicker-toggle" attrs (List.map HtmlIr.Element.toNode children))
+datepickerToggle =
+    M3e.Component.DatepickerToggle.component
 
 
 {-| See `M3e.Component.Dialog.component`.
@@ -452,14 +452,14 @@ dialogAction =
     M3e.Component.DialogAction.component
 
 
-{-| The loose `m3e-dialog-trigger` producer — open attribute/child rows, no required record. See `M3e.Component.DialogTrigger.component` for the required-content form.
+{-| See `M3e.Component.DialogTrigger.component`.
 -}
 dialogTrigger :
     List (Attr M3e.Component.DialogTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DialogTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DialogTrigger.Is s) admittedBy msg
-dialogTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-dialog-trigger" attrs (List.map HtmlIr.Element.toNode children))
+dialogTrigger =
+    M3e.Component.DialogTrigger.component
 
 
 {-| See `M3e.Component.Divider.component`.
@@ -482,14 +482,14 @@ drawerContainer =
     M3e.Component.DrawerContainer.component
 
 
-{-| The loose `m3e-drawer-toggle` producer — open attribute/child rows, no required record. See `M3e.Component.DrawerToggle.component` for the required-content form.
+{-| See `M3e.Component.DrawerToggle.component`.
 -}
 drawerToggle :
     List (Attr M3e.Component.DrawerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.DrawerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.DrawerToggle.Is s) admittedBy msg
-drawerToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-drawer-toggle" attrs (List.map HtmlIr.Element.toNode children))
+drawerToggle =
+    M3e.Component.DrawerToggle.component
 
 
 {-| See `M3e.Component.Elevation.component`.
@@ -562,14 +562,14 @@ fabMenuItem =
     M3e.Component.FabMenuItem.component
 
 
-{-| The loose `m3e-fab-menu-trigger` producer — open attribute/child rows, no required record. See `M3e.Component.FabMenuTrigger.component` for the required-content form.
+{-| See `M3e.Component.FabMenuTrigger.component`.
 -}
 fabMenuTrigger :
     List (Attr M3e.Component.FabMenuTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.FabMenuTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.FabMenuTrigger.Is s) admittedBy msg
-fabMenuTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-fab-menu-trigger" attrs (List.map HtmlIr.Element.toNode children))
+fabMenuTrigger =
+    M3e.Component.FabMenuTrigger.component
 
 
 {-| The loose `m3e-filter-chip` producer — open attribute/child rows, no required record. See `M3e.Component.FilterChip.component` for the required-content form.
@@ -802,14 +802,14 @@ menuItemRadio =
     M3e.Component.MenuItemRadio.component
 
 
-{-| The loose `m3e-menu-trigger` producer — open attribute/child rows, no required record. See `M3e.Component.MenuTrigger.component` for the required-content form.
+{-| See `M3e.Component.MenuTrigger.component`.
 -}
 menuTrigger :
     List (Attr M3e.Component.MenuTrigger.Attrs msg)
     -> List (Element childAccepts (M3e.Component.MenuTrigger.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.MenuTrigger.Is s) admittedBy msg
-menuTrigger attrs children =
-    Ir.fromNode (Ir.node "m3e-menu-trigger" attrs (List.map HtmlIr.Element.toNode children))
+menuTrigger =
+    M3e.Component.MenuTrigger.component
 
 
 {-| See `M3e.Component.MonthView.component`.
@@ -892,14 +892,14 @@ navRail =
     M3e.Component.NavRail.component
 
 
-{-| The loose `m3e-nav-rail-toggle` producer — open attribute/child rows, no required record. See `M3e.Component.NavRailToggle.component` for the required-content form.
+{-| See `M3e.Component.NavRailToggle.component`.
 -}
 navRailToggle :
     List (Attr M3e.Component.NavRailToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.NavRailToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.NavRailToggle.Is s) admittedBy msg
-navRailToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-nav-rail-toggle" attrs (List.map HtmlIr.Element.toNode children))
+navRailToggle =
+    M3e.Component.NavRailToggle.component
 
 
 {-| See `M3e.Component.Optgroup.component`.
@@ -1382,14 +1382,14 @@ timepickerInputPeriodToggle =
     M3e.Component.TimepickerInputPeriodToggle.component
 
 
-{-| The loose `m3e-timepicker-toggle` producer — open attribute/child rows, no required record. See `M3e.Component.TimepickerToggle.component` for the required-content form.
+{-| See `M3e.Component.TimepickerToggle.component`.
 -}
 timepickerToggle :
     List (Attr M3e.Component.TimepickerToggle.Attrs msg)
     -> List (Element childAccepts (M3e.Component.TimepickerToggle.ChildAdmittedBy childAdm) msg)
     -> Element (M3e.Component.TimepickerToggle.Is s) admittedBy msg
-timepickerToggle attrs children =
-    Ir.fromNode (Ir.node "m3e-timepicker-toggle" attrs (List.map HtmlIr.Element.toNode children))
+timepickerToggle =
+    M3e.Component.TimepickerToggle.component
 
 
 {-| See `M3e.Component.Toc.component`.

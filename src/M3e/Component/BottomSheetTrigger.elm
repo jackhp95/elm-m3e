@@ -1,7 +1,7 @@
 module M3e.Component.BottomSheetTrigger exposing
     ( component
-    , Is, Attrs, Content, ChildAdmittedBy
-    , detent, secondary
+    , Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
+    , detent, for, secondary
     , child
     )
 
@@ -10,8 +10,8 @@ module M3e.Component.BottomSheetTrigger exposing
 An element, nested within a clickable element, used to trigger a bottom sheet.
 
 @docs component
-@docs Is, Attrs, Content, ChildAdmittedBy
-@docs detent, secondary
+@docs Is, Attrs, Builder, AttrCaps, SlotCaps, Content, ChildAdmittedBy
+@docs detent, for, secondary
 @docs child
 
 -}
@@ -50,15 +50,32 @@ type alias ChildAdmittedBy childAdm =
     M3e.Internal.Types.BottomSheetTrigger.ChildAdmittedBy childAdm
 
 
-{-| Required-content (and action) constructor — omissions are unwritable.
+{-| The narrowed pipe-builder this component's `M3e.Build.<X>` module exposes.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Internal.Types.BottomSheetTrigger.Builder attrCaps slotCaps msg kind
+
+
+{-| The attribute capabilities this component's builder admits.
+-}
+type alias AttrCaps =
+    M3e.Internal.Types.BottomSheetTrigger.AttrCaps
+
+
+{-| The singular-slot capabilities this component's builder admits.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Standard constructor: `[attributes] [children]`.
 -}
 component :
-    { for : String }
-    -> List (Attr Attrs msg)
+    List (Attr Attrs msg)
     -> List (Element Content (ChildAdmittedBy childAdm) msg)
     -> Element (Is s) admittedBy msg
-component required_ attrs children =
-    H.bottomSheetTrigger (Ir.attribute "for" required_.for :: attrs) children
+component =
+    H.bottomSheetTrigger
 
 
 {-| See `M3e.Attributes.detent`.
@@ -66,6 +83,13 @@ component required_ attrs children =
 detent : Float -> Attr { c | detent : Supported } msg
 detent =
     A.detent
+
+
+{-| See `M3e.Attributes.for`.
+-}
+for : String -> Attr { c | for : Supported } msg
+for =
+    A.for
 
 
 {-| See `M3e.Attributes.secondary`.

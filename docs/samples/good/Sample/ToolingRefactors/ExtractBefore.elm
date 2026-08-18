@@ -10,8 +10,6 @@ Change the sample there; this file follows.
 import Html
 import Html.Attributes
 import M3e
-import M3e.Action
-import M3e.Component.Button
 import M3e.Unsafe
 import M3e.Unsafe.Attributes
 
@@ -19,4 +17,4 @@ import M3e.Unsafe.Attributes
 -- a raw escape inlined in a feature module, for something the library
 -- already models: `class` has a typed setter, so this is a needless escape
 shown0_ =
-    M3e.Component.Button.component { content = M3e.text "Save", action = M3e.Action.none } [ M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Attributes.class "flex-auto") ] []
+    M3e.button [ M3e.Unsafe.Attributes.fromHtmlAttribute (Html.Attributes.class "flex-auto") ] [ M3e.text "Save" ]

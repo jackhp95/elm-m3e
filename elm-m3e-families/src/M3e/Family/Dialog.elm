@@ -1,4 +1,4 @@
-module M3e.Family.Dialog exposing (DialogIs, DialogAttrs, DialogCloseIconSlot, DialogHeaderSlot, DialogChildAdmittedBy, ActionIs, ActionAttrs, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, dialog, dialogAlert, dialogCloseLabel, dialogDisableClose, dialogDismissible, dialogNoFocusTrap, dialogOpen, dialogOnOpening, dialogOnOpened, dialogOnClosing, dialogOnClosed, dialogOnCancel, dialogActions, dialogCloseIcon, dialogHeader, dialogChild, action, actionReturnValue, actionChild, trigger)
+module M3e.Family.Dialog exposing (DialogIs, DialogAttrs, DialogBuilder, DialogAttrCaps, DialogSlotCaps, DialogCloseIconSlot, DialogHeaderSlot, DialogChildAdmittedBy, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerChildAdmittedBy, dialog, dialogAlert, dialogCloseLabel, dialogDisableClose, dialogDismissible, dialogNoFocusTrap, dialogOpen, dialogOnOpening, dialogOnOpened, dialogOnClosing, dialogOnClosed, dialogOnCancel, dialogActions, dialogCloseIcon, dialogHeader, dialogChild, action, actionReturnValue, actionChild, trigger, triggerFor)
 
 {-| The **Dialog** family — flat module re-exporting its member elements.
 
@@ -12,7 +12,7 @@ typed helpers so members never collide. It re-exports:
 Prefer whichever import reads best — the flat `M3e.Component.*` modules and
 this family module are the same elements, same types.
 
-@docs DialogIs, DialogAttrs, DialogCloseIconSlot, DialogHeaderSlot, DialogChildAdmittedBy, ActionIs, ActionAttrs, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerChildAdmittedBy, dialog, dialogAlert, dialogCloseLabel, dialogDisableClose, dialogDismissible, dialogNoFocusTrap, dialogOpen, dialogOnOpening, dialogOnOpened, dialogOnClosing, dialogOnClosed, dialogOnCancel, dialogActions, dialogCloseIcon, dialogHeader, dialogChild, action, actionReturnValue, actionChild, trigger
+@docs DialogIs, DialogAttrs, DialogBuilder, DialogAttrCaps, DialogSlotCaps, DialogCloseIconSlot, DialogHeaderSlot, DialogChildAdmittedBy, ActionIs, ActionAttrs, ActionBuilder, ActionAttrCaps, ActionSlotCaps, ActionChildAdmittedBy, TriggerIs, TriggerAttrs, TriggerBuilder, TriggerAttrCaps, TriggerSlotCaps, TriggerChildAdmittedBy, dialog, dialogAlert, dialogCloseLabel, dialogDisableClose, dialogDismissible, dialogNoFocusTrap, dialogOpen, dialogOnOpening, dialogOnOpened, dialogOnClosing, dialogOnClosed, dialogOnCancel, dialogActions, dialogCloseIcon, dialogHeader, dialogChild, action, actionReturnValue, actionChild, trigger, triggerFor
 
 -}
 
@@ -44,6 +44,24 @@ type alias DialogIs s =
 -}
 type alias DialogAttrs =
     Dialog_.Attrs
+
+
+{-| See [`M3e.Component.Dialog.Builder`](M3e.Component.Dialog#Builder).
+-}
+type alias DialogBuilder attrCaps slotCaps msg kind =
+    Dialog_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.Dialog.AttrCaps`](M3e.Component.Dialog#AttrCaps).
+-}
+type alias DialogAttrCaps =
+    Dialog_.AttrCaps
+
+
+{-| See [`M3e.Component.Dialog.SlotCaps`](M3e.Component.Dialog#SlotCaps).
+-}
+type alias DialogSlotCaps =
+    Dialog_.SlotCaps
 
 
 {-| See [`M3e.Component.Dialog.CloseIconSlot`](M3e.Component.Dialog#CloseIconSlot).
@@ -191,6 +209,24 @@ type alias ActionAttrs =
     Action_.Attrs
 
 
+{-| See [`M3e.Component.DialogAction.Builder`](M3e.Component.DialogAction#Builder).
+-}
+type alias ActionBuilder attrCaps slotCaps msg kind =
+    Action_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.DialogAction.AttrCaps`](M3e.Component.DialogAction#AttrCaps).
+-}
+type alias ActionAttrCaps =
+    Action_.AttrCaps
+
+
+{-| See [`M3e.Component.DialogAction.SlotCaps`](M3e.Component.DialogAction#SlotCaps).
+-}
+type alias ActionSlotCaps =
+    Action_.SlotCaps
+
+
 {-| See [`M3e.Component.DialogAction.ChildAdmittedBy`](M3e.Component.DialogAction#ChildAdmittedBy).
 -}
 type alias ActionChildAdmittedBy childAdm =
@@ -214,8 +250,7 @@ actionChild =
 {-| The `trigger` element of this family — delegates to [`M3e.Component.DialogTrigger.component`](M3e.Component.DialogTrigger#component).
 -}
 trigger :
-    { for : String }
-    -> List (Attr TriggerAttrs msg)
+    List (Attr TriggerAttrs msg)
     -> List (Element childAccepts (TriggerChildAdmittedBy childAdm) msg)
     -> Element (TriggerIs s) admittedBy msg
 trigger =
@@ -234,7 +269,32 @@ type alias TriggerAttrs =
     Trigger_.Attrs
 
 
+{-| See [`M3e.Component.DialogTrigger.Builder`](M3e.Component.DialogTrigger#Builder).
+-}
+type alias TriggerBuilder attrCaps slotCaps msg kind =
+    Trigger_.Builder attrCaps slotCaps msg kind
+
+
+{-| See [`M3e.Component.DialogTrigger.AttrCaps`](M3e.Component.DialogTrigger#AttrCaps).
+-}
+type alias TriggerAttrCaps =
+    Trigger_.AttrCaps
+
+
+{-| See [`M3e.Component.DialogTrigger.SlotCaps`](M3e.Component.DialogTrigger#SlotCaps).
+-}
+type alias TriggerSlotCaps =
+    Trigger_.SlotCaps
+
+
 {-| See [`M3e.Component.DialogTrigger.ChildAdmittedBy`](M3e.Component.DialogTrigger#ChildAdmittedBy).
 -}
 type alias TriggerChildAdmittedBy childAdm =
     Trigger_.ChildAdmittedBy childAdm
+
+
+{-| See [`M3e.Component.DialogTrigger.for`](M3e.Component.DialogTrigger#for).
+-}
+triggerFor : String -> Attr { c | for : Supported } msg
+triggerFor =
+    Trigger_.for

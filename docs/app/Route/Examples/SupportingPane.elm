@@ -23,12 +23,9 @@ import BackendTask
 import ExampleNav
 import Head
 import M3e exposing (Element)
-import M3e.Action
 import M3e.Attributes
 import M3e.Component.AppBar
-import M3e.Component.AssistChip
 import M3e.Component.Card
-import M3e.Component.Heading
 import M3e.Component.ListItem
 import M3e.Component.NavItem
 import M3e.Kind
@@ -39,7 +36,7 @@ import Shared
 import TypedHtml
 import TypedHtml.Aria as Aria
 import TypedHtml.Attributes as TA
-import TypedHtml.Grouping
+import TypedHtml.Component.Grouping
 import View exposing (View)
 
 
@@ -119,7 +116,7 @@ its flex basis, pushing the nav bar off the bottom of the viewport and turning
 the DOCUMENT into the scroller.
 
 -}
-screen : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+screen : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 screen =
     TypedHtml.div
         [ TA.class "bg-surface text-on-surface flex flex-col md:flex-row h-dvh w-full overflow-hidden" ]
@@ -135,7 +132,7 @@ screen =
         ]
 
 
-exampleFooter : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+exampleFooter : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -167,7 +164,7 @@ pane BELOW the primary on compact and BESIDE it on expanded. `flex-1` lets the
 primary grow; `lg:w-80 lg:shrink-0` fixes the supporting pane's width so it never
 crowds the primary.
 -}
-body : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+body : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 body =
     TypedHtml.div [ TA.class "mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6 lg:flex-row" ]
         [ primary
@@ -177,10 +174,10 @@ body =
 
 {-| The primary region: the focus content. Flexes to fill the row.
 -}
-primary : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+primary : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 primary =
     TypedHtml.div [ TA.class "flex flex-1 flex-col gap-4 min-w-0" ]
-        [ M3e.Component.Heading.component { content = M3e.text "Project overview" } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] []
+        [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.small, TA.class "text-on-surface" ] [ M3e.text "Project overview" ]
         , TypedHtml.span [ TA.class "text-body-lg text-on-surface-variant" ]
             [ M3e.text "The Rally redesign moves the metric cards to the top row and swaps the donut for a stacked bar so the trend reads at a glance. This quarter's focus is the motion pass and the adaptive navigation." ]
         , summaryCard
@@ -191,7 +188,7 @@ primary =
 summaryCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 summaryCard =
     M3e.card [ M3e.Attributes.variant Value.elevated ]
-        [ M3e.Component.Card.header (M3e.Component.Heading.component { content = M3e.text "This sprint" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [])
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "This sprint" ])
         , M3e.Component.Card.content
             (TypedHtml.div [ TA.class "flex flex-wrap gap-6 pt-1" ]
                 [ metric "12" "Tasks done"
@@ -202,18 +199,18 @@ summaryCard =
         ]
 
 
-metric : String -> String -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+metric : String -> String -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 metric value label =
     TypedHtml.div [ TA.class "flex flex-col" ]
-        [ M3e.Component.Heading.component { content = M3e.text value } [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, TA.class "text-primary" ] []
-        , M3e.Component.Heading.component { content = M3e.text label } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] []
+        [ M3e.heading [ M3e.Attributes.variant Value.headline, M3e.Attributes.size Value.medium, TA.class "text-primary" ] [ M3e.text value ]
+        , M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text label ]
         ]
 
 
 milestonesCard : Element { s | card : M3e.Kind.Brand } adm_ msg
 milestonesCard =
     M3e.card [ M3e.Attributes.variant Value.filled ]
-        [ M3e.Component.Card.header (M3e.Component.Heading.component { content = M3e.text "Milestones" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [])
+        [ M3e.Component.Card.header (M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.large, TA.class "text-on-surface" ] [ M3e.text "Milestones" ])
         , M3e.Component.Card.content
             (M3e.list []
                 (List.intersperse (M3e.divider [ M3e.Attributes.inset True ] [])
@@ -232,23 +229,23 @@ milestoneRow iconName label status =
         [ M3e.Component.ListItem.leading (M3e.icon [ TA.name iconName ] [])
         , M3e.text label
         , M3e.Component.ListItem.trailing
-            (M3e.Component.Heading.component { content = M3e.text status } [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [])
+            (M3e.heading [ M3e.Attributes.variant Value.label, M3e.Attributes.size Value.large, TA.class "text-on-surface-variant" ] [ M3e.text status ])
         ]
 
 
 {-| The supporting pane: secondary, related material. Fixed width beside the
 primary on `lg:`, reflowed beneath it on compact.
 -}
-supporting : Element (TypedHtml.Grouping.DivIs s) adm_ msg
+supporting : Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 supporting =
     TypedHtml.div [ TA.class "shrink-0 lg:w-80" ]
         [ TypedHtml.div
             [ TA.class "bg-surface-container text-on-surface rounded-md-corner-large flex flex-col gap-4 p-4" ]
-            [ M3e.Component.Heading.component { content = M3e.text "Recent activity" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
+            [ M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Recent activity" ]
             , TypedHtml.div [ TA.class "flex flex-col gap-3" ]
                 (List.map activityRow activity)
             , M3e.divider [] []
-            , M3e.Component.Heading.component { content = M3e.text "Tags" } [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] []
+            , M3e.heading [ M3e.Attributes.variant Value.title, M3e.Attributes.size Value.medium, TA.class "text-on-surface" ] [ M3e.text "Tags" ]
             , M3e.chipSet [ Aria.label "Tags" ]
                 (List.map tag [ "design", "motion", "a11y", "beta" ])
             ]
@@ -267,7 +264,7 @@ activity =
     ]
 
 
-activityRow : Activity -> Element (TypedHtml.Grouping.DivIs s) adm_ msg
+activityRow : Activity -> Element (TypedHtml.Component.Grouping.DivIs s) adm_ msg
 activityRow a =
     TypedHtml.div [ TA.class "flex items-start gap-3" ]
         [ M3e.avatar [] [ M3e.text a.initials ]
@@ -280,7 +277,7 @@ activityRow a =
 
 tag : String -> Element { s | assistChip : M3e.Kind.Brand } adm_ msg
 tag label =
-    M3e.Component.AssistChip.component { content = M3e.text label, action = M3e.Action.none } [] []
+    M3e.assistChip [] [ M3e.text label ]
 
 
 
