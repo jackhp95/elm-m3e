@@ -12,7 +12,7 @@
 // proof that the family remains publishable (no reintroduced import cycle, no
 // undeclared dep, no unexposed cross-package import) after any codegen change.
 //
-// Env: ELM_CEM_BIN (default ../elm-cem/bin/elm-cem.js), IR_SRC / FACTS_SRC
+// Env: ELM_CEM_BIN (default ../../../../core/elm-cem/bin/elm-cem.js), IR_SRC / FACTS_SRC
 // (default: sibling layout, resolved by registry-check itself).
 
 import { execFileSync, spawnSync } from "node:child_process";
@@ -21,7 +21,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CEM = process.env.ELM_CEM_BIN || path.resolve(repo, "..", "elm-cem", "bin", "elm-cem.js");
+const CEM = process.env.ELM_CEM_BIN || path.resolve(repo, "..", "..", "..", "..", "core", "elm-cem", "bin", "elm-cem.js");
 const packagesPath = path.join(repo, "packages.json");
 const outDir = path.join(repo, "dist-packages");
 

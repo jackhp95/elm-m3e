@@ -3,10 +3,10 @@
     "source-directories": [
         "src",
         "../../../src",
-        "../../../../elm-review-cem/src",
-        "../../../../elm-cem/facts/src",
-        "../../../../elm-html-intermediate-representation/src",
-        "../../../../elm-typed-html/src"
+        "../../../../../../../core/elm-review-cem/src",
+        "../../../../../../../core/elm-cem/facts/src",
+        "../../../../../../../core/elm-html-intermediate-representation/src",
+        "../../../../../../../core/elm-typed-html/src"
     ],
     "elm-version": "0.19.1",
     "dependencies": {
